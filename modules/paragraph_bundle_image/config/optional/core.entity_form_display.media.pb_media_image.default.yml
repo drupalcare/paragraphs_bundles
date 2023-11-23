@@ -20,6 +20,20 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_image_caption:
     type: string_textfield
     weight: 3
@@ -35,20 +49,6 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
-    third_party_settings: {  }
-  name:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  path:
-    type: path
-    weight: 6
-    region: content
-    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

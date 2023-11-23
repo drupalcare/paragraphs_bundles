@@ -1,6 +1,7 @@
 langcode: en
 status: true
 dependencies: {  }
+name: pb_wide_xxlg_1800x900
 label: 'PB Wide XXLG 1800x900'
 effects:
   b8acd5c8-527b-4e79-86b9-e9fb54468a5c:

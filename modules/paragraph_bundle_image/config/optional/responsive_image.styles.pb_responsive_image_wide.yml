@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - image.style.pb_wide_xxlg_1800x900
-    - image.style.pb_wide_xlg_1339x820
     - image.style.pb_wide_lg_1280x750
     - image.style.pb_wide_md_992x610
     - image.style.pb_wide_sm_600x440
+    - image.style.pb_wide_xlg_1339x820
     - image.style.pb_wide_xsm_420x280
+    - image.style.pb_wide_xxlg_1800x900
   module:
     - paragraph_bundle_image
 id: pb_responsive_image_wide

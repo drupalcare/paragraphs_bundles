@@ -38,3 +38,20 @@ function paragraph_bundle_image_help($route_name, RouteMatchInterface $route_mat
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_image_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__image_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__image_wide_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__image_narrow_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}
