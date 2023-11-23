@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_xlg_1339x820
-label: 'Pb Wide XLG 1339x820'
+label: 'PB Wide XLG 1339x820'
 effects:
   6aff9c5e-7ed5-4abc-a6d2-79028867093a:
     uuid: 6aff9c5e-7ed5-4abc-a6d2-79028867093a

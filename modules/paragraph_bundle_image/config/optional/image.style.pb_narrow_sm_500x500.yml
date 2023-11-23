@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_narrow_sm_500x500
-label: 'Pb Narrow SM 500x500'
+label: 'PB Narrow SM 500x500'
 effects:
   a15e2646-27e2-41ea-8e2c-a94aa413f099:
     uuid: a15e2646-27e2-41ea-8e2c-a94aa413f099

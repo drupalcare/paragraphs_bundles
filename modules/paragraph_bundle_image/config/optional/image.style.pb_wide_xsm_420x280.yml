@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_xsm_420x280
-label: 'Pb Wide XSM 420x280'
+label: 'PB Wide XSM 420x280'
 effects:
   86508b55-691a-44d4-b85a-ba1ac843d868:
     uuid: 86508b55-691a-44d4-b85a-ba1ac843d868

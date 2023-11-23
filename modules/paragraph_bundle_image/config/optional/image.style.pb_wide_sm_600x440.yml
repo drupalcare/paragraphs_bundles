@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_sm_600x440
-label: 'Pb Wide SM 600x440'
+label: 'PB Wide SM 600x440'
 effects:
   49be2c2d-f374-4727-9cac-2e831b9687af:
     uuid: 49be2c2d-f374-4727-9cac-2e831b9687af

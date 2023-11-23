@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_narrow_xlg_1100x1100
-label: 'Pb Narrow XLG 1100x1100'
+label: 'PB Narrow XLG 1100x1100'
 effects:
   72a1057c-734e-43e9-8e51-c690852f07e5:
     uuid: 72a1057c-734e-43e9-8e51-c690852f07e5

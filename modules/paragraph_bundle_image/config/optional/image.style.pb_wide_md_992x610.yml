@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_md_992x610
-label: 'Pb Wide MD 992x610'
+label: 'PB Wide MD 992x610'
 effects:
   8f8ce354-e216-461d-8705-fb0dd5b97dfb:
     uuid: 8f8ce354-e216-461d-8705-fb0dd5b97dfb

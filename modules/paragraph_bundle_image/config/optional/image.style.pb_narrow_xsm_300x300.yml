@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_narrow_xsm_300x300
-label: 'Pb Narrow XSM 300x300'
+label: 'PB Narrow XSM 300x300'
 effects:
   6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb:
     uuid: 6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb
