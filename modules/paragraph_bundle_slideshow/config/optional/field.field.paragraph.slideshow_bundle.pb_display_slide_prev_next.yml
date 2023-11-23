@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_slide_prev_next
+    - paragraphs.paragraphs_type.slideshow_bundle
+id: paragraph.slideshow_bundle.pb_display_slide_prev_next
+field_name: pb_display_slide_prev_next
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Show Prev and Next Buttons'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

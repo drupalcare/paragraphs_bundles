@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_accor_animated
+    - paragraphs.paragraphs_type.accordion_bundle
+  module:
+    - options
+id: paragraph.accordion_bundle.pb_display_accor_animated
+field_name: pb_display_accor_animated
+entity_type: paragraph
+bundle: accordion_bundle
+label: 'Animated Section'
+description: 'Select the animation for the section.'
+required: false
+translatable: false
+default_value:
+  -
+    value: pb-animate-opacity
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_flip_xy
+    - paragraphs.paragraphs_type.3d_flip_box_bundle
+  module:
+    - options
+id: paragraph.3d_flip_box_bundle.pb_display_flip_xy
+field_name: pb_display_flip_xy
+entity_type: paragraph
+bundle: 3d_flip_box_bundle
+label: 'Flip Box (Horizontal Or Vertical)'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: flip-x
+default_value_callback: ''
+settings: {  }
+field_type: list_string

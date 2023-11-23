@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_accor_animated
+field_name: pb_display_accor_animated
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: pb-animate-zoom
+      label: 'Animated Tab Zoom'
+    -
+      value: pb-animate-top
+      label: 'Animated Tab Top'
+    -
+      value: pb-animate-bottom
+      label: 'Animated Tab Bottom'
+    -
+      value: pb-animate-left
+      label: 'Animated Tab Left'
+    -
+      value: pb-animate-right
+      label: 'Animated Tab Right'
+    -
+      value: pb-animate-opacity
+      label: 'Animated Tab Opacity'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

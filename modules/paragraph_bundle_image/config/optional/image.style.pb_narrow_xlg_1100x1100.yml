@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_narrow_xlg_1100x1100
+label: 'Pb Narrow XLG 1100x1100'
+effects:
+  72a1057c-734e-43e9-8e51-c690852f07e5:
+    uuid: 72a1057c-734e-43e9-8e51-c690852f07e5
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  bbfea251-e372-43f2-ad08-48b1b4ab3bb8:
+    uuid: bbfea251-e372-43f2-ad08-48b1b4ab3bb8
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1100
+      height: 1100
+      anchor: center-center

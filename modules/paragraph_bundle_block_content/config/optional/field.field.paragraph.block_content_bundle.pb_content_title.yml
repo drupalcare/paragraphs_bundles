@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_title
+    - paragraphs.paragraphs_type.block_content_bundle
+id: paragraph.block_content_bundle.pb_content_title
+field_name: pb_content_title
+entity_type: paragraph
+bundle: block_content_bundle
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

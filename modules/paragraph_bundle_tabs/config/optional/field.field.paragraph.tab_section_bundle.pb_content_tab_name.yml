@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_pb_content_tab_name
+    - paragraphs.paragraphs_type.tab_section_bundle
+id: paragraph.tab_section_bundle.field_pb_content_tab_name
+field_name: field_pb_content_tab_name
+entity_type: paragraph
+bundle: tab_section_bundle
+label: 'Tab Section Name'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_content_3dcar_lheight
+field_name: pb_content_3dcar_lheight
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '100'
+      label: '100 px'
+    -
+      value: '150'
+      label: '150 px'
+    -
+      value: '200'
+      label: '200 px'
+    -
+      value: '250'
+      label: '250 px'
+    -
+      value: '300'
+      label: '300 px'
+    -
+      value: '350'
+      label: '350 px'
+    -
+      value: '400'
+      label: '400 px'
+    -
+      value: '450'
+      label: '450 px'
+    -
+      value: '500'
+      label: '500 px'
+    -
+      value: '550'
+      label: '550 px'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

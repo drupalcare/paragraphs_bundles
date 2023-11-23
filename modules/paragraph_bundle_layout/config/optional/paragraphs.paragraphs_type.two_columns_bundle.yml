@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: two_columns_bundle
+label: 'Two Columns Bundle'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

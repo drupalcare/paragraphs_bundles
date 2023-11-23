@@ -1,0 +1,11 @@
+paragraph-bundle-modal:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-modal.css: { }
+  js:
+    js/paragraph-bundle-modal.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once

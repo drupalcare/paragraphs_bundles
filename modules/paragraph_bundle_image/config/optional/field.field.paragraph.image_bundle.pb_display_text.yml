@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_text
+    - paragraphs.paragraphs_type.image_bundle
+  module:
+    - paragraphs_bundles
+id: paragraph.image_bundle.pb_display_text
+field_name: pb_display_text
+entity_type: paragraph
+bundle: image_bundle
+label: 'Text Color'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_rgb

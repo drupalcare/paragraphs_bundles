@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_wide_lg_1280x750
+label: 'Pb Wide LG 1280x750'
+effects:
+  a85d6d3d-4131-4022-8a95-205aa544cb67:
+    uuid: a85d6d3d-4131-4022-8a95-205aa544cb67
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  529b4bc4-1ff6-49db-9f4d-c665dfa2af05:
+    uuid: 529b4bc4-1ff6-49db-9f4d-c665dfa2af05
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1280
+      height: 750
+      anchor: center-center

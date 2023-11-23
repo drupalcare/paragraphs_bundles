@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_animated_slides
+    - paragraphs.paragraphs_type.slideshow_bundle
+  module:
+    - options
+id: paragraph.slideshow_bundle.pb_display_animated_slides
+field_name: pb_display_animated_slides
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Animated Slide'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: pb-animate-opacity
+default_value_callback: ''
+settings: {  }
+field_type: list_string

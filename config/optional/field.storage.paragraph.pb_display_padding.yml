@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_padding
+field_name: pb_display_padding
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: pb-padding-small
+      label: 'Adds 4px top and bottom, and 8px left and right padding'
+    -
+      value: pb-padding
+      label: 'Adds 8px top and bottom, and 16px left and right padding'
+    -
+      value: pb-padding-large
+      label: 'Adds 12px top and bottom, and 24px left and right padding'
+    -
+      value: pb-padding-16
+      label: 'Adds 16px top and bottom padding to an element'
+    -
+      value: pb-padding-24
+      label: 'Adds 24px top and bottom padding to an element'
+    -
+      value: pb-padding-32
+      label: 'Adds 32px top and bottom padding to an element'
+    -
+      value: pb-padding-48
+      label: 'Adds 48px top and bottom padding to an element'
+    -
+      value: pb-padding-64
+      label: 'Adds 64px top and bottom padding to an element'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

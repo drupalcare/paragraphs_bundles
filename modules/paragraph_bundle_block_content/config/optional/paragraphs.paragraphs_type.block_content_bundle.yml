@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: block_content_bundle
+label: 'Block Content Bundle'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

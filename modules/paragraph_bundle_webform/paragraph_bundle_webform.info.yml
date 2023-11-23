@@ -1,0 +1,8 @@
+name: Paragraph Bundle Webform
+type: module
+description: A reusable Paragraph Webform bundle.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - webform:webform
+  - paragraphs_bundles:paragraphs_bundles

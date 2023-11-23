@@ -1,0 +1,170 @@
+/**
+ * @file
+ * W3CSS Paragraphs.
+ *
+ * Filename:     paragraphs-bundles-base.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
+ */
+.paragraph,
+.paragraph .w3-one-column {
+  display: grid;
+  margin: 0 auto;
+}
+
+.paragraph a,
+.paragraph button {
+  all: unset;
+  outline: revert;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.paragraph > .paragraph__inner {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+}
+
+.paragraph h1,
+.paragraph h2,
+.paragraph h3 {
+  color: inherit !important;
+  background-color: transparent !important;
+}
+
+.paragraph .content-title {
+  display: flex;
+  flex-grow: 1;
+}
+
+.solo-row:after,
+.solo-row:before {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.w3-img-auto .field--name-w3css-media-image img {
+  width: auto !important;
+}
+
+.field--name-w3css-media-image picture,
+.paragraph .w3-img-wrapper {
+  float: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraph a.w3css-link {
+  display: block;
+}
+
+/*.paragraph .w3-img-wrapper {
+  overflow: hidden;
+}
+*/
+.pparagraph .w3-img-wrapper div {
+  float: left;
+}
+
+.w3-img-wrapper.w3-dis-top-left-right {
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+}
+
+.w3-img-wrapper.w3-dis-radius {
+  border-radius: 0 !important;
+}
+
+/* Button */
+.paragraph .button,
+.paragraph .solo-button {
+  display: inline-block;
+  padding: 8px 16px;
+  line-height: inherit;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  white-space: nowrap;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+@media (min-width:993px) {
+  .paragraph > .simple__inner,
+  .w3-hero-txt-wrapper .w-100,
+  .paragraph > .w-100 {
+    width: 100%;
+  }
+
+  .w3-hero-txt-wrapper .w-90,
+  .paragraph > .w-90 {
+    width: 90%;
+  }
+
+  .w3-hero-txt-wrapper .w-80,
+  .paragraph > .w-80 {
+    width: 80%;
+  }
+
+  .w3-hero-txt-wrapper .w-70,
+  .paragraph > .w-70 {
+    width: 70%;
+  }
+
+  .w3-hero-txt-wrapper .w-60,
+  .paragraph > .w-60 {
+    width: 60%;
+  }
+
+  .w3-hero-txt-wrapper .w-50,
+  .paragraph > .w-50 {
+    width: 50%;
+  }
+
+  .w3-hero-txt-wrapper .w-40,
+  .paragraph > .w-40 {
+    width: 40%;
+  }
+
+  .w3-hero-txt-wrapper .w-30,
+  .paragraph > .w-30 {
+    width: 30%;
+  }
+
+  .paragraph > .simple__inner {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .paragraph > .w-100,
+  .paragraph > .w-90,
+  .paragraph > .w-80,
+  .paragraph > .w-70,
+  .paragraph > .w-60,
+  .paragraph > .w-50,
+  .paragraph > .w-40,
+  .paragraph > .w-30,
+  .w3-hero-txt-wrapper .w-100,
+  .w3-hero-txt-wrapper .w-90,
+  .w3-hero-txt-wrapper .w-80,
+  .w3-hero-txt-wrapper .w-70,
+  .w3-hero-txt-wrapper .w-60,
+  .w3-hero-txt-wrapper .w-50,
+  .w3-hero-txt-wrapper .w-40,
+  .w3-hero-txt-wrapper .w-30 {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+}

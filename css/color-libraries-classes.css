@@ -1,0 +1,191 @@
+/**
+ * @file
+ * W3CSS Paragraphs.
+ *
+ * Filename:     w3css-color-libraries-classes.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.w3-255-193-7,
+.w3-amber {
+  color: #000 !important;
+  background-color: rgb(255, 193, 7) !important;
+}
+
+.w3-0-255-255,
+.w3-aqua {
+  color: #000 !important;
+  background-color: rgb(0, 255, 255) !important;
+}
+
+.w3-33-150-243,
+.w3-blue {
+  color: #fff !important;
+  background-color: rgb(33, 150, 243) !important;
+}
+
+.w3-135-206-235,
+.w3-light-blue {
+  color: #000 !important;
+  background-color: rgb(135, 206, 235) !important;
+}
+
+.w3-121-85-72,
+.w3-brown {
+  color: #fff !important;
+  background-color: rgb(121, 85, 72) !important;
+}
+
+.w3-0-188-212,
+.w3-cyan {
+  color: #000 !important;
+  background-color: rgb(0, 188, 212) !important;
+}
+
+.w3-96-125-139,
+.w3-blue-gray,
+.w3-blue-grey {
+  color: #fff !important;
+  background-color: rgb(96, 125, 139) !important;
+}
+
+.w3-76-175-80,
+.w3-green {
+  color: #fff !important;
+  background-color: rgb(76, 175, 80) !important;
+}
+
+.w3-139-195-74,
+.w3-light-green {
+  color: #000 !important;
+  background-color: rgb(139, 195, 74) !important;
+}
+
+.w3-63-81-181,
+.w3-indigo {
+  color: #fff !important;
+  background-color: rgb(63, 81, 181) !important;
+}
+
+.w3-240-230-140,
+.w3-khaki {
+  color: #000 !important;
+  background-color: rgb(240, 230, 140) !important;
+}
+
+.w3-205-220-57,
+.w3-lime {
+  color: #000 !important;
+  background-color: rgb(205, 220, 57) !important;
+}
+
+.w3-255-152-0,
+.w3-orange {
+  color: #000 !important;
+  background-color: rgb(255, 152, 0) !important;
+}
+
+.w3-255-87-34,
+.w3-deep-orange {
+  color: #fff !important;
+  background-color: rgb(255, 87, 34) !important;
+}
+
+.w3-233-30-99,
+.w3-pink {
+  color: #fff !important;
+  background-color: rgb(233, 30, 99) !important;
+}
+
+.w3-156-39-176,
+.w3-purple {
+  color: #fff !important;
+  background-color: rgb(156, 39, 176) !important;
+}
+
+.w3-103-58-183,
+.w3-deep-purple {
+  color: #fff !important;
+  background-color: rgb(103, 58, 183) !important;
+}
+
+.w3-244-67-54,
+.w3-red {
+  color: #fff !important;
+  background-color: rgb(244, 67, 54) !important;
+}
+
+.w3-253-245-230,
+.w3-sand {
+  color: #000 !important;
+  background-color: rgb(253, 245, 230) !important;
+}
+
+.w3-0-150-136,
+.w3-teal {
+  color: #fff !important;
+  background-color: rgb(0, 150, 136) !important;
+}
+
+.w3-255-235-59,
+.w3-yellow {
+  color: #000 !important;
+  background-color: rgb(255, 235, 59) !important;
+}
+
+.w3-255-255-255,
+.w3-white {
+  color: #000 !important;
+  background-color: rgb(255, 255, 255) !important;
+}
+
+.w3-0-0-0,
+.w3-black {
+  color: #fff !important;
+  background-color: rgb(0, 0, 0) !important;
+}
+
+.w3-158-158-158,
+.w3-gray,
+.w3-grey {
+  color: #000 !important;
+  background-color: rgb(158, 158, 158) !important;
+}
+
+.w3-241-241-241,
+.w3-light-gray,
+.w3-light-grey {
+  color: #000 !important;
+  background-color: rgb(241, 241, 241) !important;
+}
+
+.w3-97-97-97,
+.w3-dark-gray,
+.w3-dark-grey {
+  color: #fff !important;
+  background-color: rgb(97, 97, 97) !important;
+}
+
+.w3-255-221-221,
+.w3-pale-red {
+  color: #000 !important;
+  background-color: rgb(255, 221, 221) !important;
+}
+
+.w3-221-255-221,
+.w3-pale-green {
+  color: #000 !important;
+  background-color: rgb(221, 255, 221) !important;
+}
+
+.w3-255-255-204,
+.w3-pale-yellow {
+  color: #000 !important;
+  background-color: rgb(255, 255, 204) !important;
+}
+
+.w3-221-255-255,
+.w3-pale-blue {
+  color: #000 !important;
+  background-color: rgb(221, 255, 255) !important;
+}

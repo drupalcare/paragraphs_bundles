@@ -1,0 +1,119 @@
+{#
+/**
+* @file
+* Default theme implementation to display a paragraph.
+*
+* Available variables:
+* - paragraph: Full paragraph entity.
+*   Only method names starting with "get", "has", or "is" and a few common
+*   methods such as "id", "label", and "bundle" are available. For example:
+*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+*   - paragraph.id(): The paragraph ID.
+*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+*   - paragraph.getOwnerId(): The user ID of the paragraph author.
+*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+*   and methods for the paragraph object.
+* - content: All paragraph items. Use {{ content }} to print them all,
+*   or print a subset such as {{ content.field_example }}. Use
+*   {{ content|without('field_example') }} to temporarily suppress the printing
+*   of a given child element.
+* - attributes: HTML attributes for the containing element.
+*   The attributes.class element may contain one or more of the following
+*   classes:
+*   - paragraphs: The current template type (also known as a "theming hook").
+*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+*     "Image" it would result in "paragraphs--type--image". Note that the machine
+*     name will often be in a short form of the human readable label.
+*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+*     preview would result in: "paragraphs--view-mode--preview", and
+*     default: "paragraphs--view-mode--default".
+* - view_mode: View mode; for example, "preview" or "full".
+* - logged_in: Flag for authenticated user status. Will be true when the
+*   current user is a logged-in member.
+* - is_admin: Flag for admin user status. Will be true when the current user
+*   is an administrator.
+*
+* @see template_preprocess_paragraph()
+*
+* @ingroup themeable
+#}
+
+{{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
+
+{% set paragraph_id = 'w3-image-' ~ paragraph.id.value %}
+
+{% set classes = [
+   paragraph_id,
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished',
+  'paragraph--id--' ~ paragraph.id.value
+] %}
+
+{% set classes_inner = 'paragraph__inner w3-image__inner' %}
+
+{# Merge display features into classes. #}
+{% set w3css_displays = [
+  'w3css_display_hover_bg',
+  'w3css_display_text_color',
+  'w3css_display_hover_text',
+  'w3css_display_border',
+  'w3css_display_round',
+  'w3css_display_border_color',
+  'w3css_display_card',
+  'w3css_display_hover_border',
+  'w3css_display_padding',
+  'w3css_display_margin',
+] %}
+
+{% for w3css_display in w3css_displays %}
+  {% if content[w3css_display]|render %}
+    {% set classes_inner = classes_inner ~ ' ' ~ content[w3css_display]|render|striptags|trim %}
+  {% endif %}
+{% endfor %}
+
+{# Get the paragraph width. #}
+{% set container_w_input = content.w3css_display_width|render|striptags|trim %}
+{% if container_w_input %}
+  {% set container_width = 'w-' ~ container_w_input %}
+  {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
+{% endif %}
+
+{# Get the paragraph backgournd/opcity . #}
+{% set w3css_bg_color = content.w3css_display_bg_color|render|striptags|trim|slice(3)|replace({'-': ','}) %}
+{% set w3css_bg_opacity = content.w3css_display_opacity|render|striptags|trim|default('100') %}
+{% if w3css_bg_color %}
+  {% set w3css_bg_opacity = w3css_bg_opacity != '100' ? '0.' ~ w3css_bg_opacity : w3css_bg_opacity %}
+  {% set w3css_bg_color = w3css_bg_color ~ ',' ~  w3css_bg_opacity %}
+{% endif %}
+
+{# Image and link #}
+{% set w3css_link = content.w3css_content_link.0['#url'] %}
+{% set w3css_link_title_attr = content.w3css_content_link_title_attr|render|striptags|trim %}
+{# Set the round around the image also #}
+{% set w3css_padding = content.w3css_display_padding|render|striptags|trim %}
+{% set w3css_round = content.w3css_display_round|render|striptags|trim %}
+{% set w3css_image = content.w3css_content_image %}
+
+
+<div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
+  <div class="{{ classes_inner }}" {% if w3css_bg_color %}style="background-color: rgba( {{ w3css_bg_color }} )" {% endif %}>
+
+      {% if content.w3css_content_title|render %}
+      <h3 class="content-title">{{ content.w3css_content_title }}</h3>
+      {% endif %}
+
+      {% if w3css_link %}
+      <a href="{{ w3css_link }}" class="w3css-link" {% if w3css_link_title_attr %} title="{{ w3css_link_title_attr }}" {% endif %}>
+      {% endif %}
+
+        <div class="w3-img-wrapper {{ w3css_round == '' ? '' : ' ' ~ w3css_round }}{% if content.w3css_content_title|render %} w3-dis-top-left-right {% endif %}{% if w3css_padding %} w3-dis-radius {% endif %}"> {{ w3css_image }}
+        </div>
+
+      {% if w3css_link %}
+      </a>
+      {% endif %}
+
+  </div>
+</div> {# End of main wrapper #}

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_slide_active_item
+    - paragraphs.paragraphs_type.slideshow_bundle
+  module:
+    - paragraphs_bundles
+id: paragraph.slideshow_bundle.pb_display_slide_active_item
+field_name: pb_display_slide_active_item
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Active Button Background'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_rgb

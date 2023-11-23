@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_3dcar_lheight
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+  module:
+    - options
+id: paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
+field_name: pb_content_3dcar_lheight
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: 'Large Screen Height'
+description: 'This height will be applied to all carrousel items. For 993px or more.'
+required: true
+translatable: false
+default_value:
+  -
+    value: '550'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

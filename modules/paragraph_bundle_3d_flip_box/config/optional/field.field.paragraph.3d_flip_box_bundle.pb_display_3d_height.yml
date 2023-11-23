@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3d_height
+    - paragraphs.paragraphs_type.3d_flip_box_bundle
+id: paragraph.3d_flip_box_bundle.pb_display_3d_height
+field_name: pb_display_3d_height
+entity_type: paragraph
+bundle: 3d_flip_box_bundle
+label: '3D Box Height'
+description: 'Insert the height in pixels.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 300
+default_value_callback: ''
+settings:
+  min: 150
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

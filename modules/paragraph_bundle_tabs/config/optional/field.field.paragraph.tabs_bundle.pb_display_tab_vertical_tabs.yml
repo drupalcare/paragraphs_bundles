@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_tab_vertical_tabs
+    - paragraphs.paragraphs_type.tabs_bundle
+id: paragraph.tabs_bundle.pb_display_tab_vertical_tabs
+field_name: pb_display_tab_vertical_tabs
+entity_type: paragraph
+bundle: tabs_bundle
+label: 'Vertical Tabs'
+description: 'Check this box to change it to vertical tabs.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

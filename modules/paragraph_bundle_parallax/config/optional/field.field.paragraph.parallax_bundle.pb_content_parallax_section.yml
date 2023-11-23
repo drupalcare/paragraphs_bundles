@@ -1,0 +1,69 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_parallax_section
+    - paragraphs.paragraphs_type.parallax_bundle
+    - paragraphs.paragraphs_type.parallax_section_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.parallax_bundle.pb_content_parallax_section
+field_name: pb_content_parallax_section
+entity_type: paragraph
+bundle: parallax_bundle
+label: 'Parallax Section'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      parallax_section_bundle: parallax_section_bundle
+    negate: 0
+    target_bundles_drag_drop:
+      block_bundle:
+        weight: 15
+        enabled: false
+      block_content_bundle:
+        weight: 16
+        enabled: false
+      contact_form_bundle:
+        weight: 17
+        enabled: false
+      image_bundle:
+        weight: 18
+        enabled: false
+      image_narrow_bundle:
+        weight: 19
+        enabled: false
+      image_wide_bundle:
+        weight: 20
+        enabled: false
+      one_column_bundle:
+        weight: 21
+        enabled: false
+      parallax_bundle:
+        weight: 22
+        enabled: false
+      parallax_section_bundle:
+        weight: 23
+        enabled: true
+      simple_bundle:
+        weight: 24
+        enabled: false
+      three_columns_bundle:
+        weight: 25
+        enabled: false
+      two_columns_bundle:
+        weight: 26
+        enabled: false
+      views_bundle:
+        weight: 27
+        enabled: false
+      webform_bundle:
+        weight: 28
+        enabled: false
+field_type: entity_reference_revisions

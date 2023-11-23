@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_wide_xlg_1339x820
+label: 'Pb Wide XLG 1339x820'
+effects:
+  6aff9c5e-7ed5-4abc-a6d2-79028867093a:
+    uuid: 6aff9c5e-7ed5-4abc-a6d2-79028867093a
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  f1aa462c-9b4c-4809-bc04-9c207b81d3e8:
+    uuid: f1aa462c-9b4c-4809-bc04-9c207b81d3e8
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 1339
+      height: 820
+      anchor: center-center

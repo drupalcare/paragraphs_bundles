@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_border_hover
+    - paragraphs.paragraphs_type.block_content_bundle
+  module:
+    - paragraphs_bundles
+id: paragraph.block_content_bundle.pb_display_border_hover
+field_name: pb_display_border_hover
+entity_type: paragraph
+bundle: block_content_bundle
+label: 'Border Color Hover'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_rgb

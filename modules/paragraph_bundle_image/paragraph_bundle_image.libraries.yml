@@ -1,0 +1,5 @@
+paragraph-bundle-image:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-image.css: { }

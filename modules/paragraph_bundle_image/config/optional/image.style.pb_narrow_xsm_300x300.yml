@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_narrow_xsm_300x300
+label: 'Pb Narrow XSM 300x300'
+effects:
+  6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb:
+    uuid: 6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  33e68eb7-3153-4065-a4a9-7d12ab03c79e:
+    uuid: 33e68eb7-3153-4065-a4a9-7d12ab03c79e
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 300
+      height: 300
+      anchor: center-center

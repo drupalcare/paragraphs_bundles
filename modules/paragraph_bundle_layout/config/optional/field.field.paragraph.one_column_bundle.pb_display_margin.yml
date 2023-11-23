@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_margin
+    - paragraphs.paragraphs_type.one_column_bundle
+  module:
+    - options
+id: paragraph.one_column_bundle.pb_display_margin
+field_name: pb_display_margin
+entity_type: paragraph
+bundle: one_column_bundle
+label: Margin
+description: 'Incorporate pre-set custom CSS classes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

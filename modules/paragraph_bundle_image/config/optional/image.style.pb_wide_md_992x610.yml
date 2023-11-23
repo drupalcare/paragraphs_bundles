@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_wide_md_992x610
+label: 'Pb Wide MD 992x610'
+effects:
+  8f8ce354-e216-461d-8705-fb0dd5b97dfb:
+    uuid: 8f8ce354-e216-461d-8705-fb0dd5b97dfb
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  136be987-1958-4742-a171-e6f7d5af136c:
+    uuid: 136be987-1958-4742-a171-e6f7d5af136c
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 992
+      height: 610
+      anchor: center-center

@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+id: pb_media_image
+label: 'Image (PB)'
+description: 'Use local with Paragraph Bundle image for reusable media.'
+source: image
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: pb_image_field
+field_map:
+  name: name

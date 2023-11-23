@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_animated_modal
+    - paragraphs.paragraphs_type.modal_bundle
+  module:
+    - options
+id: paragraph.modal_bundle.pb_display_animated_modal
+field_name: pb_display_animated_modal
+entity_type: paragraph
+bundle: modal_bundle
+label: 'Animated Modal'
+description: 'Use any of the pb-animate-zoom|top|bottom|right|left classes to slide in the modal from a specific direction'
+required: false
+translatable: false
+default_value:
+  -
+    value: w3-animate-opacity
+default_value_callback: ''
+settings: {  }
+field_type: list_string

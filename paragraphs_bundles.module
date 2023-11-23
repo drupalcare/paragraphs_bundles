@@ -1,0 +1,83 @@
+<?php
+
+/**
+ * @file
+ * Paragraphs Bundles.
+ *
+ * Filename:     paragraphs_bundles.module
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function paragraphs_bundles_help($route_name, RouteMatchInterface $route_match) {
+
+  switch ($route_name) {
+    case 'help.page.paragraphs_bundles':
+      $text = file_get_contents(__DIR__ . "/README.md");
+      if (!\Drupal::moduleHandler()->moduleExists('markdown')) {
+        return '<pre>' . $text . '</pre>';
+      }
+      // Use the Markdown filter to render the README.
+      $filter_manager = \Drupal::service('plugin.manager.filter');
+      $settings = \Drupal::configFactory()
+        ->get('markdown.settings')
+        ->getRawData();
+      $config = ['settings' => $settings];
+      $filter = $filter_manager->createInstance('markdown', $config);
+      return $filter->process($text, 'en');
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+// Function paragraphs_bundles_preprocess_page(&$variables) {
+// if (!\Drupal::config('system.theme')->get('admin')) {
+//     $admin_theme = \Drupal::config('system.theme')->get('default');
+//   }
+//   else {
+//     $admin_theme = \Drupal::config('system.theme')->get('admin');
+//   }.
+// // No admin theme selected or value not existing. Cancel.
+//   if (empty($admin_theme) || !\Drupal::service('theme_handler')->themeExists($admin_theme)) {
+//     return;
+//   }
+// $admin_theme_name = \Drupal::service('theme_handler')->getName($admin_theme);
+// /** @var \Drupal\Core\Routing\AdminContext $admin_context */
+//   $admin_context = \Drupal::service('router.admin_context');
+//   if ($admin_context->isAdminRoute()) {
+//     if ($admin_theme_name == 'Seven') {
+//       $variables['#attached']['library'][] = "paragraphs_bundles/paragraphs-admin-seven";
+//     }
+//     else {
+//       $variables['#attached']['library'][] = "paragraphs_bundles/paragraphs-admin-claro";
+//     }
+//   }
+// }.
+
+/**
+ * Implements hook_theme().
+ */
+function paragraphs_bundles_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__default' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__simple_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+    // 'paragraph__w3css_image' => [
+    //   'base hook' => 'paragraph',
+    // ],
+    'field__entity_reference_revisions' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

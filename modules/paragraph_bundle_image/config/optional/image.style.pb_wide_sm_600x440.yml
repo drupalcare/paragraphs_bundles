@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_wide_sm_600x440
+label: 'Pb Wide SM 600x440'
+effects:
+  49be2c2d-f374-4727-9cac-2e831b9687af:
+    uuid: 49be2c2d-f374-4727-9cac-2e831b9687af
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  398dc8f2-7d51-4fc7-9f90-ca47b181c2e9:
+    uuid: 398dc8f2-7d51-4fc7-9f90-ca47b181c2e9
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 600
+      height: 440
+      anchor: center-center

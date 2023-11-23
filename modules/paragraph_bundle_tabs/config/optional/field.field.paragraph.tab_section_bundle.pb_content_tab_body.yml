@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_pb_content_tab_body
+    - paragraphs.paragraphs_type.tab_section_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.tab_section_bundle.field_pb_content_tab_body
+field_name: field_pb_content_tab_body
+entity_type: paragraph
+bundle: tab_section_bundle
+label: 'Tab Section Body'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+    target_bundles_drag_drop:
+field_type: entity_reference_revisions

@@ -1,0 +1,8 @@
+name: Paragraph Bundle Image Overlay
+type: module
+description: A reusable Paragraph Image Overlay bundle.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - paragraphs_bundles:paragraphs_bundles
+  - paragraph_bundle_image:paragraph_bundle_image

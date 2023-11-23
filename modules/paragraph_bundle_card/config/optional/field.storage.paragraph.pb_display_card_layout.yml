@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_card_layout
+field_name: pb_display_card_layout
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: left25
+      label: 'Image On The Left ( 25% / 75% )'
+    -
+      value: left33
+      label: 'Image On The Left ( 33% / 67% )'
+    -
+      value: left50
+      label: 'Image On The Left ( 50% / 50% )'
+    -
+      value: left67
+      label: 'Image On The Left ( 67% / 33% )'
+    -
+      value: left75
+      label: 'Image On The Left ( 75% / 25% )'
+    -
+      value: right25
+      label: 'Image On The Right ( 75% / 25% )'
+    -
+      value: right33
+      label: 'Image On The Right ( 67% / 33% )'
+    -
+      value: right50
+      label: 'Image On The Right ( 50% / 50% )'
+    -
+      value: right67
+      label: 'Image On The Right ( 33% / 67% )'
+    -
+      value: right75
+      label: 'Image On The Right ( 25% / 75% )'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_shadow
+field_name: pb_display_shadow
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: pb-card-2
+      label: '2px bordered shadow'
+    -
+      value: pb-card-4
+      label: '4px bordered shadow'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,10 @@
+name: Paragraph Bundle Image
+type: module
+description: A reusable Paragraph Image bundle.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - drupal:media
+  - drupal:media_library
+  - drupal:responsive_image
+  - paragraphs_bundles:paragraphs_bundles

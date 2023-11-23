@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.pb_wide_lg_1280x750
+    - image.style.pb_wide_md_992x610
+    - image.style.pb_wide_sm_600x440
+    - image.style.pb_wide_xsm_420x280
+    - image.style.pb_wide_xxlg_1800x900
+    - image.style.w3css_narrow_xlg_1100x1100
+    - image.style.w3css_wide_xxlg_1800x900
+  module:
+    - paragraph_bundle_image
+id: pb_responsive_image_wide
+label: 'Wide (PB)'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: w3css_wide_xxlg_1800x900
+    breakpoint_id: paragraph_bundle_image.screen-xxlg-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: w3css_narrow_xlg_1100x1100
+    breakpoint_id: paragraph_bundle_image.screen-xlg-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_wide_lg_1280x750
+    breakpoint_id: paragraph_bundle_image.screen-lg-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_wide_md_992x610
+    breakpoint_id: paragraph_bundle_image.screen-md-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_wide_sm_600x440
+    breakpoint_id: paragraph_bundle_image.screen-sm-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_wide_xsm_420x280
+    breakpoint_id: paragraph_bundle_image.screen-xsm-min
+    multiplier: 1x
+breakpoint_group: paragraph_bundle_image
+fallback_image_style: pb_wide_xxlg_1800x900

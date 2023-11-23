@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_two_columns
+    - paragraphs.paragraphs_type.two_columns_bundle
+  module:
+    - options
+id: paragraph.two_columns_bundle.pb_display_two_columns
+field_name: pb_display_two_columns
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Layout Style'
+description: 'Select the layout style fro the two columns.'
+required: true
+translatable: false
+default_value:
+  -
+    value: l6-l6
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.pb_media_image.pb_image_caption
+    - field.field.media.pb_media_image.pb_image_field
+    - image.style.medium
+    - media.type.pb_media_image
+  module:
+    - image
+id: media.pb_media_image.media_library
+targetEntityType: media
+bundle: pb_media_image
+mode: media_library
+content:
+  pb_image_caption:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  pb_image_field: true
+  uid: true

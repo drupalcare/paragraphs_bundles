@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_padding
+    - paragraphs.paragraphs_type.block_bundle
+  module:
+    - options
+id: paragraph.block_bundle.pb_display_padding
+field_name: pb_display_padding
+entity_type: paragraph
+bundle: block_bundle
+label: Padding
+description: 'Incorporate pre-set custom CSS classes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

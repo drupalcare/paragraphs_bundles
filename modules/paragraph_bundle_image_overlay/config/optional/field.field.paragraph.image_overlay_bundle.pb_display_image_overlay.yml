@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_image_overlay
+    - paragraphs.paragraphs_type.image_overlay_bundle
+  module:
+    - options
+id: paragraph.image_overlay_bundle.pb_display_image_overlay
+field_name: pb_display_image_overlay
+entity_type: paragraph
+bundle: image_overlay_bundle
+label: 'Image Overlay Style'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: fade
+default_value_callback: ''
+settings: {  }
+field_type: list_string

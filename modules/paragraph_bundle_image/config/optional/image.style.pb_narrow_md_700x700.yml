@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_narrow_md_700x700
+label: 'PB Narrow MD 700x700'
+effects:
+  98974cfe-386f-4ef2-83e9-72911dcab60b:
+    uuid: 98974cfe-386f-4ef2-83e9-72911dcab60b
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  c90c6e88-1b36-487e-911b-3d349b509e52:
+    uuid: c90c6e88-1b36-487e-911b-3d349b509e52
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 700
+      height: 700
+      anchor: center-center

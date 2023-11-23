@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_wide_xsm_420x280
+label: 'Pb Wide XSM 420x280'
+effects:
+  86508b55-691a-44d4-b85a-ba1ac843d868:
+    uuid: 86508b55-691a-44d4-b85a-ba1ac843d868
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  2fd22446-c088-4f19-ac24-9fb4479f2d0e:
+    uuid: 2fd22446-c088-4f19-ac24-9fb4479f2d0e
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 420
+      height: 250
+      anchor: center-center

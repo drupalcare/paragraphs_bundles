@@ -1,0 +1,10 @@
+field.paragraphs_bundles_rgb.value:
+  type: sequence
+  label: 'Default value'
+  sequence:
+    - type: mapping
+      label: 'Default'
+      mapping:
+        value:
+          type: string
+          label: 'Value'

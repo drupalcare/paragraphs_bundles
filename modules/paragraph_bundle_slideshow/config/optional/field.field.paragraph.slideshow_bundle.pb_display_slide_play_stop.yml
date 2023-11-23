@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_slide_play_stop
+    - paragraphs.paragraphs_type.slideshow_bundle
+  module:
+    - options
+id: paragraph.slideshow_bundle.pb_display_slide_play_stop
+field_name: pb_display_slide_play_stop
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Play and Stop'
+description: 'The slideshow will move to a new slide every 5 seconds by default. You can change the interval. When the interval selected is between 3-15 seconds, a play/pause button will be shown and also the slideshow will pause on mouse hover. If you would like to stop the slideshow, set this field value to none.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 5000
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

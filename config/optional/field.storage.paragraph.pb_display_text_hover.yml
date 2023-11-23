@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - paragraphs_bundles
+id: paragraph.pb_display_text_hover
+field_name: pb_display_text_hover
+entity_type: paragraph
+type: paragraphs_bundles_rgb
+settings: {  }
+module: paragraphs_bundles
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

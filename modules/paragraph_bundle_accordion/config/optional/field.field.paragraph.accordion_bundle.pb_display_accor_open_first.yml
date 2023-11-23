@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_accor_open_first
+    - paragraphs.paragraphs_type.accordion_bundle
+id: paragraph.accordion_bundle.pb_display_accor_open_first
+field_name: pb_display_accor_open_first
+entity_type: paragraph
+bundle: accordion_bundle
+label: 'Expand First Accordion Item'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_drupal_block
+    - paragraphs.paragraphs_type.block_bundle
+id: paragraph.block_bundle.pb_content_drupal_block
+field_name: pb_content_drupal_block
+entity_type: paragraph
+bundle: block_bundle
+label: Block
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:block'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

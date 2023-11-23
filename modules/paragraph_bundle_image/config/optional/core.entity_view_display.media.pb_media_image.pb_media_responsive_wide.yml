@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.pb_media_responsive_wide
+    - field.field.media.pb_media_image.pb_image_caption
+    - field.field.media.pb_media_image.pb_image_field
+    - media.type.pb_media_image
+    - responsive_image.styles.pb_responsive_image_wide
+  module:
+    - responsive_image
+id: media.pb_media_image.pb_media_responsive_wide
+targetEntityType: media
+bundle: pb_media_image
+mode: pb_media_responsive_wide
+content:
+  pb_image_caption:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_image_field:
+    type: responsive_image
+    label: visually_hidden
+    settings:
+      responsive_image_style: pb_responsive_image_wide
+      image_link: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

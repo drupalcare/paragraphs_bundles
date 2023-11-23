@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_pb_content_accordion_title
+    - paragraphs.paragraphs_type.accordion_section_bundle
+id: paragraph.accordion_section_bundle.field_pb_content_accordion_title
+field_name: field_pb_content_accordion_title
+entity_type: paragraph
+bundle: accordion_section_bundle
+label: 'Accordion Section Title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

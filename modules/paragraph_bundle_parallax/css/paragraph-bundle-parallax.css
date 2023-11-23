@@ -1,0 +1,30 @@
+/**
+ * @file
+ * W3CSS Paragraphs Parallax.
+ *
+ * Filename:     w3css-paragraphs-parallax.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph--type--w3css-parallax {
+  overflow: hidden;
+}
+
+.paragraph--type--w3css-parallax-section .p-container-inner {
+  position: relative;
+}
+
+.paragraph--type--w3css-parallax-section .w3-parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.paragraph--type--w3css-parallax-section .w3-parallax-bg {
+  min-height: 250px;
+}
+
+.paragraph--type--w3css-parallax-section .w3-parallax-text {
+  min-height: 100px;
+}

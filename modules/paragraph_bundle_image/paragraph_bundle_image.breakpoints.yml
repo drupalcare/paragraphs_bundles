@@ -1,0 +1,36 @@
+paragraph_bundle_image.screen-xsm-min:
+  label: screen-xsm-min
+  mediaQuery: ''
+  weight: 0
+  multipliers:
+    - 1x
+paragraph_bundle_image.screen-sm-min:
+  label: screen-sm-min
+  mediaQuery: 'all and (min-width: 414px)'
+  weight: 1
+  multipliers:
+    - 1x
+paragraph_bundle_image.screen-md-min:
+  label: screen-md-min
+  mediaQuery: 'all and (min-width: 601px)'
+  weight: 2
+  multipliers:
+    - 1x
+paragraph_bundle_image.screen-lg-min:
+  label: screen-lg-min
+  mediaQuery: 'all and (min-width: 993px)'
+  weight: 3
+  multipliers:
+    - 1x
+paragraph_bundle_image.screen-xlg-min:
+  label: screen-xlg-min
+  mediaQuery: 'all and (min-width: 1281px)'
+  weight: 4
+  multipliers:
+    - 1x
+paragraph_bundle_image.screen-xxlg-min:
+  label: screen-xxlg-min
+  mediaQuery: 'all and (min-width: 1440px)'
+  weight: 5
+  multipliers:
+    - 1x

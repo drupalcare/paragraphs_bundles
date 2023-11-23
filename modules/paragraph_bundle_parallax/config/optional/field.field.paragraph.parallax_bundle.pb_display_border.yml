@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_border
+    - paragraphs.paragraphs_type.parallax_bundle
+  module:
+    - options
+id: paragraph.parallax_bundle.pb_display_border
+field_name: pb_display_border
+entity_type: paragraph
+bundle: parallax_bundle
+label: Border
+description: 'Incorporate pre-set custom CSS classes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

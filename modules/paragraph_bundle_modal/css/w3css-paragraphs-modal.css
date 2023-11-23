@@ -1,0 +1,122 @@
+/**
+ * @file
+ * W3CSS Paragraph Modal.
+ *
+ * Filename:     w3css-paragraphs-modal.css
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.w3-modal {
+  z-index: 100 !important;
+  display: none;
+  padding-top: 100px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.w3-modal-content {
+  margin: auto;
+  position: relative;
+  padding: 0;
+  outline: 0;
+  width: 600px;
+}
+
+.w3-modal-content .w3-modal__inner {
+  display: grid;
+}
+
+.w3-modal-content .w3-modal__inner>* {
+  width: 100%;
+}
+
+.w3-modal-content .w3-modal-header {
+  display: flex;
+}
+
+.w3-modal-content .w3-modal-header button {
+  width: 50px;
+  height: 50px;
+  font-size: 50px;
+  margin-left: auto;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.w3-modal-content .w3-modal-header .w3-modal-title {
+  width: calc(100% - 50px);
+  justify-content: left;
+  align-items: center;
+  flex-grow: 1;
+}
+.w3-modal-content .w3-modal-header .w3-modal-title div {
+  display: flex;
+  height: 100%;
+  justify-content: start;
+  align-items: center;
+}
+
+.w3-modal-button button div {
+  margin: 0 auto !important;
+}
+
+.w3-modal-header button {
+}
+
+.paragraph--type--w3css-modal {
+  overflow: hidden;
+}
+
+.w3-modal-header .solo-button.w3-display-topright {
+  position: absolute;
+}
+
+.paragraph--type--w3css-modal.w3-card-2 {
+  margin: 10px auto !important;
+  width: auto;
+  max-width: 900px;
+}
+
+.paragraph--type--w3css-modal.w3-card-4 {
+  margin: 20px auto !important;
+  width: auto;
+  max-width: 900px;
+}
+
+@media (max-width:600px) {
+  .w3-modal-content {
+    margin: 0 10px;
+    width: auto !important;
+  }
+
+  .w3-modal {
+    padding-top: 30px;
+  }
+
+}
+
+@media (max-width:768px) {
+  .w3-modal-content {
+    width: 500px;
+  }
+
+  .w3-modal {
+    padding-top: 50px;
+  }
+
+}
+
+@media (min-width:992px) {
+  .w3-modal-content {
+    width: 900px;
+  }
+
+}

@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_original_size
+label: 'PB Original Size'
+effects:
+  7b260685-a33b-4e87-b345-028613e9f2a5:
+    uuid: 7b260685-a33b-4e87-b345-028613e9f2a5
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp

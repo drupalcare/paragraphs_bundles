@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.pb_media_responsive_wide
+label: 'PB Media Responsive Wide'
+targetEntityType: media
+cache: true

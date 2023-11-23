@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.basic
+    - field.storage.paragraph.pb_content_block_content
+    - paragraphs.paragraphs_type.block_content_bundle
+id: paragraph.block_content_bundle.pb_content_block_content
+field_name: pb_content_block_content
+entity_type: paragraph
+bundle: block_content_bundle
+label: 'Block Content'
+description: 'Reference created block content. Example, content created by Basic block ../block/add'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:block_content'
+  handler_settings:
+    target_bundles:
+      basic: basic
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
