@@ -1,0 +1,5 @@
+paragraph-bundle-layout:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout.css: { }

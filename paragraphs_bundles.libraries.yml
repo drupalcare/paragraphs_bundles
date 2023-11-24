@@ -1,38 +1,9 @@
-paragraphs-admin-seven:
-  version: VERSION
-  css:
-    theme:
-      css/color-libraries-classes.css: { }
-      css/paragraphs-admin-seven.css: { }
-  js:
-    js/paragraphs-bundles-admin-seven.js: { }
-  dependencies:
-    - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
-    - core/once
-
-paragraphs-admin-claro:
-  version: VERSION
-  css:
-    theme:
-      css/color-libraries-classes.css: { }
-      css/paragraphs-admin-claro.css: { }
-  js:
-    js/paragraphs-admin-claro.js: { }
-  dependencies:
-    - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
-    - core/once
-
 paragraphs-bundles:
   version: VERSION
   css:
     theme:
       css/paragraphs-bundles-basic.css: { }
       css/paragraphs-bundles-custom.css: { }
-
 
 color-picker:
   version: VERSION

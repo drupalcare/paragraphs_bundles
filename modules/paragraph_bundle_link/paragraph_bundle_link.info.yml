@@ -1,0 +1,8 @@
+name: Paragraph Bunlde Link
+type: module
+description: A reusable Paragraph Link bundle.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - link_attributes:link_attributes
+  - paragraphs_bundles:paragraphs_bundles

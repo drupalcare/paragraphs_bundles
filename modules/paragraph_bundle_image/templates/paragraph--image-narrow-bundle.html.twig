@@ -40,8 +40,7 @@
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 
-{% set paragraph_id = 'w3-image-' ~ paragraph.id.value %}
-
+{% set paragraph_id  = 'pb-image-n-' ~ paragraph.id.value %}
 {% set classes = [
    paragraph_id,
   'paragraph',
@@ -51,69 +50,67 @@
   'paragraph--id--' ~ paragraph.id.value
 ] %}
 
-{% set classes_inner = 'paragraph__inner w3-image__inner' %}
+{% set pb_styles = {
+  'pb-bg': 'pb_display_bg',
+  'pb-bg-h': 'pb_display_bg_hover',
+  'pb-br': 'pb_display_border_color',
+  'pb-br-h': 'pb_display_border_hover',
+  'pb-tx': 'pb_display_text',
+  'pb-tx-h': 'pb_display_text_hover'
+} %}
 
-{# Merge display features into classes. #}
-{% set w3css_displays = [
-  'w3css_display_hover_bg',
-  'w3css_display_text_color',
-  'w3css_display_hover_text',
-  'w3css_display_border',
-  'w3css_display_round',
-  'w3css_display_border_color',
-  'w3css_display_card',
-  'w3css_display_hover_border',
-  'w3css_display_padding',
-  'w3css_display_margin',
+{% set pb_displays = [
+'pb_display_border',
+'pb_display_border_radius',
+'pb_display_margin',
+'pb_display_padding',
+'pb_display_shadow',
 ] %}
 
-{% for w3css_display in w3css_displays %}
-  {% if content[w3css_display]|render %}
-    {% set classes_inner = classes_inner ~ ' ' ~ content[w3css_display]|render|striptags|trim %}
+{% set classes_inner = 'paragraph__inner pb-image-n__inner' %}
+
+{% for pb_display in pb_displays %}
+  {% if content[pb_display]|render %}
+    {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
   {% endif %}
 {% endfor %}
 
+
 {# Get the paragraph width. #}
-{% set container_w_input = content.w3css_display_width|render|striptags|trim %}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
 {% if container_w_input %}
   {% set container_width = 'w-' ~ container_w_input %}
   {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
 {% endif %}
 
-{# Get the paragraph backgournd/opcity . #}
-{% set w3css_bg_color = content.w3css_display_bg_color|render|striptags|trim|slice(3)|replace({'-': ','}) %}
-{% set w3css_bg_opacity = content.w3css_display_opacity|render|striptags|trim|default('100') %}
-{% if w3css_bg_color %}
-  {% set w3css_bg_opacity = w3css_bg_opacity != '100' ? '0.' ~ w3css_bg_opacity : w3css_bg_opacity %}
-  {% set w3css_bg_color = w3css_bg_color ~ ',' ~  w3css_bg_opacity %}
-{% endif %}
 
 {# Image and link #}
-{% set w3css_link = content.w3css_content_link.0['#url'] %}
-{% set w3css_link_title_attr = content.w3css_content_link_title_attr|render|striptags|trim %}
+{% set pb_link = content. pb_content_image_link.0['#url'] %}
+{% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
 {# Set the round around the image also #}
-{% set w3css_padding = content.w3css_display_padding|render|striptags|trim %}
-{% set w3css_round = content.w3css_display_round|render|striptags|trim %}
-{% set w3css_image = content.w3css_content_image %}
+{% set pb_padding = content.pb_display_padding|render|striptags|trim %}
+{% set pb_radius = content.pb_display_border_radius|render|striptags|trim %}
+{% set pb_image = content.pb_content_image %}
 
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" {% if w3css_bg_color %}style="background-color: rgba( {{ w3css_bg_color }} )" {% endif %}>
+  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
 
-      {% if content.w3css_content_title|render %}
-      <h3 class="content-title">{{ content.w3css_content_title }}</h3>
+      {% if content.pb_content_title|render %}
+      <h3 class="content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
 
-      {% if w3css_link %}
-      <a href="{{ w3css_link }}" class="w3css-link" {% if w3css_link_title_attr %} title="{{ w3css_link_title_attr }}" {% endif %}>
+      {% if pb_link %}
+      <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
       {% endif %}
 
-        <div class="w3-img-wrapper {{ w3css_round == '' ? '' : ' ' ~ w3css_round }}{% if content.w3css_content_title|render %} w3-dis-top-left-right {% endif %}{% if w3css_padding %} w3-dis-radius {% endif %}"> {{ w3css_image }}
+        <div class="pb-img-wrapper {{ pb_radius == '' ? '' : ' ' ~ pb_radius }}{% if content.pb_content_title|render %} pb-dis-top-left-right {% endif %}{% if pb_padding %} pb-dis-radius {% endif %}"> {{ pb_image }}
         </div>
 
-      {% if w3css_link %}
+      {% if pb_link %}
       </a>
       {% endif %}
 
   </div>
 </div> {# End of main wrapper #}
+

@@ -1,0 +1,5 @@
+paragraph-bundle-image-overlay:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-image-overlay.css: { }

@@ -1,0 +1,5 @@
+paragraph-bundle-card:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card.css: { }

@@ -40,7 +40,7 @@
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 
-{% set paragraph_id  = 'pb-default-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb-simple-' ~ paragraph.id.value %}
 {% set classes = [
    paragraph_id,
   'paragraph',
@@ -85,13 +85,12 @@
 
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-<div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
 
       {% if content.pb_content_title|render %}
       <h3 class="content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
-      {# In the default template we remove un wanted fields #}
-      {{ content|without('pb_display_bg', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
-
+       {{ content.pb_content_body }}
+       {{ content.pb_content_link }}
   </div>
 </div> {# End of main wrapper #}

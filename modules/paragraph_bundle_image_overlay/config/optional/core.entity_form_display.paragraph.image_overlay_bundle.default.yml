@@ -2,22 +2,19 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.image_overlay_bundle.pb_display_image_overlay
     - field.field.paragraph.image_overlay_bundle.pb_content_image
     - field.field.paragraph.image_overlay_bundle.pb_content_image_link
     - field.field.paragraph.image_overlay_bundle.pb_content_image_link_title
     - field.field.paragraph.image_overlay_bundle.pb_content_title
     - field.field.paragraph.image_overlay_bundle.pb_display_bg
-    - field.field.paragraph.image_overlay_bundle.pb_display_bg_hover
     - field.field.paragraph.image_overlay_bundle.pb_display_border
     - field.field.paragraph.image_overlay_bundle.pb_display_border_color
-    - field.field.paragraph.image_overlay_bundle.pb_display_border_hover
     - field.field.paragraph.image_overlay_bundle.pb_display_border_radius
+    - field.field.paragraph.image_overlay_bundle.pb_display_image_overlay
     - field.field.paragraph.image_overlay_bundle.pb_display_margin
     - field.field.paragraph.image_overlay_bundle.pb_display_padding
     - field.field.paragraph.image_overlay_bundle.pb_display_shadow
     - field.field.paragraph.image_overlay_bundle.pb_display_text
-    - field.field.paragraph.image_overlay_bundle.pb_display_text_hover
     - field.field.paragraph.image_overlay_bundle.pb_display_width
     - paragraphs.paragraphs_type.image_overlay_bundle
   module:
@@ -62,19 +59,16 @@ third_party_settings:
         required_fields: true
     group_pb_tab_display:
       children:
-        - pb_display_bg
-        - pb_display_bg_hover
-        - pb_display_text
-        - pb_display_text_hover
-        - pb_display_border_color
-        - pb_display_border_hover
         - pb_display_border
         - pb_display_border_radius
         - pb_display_margin
         - pb_display_padding
-        - pb_display_width
-        - pb_display_shadow
         - pb_display_image_overlay
+        - pb_display_bg
+        - pb_display_text
+        - pb_display_border_color
+        - pb_display_shadow
+        - pb_display_width
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -92,12 +86,6 @@ targetEntityType: paragraph
 bundle: image_overlay_bundle
 mode: default
 content:
-  pb_display_image_overlay:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   pb_content_image:
     type: media_library_widget
     weight: 2
@@ -131,73 +119,61 @@ content:
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget
-    weight: 4
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_bg_hover:
-    type: color_text_widget
-    weight: 5
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border:
     type: options_select
-    weight: 10
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_color:
     type: color_text_widget
-    weight: 8
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_border_hover:
-    type: color_text_widget
-    weight: 9
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_radius:
     type: options_select
-    weight: 11
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_overlay:
+    type: options_select
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_margin:
     type: options_select
-    weight: 12
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 13
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
     type: options_buttons
-    weight: 15
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_text:
     type: color_text_widget
-    weight: 6
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_text_hover:
-    type: color_text_widget
-    weight: 7
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
     type: options_buttons
-    weight: 14
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }

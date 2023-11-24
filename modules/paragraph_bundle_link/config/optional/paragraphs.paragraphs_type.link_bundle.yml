@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: link_bundle
+label: 'Link Bundle'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

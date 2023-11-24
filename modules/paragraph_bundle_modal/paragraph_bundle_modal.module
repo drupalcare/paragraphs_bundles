@@ -38,3 +38,14 @@ function paragraph_bundle_modal_help($route_name, RouteMatchInterface $route_mat
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_modal_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__modal_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

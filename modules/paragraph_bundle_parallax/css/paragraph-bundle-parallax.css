@@ -6,25 +6,25 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph--type--w3css-parallax {
+.paragraph--type--parallax-bundle {
   overflow: hidden;
 }
 
-.paragraph--type--w3css-parallax-section .p-container-inner {
+.paragraph--type--parallax-section-bundle .paragraph__inner {
   position: relative;
 }
 
-.paragraph--type--w3css-parallax-section .w3-parallax-bg {
+.paragraph--type--parallax-section-bundle .pb-parallax-bg {
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.paragraph--type--w3css-parallax-section .w3-parallax-bg {
+.paragraph--type--parallax-section-bundle .pb-parallax-bg {
   min-height: 250px;
 }
 
-.paragraph--type--w3css-parallax-section .w3-parallax-text {
+.paragraph--type--parallax-section-bundle .pb-parallax-text {
   min-height: 100px;
 }

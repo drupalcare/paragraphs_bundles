@@ -25,10 +25,10 @@
         currWin.style.display = "none";
       };
 
-      let modalButtons = once('.w3-modal-button', '.w3-modal-button>button', context);
+      let modalButtons = once('.pb-modal-button', '.pb-modal-button>button', context);
       modalButtons.forEach(button => button.addEventListener('click', showModal));
 
-      let modalHeaders = once('.w3-modal-header', '.w3-modal-header>button', context);
+      let modalHeaders = once('.pb-modal-header', '.pb-modal-header>button', context);
       modalHeaders.forEach(header => header.addEventListener('click', hideModal));
     }
 

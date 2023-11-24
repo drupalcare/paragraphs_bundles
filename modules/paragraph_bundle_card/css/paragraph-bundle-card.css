@@ -1,0 +1,71 @@
+/**
+ * @file
+ * Paragraph Bundle Layout.
+ *
+ * Filename:     paragraph-bundle-layout.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph .pb-two-columns {
+  gap: 16px;
+  display: grid;
+}
+
+.paragraph .pb-two-columns>div {
+  width: 100%;
+  height: 100%;
+}
+
+.pb-card__inner .pb-two-columns.On>.pb-col-left {
+  grid-column: 2;
+}
+
+.pb-card__inner .content-title {
+  margin: 0;
+}
+
+@media only screen and (min-width:62.001rem) {
+  .paragraph .pb-two-columns {
+    grid-auto-flow: row;
+  }
+
+  .pb-two-columns.two-l6-l6 {
+    grid-auto-flow: column;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pb-two-columns.two-l4-l8 {
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .pb-two-columns.two-l8-l4 {
+    grid-auto-flow: column;
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .pb-two-columns.two-l3-l9 {
+    grid-auto-flow: column;
+    grid-template-columns: 1fr 3fr;
+  }
+
+  .pb-two-columns.two-l9-l3 {
+    grid-auto-flow: column;
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .pb-two-columns.On.two-l6-l6>.pb-col-left,
+  .pb-two-columns.On.two-l4-l8>.pb-col-left,
+  .pb-two-columns.On.two-l8-l4>.pb-col-left,
+  .pb-two-columns.On.two-l3-l9>.pb-col-left,
+  .pb-two-columns.On.two-l9-l3>.pb-col-left {
+    grid-column: 2;
+  }
+
+  .paragraph .pb-two-columns .paragraph,
+  .paragraph .pb-two-columns .paragraph__inner {
+    display: flex;
+    height: 100%;
+  }
+
+}

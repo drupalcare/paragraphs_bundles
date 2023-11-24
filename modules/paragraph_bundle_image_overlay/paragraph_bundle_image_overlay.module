@@ -38,3 +38,14 @@ function paragraph_bundle_image_overlay_help($route_name, RouteMatchInterface $r
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_image_overlay_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__image_overlay_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

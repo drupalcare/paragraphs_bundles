@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.pb_display_bg_hover
-    - paragraphs.paragraphs_type.image_overlay_bundle
+    - field.storage.paragraph.pb_display_text_hover
+    - paragraphs.paragraphs_type.link_bundle
   module:
     - paragraphs_bundles
-id: paragraph.image_overlay_bundle.pb_display_bg_hover
-field_name: pb_display_bg_hover
+id: paragraph.link_bundle.pb_display_text_hover
+field_name: pb_display_text_hover
 entity_type: paragraph
-bundle: image_overlay_bundle
-label: 'Background Color Hover'
+bundle: link_bundle
+label: 'Text Color Hover'
 description: ''
 required: false
 translatable: false

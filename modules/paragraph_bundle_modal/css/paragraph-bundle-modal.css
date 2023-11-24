@@ -1,13 +1,13 @@
 /**
  * @file
- * W3CSS Paragraph Modal.
+ * pbCSS Paragraph Modal.
  *
- * Filename:     w3css-paragraphs-modal.css
+ * Filename:     pbcss-paragraphs-modal.css
  * Website:      https://www.flashwebcenter.com
  * Description:  template.
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.w3-modal {
+.pb-modal {
   z-index: 100 !important;
   display: none;
   padding-top: 100px;
@@ -21,7 +21,7 @@
   background-color: rgba(0, 0, 0, 0.4);
 }
 
-.w3-modal-content {
+.pb-modal-content {
   margin: auto;
   position: relative;
   padding: 0;
@@ -29,19 +29,19 @@
   width: 600px;
 }
 
-.w3-modal-content .w3-modal__inner {
+.pb-modal-content .pb-modal__inner {
   display: grid;
 }
 
-.w3-modal-content .w3-modal__inner>* {
+.pb-modal-content .pb-modal__inner>* {
   width: 100%;
 }
 
-.w3-modal-content .w3-modal-header {
+.pb-modal-content .pb-modal-header {
   display: flex;
 }
 
-.w3-modal-content .w3-modal-header button {
+.pb-modal-content .pb-modal-header button {
   width: 50px;
   height: 50px;
   font-size: 50px;
@@ -51,71 +51,71 @@
   align-items: center;
 }
 
-.w3-modal-content .w3-modal-header .w3-modal-title {
+.pb-modal-content .pb-modal-header .pb-modal-title {
   width: calc(100% - 50px);
   justify-content: left;
   align-items: center;
   flex-grow: 1;
 }
-.w3-modal-content .w3-modal-header .w3-modal-title div {
+.pb-modal-content .pb-modal-header .pb-modal-title div {
   display: flex;
   height: 100%;
   justify-content: start;
   align-items: center;
 }
 
-.w3-modal-button button div {
+.pb-modal-button button div {
   margin: 0 auto !important;
 }
 
-.w3-modal-header button {
+.pb-modal-header button {
 }
 
-.paragraph--type--w3css-modal {
+.paragraph--type--pbcss-modal {
   overflow: hidden;
 }
 
-.w3-modal-header .solo-button.w3-display-topright {
+.pb-modal-header .solo-button.pb-display-topright {
   position: absolute;
 }
 
-.paragraph--type--w3css-modal.w3-card-2 {
+.paragraph--type--modal-bundle.pb-card-2 {
   margin: 10px auto !important;
   width: auto;
   max-width: 900px;
 }
 
-.paragraph--type--w3css-modal.w3-card-4 {
+.paragraph--type--modal-bundle.pb-card-4 {
   margin: 20px auto !important;
   width: auto;
   max-width: 900px;
 }
 
 @media (max-width:600px) {
-  .w3-modal-content {
+  .pb-modal-content {
     margin: 0 10px;
     width: auto !important;
   }
 
-  .w3-modal {
+  .pb-modal {
     padding-top: 30px;
   }
 
 }
 
 @media (max-width:768px) {
-  .w3-modal-content {
+  .pb-modal-content {
     width: 500px;
   }
 
-  .w3-modal {
+  .pb-modal {
     padding-top: 50px;
   }
 
 }
 
 @media (min-width:992px) {
-  .w3-modal-content {
+  .pb-modal-content {
     width: 900px;
   }
 

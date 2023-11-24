@@ -38,3 +38,14 @@ function paragraph_bundle_card_help($route_name, RouteMatchInterface $route_matc
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_card_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__card_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

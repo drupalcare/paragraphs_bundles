@@ -73,9 +73,6 @@ function paragraphs_bundles_theme($existing, $type, $theme, $path) {
     'paragraph__simple_bundle' => [
       'base hook' => 'paragraph',
     ],
-    // 'paragraph__w3css_image' => [
-    //   'base hook' => 'paragraph',
-    // ],
     'field__entity_reference_revisions' => [
       'base hook' => 'paragraph',
     ],

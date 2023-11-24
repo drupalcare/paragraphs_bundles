@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 .paragraph,
-.paragraph .w3-one-column {
+.paragraph .pb-one-column {
   display: grid;
   margin: 0 auto;
 }
@@ -45,36 +45,44 @@
   clear: both;
 }
 
-.w3-img-auto .field--name-w3css-media-image img {
+.pb-img-auto .field--name-pb-media-image img {
   width: auto !important;
 }
 
-.field--name-w3css-media-image picture,
-.paragraph .w3-img-wrapper {
+.field--name-pb-media-image picture,
+.paragraph .pb-img-wrapper {
   float: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.paragraph a.w3css-link {
+.paragraph a.pb-link {
   display: block;
+}
+
+.paragraph .field--name-pb-image-field {
+  margin-bottom: 0 !important;
+}
+
+.paragraph .field--name-pb-image-caption {
+  font-size: 12px;
 }
 
 /*.paragraph .w3-img-wrapper {
   overflow: hidden;
 }
 */
-.pparagraph .w3-img-wrapper div {
+.pparagraph .pb-img-wrapper div {
   float: left;
 }
 
-.w3-img-wrapper.w3-dis-top-left-right {
+.pb-img-wrapper.pb-dis-top-left-right {
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
 
-.w3-img-wrapper.w3-dis-radius {
+.pb-img-wrapper.pb-dis-radius {
   border-radius: 0 !important;
 }
 
@@ -102,42 +110,42 @@
 
 @media (min-width:993px) {
   .paragraph > .simple__inner,
-  .w3-hero-txt-wrapper .w-100,
+  .pb-hero-txt-wrapper .w-100,
   .paragraph > .w-100 {
     width: 100%;
   }
 
-  .w3-hero-txt-wrapper .w-90,
+  .pb-hero-txt-wrapper .w-90,
   .paragraph > .w-90 {
     width: 90%;
   }
 
-  .w3-hero-txt-wrapper .w-80,
+  .pb-hero-txt-wrapper .w-80,
   .paragraph > .w-80 {
     width: 80%;
   }
 
-  .w3-hero-txt-wrapper .w-70,
+  .pb-hero-txt-wrapper .w-70,
   .paragraph > .w-70 {
     width: 70%;
   }
 
-  .w3-hero-txt-wrapper .w-60,
+  .pb-hero-txt-wrapper .w-60,
   .paragraph > .w-60 {
     width: 60%;
   }
 
-  .w3-hero-txt-wrapper .w-50,
+  .pb-hero-txt-wrapper .w-50,
   .paragraph > .w-50 {
     width: 50%;
   }
 
-  .w3-hero-txt-wrapper .w-40,
+  .pb-hero-txt-wrapper .w-40,
   .paragraph > .w-40 {
     width: 40%;
   }
 
-  .w3-hero-txt-wrapper .w-30,
+  .pb-hero-txt-wrapper .w-30,
   .paragraph > .w-30 {
     width: 30%;
   }
@@ -155,14 +163,14 @@
   .paragraph > .w-50,
   .paragraph > .w-40,
   .paragraph > .w-30,
-  .w3-hero-txt-wrapper .w-100,
-  .w3-hero-txt-wrapper .w-90,
-  .w3-hero-txt-wrapper .w-80,
-  .w3-hero-txt-wrapper .w-70,
-  .w3-hero-txt-wrapper .w-60,
-  .w3-hero-txt-wrapper .w-50,
-  .w3-hero-txt-wrapper .w-40,
-  .w3-hero-txt-wrapper .w-30 {
+  .pb-hero-txt-wrapper .w-100,
+  .pb-hero-txt-wrapper .w-90,
+  .pb-hero-txt-wrapper .w-80,
+  .pb-hero-txt-wrapper .w-70,
+  .pb-hero-txt-wrapper .w-60,
+  .pb-hero-txt-wrapper .w-50,
+  .pb-hero-txt-wrapper .w-40,
+  .pb-hero-txt-wrapper .w-30 {
     margin-left: auto !important;
     margin-right: auto !important;
   }

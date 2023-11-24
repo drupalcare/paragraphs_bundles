@@ -1,0 +1,174 @@
+/**
+ * @file
+ * Paragraphs Image Overlay Bundle.
+ *
+ * Filename:     paragraph-image-overlay-bundle.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.overlay-container div {
+  height: 100%;
+}
+
+.paragraph--type--image-overlay-bundle .field--name-pbcss-media-image .field__item {
+  margin: 0;
+}
+
+.paragraph--type--image-overlay-bundle .pb-image-overlay__inner {
+  position: relative;
+  overflow: hidden;
+}
+
+.paragraph--type--image-overlay-bundle a.pb-link {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.paragraph--type--image-overlay-bundle .overlay-title {
+  position: absolute;
+  width: auto;
+}
+
+.paragraph--type--image-overlay-bundle .overlay-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+.pb-image-overlay-fade .pb-image-overlay__inner .overlay-container {
+  opacity: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transition: .5s ease;
+}
+
+.pb-image-overlay-fade .pb-image-overlay__inner .overlay-title {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.pb-image-overlay-fade .pb-image-overlay__inner:hover .overlay-container {
+  opacity: 1;
+}
+
+.pb-image-overlay-zoom .pb-image-overlay__inner .overlay-container {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: scale(0);
+  transition: .3s ease;
+}
+
+.pb-image-overlay-zoom .pb-image-overlay__inner .overlay-title {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.pb-image-overlay-zoom .pb-image-overlay__inner:hover .overlay-container {
+  transform: scale(1);
+}
+
+.pb-image-overlay-title .pb-image-overlay__inner .overlay-container {
+  top: 0;
+  left: 0;
+  background-color: transparent !important;
+}
+
+.pb-image-overlay-title .pb-image-overlay__inner .overlay-title {
+  justify-content: center;
+  margin: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  padding: 8px 16px!important;
+  margin: 0!important;
+  transition: .5s ease;
+  width: 100%;
+}
+
+.pb-image-overlay-title .pb-image-overlay__inner:hover .overlay-title {
+  background: var(--pb-bg)!important;
+  opacity: 1;
+}
+
+/* slide global  */
+.pb-image-overlay-slide-top .pb-image-overlay__inner .overlay-container,
+.pb-image-overlay-slide-bottom .pb-image-overlay__inner .overlay-container,
+.pb-image-overlay-slide-left .pb-image-overlay__inner .overlay-container,
+.pb-image-overlay-slide-right .pb-image-overlay__inner .overlay-container {
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  transition: .5s ease;
+}
+
+.pb-image-overlay-slide-top .pb-image-overlay__inner .overlay-title,
+.pb-image-overlay-slide-bottom .pb-image-overlay__inner .overlay-title,
+.pb-image-overlay-slide-left .pb-image-overlay__inner .overlay-title,
+.pb-image-overlay-slide-right .pb-image-overlay__inner .overlay-title {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+/* slide top */
+.pb-image-overlay-slide-top .pb-image-overlay__inner .overlay-container {
+  height: 0;
+  bottom: 100%;
+}
+
+.pb-image-overlay-slide-top .pb-image-overlay__inner:hover .overlay-container {
+  bottom: 0;
+  height: 100%;
+}
+
+/* slide bottom */
+.pb-image-overlay-slide-bottom .pb-image-overlay__inner .overlay-container {
+  height: 0;
+  bottom: 0;
+}
+
+.pb-image-overlay-slide-bottom .pb-image-overlay__inner:hover .overlay-container {
+  height: 100%;
+}
+
+/* slide left */
+.pb-image-overlay-slide-left .pb-image-overlay__inner .overlay-container {
+  bottom: 0;
+  width: 0;
+  height: 100%;
+}
+
+.pb-image-overlay-slide-left .pb-image-overlay__inner:hover .overlay-container {
+  width: 100%;
+}
+
+/* slide right */
+.pb-image-overlay-slide-right .pb-image-overlay__inner .overlay-container {
+  bottom: 0;
+  left: 100%;
+  width: 0;
+  height: 100%;
+}
+
+.pb-image-overlay-slide-right .pb-image-overlay__inner:hover .overlay-container {
+  width: 100%;
+  left: 0;
+}

@@ -4,7 +4,6 @@ dependencies:
   config:
     - field.field.paragraph.two_columns_bundle.pb_content_left_column
     - field.field.paragraph.two_columns_bundle.pb_content_right_column
-    - field.field.paragraph.two_columns_bundle.pb_display_two_columns
     - field.field.paragraph.two_columns_bundle.pb_content_title
     - field.field.paragraph.two_columns_bundle.pb_display_bg
     - field.field.paragraph.two_columns_bundle.pb_display_bg_hover
@@ -17,6 +16,7 @@ dependencies:
     - field.field.paragraph.two_columns_bundle.pb_display_shadow
     - field.field.paragraph.two_columns_bundle.pb_display_text
     - field.field.paragraph.two_columns_bundle.pb_display_text_hover
+    - field.field.paragraph.two_columns_bundle.pb_display_two_columns
     - field.field.paragraph.two_columns_bundle.pb_display_width
     - paragraphs.paragraphs_type.two_columns_bundle
   module:
@@ -97,7 +97,7 @@ content:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
-      closed_mode: preview
+      closed_mode: summary
       autocollapse: all
       closed_mode_threshold: 0
       add_mode: modal
@@ -116,7 +116,7 @@ content:
       title: Paragraph
       title_plural: Paragraphs
       edit_mode: closed
-      closed_mode: preview
+      closed_mode: summary
       autocollapse: none
       closed_mode_threshold: 0
       add_mode: modal
@@ -126,12 +126,6 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: {  }
-  pb_display_two_columns:
-    type: options_buttons
-    weight: 16
-    region: content
-    settings: {  }
     third_party_settings: {  }
   pb_content_title:
     type: string_textfield
@@ -204,6 +198,12 @@ content:
   pb_display_text_hover:
     type: color_text_widget
     weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_two_columns:
+    type: options_buttons
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
