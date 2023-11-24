@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.link_bundle.pb_link_section_body
     - field.field.paragraph.link_bundle.pb_content_title
     - field.field.paragraph.link_bundle.pb_display_bg
     - field.field.paragraph.link_bundle.pb_display_bg_hover
@@ -18,6 +19,7 @@ dependencies:
     - paragraphs.paragraphs_type.link_bundle
   module:
     - field_group
+    - paragraphs
     - paragraphs_bundles
 third_party_settings:
   field_group:
@@ -39,8 +41,7 @@ third_party_settings:
     group_pp_tab_content:
       children:
         - pb_content_title
-        - field_pb_content_drupal_block
-        - pb_content_link
+        - pb_link_section_body
       label: 'Tab Content'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -84,6 +85,25 @@ targetEntityType: paragraph
 bundle: link_bundle
 mode: default
 content:
+  pb_link_section_body:
+    type: paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: all
+      closed_mode_threshold: 0
+      add_mode: button
+      form_display_mode: default
+      default_paragraph_type: link_section_bundle
+      features:
+        add_above: add_above
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
   pb_content_title:
     type: string_textfield
     weight: 1

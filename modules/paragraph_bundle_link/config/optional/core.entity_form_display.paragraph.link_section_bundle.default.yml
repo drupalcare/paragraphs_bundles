@@ -1,0 +1,43 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.link_section_bundle.pb_content_link_section_title
+    - field.field.paragraph.link_section_bundle.pb_content_link_section_url
+    - paragraphs.paragraphs_type.link_section_bundle
+  module:
+    - link_attributes
+id: paragraph.link_section_bundle.default
+targetEntityType: paragraph
+bundle: link_section_bundle
+mode: default
+content:
+  pb_content_link_section_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_link_section_url:
+    type: link_attributes
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+      enabled_attributes:
+        target: true
+        rel: true
+        class: true
+        id: false
+        name: false
+        accesskey: false
+        aria-label: false
+        title: false
+      widget_default_open: expandIfValuesSet
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

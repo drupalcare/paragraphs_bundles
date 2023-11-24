@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.link_section_bundle.pb_content_link_section_title
+    - field.field.paragraph.link_section_bundle.pb_content_link_section_url
+    - paragraphs.paragraphs_type.link_section_bundle
+  module:
+    - link
+id: paragraph.link_section_bundle.default
+targetEntityType: paragraph
+bundle: link_section_bundle
+mode: default
+content:
+  pb_content_link_section_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  pb_content_link_section_url:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

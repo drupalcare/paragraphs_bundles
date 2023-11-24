@@ -1,4 +1,4 @@
-name: Paragraph Bunlde Link
+name: Paragraph Bundle Link
 type: module
 description: A reusable Paragraph Link bundle.
 core_version_requirement: ^9.4 || ^10
