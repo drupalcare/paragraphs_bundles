@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.hero_bundle.pb_display_hero
     - field.field.paragraph.hero_bundle.pb_content_body
     - field.field.paragraph.hero_bundle.pb_content_image
     - field.field.paragraph.hero_bundle.pb_content_image_link
@@ -14,6 +13,7 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_display_border_color
     - field.field.paragraph.hero_bundle.pb_display_border_hover
     - field.field.paragraph.hero_bundle.pb_display_border_radius
+    - field.field.paragraph.hero_bundle.pb_display_hero
     - field.field.paragraph.hero_bundle.pb_display_margin
     - field.field.paragraph.hero_bundle.pb_display_padding
     - field.field.paragraph.hero_bundle.pb_display_shadow
@@ -31,13 +31,6 @@ targetEntityType: paragraph
 bundle: hero_bundle
 mode: default
 content:
-  pb_display_hero:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
   pb_content_body:
     type: text_default
     label: hidden
@@ -123,6 +116,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 8
+    region: content
+  pb_display_hero:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
   pb_display_margin:
     type: list_key

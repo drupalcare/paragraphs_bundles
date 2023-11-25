@@ -4,15 +4,15 @@ dependencies:
   config:
     - field.field.paragraph.3d_flip_box_bundle.pb_content_3d_box_back
     - field.field.paragraph.3d_flip_box_bundle.pb_content_3d_box_front
-    - field.field.paragraph.3d_flip_box_bundle.pb_display_3d_height
-    - field.field.paragraph.3d_flip_box_bundle.pb_display_flip_xy
     - field.field.paragraph.3d_flip_box_bundle.pb_content_title
+    - field.field.paragraph.3d_flip_box_bundle.pb_display_3d_height
     - field.field.paragraph.3d_flip_box_bundle.pb_display_bg
     - field.field.paragraph.3d_flip_box_bundle.pb_display_bg_hover
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_color
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_hover
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_radius
+    - field.field.paragraph.3d_flip_box_bundle.pb_display_flip_xy
     - field.field.paragraph.3d_flip_box_bundle.pb_display_margin
     - field.field.paragraph.3d_flip_box_bundle.pb_display_padding
     - field.field.paragraph.3d_flip_box_bundle.pb_display_shadow
@@ -72,8 +72,8 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
-        - pb_display_3d_height
         - pb_display_flip_xy
+        - pb_display_3d_height
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -129,25 +129,19 @@ content:
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
     third_party_settings: {  }
-  pb_display_3d_height:
-    type: number
-    weight: 16
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  pb_display_flip_xy:
-    type: options_select
-    weight: 17
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   pb_content_title:
     type: string_textfield
     weight: 1
     region: content
     settings:
       size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_3d_height:
+    type: number
+    weight: 17
+    region: content
+    settings:
       placeholder: ''
     third_party_settings: {  }
   pb_display_bg:
@@ -183,6 +177,12 @@ content:
   pb_display_border_radius:
     type: options_select
     weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_flip_xy:
+    type: options_buttons
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }

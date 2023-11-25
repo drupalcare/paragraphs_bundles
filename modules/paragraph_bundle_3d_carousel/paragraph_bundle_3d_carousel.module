@@ -38,3 +38,14 @@ function paragraph_bundle_3d_carousel_help($route_name, RouteMatchInterface $rou
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_3d_carousel_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__3d_carousel_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

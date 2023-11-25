@@ -1,0 +1,59 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.pb_display_disable_region
+field_name: pb_display_disable_region
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: navigation
+      label: 'Disable Main Navigation Regions'
+    -
+      value: popup_login_block
+      label: 'Disable Popup Login Block Region'
+    -
+      value: fixed_search_block
+      label: 'Disable Fixed Search Block Region'
+    -
+      value: header
+      label: 'Disable Header Region'
+    -
+      value: welcome_text
+      label: 'Disable Welcome Region'
+    -
+      value: highlighted
+      label: 'Disable Highlighted Region'
+    -
+      value: top_regions
+      label: 'Disable Top Regions'
+    -
+      value: page_title
+      label: 'Disable Page Title Region'
+    -
+      value: breadcrumb
+      label: 'Disable Breadcrumb Region'
+    -
+      value: bottom_regions
+      label: 'Disable Bottom Regions'
+    -
+      value: footer_regions
+      label: 'Disable Footer Regions'
+    -
+      value: footer_menu
+      label: 'Disable Footer Menu'
+    -
+      value: copyright
+      label: 'Hide Copyright'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

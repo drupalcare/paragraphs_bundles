@@ -8,8 +8,8 @@ id: paragraph.slideshow_bundle.pb_display_slide_prev_next
 field_name: pb_display_slide_prev_next
 entity_type: paragraph
 bundle: slideshow_bundle
-label: 'Show Prev and Next Buttons'
-description: ''
+label: 'Show Prev and Next Arrows'
+description: 'The two arrows in the middle on both sides.'
 required: false
 translatable: false
 default_value:

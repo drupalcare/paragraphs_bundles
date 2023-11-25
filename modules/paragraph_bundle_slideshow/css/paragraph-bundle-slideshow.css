@@ -1,0 +1,139 @@
+/**
+ * @file
+ * paragraph Bundle Slideshow.
+ *
+ * Filename:     paragraph-bundle-slideshow.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph--type--slideshow-bundle {
+  overflow: hidden;
+}
+
+.paragraph--type--slideshow-bundle .pb-slides > .pb-s-wr {
+  display: none;
+}
+
+.paragraph--type--slideshow-bundle .pb-slides > div:first-of-type {
+  display: block;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner .pb-s-np > a {
+  cursor: pointer;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner {
+  position: relative;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np {
+  position: absolute;
+  top: calc(50% - 50px);
+  background-color: transparent;
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+  justify-content: left;
+  align-items: center;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np .pb-s-prev {
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np .pb-s-next {
+  margin-left: auto;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav > .pb-is-active {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np a {
+  transition: 0.4s;
+  outline: none;
+  background-color: transparent !important;
+  font-size: 50px;
+}
+
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np.btns-On {
+  opacity: 0;
+}
+
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np.btns-On:hover {
+  opacity: 100;
+  outline: none;
+  background-color: transparent !important;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner .play-stop-value,
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-np.btns-Off,
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns:not(.dot,
+.nav) > .b-nav {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  width: 0;
+  font-size: 8px;
+  line-height: 0;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.dot > .b-nav,
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.nav > .b-nav {
+  opacity: 100;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.dot > .b-nav {
+  padding: 0 !important;
+  margin: 0 3px;
+  width: 10px !important;
+  height: 10px !important;
+  border-radius: 50% !important;
+  font-size: 0 !important;
+  line-height: initial !important;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.dot > .b-nav {
+  background-color: gray;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.dot > .b-nav.pb-is-active {
+  width: 12px !important;
+  height: 12px !important;
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.nav > .b-nav.pb-is-active {
+  background-color: var(--pb-bt-a);
+}
+
+.paragraph--type--slideshow-bundle .pb-slideshow-inner > .pb-s-nav.btns.dot > .b-nav.pb-is-active {
+  background-color: var(--pb-bt-a, gray);
+}
+
+.paragraph--type--slideshow-bundle .pp {
+  display: none;
+}
+
+.paragraph--type--slideshow-bundle .pp.no-bottom-nav {
+  display: inline;
+  width: auto;
+}
+
+.paragraph--type--slideshow-bundle .pb-s-nav {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraph--type--slideshow-bundle .pb-s-nav .play-active-slideshow {
+  font-weight: bold;
+}
+
+.paragraph--type--slideshow-bundle .pb-s-nav .solo-button {
+  padding: 3px 12px;
+  font-size: 14px;
+}

@@ -1,0 +1,13 @@
+/**
+ * @file
+ * W3CSS Paragraphs Content.
+ *
+ * Filename:     hide-footer-menu.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
+ */
+#footer-menu {
+  display: none!important;
+  height: 0!important;
+  width: 0!important;
+}

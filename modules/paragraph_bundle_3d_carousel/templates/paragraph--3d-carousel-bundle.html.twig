@@ -39,16 +39,17 @@
 #}
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
-{{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
+{{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel') }}
 
-{% set paragraph_id  = 'pb-card-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb-carousel-wrapper-' ~ paragraph.id.value %}
+
 {% set classes = [
-   paragraph_id,
   'paragraph',
-  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  'paragraph--type--3d-carousel-bundle',
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+   paragraph_id,
 ] %}
 
 {% set pb_styles = {
@@ -68,7 +69,7 @@
 'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-card__inner' %}
+{% set classes_inner = 'paragraph__inner pb-carousel-wrapper__inner' %}
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -84,39 +85,49 @@
   {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
 {% endif %}
 
-{# Image and link #}
-{% set pb_link = content. pb_content_image_link.0['#url'] %}
-{% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
-{% set pb_image_right = content.pb_display_image_right|render|striptags|trim %}
+{# End of margin and height #}
+{% set pb_play_stop = content.pb_display_3d_play_stop|render|striptags|trim|default(0) %}
+
+{% set pb_lheight = content.pb_content_3dcar_lheight|render|striptags|trim %}
+{% if pb_lheight %}
+  {% set pb_lheight  = 'pb-3d-car-' ~ pb_lheight %}
+  {% set classes = classes|merge([pb_lheight]) %}
+{% endif %}
+
+{% set pb_sheight = content.pb_content_3dcar_sheight|render|striptags|trim %}
+{% if pb_sheight %}
+  {% set pb_sheight  = 'pb-3d-car-s-' ~ pb_sheight %}
+  {% set classes = classes|merge([pb_sheight]) %}
+{% endif %}
+
+{% set carousel_id  = 'pb-3d-carousel-' ~ paragraph.id.value %}
+{% set co_id  = 'co-' ~ paragraph.id.value %}
+
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
   <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
 
-
-
-      <div class="pb-two-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
-        <div class="pb-col-left">
-
-          {% if pb_link %}
-          <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-          {% endif %}
-
-            {{ content.pb_content_image }}
-
-          {% if pb_link %}
-          </a>
-          {% endif %}
-
-        </div>
-        <div class="pb-col-right">
-          {% if content.pb_content_title|render %}
-            <h3 class="content-title">{{ content.pb_content_title }}</h3>
-          {% endif %}
-          {{ content.pb_content_body }}
-           {{ pb_image_right }}
-        </div>
+    {% if content.pb_content_title|render %}
+    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    {% endif %}
+    <div id="{{ carousel_id }}" class="pb-3d-carousel">
+      {% for key, item in content.pb_content_3d_car_body %}
+      {% if key|first != '#' %}
+      <div class="pb-carousel-item item-{{ key + 1 }}">{{ item }}</div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div id="{{ co_id }}" class="carousel-options">
+      <div class="solo-row">
+        <button id="prev-{{ paragraph.id.value }}" class="solo-button previous-button">&#10094;</button>
+        <span id="index-{{ paragraph.id.value }}" class="slide-number"></span>
+        <button id="btn-{{ paragraph.id.value }}" class="solo-button pp play-active-carousel">&#10073;&nbsp;&#10073;</button>
+        <button id="next-{{ paragraph.id.value }}" class="solo-button next-button">&#10095;</button>
       </div>
+    <div class="play-stop-value">{{ pb_play_stop }}</div>
+    </div>
 
   </div>
 </div> {# End of main wrapper #}
+
+

@@ -1,0 +1,439 @@
+/**
+ * @file
+ * Paragraphs Bundle 3D Carousel.
+ *
+ * Filename:     paragraph-bundle-3d-carousel.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+/* 3d_carousel */
+.paragraph--type--3d-carousel-bundle {
+  margin-bottom: 16px;
+  padding-top: 16px;
+}
+.paragraph--type--3d-carousel-bundle > .pb-carousel-wrapper__inner {
+  max-width: 1200px;
+  max-height: 610px;
+  margin: 0 auto;
+  position: relative;
+  perspective: 400px;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-3d-carousel {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  margin: 0 auto;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-3d-carousel > .pb-carousel-item {
+  max-width: 1150px;
+  max-height: 550px;
+  position: absolute;
+  transform-style: preserve-3d;
+  width: calc(100% - 24px);
+  top: 0;
+  left: 12px;
+  right: 12px;
+  transition: transform 1s, opacity 1s;
+  overflow: hidden;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options {
+  min-height: 40px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.pb-carousel-item .paragraph--type--image-bundle div,
+.pb-carousel-item .paragraph--type--image-bundle img,
+.pb-carousel-item .paragraph--type--image-wide-bundle div,
+.pb-carousel-item .paragraph--type--image-wide-bundle img,
+.pb-carousel-item .paragraph--type--image-narrow-bundle div,
+.pb-carousel-item .paragraph--type--image-narrow-bundle img {
+  height: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options div {
+  text-align: center;
+  width: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-100 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-100 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 160px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-100 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 100px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-150 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-150 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 210px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-150 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 150px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-200 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-200 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 260px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-200 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 200px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-250 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-250 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 310px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-250 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 250px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-300 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-300 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 360px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-300 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 300px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-350 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-350 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 410px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-350 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 350px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-400 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-400 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 460px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-400 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 400px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-450 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-450 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 510px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-450 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 450px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-500 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-500 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 560px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-500 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 500px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-550 > .pb-carousel-wrapper__inner,
+.paragraph--type--3d-carousel-bundle.pb-3d-car-550 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+  height: 610px;
+}
+
+.paragraph--type--3d-carousel-bundle.pb-3d-car-550 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+  height: 550px;
+}
+
+@media (min-width:993px) {
+  .paragraph--type--3d-carousel-bundle.w-30 > .pb-carousel-wrapper__inner {
+    perspective: 900px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-40 > .pb-carousel-wrapper__inner {
+    perspective: 800px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-50 > .pb-carousel-wrapper__inner {
+    perspective: 700px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-60 > .pb-carousel-wrapper__inner {
+    perspective: 600px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-70 > .pb-carousel-wrapper__inner {
+    perspective: 550px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-80 > .pb-carousel-wrapper__inner {
+    perspective: 450px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.w-90 > .pb-carousel-wrapper__inner {
+    perspective: 400px;
+  }
+  .paragraph--type--3d-carousel-bundle.w-100 > .pb-carousel-wrapper__inner {
+    perspective: 400px;
+  }
+}
+
+@media (max-width:992px) {
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-500 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-500 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 560px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-500 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 500px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-450 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-450 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 510px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-450 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 450px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-400 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-400 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 460px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-400 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 400px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-350 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-350 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 410px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-350 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 350px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-300 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-300 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 360px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-300 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 300px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-250 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-250 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 310px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-250 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 250px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-200 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-200 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 260px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-200 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 200px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-150 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-150 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 210px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-150 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 150px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-100 > .pb-carousel-wrapper__inner,
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-100 > .pb-carousel-wrapper__inner > .pb-3d-carousel {
+    height: 160px;
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb-3d-car-s-100 > .pb-carousel-wrapper__inner > .pb-3d-carousel > .pb-carousel-item {
+    height: 100px;
+  }
+
+  .paragraph--type--3d-carousel-bundle > .pb-carousel-wrapper__inner {
+    overflow: hidden;
+    perspective: 200px;
+  }
+
+  .paragraph--type--3d-carousel-bundle .pb-3d-carousel > .pb-carousel-item {
+    padding: 0 16px;
+  }
+
+}
+
+.paragraph--type--3d-carousel-bundle .field--name-pb-media-image .field__item {
+  display: flex;
+  justify-content: center;
+}
+
+.paragraph--type--3d-carousel-bundle .field--name-pb-media-image .field__item img {
+  display: block;
+  width: auto !important;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-img-wrapper div {
+  width: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options > .btns-Off,
+.paragraph--type--3d-carousel-bundle .carousel-options > .play-stop-value {
+  opacity: 0;
+  height: 0;
+  padding: 0;
+  margin: 0;
+  width: 0;
+  font-size: 8px;
+  line-height: 0;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options button.pp {
+  text-align: center;
+  display: none;
+  font-weight: normal;
+  min-width: 42px;
+  min-height: 30px;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options .previous-button {
+  display: none;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options .next-button,
+.paragraph--type--3d-carousel-bundle .carousel-options .previous-button {
+  font-weight: normal;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options button {
+  padding: 3px 12px;
+  font-size: 14px;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraph--type--3d-carousel-bundle .carousel-options .slide-number {
+  display: inline;
+  padding: 3px 6px;
+  font-size: 14px;
+}
+
+.pb-carousel-item.title-over-image .paragraph--type--image-bundle > div.solo-row,
+.pb-carousel-item.title-over-image .paragraph--type--image-wide-bundle > div.solo-row,
+.pb-carousel-item.title-over-image .paragraph--type--image-narrow-bundle > div.solo-row {
+  position: relative;
+}
+
+.pb-carousel-item.title-over-image .paragraph--type--image-bundle .content-title,
+.pb-carousel-item.title-over-image .paragraph--type--image-wide-bundle .content-title,
+.pb-carousel-item.title-over-image .paragraph--type--image-narrow-bundle .content-title {
+  position: absolute;
+  font-weight: normal;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  text-align: center;
+  padding: 16px;
+  font-size: 16px;
+  z-index: 1;
+  color: #ccc;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.pb-carousel-item.title-over-image .paragraph--type--image-bundle a.pb-link,
+.pb-carousel-item.title-over-image .paragraph--type--image-wide-bundle a.pb-link,
+.pb-carousel-item.title-over-image .paragraph--type--image-narrow-bundle a.pb-link {
+  z-index: 1000;
+}
+
+
+.pb-carousel-item .paragraph--type--image-overlay-bundle > div > .pb-img-wrapper div,
+.pb-carousel-item .paragraph--type--image-overlay-bundle > div > .pb-img-wrapper,
+.pb-carousel-item .paragraph--type--hero-bundle .pn-carousel-wrapper__inner,
+.pb-carousel-item .paragraph--type--hero-bundle .pb-carousel-wrapper__inner div {
+  height: 100%;
+  overflow: hidden;
+}
+
+.pb-carousel-item .paragraph--type--hero-bundle .pb-hero-txt-wrapper div {
+  height: auto !important;
+  width: auto !important;
+}
+
+.pb-carousel-item > .paragraph {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.pb-carousel-item > .paragraph--type--image-bundle,
+.pb-carousel-item > .paragraph--type--image-wide-bundle,
+.pb-carousel-item > .paragraph--type--image-narrow-bundle {
+  overflow: hidden;
+}
+
+.pb-carousel-item >.paragraph.pb-card-2,
+.pb-carousel-item >.paragraph>.pb-card-2 {
+  margin: 10px auto;
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+}
+
+.pb-carousel-item >.paragraph.pb-card-4,
+.pb-carousel-item >.paragraph>.pb-card-4 {
+  margin: 20px auto;
+  height: calc(100% - 40px);
+  width: calc(100% - 40px);
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-fade .overlay-container {
+  opacity: 1;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-zoom .overlay-container {
+  transform: scale(1);
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-title .overlay-title {
+  opacity: 1;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-slide-top .overlay-container {
+  bottom: 0;
+  height: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-slide-bottom .overlay-container {
+  height: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-slide-left .overlay-container {
+  width: 100%;
+}
+
+.paragraph--type--3d-carousel-bundle .pb-carousel-wrapper__inner:hover .pb-is-active .pb-image-overlay-slide-right .overlay-container {
+  width: 100%;
+  left: 0;
+}

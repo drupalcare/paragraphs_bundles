@@ -1,0 +1,54 @@
+/**
+ * @file
+ * Paragraph Bundle Content Admin.
+ *
+ * Filename:     paragraph-bundle-content-admin.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.field-group-tab.pb-content-type-display .details-wrapper {
+  display: grid;
+}
+
+.field-group-tab.pb-content-type-display .details-wrapper .form-radios,
+.field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.field-group-tab.pb-content-type-display .details-wrapper .form-radios .form-item input,
+.field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes .form-item input {
+  margin-left: 20px;
+  margin-right: 5px;
+}
+
+.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] {
+  display: inline-block;
+  min-width: 210px;
+  border-radius: 5px;
+}
+
+.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-text {
+  display: inline-block;
+  width: calc(100% - 70px);
+  border-radius: 12px 0 0 12px;
+  border-right: none;
+}
+
+.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-color {
+  display: inline-block;
+  width: 40px;
+  margin-right: 20px;
+  vertical-align: bottom;
+  border-radius: 0 12px 12px 0;
+  border-left: none;
+  padding: 5px;
+  background-color: black;
+  box-sizing: border-box;
+}
+
+.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"]label,
+.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] div {
+  display: block;
+  width: 100%;
+}

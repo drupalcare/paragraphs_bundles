@@ -7,13 +7,15 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
-.paragraph__inner {
-  background-color: var(--pb-bg, var(--pb-bg-h));
-  border-color: var(--pb-br, var(--pb-br-h));
-  color: var(--pb-tx, var(--pb-tx-h));
+.paragraph__inner,
+.pb-hero-txt-wrapper-inner {
+  background-color: var(--pb-bg);
+  border-color: var(--pb-br);
+  color: var(--pb-tx);
 }
 
-.paragraph__inner:hover {
+.paragraph__inner:hover,
+.pb-hero-txt-wrapper-inner:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
   color: var(--pb-tx-h, var(--pb-tx));

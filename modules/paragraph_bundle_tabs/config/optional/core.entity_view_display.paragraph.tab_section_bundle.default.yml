@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.tab_section_bundle.field_pb_content_tab_body
-    - field.field.paragraph.tab_section_bundle.field_pb_content_tab_name
+    - field.field.paragraph.tab_section_bundle.pb_content_tab_body
+    - field.field.paragraph.tab_section_bundle.pb_content_tab_name
     - paragraphs.paragraphs_type.tab_section_bundle
   module:
     - entity_reference_revisions
@@ -12,7 +12,7 @@ targetEntityType: paragraph
 bundle: tab_section_bundle
 mode: default
 content:
-  field_pb_content_tab_body:
+  pb_content_tab_body:
     type: entity_reference_revisions_entity_view
     label: hidden
     settings:
@@ -21,7 +21,7 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-  field_pb_content_tab_name:
+  pb_content_tab_name:
     type: string
     label: hidden
     settings:

@@ -1,0 +1,25 @@
+{
+    "name": "drupal/w3css_paragraphs_content",
+    "description": "A reusable W3CSS paragraphs Content Type for all Paragraphs Bundles.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Alaa Haddad (alaahaddad.com)",
+            "homepage": "https://www.drupal.org/u/flashwebcenter",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://drupal.org/project/w3css_paragraphs_content",
+  "require": {
+    "drupal/core": "*",
+    "drupal/node": "*",
+    "drupal/w3css_paragraphs": "*"
+  },
+    "support": {
+        "issues": "https://drupal.org/project/issues/w3css_paragraphs_content",
+        "source": "https://git.drupalcode.org/project/w3css_paragraphs_content"
+    }
+}
+

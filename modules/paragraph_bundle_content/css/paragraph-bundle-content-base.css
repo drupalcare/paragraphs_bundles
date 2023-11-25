@@ -1,0 +1,119 @@
+/**
+ * @file
+ * Paragraph Bundle Content.
+ *
+ * Filename:     paragraph-bundle-content-base.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
+ */
+@media (min-width:993px) {
+  .page-node-type-pb-content .node.cw-100 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-100 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-2560 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-2560 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 2560px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-1920 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-1920 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 1920px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-1600 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-1600 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 1600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-1440 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-1440 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-1280 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-1280 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-1024 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-1024 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 1024px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-800 .pb-hero-txt-wrapper,
+  .page-node-type-pb-content .node.cw-800 .node__content>.paragraph>.paragraph__inner>* {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+}
+
+#main-container-inner .pb-content,
+#main-container-inner .pb-content > div {
+  margin: 0 auto !important;
+  padding: 0 !important;
+}
+
+div.pb-content section.pb-block > article.node > div,
+div.pb-content section.pb-block > article.node > header {
+  margin: 0;
+}
+
+.page-node-type-pb-content .node__header,
+.page-node-type-pb-content .node__content {
+  margin-bottom: 0 !important;
+}
+
+.page-node-type-pb-content .paragraph .field--type-entity-reference > div {
+  width: 100%;
+}
+
+.page-node-type-pb-content #main-container-inner .main-box-inner,
+.page-node-type-pb-content #main-container-inner.solo-col {
+  gap: 0 !important;
+  padding: 0 !important;
+  margin: 0 auto !important;
+}
+
+.page-node-type-pb-content .node__content>.paragraph .pb-img-wrapper {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+.page-node-type-pb-content .node__content>.paragraph .paragraph .pb-img-wrapper,
+.page-node-type-pb-content .node__content>.paragraph .paragraph .paragraph .pb-img-wrapper {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper,
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper div,
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper div img {
+  width: 100%;
+}

@@ -2,13 +2,14 @@ langcode: en
 status: true
 dependencies:
   module:
-    - paragraphs
-id: paragraph.pb_display_slide_bottom_nav
-field_name: pb_display_slide_bottom_nav
-entity_type: paragraph
-type: boolean
+    - node
+    - paragraphs_bundles
+id: node.pb_display_content_bg
+field_name: pb_display_content_bg
+entity_type: node
+type: paragraphs_bundles_rgb
 settings: {  }
-module: core
+module: paragraphs_bundles
 locked: false
 cardinality: 1
 translatable: true

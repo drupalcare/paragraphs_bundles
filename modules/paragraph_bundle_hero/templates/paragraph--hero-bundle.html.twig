@@ -39,16 +39,17 @@
 #}
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
-{{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
+{{ attach_library('paragraph_bundle_hero/paragraph-bundle-hero') }}
 
-{% set paragraph_id  = 'pb-card-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb-hero-' ~ paragraph.id.value %}
+
 {% set classes = [
-   paragraph_id,
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id,
 ] %}
 
 {% set pb_styles = {
@@ -66,9 +67,10 @@
 'pb_display_margin',
 'pb_display_padding',
 'pb_display_shadow',
+'pb_display_hero'
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-card__inner' %}
+{% set classes_inner = 'solo-row pb-hero-txt-wrapper-inner' %}
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -87,36 +89,37 @@
 {# Image and link #}
 {% set pb_link = content. pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
-{% set pb_image_right = content.pb_display_image_right|render|striptags|trim %}
-
-<div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+{% set pb_round = content.pb_display_border_radius|render|striptags|trim %}
 
 
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
+  <div class="solo-row hero-bundle-inner">
 
-      <div class="pb-two-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
-        <div class="pb-col-left">
+    <div class="solo-row pb-img-wrapper">
+      {{ content.pb_content_image }}
+    </div>
 
-          {% if pb_link %}
-          <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-          {% endif %}
+    <div class="solo-row pb-hero-txt-wrapper">
+          <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
 
-            {{ content.pb_content_image }}
+        {% if pb_link %}
+        <a href="{{ pb_link }}" class="solo-row pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+        {% endif %}
 
-          {% if pb_link %}
-          </a>
-          {% endif %}
 
-        </div>
-        <div class="pb-col-right">
           {% if content.pb_content_title|render %}
             <h3 class="content-title">{{ content.pb_content_title }}</h3>
           {% endif %}
+
           {{ content.pb_content_body }}
-           {{ pb_image_right }}
-        </div>
+
+
+        {% if pb_link %}
+        </a>
+        {% endif %}
+
       </div>
+    </div>
 
   </div>
 </div> {# End of main wrapper #}

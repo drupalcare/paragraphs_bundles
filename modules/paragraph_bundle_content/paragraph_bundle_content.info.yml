@@ -1,0 +1,8 @@
+name: Paragraphs Bundles Content Type
+type: module
+description: A reusable Paragraphs Bundles Content Type for all Paragraphs Bundles.
+core_version_requirement: ^9.3 || ^10
+package: Paragraphs
+dependencies:
+  - drupal:node
+  - paragraphs_bundles:paragraphs_bundles

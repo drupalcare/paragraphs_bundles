@@ -89,7 +89,7 @@
 {% set pb_image_height = content.pb_display_parallax_height|render|striptags|trim %}
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-  <div class="paragraph__inner w3-parallax-section__inner">
+  <div class="paragraph__inner pb-parallax-section__inner">
 
     <div class="pb-parallax-bg" {% if pb_image_url %}style="background-image: url( {{ pb_image_url }} ); min-height: {{ pb_image_height }}px;" {% endif %}></div>
     <div class="pb-parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}"style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">

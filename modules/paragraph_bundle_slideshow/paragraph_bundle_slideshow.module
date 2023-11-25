@@ -38,3 +38,15 @@ function paragraph_bundle_slideshow_help($route_name, RouteMatchInterface $route
 
   return NULL;
 }
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_slideshow_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__slideshow_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+
+  ];
+}

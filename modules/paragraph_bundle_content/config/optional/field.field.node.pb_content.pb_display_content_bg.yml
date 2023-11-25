@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_display_content_bg
+    - node.type.pb_content
+  module:
+    - paragraphs_bundles
+id: node.pb_content.pb_display_content_bg
+field_name: pb_display_content_bg
+entity_type: node
+bundle: pb_content
+label: 'Content Background'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_rgb

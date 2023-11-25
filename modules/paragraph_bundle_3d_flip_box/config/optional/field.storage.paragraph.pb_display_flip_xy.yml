@@ -12,10 +12,10 @@ settings:
   allowed_values:
     -
       value: flip-x
-      label: 'Flip Box (Vertical)'
+      label: 'Flip Box Vertical'
     -
       value: flip-y
-      label: 'Flip Box (Horizontal)'
+      label: 'Flip Box Horizontal'
   allowed_values_function: ''
 module: options
 locked: false

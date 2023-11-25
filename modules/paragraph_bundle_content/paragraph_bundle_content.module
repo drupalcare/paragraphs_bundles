@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * @file
+ * Paragraph Bundle Content.
+ *
+ * Filename:     paragraph_bundle_content.module
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\node\Entity\Node;
+
+/**
+ * Implements hook_help().
+ */
+function paragraph_bundle_content_help($route_name, RouteMatchInterface $route_match) {
+
+  switch ($route_name) {
+    case 'help.page.paragraph_bundle_content_content':
+
+      $text = file_get_contents(__DIR__ . "/README.md");
+
+      if (!\Drupal::moduleHandler()->moduleExists('markdown')) {
+        return '<pre>' . $text . '</pre>';
+      }
+
+      // Use the Markdown filter to render the README.
+      $filter_manager = \Drupal::service('plugin.manager.filter');
+      $settings = \Drupal::configFactory()
+        ->get('markdown.settings')
+        ->getRawData();
+      $config = ['settings' => $settings];
+      $filter = $filter_manager->createInstance('markdown', $config);
+      return $filter->process($text, 'en');
+  }
+
+  return NULL;
+}
+
+/**
+ * Implements hook_preprocess_page() for page templates.
+ */
+function paragraph_bundle_content_preprocess_page(&$variables) {
+
+  /** @var \Drupal\Core\Routing\AdminContext $admin_context */
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute()) {
+    $variables['#attached']['library'][] = "paragraph_bundle_content/paragraph-bundle-content-admin";
+  }
+
+  $route_match  = \Drupal::routeMatch();
+  $node_publish = $route_match->getParameter('node');
+  $node_preview = $route_match->getParameter('node_preview');
+  $node         = $node_publish ?? $node_preview;
+
+  if ($node instanceof Node && $node->bundle() == 'pb_content') {
+    $variables['#attached']['library'][] = "paragraph_bundle_content/paragraph-bundle-content-base";
+
+    // Unset left and right.
+    unset($variables['page']['sidebar_first'], $variables['page']['sidebar_second']);
+
+    $selected_regions = array_column($node->pb_display_disable_region->getValue(), 'value');
+
+    foreach ($selected_regions as $x => $selected_region) {
+
+      switch ($selected_region) {
+
+        case 'popup_login_block':
+          unset($variables['page']['popup_login_block']);
+          break;
+
+        case 'fixed_search_block':
+          unset($variables['page']['fixed_search_block']);
+          break;
+
+        case 'header':
+          unset($variables['page']['header']);
+          break;
+
+        case 'navigation':
+          unset($variables['page']['primary_menu'], $variables['page']['primary_sidebar_menu']);
+          break;
+
+        case 'welcome_text':
+          unset($variables['page']['welcome_text']);
+          break;
+
+        case 'highlighted':
+          unset($variables['page']['highlighted']);
+          break;
+
+        case 'top_regions':
+          unset($variables['page']['top_first'], $variables['page']['top_second'], $variables['page']['top_third']);
+          break;
+
+        case 'page_title':
+          unset($variables['page']['page_title']);
+          break;
+
+        case 'breadcrumb':
+          unset($variables['page']['breadcrumb']);
+          break;
+
+        case 'bottom_regions':
+          unset($variables['page']['bottom_first'], $variables['page']['bottom_second'], $variables['page']['bottom_third'], $variables['page']['bottom_forth']);
+          break;
+
+        case 'footer_regions':
+          unset($variables['page']['footer_first'], $variables['page']['footer_second'], $variables['page']['footer_third']);
+          break;
+
+        case 'footer_menu':
+          unset($variables['page']['footer_menu']);
+          $variables['#attached']['library'][] = "paragraph_bundle_content/hide-footer-menu";
+          break;
+
+        case 'copyright':
+          $variables['#attached']['library'][] = "paragraph_bundle_content/hide-copyright";
+          break;
+      }
+
+    }
+
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_content_theme($existing, $type, $theme, $path) {
+  return [
+    'node__pb_content' => [
+      'base hook' => 'node',
+    ],
+
+  ];
+}

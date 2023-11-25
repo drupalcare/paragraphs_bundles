@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - options
+id: node.pb_display_content_width
+field_name: pb_display_content_width
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: cw-100
+      label: 100%
+    -
+      value: cw-2560
+      label: 2560px
+    -
+      value: cw-1920
+      label: 1920px
+    -
+      value: cw-1600
+      label: 1600px
+    -
+      value: cw-1440
+      label: 1440px
+    -
+      value: cw-1280
+      label: 1280px
+    -
+      value: cw-1024
+      label: 1024px
+    -
+      value: cw-800
+      label: 800px
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

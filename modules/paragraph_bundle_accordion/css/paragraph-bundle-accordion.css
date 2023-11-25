@@ -1,0 +1,71 @@
+/**
+ * @file
+ * Paragraph Bundle Accordion.
+ *
+ * Filename:     paragraph-bundle-accordion.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+.paragraph--type--accordion-bundle {
+  overflow: hidden;
+}
+
+.paragraph--type--accordion-bundle .pb-accs-button > button {
+  padding: 24px 12px;
+  display: flex;
+  width: 100%;
+  flex-grow: 1;
+}
+
+.paragraph--type--accordion-bundle .pb-accs-button > button > .plus-minus {
+  display: flex;
+  margin-left: auto;
+}
+
+.paragraph--type--accordion-bundle .pb-not-active > .pb-accs-pane {
+  display: none;
+}
+
+.paragraph--type--accordion-bundle .wrapper-accs-btn-pane {
+  display: grid;
+  width: 100%;
+}
+
+.paragraph--type--accordion-bundle .pb-accs-button {
+  cursor: pointer;
+  padding: 8px;
+  width: 100%;
+}
+
+.paragraph--type--accordion-bundle .pb-is-active .pb-accs-pane {
+  padding: 16px;
+  border-top: none;
+  width: 100%;
+  margin: 0 0 10px 0;
+}
+.paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active,
+.paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active div {
+  background-color: var(--pb-bt-a);
+}
+
+.paragraph--type--accordion-bundle .ex-button {
+  justify-content: end;
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+}
+
+.paragraph--type--accordion-bundle .ex-button button {
+  font-size: 24px;
+}
+
+.paragraph--type--accordion-bundle .ex-button .minus,
+.paragraph--type--accordion-bundle .wrapper-accs-btn-pane .plus-minus span {
+  display: none;
+}
+
+.paragraph--type--accordion-bundle .wrapper-accs-btn-pane.pb-is-active .plus-minus span.minus,
+.paragraph--type--accordion-bundle .wrapper-accs-btn-pane.pb-not-active .plus-minus span.plus {
+  display: block;
+}

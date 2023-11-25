@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_display_disable_region
+    - node.type.pb_content
+  module:
+    - options
+id: node.pb_content.pb_display_disable_region
+field_name: pb_display_disable_region
+entity_type: node
+bundle: pb_content
+label: 'Disabled Regions'
+description: 'The left/right sidebar are disabled by default.  You can choose any other regions to be disabled.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_title
     - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_body
     - paragraphs.paragraphs_type.slideshow_section_bundle
   module:
@@ -11,6 +12,14 @@ targetEntityType: paragraph
 bundle: slideshow_section_bundle
 mode: default
 content:
+  pb_content_slideshow_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
   pb_content_slideshow_body:
     type: entity_reference_revisions_entity_view
     label: hidden

@@ -23,5 +23,5 @@ settings:
     target_bundles:
       accordion_section_bundle: accordion_section_bundle
     negate: 0
-    target_bundles_drag_drop:
+    target_bundles_drag_drop: null
 field_type: entity_reference_revisions

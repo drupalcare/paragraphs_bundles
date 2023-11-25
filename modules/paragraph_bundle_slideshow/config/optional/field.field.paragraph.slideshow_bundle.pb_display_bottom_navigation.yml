@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_bottom_navigation
+    - paragraphs.paragraphs_type.slideshow_bundle
+  module:
+    - options
+id: paragraph.slideshow_bundle.pb_display_bottom_navigation
+field_name: pb_display_bottom_navigation
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Bottom Navigation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

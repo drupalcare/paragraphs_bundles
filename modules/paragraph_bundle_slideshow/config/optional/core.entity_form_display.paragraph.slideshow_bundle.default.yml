@@ -2,12 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_bundle.pb_display_bottom_navigation
     - field.field.paragraph.slideshow_bundle.pb_content_slideshow_section
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_active_item
-    - field.field.paragraph.slideshow_bundle.pb_display_animated_slides
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_bottom_nav
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_play_stop
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_prev_next
     - field.field.paragraph.slideshow_bundle.pb_content_title
     - field.field.paragraph.slideshow_bundle.pb_display_bg
     - field.field.paragraph.slideshow_bundle.pb_display_bg_hover
@@ -18,6 +14,10 @@ dependencies:
     - field.field.paragraph.slideshow_bundle.pb_display_margin
     - field.field.paragraph.slideshow_bundle.pb_display_padding
     - field.field.paragraph.slideshow_bundle.pb_display_shadow
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_active_item
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_animated_slides
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_play_stop
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_prev_next
     - field.field.paragraph.slideshow_bundle.pb_display_text
     - field.field.paragraph.slideshow_bundle.pb_display_text_hover
     - field.field.paragraph.slideshow_bundle.pb_display_width
@@ -74,8 +74,10 @@ third_party_settings:
         - pb_display_width
         - pb_display_shadow
         - pb_display_slide_play_stop
-        - pb_display_animated_slides
+        - pb_display_slide_animated_slides
+        - pb_display_bottom_navigation
         - pb_display_slide_bottom_nav
+        - pb_display_slide_bottom_dots
         - pb_display_slide_prev_next
         - pb_display_slide_active_item
       label: 'Tab Display'
@@ -95,6 +97,12 @@ targetEntityType: paragraph
 bundle: slideshow_bundle
 mode: default
 content:
+  pb_display_bottom_navigation:
+    type: options_buttons
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_content_slideshow_section:
     type: paragraphs
     weight: 2
@@ -113,38 +121,6 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: {  }
-  pb_display_slide_active_item:
-    type: color_text_widget
-    weight: 20
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_animated_slides:
-    type: options_select
-    weight: 17
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_slide_bottom_nav:
-    type: boolean_checkbox
-    weight: 18
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  pb_display_slide_play_stop:
-    type: options_select
-    weight: 16
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pb_display_slide_prev_next:
-    type: boolean_checkbox
-    weight: 19
-    region: content
-    settings:
-      display_label: true
     third_party_settings: {  }
   pb_content_title:
     type: string_textfield
@@ -207,6 +183,31 @@ content:
     weight: 15
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_slide_active_item:
+    type: color_text_widget
+    weight: 22
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_slide_animated_slides:
+    type: options_select
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_slide_play_stop:
+    type: options_select
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_slide_prev_next:
+    type: boolean_checkbox
+    weight: 21
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_display_text:
     type: color_text_widget

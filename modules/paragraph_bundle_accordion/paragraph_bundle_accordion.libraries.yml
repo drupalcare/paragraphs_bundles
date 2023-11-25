@@ -1,5 +1,7 @@
-paragraph-bundle-card:
+paragraph-bundle-accordion:
   version: VERSION
   css:
     theme:
-      css/paragraph-bundle-card.css: { }
+      css/paragraph-bundle-accordion.css: { }
+  js:
+    js/paragraph-bundle-accordion.js: { }

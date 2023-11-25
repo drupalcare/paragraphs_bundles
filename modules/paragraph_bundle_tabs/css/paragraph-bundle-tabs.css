@@ -1,0 +1,87 @@
+/**
+ * @file
+ * Paragraph Bundle Tabs.
+ *
+ * Filename:     paragraph-bundle-tabs.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.solo-bar {
+  width: 100%;
+  overflow: hidden;
+}
+
+.solo-bar .solo-button {
+  white-space: normal;
+}
+
+.solo-bar:before,
+.solo-bar:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.paragraph--type--tabs-bundle {
+  overflow: hidden;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-wrapper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-wrapper > .pb-tabs-button {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-pane .pb-tab-pane {
+  display: none;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-pane > div:first-child {
+  display: block;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-button > button {
+  float: left;
+}
+
+.paragraph--type--tabs-bundle .pb-tabs-wrapper .pb-tabs-button > .pb-is-active {
+  font-weight: bold;
+  text-decoration: underline;
+  background-color: var(--pb-bt-a);
+}
+
+@media (min-width:993px) {
+  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+  }
+
+  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs > .pb-tabs-button {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs .pb-tabs-pane {
+    width: 70%;
+  }
+
+  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs .pb-tabs-button {
+    width: 30%;
+  }
+
+  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs .pb-tab-button {
+    width: 100%;
+    clear: both;
+    text-align: left;
+  }
+
+}

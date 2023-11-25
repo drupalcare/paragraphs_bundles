@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_display_content_width
+    - node.type.pb_content
+  module:
+    - options
+id: node.pb_content.pb_display_content_width
+field_name: pb_display_content_width
+entity_type: node
+bundle: pb_content
+label: 'Max Content Width'
+description: 'The global width is disabled for this content type to control it from here.'
+required: true
+translatable: false
+default_value:
+  -
+    value: cw-100
+default_value_callback: ''
+settings: {  }
+field_type: list_string

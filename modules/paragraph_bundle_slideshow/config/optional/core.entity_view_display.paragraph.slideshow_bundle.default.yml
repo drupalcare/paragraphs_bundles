@@ -2,12 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_bundle.pb_display_bottom_navigation
     - field.field.paragraph.slideshow_bundle.pb_content_slideshow_section
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_active_item
-    - field.field.paragraph.slideshow_bundle.pb_display_animated_slides
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_bottom_nav
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_play_stop
-    - field.field.paragraph.slideshow_bundle.pb_display_slide_prev_next
     - field.field.paragraph.slideshow_bundle.pb_content_title
     - field.field.paragraph.slideshow_bundle.pb_display_bg
     - field.field.paragraph.slideshow_bundle.pb_display_bg_hover
@@ -18,6 +14,10 @@ dependencies:
     - field.field.paragraph.slideshow_bundle.pb_display_margin
     - field.field.paragraph.slideshow_bundle.pb_display_padding
     - field.field.paragraph.slideshow_bundle.pb_display_shadow
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_active_item
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_animated_slides
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_play_stop
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_prev_next
     - field.field.paragraph.slideshow_bundle.pb_display_text
     - field.field.paragraph.slideshow_bundle.pb_display_text_hover
     - field.field.paragraph.slideshow_bundle.pb_display_width
@@ -31,6 +31,13 @@ targetEntityType: paragraph
 bundle: slideshow_bundle
 mode: default
 content:
+  pb_display_bottom_navigation:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 14
+    region: content
   pb_content_slideshow_section:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -38,48 +45,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 18
-    region: content
-  pb_display_slide_active_item:
-    type: color_text_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
-  pb_display_animated_slides:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 12
-    region: content
-  pb_display_slide_bottom_nav:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 14
-    region: content
-  pb_display_slide_play_stop:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
-  pb_display_slide_prev_next:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 15
+    weight: 20
     region: content
   pb_content_title:
     type: string
@@ -87,7 +53,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 17
+    weight: 19
     region: content
   pb_display_bg:
     type: color_text_formatter
@@ -151,6 +117,37 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 8
+    region: content
+  pb_display_slide_active_item:
+    type: color_text_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  pb_display_slide_animated_slides:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  pb_display_slide_play_stop:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  pb_display_slide_prev_next:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 17
     region: content
   pb_display_text:
     type: color_text_formatter

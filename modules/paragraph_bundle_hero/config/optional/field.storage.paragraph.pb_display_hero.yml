@@ -11,32 +11,32 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: w3-display-topleft
-      label: 'Displays content at the top left corner of the w3-display-container'
+      value: pb-display-topleft
+      label: 'Displays content at the top left corner of the pb-display-container'
     -
-      value: w3-display-topright
-      label: 'Displays content at the top right corner of the w3-display-container'
+      value: pb-display-topright
+      label: 'Displays content at the top right corner of the pb-display-container'
     -
-      value: w3-display-bottomleft
-      label: 'Displays content at the bottom left corner of the w3-display-container'
+      value: pb-display-bottomleft
+      label: 'Displays content at the bottom left corner of the pb-display-container'
     -
-      value: w3-display-bottomright
-      label: 'Displays content at the bottom right corner of the w3-display-container'
+      value: pb-display-bottomright
+      label: 'Displays content at the bottom right corner of the pb-display-container'
     -
-      value: w3-display-left
-      label: 'Displays content to the left (middle left) of the w3-display-container'
+      value: pb-display-left
+      label: 'Displays content to the left (middle left) of the pb-display-container'
     -
-      value: w3-display-right
-      label: 'Displays content to the right (middle right) of the w3-display-container'
+      value: pb-display-right
+      label: 'Displays content to the right (middle right) of the pb-display-container'
     -
-      value: w3-display-middle
-      label: 'Displays content in the middle (center) of the w3-display-container'
+      value: pb-display-middle
+      label: 'Displays content in the middle (center) of the pb-display-container'
     -
-      value: w3-display-topmiddle
-      label: 'Displays content at the top middle of the w3-display-container'
+      value: pb-display-topmiddle
+      label: 'Displays content at the top middle of the pb-display-container'
     -
-      value: w3-display-bottommiddle
-      label: 'Displays content at the bottom middle of the w3-display-container'
+      value: pb-display-bottommiddle
+      label: 'Displays content at the bottom middle of the pb-display-container'
   allowed_values_function: ''
 module: options
 locked: false

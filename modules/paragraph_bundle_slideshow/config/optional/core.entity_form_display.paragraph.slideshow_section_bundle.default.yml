@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_title
     - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_body
     - paragraphs.paragraphs_type.slideshow_section_bundle
   module:
@@ -11,6 +12,14 @@ targetEntityType: paragraph
 bundle: slideshow_section_bundle
 mode: default
 content:
+  pb_content_slideshow_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   pb_content_slideshow_body:
     type: paragraphs
     weight: 1

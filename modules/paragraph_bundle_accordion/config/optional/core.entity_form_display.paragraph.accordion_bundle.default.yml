@@ -1,14 +1,15 @@
+uuid: 2e98264f-e87a-4215-931b-842a531d6af1
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.paragraph.accordion_bundle.pb_content_accordion_section
+    - field.field.paragraph.accordion_bundle.pb_content_title
     - field.field.paragraph.accordion_bundle.pb_display_accor_active_item
     - field.field.paragraph.accordion_bundle.pb_display_accor_animated
     - field.field.paragraph.accordion_bundle.pb_display_accor_indicator
     - field.field.paragraph.accordion_bundle.pb_display_accor_open_first
     - field.field.paragraph.accordion_bundle.pb_display_accor_show_expand
-    - field.field.paragraph.accordion_bundle.pb_content_title
     - field.field.paragraph.accordion_bundle.pb_display_bg
     - field.field.paragraph.accordion_bundle.pb_display_bg_hover
     - field.field.paragraph.accordion_bundle.pb_display_border
@@ -90,6 +91,8 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
+_core:
+  default_config_hash: zp2sndXDa-MIna_-cXwoI74wjQ8_UYjF3JIlyeaWCdQ
 id: paragraph.accordion_bundle.default
 targetEntityType: paragraph
 bundle: accordion_bundle
@@ -113,6 +116,14 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
+    third_party_settings: {  }
+  pb_content_title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   pb_display_accor_active_item:
     type: color_text_widget
@@ -146,14 +157,6 @@ content:
     region: content
     settings:
       display_label: true
-    third_party_settings: {  }
-  pb_content_title:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget

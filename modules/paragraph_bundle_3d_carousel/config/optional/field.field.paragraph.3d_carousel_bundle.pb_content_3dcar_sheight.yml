@@ -10,7 +10,7 @@ id: paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
 field_name: pb_content_3dcar_sheight
 entity_type: paragraph
 bundle: 3d_carousel_bundle
-label: 'Small/Medium Screen Height'
+label: 'Height in pixels'
 description: 'This height will be applied to all carrousel items. For 992px or less.'
 required: false
 translatable: false

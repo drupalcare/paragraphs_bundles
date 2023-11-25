@@ -69,7 +69,7 @@
   font-size: 12px;
 }
 
-/*.paragraph .w3-img-wrapper {
+/*.paragraph .pb-img-wrapper {
   overflow: hidden;
 }
 */
@@ -109,68 +109,60 @@
 }
 
 @media (min-width:993px) {
-  .paragraph > .simple__inner,
-  .pb-hero-txt-wrapper .w-100,
-  .paragraph > .w-100 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-100,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner,
+  .pb-hero-txt-wrapper-inner.w-100:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 100%;
   }
 
-  .pb-hero-txt-wrapper .w-90,
-  .paragraph > .w-90 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-90,
+  .pb-hero-txt-wrapper-inner.w-90:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 90%;
   }
 
-  .pb-hero-txt-wrapper .w-80,
-  .paragraph > .w-80 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-80,
+  .pb-hero-txt-wrapper-inner.w-80:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 80%;
   }
 
-  .pb-hero-txt-wrapper .w-70,
-  .paragraph > .w-70 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-70,
+  .pb-hero-txt-wrapper-inner.w-70:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 70%;
   }
 
-  .pb-hero-txt-wrapper .w-60,
-  .paragraph > .w-60 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-60,
+  .pb-hero-txt-wrapper-inner.w-60:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 60%;
   }
 
-  .pb-hero-txt-wrapper .w-50,
-  .paragraph > .w-50 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-50,
+  .pb-hero-txt-wrapper-inner.w-50:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 50%;
   }
 
-  .pb-hero-txt-wrapper .w-40,
-  .paragraph > .w-40 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-40,
+  .pb-hero-txt-wrapper-inner.w-40:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 40%;
   }
 
-  .pb-hero-txt-wrapper .w-30,
-  .paragraph > .w-30 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-30,
+  .pb-hero-txt-wrapper-inner.w-30:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
     width: 30%;
   }
 
-  .paragraph > .simple__inner {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner {
     margin-left: auto;
     margin-right: auto;
   }
 
-  .paragraph > .w-100,
-  .paragraph > .w-90,
-  .paragraph > .w-80,
-  .paragraph > .w-70,
-  .paragraph > .w-60,
-  .paragraph > .w-50,
-  .paragraph > .w-40,
-  .paragraph > .w-30,
-  .pb-hero-txt-wrapper .w-100,
-  .pb-hero-txt-wrapper .w-90,
-  .pb-hero-txt-wrapper .w-80,
-  .pb-hero-txt-wrapper .w-70,
-  .pb-hero-txt-wrapper .w-60,
-  .pb-hero-txt-wrapper .w-50,
-  .pb-hero-txt-wrapper .w-40,
-  .pb-hero-txt-wrapper .w-30 {
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-100,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-90,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-80,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-70,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-60,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-50,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-40,
+  .paragraph:not(.page-node-type-pb-content .paragraph) > .w-30 {
     margin-left: auto !important;
     margin-right: auto !important;
   }

@@ -4,8 +4,8 @@ dependencies:
   module:
     - entity_reference_revisions
     - paragraphs
-id: paragraph.field_pb_content_tab_body
-field_name: field_pb_content_tab_body
+id: paragraph.pb_content_tab_body
+field_name: pb_content_tab_body
 entity_type: paragraph
 type: entity_reference_revisions
 settings:

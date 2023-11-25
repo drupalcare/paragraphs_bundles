@@ -39,17 +39,18 @@
 #}
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
-{{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
+{{ attach_library('paragraph_bundle_3d_flip_box/paragraph-bundle-3d-flip-box') }}
 
-{% set paragraph_id  = 'pb-card-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb-3d-flip-box-' ~ paragraph.id.value %}
 {% set classes = [
-   paragraph_id,
   'paragraph',
-  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  'paragraph--type--3d-flip-box-bundle',
+  paragraph_id,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value
 ] %}
+
 
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
@@ -68,7 +69,7 @@
 'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-card__inner' %}
+{% set classes_inner = 'paragraph__inner pb-3d-flip-box__inner' %}
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -84,37 +85,22 @@
   {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
 {% endif %}
 
-{# Image and link #}
-{% set pb_link = content. pb_content_image_link.0['#url'] %}
-{% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
-{% set pb_image_right = content.pb_display_image_right|render|striptags|trim %}
+{# End of margin and height #}
+{# flip and height must be filled #}
+{% set pb_flip_xy = content.pb_display_flip_xy|render|striptags|trim %}
+{% set pb_box_height = content.pb_display_3d_height|render|striptags|trim %}
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
   <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
 
+      {% if content.pb_content_title|render %}
+      <h3 class="content-title">{{ content.pb_content_title }}</h3>
+      {% endif %}
 
-
-      <div class="pb-two-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
-        <div class="pb-col-left">
-
-          {% if pb_link %}
-          <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-          {% endif %}
-
-            {{ content.pb_content_image }}
-
-          {% if pb_link %}
-          </a>
-          {% endif %}
-
-        </div>
-        <div class="pb-col-right">
-          {% if content.pb_content_title|render %}
-            <h3 class="content-title">{{ content.pb_content_title }}</h3>
-          {% endif %}
-          {{ content.pb_content_body }}
-           {{ pb_image_right }}
+      <div style="height: {{ pb_box_height }}px;" class="pb-flip-box {{ pb_flip_xy }}">
+        <div class="pb-flip-box-inner">
+          <div class="pb-3d-front">{{ content.pb_content_3d_box_front }}</div>
+          <div class="pb-3d-back {{ pb_flip_xy }}">{{ content.pb_content_3d_box_back }}</div>
         </div>
       </div>
 

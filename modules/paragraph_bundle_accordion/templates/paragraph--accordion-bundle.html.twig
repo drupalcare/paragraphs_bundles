@@ -39,16 +39,17 @@
 #}
 
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
-{{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
+{{ attach_library('paragraph_bundle_accordion/paragraph-bundle-accordion') }}
 
-{% set paragraph_id  = 'pb-card-' ~ paragraph.id.value %}
+{% set paragraph_id = 'pb-acc-wrapper-' ~ paragraph.id.value %}
+
 {% set classes = [
-   paragraph_id,
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id,
 ] %}
 
 {% set pb_styles = {
@@ -57,7 +58,8 @@
   'pb-br': 'pb_display_border_color',
   'pb-br-h': 'pb_display_border_hover',
   'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
+  'pb-tx-h': 'pb_display_text_hover',
+  'pb-bt-a': 'pb_display_accor_active_item'
 } %}
 
 {% set pb_displays = [
@@ -68,7 +70,7 @@
 'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-card__inner' %}
+{% set classes_inner = 'paragraph__inner pb-acc-wrapper__inner' %}
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -84,39 +86,78 @@
   {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
 {% endif %}
 
-{# Image and link #}
-{% set pb_link = content. pb_content_image_link.0['#url'] %}
-{% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
-{% set pb_image_right = content.pb_display_image_right|render|striptags|trim %}
+{# End of margin and height #}
+{# Display or hide expand all #}
+{% set pb_expand_all = content.pb_display_accor_show_expand|render|striptags|trim %}
+{% set pb_show_indicator = content.pb_display_accor_indicator|render|striptags|trim %}
+{% set pb_open_first = content.pb_display_accor_open_first|render|striptags|trim %}
+{% set pb_animated_tab = content.pb_display_accor_animated|render|striptags|trim %}
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}" role="tablist" aria-multiselectable="true">
 
 
 
-      <div class="pb-two-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
-        <div class="pb-col-left">
+      {% set acc_id = 'pb-acc-' ~ paragraph.id.value %}
+      <div id="{{ acc_id }}" class="solo-row">
 
-          {% if pb_link %}
-          <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-          {% endif %}
+        {% if content.pb_content_title|render %}
+        <h3 class="content-title">{{ content.pb_content_title }}</h3>
+        {% endif %}
 
-            {{ content.pb_content_image }}
-
-          {% if pb_link %}
-          </a>
-          {% endif %}
-
+        {% if pb_expand_all == "On" %}
+        <div class="solo-row ex-button">
+          <button class="solo-button plus">&#x0229E</button>
+          <button class="solo-button minus">&#x0229F</button>
         </div>
-        <div class="pb-col-right">
-          {% if content.pb_content_title|render %}
-            <h3 class="content-title">{{ content.pb_content_title }}</h3>
-          {% endif %}
-          {{ content.pb_content_body }}
-           {{ pb_image_right }}
-        </div>
-      </div>
+        {% endif %}
+
+        {% for key, item in content.pb_content_accordion_section %}
+        {% if key|first != '#' %}
+        <div id="wrapper-accs-btn-pane-{{ paragraph.id.value }}-{{ key + 1 }}" class="solo-row wrapper-accs-btn-pane {% if key == 0 %} {{ pb_open_first == 'On' ? 'pb-is-active' : 'pb-not-active' }} {% else %} pb-not-active{% endif %}">
+          <div class="solo-row pb-accs-button" role="tablist">
+            {# Loops through the accordion sections to print the tab section titles. #}
+            <button id="{{ acc_id }}-{{ key + 1 }}" class="solo-button solo-bar pb-acc-button" aria-controls="{{ item['#paragraph'].pb_content_accordion_title.value }}" role="tab" data-toggle="tab">
+              {{ item['#paragraph'].pb_content_accordion_title.value }}
+              {% if pb_show_indicator == "On" %}
+              <div class="plus-minus">
+                <span class="minus">&#x02212</span>
+                <span class="plus">&#x0002B</span>
+              </div>
+              {% endif %}
+            </button>
+          </div>
+
+          <div class="solo-row pb-accs-pane">
+            {# Loop through all of the accordion section bodies. #}
+            <div role="tabpanel" class="pb-acc-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}"
+                 id="{{ acc_id }}-{{ key + 1 }}-pane">
+              {% for body_key, body_item in item['#paragraph'].pb_content_accordion_body %}
+                {# Use the same render array as item and set the '#paragraph'. #}
+                {% set section_body = item %}
+                {% set lang = section_body['#paragraph'].langcode[0].value %}
+                {# Check if a translation exists #}
+                {% if section_body['#paragraph'].pb_content_accordion_body[body_key].entity.hasTranslation(lang) %}
+                  {# Load the entity for the current translation #}
+                  {% set section_translation = section_body['#paragraph'].pb_content_accordion_body[body_key].entity.getTranslation(lang) %}
+                {% else %}
+                  {# Load the source entity #}
+                  {% set section_translation = section_body['#paragraph'].pb_content_accordion_body[body_key].entity %}
+                {% endif %}
+                {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
+                {# Remove the cache keys so it doesn't repeat the first value. #}
+                {% set section_body = section_body|merge({'#cache': {}}) %}
+                {# Print the compiled section body. #}
+                {{ section_body }}
+              {% endfor %}
+            </div>
+          </div>
+
+          </div>{# End of wrapper-accs-btn-pane #}
+        {% endif %}
+        {% endfor %}
+
+      </div> {# End of paragraph ID #}
 
   </div>
 </div> {# End of main wrapper #}

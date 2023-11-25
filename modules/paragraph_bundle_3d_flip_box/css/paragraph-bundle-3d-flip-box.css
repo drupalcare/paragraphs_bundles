@@ -1,0 +1,51 @@
+/**
+ * @file
+ * Paragraphs 3D Flip box Bundle
+ *
+ * Filename:     paragraphs-bundle-3d-flip-box.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph--type--3d-flip-box-bundle .pb-flip-box {
+  overflow: hidden;
+  background-color: transparent;
+  width: 100%;
+  perspective: 1500px;
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-flip-box-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-flip-box.flip-x:hover .pb-flip-box-inner {
+  transform: rotateX(180deg);
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-flip-box.flip-y:hover .pb-flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-3d-front,
+.paragraph--type--3d-flip-box-bundle .pb-3d-back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden !important;
+  backface-visibility: hidden !important;
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-3d-back.flip-y {
+  transform: rotateY(180deg);
+}
+
+.paragraph--type--3d-flip-box-bundle .pb-3d-back.flip-x {
+  transform: rotateX(180deg);
+}
