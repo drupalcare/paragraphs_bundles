@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.simple_bundle.pb_display_bg_opacity
     - field.field.paragraph.simple_bundle.pb_content_body
     - field.field.paragraph.simple_bundle.pb_content_link
     - field.field.paragraph.simple_bundle.pb_content_title
@@ -71,6 +72,7 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_bg_opacity
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -88,6 +90,12 @@ targetEntityType: paragraph
 bundle: simple_bundle
 mode: default
 content:
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_content_body:
     type: text_textarea
     weight: 2

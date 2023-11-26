@@ -11,7 +11,20 @@ color-picker:
     theme:
       css/paragraphs-bundles-admin.css: { }
   js:
-    js/paragraphs-color-picker.js: {}
+    js/paragraphs-bundles-color-picker.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+
+opacity-range:
+  version: VERSION
+  css:
+    theme:
+      css/paragraphs-bundles-opacity-range.css: { }
+  js:
+    js/paragraphs-bundles-opacity-range.js: {}
   dependencies:
     - core/drupal
     - core/drupal.ajax

@@ -42,12 +42,12 @@
 
 {% set paragraph_id  = 'pb-simple-' ~ paragraph.id.value %}
 {% set classes = [
-   paragraph_id,
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id
 ] %}
 
 {% set pb_styles = {
@@ -69,6 +69,23 @@
 
 {% set classes_inner = 'paragraph__inner pb-simple__inner' %}
 
+{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
+{% if pb_bg_opacity != 100 %}
+  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{% endif %}
+
+{% set styleAttributes = [] %}
+{% for key, value in pb_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+    {% if value == 'pb_display_bg' %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% else %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
     {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
@@ -85,7 +102,7 @@
 
 
 <div id="{{ paragraph_id }}" {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+  <div class="{{ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
 
       {% if content.pb_content_title|render %}
       <h3 class="content-title">{{ content.pb_content_title }}</h3>

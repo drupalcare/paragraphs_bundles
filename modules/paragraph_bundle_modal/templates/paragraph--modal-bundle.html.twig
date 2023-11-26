@@ -43,13 +43,13 @@
 
 {% set paragraph_id  = 'pb-modal-' ~ paragraph.id.value %}
 {% set classes = [
-   paragraph_id,
   'paragraph',
   'pb-modal-content',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id,
 ] %}
 
 {% set pb_styles = {
@@ -70,6 +70,24 @@
 ] %}
 
 {% set classes_inner = 'paragraph__inner pb-modal__inner' %}
+
+{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
+{% if pb_bg_opacity != 100 %}
+  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{% endif %}
+
+{% set styleAttributes = [] %}
+{% for key, value in pb_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+    {% if value == 'pb_display_bg' %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% else %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -109,7 +127,7 @@
   <div class="pb-modal" id="{{ paragraph_id }}-win" role="dialog" aria-labelledby="{{ paragraph_id }}-label" aria-hidden="true">
 
 <div {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+  <div class="{{ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
 
           <div class="pb-modal-header">
               {% if content.pb_content_modal_title|render %}

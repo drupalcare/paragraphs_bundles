@@ -43,12 +43,12 @@
 
 {% set paragraph_id  = 'pb-parallax-' ~ paragraph.id.value %}
 {% set classes = [
-   paragraph_id,
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
-  'paragraph--id--' ~ paragraph.id.value
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id
 ] %}
 
 {% set pb_styles = {
@@ -69,6 +69,24 @@
 ] %}
 
 {% set classes_inner = 'paragraph__inner pb-parallax__inner' %}
+
+{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
+{% if pb_bg_opacity != 100 %}
+  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{% endif %}
+
+{% set styleAttributes = [] %}
+{% for key, value in pb_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+    {% if value == 'pb_display_bg' %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% else %}
+      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
 
 {% for pb_display in pb_displays %}
   {% if content[pb_display]|render %}
@@ -92,7 +110,7 @@
   <div class="paragraph__inner pb-parallax-section__inner">
 
     <div class="pb-parallax-bg" {% if pb_image_url %}style="background-image: url( {{ pb_image_url }} ); min-height: {{ pb_image_height }}px;" {% endif %}></div>
-    <div class="pb-parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}"style="{% for key, value in pb_styles %}{% set style = content[value]|render|striptags|trim %}{% if style %}--{{ key }}:{{ style }};{% endif %}{% endfor %}">
+    <div class="pb-parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
       {{ content.pb_content_body }}
     </div>
 
