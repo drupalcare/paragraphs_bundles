@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.contact_form_bundle.pb_content_title
     - field.field.paragraph.contact_form_bundle.pb_display_bg
     - field.field.paragraph.contact_form_bundle.pb_display_bg_hover
+    - field.field.paragraph.contact_form_bundle.pb_display_bg_opacity
     - field.field.paragraph.contact_form_bundle.pb_display_border
     - field.field.paragraph.contact_form_bundle.pb_display_border_color
     - field.field.paragraph.contact_form_bundle.pb_display_border_hover
@@ -67,6 +68,7 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_bg_opacity
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -111,6 +113,12 @@ content:
   pb_display_bg_hover:
     type: color_text_widget
     weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }

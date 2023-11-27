@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+    - paragraphs_bundles
+id: node.pb_display_content_bg_opacity
+field_name: pb_display_content_bg_opacity
+entity_type: node
+type: paragraphs_bundles_range
+settings: {  }
+module: paragraphs_bundles
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

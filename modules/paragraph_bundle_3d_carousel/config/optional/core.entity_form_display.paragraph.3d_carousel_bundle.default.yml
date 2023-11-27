@@ -9,6 +9,7 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg_hover
+    - field.field.paragraph.3d_carousel_bundle.pb_display_bg_opacity
     - field.field.paragraph.3d_carousel_bundle.pb_display_border
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_color
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_hover
@@ -74,6 +75,7 @@ third_party_settings:
         - pb_content_3dcar_lheight
         - pb_content_3dcar_sheight
         - pb_display_3d_play_stop
+        - pb_display_bg_opacity
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -145,6 +147,12 @@ content:
   pb_display_bg_hover:
     type: color_text_widget
     weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }

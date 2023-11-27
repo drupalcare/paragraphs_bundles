@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.card_bundle.pb_display_image_right
     - field.field.paragraph.card_bundle.pb_content_body
     - field.field.paragraph.card_bundle.pb_content_image
     - field.field.paragraph.card_bundle.pb_content_image_link
@@ -10,11 +9,13 @@ dependencies:
     - field.field.paragraph.card_bundle.pb_content_title
     - field.field.paragraph.card_bundle.pb_display_bg
     - field.field.paragraph.card_bundle.pb_display_bg_hover
+    - field.field.paragraph.card_bundle.pb_display_bg_opacity
     - field.field.paragraph.card_bundle.pb_display_border
     - field.field.paragraph.card_bundle.pb_display_border_color
     - field.field.paragraph.card_bundle.pb_display_border_hover
     - field.field.paragraph.card_bundle.pb_display_border_radius
     - field.field.paragraph.card_bundle.pb_display_card_layout
+    - field.field.paragraph.card_bundle.pb_display_image_right
     - field.field.paragraph.card_bundle.pb_display_margin
     - field.field.paragraph.card_bundle.pb_display_padding
     - field.field.paragraph.card_bundle.pb_display_shadow
@@ -78,6 +79,7 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_bg_opacity
         - pb_display_card_layout
         - pb_display_image_right
       label: 'Tab Display'
@@ -97,13 +99,6 @@ targetEntityType: paragraph
 bundle: card_bundle
 mode: default
 content:
-  pb_display_image_right:
-    type: boolean_checkbox
-    weight: 17
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
   pb_content_body:
     type: text_textarea
     weight: 2
@@ -155,6 +150,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_display_border:
     type: options_select
     weight: 10
@@ -181,9 +182,16 @@ content:
     third_party_settings: {  }
   pb_display_card_layout:
     type: options_buttons
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_image_right:
+    type: boolean_checkbox
+    weight: 18
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_display_margin:
     type: options_select

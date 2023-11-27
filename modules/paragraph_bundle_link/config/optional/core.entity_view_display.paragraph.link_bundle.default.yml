@@ -2,10 +2,10 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.link_bundle.pb_link_section_body
     - field.field.paragraph.link_bundle.pb_content_title
     - field.field.paragraph.link_bundle.pb_display_bg
     - field.field.paragraph.link_bundle.pb_display_bg_hover
+    - field.field.paragraph.link_bundle.pb_display_bg_opacity
     - field.field.paragraph.link_bundle.pb_display_border
     - field.field.paragraph.link_bundle.pb_display_border_color
     - field.field.paragraph.link_bundle.pb_display_border_hover
@@ -16,6 +16,7 @@ dependencies:
     - field.field.paragraph.link_bundle.pb_display_text
     - field.field.paragraph.link_bundle.pb_display_text_hover
     - field.field.paragraph.link_bundle.pb_display_width
+    - field.field.paragraph.link_bundle.pb_link_section_body
     - paragraphs.paragraphs_type.link_bundle
   module:
     - entity_reference_revisions
@@ -26,22 +27,13 @@ targetEntityType: paragraph
 bundle: link_bundle
 mode: default
 content:
-  pb_link_section_body:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    weight: 13
-    region: content
   pb_content_title:
     type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   pb_display_bg:
     type: color_text_formatter
@@ -56,6 +48,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
     region: content
   pb_display_border:
     type: list_key
@@ -126,5 +125,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 11
+    region: content
+  pb_link_section_body:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 14
     region: content
 hidden: {  }

@@ -67,9 +67,9 @@
  *
  */
 #}
-{% set node_max_width = node.pb_display_content_width.0.value|default('cw-100')  %}
-{% set pb_bg = node.pb_display_content_bg.0.value|render|striptags|trim %}
-{% set pb_bg_opacity = node.pb_display_content_bg_opacity.0.value|render|striptags|trim %}
+{% set node_max_width = content.pb_display_content_width|render|striptags|trim|default('cw-100')  %}
+{% set pb_bg = content.pb_display_content_bg|render|striptags|trim %}
+{% set pb_bg_opacity = content.pb_display_content_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
@@ -85,7 +85,7 @@
   ]
 %}
 
-<article {% if pb_bg %}style="background-color: rgba ( {{ pb_bg }}, {{ pb_bg_opacity }})" {% endif %} {{ attributes.addClass(classes) }}>
+<article {% if pb_bg %}style="background-color: rgba({{ pb_bg }}, {{ pb_bg_opacity }});" {% endif %} {{ attributes.addClass(classes) }}>
 
  {% if (label and not page) or display_submitted %}
 
@@ -119,7 +119,8 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('node__content') }}>
-    {{ content }}
+    {{ content|without('pb_display_content_bg', 'pb_display_content_bg_opacity', 'pb_display_disable_region', 'pb_display_content_width') }}
+
   </div>
 
 </article>

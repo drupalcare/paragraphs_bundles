@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.pb_content.pb_content_type_body
     - field.field.node.pb_content.pb_display_content_bg
+    - field.field.node.pb_content.pb_display_content_bg_opacity
     - field.field.node.pb_content.pb_display_content_width
     - field.field.node.pb_content.pb_display_disable_region
     - node.type.pb_content
@@ -50,6 +51,7 @@ third_party_settings:
         - pb_display_disable_region
         - pb_display_content_width
         - pb_display_content_bg
+        - pb_display_content_bg_opacity
       label: Display
       region: content
       parent_name: group_tabs_wrapper
@@ -70,6 +72,12 @@ content:
   created:
     type: datetime_timestamp
     weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -98,6 +106,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_content_bg_opacity:
+    type: range_number_widget
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_display_content_width:
     type: options_buttons
     weight: 4
@@ -107,12 +121,6 @@ content:
   pb_display_disable_region:
     type: options_buttons
     weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  path:
-    type: path
-    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }

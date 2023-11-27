@@ -9,6 +9,7 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg_hover
+    - field.field.paragraph.3d_carousel_bundle.pb_display_bg_opacity
     - field.field.paragraph.3d_carousel_bundle.pb_display_border
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_color
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_hover
@@ -36,7 +37,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 16
+    weight: 17
     region: content
   pb_content_3dcar_lheight:
     type: list_key
@@ -58,7 +59,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   pb_display_3d_play_stop:
     type: list_key
@@ -80,6 +81,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 15
     region: content
   pb_display_border:
     type: list_key

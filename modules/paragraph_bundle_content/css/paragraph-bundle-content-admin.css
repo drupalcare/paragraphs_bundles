@@ -6,10 +6,6 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.field-group-tab.pb-content-type-display .details-wrapper {
-  display: grid;
-}
-
 .field-group-tab.pb-content-type-display .details-wrapper .form-radios,
 .field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
   display: flex;
@@ -18,14 +14,30 @@
 
 .field-group-tab.pb-content-type-display .details-wrapper .form-radios .form-item input,
 .field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes .form-item input {
-  margin-left: 20px;
   margin-right: 5px;
 }
 
+.field-group-tab.pb-content-type-display .details-wrapper .form-type--checkbox,
+.field-group-tab.pb-content-type-display .details-wrapper .form-type--radio {
+  margin-right: 20px;
+}
+
+.field-group-tab.pb-content-type-display .field--name-pb-display-content-width {
+  display: block;
+  width: 100%;
+  clear: both;
+}
+
+.field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-rgb,
+.field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-range {
+  width: 49%;
+  display: inline-block;
+  float: left;
+}
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] {
   display: inline-block;
   min-width: 210px;
-  border-radius: 5px;
+  width: 100%;
 }
 
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-text {

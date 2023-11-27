@@ -1,4 +1,3 @@
-uuid: 2e98264f-e87a-4215-931b-842a531d6af1
 langcode: en
 status: true
 dependencies:
@@ -12,6 +11,7 @@ dependencies:
     - field.field.paragraph.accordion_bundle.pb_display_accor_show_expand
     - field.field.paragraph.accordion_bundle.pb_display_bg
     - field.field.paragraph.accordion_bundle.pb_display_bg_hover
+    - field.field.paragraph.accordion_bundle.pb_display_bg_opacity
     - field.field.paragraph.accordion_bundle.pb_display_border
     - field.field.paragraph.accordion_bundle.pb_display_border_color
     - field.field.paragraph.accordion_bundle.pb_display_border_hover
@@ -74,6 +74,7 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_bg_opacity
         - pb_display_accor_animated
         - pb_display_accor_active_item
         - pb_display_accor_open_first
@@ -91,8 +92,6 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
-_core:
-  default_config_hash: zp2sndXDa-MIna_-cXwoI74wjQ8_UYjF3JIlyeaWCdQ
 id: paragraph.accordion_bundle.default
 targetEntityType: paragraph
 bundle: accordion_bundle
@@ -127,33 +126,33 @@ content:
     third_party_settings: {  }
   pb_display_accor_active_item:
     type: color_text_widget
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_accor_animated:
     type: options_select
-    weight: 16
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_accor_indicator:
     type: boolean_checkbox
-    weight: 20
+    weight: 21
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   pb_display_accor_open_first:
     type: boolean_checkbox
-    weight: 18
+    weight: 19
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   pb_display_accor_show_expand:
     type: boolean_checkbox
-    weight: 19
+    weight: 20
     region: content
     settings:
       display_label: true
@@ -167,6 +166,12 @@ content:
   pb_display_bg_hover:
     type: color_text_widget
     weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }

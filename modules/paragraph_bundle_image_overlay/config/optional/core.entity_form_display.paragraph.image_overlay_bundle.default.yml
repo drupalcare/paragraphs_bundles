@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.image_overlay_bundle.pb_content_image_link_title
     - field.field.paragraph.image_overlay_bundle.pb_content_title
     - field.field.paragraph.image_overlay_bundle.pb_display_bg
+    - field.field.paragraph.image_overlay_bundle.pb_display_bg_opacity
     - field.field.paragraph.image_overlay_bundle.pb_display_border
     - field.field.paragraph.image_overlay_bundle.pb_display_border_color
     - field.field.paragraph.image_overlay_bundle.pb_display_border_radius
@@ -69,6 +70,7 @@ third_party_settings:
         - pb_display_border_color
         - pb_display_shadow
         - pb_display_width
+        - pb_display_bg_opacity
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -120,6 +122,12 @@ content:
   pb_display_bg:
     type: color_text_widget
     weight: 22
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }

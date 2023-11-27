@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_display_content_bg_opacity
+    - node.type.pb_content
+  module:
+    - paragraphs_bundles
+id: node.pb_content.pb_display_content_bg_opacity
+field_name: pb_display_content_bg_opacity
+entity_type: node
+bundle: pb_content
+label: 'Content Background Opacity'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: '100'
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_range

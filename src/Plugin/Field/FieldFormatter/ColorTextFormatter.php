@@ -26,14 +26,14 @@ class ColorTextFormatter extends FormatterBase {
     $elements = [];
 
     foreach ($items as $delta => $item) {
-    $hex_val = trim($item->value, '#');
-    $r0 = hexdec($hex_val[0] . $hex_val[1]);
-    $g0 = hexdec($hex_val[2] . $hex_val[3]);
-    $b0 = hexdec($hex_val[4] . $hex_val[5]);
+      $hex_val = trim($item->value, '#');
+      $r0 = hexdec($hex_val[0] . $hex_val[1]);
+      $g0 = hexdec($hex_val[2] . $hex_val[3]);
+      $b0 = hexdec($hex_val[4] . $hex_val[5]);
       $elements[$delta] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $r0 . ',' . $g0 .',' . $b0,
+        '#value' => $r0 . ',' . $g0 . ',' . $b0,
       ];
     }
 

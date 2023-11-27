@@ -2,7 +2,6 @@
 
 namespace Drupal\paragraphs_bundles\Plugin\Field\FieldWidget;
 
-use Drupal\Component\Utility\Color;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -27,7 +26,7 @@ class RangeNumberWidget extends WidgetBase {
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
     $element += [
       '#type' => 'number',
-      '#default_value' => isset($items[$delta]->value) ? $items[$delta]->value : '100',
+      '#default_value' => $items[$delta]->value ?? '100',
       '#size' => 7,
       '#maxlength' => 3,
       '#attributes' => [
@@ -59,7 +58,7 @@ class RangeNumberWidget extends WidgetBase {
     }
 
     if (!($value >= 1 && $value <= 100)) {
-        $form_state->setError($element, $this->t('Opacity number must be between 1 and 100.'));
+      $form_state->setError($element, $this->t('Opacity number must be between 1 and 100.'));
     }
 
   }

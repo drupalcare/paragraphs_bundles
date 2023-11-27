@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.3d_flip_box_bundle.pb_display_3d_height
     - field.field.paragraph.3d_flip_box_bundle.pb_display_bg
     - field.field.paragraph.3d_flip_box_bundle.pb_display_bg_hover
+    - field.field.paragraph.3d_flip_box_bundle.pb_display_bg_opacity
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_color
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_hover
@@ -36,7 +37,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   pb_content_3d_box_front:
     type: entity_reference_revisions_entity_view
@@ -45,7 +46,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 16
+    weight: 17
     region: content
   pb_content_title:
     type: string
@@ -53,14 +54,14 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   pb_display_3d_height:
     type: number_unformatted
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   pb_display_bg:
     type: color_text_formatter
@@ -75,6 +76,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 1
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
     region: content
   pb_display_border:
     type: list_key

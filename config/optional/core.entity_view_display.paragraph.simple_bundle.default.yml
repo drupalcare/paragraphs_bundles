@@ -2,12 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.simple_bundle.pb_display_bg_opacity
     - field.field.paragraph.simple_bundle.pb_content_body
     - field.field.paragraph.simple_bundle.pb_content_link
     - field.field.paragraph.simple_bundle.pb_content_title
     - field.field.paragraph.simple_bundle.pb_display_bg
     - field.field.paragraph.simple_bundle.pb_display_bg_hover
+    - field.field.paragraph.simple_bundle.pb_display_bg_opacity
     - field.field.paragraph.simple_bundle.pb_display_border
     - field.field.paragraph.simple_bundle.pb_display_border_color
     - field.field.paragraph.simple_bundle.pb_display_border_hover
@@ -29,13 +29,6 @@ targetEntityType: paragraph
 bundle: simple_bundle
 mode: default
 content:
-  pb_display_bg_opacity:
-    type: range_number_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
   pb_content_body:
     type: text_default
     label: hidden
@@ -53,7 +46,7 @@ content:
       rel: '0'
       target: '0'
     third_party_settings: {  }
-    weight: 0
+    weight: 14
     region: content
   pb_content_title:
     type: string
@@ -61,90 +54,97 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 14
+    weight: 13
     region: content
   pb_display_bg:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
   pb_display_bg_hover:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 1
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
     region: content
   pb_display_border:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 6
     region: content
   pb_display_border_color:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 3
+    weight: 2
     region: content
   pb_display_border_hover:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   pb_display_border_radius:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 7
     region: content
   pb_display_margin:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 9
     region: content
   pb_display_padding:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 10
     region: content
   pb_display_shadow:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 8
     region: content
   pb_display_text:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   pb_display_text_hover:
     type: color_text_formatter
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 5
     region: content
   pb_display_width:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 11
     region: content
 hidden: {  }
