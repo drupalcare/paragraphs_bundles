@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_3d_carousel",
-    "description": "A reusable Paragraph 3D Carousel bundle.",
+    "description": "A reusable Paragraph Bundle 3D Carousel.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

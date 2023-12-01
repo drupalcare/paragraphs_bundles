@@ -1,6 +1,6 @@
 name: Paragraph Bundle Slideshow
 type: module
-description: A reusable Paragraph Slideshow bundle.
+description: A reusable Paragraph Bundle Slideshow.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

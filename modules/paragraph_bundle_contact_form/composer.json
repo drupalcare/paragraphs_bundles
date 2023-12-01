@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_contact_form",
-    "description": "A reusable Paragraph Contact Form bundle.",
+    "description": "A reusable Paragraph Bundle Contact Form.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

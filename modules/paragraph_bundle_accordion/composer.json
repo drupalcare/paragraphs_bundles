@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_accordion",
-    "description": "A reusable Paragraph Accordion bundle.",
+    "description": "A reusable Paragraph Bundle Accordion.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

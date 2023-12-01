@@ -5,3 +5,8 @@ paragraph-bundle-tabs:
       css/paragraph-bundle-tabs.css: { }
   js:
     js/paragraph-bundle-tabs.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once

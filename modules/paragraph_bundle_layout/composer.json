@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_layout",
-    "description": "A reusable Paragraph Layout bundle.",
+    "description": "A reusable Paragraph Bundle Layout (One Column, Two Columns and Three Columns).",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_modal",
-    "description": "A reusable Paragraph Modal bundle.",
+    "description": "A reusable Paragraph Bundle Modal.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

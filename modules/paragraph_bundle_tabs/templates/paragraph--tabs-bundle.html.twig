@@ -1,7 +1,7 @@
 {#
 /**
 * @file
-* Default theme implementation to display a paragraph.
+* Default theme implementation to display a 'tabs' paragraph.
 *
 * Available variables:
 * - paragraph: Full paragraph entity.
@@ -38,10 +38,16 @@
 * @ingroup themeable
 #}
 
+{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_tabs/paragraph-bundle-tabs') }}
 
+{# Set the paragraph id. #}
 {% set paragraph_id = 'pb-tabs-' ~ paragraph.id.value %}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb-tabs__inner pb__content-full' %}
+
+{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
@@ -51,6 +57,7 @@
   paragraph_id,
 ] %}
 
+{# Set the color styles for the paragraph. #}
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
   'pb-bg-h': 'pb_display_bg_hover',
@@ -61,107 +68,101 @@
   'pb-bt-a': 'pb_display_tab_active_item'
 } %}
 
+{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
-'pb_display_border',
-'pb_display_border_radius',
-'pb_display_margin',
-'pb_display_padding',
-'pb_display_shadow',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-tabs__inner' %}
+{# Get the paragraph width and add it to the inner classes if it exists. #}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
 
-{% set styleAttributes = [] %}
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
     {% if value == 'pb_display_bg' %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
     {% else %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
   {% endif %}
 {% endfor %}
-
-
-{% for pb_display in pb_displays %}
-  {% if content[pb_display]|render %}
-    {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
-  {% endif %}
-{% endfor %}
-
-
-{# Get the paragraph width. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
-{% if container_w_input %}
-  {% set container_width = 'w-' ~ container_w_input %}
-  {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
-{% endif %}
 
 {# Animated Tab Display #}
 {% set pb_animated_tab = content.pb_display_tab_animated_tabs|render|striptags|trim %}
 {% set pb_vertical_tabs = content.pb_display_tab_vertical_tabs|render|striptags|trim %}
 
-
+{# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
+    {# Render the content title if it exists. #}
+    {% if content.pb_content_title|render %}
+    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    {% endif %}
 
+    {# Set the tab id. #}
+    {% set tab_id = 'pb-tab-' ~ paragraph.id.value %}
+    <div id="{{ tab_id }}" class="solo-row pb-tabs-wrapper {{ pb_vertical_tabs == 'On' ? 'v-tabs' : '' }}">
 
-      {% if content.pb_content_title|render %}
-        <h3 class="content-title">{{ content.pb_content_title }}</h3>
-      {% endif %}
-      {% set tab_id = 'pb-tab-' ~ paragraph.id.value %}
-      <div id="{{ tab_id }}" class="solo-row pb-tabs-wrapper {{ pb_vertical_tabs == 'On' ? 'v-tabs' : '' }}">
-
-        <div class="solo-bar pb-tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist">
-          {# Loops through the tab sections to print the tab section titles. #}
-          {% for key, item in content.pb_content_tab_section %}
-          {% if key|first != '#' %}
-            <button id="{{ tab_id }}-{{ key + 1 }}" class="solo-button pb-tab-button" aria-controls="{{ item['#paragraph'].pb_content_tab_name.value }}" role="tab" data-toggle="tab">
+      {# Render the tab buttons. #}
+      <div class="solo-bar pb-tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist">
+      {% for key, item in content.pb_content_tab_section %}
+      {% if key|first != '#' %}
+        <button id="{{ tab_id }}-{{ key + 1 }}" class="solo-button pb-tab-button" aria-controls="{{ item['#paragraph'].pb_content_tab_name.value }}" role="tab" data-toggle="tab">
               {{ item['#paragraph'].pb_content_tab_name.value }}
-            </button>
-           {% endif %}
-          {% endfor %}
-        </div>
-
-        <div class="solo-row pb-tabs-pane">
-          {# Loops through the tab sections again to print the tab section bodies. #}
-          {% for key, item in content.pb_content_tab_section %}
-
-          {% if key|first != '#' %}
-            <div role="tabpanel"
-                 class="pb-tab-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}"
-                 id="{{ tab_id }}-{{ key + 1 }}-pane">
-              {% for body_key, body_item in item['#paragraph'].pb_content_tab_body %}
-                {# Use the same render array as item and set the '#paragraph'. #}
-                {% set section_body = item %}
-                {% set lang = section_body['#paragraph'].langcode[0].value %}
-                {# Check if a translation exists #}
-                {% if section_body['#paragraph'].pb_content_tab_body[body_key].entity.hasTranslation(lang) %}
-                  {# Load the entity for the current translation #}
-                  {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity.getTranslation(lang) %}
-                {% else %}
-                  {# Load the source entity #}
-                  {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity %}
-                {% endif %}
-                {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
-                {# Remove the cache keys so it doesn't repeat the first value. #}
-                {% set section_body = section_body|merge({'#cache': {}}) %}
-                {# Print the compiled section body. #}
-                {{ section_body }}
-              {% endfor %}
-            </div>
-          {% endif %}
-          {% endfor %}
-        </div>
-
+        </button>
+      {% endif %}
+      {% endfor %}
       </div>
+
+      {# Render the tab content. #}
+      <div class="solo-row pb-tabs-pane">
+      {% for key, item in content.pb_content_tab_section %}
+      {% if key|first != '#' %}
+        <div role="tabpanel" class="pb-tab-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ tab_id }}-{{ key + 1 }}-pane">
+        {% for body_key, body_item in item['#paragraph'].pb_content_tab_body %}
+        {% set section_body = item %}
+        {% set lang = section_body['#paragraph'].langcode[0].value %}
+
+        {# Check if a translation exists and load the appropriate entity. #}
+        {% if section_body['#paragraph'].pb_content_tab_body[body_key].entity.hasTranslation(lang) %}
+        {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity.getTranslation(lang) %}
+        {% else %}
+        {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity %}
+        {% endif %}
+
+        {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
+        {% set section_body = section_body|merge({'#cache': {}}) %}
+
+        {# Print the compiled section body. #}
+        {{ section_body }}
+        {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+
+    </div>{# End of pb-tabs-wrapper  #}
 
   </div>
 </div> {# End of main wrapper #}
+

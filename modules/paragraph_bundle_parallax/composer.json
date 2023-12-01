@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_parallax",
-    "description": "A reusable Paragraph Parallax bundle.",
+    "description": "A reusable Paragraph Bundle Parallax.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

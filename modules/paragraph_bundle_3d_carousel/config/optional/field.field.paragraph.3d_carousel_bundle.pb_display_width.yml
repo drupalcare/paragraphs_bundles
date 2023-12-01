@@ -12,9 +12,11 @@ entity_type: paragraph
 bundle: 3d_carousel_bundle
 label: Width
 description: 'Change the width for the paragraph wrapper.'
-required: false
+required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: '40'
 default_value_callback: ''
 settings: {  }
 field_type: list_string

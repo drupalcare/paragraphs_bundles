@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.pb_content.pb_content_reference_para_block
     - field.field.node.pb_content.pb_content_type_body
     - field.field.node.pb_content.pb_display_content_bg
     - field.field.node.pb_content.pb_display_content_bg_opacity
@@ -18,10 +19,19 @@ targetEntityType: node
 bundle: pb_content
 mode: default
 content:
+  pb_content_reference_para_block:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 5
+    weight: 6
     region: content
   pb_content_type_body:
     type: entity_reference_revisions_entity_view
@@ -30,7 +40,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 0
+    weight: 4
     region: content
   pb_display_content_bg:
     type: color_text_formatter
@@ -44,20 +54,20 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
   pb_display_content_width:
-    type: list_default
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  pb_display_disable_region:
+    type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 3
-    region: content
-  pb_display_disable_region:
-    type: list_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
     region: content
 hidden: {  }

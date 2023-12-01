@@ -1,6 +1,6 @@
 name: Paragraph Bundle Card
 type: module
-description: A reusable Paragraph Card bundle.
+description: A reusable Paragraph Bundle Card.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

@@ -1,6 +1,6 @@
 name: Paragraph Bundle Link
 type: module
-description: A reusable Paragraph Link bundle.
+description: A reusable Paragraph Bundle Link.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

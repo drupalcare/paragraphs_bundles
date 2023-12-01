@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.pb_content.pb_content_reference_para_block
     - field.field.node.pb_content.pb_content_type_body
     - field.field.node.pb_content.pb_display_content_bg
     - field.field.node.pb_content.pb_display_content_bg_opacity
@@ -34,6 +35,7 @@ third_party_settings:
       children:
         - title
         - pb_content_type_body
+        - pb_content_reference_para_block
       label: Content
       region: content
       parent_name: group_tabs_wrapper
@@ -74,6 +76,16 @@ content:
     weight: 7
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_content_reference_para_block:
+    type: entity_reference_autocomplete
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   path:
     type: path

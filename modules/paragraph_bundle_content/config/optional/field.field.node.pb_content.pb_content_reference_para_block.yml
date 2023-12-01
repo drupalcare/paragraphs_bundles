@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.pb_block
+    - field.storage.node.pb_content_reference_para_block
+    - node.type.pb_content
+id: node.pb_content.pb_content_reference_para_block
+field_name: pb_content_reference_para_block
+entity_type: node
+bundle: pb_content
+label: 'Referenced Block'
+description: "This field reference the content for block type PB Block <a href='/block/add/pb_block'>Add PB Block</i>"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:block_content'
+  handler_settings:
+    target_bundles:
+      pb_block: pb_block
+    sort:
+      field: _none
+      direction: DESC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

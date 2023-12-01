@@ -1,6 +1,6 @@
 name: Paragraph Bundle Layout
 type: module
-description: A reusable Paragraph Layout bundle contains one, two and three layout.
+description: A reusable Paragraph Bundle Layout contains one, two and three layout.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

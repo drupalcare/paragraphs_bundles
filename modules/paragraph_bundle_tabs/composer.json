@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_tabs",
-    "description": "A reusable Paragraph Tabs bundle.",
+    "description": "A reusable Paragraph Bundle Tabs.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

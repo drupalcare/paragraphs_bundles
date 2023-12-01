@@ -1,24 +1,56 @@
 /**
  * @file
- * W3CSS Paragraphs.
+ * Paragraphs.
  *
- * Filename:     paragraphs-bundles-base.css
+ * Filename:     paragraphs-bundles-basic.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+.paragraph__inner .paragraph__inner .paragraph__inner,
+.paragraph__inner .paragraph__inner {
+  --pb-bg: transparent;
+}
 
-.paragraph__inner,
+.paragraph>.paragraph__inner,
 .pb-hero-txt-wrapper-inner {
   background-color: var(--pb-bg);
   border-color: var(--pb-br);
   color: var(--pb-tx);
 }
 
-.paragraph__inner:hover,
+.paragraph>.paragraph__inner:hover,
 .pb-hero-txt-wrapper-inner:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
   color: var(--pb-tx-h, var(--pb-tx));
+}
+
+.paragraph>.paragraph__inner *,
+.pb-hero-txt-wrapper-inner * {
+  border-color: var(--pb-br);
+  color: var(--pb-tx);
+}
+
+.paragraph>.paragraph__inner:hover *,
+.pb-hero-txt-wrapper-inner:hover * {
+  border-color: var(--pb-br-h, var(--pb-br));
+  color: var(--pb-tx-h, var(--pb-tx));
+}
+
+.solo-bar {
+  width: 100%;
+  overflow: hidden;
+}
+
+.solo-bar .solo-button {
+  white-space: normal;
+}
+
+.solo-bar:before,
+.solo-bar:after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
 /* Borders */

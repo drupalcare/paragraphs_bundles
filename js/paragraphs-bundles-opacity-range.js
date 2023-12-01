@@ -1,41 +1,29 @@
+/**
+ * @file
+ * Paragraphs Bundles
+ *
+ * Filename:     paragraphs-bundles-opacity-range.js
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
 ((Drupal, settings, once) => {
+  const DATA_PARA_CUSTOM_OPACITY = 'data-para-custom-opacity';
+  const PARA_OPACITY_RANGE = 'para-opacity-range';
+  const INPUT_TYPE_NUMBER = 'input[type="number"]';
 
-
-  /**
-   * Announces the text value of the field's label.
-   *
-   * @param {HTMLElement} changedInput
-   *  The form element that was changed.
-   */
-  function announceFieldChange(changedInput) {
-    const fieldTitle =
-      changedInput.parentElement.querySelector('label').innerText;
-    const fieldValue = changedInput.value;
-    const announcement = Drupal.t('@fieldName has changed to @fieldValue', {
-      '@fieldName': fieldTitle,
-      '@fieldValue': fieldValue,
-    });
-    Drupal.announce(announcement);
-  }
-
-  /**
-   * `input` event callback to keep text & color inputs in sync.
-   *
-   * @param {HTMLElement} changedInput input element changed by user
-   * @param {HTMLElement} inputToSync input element to synchronize
-   */
   function synchronizeInputs(changedInput, inputToSync) {
-    inputToSync.value = changedInput.value;
-    changedInput.setAttribute('data-para-custom-opacity', changedInput.value);
-    inputToSync.setAttribute('data-para-custom-opacity', changedInput.value);
+    const value = changedInput.value;
+    inputToSync.value = value;
+    setAttributeToElement(changedInput, DATA_PARA_CUSTOM_OPACITY, value);
+    setAttributeToElement(inputToSync, DATA_PARA_CUSTOM_OPACITY, value);
   }
 
+  function setAttributeToElement(element, attributeName, value) {
+    element.setAttribute(attributeName, value);
+  }
 
-  function initColorPicker(integerInput) {
-    // Create input element.
+  function createAndConfigureInput(integerInput) {
     const opcityInput = document.createElement('input');
-
-    // Set new input's attributes.
     opcityInput.type = 'range';
     opcityInput.classList.add(
       'form-range',
@@ -44,56 +32,43 @@
       'form-element--api-range',
     );
     opcityInput.value = integerInput.value;
-    opcityInput.setAttribute('name', `visual_${integerInput.name}`);
-    opcityInput.setAttribute('min', 1);
-    opcityInput.setAttribute('max', 100);
-    opcityInput.setAttribute('value', 100);
-    opcityInput.setAttribute(
-      'data-para-custom-opacity',
-      integerInput.getAttribute('data-para-custom-opacity'),
+    setAttributeToElement(opcityInput, 'name', `visual_${integerInput.name}`);
+    setAttributeToElement(opcityInput, 'min', 1);
+    setAttributeToElement(opcityInput, 'max', 100);
+    setAttributeToElement(opcityInput, 'value', 100);
+    setAttributeToElement(
+      opcityInput,
+      DATA_PARA_CUSTOM_OPACITY,
+      integerInput.getAttribute(DATA_PARA_CUSTOM_OPACITY),
     );
+    return opcityInput;
+  }
 
-    // Insert new input into DOM.
+  function initRangeInput(integerInput) {
+    const opcityInput = createAndConfigureInput(integerInput);
     integerInput.after(opcityInput);
-
-    // Make field label apply to integerInput and opcityInput.
     const fieldID = integerInput.id;
     const label = document.querySelector(`label[for="${fieldID}"]`);
     label.removeAttribute('for');
-    label.setAttribute('id', `${fieldID}-label`);
-
-    integerInput.setAttribute('aria-labelledby', `${fieldID}-label`);
-    opcityInput.setAttribute('aria-labelledby', `${fieldID}-label`);
-
-    // Add `input` event listener to keep inputs synchronized.
+    setAttributeToElement(label, 'id', `${fieldID}-label`);
+    setAttributeToElement(integerInput, 'aria-labelledby', `${fieldID}-label`);
+    setAttributeToElement(opcityInput, 'aria-labelledby', `${fieldID}-label`);
     integerInput.addEventListener('input', () => {
       synchronizeInputs(integerInput, opcityInput);
     });
-
     opcityInput.addEventListener('input', () => {
       synchronizeInputs(opcityInput, integerInput);
     });
   }
 
-  /**
-   * Paragraphs bundles range behavior.
-   *
-   * @type {Drupal~behavior}
-   * @prop {Drupal~behaviorAttach} attach
-   *   Initializes range field.
-   */
   Drupal.behaviors.paragraphRange = {
     attach: () => {
-
-
       const opacityIntegerInputs = once(
-        'para-opacity-range',
-        '[data-drupal-selector="para-opacity-range"] input[type="number"]',
+        PARA_OPACITY_RANGE,
+        `[data-drupal-selector="${PARA_OPACITY_RANGE}"] ${INPUT_TYPE_NUMBER}`,
       );
-
       opacityIntegerInputs.forEach((integerInput) => {
-        initColorPicker(integerInput);
-        console.log('hello');
+        initRangeInput(integerInput);
       });
     },
   };

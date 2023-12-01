@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_link",
-    "description": "A reusable Paragraph Drupal block bundle.",
+    "description": "A reusable Paragraph Bundle Link.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

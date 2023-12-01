@@ -1,8 +1,8 @@
 /**
  * @file
- * Paragraphs Image Overlay Bundle.
+ * Paragraph Bundle Image Overlay.
  *
- * Filename:     paragraph-image-overlay-bundle.css
+ * Filename:     paragraph-bundle-image-overlay.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
@@ -10,7 +10,7 @@
   height: 100%;
 }
 
-.paragraph--type--image-overlay-bundle .field--name-pbcss-media-image .field__item {
+.paragraph--type--image-overlay-bundle .field--name-pb-media-image .field__item {
   margin: 0;
 }
 
@@ -36,6 +36,9 @@
   position: absolute;
   height: 100%;
   width: 100%;
+}
+.paragraph--type--image-overlay-bundle:not(.pb-image-overlay-title) .overlay-container {
+  background-color: var(--pb-bg);
 }
 
 .pb-image-overlay-fade .pb-image-overlay__inner .overlay-container {

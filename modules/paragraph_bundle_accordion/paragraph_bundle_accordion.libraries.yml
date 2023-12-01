@@ -5,3 +5,8 @@ paragraph-bundle-accordion:
       css/paragraph-bundle-accordion.css: { }
   js:
     js/paragraph-bundle-accordion.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once

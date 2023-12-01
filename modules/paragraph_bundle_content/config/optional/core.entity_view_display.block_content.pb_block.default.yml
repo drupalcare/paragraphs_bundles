@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.pb_block
+    - field.field.block_content.pb_block.pb_content_paragraph_in_block
+  module:
+    - entity_reference_revisions
+id: block_content.pb_block.default
+targetEntityType: block_content
+bundle: pb_block
+mode: default
+content:
+  pb_content_paragraph_in_block:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

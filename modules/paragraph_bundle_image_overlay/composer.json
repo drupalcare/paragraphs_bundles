@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_image_overlay",
-    "description": "A reusable Paragraph Image Overlay bundle.",
+    "description": "A reusable Paragraph Bundle Image Overlay.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

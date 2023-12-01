@@ -5,3 +5,8 @@ paragraph-bundle-3d-carousel:
       css/paragraph-bundle-3d-carousel.css: { }
   js:
     js/paragraph-bundle-3d-carousel.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once

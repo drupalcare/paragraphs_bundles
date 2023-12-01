@@ -1,6 +1,6 @@
 name: Paragraph Bundle Hero
 type: module
-description: A reusable Paragraph Hero bundle.
+description: A reusable Paragraph Bundle Hero.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_webform",
-    "description": "A reusable Paragraph Webform bundle.",
+    "description": "A reusable Paragraph bundle Webform.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

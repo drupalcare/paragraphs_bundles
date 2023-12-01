@@ -1,7 +1,7 @@
 {#
 /**
 * @file
-* Default theme implementation to display a paragraph.
+* Default theme implementation to display a 'modal' paragraph.
 *
 * Available variables:
 * - paragraph: Full paragraph entity.
@@ -38,10 +38,17 @@
 * @ingroup themeable
 #}
 
+{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_modal/paragraph-bundle-modal') }}
 
-{% set paragraph_id  = 'pb-modal-' ~ paragraph.id.value %}
+{# Sets Unique ID for Modal from Paragraph ID. #}
+{% set paragraph_id = 'pb-modal-id-' ~ paragraph.id.value %}
+{% set modal_warpper = 'pb-modal-wrapper-' ~ paragraph.id.value %}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb-modal__inner pb__content-full' %}
+
+{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'pb-modal-content',
@@ -52,6 +59,7 @@
   paragraph_id,
 ] %}
 
+{# Set the color styles for the paragraph. #}
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
   'pb-bg-h': 'pb_display_bg_hover',
@@ -61,105 +69,99 @@
   'pb-tx-h': 'pb_display_text_hover'
 } %}
 
+{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
-'pb_display_border',
-'pb_display_border_radius',
-'pb_display_margin',
-'pb_display_padding',
-'pb_display_shadow',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-modal__inner' %}
+{# Get the paragraph width and add it to the inner classes if it exists. #}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
 
-{% set styleAttributes = [] %}
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
     {% if value == 'pb_display_bg' %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
     {% else %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
   {% endif %}
 {% endfor %}
 
-
-{% for pb_display in pb_displays %}
-  {% if content[pb_display]|render %}
-    {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
-  {% endif %}
-{% endfor %}
-
-
-{# Get the paragraph width. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
-{% if container_w_input %}
-  {% set container_width = 'w-' ~ container_w_input %}
-  {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
-{% endif %}
-
-
+{# Set the main wrapper. #}
 {% set pb_animated_modal = content.pb_display_animated_modal|render|striptags|trim %}
 {% if pb_animated_modal %}
   {% set classes = classes|merge([pb_animated_modal]) %}
 {% endif %}
+{# Set animated classes. #}
+<div id="{{ modal_warpper }}" class="paragraph pb-modal-wrapper pb__content-full">
 
-<div id="{{ modal_warpper }}" class="paragraph pb-modal-wrapper">
-
-{# Sets Unique ID for Modal from Paragraph ID. #}
-{% if content.pb_content_title|render %}
+  {% if content.pb_content_title|render %}
   <h3 class="content-title">{{ content.pb_content_title }}</h3>
-{% endif %}
+  {% endif %}
 
-{% set paragraph_id = 'pb-modal-id-' ~ paragraph.id.value %}
   <div class="pb-modal-button">
     <button id="{{ paragraph_id }}" type="button" class="solo-button" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
       {{ content.pb_content_modal_button }}
     </button>
   </div>
 
-
   <div class="pb-modal" id="{{ paragraph_id }}-win" role="dialog" aria-labelledby="{{ paragraph_id }}-label" aria-hidden="true">
 
-<div {{ attributes.addClass(classes) }}>
-  <div class="{{ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
+    {# Render the paragraph. #}
+    <div {{ attributes.addClass(classes) }}>
+      <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-          <div class="pb-modal-header">
-              {% if content.pb_content_modal_title|render %}
-              <div class="pb-modal-title" id="{{ paragraph_id }}-label">
-                {{ content.pb_content_modal_title }}
-              </div>
-            {% endif %}
-            <button class="solo-button">&times;</button>
+        <div class="pb-modal-header">
+          {% if content.pb_content_modal_title|render %}
+          <div class="pb-modal-title" id="{{ paragraph_id }}-label">
+            {{ content.pb_content_modal_title }}
           </div>
-
-          {% if content.pb_content_modal_body|render %}
-            <div class="pb-modal-body">
-              {% for key, item in content.pb_content_modal_body %}
-              {% if key|first != '#' %}
-                {{ item }}
-              {% endif %}
-              {% endfor %}
-            </div>
           {% endif %}
+          <button class="solo-button">&times;</button>
+        </div> {# End of pb-modal-header #}
 
-          {% if content.pb_content_modal_footer|render %}
-            <div class="pb-modal-footer">
-              {% for key, item in content.pb_content_modal_footer %}
-              {% if key|first != '#' %}
-                {{ item }}
-              {% endif %}
-              {% endfor %}
-            </div>
+        {% if content.pb_content_modal_body|render %}
+        <div class="pb-modal-body">
+          {% for key, item in content.pb_content_modal_body %}
+          {% if key|first != '#' %}
+          {{ item }}
           {% endif %}
+          {% endfor %}
+        </div> {# End of pb-modal-body #}
+        {% endif %}
 
-      </div>
+        {% if content.pb_content_modal_footer|render %}
+        <div class="pb-modal-footer">
+          {% for key, item in content.pb_content_modal_footer %}
+          {% if key|first != '#' %}
+          {{ item }}
+          {% endif %}
+          {% endfor %}
+        </div> {# End of pb-modal-footer #}
+        {% endif %}
 
-    </div> {# End of main wrapper #}
-  </div> {# End of pb-modal #}
-</div>
+      </div> {# End of classes_inner div #}
+    </div> {# End of paragraph div #}
+
+  </div> {# End of pb-modal div #}
+</div> {# End of pb-modal-wrapper div #}

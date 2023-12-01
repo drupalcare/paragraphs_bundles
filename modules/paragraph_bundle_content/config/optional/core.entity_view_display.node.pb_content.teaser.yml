@@ -3,6 +3,7 @@ status: false
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.pb_content.pb_content_reference_para_block
     - field.field.node.pb_content.pb_content_type_body
     - field.field.node.pb_content.pb_display_content_bg
     - field.field.node.pb_content.pb_display_content_bg_opacity
@@ -32,6 +33,7 @@ content:
     weight: 0
     region: content
 hidden:
+  pb_content_reference_para_block: true
   pb_display_content_bg: true
   pb_display_content_bg_opacity: true
   pb_display_content_width: true

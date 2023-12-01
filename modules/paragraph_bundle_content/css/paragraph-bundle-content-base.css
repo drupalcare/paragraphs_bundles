@@ -7,68 +7,54 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 @media (min-width:993px) {
-  .page-node-type-pb-content .node.cw-100 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-100 .node__content>.paragraph>.paragraph__inner>* {
+  .page-node-type-pb-content .node.cw-100 .pb__content-full,
+  .page-node-type-pb-content .node.cw-2560 .pb__content-full,
+  .page-node-type-pb-content .node.cw-1920 .pb__content-full,
+  .page-node-type-pb-content .node.cw-1600 .pb__content-full,
+  .page-node-type-pb-content .node.cw-1440 .pb__content-full,
+  .page-node-type-pb-content .node.cw-1280 .pb__content-full,
+  .page-node-type-pb-content .node.cw-1024 .pb__content-full,
+  .page-node-type-pb-content .node.cw-800 .pb__content-full {
     width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .page-node-type-pb-content .node.cw-100 .pb__content-full {
     max-width: 100%;
-    margin-left: auto;
-    margin-right: auto;
   }
 
-  .page-node-type-pb-content .node.cw-2560 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-2560 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 2560px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-2560 .pb__content-full {
+    max-width: 160rem;
   }
 
-  .page-node-type-pb-content .node.cw-1920 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-1920 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 1920px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-1920 .pb__content-full {
+    max-width: 120rem;
   }
 
-  .page-node-type-pb-content .node.cw-1600 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-1600 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 1600px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-1600 .pb__content-full {
+    max-width: 100rem;
   }
 
-  .page-node-type-pb-content .node.cw-1440 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-1440 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 1440px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-1440 .pb__content-full {
+    max-width: 90rem;
   }
 
-  .page-node-type-pb-content .node.cw-1280 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-1280 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-1280 .pb__content-full {
+    max-width: 80rem;
   }
 
-  .page-node-type-pb-content .node.cw-1024 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-1024 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 1024px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-1024 .pb__content-full {
+    max-width: 64rem;
   }
 
-  .page-node-type-pb-content .node.cw-800 .pb-hero-txt-wrapper,
-  .page-node-type-pb-content .node.cw-800 .node__content>.paragraph>.paragraph__inner>* {
-    width: 100%;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
+  .page-node-type-pb-content .node.cw-800 .pb__content-full {
+    max-width: 50rem;
+  }
+
+  .page-node-type-pb-content .pb__content-full .pb__content-full,
+  .page-node-type-pb-content .pb__content-full .pb__content-full .pb__content-full {
+    max-width: initial;
   }
 
 }
@@ -100,20 +86,20 @@ div.pb-content section.pb-block > article.node > header {
   margin: 0 auto !important;
 }
 
-.page-node-type-pb-content .node__content>.paragraph .pb-img-wrapper {
+.page-node-type-pb-content .node__content .paragraph .pb__image-full {
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
 }
 
-.page-node-type-pb-content .node__content>.paragraph .paragraph .pb-img-wrapper,
-.page-node-type-pb-content .node__content>.paragraph .paragraph .paragraph .pb-img-wrapper {
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full,
+.page-node-type-pb-content .node__content .paragraph .paragraph .paragraph .pb__image-full {
   margin: 0 auto;
   width: 100%;
   max-width: 100%;
 }
 
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper,
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper div,
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb-img-wrapper div img {
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full,
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full div,
+.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full div img {
   width: 100%;
 }

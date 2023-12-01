@@ -11,29 +11,29 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: cw-100
-      label: 100%
-    -
-      value: cw-2560
-      label: 2560px
-    -
-      value: cw-1920
-      label: 1920px
-    -
-      value: cw-1600
-      label: 1600px
-    -
-      value: cw-1440
-      label: 1440px
-    -
-      value: cw-1280
-      label: 1280px
+      value: cw-800
+      label: 800px / 50rem
     -
       value: cw-1024
-      label: 1024px
+      label: 1024px / 64rem
     -
-      value: cw-800
-      label: 800px
+      value: cw-1280
+      label: 1280px / 80rem
+    -
+      value: cw-1440
+      label: 1440px / 90rem
+    -
+      value: cw-1600
+      label: 1600px / 100rem
+    -
+      value: cw-1920
+      label: 1920px / 120rem
+    -
+      value: cw-2560
+      label: 2560px / 160rem
+    -
+      value: cw-100
+      label: 100%
   allowed_values_function: ''
 module: options
 locked: false

@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_views",
-    "description": "A reusable Paragraph Views bundle.",
+    "description": "A reusable Paragraph Bundle Views.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

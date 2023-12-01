@@ -1,7 +1,7 @@
 {#
 /**
 * @file
-* Default theme implementation to display a paragraph.
+* Default theme implementation to display a 'slideshow' paragraph.
 *
 * Available variables:
 * - paragraph: Full paragraph entity.
@@ -38,10 +38,17 @@
 * @ingroup themeable
 #}
 
+{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_slideshow/paragraph-bundle-slideshow') }}
 
+{# Set paragraph id #}
 {% set paragraph_id = 'pb-slide-wrapper-' ~ paragraph.id.value %}
+{% set slide_id = 'pb-slideshow-' ~ paragraph.id.value %}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb-slide-wrapper__inner pb__content-full' %}
+
+{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
@@ -51,6 +58,7 @@
   paragraph_id,
 ] %}
 
+{# Set the color styles for the paragraph. #}
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
   'pb-bg-h': 'pb_display_bg_hover',
@@ -61,47 +69,43 @@
   'pb-bt-a': 'pb_display_slide_active_item'
 } %}
 
+{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
-'pb_display_border',
-'pb_display_border_radius',
-'pb_display_margin',
-'pb_display_padding',
-'pb_display_shadow',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-slide-wrapper__inner' %}
+{# Get the paragraph width and add it to the inner classes if it exists. #}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
 
-{% set styleAttributes = [] %}
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
     {% if value == 'pb_display_bg' %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
     {% else %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
   {% endif %}
 {% endfor %}
-
-
-{% for pb_display in pb_displays %}
-  {% if content[pb_display]|render %}
-    {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
-  {% endif %}
-{% endfor %}
-
-
-{# Get the paragraph width. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
-{% if container_w_input %}
-  {% set container_width = 'w-' ~ container_w_input %}
-  {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
-{% endif %}
 
 {# Slideshow fields #}
 {% set pb_prev_next = content.pb_display_slide_prev_next|render|striptags|trim %}
@@ -109,74 +113,78 @@
 {% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
 {% set pb_play_stop = content.pb_display_slide_play_stop|render|striptags|trim|default(0) %}
 
+{# Main wrapper #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" role="tablist" aria-multiselectable="true" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}" role="tablist" aria-multiselectable="true" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+
+    {% if content.pb_content_title|render %}
+    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    {% endif %}
 
 
-      {% if content.pb_content_title|render %}
-      <h3 class="content-title">{{ content.pb_content_title }}</h3>
-      {% endif %}
-      {% set slide_id = 'pb-slideshow-' ~ paragraph.id.value %}
-      <div id="{{ slide_id }}" class="pb-slideshow-inner">
-        <div id="pb-slides-{{ paragraph.id.value }}" class="pb-slides">
-        {% for key, item in content.pb_content_slideshow_section %}
-        {% if key|first != '#' %}
+    <div id="{{ slide_id }}" class="pb-slideshow-inner">
+
+      <div id="pb-slides-{{ paragraph.id.value }}" class="pb-slides">
+
+      {% for key, item in content.pb_content_slideshow_section %}
+      {% if key|first != '#' %}
+
         <div id="pb-s-wr-{{ paragraph.id.value }}-{{ key + 1 }}" class="solo-row pb-s-wr">
-
           <div class="solo-row pb-s-pane">
             {# Loop through all of the slideshow section bodies. #}
-            <div role="tabpanel"
-                 class="pb-s-pane{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}"
-                 id="{{ slide_id }}-{{ key + 1 }}-pane">
+            <div role="tabpanel" class="pb-s-pane{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
               {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
-                {# Use the same render array as item and set the '#paragraph'. #}
-                {% set section_body = item %}
-                {% set lang = section_body['#paragraph'].langcode[0].value %}
-                {# Check if a translation exists #}
-                {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
-                  {# Load the entity for the current translation #}
-                  {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
-                {% else %}
-                  {# Load the source entity #}
-                  {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
-                {% endif %}
-                {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
-                {# Remove the cache keys so it doesn't repeat the first value. #}
-                {% set section_body = section_body|merge({'#cache': {}}) %}
-                {# Print the compiled section body. #}
-                {{ section_body }}
+              {# Use the same render array as item and set the '#paragraph'. #}
+              {% set section_body = item %}
+              {% set lang = section_body['#paragraph'].langcode[0].value %}
+              {# Check if a translation exists #}
+              {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
+              {# Load the entity for the current translation #}
+              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
+              {% else %}
+                {# Load the source entity #}
+              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
+              {% endif %}
+              {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
+              {# Remove the cache keys so it doesn't repeat the first value. #}
+              {% set section_body = section_body|merge({'#cache': {}}) %}
+              {# Print the compiled section body. #}
+              {{ section_body }}
               {% endfor %}
             </div>
-
             <div class="solo-row pb-s-title">
               {{ item['#paragraph'].pb_content_slideshow_title.value }}
             </div>
-
           </div>
-
         </div>
+
         {% endif %}
         {% endfor %}
-        </div>
 
-          <div id="pb-s-nav-{{ paragraph.id.value }}" class="solo-bar pb-s-nav btns {{ pb_bottom_nav }}">
-            <button id="btn-{{ paragraph.id.value }}" class="solo-button pp play-active-slideshow">&#10073;&nbsp;&#10073;</button>
-            {% for key, item in content.pb_content_slideshow_section %}
-            {% if key|first != '#' %}
-            <button id="b-nav-{{ key + 1 }}" class="solo-button b-nav {% if key == 0 %} pb-is-active {% endif %}">
-              {{ key + 1 }}
-            </button>
-            {% endif %}
-            {% endfor %}
-          </div>
+      </div>{# End of pb-slides #}
 
-        <div id="pb-s-np-{{ paragraph.id.value }}" class="solo-bar pb-s-np btns-{{ pb_prev_next }}">
-          <a class="pb-s-prev solo-button">&#10094;</a>
-          <a class="pb-s-next solo-button">&#10095;</a>
-        </div>
+      <div id="pb-s-nav-{{ paragraph.id.value }}" class="solo-bar pb-s-nav btns {{ pb_bottom_nav }}">
+        <button id="btn-{{ paragraph.id.value }}" class="solo-button pp play-active-slideshow">&#10073;&nbsp;&#10073;</button>
+        {% for key, item in content.pb_content_slideshow_section %}
+        {% if key|first != '#' %}
+        <button id="b-nav-{{ key + 1 }}" class="solo-button b-nav {% if key == 0 %} pb-is-active {% endif %}">
+          {{ key + 1 }}
+        </button>
+        {% endif %}
+        {% endfor %}
+      </div>
 
-        <div class="play-stop-value">{{ pb_play_stop }}</div>
+      <div id="pb-s-np-{{ paragraph.id.value }}" class="solo-bar pb-s-np btns-{{ pb_prev_next }}">
+        <a class="pb-s-prev solo-button">&#10094;</a>
+        <a class="pb-s-next solo-button">&#10095;</a>
+      </div>
 
+      <div class="play-stop-value">
+        {{ pb_play_stop }}
+      </div>
+
+    </div>{# End of pb-slideshow-inner #}
 
   </div>
 </div> {# End of main wrapper #}
+

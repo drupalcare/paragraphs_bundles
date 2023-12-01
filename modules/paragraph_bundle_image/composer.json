@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_image",
-    "description": "A reusable Paragraph Image bundle.",
+    "description": "A reusable Paragraph Bundle Image.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

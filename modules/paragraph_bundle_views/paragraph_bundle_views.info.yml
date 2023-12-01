@@ -1,6 +1,6 @@
 name: Paragraph Bundle Views
 type: module
-description: A reusable Paragraph Views bundle.
+description: A reusable Paragraph Bundle Views.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:

@@ -1,44 +1,35 @@
 /**
  * @file
- * W3CSS Paragraphs Modal.
+ * Paragraph Bundle Modal.
  *
- * Filename:     w3css-paragraphs-modal.js
+ * Filename:     paragraph-bundle-modal.js
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 ((Drupal, once) => {
   'use strict';
-
-  Drupal.behaviors.w3cssParagraphsModal = {
+  Drupal.behaviors.ParagraphBundleModal = {
     attach: (context, settings) => {
       let currWin;
-
-      const showModal = function () {
-
-        let modalBtn = this.id;
+      const showModal = (event) => {
+        let modalBtn = event.currentTarget.id;
         let modalWin = `${modalBtn}-win`;
         currWin = document.getElementById(modalWin);
         currWin.style.display = "block";
+        event.stopPropagation(); // Prevents the event from bubbling up
       };
-
-      const hideModal = function () {
-        currWin.style.display = "none";
+      const hideModal = () => {
+        if (currWin) {
+          currWin.style.display = "none";
+        }
       };
-
       let modalButtons = once('.pb-modal-button', '.pb-modal-button>button', context);
       modalButtons.forEach(button => button.addEventListener('click', showModal));
-
       let modalHeaders = once('.pb-modal-header', '.pb-modal-header>button', context);
       modalHeaders.forEach(header => header.addEventListener('click', hideModal));
+
+      // Add event listener to the entire document
+      document.addEventListener('click', hideModal);
     }
-
-      //click any where to close any submenu.
-      // document.addEventListener('click', (event) => {
-      //   if (event.target == loginBlock) {
-      //     closeSearchHandler();
-      //   }
-      // });
-
-  }
-
+  };
 })(Drupal, once);

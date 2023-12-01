@@ -9,7 +9,7 @@ third_party_settings:
     parent: ''
 name: 'PB Content'
 type: pb_content
-description: 'Custom content type with ability to disable any region with solo theme.'
+description: 'This is a custom content type that includes two fields: a paragraph field and a reference content block field. It also possesses the capability to disable any region when using the solo theme.'
 help: ''
 new_revision: true
 preview_mode: 1

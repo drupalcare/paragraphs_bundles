@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: pb_block
+label: 'PB Block'
+revision: 1
+description: 'This block has a paragraph field to create paragraphs in blocks.'

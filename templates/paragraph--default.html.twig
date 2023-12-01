@@ -38,9 +38,15 @@
 * @ingroup themeable
 #}
 
+{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 
+{# Set the paragraph id. #}
 {% set paragraph_id  = 'pb-default-' ~ paragraph.id.value %}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb-default__inner  pb__content-full' %}
+{# Set the classes for the paragraph. #}
+
 {% set classes = [
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
@@ -50,6 +56,7 @@
   paragraph_id
 ] %}
 
+{# Set the color styles for the paragraph. #}
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
   'pb-bg-h': 'pb_display_bg_hover',
@@ -59,55 +66,54 @@
   'pb-tx-h': 'pb_display_text_hover'
 } %}
 
+{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
-'pb_display_border',
-'pb_display_border_radius',
-'pb_display_margin',
-'pb_display_padding',
-'pb_display_shadow',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
 ] %}
 
-{% set classes_inner = 'paragraph__inner pb-default__inner' %}
+{# Get the paragraph width and add it to the inner classes if it exists. #}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
 
-{% set styleAttributes = [] %}
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
     {% if value == 'pb_display_bg' %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
     {% else %}
-      {% set styleAttributes = styleAttributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
   {% endif %}
 {% endfor %}
 
-{% for pb_display in pb_displays %}
-  {% if content[pb_display]|render %}
-    {% set classes_inner = classes_inner ~ ' ' ~ content[pb_display]|render|striptags|trim %}
-  {% endif %}
-{% endfor %}
-
-{# Get the paragraph width. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
-{% if container_w_input %}
-  {% set container_width = 'w-' ~ container_w_input %}
-  {% set classes_inner = classes_inner ~ ' ' ~ container_width %}
-{% endif %}
-
-
+{# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" {% if styleAttributes|length > 0 %}style="{{ styleAttributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
       {% if content.pb_content_title|render %}
       <h3 class="content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
-      {# In the default template we remove un wanted fields #}
+      {# In the default template we remove unwanted fields. #}
       {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
   </div>
-</div> {# End of main wrapper #}
+</div> {# End of main wrapper. #}
+

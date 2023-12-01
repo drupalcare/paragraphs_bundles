@@ -37,24 +37,30 @@
  * @see template_preprocess_field()
  */
 #}
+{# Define classes for the field #}
 {% set classes = [
   'field--name-' ~ field_name|clean_class,
   'field--type-' ~ field_type|clean_class,
   'field--label-' ~ label_display,
 ] %}
 
+{# Define classes for the title #}
 {% set title_classes = [
   'field__label',
   label_display == 'visually_hidden' ? 'visually-hidden',
 ] %}
 
+{# Check if label is hidden #}
 {% if label_hidden %}
+  {# Loop through items and display content #}
   {% for item in items %}
     {{ item.content }}
   {% endfor %}
 {% else %}
+  {# Display label and loop through items to display content #}
   {{ label }}
   {% for item in items %}
     {{ item.content }}
   {% endfor %}
 {% endif %}
+

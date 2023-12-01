@@ -1,0 +1,109 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.pb_block
+    - field.storage.block_content.pb_content_paragraph_in_block
+  module:
+    - entity_reference_revisions
+id: block_content.pb_block.pb_content_paragraph_in_block
+field_name: pb_content_paragraph_in_block
+entity_type: block_content
+bundle: pb_block
+label: Paragraph
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+    target_bundles_drag_drop:
+      3d_carousel_bundle:
+        weight: 29
+        enabled: false
+      3d_flip_box_bundle:
+        weight: 30
+        enabled: false
+      accordion_bundle:
+        weight: 31
+        enabled: false
+      accordion_section_bundle:
+        weight: 32
+        enabled: false
+      block_bundle:
+        weight: 33
+        enabled: false
+      block_content_bundle:
+        weight: 34
+        enabled: false
+      card_bundle:
+        weight: 35
+        enabled: false
+      contact_form_bundle:
+        weight: 36
+        enabled: false
+      hero_bundle:
+        weight: 37
+        enabled: false
+      image_bundle:
+        weight: 38
+        enabled: false
+      image_narrow_bundle:
+        weight: 39
+        enabled: false
+      image_overlay_bundle:
+        weight: 40
+        enabled: false
+      image_wide_bundle:
+        weight: 41
+        enabled: false
+      link_bundle:
+        weight: 42
+        enabled: false
+      link_section_bundle:
+        weight: 43
+        enabled: false
+      modal_bundle:
+        weight: 44
+        enabled: false
+      one_column_bundle:
+        weight: 45
+        enabled: false
+      parallax_bundle:
+        weight: 46
+        enabled: false
+      parallax_section_bundle:
+        weight: 47
+        enabled: false
+      simple_bundle:
+        weight: 48
+        enabled: false
+      slideshow_bundle:
+        weight: 49
+        enabled: false
+      slideshow_section_bundle:
+        weight: 50
+        enabled: false
+      tab_section_bundle:
+        weight: 52
+        enabled: false
+      tabs_bundle:
+        weight: 51
+        enabled: false
+      three_columns_bundle:
+        weight: 53
+        enabled: false
+      two_columns_bundle:
+        weight: 54
+        enabled: false
+      views_bundle:
+        weight: 55
+        enabled: false
+      webform_bundle:
+        weight: 56
+        enabled: false
+field_type: entity_reference_revisions

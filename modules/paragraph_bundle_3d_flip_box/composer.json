@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_3d_flip_box",
-    "description": "A reusable Paragraph 3D Flip Box bundle.",
+    "description": "A reusable Paragraph Bundle 3D Flip Box.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

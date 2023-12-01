@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_slideshow",
-    "description": "A reusable Paragraph Slideshow bundle.",
+    "description": "A reusable Paragraph Bundle Slideshow.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

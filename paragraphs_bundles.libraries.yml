@@ -5,11 +5,17 @@ paragraphs-bundles:
       css/paragraphs-bundles-basic.css: { }
       css/paragraphs-bundles-custom.css: { }
 
-color-picker:
+paragraphs-bundles-admin:
   version: VERSION
   css:
     theme:
       css/paragraphs-bundles-admin.css: { }
+
+color-picker:
+  version: VERSION
+  css:
+    theme:
+      css/paragraphs-bundles-color-picker.css: { }
   js:
     js/paragraphs-bundles-color-picker.js: {}
   dependencies:

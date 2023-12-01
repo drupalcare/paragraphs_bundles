@@ -5,3 +5,8 @@ paragraph-bundle-slideshow:
       css/paragraph-bundle-slideshow.css: { }
   js:
     js/paragraph-bundle-slideshow.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once

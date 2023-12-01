@@ -1,6 +1,6 @@
 name: Paragraph Bundle Tabs
 type: module
-description: A reusable Paragraph Tabs bundle.
+description: A reusable Paragraph Bundle Tabs.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:
