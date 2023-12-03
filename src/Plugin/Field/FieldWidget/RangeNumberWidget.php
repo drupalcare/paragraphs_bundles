@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @FieldWidget(
  *   id = "range_number_widget",
  *   module = "paragraphs_bundles",
- *   label = @Translation("Value 0 to 100"),
+ *   label = @Translation("Value 1 to 100"),
  *   field_types = {
  *     "paragraphs_bundles_range"
  *   }

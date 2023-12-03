@@ -11,7 +11,7 @@ field_name: pb_display_bg_opacity
 entity_type: paragraph
 bundle: two_columns_bundle
 label: 'Background Color Opacity'
-description: ''
+description: 'Value 1 to 100'
 required: false
 translatable: false
 default_value:

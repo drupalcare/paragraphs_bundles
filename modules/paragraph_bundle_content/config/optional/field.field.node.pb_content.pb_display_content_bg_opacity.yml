@@ -11,7 +11,7 @@ field_name: pb_display_content_bg_opacity
 entity_type: node
 bundle: pb_content
 label: 'Content Background Opacity'
-description: ''
+description: 'Value 1 to 100'
 required: false
 translatable: false
 default_value:
