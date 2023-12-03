@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_narrow_md_700x700
-label: 'PB Narrow MD 700x700'
+name: pb_narrow_md
+label: 'PB Narrow MD 900x900'
 effects:
   98974cfe-386f-4ef2-83e9-72911dcab60b:
     uuid: 98974cfe-386f-4ef2-83e9-72911dcab60b
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 700
-      height: 700
+      width: 900
+      height: 900
       anchor: center-center

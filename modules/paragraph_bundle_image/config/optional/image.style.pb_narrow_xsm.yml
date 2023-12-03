@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_narrow_xsm_300x300
-label: 'PB Narrow XSM 300x300'
+name: pb_narrow_xsm
+label: 'PB Narrow XSM 400x400'
 effects:
   6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb:
     uuid: 6212d6f1-b93e-470b-9f7b-6e4bbd3df0eb
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 300
-      height: 300
+      width: 400
+      height: 400
       anchor: center-center

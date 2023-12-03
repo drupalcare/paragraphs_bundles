@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_narrow_sm_500x500
-label: 'PB Narrow SM 500x500'
+name: pb_narrow_sm
+label: 'PB Narrow SM 600x600'
 effects:
   a15e2646-27e2-41ea-8e2c-a94aa413f099:
     uuid: a15e2646-27e2-41ea-8e2c-a94aa413f099
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 500
-      height: 500
+      width: 600
+      height: 600
       anchor: center-center

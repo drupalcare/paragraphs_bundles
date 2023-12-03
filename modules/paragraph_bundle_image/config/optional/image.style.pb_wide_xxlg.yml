@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_wide_xxlg_1800x900
-label: 'PB Wide XXLG 1800x900'
+name: pb_wide_xxlg
+label: 'PB Wide XXLG 1700x320'
 effects:
   b8acd5c8-527b-4e79-86b9-e9fb54468a5c:
     uuid: b8acd5c8-527b-4e79-86b9-e9fb54468a5c
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 1800
-      height: 900
+      width: 1700
+      height: 320
       anchor: center-center

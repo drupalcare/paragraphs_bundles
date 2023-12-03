@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_wide_lg_1280x750
-label: 'PB Wide LG 1280x750'
+name: pb_wide_lg
+label: 'PB Wide LG 1280x280'
 effects:
   a85d6d3d-4131-4022-8a95-205aa544cb67:
     uuid: a85d6d3d-4131-4022-8a95-205aa544cb67
@@ -16,5 +16,5 @@ effects:
     weight: 2
     data:
       width: 1280
-      height: 750
+      height: 280
       anchor: center-center

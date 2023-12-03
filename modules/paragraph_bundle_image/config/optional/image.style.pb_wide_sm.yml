@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_wide_sm_600x440
-label: 'PB Wide SM 600x440'
+name: pb_wide_sm
+label: 'PB Wide SM 620x240'
 effects:
   49be2c2d-f374-4727-9cac-2e831b9687af:
     uuid: 49be2c2d-f374-4727-9cac-2e831b9687af
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 600
-      height: 440
+      width: 620
+      height: 240
       anchor: center-center

@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_wide_md_992x610
-label: 'PB Wide MD 992x610'
+name: pb_wide_md
+label: 'PB Wide MD 920x260'
 effects:
   8f8ce354-e216-461d-8705-fb0dd5b97dfb:
     uuid: 8f8ce354-e216-461d-8705-fb0dd5b97dfb
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 992
-      height: 610
+      width: 920
+      height: 260
       anchor: center-center

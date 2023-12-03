@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_narrow_xlg_1100x1100
-label: 'PB Narrow XLG 1100x1100'
+name: pb_narrow_xlg
+label: 'PB Narrow XLG 1400x1400'
 effects:
   72a1057c-734e-43e9-8e51-c690852f07e5:
     uuid: 72a1057c-734e-43e9-8e51-c690852f07e5
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 1100
-      height: 1100
+      width: 1400
+      height: 1400
       anchor: center-center

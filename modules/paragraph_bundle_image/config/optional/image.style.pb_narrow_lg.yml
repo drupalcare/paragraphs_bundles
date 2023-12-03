@@ -1,8 +1,8 @@
 langcode: en
 status: true
 dependencies: {  }
-name: pb_narrow_lg_900x900
-label: 'PB Narrow LG 900x900'
+name: pb_narrow_lg
+label: 'PB Narrow LG 1200x1200'
 effects:
   d64a7a84-4151-4f88-b9d8-1637edb056e7:
     uuid: d64a7a84-4151-4f88-b9d8-1637edb056e7
@@ -15,6 +15,6 @@ effects:
     id: image_scale_and_crop
     weight: 2
     data:
-      width: 900
-      height: 900
+      width: 1200
+      height: 1200
       anchor: center-center
