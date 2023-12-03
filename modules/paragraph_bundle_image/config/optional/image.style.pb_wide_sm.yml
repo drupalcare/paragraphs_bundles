@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_sm
-label: 'PB Wide SM 620x240'
+label: 'PB Wide SM 620x300'
 effects:
   49be2c2d-f374-4727-9cac-2e831b9687af:
     uuid: 49be2c2d-f374-4727-9cac-2e831b9687af
@@ -16,5 +16,5 @@ effects:
     weight: 2
     data:
       width: 620
-      height: 240
+      height: 300
       anchor: center-center

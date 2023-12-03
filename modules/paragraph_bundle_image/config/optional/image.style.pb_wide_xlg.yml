@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 name: pb_wide_xlg
-label: 'PB Wide XLG 1400x300'
+label: 'PB Wide XLG 1400x500'
 effects:
   6aff9c5e-7ed5-4abc-a6d2-79028867093a:
     uuid: 6aff9c5e-7ed5-4abc-a6d2-79028867093a
@@ -16,5 +16,5 @@ effects:
     weight: 2
     data:
       width: 1400
-      height: 300
+      height: 500
       anchor: center-center
