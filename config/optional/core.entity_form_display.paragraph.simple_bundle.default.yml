@@ -169,7 +169,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
+    type: options_select
     weight: 15
     region: content
     settings: {  }
@@ -187,7 +187,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
+    type: options_select
     weight: 14
     region: content
     settings: {  }

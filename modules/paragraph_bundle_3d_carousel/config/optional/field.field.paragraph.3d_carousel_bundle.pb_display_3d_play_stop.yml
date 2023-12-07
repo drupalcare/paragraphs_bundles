@@ -11,7 +11,7 @@ field_name: pb_display_3d_play_stop
 entity_type: paragraph
 bundle: 3d_carousel_bundle
 label: 'Time in seconds'
-description: 'The 3D carousel will move to a new slide every 5 seconds by default. You can change the interval. When the interval selected is between 3-15 seconds, a play/pause button will be shown and also the 3D carousel will pause on mouse hover. If you would like to stop the 3D carousel, set this field value to none.'
+description: 'By default, the 3D carousel scroll every 5 seconds. You can modify this interval. If set between 3-15 seconds, a play/pause button appears and the carousel pauses on mouse hover. To stop the carousel, set the field value to none.'
 required: false
 translatable: false
 default_value:

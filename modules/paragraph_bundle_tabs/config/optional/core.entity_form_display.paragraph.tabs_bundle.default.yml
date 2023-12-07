@@ -17,6 +17,7 @@ dependencies:
     - field.field.paragraph.tabs_bundle.pb_display_tab_active_item
     - field.field.paragraph.tabs_bundle.pb_display_tab_animated_tabs
     - field.field.paragraph.tabs_bundle.pb_display_tab_vertical_tabs
+    - field.field.paragraph.tabs_bundle.pb_display_tabs_breakpoints
     - field.field.paragraph.tabs_bundle.pb_display_text
     - field.field.paragraph.tabs_bundle.pb_display_text_hover
     - field.field.paragraph.tabs_bundle.pb_display_width
@@ -72,14 +73,15 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_tabs_breakpoints
+        - pb_display_tab_animated_tabs
         - pb_display_bg_opacity
         - pb_display_tab_active_item
-        - pb_display_tab_animated_tabs
         - pb_display_tab_vertical_tabs
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
-      weight: 22
+      weight: 21
       format_type: tab
       format_settings:
         classes: pb-tab-display
@@ -134,7 +136,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 16
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -175,29 +177,35 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
+    type: options_select
     weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_tab_active_item:
     type: color_text_widget
-    weight: 17
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_tab_animated_tabs:
     type: options_select
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_tab_vertical_tabs:
     type: boolean_checkbox
-    weight: 19
+    weight: 20
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  pb_display_tabs_breakpoints:
+    type: options_select
+    weight: 16
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_display_text:
     type: color_text_widget
@@ -212,7 +220,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
+    type: options_select
     weight: 14
     region: content
     settings: {  }

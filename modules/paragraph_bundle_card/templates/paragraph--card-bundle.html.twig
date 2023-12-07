@@ -42,6 +42,15 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
 
+{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
+
+{% if pb_display_layout %}
+    {% set pb_breakpoints = content.pb_display_card_breakpoints|render|striptags|trim %}
+    {% set pb_breakpoints = 'paragraph_bundle_card/paragraph-bundle-card-' ~ pb_breakpoints %}
+    {{ attach_library(pb_breakpoints) }}
+{% endif %}
+
+
 {# Set the paragraph id. #}
 {% set paragraph_id  = 'pb-card-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
@@ -108,14 +117,13 @@
 {# Image and link #}
 {% set pb_link = content. pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_display_layout = content.pb_display_card_layout|render|striptags|trim %}
 {% set pb_image_right = content.pb_display_image_right|render|striptags|trim %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-      <div class="pb-two-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
+      <div class="pb-card-columns {{ pb_image_right }} two-{{ pb_display_layout }}">
 
         <div class="pb-col-left">
         {% if pb_link %}
@@ -132,7 +140,6 @@
           <h3 class="content-title">{{ content.pb_content_title }}</h3>
           {% endif %}
           {{ content.pb_content_body }}
-          {{ pb_image_right }}
         </div>
 
       </div>{# pb-two-columns #}

@@ -6,31 +6,31 @@ paragraph_bundle_image.screen-xsm-min:
     - 1x
 paragraph_bundle_image.screen-sm-min:
   label: screen-sm-min
-  mediaQuery: 'all and (min-width: 414px)'
+  mediaQuery: 'all and (min-width: 414px / 25.938rem)'
   weight: 1
   multipliers:
     - 1x
 paragraph_bundle_image.screen-md-min:
   label: screen-md-min
-  mediaQuery: 'all and (min-width: 601px)'
+  mediaQuery: 'all and (min-width: 576px / 36rem)'
   weight: 2
   multipliers:
     - 1x
 paragraph_bundle_image.screen-lg-min:
   label: screen-lg-min
-  mediaQuery: 'all and (min-width: 993px)'
+  mediaQuery: 'all and (min-width: 992px / 48rem)'
   weight: 3
   multipliers:
     - 1x
 paragraph_bundle_image.screen-xlg-min:
   label: screen-xlg-min
-  mediaQuery: 'all and (min-width: 1281px)'
+  mediaQuery: 'all and (min-width: 1200px / 75rem)'
   weight: 4
   multipliers:
     - 1x
 paragraph_bundle_image.screen-xxlg-min:
   label: screen-xxlg-min
-  mediaQuery: 'all and (min-width: 1440px)'
+  mediaQuery: 'all and (min-width: 1400px / 87.5rem)'
   weight: 5
   multipliers:
     - 1x

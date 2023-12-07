@@ -9,12 +9,12 @@ field_name: pb_display_accor_indicator
 entity_type: paragraph
 bundle: accordion_bundle
 label: 'Show Indicators'
-description: ''
+description: 'The plus sign, located at the top of the tab, can be used to expand or collapse the tab. Upon clicking, it transforms into a minus sign.'
 required: false
 translatable: false
 default_value:
   -
-    value: 0
+    value: 1
 default_value_callback: ''
 settings:
   on_label: 'On'

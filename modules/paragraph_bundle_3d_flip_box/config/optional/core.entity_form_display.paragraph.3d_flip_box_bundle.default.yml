@@ -74,8 +74,8 @@ third_party_settings:
         - pb_display_width
         - pb_display_shadow
         - pb_display_flip_xy
-        - pb_display_3d_height
         - pb_display_bg_opacity
+        - pb_display_3d_height
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -141,7 +141,7 @@ content:
     third_party_settings: {  }
   pb_display_3d_height:
     type: number
-    weight: 17
+    weight: 18
     region: content
     settings:
       placeholder: ''
@@ -160,7 +160,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -189,7 +189,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_flip_xy:
-    type: options_buttons
+    type: options_select
     weight: 16
     region: content
     settings: {  }
@@ -207,7 +207,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
+    type: options_select
     weight: 15
     region: content
     settings: {  }
@@ -225,7 +225,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
+    type: options_select
     weight: 14
     region: content
     settings: {  }

@@ -11,7 +11,7 @@ field_name: pb_content_3dcar_lheight
 entity_type: paragraph
 bundle: 3d_carousel_bundle
 label: 'Height in pixels'
-description: 'This height will be applied to all carrousel items. For 993px or more.'
+description: 'This height will be applied to all carrousel items. For 992px or more.'
 required: true
 translatable: false
 default_value:

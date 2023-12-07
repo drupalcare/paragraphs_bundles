@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.three_columns_bundle.pb_display_layout_breakpoints
     - field.field.paragraph.three_columns_bundle.pb_content_left_column
     - field.field.paragraph.three_columns_bundle.pb_content_middle_column
     - field.field.paragraph.three_columns_bundle.pb_content_right_column
@@ -30,6 +31,13 @@ targetEntityType: paragraph
 bundle: three_columns_bundle
 mode: default
 content:
+  pb_display_layout_breakpoints:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
   pb_content_left_column:
     type: entity_reference_revisions_entity_view
     label: hidden

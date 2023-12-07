@@ -1,0 +1,82 @@
+/**
+ * @file
+ * Paragraph Bundle Layout.
+ *
+ * Filename:     paragraph-bundle-layout.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+@media only screen and (min-width:87.5rem) {
+  .pb-two-columns.two-l6-l6,
+  .pb-two-columns.two-l4-l8,
+  .pb-two-columns.two-l8-l4,
+  .pb-two-columns.two-l3-l9,
+  .pb-two-columns.two-l9-l3,
+  .pb-three-columns.three-l4-l4-l4,
+  .pb-three-columns.three-l2-l8-l2,
+  .pb-three-columns.three-l2-l2-l8,
+  .pb-three-columns.three-l8-l2-l2,
+  .pb-three-columns.three-l3-l6-l3,
+  .pb-three-columns.three-l6-l3-l3,
+  .pb-three-columns.three-l3-l3-l6 {
+    grid-auto-flow: column;
+  }
+
+  .pb-two-columns.two-l6-l6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .pb-two-columns.two-l4-l8 {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .pb-two-columns.two-l8-l4 {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .pb-two-columns.two-l3-l9 {
+    grid-template-columns: 1fr 3fr;
+  }
+
+  .pb-two-columns.two-l9-l3 {
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .pb-three-columns.three-l4-l4-l4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .pb-three-columns.three-l2-l8-l2 {
+    grid-template-columns: 1fr 4fr 1fr;
+  }
+
+  .pb-three-columns.three-l2-l2-l8 {
+    grid-template-columns: 1fr 1fr 4fr;
+  }
+
+  .pb-three-columns.three-l8-l2-l2 {
+    grid-template-columns: 4fr 1fr 1fr;
+  }
+
+  .pb-three-columns.three-l3-l6-l3 {
+    grid-template-columns: 1fr 3fr 1fr;
+  }
+
+  .pb-three-columns.three-l6-l3-l3 {
+    grid-template-columns: 3fr 1fr 1fr;
+  }
+
+  .pb-three-columns.three-l3-l3-l6 {
+    grid-template-columns: 1fr 1fr 3fr;
+  }
+
+  .pb-two-columns .paragraph,
+  .pb-three-columns .paragraph,
+  .pb-two-columns .paragraph__inner,
+  .pb-three-columns .paragraph__inner {
+    display: flex;
+    height: 100%;
+  }
+
+}

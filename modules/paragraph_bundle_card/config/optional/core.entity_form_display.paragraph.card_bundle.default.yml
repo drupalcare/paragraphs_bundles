@@ -14,6 +14,7 @@ dependencies:
     - field.field.paragraph.card_bundle.pb_display_border_color
     - field.field.paragraph.card_bundle.pb_display_border_hover
     - field.field.paragraph.card_bundle.pb_display_border_radius
+    - field.field.paragraph.card_bundle.pb_display_card_breakpoints
     - field.field.paragraph.card_bundle.pb_display_card_layout
     - field.field.paragraph.card_bundle.pb_display_image_right
     - field.field.paragraph.card_bundle.pb_display_margin
@@ -79,8 +80,9 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
-        - pb_display_bg_opacity
         - pb_display_card_layout
+        - pb_display_card_breakpoints
+        - pb_display_bg_opacity
         - pb_display_image_right
       label: 'Tab Display'
       region: content
@@ -152,7 +154,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 16
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -180,15 +182,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pb_display_card_layout:
-    type: options_buttons
+  pb_display_card_breakpoints:
+    type: options_select
     weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_card_layout:
+    type: options_select
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_image_right:
     type: boolean_checkbox
-    weight: 18
+    weight: 19
     region: content
     settings:
       display_label: true
@@ -206,7 +214,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
+    type: options_select
     weight: 15
     region: content
     settings: {  }
@@ -224,7 +232,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
+    type: options_select
     weight: 14
     region: content
     settings: {  }

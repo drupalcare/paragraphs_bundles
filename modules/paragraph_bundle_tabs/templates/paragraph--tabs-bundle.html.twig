@@ -109,6 +109,8 @@
 {# Animated Tab Display #}
 {% set pb_animated_tab = content.pb_display_tab_animated_tabs|render|striptags|trim %}
 {% set pb_vertical_tabs = content.pb_display_tab_vertical_tabs|render|striptags|trim %}
+{% set pb_breakpoints = content.pb_display_tabs_breakpoints|render|striptags|trim|default('sb-992') %}
+{% set activate_vertical = pb_vertical_tabs == 'On' ? 'v-tabs ' ~ pb_breakpoints : '' %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
@@ -121,7 +123,7 @@
 
     {# Set the tab id. #}
     {% set tab_id = 'pb-tab-' ~ paragraph.id.value %}
-    <div id="{{ tab_id }}" class="solo-row pb-tabs-wrapper {{ pb_vertical_tabs == 'On' ? 'v-tabs' : '' }}">
+    <div id="{{ tab_id }}" class="solo-row pb-tabs-wrapper {{ activate_vertical }}">
 
       {# Render the tab buttons. #}
       <div class="solo-bar pb-tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist">

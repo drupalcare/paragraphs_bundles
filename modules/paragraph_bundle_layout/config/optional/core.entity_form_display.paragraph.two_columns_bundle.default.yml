@@ -12,6 +12,7 @@ dependencies:
     - field.field.paragraph.two_columns_bundle.pb_display_border_color
     - field.field.paragraph.two_columns_bundle.pb_display_border_hover
     - field.field.paragraph.two_columns_bundle.pb_display_border_radius
+    - field.field.paragraph.two_columns_bundle.pb_display_layout_breakpoints
     - field.field.paragraph.two_columns_bundle.pb_display_margin
     - field.field.paragraph.two_columns_bundle.pb_display_padding
     - field.field.paragraph.two_columns_bundle.pb_display_shadow
@@ -70,9 +71,10 @@ third_party_settings:
         - pb_display_border_radius
         - pb_display_margin
         - pb_display_padding
+        - pb_display_two_columns
+        - pb_display_layout_breakpoints
         - pb_display_width
         - pb_display_shadow
-        - pb_display_two_columns
         - pb_display_bg_opacity
       label: 'Tab Display'
       region: content
@@ -151,7 +153,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -179,6 +181,12 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_layout_breakpoints:
+    type: options_select
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_display_margin:
     type: options_select
     weight: 12
@@ -192,8 +200,8 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
-    weight: 15
+    type: options_select
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -210,14 +218,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_two_columns:
-    type: options_buttons
-    weight: 16
+    type: options_select
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
-    weight: 14
+    type: options_select
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }

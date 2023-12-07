@@ -9,12 +9,12 @@ field_name: pb_display_accor_open_first
 entity_type: paragraph
 bundle: accordion_bundle
 label: 'Expand First Accordion Item'
-description: ''
+description: 'Tick this box to unfold the content of the first tab.'
 required: false
 translatable: false
 default_value:
   -
-    value: 0
+    value: 1
 default_value_callback: ''
 settings:
   on_label: 'On'

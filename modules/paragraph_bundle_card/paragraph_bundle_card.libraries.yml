@@ -3,3 +3,33 @@ paragraph-bundle-card:
   css:
     theme:
       css/paragraph-bundle-card.css: { }
+
+paragraph-bundle-card-pb-576:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card-pb-576.css: { }
+
+paragraph-bundle-card-pb-768:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card-pb-768.css: { }
+
+paragraph-bundle-card-pb-992:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card-pb-992.css: { }
+
+paragraph-bundle-card-pb-1200:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card-pb-1200.css: { }
+
+paragraph-bundle-card-pb-1400:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-card-pb-1400.css: { }

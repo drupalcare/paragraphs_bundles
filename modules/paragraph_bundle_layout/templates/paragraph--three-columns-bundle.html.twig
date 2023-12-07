@@ -107,6 +107,10 @@
 
 {# Layout options. #}
 {% set pb_display_layout = content.pb_display_three_columns|render|striptags|trim %}
+{% if pb_display_layout %}
+{% set pb_breakpoints = content.pb_display_layout_breakpoints|render|striptags|trim %}
+{% endif %}
+
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
@@ -116,7 +120,7 @@
     <h3 class="content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
-    <div class="pb-three-columns three-{{ pb_display_layout }}">
+    <div class="pb-three-columns {{ pb_breakpoints }} three-{{ pb_display_layout }}">
       <div class="pb-col-left">
         {{ content.pb_content_left_column }}
       </div>

@@ -3,3 +3,33 @@ paragraph-bundle-layout:
   css:
     theme:
       css/paragraph-bundle-layout.css: { }
+
+paragraph-bundle-layout-pb-576:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout-pb-576.css: { }
+
+paragraph-bundle-layout-pb-768:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout-pb-768.css: { }
+
+paragraph-bundle-layout-pb-992:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout-pb-992.css: { }
+
+paragraph-bundle-layout-pb-1200:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout-pb-1200.css: { }
+
+paragraph-bundle-layout-pb-1400:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-layout-pb-1400.css: { }

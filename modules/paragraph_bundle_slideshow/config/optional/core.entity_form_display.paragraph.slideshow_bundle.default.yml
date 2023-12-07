@@ -74,12 +74,12 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
-        - pb_display_bg_opacity
-        - pb_display_slide_play_stop
-        - pb_display_slide_animated_slides
         - pb_display_bottom_navigation
-        - pb_display_slide_prev_next
+        - pb_display_slide_animated_slides
+        - pb_display_slide_play_stop
+        - pb_display_bg_opacity
         - pb_display_slide_active_item
+        - pb_display_slide_prev_next
       label: 'Tab Display'
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -138,7 +138,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 16
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -167,8 +167,8 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_bottom_navigation:
-    type: options_buttons
-    weight: 19
+    type: options_select
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -185,32 +185,32 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
-    type: options_buttons
+    type: options_select
     weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_active_item:
     type: color_text_widget
-    weight: 21
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_animated_slides:
     type: options_select
-    weight: 18
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_play_stop:
     type: options_select
-    weight: 17
+    weight: 18
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_prev_next:
     type: boolean_checkbox
-    weight: 20
+    weight: 21
     region: content
     settings:
       display_label: true
@@ -228,7 +228,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
-    type: options_buttons
+    type: options_select
     weight: 14
     region: content
     settings: {  }

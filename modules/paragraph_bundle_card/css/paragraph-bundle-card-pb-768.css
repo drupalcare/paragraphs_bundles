@@ -1,0 +1,53 @@
+/**
+ * @file
+ * Paragraph Bundle Card.
+ *
+ * Filename:     paragraph-bundle-card.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+@media (min-width:48rem) {
+  .paragraph--type--card-bundle .pb-card-columns.two-l6-l6,
+  .paragraph--type--card-bundle .pb-card-columns.two-l4-l8,
+  .paragraph--type--card-bundle .pb-card-columns.two-l8-l4,
+  .paragraph--type--card-bundle .pb-card-columns.two-l3-l9,
+  .paragraph--type--card-bundle .pb-card-columns.two-l9-l3 {
+    grid-auto-flow: column;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.two-l6-l6 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.two-l4-l8 {
+    grid-template-columns: 1fr 2fr;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.two-l8-l4 {
+    grid-template-columns: 2fr 1fr;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.two-l3-l9 {
+    grid-template-columns: 1fr 3fr;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.two-l9-l3 {
+    grid-template-columns: 3fr 1fr;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns.On.two-l6-l6>.pb-col-left,
+  .paragraph--type--card-bundle .pb-card-columns.On.two-l4-l8>.pb-col-left,
+  .paragraph--type--card-bundle .pb-card-columns.On.two-l8-l4>.pb-col-left,
+  .paragraph--type--card-bundle .pb-card-columns.On.two-l3-l9>.pb-col-left,
+  .paragraph--type--card-bundle .pb-card-columns.On.two-l9-l3>.pb-col-left {
+    grid-column: 2;
+  }
+
+  .paragraph--type--card-bundle .pb-card-columns .paragraph,
+  .paragraph--type--card-bundle .pb-card-columns .paragraph__inner {
+    display: flex;
+    height: 100%;
+  }
+
+}

@@ -8,13 +8,13 @@ id: paragraph.accordion_bundle.pb_display_accor_show_expand
 field_name: pb_display_accor_show_expand
 entity_type: paragraph
 bundle: accordion_bundle
-label: 'Show Expand/Collapse All Button'
-description: ''
+label: 'Show Collapse or Expand All'
+description: 'This is a button located at the top, designed to collapse or expand all tabs.'
 required: false
 translatable: false
 default_value:
   -
-    value: 0
+    value: 1
 default_value_callback: ''
 settings:
   on_label: 'On'
