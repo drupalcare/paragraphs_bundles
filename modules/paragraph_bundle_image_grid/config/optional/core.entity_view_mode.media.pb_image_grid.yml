@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.pb_image_grid
+label: 'PB Image Grid'
+targetEntityType: media
+cache: true

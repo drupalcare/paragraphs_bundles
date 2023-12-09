@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: image_grid_bundle
+label: 'Image Grid Bundle'
+icon_uuid: null
+icon_default: null
+description: ''
+behavior_plugins: {  }

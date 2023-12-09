@@ -1,0 +1,206 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_grid_section_bundle.pb_content_image
+    - field.field.paragraph.image_grid_section_bundle.pb_content_image_link
+    - field.field.paragraph.image_grid_section_bundle.pb_content_image_link_title
+    - field.field.paragraph.image_grid_section_bundle.pb_content_title
+    - field.field.paragraph.image_grid_section_bundle.pb_display_bg
+    - field.field.paragraph.image_grid_section_bundle.pb_display_bg_hover
+    - field.field.paragraph.image_grid_section_bundle.pb_display_bg_opacity
+    - field.field.paragraph.image_grid_section_bundle.pb_display_border
+    - field.field.paragraph.image_grid_section_bundle.pb_display_border_color
+    - field.field.paragraph.image_grid_section_bundle.pb_display_border_hover
+    - field.field.paragraph.image_grid_section_bundle.pb_display_border_radius
+    - field.field.paragraph.image_grid_section_bundle.pb_display_margin
+    - field.field.paragraph.image_grid_section_bundle.pb_display_padding
+    - field.field.paragraph.image_grid_section_bundle.pb_display_shadow
+    - field.field.paragraph.image_grid_section_bundle.pb_display_text
+    - field.field.paragraph.image_grid_section_bundle.pb_display_text_hover
+    - field.field.paragraph.image_grid_section_bundle.pb_display_width
+    - paragraphs.paragraphs_type.image_grid_section_bundle
+  module:
+    - field_group
+    - link
+    - media_library
+    - paragraphs_bundles
+third_party_settings:
+  field_group:
+    group_tabs_wrapper:
+      children:
+        - group_tab_content
+        - group_tab_display
+      label: 'Tabs Wrapper'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: pb-tabs-wrapper
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: 992
+    group_tab_content:
+      children:
+        - pb_content_title
+        - pb_content_image
+        - pb_content_image_link
+        - pb_content_image_link_title
+      label: 'Tab Content'
+      region: content
+      parent_name: group_tabs_wrapper
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: pb-tab-content
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_tab_display:
+      children:
+        - pb_display_bg
+        - pb_display_bg_hover
+        - pb_display_text
+        - pb_display_text_hover
+        - pb_display_border_color
+        - pb_display_border_hover
+        - pb_display_border
+        - pb_display_border_radius
+        - pb_display_padding
+        - pb_display_margin
+        - pb_display_shadow
+        - pb_display_width
+        - pb_display_bg_opacity
+      label: 'Tab Display'
+      region: content
+      parent_name: group_tabs_wrapper
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: pb-tab-display
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: paragraph.image_grid_section_bundle.default
+targetEntityType: paragraph
+bundle: image_grid_section_bundle
+mode: default
+content:
+  pb_content_image:
+    type: media_library_widget
+    weight: 4
+    region: content
+    settings:
+      media_types: {  }
+    third_party_settings: {  }
+  pb_content_image_link:
+    type: link_default
+    weight: 5
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  pb_content_image_link_title:
+    type: string_textfield
+    weight: 6
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_title:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_bg:
+    type: color_text_widget
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_hover:
+    type: color_text_widget
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border:
+    type: options_select
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_color:
+    type: color_text_widget
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_hover:
+    type: color_text_widget
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_radius:
+    type: options_select
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_margin:
+    type: options_select
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_padding:
+    type: options_select
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_shadow:
+    type: options_select
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_text:
+    type: color_text_widget
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_text_hover:
+    type: color_text_widget
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_width:
+    type: options_select
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

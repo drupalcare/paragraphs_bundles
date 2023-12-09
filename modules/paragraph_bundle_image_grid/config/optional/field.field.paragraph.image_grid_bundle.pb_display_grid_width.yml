@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_grid_width
+    - paragraphs.paragraphs_type.image_grid_bundle
+id: paragraph.image_grid_bundle.pb_display_grid_width
+field_name: pb_display_grid_width
+entity_type: paragraph
+bundle: image_grid_bundle
+label: 'Grid Image Width'
+description: "The grid-template-columns property automatically fills the container with columns, each having a default minimum width of 200px and a maximum width of 1fr. Each image in the grid takes up the full width of its cell, with its height adjusting to maintain the image's aspect ratio. The minimum width can be adjusted."
+required: true
+translatable: false
+default_value:
+  -
+    value: 200
+default_value_callback: ''
+settings:
+  min: 50
+  max: null
+  prefix: ''
+  suffix: px
+field_type: integer

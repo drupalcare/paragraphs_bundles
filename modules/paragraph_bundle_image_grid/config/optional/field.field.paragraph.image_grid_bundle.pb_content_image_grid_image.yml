@@ -1,0 +1,66 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_image_grid_image
+    - paragraphs.paragraphs_type.image_grid_bundle
+    - paragraphs.paragraphs_type.image_grid_section_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.image_grid_bundle.pb_content_image_grid_image
+field_name: pb_content_image_grid_image
+entity_type: paragraph
+bundle: image_grid_bundle
+label: Image
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      image_grid_section_bundle: image_grid_section_bundle
+    negate: 0
+    target_bundles_drag_drop:
+      card_image_section_bundle:
+        weight: 14
+        enabled: false
+      card_text_section_bundle:
+        weight: 15
+        enabled: false
+      card_three_columns_bundle:
+        weight: 16
+        enabled: false
+      card_two_columns_bundle:
+        weight: 17
+        enabled: false
+      image_bundle:
+        weight: 18
+        enabled: false
+      image_grid_bundle:
+        weight: 19
+        enabled: false
+      image_grid_section_bundle:
+        weight: 20
+        enabled: true
+      image_narrow_bundle:
+        weight: 21
+        enabled: false
+      image_wide_bundle:
+        weight: 22
+        enabled: false
+      one_column_bundle:
+        weight: 23
+        enabled: false
+      simple_bundle:
+        weight: 24
+        enabled: false
+      three_columns_bundle:
+        weight: 25
+        enabled: false
+      two_columns_bundle:
+        weight: 26
+        enabled: false
+field_type: entity_reference_revisions

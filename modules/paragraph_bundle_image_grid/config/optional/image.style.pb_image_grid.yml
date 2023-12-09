@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_image_grid
+label: 'PB Image Grid'
+effects:
+  fa2747ad-3739-40b7-ad7a-7a74dd475744:
+    uuid: fa2747ad-3739-40b7-ad7a-7a74dd475744
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  06d9fa35-ff71-43a7-b135-067371c9fb09:
+    uuid: 06d9fa35-ff71-43a7-b135-067371c9fb09
+    id: image_scale
+    weight: 2
+    data:
+      width: 600
+      height: null
+      upscale: true
