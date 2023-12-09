@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: hero_bundle
-label: 'Hero Bundle'
+label: 'Hero'
 icon_uuid: null
 icon_default: null
 description: ''

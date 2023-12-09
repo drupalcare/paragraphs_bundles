@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: views_bundle
-label: 'Views Bundle'
+label: 'Views'
 icon_uuid: null
 icon_default: null
 description: ''

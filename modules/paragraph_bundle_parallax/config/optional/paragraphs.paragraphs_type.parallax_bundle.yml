@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: parallax_bundle
-label: 'Parallax Bundle'
+label: 'Parallax'
 icon_uuid: null
 icon_default: null
 description: ''

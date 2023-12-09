@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: accordion_section_bundle
-label: 'Accordion Section Bundle'
+label: 'Accordion Section'
 icon_uuid: null
 icon_default: null
 description: ''

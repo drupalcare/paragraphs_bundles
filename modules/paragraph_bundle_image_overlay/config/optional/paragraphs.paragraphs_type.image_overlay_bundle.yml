@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: image_overlay_bundle
-label: 'Image Overlay Bundle'
+label: 'Image Overlay'
 icon_uuid: null
 icon_default: null
 description: ''

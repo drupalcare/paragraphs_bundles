@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: two_columns_bundle
-label: 'Two Columns Bundle'
+label: 'Two Columns'
 icon_uuid: null
 icon_default: null
 description: ''

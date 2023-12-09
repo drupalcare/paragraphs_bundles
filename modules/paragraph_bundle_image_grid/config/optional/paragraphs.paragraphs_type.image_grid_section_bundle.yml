@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: image_grid_section_bundle
-label: 'Image Grid Section Bundle'
+label: 'Image Grid Section'
 icon_uuid: null
 icon_default: null
 description: ''

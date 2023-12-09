@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: slideshow_section_bundle
-label: 'Slideshow Section Bundle'
+label: 'Slideshow Section'
 icon_uuid: null
 icon_default: null
 description: ''

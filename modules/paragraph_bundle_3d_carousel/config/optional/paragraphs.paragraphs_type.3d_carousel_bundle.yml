@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: 3d_carousel_bundle
-label: '3D Carousel Bundle'
+label: '3D Carousel'
 icon_uuid: null
 icon_default: null
 description: ''

@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: card_image_section_bundle
-label: 'Card Image Section Bundle'
+label: 'Card Image Section'
 icon_uuid: null
 icon_default: null
 description: ''

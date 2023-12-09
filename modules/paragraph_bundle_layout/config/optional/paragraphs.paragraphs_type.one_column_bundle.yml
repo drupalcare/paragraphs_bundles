@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: one_column_bundle
-label: 'One Column Bundle'
+label: 'One Column'
 icon_uuid: null
 icon_default: null
 description: ''

@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: tabs_bundle
-label: 'Tabs Bundle'
+label: 'Tabs'
 icon_uuid: null
 icon_default: null
 description: ''

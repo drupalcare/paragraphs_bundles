@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: link_section_bundle
-label: 'Link Section Bundle'
+label: 'Link Section'
 icon_uuid: null
 icon_default: null
 description: ''

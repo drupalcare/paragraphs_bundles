@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies: {  }
 id: 3d_flip_box_bundle
-label: '3D Flip Box Bundle'
+label: '3D Flip Box'
 icon_uuid: null
 icon_default: null
 description: ''
