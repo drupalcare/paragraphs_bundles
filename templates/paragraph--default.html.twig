@@ -112,7 +112,7 @@
       <h3 class="content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
       {# In the default template we remove unwanted fields. #}
-      {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+      {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
   </div>
 </div> {# End of main wrapper. #}

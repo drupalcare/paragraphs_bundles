@@ -127,14 +127,12 @@
     <h3 class="content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
-    {% if pb_link %}
+    {% if pb_link and pb_image %}
     <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-    {% endif %}
-
-    <div class="{{ pb_img_classes|join(' ')|trim }}"> {{ pb_image }}</div>
-
-    {% if pb_link %}
+      <div class="{{ pb_img_classes|join(' ')|trim }}"> {{ pb_image }}</div>
     </a>
+    {% else %}
+    <div class="{{ pb_img_classes|join(' ')|trim }}"> {{ pb_image }}</div>
     {% endif %}
 
   </div>

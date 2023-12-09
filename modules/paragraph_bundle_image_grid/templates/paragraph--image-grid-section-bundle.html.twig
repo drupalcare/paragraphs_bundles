@@ -1,0 +1,153 @@
+{#
+/**
+* @file
+* Default theme implementation to display a 'image' paragraph.
+*
+* Available variables:
+* - paragraph: Full paragraph entity.
+*   Only method names starting with "get", "has", or "is" and a few common
+*   methods such as "id", "label", and "bundle" are available. For example:
+*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+*   - paragraph.id(): The paragraph ID.
+*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+*   - paragraph.getOwnerId(): The user ID of the paragraph author.
+*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+*   and methods for the paragraph object.
+* - content: All paragraph items. Use {{ content }} to print them all,
+*   or print a subset such as {{ content.field_example }}. Use
+*   {{ content|without('field_example') }} to temporarily suppress the printing
+*   of a given child element.
+* - attributes: HTML attributes for the containing element.
+*   The attributes.class element may contain one or more of the following
+*   classes:
+*   - paragraphs: The current template type (also known as a "theming hook").
+*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+*     "Image" it would result in "paragraphs--type--image". Note that the machine
+*     name will often be in a short form of the human readable label.
+*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+*     preview would result in: "paragraphs--view-mode--preview", and
+*     default: "paragraphs--view-mode--default".
+* - view_mode: View mode; for example, "preview" or "full".
+* - logged_in: Flag for authenticated user status. Will be true when the
+*   current user is a logged-in member.
+* - is_admin: Flag for admin user status. Will be true when the current user
+*   is an administrator.
+*
+* @see template_preprocess_paragraph()
+*
+* @ingroup themeable
+#}
+
+{# Attach the necessary library. #}
+{{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
+{{ attach_library('paragraph_bundle_image_grid/paragraph-bundle-image-grid') }}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb-image-grid-section__inner' %}
+
+{# Set the paragraph id. #}
+{% set paragraph_id  = 'pb-image-grid-section' ~ paragraph.id.value %}
+
+{# Set the classes for the paragraph. #}
+{% set classes = [
+  'paragraph',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished',
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id
+] %}
+
+{# Set the color styles for the paragraph. #}
+{% set pb_styles = {
+  'pb-br': 'pb_display_border_color',
+  'pb-br-h': 'pb_display_border_hover',
+} %}
+
+{# Set the color styles for the paragraph. #}
+{% set pb_image_styles = {
+  'pb-bg': 'pb_display_bg',
+  'pb-tx': 'pb_display_text',
+  'pb-tx-h': 'pb_display_text_hover',
+  'pb-bg-h': 'pb_display_bg_hover',
+} %}
+
+{# Set the display properties for the paragraph. #}
+{% set pb_displays = [
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
+] %}
+
+{# Get the paragraph width and add it to the inner classes if it exists. #}
+{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
+
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
+{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
+{% if pb_bg_opacity != 100 %}
+  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{% endif %}
+
+{# Set the style attributes for the paragraph. #}
+{% set pb_image_attributes = [] %}
+{% for key, value in pb_image_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+    {% if value == 'pb_display_bg' %}
+      {% set pb_image_attributes = pb_image_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% else %}
+      {% set pb_image_attributes = pb_image_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
+{% for key, value in pb_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+  {% endif %}
+{% endfor %}
+
+{# Image and link #}
+{% set pb_link = content.pb_content_image_link.0['#url'] %}
+{% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
+{# Set the round around the image also #}
+{% set pb_padding = content.pb_display_padding|render|striptags|trim %}
+{% set pb_radius = content.pb_display_border_radius|render|striptags|trim %}
+{% set pb_image = content.pb_content_image %}
+
+
+{# Render the paragraph. #}
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
+  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+
+    {% if pb_link and pb_image %}
+    <div class="pb-img-wrapper pb-image-grid">
+      <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+        {{ pb_image }}
+        <div class="pb-image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="content-title">{{ content.pb_content_title }}</h3>
+        </div>
+      </a>
+    </div>
+
+    {% else %}
+    <div class="pb-img-wrapper pb-image-grid">
+      {{ pb_image }}
+      <div class="pb-image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="content-title">{{ content.pb_content_title }}</h3>
+      </div>
+    </div>
+    {% endif %}
+
+  </div>
+</div> {# End of main wrapper #}
+
