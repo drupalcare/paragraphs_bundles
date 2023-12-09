@@ -25,18 +25,6 @@
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph>.paragraph__inner *,
-.pb-hero-txt-wrapper-inner * {
-  border-color: var(--pb-br);
-  color: var(--pb-tx);
-}
-
-.paragraph>.paragraph__inner:hover *,
-.pb-hero-txt-wrapper-inner:hover * {
-  border-color: var(--pb-br-h, var(--pb-br));
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
 .solo-bar {
   width: 100%;
   overflow: hidden;

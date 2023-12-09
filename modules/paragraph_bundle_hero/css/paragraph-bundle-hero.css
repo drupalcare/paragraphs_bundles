@@ -13,6 +13,16 @@
   position: relative;
 }
 
+.pb-hero-txt-wrapper-inner * {
+  border-color: var(--pb-br);
+  color: var(--pb-tx);
+}
+
+.pb-hero-txt-wrapper-inner:hover * {
+  border-color: var(--pb-br-h, var(--pb-br));
+  color: var(--pb-tx-h, var(--pb-tx));
+}
+
 .paragraph--type--hero-bundle .pb-hero-txt-wrapper {
   position: absolute;
   top: 0;

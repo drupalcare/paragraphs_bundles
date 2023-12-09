@@ -6,21 +6,91 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph--type--card-bundle .pb-card-columns {
+.paragraph--type--card-two-columns-bundle .pb-card-two-columns,
+.paragraph--type--card-three-columns-bundle .pb-card-three-columns {
   gap: 16px;
   display: grid;
   grid-auto-flow: row;
 }
 
-.paragraph--type--card-bundle .pb-card-columns>div {
+.paragraph--type--card-two-columns-bundle .pb-card-two-columns>div,
+.paragraph--type--card-three-columns-bundle .pb-card-three-columns>div {
   width: 100%;
   height: 100%;
 }
 
-.paragraph--type--card-bundle .pb-card__inner .pb-card-columns.On>.pb-col-left {
-  grid-column: 2;
+.paragraph--type--card-two-columns-bundle .pb-card-two-columns h3,
+.paragraph--type--card-three-columns-bundle .pb-card-three-columns h3 {
+  font-size: 1.125rem;
+  margin: 0;
+  padding: 0;
+  line-height: 1.25rem;
 }
 
-.paragraph--type--card-bundle .pb-card__inner .content-title {
-  margin: 0;
+.paragraph .pb-card-text-section__inner > div,
+.paragraph .pb-card-text-section__inner > a > div {
+  color: var(--pb-tx);
+  back-ground-color: var(--pb-bg);
+}
+
+.paragraph .pb-card-text-section__inner > div:hover,
+.paragraph .pb-card-text-section__inner > a > div:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
+  back-ground-color: var(--pb-bg-h, var(--pb-bg));
+}
+
+.paragraph .pb-card-image a,
+.paragraph .pb-card-image div:not(.field--name-pb-content-title) {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100%;
+  height: 100%;
+}
+
+.paragraph .pb-card-image {
+  position: relative;
+}
+
+.paragraph .pb-card-image .pb-card-image-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  justify-content: left;
+  align-items: end;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  z-index: 1000;
+}
+
+.paragraph .pb-card-image .pb-card-image-title>* {
+  width: 100%;
+}
+
+.paragraph .pb-card-image .field--name-pb-content-image {
+  z-index: -1;
+}
+
+.paragraph .pb-card-image .field--name-pb-content-title {
+  padding: 0.75rem;
+}
+
+.paragraph .pb-card-image > .pb-card-image-title,
+.paragraph .pb-card-image > a > .pb-card-image-title {
+  color: var(--pb-tx);
+  background-color: var(--pb-bg);
+}
+
+.paragraph .pb-card-image:hover > .pb-card-image-title,
+.paragraph .pb-card-image:hover > a > .pb-card-image-title {
+  color: var(--pb-tx-h, var(--pb-tx));
+  background-color: var(--pb-bg-h, var(--pb-bg));
+}
+
+.paragraph .pb-card-image:hover .field--name-pb-content-title {
+  color: var(--pb-tx-h, var(--pb-tx));
+  z-index: 1001;
 }
