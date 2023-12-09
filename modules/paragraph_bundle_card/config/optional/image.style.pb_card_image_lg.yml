@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_card_image_lg
+label: 'PB Card Image LG 700x420'
+effects:
+  887e67ea-c863-4ef2-bac1-15c88cd1c108:
+    uuid: 887e67ea-c863-4ef2-bac1-15c88cd1c108
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  23088d62-7398-441d-a543-f8c70eafa1be:
+    uuid: 23088d62-7398-441d-a543-f8c70eafa1be
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 700
+      height: 420
+      anchor: center-center

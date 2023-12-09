@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_card_image_xl
+label: 'PB Card Image XL 900x540'
+effects:
+  a4aaf211-319d-4b6b-865c-75949df0e87c:
+    uuid: a4aaf211-319d-4b6b-865c-75949df0e87c
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  aef95336-05fe-4144-9db0-82a44e9cd7ec:
+    uuid: aef95336-05fe-4144-9db0-82a44e9cd7ec
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 900
+      height: 540
+      anchor: center-center

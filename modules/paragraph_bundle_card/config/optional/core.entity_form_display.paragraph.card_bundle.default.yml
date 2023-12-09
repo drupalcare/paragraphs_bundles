@@ -15,7 +15,7 @@ dependencies:
     - field.field.paragraph.card_bundle.pb_display_border_hover
     - field.field.paragraph.card_bundle.pb_display_border_radius
     - field.field.paragraph.card_bundle.pb_display_card_breakpoints
-    - field.field.paragraph.card_bundle.pb_display_card_layout
+    - field.field.paragraph.card_bundle.pb_display_card_layout_two
     - field.field.paragraph.card_bundle.pb_display_image_right
     - field.field.paragraph.card_bundle.pb_display_margin
     - field.field.paragraph.card_bundle.pb_display_padding
@@ -80,7 +80,7 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
-        - pb_display_card_layout
+        - pb_display_card_layout_two
         - pb_display_card_breakpoints
         - pb_display_bg_opacity
         - pb_display_image_right
@@ -188,7 +188,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pb_display_card_layout:
+  pb_display_card_layout_two:
     type: options_select
     weight: 16
     region: content

@@ -27,8 +27,18 @@ function paragraph_bundle_card_help($route_name, RouteMatchInterface $route_matc
  */
 function paragraph_bundle_card_theme($existing, $type, $theme, $path) {
   return [
-    'paragraph__card_bundle' => [
+    'paragraph__card_three_columns_bundle' => [
       'base hook' => 'paragraph',
     ],
+    'paragraph__card_two_columns_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__card_text_section_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+    'paragraph__card_image_section_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+
   ];
 }

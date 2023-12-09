@@ -1,0 +1,5 @@
+paragraph-bundle-image-grid:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-image-grid.css: { }

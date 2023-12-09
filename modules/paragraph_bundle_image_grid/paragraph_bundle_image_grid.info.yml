@@ -1,0 +1,8 @@
+name: Paragraph Bundle Image Grid
+type: module
+description: A reusable Paragraph Bundle Image Grid.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - paragraphs_bundles:paragraphs_bundles
+  - paragraph_bundle_image:paragraph_bundle_image

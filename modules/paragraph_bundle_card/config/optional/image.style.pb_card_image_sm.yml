@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_card_image_sm
+label: 'PB Card Image SM 300x180'
+effects:
+  df4b6bfe-ec3b-4914-90e7-b5ed46962682:
+    uuid: df4b6bfe-ec3b-4914-90e7-b5ed46962682
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp
+  46aff8f1-4fdd-474b-aca8-8198998b7fb2:
+    uuid: 46aff8f1-4fdd-474b-aca8-8198998b7fb2
+    id: image_scale_and_crop
+    weight: 2
+    data:
+      width: 300
+      height: 180
+      anchor: center-center

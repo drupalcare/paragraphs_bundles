@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_card_layout_two
+    - paragraphs.paragraphs_type.card_two_columns_bundle
+  module:
+    - options
+id: paragraph.card_two_columns_bundle.pb_display_card_layout_two
+field_name: pb_display_card_layout_two
+entity_type: paragraph
+bundle: card_two_columns_bundle
+label: 'Card Layout'
+description: 'Please select the card layout. The default layout is the image on the top.'
+required: true
+translatable: false
+default_value:
+  -
+    value: l6-l6
+default_value_callback: ''
+settings: {  }
+field_type: list_string

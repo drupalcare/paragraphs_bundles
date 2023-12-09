@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.pb_card_image_lg
+    - image.style.pb_card_image_md
+    - image.style.pb_card_image_sm
+    - image.style.pb_card_image_xl
+  module:
+    - paragraph_bundle_image
+id: pb_card
+label: 'Card (PB)'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_card_image_xl
+    breakpoint_id: paragraph_bundle_image.screen-lg-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_card_image_lg
+    breakpoint_id: paragraph_bundle_image.screen-md-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_card_image_md
+    breakpoint_id: paragraph_bundle_image.screen-sm-min
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: pb_card_image_sm
+    breakpoint_id: paragraph_bundle_image.screen-xsm-min
+    multiplier: 1x
+breakpoint_group: paragraph_bundle_image
+fallback_image_style: pb_card_image_lg

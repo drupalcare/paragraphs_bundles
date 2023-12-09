@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.card_bundle.pb_display_card_breakpoints
     - field.field.paragraph.card_bundle.pb_content_body
     - field.field.paragraph.card_bundle.pb_content_image
     - field.field.paragraph.card_bundle.pb_content_image_link
@@ -15,7 +14,8 @@ dependencies:
     - field.field.paragraph.card_bundle.pb_display_border_color
     - field.field.paragraph.card_bundle.pb_display_border_hover
     - field.field.paragraph.card_bundle.pb_display_border_radius
-    - field.field.paragraph.card_bundle.pb_display_card_layout
+    - field.field.paragraph.card_bundle.pb_display_card_breakpoints
+    - field.field.paragraph.card_bundle.pb_display_card_layout_two
     - field.field.paragraph.card_bundle.pb_display_image_right
     - field.field.paragraph.card_bundle.pb_display_margin
     - field.field.paragraph.card_bundle.pb_display_padding
@@ -34,13 +34,6 @@ targetEntityType: paragraph
 bundle: card_bundle
 mode: default
 content:
-  pb_display_card_breakpoints:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
   pb_content_body:
     type: text_default
     label: hidden
@@ -134,7 +127,14 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
-  pb_display_card_layout:
+  pb_display_card_breakpoints:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  pb_display_card_layout_two:
     type: list_key
     label: hidden
     settings: {  }
