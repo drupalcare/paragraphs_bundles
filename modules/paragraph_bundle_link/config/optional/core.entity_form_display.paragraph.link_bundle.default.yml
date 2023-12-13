@@ -43,7 +43,7 @@ third_party_settings:
       children:
         - pb_content_title
         - pb_link_section_body
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -70,7 +70,7 @@ third_party_settings:
         - pb_display_width
         - pb_display_shadow
         - pb_display_bg_opacity
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
@@ -178,8 +178,8 @@ content:
     weight: 2
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Link Body Section'
+      title_plural: 'Link Body Section'
       edit_mode: closed
       closed_mode: summary
       autocollapse: all

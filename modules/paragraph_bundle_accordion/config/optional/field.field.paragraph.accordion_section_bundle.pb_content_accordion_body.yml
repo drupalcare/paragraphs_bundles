@@ -10,9 +10,9 @@ id: paragraph.accordion_section_bundle.pb_content_accordion_body
 field_name: pb_content_accordion_body
 entity_type: paragraph
 bundle: accordion_section_bundle
-label: 'Accordion Section Body'
+label: 'Accordion Body Section'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

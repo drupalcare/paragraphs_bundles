@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_title
     - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_body
+    - field.field.paragraph.slideshow_section_bundle.pb_content_slideshow_title
     - paragraphs.paragraphs_type.slideshow_section_bundle
   module:
     - paragraphs
@@ -12,21 +12,13 @@ targetEntityType: paragraph
 bundle: slideshow_section_bundle
 mode: default
 content:
-  pb_content_slideshow_title:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   pb_content_slideshow_body:
     type: paragraphs
     weight: 1
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Slideshow Body Section'
+      title_plural: 'Slideshow Body Sections'
       edit_mode: closed
       closed_mode: summary
       autocollapse: all
@@ -38,6 +30,14 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
+    third_party_settings: {  }
+  pb_content_slideshow_title:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true

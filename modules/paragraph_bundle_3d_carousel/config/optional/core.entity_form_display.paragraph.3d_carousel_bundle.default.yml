@@ -5,7 +5,6 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_content_3d_car_body
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
-    - field.field.paragraph.3d_carousel_bundle.pb_content_title
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg_hover
@@ -44,9 +43,8 @@ third_party_settings:
         width_breakpoint: 992
     group_pp_tab_content:
       children:
-        - pb_content_title
         - pb_content_3d_car_body
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -76,7 +74,7 @@ third_party_settings:
         - pb_content_3dcar_sheight
         - pb_display_3d_play_stop
         - pb_display_bg_opacity
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
@@ -98,8 +96,8 @@ content:
     weight: 2
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Carousel item'
+      title_plural: 'Carousel items'
       edit_mode: closed
       closed_mode: summary
       autocollapse: all
@@ -123,14 +121,6 @@ content:
     weight: 17
     region: content
     settings: {  }
-    third_party_settings: {  }
-  pb_content_title:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
   pb_display_3d_play_stop:
     type: options_select

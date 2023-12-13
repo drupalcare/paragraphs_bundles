@@ -17,8 +17,8 @@ content:
     weight: 1
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Tab Body Section'
+      title_plural: 'Tab Body Sections'
       edit_mode: closed
       closed_mode: summary
       autocollapse: all

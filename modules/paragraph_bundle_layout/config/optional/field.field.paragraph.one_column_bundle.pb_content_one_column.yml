@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: one_column_bundle
 label: 'One Column'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -10,7 +10,7 @@ entity_type: paragraph
 bundle: modal_bundle
 label: 'Modal Button'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

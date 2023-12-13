@@ -10,9 +10,9 @@ id: paragraph.link_section_bundle.pb_content_link_section_url
 field_name: pb_content_link_section_url
 entity_type: paragraph
 bundle: link_section_bundle
-label: 'pp content link section link'
+label: Link
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

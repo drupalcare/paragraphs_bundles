@@ -107,7 +107,7 @@
 {% endfor %}
 
 {# Title, link and radius #}
-{% set pb_link = content. pb_content_image_link.0['#url'] %}
+{% set pb_link = content.pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
 {% set pb_round = content.pb_display_border_radius|render|striptags|trim %}
 

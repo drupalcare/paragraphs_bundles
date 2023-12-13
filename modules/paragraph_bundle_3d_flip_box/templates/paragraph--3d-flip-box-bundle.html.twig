@@ -38,16 +38,15 @@
 * @ingroup themeable
 #}
 
-{# Attach the necessary library. #}
+{# Attach necessary libraries #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_3d_flip_box/paragraph-bundle-3d-flip-box') }}
 
-{# Set the paragraph id. #}
+{# Set paragraph and inner classes #}
 {% set paragraph_id  = 'pb-3d-flip-box-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
 {% set classes_inner = 'paragraph__inner pb-3d-flip-box__inner pb__content-full' %}
 
-{# Set the classes for the paragraph. #}
+{# Set paragraph classes #}
 {% set classes = [
   'paragraph',
   'paragraph--type--3d-flip-box-bundle',
@@ -57,7 +56,7 @@
   paragraph_id
 ] %}
 
-{# Set the color styles for the paragraph. #}
+{# Set color styles and display properties #}
 {% set pb_styles = {
   'pb-bg': 'pb_display_bg',
   'pb-bg-h': 'pb_display_bg_hover',
@@ -66,8 +65,6 @@
   'pb-tx': 'pb_display_text',
   'pb-tx-h': 'pb_display_text_hover'
 } %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_border',
   'pb_display_border_radius',
@@ -76,23 +73,23 @@
   'pb_display_shadow',
 ] %}
 
-{# Get the paragraph width and add it to the inner classes if it exists. #}
+{# Add paragraph width to inner classes if exists #}
 {% set container_w_input = content.pb_display_width|render|striptags|trim %}
 {% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
-{# Add display properties to the inner classes if they exist. #}
+{# Add display properties to inner classes if they exist #}
 {% for pb_display in pb_displays %}
   {% set display_value = content[pb_display]|render|striptags|trim %}
   {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
+{# Set background opacity for paragraph #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
 
-{# Set the style attributes for the paragraph. #}
+{# Set style attributes for paragraph #}
 {% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
@@ -105,25 +102,21 @@
   {% endif %}
 {% endfor %}
 
-{# End of margin and height #}
-{# flip and height must be filled #}
+{# Set flip and height #}
 {% set pb_flip_xy = content.pb_display_flip_xy|render|striptags|trim %}
 {% set pb_box_height = content.pb_display_3d_height|render|striptags|trim %}
 
-{# Render the paragraph. #}
+{# Render the paragraph #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
-
     {% if content.pb_content_title|render %}
     <h3 class="content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
-
     <div style="height: {{ pb_box_height }}px;" class="pb-flip-box {{ pb_flip_xy }}">
       <div class="pb-flip-box-inner">
         <div class="pb-3d-front">{{ content.pb_content_3d_box_front }}</div>
         <div class="pb-3d-back {{ pb_flip_xy }}">{{ content.pb_content_3d_box_back }}</div>
       </div>
     </div>
-
   </div>
 </div> {# End of main wrapper #}

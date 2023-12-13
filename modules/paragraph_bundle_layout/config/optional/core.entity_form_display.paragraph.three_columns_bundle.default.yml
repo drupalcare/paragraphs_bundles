@@ -49,7 +49,7 @@ third_party_settings:
         - pb_content_left_column
         - pb_content_middle_column
         - pb_content_right_column
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -78,7 +78,7 @@ third_party_settings:
         - pb_display_three_columns
         - pb_display_layout_breakpoints
         - pb_display_bg_opacity
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21

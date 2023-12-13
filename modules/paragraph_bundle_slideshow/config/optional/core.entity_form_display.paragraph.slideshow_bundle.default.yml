@@ -48,7 +48,7 @@ third_party_settings:
       children:
         - pb_content_title
         - pb_content_slideshow_section
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -80,7 +80,7 @@ third_party_settings:
         - pb_display_bg_opacity
         - pb_display_slide_active_item
         - pb_display_slide_prev_next
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21

@@ -50,7 +50,7 @@ third_party_settings:
         - pb_content_modal_button
         - pb_content_modal_body
         - pb_content_modal_footer
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -78,7 +78,7 @@ third_party_settings:
         - pb_display_shadow
         - pb_display_bg_opacity
         - pb_display_animated_modal
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 22

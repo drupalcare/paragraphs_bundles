@@ -13,7 +13,7 @@ entity_type: paragraph
 bundle: link_bundle
 label: Body
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

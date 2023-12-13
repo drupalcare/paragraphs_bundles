@@ -10,6 +10,7 @@
 .paragraph .pb-one-column {
   display: grid;
   margin: 0 auto;
+  word-break: break-all;
 }
 
 .paragraph a,
@@ -33,9 +34,14 @@
   background-color: transparent !important;
 }
 
+.paragraph a.pb-link {
+  z-index: 1000;
+}
+
 .paragraph .content-title {
   display: flex;
   flex-grow: 1;
+  flex-basis: 100%;
 }
 
 .solo-row:after,

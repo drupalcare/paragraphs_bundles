@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: views_bundle
 label: 'Views Block'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: tab_section_bundle
 label: 'Tab Section Body'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

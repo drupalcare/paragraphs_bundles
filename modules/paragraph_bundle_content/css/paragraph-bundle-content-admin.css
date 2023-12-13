@@ -8,8 +8,11 @@
  */
 .field-group-tab.pb-content-type-display .details-wrapper .form-radios,
 .field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-auto-flow: row;
+  justify-content: left;
+  align-items: end;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 .field-group-tab.pb-content-type-display .details-wrapper .form-radios .form-item input,
@@ -28,12 +31,16 @@
   clear: both;
 }
 
-.field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-rgb,
-.field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-range {
-  width: 49%;
-  display: inline-block;
-  float: left;
+@media (min-width:48rem) {
+  .field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-rgb,
+  .field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-range {
+    width: 49%;
+    display: inline-block;
+    float: left;
+  }
+
 }
+
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] {
   display: inline-block;
   min-width: 210px;

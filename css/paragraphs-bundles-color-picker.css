@@ -10,6 +10,7 @@
 .pb-tab-display [data-drupal-selector="para-color-picker"] {
   display: inline-block;
   min-width: 210px;
+  width: 100%;
   border-radius: 5px;
 }
 

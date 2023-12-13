@@ -2,17 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_height
     - field.field.paragraph.parallax_section_bundle.pb_content_body
     - field.field.paragraph.parallax_section_bundle.pb_content_image
     - field.field.paragraph.parallax_section_bundle.pb_display_bg
     - field.field.paragraph.parallax_section_bundle.pb_display_bg_hover
+    - field.field.paragraph.parallax_section_bundle.pb_display_bg_opacity
     - field.field.paragraph.parallax_section_bundle.pb_display_border
     - field.field.paragraph.parallax_section_bundle.pb_display_border_color
     - field.field.paragraph.parallax_section_bundle.pb_display_border_hover
     - field.field.paragraph.parallax_section_bundle.pb_display_border_radius
     - field.field.paragraph.parallax_section_bundle.pb_display_margin
     - field.field.paragraph.parallax_section_bundle.pb_display_padding
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_height
     - field.field.paragraph.parallax_section_bundle.pb_display_shadow
     - field.field.paragraph.parallax_section_bundle.pb_display_text
     - field.field.paragraph.parallax_section_bundle.pb_display_text_hover
@@ -44,7 +45,7 @@ third_party_settings:
       children:
         - pb_content_image
         - pb_content_body
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -70,8 +71,9 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_bg_opacity
         - pb_display_parallax_height
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
@@ -88,13 +90,6 @@ targetEntityType: paragraph
 bundle: parallax_section_bundle
 mode: default
 content:
-  pb_display_parallax_height:
-    type: number
-    weight: 16
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
   pb_content_body:
     type: text_textarea
     weight: 4
@@ -119,6 +114,12 @@ content:
   pb_display_bg_hover:
     type: color_text_widget
     weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -157,6 +158,13 @@ content:
     weight: 13
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_parallax_height:
+    type: number
+    weight: 17
+    region: content
+    settings:
+      placeholder: ''
     third_party_settings: {  }
   pb_display_shadow:
     type: options_select

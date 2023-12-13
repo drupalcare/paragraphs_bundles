@@ -109,14 +109,14 @@
 
 
 {# Title and link #}
-{% set pb_link = content. pb_content_image_link.0['#url'] %}
+{% set pb_link = content.pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
 
 {# Radius and padding #}
-{% set br_color     = content.pb_display_border_color|render|striptags|trim %}
-{% set pb_br_radius = content.pb_display_border_radius|render|striptags|trim %}
-{% set pb_padding   = content.pb_display_padding|render|striptags|trim %}
-{% set pb_br_color  = br_color ? 'border-color:rgb(' ~ br_color ~ ')' : '' %}
+{% set br_color         = content.pb_display_border_color|render|striptags|trim %}
+{% set pb_br_radius     = content.pb_display_border_radius|render|striptags|trim %}
+{% set pb_padding       = content.pb_display_padding|render|striptags|trim %}
+{% set pb_br_color      = br_color ? 'border-color:rgb(' ~ br_color ~ ')' : '' %}
 {% set pb_overlay_class = pb_br_radius ? 'overlay-container ' ~ pb_br_radius : 'overlay-container' %}
 {% set pb_overlay_style = pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
 {% set pb_title_class   = pb_padding ? 'content-title overlay-title ' ~ pb_padding : 'content-title overlay-title' %}
@@ -131,7 +131,6 @@
     </div>
 
     <div {% if pb_overlay_class is not empty %}class="{{ pb_overlay_class }}"{% endif %} {% if pb_overlay_style is not empty %}style="{{ pb_overlay_style }}"{% endif %}>
-
 
       {% if pb_link %}
       <a href="{{ pb_link }}" class="solo-row pb-link" title="{{ pb_link_title }}">

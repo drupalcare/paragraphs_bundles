@@ -14,7 +14,9 @@ label: 'Text Color'
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: '#ffffff'
 default_value_callback: ''
 settings: {  }
 field_type: paragraphs_bundles_rgb

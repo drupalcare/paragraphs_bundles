@@ -48,7 +48,7 @@ third_party_settings:
       children:
         - pb_content_title
         - pb_content_accordion_section
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -80,7 +80,7 @@ third_party_settings:
         - pb_display_accor_show_expand
         - pb_display_accor_indicator
         - pb_display_accor_active_item
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21

@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: three_columns_bundle
 label: 'Middle Column'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

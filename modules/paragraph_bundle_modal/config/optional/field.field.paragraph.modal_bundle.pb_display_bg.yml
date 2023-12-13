@@ -12,9 +12,11 @@ entity_type: paragraph
 bundle: modal_bundle
 label: 'Background Color'
 description: ''
-required: false
+required: true
 translatable: false
-default_value: {  }
+default_value:
+  -
+    value: '#000000'
 default_value_callback: ''
 settings: {  }
 field_type: paragraphs_bundles_rgb

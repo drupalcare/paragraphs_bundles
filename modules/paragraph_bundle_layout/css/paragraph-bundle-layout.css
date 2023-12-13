@@ -19,7 +19,7 @@
   height: 100%;
 }
 
-@media only screen and (min-width:87.5rem) {
+@media (min-width:87.5rem) {
   .pb-two-columns.pb-1400.two-l6-l6,
   .pb-two-columns.pb-1400.two-l4-l8,
   .pb-two-columns.pb-1400.two-l8-l4,
@@ -93,7 +93,7 @@
 
 }
 
-@media only screen and (min-width:75rem) {
+@media (min-width:75rem) {
   .pb-two-columns.pb-1200.two-l6-l6,
   .pb-two-columns.pb-1200.two-l4-l8,
   .pb-two-columns.pb-1200.two-l8-l4,
@@ -167,7 +167,7 @@
 
 }
 
-@media only screen and (min-width:62rem) {
+@media (min-width:62rem) {
   .pb-two-columns.pb-992.two-l6-l6,
   .pb-two-columns.pb-992.two-l4-l8,
   .pb-two-columns.pb-992.two-l8-l4,
@@ -241,7 +241,7 @@
 
 }
 
-@media only screen and (min-width:48rem) {
+@media (min-width:48rem) {
   .pb-two-columns.pb-768.two-l6-l6,
   .pb-two-columns.pb-768.two-l4-l8,
   .pb-two-columns.pb-768.two-l8-l4,
@@ -315,7 +315,7 @@
 
 }
 
-@media only screen and (min-width:36rem) {
+@media (min-width:36rem) {
   .pb-two-columns.pb-576.two-l6-l6,
   .pb-two-columns.pb-576.two-l4-l8,
   .pb-two-columns.pb-576.two-l8-l4,

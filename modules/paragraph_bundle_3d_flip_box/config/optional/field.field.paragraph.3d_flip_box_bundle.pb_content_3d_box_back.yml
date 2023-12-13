@@ -10,7 +10,7 @@ id: paragraph.3d_flip_box_bundle.pb_content_3d_box_back
 field_name: pb_content_3d_box_back
 entity_type: paragraph
 bundle: 3d_flip_box_bundle
-label: 'Back Content'
+label: 'Back Card'
 description: ''
 required: true
 translatable: false

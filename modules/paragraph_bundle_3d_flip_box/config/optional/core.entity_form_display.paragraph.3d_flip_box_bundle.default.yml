@@ -47,7 +47,7 @@ third_party_settings:
         - pb_content_title
         - pb_content_3d_box_front
         - pb_content_3d_box_back
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -76,7 +76,7 @@ third_party_settings:
         - pb_display_flip_xy
         - pb_display_bg_opacity
         - pb_display_3d_height
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
@@ -98,8 +98,8 @@ content:
     weight: 3
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Back Content'
+      title_plural: 'Back Contents'
       edit_mode: closed
       closed_mode: summary
       autocollapse: all
@@ -117,8 +117,8 @@ content:
     weight: 2
     region: content
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
+      title: 'Front Content'
+      title_plural: 'Front Contents'
       edit_mode: open
       closed_mode: summary
       autocollapse: none

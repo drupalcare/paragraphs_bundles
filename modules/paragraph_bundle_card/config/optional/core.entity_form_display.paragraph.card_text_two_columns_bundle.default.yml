@@ -47,7 +47,7 @@ third_party_settings:
         - pb_content_title
         - pb_content_card_left
         - pb_content_card_right
-      label: 'Tab Content'
+      label: Content
       region: content
       parent_name: group_tabs_wrapper
       weight: 20
@@ -76,7 +76,7 @@ third_party_settings:
         - pb_display_card_layout_two
         - pb_display_card_breakpoints
         - pb_display_bg_opacity
-      label: 'Tab Display'
+      label: Display
       region: content
       parent_name: group_tabs_wrapper
       weight: 21

@@ -16,7 +16,7 @@ required: false
 translatable: false
 default_value:
   -
-    value: '100'
+    value: '80'
 default_value_callback: ''
 settings: {  }
 field_type: paragraphs_bundles_range

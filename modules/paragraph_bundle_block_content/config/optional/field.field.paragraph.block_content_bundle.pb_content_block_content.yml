@@ -10,8 +10,8 @@ field_name: pb_content_block_content
 entity_type: paragraph
 bundle: block_content_bundle
 label: 'Block Content'
-description: 'Reference created block content. Example, content created by Basic block ../block/add'
-required: false
+description: "Reference created block content. Example, content created by Basic block <a target='_blank' href='/block/add'>Add Custom Block</a>"
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''

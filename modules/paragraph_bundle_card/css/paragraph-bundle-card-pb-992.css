@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media only screen and (min-width:62rem) {
+@media (min-width:62rem) {
   .pb-card-two-columns.two-l6-l6,
   .pb-card-two-columns.two-l4-l8,
   .pb-card-two-columns.two-l8-l4,

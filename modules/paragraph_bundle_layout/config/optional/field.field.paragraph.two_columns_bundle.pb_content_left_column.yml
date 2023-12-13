@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: two_columns_bundle
 label: 'Left Column'
 description: ''
-required: false
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
