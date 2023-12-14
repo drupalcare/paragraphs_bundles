@@ -10,7 +10,6 @@
 .paragraph .pb-one-column {
   display: grid;
   margin: 0 auto;
-  word-break: break-all;
 }
 
 .paragraph a,
