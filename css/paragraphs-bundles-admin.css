@@ -95,3 +95,11 @@
   border-bottom-width: 5px;
   border-color: #ff5722;
 }
+
+.pb-tabs-wrapper .horizontal-tabs .pb-tab-display {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: initial;
+  max-width: 800px;
+  margin: 0 auto;
+}

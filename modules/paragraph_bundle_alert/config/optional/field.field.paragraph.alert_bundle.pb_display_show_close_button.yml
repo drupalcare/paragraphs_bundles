@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_show_close_button
+    - paragraphs.paragraphs_type.alert_bundle
+id: paragraph.alert_bundle.pb_display_show_close_button
+field_name: pb_display_show_close_button
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Show Close Button'
+description: 'Check this option to display a close button at the top of the paragraph. This allows the user to click and hide the alert content.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

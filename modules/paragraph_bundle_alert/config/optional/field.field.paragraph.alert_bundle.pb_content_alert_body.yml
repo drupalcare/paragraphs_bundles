@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_alert_body
+    - paragraphs.paragraphs_type.alert_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.alert_bundle.pb_content_alert_body
+field_name: pb_content_alert_body
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Alert Body'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+    target_bundles_drag_drop: null
+field_type: entity_reference_revisions

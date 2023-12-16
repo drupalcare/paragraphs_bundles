@@ -6,6 +6,10 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+.paragraph * {
+  box-sizing: border-box;
+}
+
 .paragraph__inner .paragraph__inner,
 .paragraph__inner .paragraph__inner .paragraph__inner {
   --pb-bg: transparent;

@@ -1,0 +1,63 @@
+/**
+ * @file
+ * Paragraph Bundle Alert.
+ *
+ * Filename:     paragraph-bundle-alert.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph--type--alert-bundle .pb-content-alert {
+  display: grid;
+  grid-auto-flow: row;
+}
+
+.paragraph--type--alert-bundle .pb-close-alert {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  vertical-align: top;
+  border: 0;
+  background: none;
+  -webkit-appearance: none;
+  appearance: none;
+  border: 2px solid gray;
+  border-radius: 50%;
+  float: right;
+}
+
+.paragraph--type--alert-bundle .pb-close-alert::before,
+.paragraph--type--alert-bundle .pb-close-alert::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: block;
+  width: 30px;
+  height: 0;
+  content: "";
+  border-top: solid 2px gray;
+}
+
+.paragraph--type--alert-bundle .pb-close-alert::before {
+  transform: translate(-50%, -50%) rotate(45deg) !important;
+}
+
+.paragraph--type--alert-bundle .pb-close-alert::after {
+  transform: translate(-50%, -50%) rotate(-45deg) !important;
+}
+
+.paragraph--type--alert-bundle .pb-close-alert:hover,
+.paragraph--type--alert-bundle .pb-close-alert:hover::before,
+.paragraph--type--alert-bundle .pb-close-alert:hover::after {
+  border-color: #f00;
+}
+
+.paragraph--type--alert-bundle .alert-top.Off .content-title {
+  width: 100%;
+}
+
+.paragraph--type--alert-bundle .alert-top.On .content-title {
+  margin: 0 auto;
+  width: calc(100% - 40px);
+  min-height: 40px;
+}

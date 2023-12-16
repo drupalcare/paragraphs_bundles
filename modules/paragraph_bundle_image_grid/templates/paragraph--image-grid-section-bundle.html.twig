@@ -45,7 +45,7 @@
 {% set classes_inner = 'paragraph__inner pb-image-grid-section__inner' %}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-image-grid-section' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb-image-grid-section-' ~ paragraph.id.value %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [

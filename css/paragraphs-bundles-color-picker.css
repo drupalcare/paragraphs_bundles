@@ -16,15 +16,15 @@
 
 .pb-tab-display [data-drupal-selector="para-color-picker"] .form-text {
   display: inline-block;
-  width: calc(100% - 70px);
+  width: calc(100% - 50px);
   border-radius: 12px 0 0 12px;
   border-right: none;
+  box-sizing: border-box;
 }
 
 .pb-tab-display [data-drupal-selector="para-color-picker"] .form-color {
   display: inline-block;
-  width: 40px;
-  margin-right: 20px;
+  width: 50px;
   vertical-align: bottom;
   border-radius: 0 12px 12px 0;
   border-left: none;

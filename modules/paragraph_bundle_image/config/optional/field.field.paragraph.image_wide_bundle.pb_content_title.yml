@@ -8,7 +8,7 @@ id: paragraph.image_wide_bundle.pb_content_title
 field_name: pb_content_title
 entity_type: paragraph
 bundle: image_wide_bundle
-label: 'Image Title'
+label: Title
 description: ''
 required: false
 translatable: false

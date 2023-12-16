@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Paragraph Bundle Alert.
+ *
+ * Filename:     paragraph_bundle_alert.module
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function paragraph_bundle_alert_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.paragraph_bundle_alert') {
+    return _helper_render_readme();
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_alert_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__alert_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+  ];
+}

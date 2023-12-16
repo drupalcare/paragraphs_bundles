@@ -62,7 +62,7 @@
     });
   };
 
-  Drupal.behaviors.aragraphsAccordionBundle = {
+  Drupal.behaviors.paragraphsAccordionBundle = {
     attach: (settings) => {
       const loadingBlocks = document.querySelectorAll('[data-big-pipe-placeholder-id]').length;
       if (!loadingBlocks) {
