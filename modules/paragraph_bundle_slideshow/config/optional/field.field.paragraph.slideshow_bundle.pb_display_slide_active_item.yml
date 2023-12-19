@@ -10,8 +10,8 @@ id: paragraph.slideshow_bundle.pb_display_slide_active_item
 field_name: pb_display_slide_active_item
 entity_type: paragraph
 bundle: slideshow_bundle
-label: 'Active Slide Highlight'
-description: 'Apply a distinct color to the background of the active slide.'
+label: 'Active Button Background'
+description: ''
 required: false
 translatable: false
 default_value: {  }

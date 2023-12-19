@@ -10,7 +10,7 @@ id: paragraph.slideshow_bundle.pb_display_slide_play_stop
 field_name: pb_display_slide_play_stop
 entity_type: paragraph
 bundle: slideshow_bundle
-label: 'Time in seconds'
+label: 'Play and Stop'
 description: "The slideshow auto-transitions every 5 seconds by default. Adjust the interval within 3-15 seconds to enable a play/pause button that pauses on mouse hover. To stop the slideshow, set the field value to 'none'."
 required: false
 translatable: false

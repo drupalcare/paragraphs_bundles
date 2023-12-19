@@ -6,171 +6,171 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-((Drupal, settings, once) => {
+((Drupal, drupalSettings, once) => {
   'use strict';
 
+  Drupal.behaviors.paragraphSlideshowBundle = {
+    attach: function(context, settings) {
 
-  let slideIndex = 1;
-  let slides = document.querySelectorAll('.pb-slides');
 
-  const getNextItemIndex = (totalSlides) => {
-    slideIndex = slideIndex % totalSlides + 1;
-    return slideIndex;
-  };
 
-  let getPreviousItemIndex = (totalSlides) => {
-    slideIndex = slideIndex === 1 ? totalSlides : slideIndex - 1;
-    return slideIndex;
-  };
+      let slideIndex = 1;
+      let slides = context.querySelectorAll('.pb-slides');
 
-  let getParentId = (element) => {
-    return parseInt(element.split('-')[3]);
-  };
+      const getNextItemIndex = (totalSlides) => {
+        slideIndex = slideIndex % totalSlides + 1;
+        return slideIndex;
+      };
 
-  let getElementId = (element) => {
-    return parseInt(element.split('-')[2]);
-  };
+      let getPreviousItemIndex = (totalSlides) => {
+        slideIndex = slideIndex === 1 ? totalSlides : slideIndex - 1;
+        return slideIndex;
+      };
 
-  const getSlideIndex = (slides) => {
-    for (let i = 0; i < slides.length; i++) {
-      const slide = document.getElementById(slides[i].id);
-      if (window.getComputedStyle(slide).display === 'block') {
-        slideIndex = i + 1;
-        break;
-      }
-    }
-    return slideIndex;
-  };
+      let getParentId = (element) => {
+        return parseInt(element.split('-')[3]);
+      };
 
-  let getNextSlide = (parentId, slideId) => {
-    const slidesSelector = `#pb-slides-${parentId}>.pb-s-wr`;
-    const currentIdSelector = `#pb-slides-${parentId}>#pb-s-wr-${parentId}-${slideId}`;
-    const activeButtonSelector = `#pb-slideshow-${parentId}>.pb-s-nav>#b-nav-${slideId}`;
-    const allActiveClassesSelector = `#pb-slideshow-${parentId}>.pb-s-nav>.b-nav`;
+      let getElementId = (element) => {
+        return parseInt(element.split('-')[2]);
+      };
 
-    let slides = document.querySelectorAll(slidesSelector);
-    let selectedPane = document.querySelector(currentIdSelector);
-    let activeButton = document.querySelector(activeButtonSelector);
-    let allActiveClasses = document.querySelectorAll(allActiveClassesSelector);
+      const getSlideIndex = (slides) => {
+        for (let i = 0; i < slides.length; i++) {
+          const slide = context.getElementById(slides[i].id);
+          if (window.getComputedStyle(slide)
+            .display === 'block') {
+            slideIndex = i + 1;
+            break;
+          }
+        }
+        return slideIndex;
+      };
 
-    allActiveClasses.forEach(element => {
-      element.classList.remove('pb-is-active');
-    });
+      let getNextSlide = (parentId, slideId) => {
+        const slidesSelector = `#pb-slides-${parentId}>.pb-s-wr`;
+        const currentIdSelector = `#pb-slides-${parentId}>#pb-s-wr-${parentId}-${slideId}`;
+        const activeButtonSelector = `#pb-slideshow-${parentId}>.pb-s-nav>#b-nav-${slideId}`;
+        const allActiveClassesSelector = `#pb-slideshow-${parentId}>.pb-s-nav>.b-nav`;
 
-    slides.forEach(element => {
-      element.style.display = 'none';
-    });
+        let slides = context.querySelectorAll(slidesSelector);
+        let selectedPane = context.querySelector(currentIdSelector);
+        let activeButton = context.querySelector(activeButtonSelector);
+        let allActiveClasses = context.querySelectorAll(allActiveClassesSelector);
 
-    return [selectedPane, activeButton];
-  };
+        allActiveClasses.forEach(element => {
+          element.classList.remove('pb-is-active');
+        });
 
-  const handlePrevNextBtn = (element, itemFunction) => {
-    const parentId = getParentId(element);
-    const slides = document.querySelectorAll(`#pb-slides-${parentId}>.pb-s-wr`);
-    const totalSlides = slides.length;
-    const slideId = itemFunction(totalSlides);
-    const [nextSlide, isActive] = getNextSlide(parentId, slideId);
+        slides.forEach(element => {
+          element.style.display = 'none';
+        });
 
-    nextSlide.style.display = 'block';
-    isActive.classList.add('pb-is-active');
-  };
+        return [selectedPane, activeButton];
+      };
 
-  let handleBottomNav = (e, p) => {
-    const slideId = getElementId(e);
-    const parentId = getParentId(p);
-    const slideAndActiveState = getNextSlide(parentId, slideId);
+      const handlePrevNextBtn = (element, itemFunction) => {
+        const parentId = getParentId(element);
+        const slides = context.querySelectorAll(`#pb-slides-${parentId}>.pb-s-wr`);
+        const totalSlides = slides.length;
+        const slideId = itemFunction(totalSlides);
+        const [nextSlide, isActive] = getNextSlide(parentId, slideId);
 
-    if (slideAndActiveState && slideAndActiveState.length >= 2) {
-      slideAndActiveState[0].style.display = 'block';
-      slideAndActiveState[1].classList.add('pb-is-active');
-      slideIndex = slideId;
-    } else {
-      console.error('getNextSlide did not return an array with at least two elements');
-    }
-  };
+        nextSlide.style.display = 'block';
+        isActive.classList.add('pb-is-active');
+      };
 
-  const autoSlide = (parentId, itemFunction) => {
-    const slides = document.querySelectorAll(`#pb-slides-${parentId}>.pb-s-wr`);
-    getSlideIndex(slides);
-    const totalSlides = slides.length;
-    const slideId = itemFunction(totalSlides);
-    const [nextSlide, activeSlide] = getNextSlide(parentId, slideId);
+      let handleBottomNav = (e, p) => {
+        const slideId = getElementId(e);
+        const parentId = getParentId(p);
+        const slideAndActiveState = getNextSlide(parentId, slideId);
 
-    nextSlide.style.display = 'block';
-    activeSlide.classList.add('pb-is-active');
-  };
-
-  slides.forEach(slide => {
-    let slideId = slide.id;
-    let parentId = parseInt(slide.id.split('-')[2]);
-    let intervalId = slide.id.replaceAll('-', '');
-    let slideTime = parseInt(document.querySelector(`#pb-slideshow-${parentId}>.play-stop-value`).textContent);
-
-    if (slideTime != 0) {
-      let stopOnHover = document.getElementById(slideId);
-      let playPause = document.getElementById(`btn-${parentId}`);
-      let btnClasses = playPause.classList;
-
-      btnClasses.add('no-bottom-nav');
-
-      const autoSlideInterval = () => setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
-
-      intervalId = autoSlideInterval();
-
-      const clearAndSetInterval = () => {
-        if (playPause.classList.contains('play-active-slideshow')) {
-          clearInterval(intervalId);
-          intervalId = autoSlideInterval();
+        if (slideAndActiveState && slideAndActiveState.length >= 2) {
+          slideAndActiveState[0].style.display = 'block';
+          slideAndActiveState[1].classList.add('pb-is-active');
+          slideIndex = slideId;
+        } else {
+          console.error('getNextSlide did not return an array with at least two elements');
         }
       };
 
-      stopOnHover.addEventListener('mouseover', () => {
-        if (playPause.classList.contains('play-active-slideshow')) {
-          clearInterval(intervalId);
-        }
-      });
+      const autoSlide = (parentId, itemFunction) => {
+        const slides = context.querySelectorAll(`#pb-slides-${parentId}>.pb-s-wr`);
+        getSlideIndex(slides);
+        const totalSlides = slides.length;
+        const slideId = itemFunction(totalSlides);
+        const [nextSlide, activeSlide] = getNextSlide(parentId, slideId);
 
-      stopOnHover.addEventListener('mouseout', clearAndSetInterval);
+        nextSlide.style.display = 'block';
+        activeSlide.classList.add('pb-is-active');
+      };
 
-      playPause.addEventListener('click', function() {
-        if (this.classList.contains('play-active-slideshow')) {
-          this.classList.replace('play-active-slideshow', 'pause-active-slideshow');
-          this.innerHTML = '&#9654;';
-          clearInterval(intervalId);
-        } else {
-          this.classList.replace('pause-active-slideshow', 'play-active-slideshow');
-          this.innerHTML = '&#10073;&nbsp;&#10073;';
+      once('init-slides', slides).forEach(slide => {
+        let slideId = slide.id;
+        let parentId = parseInt(slide.id.split('-')[2]);
+        let intervalId = slide.id.replaceAll('-', '');
+        let slideTime = parseInt(context.querySelector(`#pb-slideshow-${parentId}>.play-stop-value`)
+          .textContent);
+
+        if (slideTime != 0) {
+          let stopOnHover = context.getElementById(slideId);
+          let playPause = context.getElementById(`btn-${parentId}`);
+          let btnClasses = playPause.classList;
+
+          btnClasses.add('no-bottom-nav');
+
+          const autoSlideInterval = () => setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
+
           intervalId = autoSlideInterval();
+
+          const clearAndSetInterval = () => {
+            if (playPause.classList.contains('play-active-slideshow')) {
+              clearInterval(intervalId);
+              intervalId = autoSlideInterval();
+            }
+          };
+
+          stopOnHover.addEventListener('mouseover', () => {
+            if (playPause.classList.contains('play-active-slideshow')) {
+              clearInterval(intervalId);
+            }
+          });
+
+          stopOnHover.addEventListener('mouseout', clearAndSetInterval);
+
+          playPause.addEventListener('click', function() {
+            if (this.classList.contains('play-active-slideshow')) {
+              this.classList.replace('play-active-slideshow', 'pause-active-slideshow');
+              this.innerHTML = '&#9654;';
+              clearInterval(intervalId);
+            } else {
+              this.classList.replace('pause-active-slideshow', 'play-active-slideshow');
+              this.innerHTML = '&#10073;&nbsp;&#10073;';
+              intervalId = autoSlideInterval();
+            }
+          });
         }
+
       });
-    }
 
-  });
-
-  Drupal.behaviors.paragraphSlideshowBundle = {
-    attach: (settings) => {
-      let loadingBlocks = document.querySelectorAll('[data-big-pipe-placeholder-id]').length;
-      if (!loadingBlocks) {
-
-        document.querySelectorAll('.pb-slideshow-inner .pb-s-next').forEach(function(element) {
-          element.addEventListener('click', function(event) {
-            handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
-          });
+      once('init-next-button', '.pb-slideshow-inner .pb-s-next', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
         });
+      });
 
-        document.querySelectorAll('.pb-slideshow-inner .pb-s-prev').forEach(function(element) {
-          element.addEventListener('click', function(event) {
-            handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
-          });
+      once('init-prev-button', '.pb-slideshow-inner .pb-s-prev', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
         });
+      });
 
-        document.querySelectorAll('.pb-slideshow-inner .b-nav').forEach(function(element) {
-          element.addEventListener('click', function(event) {
-            handleBottomNav(event.target.id, event.target.parentElement.id);
-          });
+      once('init-bottom-nav', '.pb-slideshow-inner .b-nav', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handleBottomNav(event.target.id, event.target.parentElement.id);
         });
+      });
 
-      } // end of lading Blocks
     }
   };
 })(Drupal, drupalSettings, once);

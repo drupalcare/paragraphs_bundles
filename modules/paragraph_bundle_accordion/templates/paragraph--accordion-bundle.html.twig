@@ -118,7 +118,7 @@
   <div class="{{ classes_inner }}" role="tablist" aria-multiselectable="true" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
       {% set acc_id = 'pb-acc-' ~ paragraph.id.value %}
-      <div id="{{ acc_id }}" class="solo-row">
+      <div id="{{ acc_id }}" class="pb-acc solo-row">
 
       {% if content.pb_content_title|render %}
       <h3 class="content-title">{{ content.pb_content_title }}</h3>

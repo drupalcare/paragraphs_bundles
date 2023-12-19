@@ -10,8 +10,8 @@ id: paragraph.tabs_bundle.pb_display_tab_active_item
 field_name: pb_display_tab_active_item
 entity_type: paragraph
 bundle: tabs_bundle
-label: 'Active Tab Highlight'
-description: 'Apply a distinct color to the background of the active tab.'
+label: 'Active Tab Background'
+description: ''
 required: false
 translatable: false
 default_value: {  }

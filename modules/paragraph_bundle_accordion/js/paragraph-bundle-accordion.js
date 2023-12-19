@@ -6,70 +6,73 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-((Drupal, settings, once) => {
-
+((Drupal, drupalSettings, once) => {
   'use strict';
 
-  const getMyId = (classId) => {
-    const wrapperAccsBtnPane = document.querySelectorAll(`#${classId} > .wrapper-accs-btn-pane`);
-    const minusButton = document.querySelector(`#${classId} > .ex-button > button.minus`);
-    const plusButton = document.querySelector(`#${classId} > .ex-button > button.plus`);
-    return [wrapperAccsBtnPane, minusButton, plusButton];
-  };
-
-  const toggleClassAndDisplay = (buttonSelector, activeClass, inactiveClass, displayIndex1, displayIndex2) => {
-    const buttons = document.querySelectorAll(buttonSelector);
-    buttons.forEach((button) => {
-      button.addEventListener('click', function() {
-        const classId = this.parentElement.parentElement.id;
-        const s = getMyId(classId);
-        s[0].forEach((element) => {
-          element.className = element.className.replace(inactiveClass, activeClass);
-        });
-        s[displayIndex1].style.display = "none";
-        s[displayIndex2].style.display = "block";
-      });
-    });
-  };
-
-  const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
-    const buttons = document.querySelectorAll(buttonSelector);
-    buttons.forEach((button) => {
-      button.addEventListener('click', function() {
-        const classId = this.parentElement.parentElement.id;
-        const sectionId = this.parentElement.parentElement.parentElement.id;
-        const x = getMyId(sectionId);
-        const element = document.getElementById(classId);
-        const section = document.getElementById(sectionId);
-        if (element.classList.contains(inactiveClass)) {
-          element.classList.replace(inactiveClass, activeClass);
-          Array.from(section.children).forEach((child) => {
-            if (!child.classList.contains(inactiveClass) && x[1]) {
-              x[1].style.display = "block";
-              x[2].style.display = "none";
-            }
-          });
-        } else {
-          element.classList.replace(activeClass, inactiveClass);
-          Array.from(section.children).forEach((child) => {
-            if (!child.classList.contains(activeClass) && x[2]) {
-              x[2].style.display = "block";
-              x[1].style.display = "none";
-            }
-          });
-        }
-      });
-    });
-  };
-
   Drupal.behaviors.paragraphsAccordionBundle = {
-    attach: (settings) => {
-      const loadingBlocks = document.querySelectorAll('[data-big-pipe-placeholder-id]').length;
-      if (!loadingBlocks) {
-        toggleActiveState('.pb-accs-button>button', 'pb-is-active', 'pb-not-active');
-        toggleClassAndDisplay('.ex-button>button.plus', 'pb-is-active', 'pb-not-active', 2, 1);
-        toggleClassAndDisplay('.ex-button>button.minus', 'pb-not-active', 'pb-is-active', 1, 2);
-      }
+    attach: function (context, settings) {
+      // Utility function to get elements by ID
+      const getElementsById = (id) => {
+        const wrapper = context.querySelectorAll(`#${id} > .wrapper-accs-btn-pane`);
+        const minusButton = context.querySelector(`#${id} > .ex-button > button.minus`);
+        const plusButton = context.querySelector(`#${id} > .ex-button > button.plus`);
+        return [wrapper, minusButton, plusButton];
+      };
+
+      // Function to toggle class and display
+      const toggleClassAndDisplay = (buttonSelector, addClass, removeClass, hideIndex, showIndex) => {
+        once('toggleClassAndDisplay', buttonSelector, context).forEach((button) => {
+          button.addEventListener('click', function (event) {
+            const classId = event.target.closest('.pb-acc').id;
+            const [wrapper, minusButton, plusButton] = getElementsById(classId);
+            wrapper.forEach((element) => {
+              element.classList.remove(removeClass);
+              element.classList.add(addClass);
+            });
+            minusButton.style.display = hideIndex === 1 ? "none" : "block";
+            plusButton.style.display = showIndex === 1 ? "none" : "block";
+          });
+        });
+      };
+
+      // Function to toggle active state
+      const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
+        once('toggleActiveState', buttonSelector, context).forEach((button) => {
+          button.addEventListener('click', function (event) {
+            const classId = event.target.closest('.wrapper-accs-btn-pane').id;
+            const sectionId = event.target.closest('.pb-acc').id;
+            const [wrapper, minusButton, plusButton] = getElementsById(sectionId);
+            const element = context.getElementById(classId);
+            const section = context.getElementById(sectionId);
+
+            if (element.classList.contains(inactiveClass)) {
+              element.classList.replace(inactiveClass, activeClass);
+              Array.from(section.children).forEach((child) => {
+                if (!child.classList.contains(inactiveClass) && minusButton) {
+                  minusButton.style.display = "block";
+                  plusButton.style.display = "none";
+                }
+              });
+            } else {
+              element.classList.replace(activeClass, inactiveClass);
+              Array.from(section.children).forEach((child) => {
+                if (!child.classList.contains(activeClass) && plusButton) {
+                  plusButton.style.display = "block";
+                  minusButton.style.display = "none";
+                }
+              });
+            }
+          });
+        });
+      };
+
+      // Initialize toggle functions
+      toggleActiveState('.pb-accs-button>button', 'pb-is-active', 'pb-not-active');
+      toggleClassAndDisplay('.ex-button>button.plus', 'pb-is-active', 'pb-not-active', 2, 1);
+      toggleClassAndDisplay('.ex-button>button.minus', 'pb-not-active', 'pb-is-active', 1, 2);
     }
   };
 })(Drupal, drupalSettings, once);
+
+
+
