@@ -16,6 +16,7 @@
       if (!carousels.length) {
         return;
       }
+
       let currentWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       let autoHelper = [];
       let carouselId;

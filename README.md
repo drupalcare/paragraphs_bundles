@@ -1,76 +1,130 @@
-# INTRODUCTION
+# Custom Paragraph Bundles Module
 
-The W3CSS Paragraphs module provides a suite of paragraph bundles made with the
-W3.CSS front-end framework. You have the power to create unlimited UI design
-by using the paragraph bundle features.
+This module provides a powerful and flexible way to create custom paragraph
+bundles in Drupal. It leverages the Paragraph and Field Group modules to
+create unique bundles. Each bundle can be customized with its own colors,
+border, layout, box shadow, margin, and padding.
 
-The parent module paragraphs_bundles has the first two basic paragraph bundles
-(Text and Image) All other children bundles are in a separate bundle/module.
-All images are using the media module.
+## FEATURES
 
-Combine the power of the w3.css front end framework with Drupal Paragraphs,
-the powerful module that allows content creators to build layouts and
-structured pages.
+- **Independent:** The module does not depend on jQuery, making it
+  lightweight, efficient and compatible with any Drupal theme.
+- **Customizable:** Fully customizable paragraph bundles with options for
+  colors, border, layout, box shadow, margin, and padding.
+- **5 Breakpoints:** Supports five breakpoints for two or three column bundles,
+  ensuring compatibility across devices.
+- **Easy to Use:** User-friendly customization of all bundles.
+- **Integration:** Utilizes Paragraph and Field Group modules; integrates with
+  the [Solo theme](https://www.drupal.org/project/solo).
 
-Using the w3.css Paragraphs Drupal module, you'll be able to create in less than
-minutes features like Slideshow, Accordions, Hero Banner, Image Overlay,
-Parallax, 3D Carousels, Modals, Tabs (Horizontal or Vertical), 3D Flip Box,
-One Column Layout, Two Columns Layout and Three Columns Layout.
+The module allows creation of paragraph bundles with two group field horizontal
+tabs: Content and Display.
 
-Bundle Types: for each bundle type I created a demo, feel free to check it.
+### Display Tab
 
-W3CSS Paragraphs 3D Carousel Bundle (Images)
-W3CSS Paragraphs 3D Carousel Bundle (Text)
-W3CSS Paragraphs 3D Flip Box Bundle
-W3CSS Paragraphs Accordion Bundle
-W3CSS Paragraphs Card Bundle
-W3CSS Paragraphs Contact Form Bundle
-W3CSS Paragraphs Content Type
-W3CSS Paragraphs Custom Block Bundle
-W3CSS Paragraphs Drupal Block Bundle
-W3CSS Paragraphs Hero Bundle
-W3CSS Paragraphs Hero Full Width Bundle
-W3CSS Paragraphs Image Bundle
-W3CSS Paragraphs Image Overlay Bundle
-W3CSS Paragraphs Modal Bundle
-W3CSS Paragraphs Menu Bundle
-W3CSS Paragraphs Parallax Bundle
-W3CSS Paragraphs Simple Bundle
-W3CSS Paragraphs Slideshow Bundle
-W3CSS Paragraphs Tabs Bundle (Horizontal or Vertical)
-W3CSS Paragraphs One Column Bundle
-W3CSS Paragraphs Three Columns Bundle
-W3CSS Paragraphs Two Columns Bundle
-W3CSS Paragraphs Quicklinks Bundle
-W3CSS Paragraphs Responsive Image Bundle
-W3CSS Paragraphs Views Bundle
-W3CSS Paragraphs Webform Bundle
+The Display tab offers customization options for paragraph bundle appearance,
+including six color input fields:
 
+- Background color
+- Background color hover
+- Text color
+- Text color hover
+- Border color
+- Border color hover
 
-Bundle Type Features: some paragraph bundles may have more or less.
-Background colors: 30 Colors to choose from.
-Background color Hover: 30 Colors to choose from.
-Text colors: 30 Colors to choose from.
-Text color hover: 30 Colors to choose from.
-Border color: 30 Colors to choose from.
-Border color hover: 30 Colors to choose from.
-Background color opacity: after you choose the background color you can choose
-the opacity for the background color. 5% - 10% - 20% - 30% - 40% - 50% - 60% -
-70% - 80% - 90% - 95% (11 x 30 = 330 total colors you can create.) The opacity
-will be applied to the background color only.
-Width: 30% - 40% - 50% - 60% - 70% - 80% - 90% - 100%.
-Borders: 11 styles to choose from.
-Round Borders: 6 Styles to choose from.
-Margin: 6 styles to choose from
-Padding: 8 styles to choose from.
-Card: Add 2px or 4px bordered shadow.
-W3CSS Classes: One extra field for any w3.css classes.
+Additional seven fields for customization:
 
+- Border
+- Border radius
+- Margin
+- Padding
+- Width in Percentage
+- Box shadow
+- Background color opacity
 
-# DEPENDENCIES
-W3CSS Theme: https://www.drupal.org/project/d8w3css
-Paragraphs: https://www.drupal.org/project/paragraphs
-Field Group: https://www.drupal.org/project/field_group
+These 13 fields are default in most bundles. The number may vary by bundle type.
 
-# INSTALLATION
-Install as any other contrib module.
+### Content Tab
+
+The Content tab contains the actual content fields of the bundle. The number
+of fields varies depending on the bundle type.
+
+## BUNDLES
+
+The module supports 26 types of paragraph bundles, one content type and one
+block type:
+
+1. 3D Carousel
+2. 3D Flip Box
+3. Accordion
+4. Alert
+5. Block Content
+6. Card Two Columns
+7. Card Three Columns
+8. Contact Form
+9. Drupal Block
+10. Hero
+11. Image (original size)
+12. Responsive Image Narrow
+13. Responsive Image Wide
+14. Image Grid
+15. Image Overlay
+16. Link
+17. Modal
+18. One Column
+19. Parallax
+20. Simple
+21. Slideshow
+22. Tabs
+23. Three Columns
+24. Two Columns
+25. Views
+26. Webform
+
+Each bundle can be customized using the Content and Display tab options.
+
+### The PB Block
+
+A custom block with a paragraph field, compatible with all themes. It can be
+used to create a paragraph block and positioned in any region.
+
+### The PB Content
+
+A custom content type with disabled left and right regions. It comes with width
+settings and comprises two group field horizontal tabs: Content and Display.
+Works with Solo Theme Only.
+
+#### Display Tab
+
+- List of all solo regions that can be disabled.
+- Field to select the maximum content width.
+- Input field for content background color.
+- Slide range for background opacity (1 to 100).
+
+#### Content Tab
+
+- Paragraph field to add any paragraph bundle. (Width setting for the paragraph
+  bundle is disabled; content settings override it.)
+- Block content reference field.
+
+This feature allows crafting unique page layouts with different color schemes
+or without elements like headers or footers.
+
+## REQUIREMENTS
+
+- Paragraph module
+- Field Group module
+
+## INSTALLATION
+
+1. Download and enable the Paragraph and Field Group modules.
+2. Download and enable this module.
+
+## USAGE
+
+After enabling the module, start creating custom paragraph bundles. Customize
+each bundle with colors, border, layout, box shadow, margin, and padding.
+
+## SUPPORT
+
+Encounter issues or have questions? Please open an issue in the issue queue.

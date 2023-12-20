@@ -12,10 +12,12 @@
   Drupal.behaviors.paragraphSlideshowBundle = {
     attach: function(context, settings) {
 
-
+        const slides = once('paragraphSlideshowBundle', '.pb-slides', context);
+        if (!slides.length) {
+          return;
+        }
 
       let slideIndex = 1;
-      let slides = context.querySelectorAll('.pb-slides');
 
       const getNextItemIndex = (totalSlides) => {
         slideIndex = slideIndex % totalSlides + 1;
