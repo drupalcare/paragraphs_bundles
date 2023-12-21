@@ -13,15 +13,15 @@
 
 .paragraph--type--alert-bundle .pb-close-alert {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: var(--pb-36);
+  height: var(--pb-36);
   cursor: pointer;
   vertical-align: top;
   border: 0;
   background: none;
   -webkit-appearance: none;
   appearance: none;
-  border: 2px solid gray;
+  border: var(--pb-2) solid var(--pb-br, gray);
   border-radius: 50%;
   float: right;
 }
@@ -32,10 +32,10 @@
   top: 50%;
   left: 50%;
   display: block;
-  width: 30px;
+  width: var(--pb-32);
   height: 0;
   content: "";
-  border-top: solid 2px gray;
+  border-top: solid var(--pb-2) var(--pb-br, gray);
 }
 
 .paragraph--type--alert-bundle .pb-close-alert::before {
@@ -49,7 +49,7 @@
 .paragraph--type--alert-bundle .pb-close-alert:hover,
 .paragraph--type--alert-bundle .pb-close-alert:hover::before,
 .paragraph--type--alert-bundle .pb-close-alert:hover::after {
-  border-color: #f00;
+  border-color: var(--pb-br, red);
 }
 
 .paragraph--type--alert-bundle .alert-top.Off .content-title {
@@ -58,6 +58,6 @@
 
 .paragraph--type--alert-bundle .alert-top.On .content-title {
   margin: 0 auto;
-  width: calc(100% - 40px);
-  min-height: 40px;
+  width: calc(100% - var(--pb-36));
+  min-height: var(--pb-36);
 }

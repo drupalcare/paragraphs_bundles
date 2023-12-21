@@ -71,13 +71,9 @@
 }
 
 .paragraph .field--name-pb-image-caption {
-  font-size: 12px;
+  font-size: var(--pb-12);
 }
 
-/*.paragraph .pb-img-wrapper {
-  overflow: hidden;
-}
-*/
 .pparagraph .pb-img-wrapper div {
   float: left;
 }
@@ -95,7 +91,7 @@
 .paragraph .button,
 .paragraph .solo-button {
   display: inline-block;
-  padding: 8px 16px;
+  padding: var(--pb-8) var(--pb-16);
   line-height: inherit;
   vertical-align: middle;
   overflow: hidden;
@@ -113,7 +109,7 @@
   user-select: none;
 }
 
-@media (min-width:993px) {
+@media (min-width:62rem) {
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-100,
   .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner,
   .pb-hero-txt-wrapper-inner.w-100:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {

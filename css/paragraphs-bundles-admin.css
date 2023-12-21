@@ -7,16 +7,6 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-:root {
-  --pb-xs: 0;
-  --pb-sm: 36rem;
-  --pb-md: 48rem;
-  --pb-lg: 62rem;
-  --pb-xlg: 75rem;
-  --pb-xxlg: 87.5rem;
-}
-
-
 .pb-tab-display > .details-wrapper {
   padding: 0 !important;
   gap: 16px;

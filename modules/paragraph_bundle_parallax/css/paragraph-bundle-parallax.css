@@ -34,9 +34,9 @@
 }
 
 .paragraph--type--parallax-section-bundle .pb-parallax-bg {
-  min-height: 250px;
+  min-height: calc(6 * var(--pb-48));
 }
 
 .paragraph--type--parallax-section-bundle .pb-parallax-text {
-  min-height: 100px;
+  min-height: calc(3 * var(--pb-32));
 }

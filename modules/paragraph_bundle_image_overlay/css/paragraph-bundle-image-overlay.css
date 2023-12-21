@@ -13,6 +13,19 @@
 
 .overlay-container div {
   height: 100%;
+
+}
+
+.paragraph div:hover a.pb-link {
+  cursor: pointer;
+}
+
+.pb-image-overlay__inner a,
+.pb-image-overlay__inner img,
+.pb-image-overlay__inner div,
+.pb-image-overlay__inner picture {
+  width: 100%;
+  display: flex;
 }
 
 .paragraph--type--image-overlay-bundle .field--name-pb-media-image .field__item {
@@ -69,6 +82,10 @@
   opacity: 1;
 }
 
+.pb-image-overlay-fade .pb-image-overlay__inner:hover .overlay-container a {
+  cursor: pointer;
+}
+
 .pb-image-overlay-zoom .pb-image-overlay__inner .overlay-container {
   top: 0;
   bottom: 0;
@@ -103,7 +120,7 @@
   opacity: 0;
   background: rgba(0, 0, 0, 0.5);
   text-align: center;
-  padding: 8px 16px !important;
+  padding: var(--pb-8) var(--pb-16) !important;
   margin: 0 !important;
   transition: .5s ease;
   width: 100%;

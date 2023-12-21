@@ -9,7 +9,7 @@
 .paragraph .pb-two-columns,
 .paragraph .pb-three-columns {
   grid-auto-flow: row;
-  gap: 16px;
+  gap: var(--pb-16);
   display: grid;
 }
 
