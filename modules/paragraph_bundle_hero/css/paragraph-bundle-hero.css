@@ -23,6 +23,14 @@
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
+.pb-hero-txt-wrapper-inner {
+  background-color: var(--pb-bg);
+}
+
+.pb-hero-txt-wrapper-inner:hover {
+  background-color: var(--pb-bg-h, var(--pb-bg));
+}
+
 .paragraph--type--hero-bundle .pb-hero-txt-wrapper {
   position: absolute;
   top: 0;

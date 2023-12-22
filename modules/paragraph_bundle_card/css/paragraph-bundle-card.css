@@ -39,8 +39,8 @@
   back-ground-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.paragraph .pb-card-image a,
-.paragraph .pb-card-image div:not(.field--name-pb-content-title) {
+.pb-card-image-section__inner > .pb-card-image a,
+.pb-card-image-section__inner > .pb-card-image div:not(.field--name-pb-content-title) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -49,11 +49,11 @@
   justify-content: center;
 }
 
-.paragraph .pb-card-image {
+.pb-card-image-section__inner > .pb-card-image {
   position: relative;
 }
 
-.paragraph .pb-card-image .pb-card-image-title {
+.pb-card-image-section__inner > .pb-card-image .pb-card-image-title {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -68,32 +68,37 @@
   z-index: 1000;
 }
 
-.paragraph .pb-card-image .pb-card-image-title>* {
+.pb-card-image-section__inner > .pb-card-image .pb-card-image-title>* {
   width: 100%;
 }
 
-.paragraph .pb-card-image .field--name-pb-content-image {
+.pb-card-image-section__inner > .pb-card-image .field--name-pb-content-image {
   z-index: -1;
 }
 
-.paragraph .pb-card-image .field--name-pb-content-title {
+.pb-card-image-section__inner > .pb-card-image .field--name-pb-content-title {
   width: 100%;
   padding: var(--pb-12);
 }
 
-.paragraph .pb-card-image > .pb-card-image-title,
-.paragraph .pb-card-image > a > .pb-card-image-title {
+.pb-card-image-section__inner > .pb-card-image > .pb-card-image-title,
+.pb-card-image-section__inner > .pb-card-image > a > .pb-card-image-title {
   color: var(--pb-tx);
   background-color: var(--pb-bg);
 }
 
-.paragraph .pb-card-image:hover > .pb-card-image-title,
-.paragraph .pb-card-image:hover > a > .pb-card-image-title {
+.pb-card-image-section__inner > .pb-card-image:hover > .pb-card-image-title,
+.pb-card-image-section__inner > .pb-card-image:hover > a > .pb-card-image-title {
   color: var(--pb-tx-h, var(--pb-tx));
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.paragraph .pb-card-image:hover .field--name-pb-content-title {
+.pb-card-image-section__inner > .pb-card-image:hover .field--name-pb-content-title {
   color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
+}
+
+.paragraph .pb-card-image-section__inner .pb-img-wrapper {
+  width: 100%;
+  display: block;
 }
