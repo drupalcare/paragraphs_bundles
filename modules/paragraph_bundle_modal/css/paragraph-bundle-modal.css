@@ -112,7 +112,8 @@ word-break: break-all;
 
 @media (max-width:48rem) {
   .pb-modal-content {
-    width: var(--pb-600);
+    width: 100%;
+    max-width: var(--pb-600);
   }
 
   .pb-modal {
@@ -123,7 +124,8 @@ word-break: break-all;
 
 @media (min-width:62rem) {
   .pb-modal-content {
-    width: var(--pb-800);
+    width: 100%;
+    max-width: var(--pb-800);
   }
 
 }
