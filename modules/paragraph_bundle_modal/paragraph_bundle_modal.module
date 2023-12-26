@@ -17,7 +17,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
  */
 function paragraph_bundle_modal_help($route_name, RouteMatchInterface $route_match) {
   if ($route_name === 'help.page.paragraph_bundle_modal') {
-    return _helper_render_readme();
+    return paragraphs_bundles__helper_render_readme();
   }
   return NULL;
 }

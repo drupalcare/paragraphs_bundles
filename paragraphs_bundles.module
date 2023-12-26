@@ -17,7 +17,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
  */
 function paragraphs_bundles_help($route_name, RouteMatchInterface $route_match) {
   if ($route_name === 'help.page.paragraphs_bundles') {
-    return _helper_render_readme();
+    return paragraphs_bundles__helper_render_readme();
   }
   return NULL;
 }
@@ -25,7 +25,7 @@ function paragraphs_bundles_help($route_name, RouteMatchInterface $route_match) 
 /**
  * Helper function to render README.md.
  */
-function _helper_render_readme() {
+function paragraphs_bundles__helper_render_readme() {
   $text = file_get_contents(__DIR__ . "/README.md");
 
   if (!\Drupal::moduleHandler()->moduleExists('markdown')) {
