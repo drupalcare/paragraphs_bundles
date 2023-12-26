@@ -10,6 +10,7 @@
 form [data-drupal-selector="para-opacity-range"] {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
 }
 
 form [data-drupal-selector="para-opacity-range"] label {

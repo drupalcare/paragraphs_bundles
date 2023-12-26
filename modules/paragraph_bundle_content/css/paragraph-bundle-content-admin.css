@@ -57,6 +57,7 @@
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-color {
   display: inline-block;
   width: 40px;
+  min-height: 40px;
   margin-right: 20px;
   vertical-align: bottom;
   border-radius: 0 12px 12px 0;
