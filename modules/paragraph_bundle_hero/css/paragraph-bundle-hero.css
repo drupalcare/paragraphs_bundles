@@ -61,19 +61,19 @@
 
 @media (max-width:62rem) {
   .paragraph--type--hero-bundle .pb-hero-txt-wrapper h1 {
-    font-size: var(--pb-28);
+    font-size: var(--pb-px28);
   }
 
   .paragraph--type--hero-bundle .pb-hero-txt-wrapper h2 {
-    font-size: var(--pb-24);
+    font-size: var(--pb-px24);
   }
 
   .paragraph--type--hero-bundle .pb-hero-txt-wrapper h3 {
-    font-size: var(--pb-22);
+    font-size: var(--pb-px22);
   }
 
   .paragraph--type--hero-bundle .pb-hero-txt-wrapper p {
-    font-size: var(--pb-16);
+    font-size: var(--pb-px16);
   }
 
   .paragraph--type--hero-bundle .pb-hero-txt-wrapper-inner {

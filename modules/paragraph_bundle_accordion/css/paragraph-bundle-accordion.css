@@ -12,7 +12,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb-accs-button > button {
-  padding: var(--pb-24) var(--pb-12);
+  padding: var(--pb-px24) var(--pb-px12);
   display: flex;
   width: 100%;
   flex-grow: 1;
@@ -34,15 +34,15 @@
 
 .paragraph--type--accordion-bundle .pb-accs-button {
   cursor: pointer;
-  padding: var(--pb-8);
+  padding: var(--pb-px8);
   width: 100%;
 }
 
 .paragraph--type--accordion-bundle .pb-is-active .pb-accs-pane {
-  padding: var(--pb-16);
+  padding: var(--pb-px16);
   border-top: none;
   width: 100%;
-  margin: 0 0 var(--pb-10) 0;
+  margin: 0 0 var(--pb-px10) 0;
 }
 .paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active,
 .paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active div {
@@ -57,7 +57,7 @@
 }
 
 .paragraph--type--accordion-bundle .ex-button button {
-  font-size: var(--pb-24);
+  font-size: var(--pb-px24);
 }
 
 .paragraph--type--accordion-bundle .ex-button .minus,

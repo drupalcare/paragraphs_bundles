@@ -7,10 +7,10 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 .paragraph--type--image-grid-section-bundle h3 {
-  font-size: var(--pb-18);
+  font-size: var(--pb-px18);
   margin: 0;
   padding: 0;
-  line-height: var(--pb-20);
+  line-height: var(--pb-px20);
 }
 
 .pb-image-grid-wrapper a,
@@ -51,7 +51,7 @@
 }
 
 .paragraph .pb-image-grid .field--name-pb-content-title {
-  padding: var(--pb-12);
+  padding: var(--pb-px12);
 }
 
 .paragraph .pb-image-grid > .pb-image-grid-title,

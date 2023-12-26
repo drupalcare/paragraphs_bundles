@@ -71,7 +71,7 @@
 }
 
 .paragraph .field--name-pb-image-caption {
-  font-size: var(--pb-12);
+  font-size: var(--pb-px12);
 }
 
 .pparagraph .pb-img-wrapper div {
@@ -91,7 +91,7 @@
 .paragraph .button,
 .paragraph .solo-button {
   display: inline-block;
-  padding: var(--pb-8) var(--pb-16);
+  padding: var(--pb-px8) var(--pb-px16);
   line-height: inherit;
   vertical-align: middle;
   overflow: hidden;

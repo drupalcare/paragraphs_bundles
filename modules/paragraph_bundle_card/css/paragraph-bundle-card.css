@@ -8,7 +8,7 @@
  */
 .paragraph--type--card-two-columns-bundle .pb-card-two-columns,
 .paragraph--type--card-three-columns-bundle .pb-card-three-columns {
-  gap: var(--pb-16);
+  gap: var(--pb-px16);
   display: grid;
   grid-auto-flow: row;
 }
@@ -78,7 +78,7 @@
 
 .pb-card-image-section__inner > .pb-card-image .field--name-pb-content-title {
   width: 100%;
-  padding: var(--pb-12);
+  padding: var(--pb-px12);
 }
 
 .pb-card-image-section__inner > .pb-card-image > .pb-card-image-title,

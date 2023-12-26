@@ -10,7 +10,7 @@
   overflow: hidden;
   background-color: transparent;
   width: 100%;
-  perspective: var(--pb-1600);
+  perspective: var(--pb-px1600);
 }
 
 .paragraph--type--3d-flip-box-bundle .pb-flip-box-inner {

@@ -13,7 +13,6 @@
 
 .overlay-container div {
   height: 100%;
-
 }
 
 .paragraph div:hover a.pb-link {
@@ -120,7 +119,7 @@
   opacity: 0;
   background: rgba(0, 0, 0, 0.5);
   text-align: center;
-  padding: var(--pb-8) var(--pb-16) !important;
+  padding: var(--pb-px8) var(--pb-px16) !important;
   margin: 0 !important;
   transition: .5s ease;
   width: 100%;
