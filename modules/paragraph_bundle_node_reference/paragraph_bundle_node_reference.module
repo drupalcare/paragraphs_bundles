@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Paragraph Bundle Node Reference.
+ *
+ * Filename:     paragraph_bundle_node_reference.module
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function paragraph_bundle_node_reference_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.paragraph_bundle_node_reference') {
+    return _helper_render_readme();
+  }
+  return NULL;
+}

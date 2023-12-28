@@ -1,0 +1,8 @@
+name: Paragraph Bundle Node Reference
+type: module
+description: A reusable Paragraph Bundle Node Reference.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - paragraphs_bundles:paragraphs_bundles
+  - paragraph_bundle_content:paragraph_bundle_content

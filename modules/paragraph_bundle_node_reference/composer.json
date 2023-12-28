@@ -1,0 +1,24 @@
+{
+    "name": "drupal/paragraph_bundle_node_reference",
+    "description": "A reusable Paragraph Drupal Node Reference.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Alaa Haddad (alaahaddad.com)",
+            "homepage": "https://www.drupal.org/u/flashwebcenter",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://drupal.org/project/paragraph_bundle_node_reference",
+  "require": {
+    "drupal/core": "*",
+    "drupal/paragraphs_bundles": "*"
+  },
+    "support": {
+        "issues": "https://drupal.org/project/issues/paragraph_bundle_node_reference",
+        "source": "https://git.drupalcode.org/project/paragraph_bundle_node_reference"
+    }
+}
+

@@ -1,0 +1,5 @@
+paragraph-bundle-node-reference:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-node-reference.css: { }
