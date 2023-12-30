@@ -6,4 +6,33 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+.node--view-mode-pb-slideshow,
+.node--view-mode-pb-3d-carousel {
+  position: relative;
+}
 
+.node--view-mode-pb-slideshow > *,
+.node--view-mode-pb-3d-carousel > * {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.node--view-mode-pb-slideshow > header,
+.node--view-mode-pb-3d-carousel > header {
+  padding: var(--pb-px12)!important;
+  background: var(--pb-bg);
+  color: var(--pb-tx);
+  border-color: var(--pb-br);
+  width: 100%;
+  position: absolute;
+  left: 0;
+  bottom: calc(3 * var(--pb-px12));
+  z-index: 1000;
+}
+
+.node--view-mode-pb-slideshow header:hover,
+.node--view-mode-pb-3d-carousel header:hover {
+  background-color: var(--pb-bg-h, var(--pb-bg));
+  border-color: var(--pb-br-h, var(--pb-br));
+  color: var(--pb-tx-h, var(--pb-tx));
+}

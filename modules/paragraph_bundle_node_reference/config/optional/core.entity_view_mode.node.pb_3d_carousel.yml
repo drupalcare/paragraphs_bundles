@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: node.pb_3d_carousel
+label: 'PB 3D Carousel'
+description: ''
+targetEntityType: node
+cache: true

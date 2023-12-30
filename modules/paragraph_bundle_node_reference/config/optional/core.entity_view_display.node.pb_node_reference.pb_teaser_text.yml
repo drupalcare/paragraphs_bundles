@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.pb_teaser_text
+    - field.field.node.pb_node_reference.pb_nf_body
+    - field.field.node.pb_node_reference.pb_nf_image
+    - node.type.pb_node_reference
+  module:
+    - text
+    - user
+id: node.pb_node_reference.pb_teaser_text
+targetEntityType: node
+bundle: pb_node_reference
+mode: pb_teaser_text
+content:
+  pb_nf_body:
+    type: text_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  addtoany: true
+  pb_nf_image: true
+  links: true

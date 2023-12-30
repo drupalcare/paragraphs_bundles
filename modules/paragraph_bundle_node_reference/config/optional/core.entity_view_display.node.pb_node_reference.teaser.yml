@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.pb_node_reference.pb_nf_body
+    - field.field.node.pb_node_reference.pb_nf_image
+    - node.type.pb_node_reference
+  module:
+    - text
+    - user
+id: node.pb_node_reference.teaser
+targetEntityType: node
+bundle: pb_node_reference
+mode: teaser
+content:
+  pb_nf_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_nf_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: pb_nf_3d_carousel
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  addtoany: true

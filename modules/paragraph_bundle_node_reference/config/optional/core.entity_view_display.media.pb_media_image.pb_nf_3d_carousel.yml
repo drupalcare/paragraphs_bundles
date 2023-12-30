@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.pb_nf_3d_carousel
+    - field.field.media.pb_media_image.pb_image_caption
+    - field.field.media.pb_media_image.pb_image_field
+    - image.style.pb_nf_3d_carousel
+    - media.type.pb_media_image
+  module:
+    - image
+id: media.pb_media_image.pb_nf_3d_carousel
+targetEntityType: media
+bundle: pb_media_image
+mode: pb_nf_3d_carousel
+content:
+  pb_image_field:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: pb_nf_3d_carousel
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  pb_image_caption: true
+  thumbnail: true
+  uid: true

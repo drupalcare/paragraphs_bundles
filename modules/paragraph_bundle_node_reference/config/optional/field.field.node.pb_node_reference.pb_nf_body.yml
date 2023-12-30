@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_nf_body
+    - node.type.pb_node_reference
+  module:
+    - text
+id: node.pb_node_reference.pb_nf_body
+field_name: pb_nf_body
+entity_type: node
+bundle: pb_node_reference
+label: Body
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

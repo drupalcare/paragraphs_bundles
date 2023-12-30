@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_nf_image
+    - media.type.pb_media_image
+    - node.type.pb_node_reference
+id: node.pb_node_reference.pb_nf_image
+field_name: pb_nf_image
+entity_type: node
+bundle: pb_node_reference
+label: Image
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      pb_media_image: pb_media_image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

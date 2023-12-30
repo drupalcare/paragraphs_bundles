@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_nf_3d_carousel
+label: 'PB NF 3D Carousel 700x420'
+effects:
+  c90ea716-8f4a-47b1-a312-d9005d74d31f:
+    uuid: c90ea716-8f4a-47b1-a312-d9005d74d31f
+    id: image_convert
+    weight: -9
+    data:
+      extension: webp
+  043ca4bc-b8b7-434d-8fbe-3661df2d9caf:
+    uuid: 043ca4bc-b8b7-434d-8fbe-3661df2d9caf
+    id: image_resize
+    weight: -10
+    data:
+      width: 700
+      height: 420
