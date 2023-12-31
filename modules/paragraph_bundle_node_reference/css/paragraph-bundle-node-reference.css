@@ -29,6 +29,12 @@
   z-index: 1000;
 }
 
+.node--view-mode-pb-slideshow > header a,
+.node--view-mode-pb-3d-carousel > header a {
+  width: 100%;
+  display: block;
+}
+
 .node--view-mode-pb-slideshow header:hover,
 .node--view-mode-pb-3d-carousel header:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));

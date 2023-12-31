@@ -20,7 +20,7 @@ settings:
       value: pb__margin_right
       label: 'Adds a 16px right margin to an element'
     -
-      value: pb__margin-bottom
+      value: pb__margin_bottom
       label: 'Adds a 16px bottom margin to an element'
     -
       value: pb__margin_left
