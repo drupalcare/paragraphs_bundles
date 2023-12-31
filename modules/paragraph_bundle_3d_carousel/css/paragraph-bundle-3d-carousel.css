@@ -262,15 +262,15 @@
   overflow: hidden;
 }
 
-.pb-carousel-item >.paragraph.pb-card-2,
-.pb-carousel-item >.paragraph>.pb-card-2 {
+.pb-carousel-item >.paragraph.pb__card_2,
+.pb-carousel-item >.paragraph>.pb__card_2 {
   margin: var(--pb-px10) auto;
   width: calc(100% - var(--pb-px24));
   height: calc(100% - var(--pb-px24));
 }
 
-.pb-carousel-item >.paragraph.pb-card-4,
-.pb-carousel-item >.paragraph>.pb-card-4 {
+.pb-carousel-item >.paragraph.pb__card_4,
+.pb-carousel-item >.paragraph>.pb__card_4 {
   margin: var(--pb-px20) auto;
   height: calc(100% - var(--pb-px48));
   width: calc(100% - var(--pb-px48));

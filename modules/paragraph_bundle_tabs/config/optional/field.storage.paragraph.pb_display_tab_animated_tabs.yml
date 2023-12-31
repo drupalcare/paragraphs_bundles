@@ -11,22 +11,22 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-animate-zoom
+      value: pb__animate_zoom
       label: 'Animated Tab Zoom'
     -
-      value: pb-animate-top
+      value: pb__animate_top
       label: 'Animated Tab Top'
     -
-      value: pb-animate-bottom
+      value: pb__animate_bottom
       label: 'Animated Tab Bottom'
     -
-      value: pb-animate-left
+      value: pb__animate_left
       label: 'Animated Tab Left'
     -
-      value: pb-animate-right
+      value: pb__animate_right
       label: 'Animated Tab Right'
     -
-      value: pb-animate-opacity
+      value: pb__animate_opacity
       label: 'Animated Tab Opacity'
   allowed_values_function: ''
 module: options

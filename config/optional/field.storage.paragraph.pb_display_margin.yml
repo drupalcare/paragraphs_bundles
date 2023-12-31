@@ -11,22 +11,22 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-margin
+      value: pb__margin
       label: 'Adds a 16px margin to all sides of an element'
     -
-      value: pb-margin-top
+      value: pb__margin_top
       label: 'Adds a 16px top margin to an element'
     -
-      value: pb-margin-right
+      value: pb__margin_right
       label: 'Adds a 16px right margin to an element'
     -
-      value: pb-margin-bottom
+      value: pb__margin-bottom
       label: 'Adds a 16px bottom margin to an element'
     -
-      value: pb-margin-left
+      value: pb__margin_left
       label: 'Adds a 16px left margin to an element'
     -
-      value: pb-section
+      value: pb__section
       label: 'Adds a 16px top and bottom margin to an element'
   allowed_values_function: ''
 module: options

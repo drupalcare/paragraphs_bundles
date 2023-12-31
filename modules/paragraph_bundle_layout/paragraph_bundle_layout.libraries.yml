@@ -4,31 +4,31 @@ paragraph-bundle-layout:
     theme:
       css/paragraph-bundle-layout.css: { }
 
-paragraph-bundle-layout-pb-576:
+paragraph-bundle-layout-pb__576:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-layout-pb-576.css: { }
 
-paragraph-bundle-layout-pb-768:
+paragraph-bundle-layout-pb__768:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-layout-pb-768.css: { }
 
-paragraph-bundle-layout-pb-992:
+paragraph-bundle-layout-pb__992:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-layout-pb-992.css: { }
 
-paragraph-bundle-layout-pb-1200:
+paragraph-bundle-layout-pb__1200:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-layout-pb-1200.css: { }
 
-paragraph-bundle-layout-pb-1400:
+paragraph-bundle-layout-pb__1400:
   version: VERSION
   css:
     theme:

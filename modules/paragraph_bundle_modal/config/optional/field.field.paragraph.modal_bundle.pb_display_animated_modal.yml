@@ -11,12 +11,12 @@ field_name: pb_display_animated_modal
 entity_type: paragraph
 bundle: modal_bundle
 label: 'Animated Modal'
-description: 'Use any of the pb-animate-zoom|top|bottom|right|left classes to slide in the modal from a specific direction'
+description: 'Use any of the pb__animate_zoom|top|bottom|right|left classes to slide in the modal from a specific direction'
 required: false
 translatable: false
 default_value:
   -
-    value: pb-animate-opacity
+    value: pb__animate_opacity
 default_value_callback: ''
 settings: {  }
 field_type: list_string

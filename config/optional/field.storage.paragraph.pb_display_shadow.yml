@@ -11,10 +11,10 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-card-2
+      value: pb__card_2
       label: '2px bordered shadow'
     -
-      value: pb-card-4
+      value: pb__card_4
       label: '4px bordered shadow'
   allowed_values_function: ''
 module: options

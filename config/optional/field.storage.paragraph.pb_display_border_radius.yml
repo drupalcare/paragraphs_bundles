@@ -11,22 +11,22 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-round-small
+      value: pb__round_small
       label: 'Element rounded (border-radius) 2px'
     -
-      value: pb-round-medium
+      value: pb__round_medium
       label: 'Element rounded (border-radius) 4px'
     -
-      value: pb-round-large
+      value: pb__round_large
       label: 'Element rounded (border-radius) 8px'
     -
-      value: pb-round-xlarge
+      value: pb__round_xlarge
       label: 'Element rounded (border-radius) 16px'
     -
-      value: pb-round-xxlarge
+      value: pb__round_xxlarge
       label: 'Element rounded (border-radius) 32px'
     -
-      value: pb-circle
+      value: pb__circle
       label: 'Displays content inside a circle'
   allowed_values_function: ''
 module: options

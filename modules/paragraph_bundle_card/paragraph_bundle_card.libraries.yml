@@ -4,31 +4,31 @@ paragraph-bundle-card:
     theme:
       css/paragraph-bundle-card.css: { }
 
-paragraph-bundle-card-pb-576:
+paragraph-bundle-card-pb__576:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-576.css: { }
 
-paragraph-bundle-card-pb-768:
+paragraph-bundle-card-pb__768:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-768.css: { }
 
-paragraph-bundle-card-pb-992:
+paragraph-bundle-card-pb__992:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-992.css: { }
 
-paragraph-bundle-card-pb-1200:
+paragraph-bundle-card-pb__1200:
   version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-1200.css: { }
 
-paragraph-bundle-card-pb-1400:
+paragraph-bundle-card-pb__1400:
   version: VERSION
   css:
     theme:

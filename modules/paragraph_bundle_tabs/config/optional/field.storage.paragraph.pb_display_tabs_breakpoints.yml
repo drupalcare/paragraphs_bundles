@@ -11,19 +11,19 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-576
+      value: pb__576
       label: '576px / 36rem'
     -
-      value: pb-768
+      value: pb__768
       label: '768px / 48rem'
     -
-      value: pb-992
+      value: pb__992
       label: '992px / 62rem'
     -
-      value: pb-1200
+      value: pb__1200
       label: '1200px / 75rem'
     -
-      value: pb-1400
+      value: pb__1400
       label: '1400px / 87.5rem'
   allowed_values_function: ''
 module: options

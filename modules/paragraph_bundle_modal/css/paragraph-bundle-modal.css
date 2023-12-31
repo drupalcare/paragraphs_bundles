@@ -80,17 +80,17 @@
   overflow: hidden;
 }
 
-.pb-modal-header .solo-button.pb-display-topright {
+.pb-modal-header .solo-button.pb__ds_top_right {
   position: absolute;
 }
 
-.paragraph--type--modal-bundle.pb-card-2 {
+.paragraph--type--modal-bundle.pb__card_2 {
   margin: var(--pb-px10) auto !important;
   width: auto;
   max-width: var(--pb-px992);
 }
 
-.paragraph--type--modal-bundle.pb-card-4 {
+.paragraph--type--modal-bundle.pb__card_4 {
   margin: var(--pb-px20) auto !important;
   width: auto;
   max-width: var(--pb-px992);

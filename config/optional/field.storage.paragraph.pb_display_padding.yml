@@ -11,28 +11,28 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-padding-small
+      value: pb__padding_small
       label: 'Adds 4px top and bottom, and 8px left and right padding'
     -
-      value: pb-padding
+      value: pb__padding
       label: 'Adds 8px top and bottom, and 16px left and right padding'
     -
-      value: pb-padding-large
+      value: pb__padding_large
       label: 'Adds 12px top and bottom, and 24px left and right padding'
     -
-      value: pb-padding-16
+      value: pb__padding_16
       label: 'Adds 16px top and bottom padding to an element'
     -
-      value: pb-padding-24
+      value: pb__padding_24
       label: 'Adds 24px top and bottom padding to an element'
     -
-      value: pb-padding-32
+      value: pb__padding_32
       label: 'Adds 32px top and bottom padding to an element'
     -
-      value: pb-padding-48
+      value: pb__padding_48
       label: 'Adds 48px top and bottom padding to an element'
     -
-      value: pb-padding-64
+      value: pb__padding_64
       label: 'Adds 64px top and bottom padding to an element'
   allowed_values_function: ''
 module: options

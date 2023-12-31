@@ -11,37 +11,37 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-border
+      value: pb__border
       label: 'Adds 1px borders (top, right, bottom, left) to an element'
     -
-      value: pb-border-3px
+      value: pb__border_3px
       label: 'Adds 3px borders (top, right, bottom, left) to an element'
     -
-      value: pb-border-6px
+      value: pb__border_6px
       label: 'Adds 6px borders (top, right, bottom, left) to an element'
     -
-      value: pb-border-top
+      value: pb__border_top
       label: 'Adds a 1px top border to an element'
     -
-      value: pb-border-right
+      value: pb__border_right
       label: 'Adds a 1px right border to an element'
     -
-      value: pb-border-bottom
+      value: pb__border_bottom
       label: 'Adds a 1px bottom border to an element'
     -
-      value: pb-border-left
+      value: pb__border_left
       label: 'Adds a 1px left border to an element'
     -
-      value: pb-bottombar
+      value: pb__bottom_bar
       label: 'Adds a 6px thick bottom border to an element'
     -
-      value: pb-leftbar
+      value: pb__left_bar
       label: 'Adds a 6px thick left border to an element'
     -
-      value: pb-rightbar
+      value: pb__right_bar
       label: 'Adds a 6px thick right border to an element'
     -
-      value: pb-topbar
+      value: pb__top_bar
       label: 'Adds a 6px thick top border to an element'
   allowed_values_function: ''
 module: options

@@ -11,22 +11,22 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: pb-animate-zoom
+      value: pb__animate_zoom
       label: 'Animated Modal Zoom'
     -
-      value: pb-animate-top
+      value: pb__animate_top
       label: 'Animated Modal Top'
     -
-      value: pb-animate-bottom
+      value: pb__animate_bottom
       label: 'Animated Modal Bottom'
     -
-      value: pb-animate-left
+      value: pb__animate_left
       label: 'Animated Modal Left'
     -
-      value: pb-animate-right
+      value: pb__animate_right
       label: 'Animated Modal Right'
     -
-      value: pb-animate-opacity
+      value: pb__animate_opacity
       label: 'Animated Modal Opacity'
   allowed_values_function: ''
 module: options
