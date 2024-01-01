@@ -6,7 +6,6 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-
 :root {
   --pb-px2560: 160rem;
   --pb-px1920: 120rem;
@@ -54,6 +53,16 @@
   box-sizing: border-box;
 }
 
+body .page-wrapper tr,
+body .page-wrapper td,
+body .page-wrapper th,
+body .page-wrapper hr,
+body .page-wrapper table,
+body .page-wrapper ul,
+body .page-wrapper li {
+  background-color: inherit;
+}
+
 .paragraph__inner .paragraph__inner,
 .paragraph__inner .paragraph__inner .paragraph__inner {
   --pb-bg: transparent;
@@ -98,27 +107,33 @@
 /* Borders */
 .pb__circle {
   border-radius: 50%;
+  overflow: hidden;
 }
 
 .pb__round_small {
   border-radius: var(--pb-px2);
+  overflow: hidden;
 }
 
 .pb-round,
 .pb__round_medium {
   border-radius: var(--pb-px4);
+  overflow: hidden;
 }
 
 .pb__round_large {
   border-radius: var(--pb-px8);
+  overflow: hidden;
 }
 
 .pb__round_xlarge {
   border-radius: var(--pb-px16);
+  overflow: hidden;
 }
 
 .pb__round_xxlarge {
   border-radius: var(--pb-px32);
+  overflow: hidden;
 }
 
 .pb__border {
@@ -287,6 +302,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
+  min-width: 70%;
 }
 
 .pb__ds_left {

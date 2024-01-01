@@ -29,20 +29,19 @@
   z-index: 1000;
 }
 
-.node--view-mode-pb-slideshow > header a,
-.node--view-mode-pb-3d-carousel > header a {
+body .node--view-mode-pb-slideshow > header a,
+body .node--view-mode-pb-3d-carousel > header a {
   width: 100%;
   display: block;
 }
 
-.node--view-mode-pb-slideshow header:hover,
-.node--view-mode-pb-3d-carousel header:hover {
+body .node--view-mode-pb-slideshow header:hover,
+body .node--view-mode-pb-3d-carousel header:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
-  color: var(--pb-tx-h, var(--pb-tx));
 }
 
-body .node--view-mode-pb-slideshow > header h3 a,
+/*body .node--view-mode-pb-slideshow > header h3 a,
 body .node--view-mode-pb-3d-carousel > header h3 a,
 body .node--view-mode-pb-slideshow > header h3 a span,
 body .node--view-mode-pb-3d-carousel > header h3 a span {
@@ -54,4 +53,49 @@ body .node--view-mode-pb-3d-carousel > header:hover h3 a,
 body .node--view-mode-pb-slideshow > header:hover h3 a span,
 body .node--view-mode-pb-3d-carousel > header:hover h3 a span {
   color: var(--pb-tx-h, var(--pb-tx)) !important;
+}
+*/
+
+/*body .node--view-mode-pb-teaser-text header,
+body .node--view-mode-pb-teaser-text header a,
+body .node--view-mode-pb-teaser-text header h3,
+body .node--view-mode-pb-3d-carousel header span
+
+body .node--view-mode-pb-teaser-text header,
+body .node--view-mode-pb-teaser-text header a,
+body .node--view-mode-pb-slideshow header h3,
+body .node--view-mode-pb-slideshow header span
+
+body .node--view-mode-pb-teaser-text header,
+body .node--view-mode-pb-teaser-text header a,
+body .node--view-mode-pb-teaser-text header h3,
+body .node--view-mode-pb-teaser-text header span
+
+
+body .node--view-mode-pb-teaser-text header,
+body .node--view-mode-pb-teaser-text header a,
+body .node--view-mode-pb-teaser-text header h3,
+body .node--view-mode-pb-3d-carousel header span
+
+body .node--view-mode-pb-teaser-text header,
+body .node--view-mode-pb-teaser-text header a,
+body .node--view-mode-pb-slideshow header h3,
+body .node--view-mode-pb-slideshow header span*/
+
+body .node--view-mode-pb-teaser-text *,
+body .node--view-mode-pb-3d-carousel *,
+body .node--view-mode-pb-slideshow *,
+#page-wrapper .node--view-mode-pb-teaser-text *,
+#page-wrapper .node--view-mode-pb-3d-carousel *,
+#page-wrapper .node--view-mode-pb-slideshow * {
+  color: var(--pb-tx, inherit);
+}
+
+body .node--view-mode-pb-slideshow:hover *,
+body .node--view-mode-pb-slideshow:hover *,
+body .node--view-mode-pb-3d-carousel:hover *,
+#page-wrapper .node--view-mode-pb-teaser-text:hover *,
+#page-wrapper .node--view-mode-pb-3d-carousel:hover *,
+#page-wrapper .node--view-mode-pb-slideshow:hover * {
+  color: var(--pb-tx-h, var(--pb-tx));
 }

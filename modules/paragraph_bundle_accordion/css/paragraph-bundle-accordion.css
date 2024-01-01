@@ -6,9 +6,16 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-
 .paragraph--type--accordion-bundle {
   overflow: hidden;
+}
+
+.paragraph--type--accordion-bundle .pb-acc .wrapper-accs-btn-pane {
+  border-bottom: var(--pb-px2) solid var(--pb-br);
+}
+
+.paragraph--type--accordion-bundle .pb-acc > div:last-child {
+  border-bottom: none;
 }
 
 .paragraph--type--accordion-bundle .pb-accs-button > button {
@@ -44,6 +51,7 @@
   width: 100%;
   margin: 0 0 var(--pb-px10) 0;
 }
+
 .paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active,
 .paragraph--type--accordion-bundle  .wrapper-accs-btn-pane.pb-is-active div {
   background-color: var(--pb-bt-a);
