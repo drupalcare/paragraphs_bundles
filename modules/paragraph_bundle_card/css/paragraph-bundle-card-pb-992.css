@@ -6,7 +6,6 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-
 @media (min-width:62rem) {
   .pb-card-two-columns.two-l6-l6,
   .pb-card-two-columns.two-l4-l8,
@@ -76,7 +75,6 @@
   .pb-card-two-columns .paragraph__inner,
   .pb-card-three-columns .paragraph__inner {
     display: flex;
-    height: 100%;
   }
 
 }

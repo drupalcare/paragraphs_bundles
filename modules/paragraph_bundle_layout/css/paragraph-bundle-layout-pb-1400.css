@@ -76,7 +76,6 @@
   .pb-two-columns .paragraph__inner,
   .pb-three-columns .paragraph__inner {
     display: flex;
-    height: 100%;
   }
 
 }

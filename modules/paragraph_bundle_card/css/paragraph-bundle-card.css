@@ -14,7 +14,9 @@
 }
 
 .paragraph--type--card-two-columns-bundle .pb-card-two-columns>div,
-.paragraph--type--card-three-columns-bundle .pb-card-three-columns>div {
+.paragraph--type--card-three-columns-bundle .pb-card-three-columns>div,
+.paragraph--type--card-two-columns-bundle .pb-card-two-columns .paragraph,
+.paragraph--type--card-three-columns-bundle .pb-card-three-columns .paragraph {
   width: 100%;
   height: 100%;
 }
