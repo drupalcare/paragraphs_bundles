@@ -9,7 +9,7 @@
 ((Drupal, once) => {
   'use strict';
 
-  const closeAlert = document.querySelector('.pb-close-alert');
+  const closeAlert = document.querySelector('.pb__close-alert');
 
   const closeBlockHandler = (pId) => {
     const alertContent = document.getElementById(pId);

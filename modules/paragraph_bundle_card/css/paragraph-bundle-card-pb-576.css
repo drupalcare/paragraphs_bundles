@@ -8,73 +8,73 @@
  */
 
 @media (min-width:36rem) {
-  .pb-card-two-columns.two-l6-l6,
-  .pb-card-two-columns.two-l4-l8,
-  .pb-card-two-columns.two-l8-l4,
-  .pb-card-two-columns.two-l3-l9,
-  .pb-card-two-columns.two-l9-l3,
-  .pb-card-three-columns.three-l4-l4-l4,
-  .pb-card-three-columns.three-l2-l8-l2,
-  .pb-card-three-columns.three-l2-l2-l8,
-  .pb-card-three-columns.three-l8-l2-l2,
-  .pb-card-three-columns.three-l3-l6-l3,
-  .pb-card-three-columns.three-l6-l3-l3,
-  .pb-card-three-columns.three-l3-l3-l6 {
+  .pb__card-two-columns.two-l6_l6,
+  .pb__card-two-columns.two-l4_l8,
+  .pb__card-two-columns.two-l8_l4,
+  .pb__card-two-columns.two-l3_l9,
+  .pb__card-two-columns.two-l9_l3,
+  .pb__card-three-columns.three-l4_l4_l4,
+  .pb__card-three-columns.three-l2_l8_l2,
+  .pb__card-three-columns.three-l2_l2_l8,
+  .pb__card-three-columns.three-l8_l2_l2,
+  .pb__card-three-columns.three-l3_l6_l3,
+  .pb__card-three-columns.three-l6_l3_l3,
+  .pb__card-three-columns.three-l3_l3_l6 {
     grid-auto-flow: column;
   }
 
-  .pb-card-two-columns.two-l6-l6 {
+  .pb__card-two-columns.two-l6_l6 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .pb-card-two-columns.two-l4-l8 {
+  .pb__card-two-columns.two-l4_l8 {
     grid-template-columns: 1fr 2fr;
   }
 
-  .pb-card-two-columns.two-l8-l4 {
+  .pb__card-two-columns.two-l8_l4 {
     grid-template-columns: 2fr 1fr;
   }
 
-  .pb-card-two-columns.two-l3-l9 {
+  .pb__card-two-columns.two-l3_l9 {
     grid-template-columns: 1fr 3fr;
   }
 
-  .pb-card-two-columns.two-l9-l3 {
+  .pb__card-two-columns.two-l9_l3 {
     grid-template-columns: 3fr 1fr;
   }
 
-  .pb-card-three-columns.three-l4-l4-l4 {
+  .pb__card-three-columns.three-l4_l4_l4 {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .pb-card-three-columns.three-l2-l8-l2 {
+  .pb__card-three-columns.three-l2_l8_l2 {
     grid-template-columns: 1fr 4fr 1fr;
   }
 
-  .pb-card-three-columns.three-l2-l2-l8 {
+  .pb__card-three-columns.three-l2_l2_l8 {
     grid-template-columns: 1fr 1fr 4fr;
   }
 
-  .pb-card-three-columns.three-l8-l2-l2 {
+  .pb__card-three-columns.three-l8_l2_l2 {
     grid-template-columns: 4fr 1fr 1fr;
   }
 
-  .pb-card-three-columns.three-l3-l6-l3 {
+  .pb__card-three-columns.three-l3_l6_l3 {
     grid-template-columns: 1fr 3fr 1fr;
   }
 
-  .pb-card-three-columns.three-l6-l3-l3 {
+  .pb__card-three-columns.three-l6_l3_l3 {
     grid-template-columns: 3fr 1fr 1fr;
   }
 
-  .pb-card-three-columns.three-l3-l3-l6 {
+  .pb__card-three-columns.three-l3_l3_l6 {
     grid-template-columns: 1fr 1fr 3fr;
   }
 
-  .pb-card-two-columns .paragraph,
-  .pb-card-three-columns .paragraph,
-  .pb-card-two-columns .paragraph__inner,
-  .pb-card-three-columns .paragraph__inner {
+  .pb__card-two-columns .paragraph,
+  .pb__card-three-columns .paragraph,
+  .pb__card-two-columns .paragraph__inner,
+  .pb__card-three-columns .paragraph__inner {
     display: flex;
   }
 

@@ -10,13 +10,13 @@
   overflow: hidden;
 }
 
-.paragraph--type--parallax-bundle .pb-parallax-text {
+.paragraph--type--parallax-bundle .pb__parallax-text {
   background-color: var(--pb-bg);
   border-color: var(--pb-br);
   color: var(--pb-tx);
 }
 
-.paragraph--type--parallax-bundle .pb-parallax-text:hover {
+.paragraph--type--parallax-bundle .pb__parallax-text:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
   color: var(--pb-tx-h, var(--pb-tx));
@@ -26,17 +26,17 @@
   position: relative;
 }
 
-.paragraph--type--parallax-section-bundle .pb-parallax-bg {
+.paragraph--type--parallax-section-bundle .pb__parallax-bg {
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.paragraph--type--parallax-section-bundle .pb-parallax-bg {
+.paragraph--type--parallax-section-bundle .pb__parallax-bg {
   min-height: calc(6 * var(--pb-px48));
 }
 
-.paragraph--type--parallax-section-bundle .pb-parallax-text {
+.paragraph--type--parallax-section-bundle .pb__parallax-text {
   min-height: calc(3 * var(--pb-px32));
 }

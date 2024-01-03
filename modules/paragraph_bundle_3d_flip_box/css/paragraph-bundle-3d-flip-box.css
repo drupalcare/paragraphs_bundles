@@ -6,14 +6,14 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph--type--3d-flip-box-bundle .pb-flip-box {
+.paragraph--type--3d-flip-box-bundle .pb__flip-box {
   overflow: hidden;
   background-color: transparent;
   width: 100%;
   perspective: var(--pb-px1600);
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-flip-box-inner {
+.paragraph--type--3d-flip-box-bundle .pb__flip-box-inner {
   position: relative;
   width: 100%;
   height: 100%;
@@ -22,16 +22,16 @@
   transform-style: preserve-3d;
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-flip-box.flip-x:hover .pb-flip-box-inner {
+.paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_x:hover .pb__flip-box-inner {
   transform: rotateX(180deg);
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-flip-box.flip-y:hover .pb-flip-box-inner {
+.paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_y:hover .pb__flip-box-inner {
   transform: rotateY(180deg);
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-3d-front,
-.paragraph--type--3d-flip-box-bundle .pb-3d-back {
+.paragraph--type--3d-flip-box-bundle .pb__3d-front,
+.paragraph--type--3d-flip-box-bundle .pb__3d-back {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,10 +42,10 @@
   backface-visibility: hidden !important;
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-3d-back.flip-y {
+.paragraph--type--3d-flip-box-bundle .pb__3d-back.flip_y {
   transform: rotateY(180deg);
 }
 
-.paragraph--type--3d-flip-box-bundle .pb-3d-back.flip-x {
+.paragraph--type--3d-flip-box-bundle .pb__3d-back.flip_x {
   transform: rotateX(180deg);
 }

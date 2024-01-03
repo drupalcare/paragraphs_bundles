@@ -52,9 +52,9 @@
 {% endif %}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-image-grid-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__image-grid-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-image-grid__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__image-grid__inner' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -118,13 +118,15 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-    {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
-    {% endif %}
+    <div class="pb__content-full">
+      {% if content.pb_content_title|render %}
+      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% endif %}
 
-    <div class="pb-image-grid-wrapper" style="{{ pb_grid_width }} {{ pb_grid_gap }}">
-      {{ content.pb_content_image_grid_image }}
+      <div class="pb__image-grid-wrapper" style="{{ pb_grid_width }} {{ pb_grid_gap }}">
+        {{ content.pb_content_image_grid_image }}
+      </div>
+
     </div>
-
   </div>
 </div> {# End of main wrapper #}

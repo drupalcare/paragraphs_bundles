@@ -12,7 +12,7 @@
   Drupal.behaviors.paragraphBundleCarousel = {
     attach: function(context, settings) {
 
-      const carousels = once('paragraphBundleCarousel', '.pb-3d-carousel', context);
+      const carousels = once('paragraphBundleCarousel', '.pb__3d-carousel', context);
       if (!carousels.length) {
         return;
       }
@@ -24,15 +24,15 @@
 
       const getCarInfo = (carouselId) => {
         const carousel = context.getElementById(carouselId);
-        const cells = carousel.querySelectorAll(`#${carouselId}>.pb-carousel-item`);
+        const cells = carousel.querySelectorAll(`#${carouselId}>.pb__caro-item`);
         const cellCount = cells.length;
         const cellWidth = carousel.offsetWidth;
         const theta = 360 / cellCount;
         const radius = Math.round(cellWidth / 2 / Math.tan(Math.PI / cellCount));
-        const rawNo = carouselId.split('-')[3];
+        const rawNo = carouselId.split('-')[2];
         return [carousel, cells, cellCount, cellWidth, theta, radius, rawNo];
       };
-      const getThisId = th => `pb-3d-carousel-${parseInt(th.slice(5))}`;
+      const getThisId = th => `pb__3d-carousel-${parseInt(th.slice(5))}`;
       let rotateCarousel = (carouselId, n) => {
         let [carousel, cells, cellCount, , theta, radius] = getCarInfo(carouselId);
         let angle = theta * n * -1;
@@ -47,21 +47,21 @@
           cells[i].style.opacity = i < cellCount ? 1 : 0;
           cells[i].style.transform = i < cellCount ? `rotateY(${theta * i}deg) translateZ(${radius}px)` : "none";
         }
-        cells[0].classList.add('pb-is-active');
+        cells[0].classList.add('pb__active');
         indexNo.innerHTML = 1;
         nextBtnId.style.display = 'inline';
         prevBtnId.style.display = 'none';
         rotateCarousel(carouselId, n);
       };
       const backward = (carouselId) => {
-        const cells = context.querySelectorAll(`#${carouselId}>.pb-carousel-item`);
+        const cells = context.querySelectorAll(`#${carouselId}>.pb__caro-item`);
         const cellCount = cells.length;
-        const btnId = carouselId.split('-')[3];
+        const btnId = carouselId.split('-')[2];
         const prevBtnId = context.getElementById(`prev-${btnId}`);
         const nextBtnId = context.getElementById(`next-${btnId}`);
         const indexNo = context.getElementById(`index-${btnId}`);
         for (let i = 0; i < cellCount; i++) {
-          if (!cells[i].classList.contains('pb-is-active')) continue;
+          if (!cells[i].classList.contains('pb__active')) continue;
           if (i === 0) {
             const prevOn = parseInt(`${btnId}00`);
             const prevOff = parseInt(`${btnId}01`);
@@ -77,27 +77,27 @@
             break;
           }
           nextBtnId.style.display = 'inline';
-          cells[i].classList.remove('pb-is-active');
+          cells[i].classList.remove('pb__active');
           i -= 1;
           if (!cells[i]) continue;
           if (i === 0) {
             prevBtnId.style.display = 'none';
             nextBtnId.style.display = 'inline';
           }
-          cells[i].classList.add('pb-is-active');
+          cells[i].classList.add('pb__active');
           indexNo.innerHTML = i + 1;
           return i;
         }
       };
       let forward = (carouselId) => {
-        let cells = context.querySelectorAll(`#${carouselId}>.pb-carousel-item`);
+        let cells = context.querySelectorAll(`#${carouselId}>.pb__caro-item`);
         let cellCount = cells.length;
-        let btnId = carouselId.split('-')[3];
+        let btnId = carouselId.split('-')[2];
         let prevBtnId = context.getElementById(`prev-${btnId}`);
         let nextBtnId = context.getElementById(`next-${btnId}`);
         let indexNo = context.getElementById(`index-${btnId}`);
         for (let i = 0; i < cellCount; i++) {
-          if (cells[i].classList.contains('pb-is-active')) {
+          if (cells[i].classList.contains('pb__active')) {
             if (i == cellCount - 1) {
               let prevOn = parseInt(`${btnId}00`);
               let prevOff = parseInt(`${btnId}01`);
@@ -117,14 +117,14 @@
               break;
             }
             prevBtnId.style.display = 'inline';
-            cells[i].classList.remove('pb-is-active');
+            cells[i].classList.remove('pb__active');
             i++;
             if (cells[i]) {
               if (i == cellCount - 1) {
                 nextBtnId.style.display = 'none';
                 prevBtnId.style.display = 'inline';
               }
-              cells[i].classList.add('pb-is-active');
+              cells[i].classList.add('pb__active');
               n = i;
               indexNo.innerHTML = n + 1;
               return n;
@@ -133,7 +133,7 @@
         }
       };
       let getNumberId = (th) => {
-        let idNu = th.split('-')[3];
+        let idNu = th.split('-')[2];
         parseInt(idNu);
         return idNu;
       };
@@ -162,7 +162,7 @@
         for (let j = 0; j < carousels.length; j++) {
           let carouselC = carousels[j];
           carouselId = carouselC.id;
-          let shortId = carouselId.split('-')[3];
+          let shortId = carouselId.split('-')[2];
           autoHelper.push(parseInt(shortId + 1 + 1));
           autoHelper.push(parseInt(shortId + 0 + 1));
           buildCarousel(carouselId);
@@ -178,8 +178,8 @@
       carousels.forEach(carouselC => {
         let carouselId = carouselC.id;
         let intervalId = carouselId.replaceAll('-', '');
-        let cTimeId = carouselId.split('-')[3];
-        let cTime = context.querySelector(`#co-${cTimeId} > .play-stop-value`)
+        let cTimeId = carouselId.split('-')[2];
+        let cTime = context.querySelector(`#co-${cTimeId} > .pb__ps-value`)
           .textContent;
         cTime = parseInt(cTime);
         if (cTime != 0) {
@@ -188,22 +188,22 @@
           let playPause = context.getElementById(`btn-${cTimeId}`);
           playPause.style.display = 'inline';
           stopOnHover.addEventListener('mouseover', function() {
-            if (playPause.classList.contains('play-active-carousel')) {
+            if (playPause.classList.contains('pb__play')) {
               clearInterval(intervalId);
             }
           });
           stopOnHover.addEventListener('mouseout', function() {
-            if (playPause.classList.contains('play-active-carousel')) {
+            if (playPause.classList.contains('pb__play')) {
               intervalId = setAutoPlayInterval(carouselId, cTime);
             }
           });
           playPause.addEventListener('click', function() {
-            if (this.classList.contains('play-active-carousel')) {
-              this.classList.replace('play-active-carousel', 'pause-active-carousel');
+            if (this.classList.contains('pb__play')) {
+              this.classList.replace('pb__play', 'pb__pause');
               this.innerHTML = '&#9654;';
               clearInterval(intervalId);
             } else {
-              this.classList.replace('pause-active-carousel', 'play-active-carousel');
+              this.classList.replace('pb__pause', 'pb__play');
               this.innerHTML = '&#10073;&nbsp;&#10073;';
               intervalId = setAutoPlayInterval(carouselId, cTime);
             }
@@ -220,13 +220,13 @@
         }
       };
 
-      once('init-next-button', '.carousel-options .next-button', context).forEach(element => {
+      once('init-pb__next', '.pb__caro-options .pb__next', context).forEach(element => {
         element.addEventListener('click', function(event) {
           nextBtn(getThisId(event.target.id));
         });
       });
 
-      once('init-prev-button', '.carousel-options .previous-button', context).forEach(element => {
+      once('init-pb__prev', '.pb__caro-options .pb__prev', context).forEach(element => {
         element.addEventListener('click', function(event) {
           prevBtn(getThisId(event.target.id));
         });

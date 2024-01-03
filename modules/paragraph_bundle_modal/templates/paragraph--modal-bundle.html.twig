@@ -43,10 +43,10 @@
 {{ attach_library('paragraph_bundle_modal/paragraph-bundle-modal') }}
 
 {# Sets Unique ID for Modal from Paragraph ID. #}
-{% set paragraph_id = 'pb-modal-id-' ~ paragraph.id.value %}
-{% set modal_warpper = 'pb-modal-wrapper-' ~ paragraph.id.value %}
+{% set paragraph_id = 'pb__modal-id-' ~ paragraph.id.value %}
+{% set modal_warpper = 'pb__modal-wrapper-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-modal__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__modal__inner' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -113,14 +113,14 @@
   {% set classes = classes|merge([pb_animated_modal]) %}
 {% endif %}
 {# Set animated classes. #}
-<div id="{{ modal_warpper }}" class="paragraph pb-modal-wrapper pb__content-full">
+<div id="{{ modal_warpper }}" class="paragraph pb__modal-wrapper pb__content-full">
 
   {% if content.pb_content_title|render %}
-  <h3 class="content-title">{{ content.pb_content_title }}</h3>
+  <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
   {% endif %}
 
   <div class="pb-modal-button">
-    <button id="{{ paragraph_id }}" type="button" class="solo-button" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
+    <button id="{{ paragraph_id }}" type="button" class="pb__button" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
       {{ content.pb_content_modal_button }}
     </button>
   </div>
@@ -137,7 +137,7 @@
             {{ content.pb_content_modal_title }}
           </div>
           {% endif %}
-          <button class="solo-button">&times;</button>
+          <button class="pb__button">&times;</button>
         </div> {# End of pb-modal-header #}
 
         {% if content.pb_content_modal_body|render %}
@@ -164,4 +164,4 @@
     </div> {# End of paragraph div #}
 
   </div> {# End of pb-modal div #}
-</div> {# End of pb-modal-wrapper div #}
+</div> {# End of pb__modal-wrapper div #}

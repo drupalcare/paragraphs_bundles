@@ -37,7 +37,7 @@ third_party_settings:
       weight: 0
       format_type: tabs
       format_settings:
-        classes: pb-tabs-wrapper
+        classes: pb__tabs-wrapper
         show_empty_fields: false
         id: ''
         direction: horizontal
@@ -54,7 +54,7 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
-        classes: pb-tab-content
+        classes: pb__tab-content
         show_empty_fields: false
         id: ''
         formatter: closed
@@ -70,10 +70,10 @@ third_party_settings:
         - pb_display_border_hover
         - pb_display_border
         - pb_display_border_radius
-        - pb_display_padding
         - pb_display_margin
-        - pb_display_shadow
+        - pb_display_padding
         - pb_display_width
+        - pb_display_shadow
         - pb_display_bg_opacity
       label: Display
       region: content
@@ -81,7 +81,7 @@ third_party_settings:
       weight: 22
       format_type: tab
       format_settings:
-        classes: pb-tab-display
+        classes: pb__tab-display
         show_empty_fields: false
         id: ''
         formatter: closed
@@ -167,19 +167,19 @@ content:
     third_party_settings: {  }
   pb_display_margin:
     type: options_select
-    weight: 13
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
     type: options_select
-    weight: 14
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -197,7 +197,7 @@ content:
     third_party_settings: {  }
   pb_display_width:
     type: options_select
-    weight: 15
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }

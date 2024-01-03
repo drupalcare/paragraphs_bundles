@@ -41,10 +41,10 @@
 {# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-image-n__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__image-n__inner pb__content-full' %}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-image-n-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__image-n-' ~ paragraph.id.value %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -113,10 +113,10 @@
 {% set pb_image = content.pb_content_image %}
 
 {% set pb_img_classes = [
-  'pb-img-wrapper',
+  'pb__img-wrapper',
   pb_radius == '' ? '' : ' ' ~ pb_radius,
-  content.pb_content_title|render ? 'pb-dis-top-left-right' : '',
-  pb_padding ? 'pb-dis-radius' : ''
+  content.pb_content_title|render ? 'pb__dis-top-left-right' : '',
+  pb_padding ? 'pb__dis-radius' : ''
 ] %}
 
 {# Render the paragraph. #}
@@ -124,11 +124,11 @@
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
     {% if pb_link and pb_image %}
-    <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+    <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
       <div class="{{ pb_img_classes|join(' ')|trim }}"> {{ pb_image }}</div>
     </a>
     {% else %}

@@ -88,17 +88,17 @@ body .page-wrapper li {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.solo-bar {
+.pb__bar {
   width: 100%;
   overflow: hidden;
 }
 
-.solo-bar .solo-button {
+.pb__bar .pb__button {
   white-space: normal;
 }
 
-.solo-bar:before,
-.solo-bar:after {
+.pb__bar:before,
+.pb__bar:after {
   content: "";
   display: table;
   clear: both;
@@ -115,7 +115,7 @@ body .page-wrapper li {
   overflow: hidden;
 }
 
-.pb-round,
+.pb__round,
 .pb__round_medium {
   border-radius: var(--pb-px4);
   overflow: hidden;
@@ -192,7 +192,7 @@ body .page-wrapper li {
 }
 
 /* Shadows */
-.pb-card,
+.pb__card,
 .pb__card_2 {
   box-shadow: 0 var(--pb-px2) var(--pb-px5) 0 rgba(0, 0, 0, 0.16), 0 var(--pb-px2) var(--pb-px10) 0 rgba(0, 0, 0, 0.12);
   margin: var(--pb-px10);
@@ -268,7 +268,7 @@ body .page-wrapper li {
 }
 
 /* Display Container */
-.pb-display-container {
+.pb__display-container {
   position: relative;
 }
 
@@ -338,7 +338,7 @@ body .page-wrapper li {
 }
 
 /* Border Colors */
-.pb-animate-fading {
+.pb__animate-fading {
   animation: fading 10s infinite;
 }
 

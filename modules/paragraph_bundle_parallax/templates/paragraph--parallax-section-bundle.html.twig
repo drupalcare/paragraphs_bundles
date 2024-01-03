@@ -43,9 +43,9 @@
 {{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax') }}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-parallax-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__parallax-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-parallax__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__parallax__inner pb__content-full' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -111,18 +111,18 @@
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="paragraph__inner pb-parallax-section__inner">
+  <div class="paragraph__inner pb__parallax-section__inner">
 
     {% if pb_image_url %}
-    <div class="pb-parallax-bg" style="background-image: url( {{ pb_image_url }} ); min-height: {{ pb_image_height }}px;"></div>
+    <div class="pb__parallax-bg" style="background-image: url( {{ pb_image_url }} ); min-height: {{ pb_image_height }}px;"></div>
     {% endif %}
 
     {% if pb_style_attributes|length > 0 %}
-    <div class="pb-parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" style="{{ pb_style_attributes|join(' ') }}">
+    <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" style="{{ pb_style_attributes|join(' ') }}">
         {{ content.pb_content_body }}
       </div>
     {% else %}
-    <div class="pb-parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
+    <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
       {{ content.pb_content_body }}
     </div>
     {% endif %}

@@ -21,7 +21,7 @@
       // Function to remove active class from buttons
       function removeActiveClassFromButtons(buttons) {
         buttons.forEach(function(button) {
-          button.classList.remove('pb-is-active');
+          button.classList.remove('pb__active');
         });
       }
 
@@ -32,24 +32,24 @@
           const paneId = `${btnId}-pane`;
           const currentPane = document.getElementById(paneId);
           const currentButton = document.getElementById(btnId);
-          const parentId = `#pb-tab-${btnId.split('-')[2]}`;
-          const tabPanes = document.querySelectorAll(`${parentId} .pb-tab-pane`);
-          const tabButtons = document.querySelectorAll(`${parentId} .pb-tab-button`);
+          const parentId = `#pb__tab-${btnId.split('-')[1]}`;
+          const tabPanes = document.querySelectorAll(`${parentId} .pb__tab-pane`);
+          const tabButtons = document.querySelectorAll(`${parentId} .pb__tab-button`);
           hideAllPanes(tabPanes);
           removeActiveClassFromButtons(tabButtons);
           currentPane.style.display = 'block';
-          currentButton.classList.add('pb-is-active');
+          currentButton.classList.add('pb__active');
         });
       }
 
-      const buttons = context.querySelectorAll('.pb-tabs-button > .pb-tab-button');
+      const buttons = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
       buttons.forEach(function(button) {
         handleButtonClick(button);
       });
 
-      const firstChildButtons = context.querySelectorAll('.pb-tabs-button > button:first-child');
+      const firstChildButtons = context.querySelectorAll('.pb__tabs-button > button:first-child');
       firstChildButtons.forEach(function(button) {
-        button.classList.add('pb-is-active');
+        button.classList.add('pb__active');
       });
     }
   };

@@ -6,12 +6,12 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph--type--alert-bundle .pb-content-alert {
+.paragraph--type--alert-bundle .pb__content-alert {
   display: grid;
   grid-auto-flow: row;
 }
 
-.paragraph--type--alert-bundle .pb-close-alert {
+.paragraph--type--alert-bundle .pb__close-alert {
   position: relative;
   width: var(--pb-px36);
   height: var(--pb-px36);
@@ -26,8 +26,8 @@
   float: right;
 }
 
-.paragraph--type--alert-bundle .pb-close-alert::before,
-.paragraph--type--alert-bundle .pb-close-alert::after {
+.paragraph--type--alert-bundle .pb__close-alert::before,
+.paragraph--type--alert-bundle .pb__close-alert::after {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -38,25 +38,25 @@
   border-top: solid var(--pb-px2) var(--pb-br, gray);
 }
 
-.paragraph--type--alert-bundle .pb-close-alert::before {
+.paragraph--type--alert-bundle .pb__close-alert::before {
   transform: translate(-50%, -50%) rotate(45deg) !important;
 }
 
-.paragraph--type--alert-bundle .pb-close-alert::after {
+.paragraph--type--alert-bundle .pb__close-alert::after {
   transform: translate(-50%, -50%) rotate(-45deg) !important;
 }
 
-.paragraph--type--alert-bundle .pb-close-alert:hover,
-.paragraph--type--alert-bundle .pb-close-alert:hover::before,
-.paragraph--type--alert-bundle .pb-close-alert:hover::after {
+.paragraph--type--alert-bundle .pb__close-alert:hover,
+.paragraph--type--alert-bundle .pb__close-alert:hover::before,
+.paragraph--type--alert-bundle .pb__close-alert:hover::after {
   border-color: var(--pb-br, red);
 }
 
-.paragraph--type--alert-bundle .alert-top.Off .content-title {
+.paragraph--type--alert-bundle .pb__alert-top.Off .pb__content-title {
   width: 100%;
 }
 
-.paragraph--type--alert-bundle .alert-top.On .content-title {
+.paragraph--type--alert-bundle .pb__alert-top.On .pb__content-title {
   margin: 0 auto;
   width: calc(100% - var(--pb-px36));
   min-height: var(--pb-px36);

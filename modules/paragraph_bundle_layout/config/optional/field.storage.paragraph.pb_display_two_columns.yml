@@ -11,19 +11,19 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: l6-l6
+      value: l6_l6
       label: '1/2 - 1/2'
     -
-      value: l4-l8
+      value: l4_l8
       label: '1/3 - 2/3'
     -
-      value: l8-l4
+      value: l8_l4
       label: '2/3 - 1/3'
     -
-      value: l3-l9
+      value: l3_l9
       label: '1/4 - 3/4'
     -
-      value: l9-l3
+      value: l9_l3
       label: '3/4 - 1/4'
   allowed_values_function: ''
 module: options

@@ -43,9 +43,9 @@
 {{ attach_library('paragraph_bundle_image_overlay/paragraph-bundle-image-overlay') }}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-image-overlay-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__image-overlay-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-image-overlay__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__image-overlay__inner pb__content-full' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -103,7 +103,7 @@
 {# Set the overlay classes for the paragraph. #}
 {% set pb_image_overlay = content.pb_display_image_overlay|render|striptags|trim %}
 {% if pb_image_overlay %}
-  {% set pb_image_overlay = 'pb-image-overlay-' ~ pb_image_overlay %}
+  {% set pb_image_overlay = 'pb__image-overlay-' ~ pb_image_overlay %}
   {% set classes = classes|merge([pb_image_overlay]) %}
 {% endif %}
 
@@ -117,26 +117,26 @@
 {% set pb_br_radius     = content.pb_display_border_radius|render|striptags|trim %}
 {% set pb_padding       = content.pb_display_padding|render|striptags|trim %}
 {% set pb_br_color      = br_color ? 'border-color:rgb(' ~ br_color ~ ')' : '' %}
-{% set pb_overlay_class = pb_br_radius ? 'overlay-container ' ~ pb_br_radius : 'overlay-container' %}
+{% set pb_overlay_class = pb_br_radius ? 'pb__overlay-container ' ~ pb_br_radius : 'pb__overlay-container' %}
 {% set pb_overlay_style = pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
-{% set pb_title_class   = pb_padding ? 'content-title overlay-title ' ~ pb_padding : 'content-title overlay-title' %}
-{% set pb_title_style   = pb_image_overlay == 'pb-image-overlay-title' and pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
+{% set pb_title_class   = pb_padding ? 'pb__content-title pb__overlay-title ' ~ pb_padding : 'pb__content-title pb__overlay-title' %}
+{% set pb_title_style   = pb_image_overlay == 'pb__image-overlay-title' and pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div {% if classes_inner is not empty %}class="{{ classes_inner }}"{% endif %} {% if pb_br_color is not empty %}style="{{ pb_br_color }}"{% endif %}>
 
-    <div class="pb-img-wrapper">
+    <div class="pb__img-wrapper">
       {{ content.pb_content_image }}
     </div>
 
     <div {% if pb_overlay_class is not empty %}class="{{ pb_overlay_class }}"{% endif %} {% if pb_overlay_style is not empty %}style="{{ pb_overlay_style }}"{% endif %}>
 
       {% if pb_link %}
-      <a href="{{ pb_link }}" class="solo-row pb-link" title="{{ pb_link_title }}">
+      <a href="{{ pb_link }}" class="pb__row pb__link" title="{{ pb_link_title }}">
       {% endif %}
 
-      <div class="solo-row">
+      <div class="pb__row">
         {% if content.pb_content_title|render %}
         <h3 {% if pb_title_class is not empty %}class="{{ pb_title_class }}"{% endif %} {% if pb_title_style is not empty %}style="{{ pb_title_style }}"{% endif %}>
           {{ content.pb_content_title }}

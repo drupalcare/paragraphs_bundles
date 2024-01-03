@@ -6,17 +6,17 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph .pb-two-columns,
-.paragraph .pb-three-columns {
+.paragraph .pb__two-columns,
+.paragraph .pb__three-columns {
   grid-auto-flow: row;
   gap: var(--pb-px16);
   display: grid;
 }
 
-.paragraph .pb-two-columns>div,
-.paragraph .pb-three-columns>div,
-.paragraph .pb-two-columns .paragraph,
-.paragraph .pb-three-columns .paragraph {
+.paragraph .pb__two-columns>div,
+.paragraph .pb__three-columns>div,
+.paragraph .pb__two-columns .paragraph,
+.paragraph .pb__three-columns .paragraph {
   width: 100%;
   height: 100%;
 }

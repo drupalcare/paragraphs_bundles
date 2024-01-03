@@ -43,9 +43,9 @@
 {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel') }}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-carousel-wrapper-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__caro-wrap-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-carousel-wrapper__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__caro-wrap__inner pb__content-full' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -110,17 +110,17 @@
 
 {% set pb_lheight = content.pb_content_3dcar_lheight|render|striptags|trim %}
 {% if pb_lheight %}
-  {% set pb_lheight  = 'pb-3d-car-' ~ pb_lheight %}
+  {% set pb_lheight  = 'pb__3d-caro-' ~ pb_lheight %}
   {% set classes = classes|merge([pb_lheight]) %}
 {% endif %}
 
 {% set pb_sheight = content.pb_content_3dcar_sheight|render|striptags|trim %}
 {% if pb_sheight %}
-  {% set pb_sheight  = 'pb-3d-car-s-' ~ pb_sheight %}
+  {% set pb_sheight  = 'pb__3d-caro-s-' ~ pb_sheight %}
   {% set classes = classes|merge([pb_sheight]) %}
 {% endif %}
 
-{% set carousel_id  = 'pb-3d-carousel-' ~ paragraph.id.value %}
+{% set carousel_id  = 'pb__3d-carousel-' ~ paragraph.id.value %}
 {% set co_id  = 'co-' ~ paragraph.id.value %}
 
 {# Render the paragraph. #}
@@ -128,29 +128,29 @@
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
-    <div id="{{ carousel_id }}" class="pb-3d-carousel">
+    <div id="{{ carousel_id }}" class="pb__3d-carousel">
 
       {% for key, item in content.pb_content_3d_car_body %}
       {% if key|first != '#' %}
-      <div class="pb-carousel-item item-{{ key + 1 }}">{{ item }}</div>
+      <div class="pb__caro-item item-{{ key + 1 }}">{{ item }}</div>
       {% endif %}
       {% endfor %}
 
     </div>
 
-    <div id="{{ co_id }}" class="carousel-options">
+    <div id="{{ co_id }}" class="pb__caro-options">
 
-      <div class="solo-row">
-        <button id="prev-{{ paragraph.id.value }}" class="solo-button previous-button">&#10094;</button>
-        <span id="index-{{ paragraph.id.value }}" class="slide-number"></span>
-        <button id="btn-{{ paragraph.id.value }}" class="solo-button pp play-active-carousel">&#10073;&nbsp;&#10073;</button>
-        <button id="next-{{ paragraph.id.value }}" class="solo-button next-button">&#10095;</button>
+      <div class="pb__row">
+        <button id="prev-{{ paragraph.id.value }}" class="pb__button pb__prev">&#10094;</button>
+        <span id="index-{{ paragraph.id.value }}" class="pb__slide-number"></span>
+        <button id="btn-{{ paragraph.id.value }}" class="pb__button pb__pp pb__play">&#10073;&nbsp;&#10073;</button>
+        <button id="next-{{ paragraph.id.value }}" class="pb__button pb__next">&#10095;</button>
       </div>
 
-      <div class="play-stop-value">
+      <div class="pb__ps-value">
         {{ pb_play_stop }}
       </div>
     </div>

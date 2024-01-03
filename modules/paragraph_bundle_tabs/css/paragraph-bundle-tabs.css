@@ -6,17 +6,17 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.solo-bar {
+.pb__bar {
   width: 100%;
   overflow: hidden;
 }
 
-.solo-bar .solo-button {
+.pb__bar .pb__button {
   white-space: normal;
 }
 
-.solo-bar:before,
-.solo-bar:after {
+.pb__bar:before,
+.pb__bar:after {
   content: "";
   display: table;
   clear: both;
@@ -26,59 +26,59 @@
   overflow: hidden;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-wrapper {
+.paragraph--type--tabs-bundle .pb__tabs-bundle {
   position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-wrapper > .pb-tabs-button {
+.paragraph--type--tabs-bundle .pb__tabs-bundle > .pb__tabs-button {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-pane .pb-tab-pane {
+.paragraph--type--tabs-bundle .pb__tabs-pane .pb__tab-pane {
   display: none;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-pane > div:first-child {
+.paragraph--type--tabs-bundle .pb__tabs-pane > div:first-child {
   display: block;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-button > button {
+.paragraph--type--tabs-bundle .pb__tabs-button > button {
   float: left;
 }
 
-.paragraph--type--tabs-bundle .pb-tabs-wrapper .pb-tabs-button > .pb-is-active {
+.paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active {
   font-weight: bold;
   text-decoration: underline;
   background-color: var(--pb-bt-a);
 }
 
 @media (min-width:87.5rem) {
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1400 {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1400 > .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 > .pb__tabs-button {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1400 .pb-tabs-pane {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-pane {
     width: 70%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1400 .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-button {
     width: 30%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1400 .pb-tab-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tab-button {
     width: 100%;
     clear: both;
     text-align: left;
@@ -87,27 +87,27 @@
 }
 
 @media (min-width:75rem) {
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1200 {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1200 > .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 > .pb__tabs-button {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1200 .pb-tabs-pane {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-pane {
     width: 70%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1200 .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-button {
     width: 30%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__1200 .pb-tab-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tab-button {
     width: 100%;
     clear: both;
     text-align: left;
@@ -116,27 +116,27 @@
 }
 
 @media (min-width:62rem) {
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__992 {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__992 > .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 > .pb__tabs-button {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__992 .pb-tabs-pane {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-pane {
     width: 70%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__992 .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-button {
     width: 30%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__992 .pb-tab-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tab-button {
     width: 100%;
     clear: both;
     text-align: left;
@@ -145,27 +145,27 @@
 }
 
 @media (min-width:48rem) {
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__768 {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__768 > .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 > .pb__tabs-button {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__768 .pb-tabs-pane {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-pane {
     width: 70%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__768 .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-button {
     width: 30%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__768 .pb-tab-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tab-button {
     width: 100%;
     clear: both;
     text-align: left;
@@ -174,27 +174,27 @@
 }
 
 @media (min-width:36rem) {
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__576 {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__576 > .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 > .pb__tabs-button {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__576 .pb-tabs-pane {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-pane {
     width: 70%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__576 .pb-tabs-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-button {
     width: 30%;
   }
 
-  .paragraph--type--tabs-bundle .pb-tabs-wrapper.v-tabs.pb__576 .pb-tab-button {
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tab-button {
     width: 100%;
     clear: both;
     text-align: left;

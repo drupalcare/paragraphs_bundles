@@ -13,9 +13,9 @@
   line-height: var(--pb-px20);
 }
 
-.pb-image-grid-wrapper a,
-.pb-image-grid-wrapper picture,
-.pb-image-grid-wrapper div:not(.field--name-pb-content-title) {
+.pb__image-grid-wrapper a,
+.pb__image-grid-wrapper picture,
+.pb__image-grid-wrapper div:not(.field--name-pb-content-title, .paragraph__inner) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -23,11 +23,11 @@
   display: grid;
 }
 
-.paragraph .pb-image-grid {
+.paragraph .pb__image-grid {
   position: relative;
 }
 
-.paragraph .pb-image-grid .pb-image-grid-title {
+.paragraph .pb__image-grid .pb__image-grid-title {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -42,45 +42,45 @@
   z-index: 1000;
 }
 
-.paragraph .pb-image-grid .pb-image-grid-title>* {
+.paragraph .pb__image-grid .pb__image-grid-title>* {
   width: 100%;
 }
 
-.paragraph .pb-image-grid .field--name-pb-content-image {
+.paragraph .pb__image-grid .field--name-pb-content-image {
   z-index: -1;
 }
 
-.paragraph .pb-image-grid .field--name-pb-content-title {
+.paragraph .pb__image-grid .field--name-pb-content-title {
   padding: var(--pb-px12);
 }
 
-.paragraph .pb-image-grid > .pb-image-grid-title,
-.paragraph .pb-image-grid > a > .pb-image-grid-title {
+.paragraph .pb__image-grid > .pb__image-grid-title,
+.paragraph .pb__image-grid > a > .pb__image-grid-title {
   color: var(--pb-tx);
   background-color: var(--pb-bg);
 }
 
-.paragraph .pb-image-grid:hover > .pb-image-grid-title,
-.paragraph .pb-image-grid:hover > a > .pb-image-grid-title {
+.paragraph .pb__image-grid:hover > .pb__image-grid-title,
+.paragraph .pb__image-grid:hover > a > .pb__image-grid-title {
   color: var(--pb-tx-h, var(--pb-tx));
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.paragraph .pb-image-grid:hover .field--name-pb-content-title {
+.paragraph .pb__image-grid:hover .field--name-pb-content-title {
   color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
 }
 
-.paragraph .pb-image-grid-wrapper {
+.paragraph .pb__image-grid-wrapper {
   display: grid;
 }
 
-.paragraph .pb-image-grid-wrapper,
-.paragraph .pb-image-grid-wrapper img {
+.paragraph .pb__image-grid-wrapper,
+.paragraph .pb__image-grid-wrapper img {
   width: 100% !important;
   height: auto;
 }
 
-.paragraph .pb-img-wrapper.pb-image-grid {
+.paragraph .pb__img-wrapper.pb__image-grid {
   display: block;
 }

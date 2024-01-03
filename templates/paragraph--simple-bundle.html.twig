@@ -42,9 +42,9 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-simple-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__simple-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-simple__inner' %}
+{% set classes_inner = 'paragraph__inner pb__simple__inner' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -111,7 +111,7 @@
     <div class="pb__content-full">
 
     {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
+    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
     {{ content.pb_content_body }}

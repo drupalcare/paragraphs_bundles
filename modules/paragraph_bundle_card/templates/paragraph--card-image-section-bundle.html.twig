@@ -42,10 +42,10 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-card-image-section__inner' %}
+{% set classes_inner = 'paragraph__inner pb__card-image-section__inner' %}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-image-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__image-' ~ paragraph.id.value %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -132,18 +132,18 @@
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     {% if pb_link and pb_image %}
-    <div class="pb-img-wrapper pb-card-image">
-      <a href="{{ pb_link }}" class="pb-link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+    <div class="pb__img-wrapper pb__card-image">
+      <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
         {{ pb_image }}
-        <div class="pb-card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="content-title">{{ content.pb_content_title }}</h3>
+        <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         </div>
       </a>
     </div>
 
     {% else %}
-    <div class="pb-img-wrapper pb-card-image">
+    <div class="pb__img-wrapper pb__card-image">
       {{ pb_image }}
-      <div class="pb-card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="content-title">{{ content.pb_content_title }}</h3>
+      <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       </div>
     </div>
     {% endif %}

@@ -51,9 +51,9 @@
 {% endif %}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb-three-columns-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__three-columns-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-three-columns__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__three-columns__inner' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -117,21 +117,23 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-    {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
-    {% endif %}
+    <div class="pb__content-full">
+      {% if content.pb_content_title|render %}
+      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% endif %}
 
-    <div class="pb-three-columns three-{{ pb_display_layout }}">
-      <div class="pb-col-left">
-        {{ content.pb_content_left_column }}
+      <div class="pb__three-columns three-{{ pb_display_layout }}">
+        <div class="pb-col-left">
+          {{ content.pb_content_left_column }}
+        </div>
+        <div class="pb-col-middle">
+          {{ content.pb_content_middle_column }}
+        </div>
+        <div class="pb-col-right">
+          {{ content.pb_content_right_column }}
+        </div>
       </div>
-      <div class="pb-col-middle">
-        {{ content.pb_content_middle_column }}
-      </div>
-      <div class="pb-col-right">
-        {{ content.pb_content_right_column }}
-      </div>
+
     </div>
-
   </div>
 </div> {# End of main wrapper #}

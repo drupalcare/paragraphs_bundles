@@ -11,10 +11,10 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: flip-x
+      value: flip_x
       label: 'Flip Box Vertical'
     -
-      value: flip-y
+      value: flip_y
       label: 'Flip Box Horizontal'
   allowed_values_function: ''
 module: options

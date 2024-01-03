@@ -43,8 +43,8 @@
 {{ attach_library('paragraph_bundle_3d_flip_box/paragraph-bundle-3d-flip-box') }}
 
 {# Set paragraph and inner classes #}
-{% set paragraph_id  = 'pb-3d-flip-box-' ~ paragraph.id.value %}
-{% set classes_inner = 'paragraph__inner pb-3d-flip-box__inner pb__content-full' %}
+{% set paragraph_id  = 'pb__3d-flip-box-' ~ paragraph.id.value %}
+{% set classes_inner = 'paragraph__inner pb__3d-flip-box__inner' %}
 
 {# Set paragraph classes #}
 {% set classes = [
@@ -109,14 +109,19 @@
 {# Render the paragraph #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
-    {% if content.pb_content_title|render %}
-    <h3 class="content-title">{{ content.pb_content_title }}</h3>
-    {% endif %}
-    <div style="height: {{ pb_box_height }}px;" class="pb-flip-box {{ pb_flip_xy }}">
-      <div class="pb-flip-box-inner">
-        <div class="pb-3d-front">{{ content.pb_content_3d_box_front }}</div>
-        <div class="pb-3d-back {{ pb_flip_xy }}">{{ content.pb_content_3d_box_back }}</div>
+
+    <div class="pb__content-full">
+
+      {% if content.pb_content_title|render %}
+      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% endif %}
+      <div style="height: {{ pb_box_height }}px;" class="pb__flip-box {{ pb_flip_xy }}">
+        <div class="pb__flip-box-inner">
+          <div class="pb__3d-front">{{ content.pb_content_3d_box_front }}</div>
+          <div class="pb__3d-back {{ pb_flip_xy }}">{{ content.pb_content_3d_box_back }}</div>
+        </div>
       </div>
+
     </div>
   </div>
 </div> {# End of main wrapper #}

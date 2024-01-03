@@ -11,25 +11,25 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: l4-l4-l4
+      value: l4_l4_l4
       label: '1/3 - 1/3 - 1/3'
     -
-      value: l2-l8-l2
+      value: l2_l8_l2
       label: '1/6 - 2/3 - 1/6'
     -
-      value: l2-l2-l8
+      value: l2_l2_l8
       label: '1/6 - 1/6 - 2/3'
     -
-      value: l8-l2-l2
+      value: l8_l2_l2
       label: '2/3 - 1/6 - 1/6'
     -
-      value: l3-l6-l3
+      value: l3_l6_l3
       label: '1/4 - 1/2 - 1/4'
     -
-      value: l6-l3-l3
+      value: l6_l3_l3
       label: '1/2 - 1/4 - 1/4'
     -
-      value: l3-l3-l6
+      value: l3_l3_l6
       label: '1/4 - 1/4 - 1/2'
   allowed_values_function: ''
 module: options

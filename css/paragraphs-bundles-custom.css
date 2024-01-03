@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 .paragraph,
-.paragraph .pb-one-column {
+.paragraph .pb__one-column {
   display: grid;
   margin: 0 auto;
 }
@@ -33,36 +33,36 @@
   background-color: transparent !important;
 }
 
-.paragraph a.pb-link {
+.paragraph a.pb__link {
   z-index: 1000;
 }
 
-.paragraph .content-title {
+.paragraph .pb__content-title {
   display: flex;
   flex-grow: 1;
   flex-basis: 100%;
 }
 
-.solo-row:after,
-.solo-row:before {
+.pb__row:after,
+.pb__row:before {
   content: "";
   display: table;
   clear: both;
 }
 
-.pb-img-auto .field--name-pb-media-image img {
+.pb__img-auto .field--name-pb-media-image img {
   width: auto !important;
 }
 
 .field--name-pb-media-image picture,
-.paragraph .pb-img-wrapper {
+.paragraph .pb__img-wrapper {
   float: none !important;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.paragraph a.pb-link {
+.paragraph a.pb__link {
   display: block;
 }
 
@@ -74,22 +74,22 @@
   font-size: var(--pb-px12);
 }
 
-.pparagraph .pb-img-wrapper div {
+.pparagraph .pb__img-wrapper div {
   float: left;
 }
 
-.pb-img-wrapper.pb-dis-top-left-right {
+.pb__img-wrapper.pb__dis-top-left-right {
   border-top-left-radius: 0 !important;
   border-top-right-radius: 0 !important;
 }
 
-.pb-img-wrapper.pb-dis-radius {
+.pb__img-wrapper.pb__dis-radius {
   border-radius: 0 !important;
 }
 
 /* Button */
 .paragraph .button,
-.paragraph .solo-button {
+.paragraph .pb__button {
   display: inline-block;
   padding: var(--pb-px8) var(--pb-px16);
   line-height: inherit;
@@ -112,42 +112,42 @@
 @media (min-width:62rem) {
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-100,
   .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner,
-  .pb-hero-txt-wrapper-inner.w-100:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-100:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 100%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-90,
-  .pb-hero-txt-wrapper-inner.w-90:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-90:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 90%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-80,
-  .pb-hero-txt-wrapper-inner.w-80:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-80:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 80%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-70,
-  .pb-hero-txt-wrapper-inner.w-70:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-70:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 70%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-60,
-  .pb-hero-txt-wrapper-inner.w-60:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-60:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 60%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-50,
-  .pb-hero-txt-wrapper-inner.w-50:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-50:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 50%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-40,
-  .pb-hero-txt-wrapper-inner.w-40:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-40:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 40%;
   }
 
   .paragraph:not(.page-node-type-pb-content .paragraph) > .w-30,
-  .pb-hero-txt-wrapper-inner.w-30:not(.page-node-type-pb-content .pb-hero-txt-wrapper-inner) {
+  .pb__hero-txt-wrapper-inner.w-30:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
     width: 30%;
   }
 

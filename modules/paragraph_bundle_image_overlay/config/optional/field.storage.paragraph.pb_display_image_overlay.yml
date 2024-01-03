@@ -20,16 +20,16 @@ settings:
       value: title
       label: 'Image Overlay Title'
     -
-      value: slide-top
+      value: slide_top
       label: 'Image Overlay Slide Top'
     -
-      value: slide-bottom
+      value: slide_bottom
       label: 'Image Overlay Slide Bottom'
     -
-      value: slide-left
+      value: slide_left
       label: 'Image Overlay Slide Left'
     -
-      value: slide-right
+      value: slide_right
       label: 'Image Overlay Slide Right'
   allowed_values_function: ''
 module: options

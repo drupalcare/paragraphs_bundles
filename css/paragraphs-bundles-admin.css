@@ -7,29 +7,29 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-.pb-tab-display > .details-wrapper {
+.pb__tab-display > .details-wrapper {
   padding: 0 !important;
   gap: 16px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
-.pb-tab-display > .details-wrapper > * {
+.pb__tab-display > .details-wrapper > * {
   width: 100%;
   margin: 0;
 }
 
-.pb-tab-display .form-radios {
+.pb__tab-display .form-radios {
   display: flex;
   flex-wrap: wrap;
 }
 
-.pb-tab-display .form-radios>* {
+.pb__tab-display .form-radios>* {
   margin-right: 20px;
   width: auto;
 }
 
-.pb-tab-display .form-select {
+.pb__tab-display .form-select {
   width: 100%;
 }
 
@@ -59,34 +59,34 @@
 
 /* Max width 992 */
 @media (max-width:62rem) {
-  .pb-tab-display > .details-wrapper {
+  .pb__tab-display > .details-wrapper {
     grid-auto-flow: row;
     grid-template-columns: 1fr;
   }
 
 }
 
-.pb-tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
+.pb__tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
   border-bottom-width: 5px;
   border-color: #4caf50;
 }
 
-.pb-tabs-wrapper .pb-tabs-wrapper .horizontal-tabs-list {
+.pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
   border-bottom-width: 5px;
   border-color: #2196f3;
 }
 
-.pb-tabs-wrapper .pb-tabs-wrapper .pb-tabs-wrapper .horizontal-tabs-list {
+.pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
   border-bottom-width: 5px;
   border-color: #9c27b0;
 }
 
-.pb-tabs-wrapper .pb-tabs-wrapper .pb-tabs-wrapper .pb-tabs-wrapper .horizontal-tabs-list {
+.pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
   border-bottom-width: 5px;
   border-color: #ff5722;
 }
 
-.pb-tabs-wrapper .horizontal-tabs .pb-tab-display {
+.pb__tabs-wrapper .horizontal-tabs .pb__tab-display {
   box-sizing: border-box;
   width: 100%;
   min-width: initial;

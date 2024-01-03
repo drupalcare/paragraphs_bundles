@@ -13,9 +13,9 @@
     attach: function (context, settings) {
       // Utility function to get elements by ID
       const getElementsById = (id) => {
-        const wrapper = context.querySelectorAll(`#${id} > .wrapper-accs-btn-pane`);
-        const minusButton = context.querySelector(`#${id} > .ex-button > button.minus`);
-        const plusButton = context.querySelector(`#${id} > .ex-button > button.plus`);
+        const wrapper = context.querySelectorAll(`#${id} > .pb__accor-wrap-btn-item`);
+        const minusButton = context.querySelector(`#${id} > .pb__ex-button > button.pb__minus`);
+        const plusButton = context.querySelector(`#${id} > .pb__ex-button > button.pb__plus`);
         return [wrapper, minusButton, plusButton];
       };
 
@@ -23,7 +23,7 @@
       const toggleClassAndDisplay = (buttonSelector, addClass, removeClass, hideIndex, showIndex) => {
         once('toggleClassAndDisplay', buttonSelector, context).forEach((button) => {
           button.addEventListener('click', function (event) {
-            const classId = event.target.closest('.pb-acc').id;
+            const classId = event.target.closest('.pb__accor').id;
             const [wrapper, minusButton, plusButton] = getElementsById(classId);
             wrapper.forEach((element) => {
               element.classList.remove(removeClass);
@@ -39,8 +39,8 @@
       const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
         once('toggleActiveState', buttonSelector, context).forEach((button) => {
           button.addEventListener('click', function (event) {
-            const classId = event.target.closest('.wrapper-accs-btn-pane').id;
-            const sectionId = event.target.closest('.pb-acc').id;
+            const classId = event.target.closest('.pb__accor-wrap-btn-item').id;
+            const sectionId = event.target.closest('.pb__accor').id;
             const [wrapper, minusButton, plusButton] = getElementsById(sectionId);
             const element = context.getElementById(classId);
             const section = context.getElementById(sectionId);
@@ -67,9 +67,9 @@
       };
 
       // Initialize toggle functions
-      toggleActiveState('.pb-accs-button>button', 'pb-is-active', 'pb-not-active');
-      toggleClassAndDisplay('.ex-button>button.plus', 'pb-is-active', 'pb-not-active', 2, 1);
-      toggleClassAndDisplay('.ex-button>button.minus', 'pb-not-active', 'pb-is-active', 1, 2);
+      toggleActiveState('.pb__accor-btn>button', 'pb__active', 'pb__active-no');
+      toggleClassAndDisplay('.pb__ex-button>button.pb__plus', 'pb__active', 'pb__active-no', 2, 1);
+      toggleClassAndDisplay('.pb__ex-button>button.pb__minus', 'pb__active-no', 'pb__active', 1, 2);
     }
   };
 })(Drupal, drupalSettings, once);
