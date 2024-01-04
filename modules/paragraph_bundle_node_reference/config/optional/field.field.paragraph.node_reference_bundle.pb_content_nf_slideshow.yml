@@ -9,8 +9,8 @@ id: paragraph.node_reference_bundle.pb_content_nf_slideshow
 field_name: pb_content_nf_slideshow
 entity_type: paragraph
 bundle: node_reference_bundle
-label: Slideshow
-description: ''
+label: 'Display (Title + Image) Wide Mode'
+description: 'The referenced node will contain both an teaser and a title, and it is designed to be utilized in Narrow mode. This makes it ideally suited for use in 3D carousels, slideshow or cards.'
 required: false
 translatable: false
 default_value: {  }

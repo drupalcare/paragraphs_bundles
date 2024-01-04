@@ -9,8 +9,8 @@ id: paragraph.node_reference_bundle.pb_content_nf_3d_carousel
 field_name: pb_content_nf_3d_carousel
 entity_type: paragraph
 bundle: node_reference_bundle
-label: '3D Carousel'
-description: ''
+label: 'Display (Title + Image) Narrow Mode'
+description: "The referenced node will contain both an image and a title, and it is designed to be utilized in Narrow mode. This makes it ideally suited for use in 3D carousels or cards.\r\n"
 required: false
 translatable: false
 default_value: {  }

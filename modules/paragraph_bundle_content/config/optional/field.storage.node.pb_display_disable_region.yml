@@ -11,8 +11,8 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: navigation
-      label: 'Disable Main Navigation Regions'
+      value: highlighted
+      label: 'Disable Highlighted Region'
     -
       value: popup_login_block
       label: 'Disable Popup Login Block Region'
@@ -23,11 +23,14 @@ settings:
       value: header
       label: 'Disable Header Region'
     -
+      value: primary_sidebar_menu
+      label: 'Disable Primary Sidebar Menu Region'
+    -
+      value: primary_menu
+      label: 'Disable Primary Menu Region'
+    -
       value: welcome_text
       label: 'Disable Welcome Region'
-    -
-      value: highlighted
-      label: 'Disable Highlighted Region'
     -
       value: top_regions
       label: 'Disable Top Regions'

@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.node_reference_bundle.pb_content_nf_title_only
     - field.field.paragraph.node_reference_bundle.pb_content_nf_3d_carousel
     - field.field.paragraph.node_reference_bundle.pb_content_nf_slideshow
     - field.field.paragraph.node_reference_bundle.pb_content_nf_teaser_text
@@ -28,6 +29,14 @@ targetEntityType: paragraph
 bundle: node_reference_bundle
 mode: default
 content:
+  pb_content_nf_title_only:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 17
+    region: content
   pb_content_nf_3d_carousel:
     type: entity_reference_entity_view
     label: hidden

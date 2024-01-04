@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_nf_title_only
+    - node.type.pb_node_reference
+    - paragraphs.paragraphs_type.node_reference_bundle
+id: paragraph.node_reference_bundle.pb_content_nf_title_only
+field_name: pb_content_nf_title_only
+entity_type: paragraph
+bundle: node_reference_bundle
+label: 'Display (Title Only)'
+description: 'The referenced node will contain both an teaser and a title, and it is designed to be utilized in Narrow mode. This makes it ideally suited for use in 3D carousels, slideshow or cards.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      pb_node_reference: pb_node_reference
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

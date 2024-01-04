@@ -63,8 +63,12 @@ function paragraph_bundle_content_preprocess_page(&$variables) {
           unset($variables['page']['header']);
           break;
 
-        case 'navigation':
-          unset($variables['page']['primary_menu'], $variables['page']['primary_sidebar_menu']);
+        case 'primary_menu':
+          unset($variables['page']['primary_menu']);
+          break;
+
+        case 'primary_sidebar_menu':
+          unset($variables['page']['primary_sidebar_menu']);
           break;
 
         case 'welcome_text':
