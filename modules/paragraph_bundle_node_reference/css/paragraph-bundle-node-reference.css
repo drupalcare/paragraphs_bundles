@@ -55,24 +55,24 @@ body .node--view-mode-pb-3d-carousel header:hover {
   border-color: var(--pb-br-h, var(--pb-br));
 }
 
-body .node--view-mode-pb-teaser-text *,
-body .node--view-mode-pb-3d-carousel *,
-body .node--view-mode-pb-slideshow *,
-body .field--name-pb-content-nf-title-only *,
-#page-wrapper .field--name-pb-content-nf-title-only *,
-#page-wrapper .node--view-mode-pb-teaser-text *,
-#page-wrapper .node--view-mode-pb-3d-carousel *,
-#page-wrapper .node--view-mode-pb-slideshow * {
+body .node--view-mode-pb-teaser-text *:not(.contextual-links a),
+body .node--view-mode-pb-3d-carousel *:not(.contextual-links a),
+body .node--view-mode-pb-slideshow *:not(.contextual-links a),
+body .field--name-pb-content-nf-title-only *:not(.contextual-links a),
+#page-wrapper .field--name-pb-content-nf-title-only *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-teaser-text *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-3d-carousel *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-slideshow *:not(.contextual-links a) {
   color: var(--pb-tx, inherit);
 }
 
-body .node--view-mode-pb-slideshow:hover *,
-body .node--view-mode-pb-slideshow:hover *,
-body .node--view-mode-pb-3d-carousel:hover *,
-body .field--name-pb-content-nf-title-only:hover *,
-#page-wrapper .field--name-pb-content-nf-title-only:hover *,
-#page-wrapper .node--view-mode-pb-teaser-text:hover *,
-#page-wrapper .node--view-mode-pb-3d-carousel:hover *,
-#page-wrapper .node--view-mode-pb-slideshow:hover * {
+body .node--view-mode-pb-slideshow:hover *:not(.contextual-links a),
+body .node--view-mode-pb-slideshow:hover *:not(.contextual-links a),
+body .node--view-mode-pb-3d-carousel:hover *:not(.contextual-links a),
+body .field--name-pb-content-nf-title-only:hover *:not(.contextual-links a),
+#page-wrapper .field--name-pb-content-nf-title-only:hover *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-teaser-text:hover *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-3d-carousel:hover *:not(.contextual-links a),
+#page-wrapper .node--view-mode-pb-slideshow:hover *:not(.contextual-links a) {
   color: var(--pb-tx-h, var(--pb-tx));
 }

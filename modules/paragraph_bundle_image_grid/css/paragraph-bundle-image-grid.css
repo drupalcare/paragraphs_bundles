@@ -15,7 +15,8 @@
 
 .pb__image-grid-wrapper a,
 .pb__image-grid-wrapper picture,
-.pb__image-grid-wrapper div:not(.field--name-pb-content-title, .paragraph__inner) {
+.pb__image-grid-wrapper div:not(.field--name-pb-content-title,
+.paragraph__inner) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
