@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3d_caro_breakpoints
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+  module:
+    - options
+id: paragraph.3d_carousel_bundle.pb_display_3d_caro_breakpoints
+field_name: pb_display_3d_caro_breakpoints
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: 'Available breakpoints'
+description: 'Use them to adjust your layout for a particular screen or device size.'
+required: true
+translatable: false
+default_value:
+  -
+    value: pb__576
+default_value_callback: ''
+settings: {  }
+field_type: list_string

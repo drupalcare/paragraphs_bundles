@@ -9,11 +9,10 @@
 
 /* 3d_carousel */
 .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
-  max-width: var(--pb-px1200);
   max-height: 38.125rem;
   margin: 0 auto;
   position: relative;
-  perspective: 25rem;
+  width: 100%;
 }
 
 .paragraph--type--3d-carousel-bundle .pb__3d-carousel {
@@ -286,142 +285,42 @@
   left: 0;
 }
 
-@media (min-width:62rem) {
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-30 {
-    width: 30% !important;
-    perspective: 68.75rem; /* 1100px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-40 {
-    width: 40% !important;
-    perspective: 62.5rem; /* 1000px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-50 {
-    width: 50% !important;
-    perspective: 56.25rem; /* 900px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-60 {
-    width: 60% !important;
-    perspective: 50rem; /* 800px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-70 {
-    width: 70% !important;
-    perspective: 43.75rem; /* 700px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-80 {
-    width: 80% !important;
-    perspective: 37.5rem; /* 600px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-90 {
-    width: 90% !important;
-    perspective: 31.25rem; /* 500px / 16 */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-100 {
-    width: 100% !important;
-    perspective: 25rem; /* 400px / 16 */
-  }
-
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-300 {
+  max-width: 18.75rem;
+  perspective: 22rem;
 }
 
-@media (max-width:62rem) {
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 35rem; /* 560px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-400 {
+  max-width: 25rem;
+  perspective: 24rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 31.25rem; /* 500px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-500 {
+  max-width: 31.25rem;
+  perspective: 26rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 31.875rem; /* 510px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-600 {
+  max-width: 37.5rem;
+  perspective: 28rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 28.125rem; /* 450px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-700 {
+  max-width: 43.75rem;
+  perspective: 30rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 28.75rem; /* 460px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-800 {
+  max-width: 50rem;
+  perspective: 32rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 25rem; /* 400px / 16px */
-  }
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-900 {
+  max-width: 56.25rem;
+  perspective: 34rem;
+}
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 25.625rem; /* 410px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 21.875rem; /* 350px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 22.5rem; /* 360px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 18.75rem; /* 300px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 19.375rem; /* 310px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 15.625rem; /* 250px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 16.25rem; /* 260px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 12.5rem; /* 200px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 13.125rem; /* 210px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 9.375rem; /* 150px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel {
-    height: 10rem; /* 160px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
-    height: 6.25rem; /* 100px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
-    overflow: hidden;
-    perspective: 12.5rem; /* 200px / 16px */
-  }
-
-  .paragraph--type--3d-carousel-bundle .pb__3d-carousel > .pb__caro-item {
-    padding: 0 var(--pb-px16);
-  }
-
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
-    width: 100%;
-  }
-
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-1000 {
+  max-width: 62.5rem;
+  perspective: 36rem;
 }

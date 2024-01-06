@@ -2,7 +2,7 @@ paragraph-bundle-3d-carousel:
   version: VERSION
   css:
     theme:
-      css/paragraph-bundle-3d-carousel.css: { }
+      css/paragraph-bundle-3d-carousel.css: { weight: 201 }
   js:
     js/paragraph-bundle-3d-carousel.js: { }
   dependencies:
@@ -10,3 +10,33 @@ paragraph-bundle-3d-carousel:
     - core/drupal.ajax
     - core/drupalSettings
     - core/once
+
+paragraph-bundle-3d-carousel-pb__576:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-pb-576.css: { weight: 202 }
+
+paragraph-bundle-3d-carousel-pb__768:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-pb-768.css: { weight: 202 }
+
+paragraph-bundle-3d-carousel-pb__992:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-pb-992.css: { weight: 202 }
+
+paragraph-bundle-3d-carousel-pb__1200:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-pb-1200.css: { weight: 202 }
+
+paragraph-bundle-3d-carousel-pb__1400:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-pb-1400.css: { weight: 202 }

@@ -2,21 +2,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.pb_display_width
+    - field.storage.paragraph.pb_display_carousel_width
     - paragraphs.paragraphs_type.3d_carousel_bundle
   module:
     - options
-id: paragraph.3d_carousel_bundle.pb_display_width
-field_name: pb_display_width
+id: paragraph.3d_carousel_bundle.pb_display_carousel_width
+field_name: pb_display_carousel_width
 entity_type: paragraph
 bundle: 3d_carousel_bundle
 label: Width
-description: 'Change the width for the paragraph wrapper.'
+description: ' Please select the max width for each carousel item.'
 required: true
 translatable: false
 default_value:
   -
-    value: '40'
+    value: 300
 default_value_callback: ''
 settings: {  }
-field_type: list_string
+field_type: list_integer

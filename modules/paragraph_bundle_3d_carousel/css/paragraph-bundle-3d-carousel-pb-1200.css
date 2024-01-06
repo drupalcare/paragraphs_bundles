@@ -1,0 +1,99 @@
+/**
+ * @file
+ * Paragraphs Bundle 3D Carousel.
+ *
+ * Filename:     paragraph-bundle-3d-carousel-pb-1200.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+@media (max-width:75rem) {
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 35rem; /* 560px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 31.25rem; /* 500px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 31.875rem; /* 510px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 28.125rem; /* 450px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 28.75rem; /* 460px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 25rem; /* 400px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 25.625rem; /* 410px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 21.875rem; /* 350px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 22.5rem; /* 360px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 18.75rem; /* 300px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 19.375rem; /* 310px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 15.625rem; /* 250px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 16.25rem; /* 260px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 12.5rem; /* 200px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 13.125rem; /* 210px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 9.375rem; /* 150px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner,
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel {
+    height: 10rem; /* 160px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+    height: 6.25rem; /* 100px / 16px */
+  }
+
+  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
+    overflow: hidden;
+  }
+
+  .paragraph--type--3d-carousel-bundle .pb__3d-carousel > .pb__caro-item {
+    padding: 0 var(--pb-px16);
+  }
+
+}

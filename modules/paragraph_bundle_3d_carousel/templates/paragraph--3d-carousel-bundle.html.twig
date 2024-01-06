@@ -42,6 +42,10 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel') }}
 
+{% set pb_breakpoints = content.pb_display_3d_caro_breakpoints|render|striptags|trim %}
+{% set pb_breakpoints = 'paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ pb_breakpoints %}
+{{ attach_library(pb_breakpoints) }}
+
 {# Set the paragraph id. #}
 {% set paragraph_id  = 'pb__caro-wrap-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
@@ -77,7 +81,7 @@
 ] %}
 
 {# Get the paragraph width and add it to the inner classes if it exists. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
+{% set container_w_input = content.pb_display_carousel_width|render|striptags|trim %}
 {% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
 {# Add display properties to the inner classes if they exist. #}

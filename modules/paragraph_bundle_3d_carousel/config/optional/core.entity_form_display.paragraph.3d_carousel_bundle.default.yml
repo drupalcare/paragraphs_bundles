@@ -2,9 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.3d_carousel_bundle.pb_display_3d_caro_breakpoints
     - field.field.paragraph.3d_carousel_bundle.pb_content_3d_car_body
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
+    - field.field.paragraph.3d_carousel_bundle.pb_content_title
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg_hover
@@ -13,12 +15,12 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_color
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_hover
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.3d_carousel_bundle.pb_display_carousel_width
     - field.field.paragraph.3d_carousel_bundle.pb_display_margin
     - field.field.paragraph.3d_carousel_bundle.pb_display_padding
     - field.field.paragraph.3d_carousel_bundle.pb_display_shadow
     - field.field.paragraph.3d_carousel_bundle.pb_display_text
     - field.field.paragraph.3d_carousel_bundle.pb_display_text_hover
-    - field.field.paragraph.3d_carousel_bundle.pb_display_width
     - paragraphs.paragraphs_type.3d_carousel_bundle
   module:
     - field_group
@@ -68,11 +70,12 @@ third_party_settings:
         - pb_display_border_radius
         - pb_display_margin
         - pb_display_padding
-        - pb_display_width
+        - pb_display_carousel_width
         - pb_display_shadow
         - pb_content_3dcar_lheight
         - pb_content_3dcar_sheight
         - pb_display_3d_play_stop
+        - pb_display_3d_caro_breakpoints
         - pb_display_bg_opacity
       label: Display
       region: content
@@ -91,6 +94,12 @@ targetEntityType: paragraph
 bundle: 3d_carousel_bundle
 mode: default
 content:
+  pb_display_3d_caro_breakpoints:
+    type: options_select
+    weight: 19
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_content_3d_car_body:
     type: paragraphs
     weight: 2
@@ -142,7 +151,7 @@ content:
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 19
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -167,6 +176,12 @@ content:
   pb_display_border_radius:
     type: options_select
     weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_carousel_width:
+    type: options_select
+    weight: 14
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -200,12 +215,7 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pb_display_width:
-    type: options_select
-    weight: 14
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   created: true
+  pb_content_title: true
   status: true

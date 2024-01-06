@@ -2,9 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.3d_carousel_bundle.pb_display_3d_caro_breakpoints
     - field.field.paragraph.3d_carousel_bundle.pb_content_3d_car_body
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
+    - field.field.paragraph.3d_carousel_bundle.pb_content_title
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg_hover
@@ -13,12 +15,12 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_color
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_hover
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.3d_carousel_bundle.pb_display_carousel_width
     - field.field.paragraph.3d_carousel_bundle.pb_display_margin
     - field.field.paragraph.3d_carousel_bundle.pb_display_padding
     - field.field.paragraph.3d_carousel_bundle.pb_display_shadow
     - field.field.paragraph.3d_carousel_bundle.pb_display_text
     - field.field.paragraph.3d_carousel_bundle.pb_display_text_hover
-    - field.field.paragraph.3d_carousel_bundle.pb_display_width
     - paragraphs.paragraphs_type.3d_carousel_bundle
   module:
     - entity_reference_revisions
@@ -29,6 +31,13 @@ targetEntityType: paragraph
 bundle: 3d_carousel_bundle
 mode: default
 content:
+  pb_display_3d_caro_breakpoints:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 15
+    region: content
   pb_content_3d_car_body:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -78,7 +87,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   pb_display_border:
     type: list_key
@@ -107,6 +116,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 7
+    region: content
+  pb_display_carousel_width:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
     region: content
   pb_display_margin:
     type: list_key
@@ -143,11 +159,5 @@ content:
     third_party_settings: {  }
     weight: 5
     region: content
-  pb_display_width:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 11
-    region: content
-hidden: {  }
+hidden:
+  pb_content_title: true
