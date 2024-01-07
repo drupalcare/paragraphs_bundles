@@ -24,51 +24,51 @@
   }
 
   .pb__card-two-columns.two-l6_l6 {
-    grid-template-columns: repeat(2, minmax(50%, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .pb__card-two-columns.two-l4_l8 {
-    grid-template-columns: minmax(33.3333%, 1fr) minmax(66.6666%, 2fr);
+    grid-template-columns: 1fr 2fr;
   }
 
   .pb__card-two-columns.two-l8_l4 {
-    grid-template-columns: minmax(66.6666%, 2fr) minmax(33.3333%, 1fr);
+    grid-template-columns: 2fr 1fr;
   }
 
   .pb__card-two-columns.two-l3_l9 {
-    grid-template-columns: minmax(25%, 1fr) minmax(75%, 3fr);
+    grid-template-columns: 1fr 3fr;
   }
 
   .pb__card-two-columns.two-l9_l3 {
-    grid-template-columns: minmax(75%, 3fr) minmax(25%, 1fr);
+    grid-template-columns: 3fr 1fr;
   }
 
   .pb__card-three-columns.three-l4_l4_l4 {
-    grid-template-columns: repeat(3, minmax(33.3333%, 1fr));
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .pb__card-three-columns.three-l2_l8_l2 {
-    grid-template-columns: minmax(16.6667%, 1fr) minmax(66.6668%, 4fr) minmax(16.6667%, 1fr);
+    grid-template-columns: 1fr 4fr 1fr;
   }
 
   .pb__card-three-columns.three-l2_l2_l8 {
-    grid-template-columns: minmax(16.6667%, 1fr) minmax(16.6667%, 1fr) minmax(66.6668%, 4fr);
+    grid-template-columns: 1fr 1fr 4fr;
   }
 
   .pb__card-three-columns.three-l8_l2_l2 {
-    grid-template-columns: minmax(66.6668%, 4fr) minmax(16.6667%, 1fr) minmax(16.6667%, 1fr);
+    grid-template-columns: 4fr 1fr 1fr;
   }
 
   .pb__card-three-columns.three-l3_l6_l3 {
-    grid-template-columns: minmax(20%, 1fr) minmax(60%, 3fr) minmax(20%, 1fr);
+    grid-template-columns: 1fr 3fr 1fr;
   }
 
   .pb__card-three-columns.three-l6_l3_l3 {
-    grid-template-columns: minmax(60%, 3fr) minmax(20%, 1fr) minmax(20%, 1fr);
+    grid-template-columns: 3fr 1fr 1fr;
   }
 
   .pb__card-three-columns.three-l3_l3_l6 {
-    grid-template-columns: minmax(20%, 1fr) minmax(20%, 1fr) minmax(60%, 3fr);
+    grid-template-columns: 1fr 1fr 3fr;
   }
 
   .pb__card-two-columns .paragraph,
