@@ -10,6 +10,7 @@
 /* 3d_carousel */
 .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
   max-height: 38.125rem;
+  perspective: 40rem;
   margin: 0 auto;
   position: relative;
   width: 100%;
@@ -285,42 +286,42 @@
   left: 0;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-300 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_300 {
   max-width: 18.75rem;
   perspective: 22rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-400 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_400 {
   max-width: 25rem;
   perspective: 24rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-500 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_500 {
   max-width: 31.25rem;
   perspective: 26rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-600 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_600 {
   max-width: 37.5rem;
   perspective: 28rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-700 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_700 {
   max-width: 43.75rem;
   perspective: 30rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-800 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_800 {
   max-width: 50rem;
   perspective: 32rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-900 {
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_900 {
   max-width: 56.25rem;
   perspective: 34rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.w-1000 {
-  max-width: 62.5rem;
-  perspective: 36rem;
+.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_100 {
+  max-width: 100%;
+  perspective: 40rem;
 }

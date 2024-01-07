@@ -10,8 +10,8 @@ id: paragraph.parallax_bundle.pb_display_width
 field_name: pb_display_width
 entity_type: paragraph
 bundle: parallax_bundle
-label: Width
-description: 'Change the width for the paragraph wrapper.'
+label: 'Max Width'
+description: 'Change the max width for the paragraph wrapper.'
 required: false
 translatable: false
 default_value: {  }

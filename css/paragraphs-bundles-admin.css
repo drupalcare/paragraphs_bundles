@@ -11,7 +11,7 @@
   padding: 0 !important;
   gap: 16px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(50%, 1fr));
 }
 
 .pb__tab-display > .details-wrapper > * {

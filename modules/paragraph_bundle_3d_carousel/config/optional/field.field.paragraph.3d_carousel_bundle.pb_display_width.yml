@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_width
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+  module:
+    - options
+id: paragraph.3d_carousel_bundle.pb_display_width
+field_name: pb_display_width
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: 'Max Width'
+description: 'Change the max width for the paragraph wrapper.'
+required: true
+translatable: false
+default_value:
+  -
+    value: pb__pmw_300
+default_value_callback: ''
+settings: {  }
+field_type: list_string

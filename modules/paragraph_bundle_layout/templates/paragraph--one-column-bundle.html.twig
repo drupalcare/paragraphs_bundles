@@ -69,16 +69,13 @@
 
 {# Set the display properties for the paragraph. #}
 {% set pb_displays = [
+  'pb_display_width',
   'pb_display_border',
   'pb_display_border_radius',
   'pb_display_margin',
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Get the paragraph width and add it to the inner classes if it exists. #}
-{% set container_w_input = content.pb_display_width|render|striptags|trim %}
-{% set classes_inner = container_w_input ? classes_inner ~ ' w-' ~ container_w_input : classes_inner %}
 
 {# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}

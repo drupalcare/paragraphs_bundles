@@ -11,28 +11,28 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: cw-800
-      label: 800px / 50rem
+      value: pb__nmw_800
+      label: '800px / 50rem'
     -
-      value: cw-1024
-      label: 1024px / 64rem
+      value: pb__nmw_1024
+      label: '1024px / 64rem'
     -
-      value: cw-1280
-      label: 1280px / 80rem
+      value: pb__nmw_1280
+      label: '1280px / 80rem'
     -
-      value: cw-1440
-      label: 1440px / 90rem
+      value: pb__nmw_1440
+      label: '1440px / 90rem'
     -
-      value: cw-1600
-      label: 1600px / 100rem
+      value: pb__nmw_1600
+      label: '1600px / 100rem'
     -
-      value: cw-1920
-      label: 1920px / 120rem
+      value: pb__nmw_1920
+      label: '1920px / 120rem'
     -
-      value: cw-2560
-      label: 2560px / 160rem
+      value: pb__nmw_2560
+      label: '2560px / 160rem'
     -
-      value: cw-100
+      value: pb__nmw_100
       label: 100%
   allowed_values_function: ''
 module: options

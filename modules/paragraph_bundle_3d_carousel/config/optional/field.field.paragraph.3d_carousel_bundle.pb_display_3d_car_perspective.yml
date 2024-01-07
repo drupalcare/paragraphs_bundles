@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3d_car_perspective
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+id: paragraph.3d_carousel_bundle.pb_display_3d_car_perspective
+field_name: pb_display_3d_car_perspective
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: Perspective
+description: "The details of perspective may change based on the quantity of items in the 3D carousel. By default, this setting adjusts with each width selection. You can modify this value in pixels if the carousel circle appears too broad.\r\n\r\n\r\n"
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

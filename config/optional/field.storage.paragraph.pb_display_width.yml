@@ -11,28 +11,28 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: '30'
-      label: '30 %'
+      value: pb__pmw_300
+      label: '300 px'
     -
-      value: '40'
-      label: '40 %'
+      value: pb__pmw_400
+      label: '400 px'
     -
-      value: '50'
-      label: '50 %'
+      value: pb__pmw_500
+      label: '500 px'
     -
-      value: '60'
-      label: '60 %'
+      value: pb__pmw_600
+      label: '600 px'
     -
-      value: '70'
-      label: '70 %'
+      value: pb__pmw_700
+      label: '700 px'
     -
-      value: '80'
-      label: '80 %'
+      value: pb__pmw_800
+      label: '800 px'
     -
-      value: '90'
-      label: '90 %'
+      value: pb__pmw_900
+      label: '900 px'
     -
-      value: '100'
+      value: pb__pmw_100
       label: '100 %'
   allowed_values_function: ''
 module: options
