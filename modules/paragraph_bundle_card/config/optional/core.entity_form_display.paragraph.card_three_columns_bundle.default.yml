@@ -28,7 +28,7 @@ dependencies:
     - paragraphs_bundles
 third_party_settings:
   field_group:
-    group_tabs_wrapper:
+    group_pb_tabs_wrapper:
       children:
         - group_tab_content
         - group_tab_display
@@ -51,7 +51,7 @@ third_party_settings:
         - pb_content_card_right
       label: Content
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 20
       format_type: tab
       format_settings:
@@ -63,6 +63,7 @@ third_party_settings:
         required_fields: true
     group_tab_display:
       children:
+        - pb_display_bg_opacity
         - pb_display_bg
         - pb_display_bg_hover
         - pb_display_text
@@ -77,10 +78,9 @@ third_party_settings:
         - pb_display_shadow
         - pb_display_card_layout_three
         - pb_display_card_breakpoints
-        - pb_display_bg_opacity
       label: Display
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 22
       format_type: tab
       format_settings:
@@ -162,13 +162,13 @@ content:
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget
-    weight: 4
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_bg_hover:
     type: color_text_widget
-    weight: 5
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -180,73 +180,73 @@ content:
     third_party_settings: {  }
   pb_display_border:
     type: options_select
-    weight: 10
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_color:
     type: color_text_widget
-    weight: 8
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_hover:
     type: color_text_widget
-    weight: 9
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_radius:
     type: options_select
-    weight: 11
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_card_breakpoints:
     type: options_select
-    weight: 17
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_card_layout_three:
     type: options_select
-    weight: 16
+    weight: 31
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_margin:
     type: options_select
-    weight: 12
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 13
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
     type: options_select
-    weight: 15
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_text:
     type: color_text_widget
-    weight: 6
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_text_hover:
     type: color_text_widget
-    weight: 7
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
     type: options_select
-    weight: 14
+    weight: 29
     region: content
     settings: {  }
     third_party_settings: {  }

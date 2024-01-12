@@ -10,7 +10,7 @@ id: paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
 field_name: pb_content_3dcar_sheight
 entity_type: paragraph
 bundle: 3d_carousel_bundle
-label: 'Height in pixels'
+label: 'Small Screen Height'
 description: 'The selected breakpoint will determine the height applied uniformly to all carousel items.'
 required: false
 translatable: false

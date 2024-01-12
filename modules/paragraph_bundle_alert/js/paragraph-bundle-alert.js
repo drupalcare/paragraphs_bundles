@@ -9,27 +9,38 @@
 ((Drupal, once) => {
   'use strict';
 
-  const closeAlert = document.querySelector('.pb__close-alert');
-
-  const closeBlockHandler = (pId) => {
-    const alertContent = document.getElementById(pId);
-    if (alertContent) { // Check if element exists
-      alertContent.setAttribute('aria-expanded', 'false');
-      alertContent.setAttribute('aria-hidden', 'true');
-      alertContent.style.display = 'none';
-    }
-  };
-
   Drupal.behaviors.paragraphBundleAlert = {
-    attach: function(settings) {
-      closeAlert?.addEventListener('click', function(event) {
-        let closestParent = event.target.closest('[id]');
-        if (closestParent) { // Ensure closestParent is not null
-          closeBlockHandler(closestParent.id);
+    attach: function(context, settings) {
+      const alertBoxes = once('paragraphBundleAlert', '.paragraph--type--alert-bundle', context);
+      if (!alertBoxes.length) {
+        return;
+      }
+
+      alertBoxes.forEach(alertBox => {
+        const closeButton = alertBox.querySelector('.pb__alert-top.On > button');
+        const paragraph = alertBox.querySelector('.paragraph');
+
+        if (closeButton && paragraph) {
+          closeButton.addEventListener('click', () => {
+            // Toggle the visibility of the alert box using CSS class
+            if (alertBox.classList.contains('alert-is-closed')) {
+              // Show the alert and update aria attributes
+              paragraph.removeAttribute('aria-hidden');
+              alertBox.classList.remove('alert-is-closed');
+              closeButton.setAttribute('aria-expanded', 'true');
+            } else {
+              // Hide the alert and update aria attributes
+              paragraph.setAttribute('aria-hidden', 'true');
+              alertBox.classList.add('alert-is-closed');
+              closeButton.setAttribute('aria-expanded', 'false');
+            }
+          });
         }
       });
     }
   };
 
 })(Drupal, once);
+
+
 

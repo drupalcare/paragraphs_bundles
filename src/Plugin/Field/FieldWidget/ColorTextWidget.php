@@ -13,7 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @FieldWidget(
  *   id = "color_text_widget",
  *   module = "paragraphs_bundles",
- *   label = @Translation("RGB value as #ffffff"),
+ *   label = @Translation("RGB value as (0,0,0)"),
  *   field_types = {
  *     "paragraphs_bundles_rgb"
  *   }

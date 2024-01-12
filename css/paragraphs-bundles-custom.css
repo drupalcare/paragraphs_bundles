@@ -8,8 +8,10 @@
  */
 .paragraph,
 .paragraph .pb__one-column {
-  display: grid;
   margin: 0 auto;
+  display: grid;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr;
 }
 
 .paragraph a,
@@ -112,49 +114,49 @@
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_100,
 .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner,
 .pb__hero-txt-wrapper-inner.pb__pmw_100:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 100%;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_900,
 .pb__hero-txt-wrapper-inner.pb__pmw_900:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 56.25rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_800,
 .pb__hero-txt-wrapper-inner.pb__pmw_800:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 50rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_700,
 .pb__hero-txt-wrapper-inner.pb__pmw_700:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 43.75rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_600,
 .pb__hero-txt-wrapper-inner.pb__pmw_600:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 37.5rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_500,
 .pb__hero-txt-wrapper-inner.pb__pmw_500:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 31.25rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_400,
 .pb__hero-txt-wrapper-inner.pb__pmw_400:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 25rem;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_300,
 .pb__hero-txt-wrapper-inner.pb__pmw_300:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
-  width: 100;
+  width: 100%;
   max-width: 18.75rem;
 }
 

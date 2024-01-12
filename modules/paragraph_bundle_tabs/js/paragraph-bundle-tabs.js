@@ -13,45 +13,66 @@
     attach: function (context, settings) {
       // Function to hide all panes
       function hideAllPanes(panes) {
-        panes.forEach(function(pane) {
-          pane.style.display = 'none';
+        panes.forEach(pane => {
+          if (pane) {
+            pane.style.display = 'none';
+            pane.setAttribute('aria-hidden', 'true'); // Set aria-hidden attribute
+          }
         });
       }
 
       // Function to remove active class from buttons
       function removeActiveClassFromButtons(buttons) {
-        buttons.forEach(function(button) {
-          button.classList.remove('pb__active');
+        buttons.forEach(button => {
+          if (button) {
+            button.classList.remove('pb__active');
+            button.setAttribute('aria-expanded', 'false'); // Set aria-expanded attribute
+          }
         });
       }
 
-      // Function to handle button click
-      function handleButtonClick(button) {
-        button.addEventListener('click', function() {
-          const btnId = this.id;
+      // Function to handle tab clicks with event delegation
+      function handleTabClicks(tabContainer) {
+        tabContainer.addEventListener('click', event => {
+          const button = event.target.closest('.pb__tab-button');
+          if (!button) return;
+
+          const btnId = button.id;
           const paneId = `${btnId}-pane`;
           const currentPane = document.getElementById(paneId);
-          const currentButton = document.getElementById(btnId);
           const parentId = `#pb__tab-${btnId.split('-')[1]}`;
           const tabPanes = document.querySelectorAll(`${parentId} .pb__tab-pane`);
           const tabButtons = document.querySelectorAll(`${parentId} .pb__tab-button`);
-          hideAllPanes(tabPanes);
-          removeActiveClassFromButtons(tabButtons);
-          currentPane.style.display = 'block';
-          currentButton.classList.add('pb__active');
+
+          if (currentPane) {
+            hideAllPanes(tabPanes);
+            removeActiveClassFromButtons(tabButtons);
+
+            currentPane.style.display = 'block';
+            currentPane.setAttribute('aria-hidden', 'false');
+            button.classList.add('pb__active');
+            button.setAttribute('aria-expanded', 'true');
+          } else {
+            console.warn(`Pane with ID ${paneId} not found.`);
+          }
         });
       }
 
-      const buttons = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
-      buttons.forEach(function(button) {
-        handleButtonClick(button);
+      const tabContainers = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
+      tabContainers.forEach(container => {
+        if (container) {
+          handleTabClicks(container);
+        }
       });
 
+      // Activating the first child buttons
       const firstChildButtons = context.querySelectorAll('.pb__tabs-button > button:first-child');
-      firstChildButtons.forEach(function(button) {
-        button.classList.add('pb__active');
+      firstChildButtons.forEach(button => {
+        if (button) {
+          button.classList.add('pb__active');
+          button.setAttribute('aria-expanded', 'true');
+        }
       });
     }
   };
 })(Drupal, drupalSettings, once);
-

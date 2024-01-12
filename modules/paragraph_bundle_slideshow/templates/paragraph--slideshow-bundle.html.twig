@@ -161,7 +161,7 @@
         </div>{# End of pb__slides #}
 
         <div id="pb__slide-nav-{{ paragraph.id.value }}" class="pb__bar pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
-          <button id="btn-{{ paragraph.id.value }}" class="pb__button pb__pp pb__play">&#10073;&nbsp;&#10073;</button>
+          <button id="btn-{{ paragraph.id.value }}" class="pb__button hide-{{ pb_play_stop }} pb__play">&#10073;&nbsp;&#10073;</button>
           {% for key, item in content.pb_content_slideshow_section %}
           {% if key|first != '#' %}
           <button id="pb__slide-bottom-btn-{{ key + 1 }}" class="pb__button pb__slide-bottom-btn {% if key == 0 %} pb__active {% endif %}">

@@ -69,13 +69,9 @@ body .page-wrapper li {
 }
 
 .paragraph>.paragraph__inner {
-  background-color: var(--pb-bg);
-  border-color: var(--pb-br);
-  color: var(--pb-tx);
-}
-
-.paragraph>.paragraph__inner div {
-  color: var(--pb-tx);
+  background-color: var(--pb-bg, inherit);
+  border-color: var(--pb-br, inherit);
+  color: var(--pb-tx, inherit);
 }
 
 .paragraph>.paragraph__inner:hover {
@@ -84,7 +80,19 @@ body .page-wrapper li {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
+.paragraph p,
+.paragraph a,
+.paragraph .pb__content-title,
+.paragraph>.paragraph__inner div {
+  border-color: var(--pb-br, inherit);
+  color: var(--pb-tx, inherit);
+}
+
+.paragraph p:hover,
+.paragraph a:hover,
+.paragraph .pb__content-title:hover,
 .paragraph>.paragraph__inner div:hover {
+  border-color: var(--pb-br, var(--pb-br-h));
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
@@ -339,7 +347,7 @@ body .page-wrapper li {
 
 /* Border Colors */
 .pb__animate-fading {
-  animation: fading 10s infinite;
+  animation: fading 5s ease-in-out infinite;
 }
 
 @keyframes fading {
@@ -358,7 +366,7 @@ body .page-wrapper li {
 }
 
 .pb__animate_opacity {
-  animation: opac 0.8s;
+  animation: opac 0.8s ease-out;
 }
 
 @keyframes opac {
@@ -374,12 +382,12 @@ body .page-wrapper li {
 
 .pb__animate_top {
   position: relative;
-  animation: animatetop 0.4s;
+  animation: animatetop 0.6s ease-out;
 }
 
 @keyframes animatetop {
   from {
-    top: -300px;
+    top: -100px;
     opacity: 0;
   }
 
@@ -392,12 +400,12 @@ body .page-wrapper li {
 
 .pb__animate_left {
   position: relative;
-  animation: animateleft 0.4s;
+  animation: animateleft 0.6s ease-out;
 }
 
 @keyframes animateleft {
   from {
-    left: -300px;
+    left: -100px;
     opacity: 0;
   }
 
@@ -410,12 +418,12 @@ body .page-wrapper li {
 
 .pb__animate_right {
   position: relative;
-  animation: animateright 0.4s;
+  animation: animateright 0.6s ease-out;
 }
 
 @keyframes animateright {
   from {
-    right: -300px;
+    right: -100px;
     opacity: 0;
   }
 
@@ -428,12 +436,12 @@ body .page-wrapper li {
 
 .pb__animate_bottom {
   position: relative;
-  animation: animatebottom 0.4s;
+  animation: animatebottom 0.6s ease-out;
 }
 
 @keyframes animatebottom {
   from {
-    bottom: -300px;
+    bottom: -100px;
     opacity: 0;
   }
 
@@ -445,7 +453,7 @@ body .page-wrapper li {
 }
 
 .pb__animate_zoom {
-  animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s ease-out;
 }
 
 @keyframes animatezoom {
@@ -454,7 +462,7 @@ body .page-wrapper li {
   }
 
   to {
-    transform: scale(1);
+    transform: scale(1.05);
   }
 
 }

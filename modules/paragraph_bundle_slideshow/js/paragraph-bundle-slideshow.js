@@ -12,12 +12,28 @@
   Drupal.behaviors.paragraphSlideshowBundle = {
     attach: function(context, settings) {
 
-        const slides = once('paragraphSlideshowBundle', '.pb__slides', context);
-        if (!slides.length) {
-          return;
-        }
+      const slides = once('paragraphSlideshowBundle', '.pb__slides', context);
+      if (!slides.length) {
+        return;
+      }
 
       let slideIndex = 1;
+      let autoSlideIntervalId = null;
+      let isPaused = false;
+
+      const manageAutoSlideInterval = (action, parentId, slideTime) => {
+        if (action === 'clear') {
+          if (autoSlideIntervalId) {
+            clearInterval(autoSlideIntervalId);
+            autoSlideIntervalId = null;
+          }
+        }
+        else if (action === 'start') {
+          if (!autoSlideIntervalId && slideTime > 0) { // Check if slideTime is greater than 0
+            autoSlideIntervalId = setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
+          }
+        }
+      };
 
       const getNextItemIndex = (totalSlides) => {
         slideIndex = slideIndex % totalSlides + 1;
@@ -73,6 +89,7 @@
 
       const handlePrevNextBtn = (element, itemFunction) => {
         const parentId = getParentId(element);
+        manageAutoSlideInterval('clear');
         const slides = context.querySelectorAll(`#pb__slides-${parentId}>.pb__slide-item`);
         const totalSlides = slides.length;
         const slideId = itemFunction(totalSlides);
@@ -80,19 +97,35 @@
 
         nextSlide.style.display = 'block';
         isActive.classList.add('pb__active');
+
+        // Resume auto-slide if it was playing
+        if (!isPaused) {
+          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
+            .textContent);
+          manageAutoSlideInterval('start', parentId, slideTime);
+        }
       };
 
       let handleBottomNav = (e, p) => {
         const slideId = getElementId(e);
         const parentId = getParentId(p);
+        manageAutoSlideInterval('clear');
         const slideAndActiveState = getNextSlide(parentId, slideId);
 
         if (slideAndActiveState && slideAndActiveState.length >= 2) {
           slideAndActiveState[0].style.display = 'block';
           slideAndActiveState[1].classList.add('pb__active');
           slideIndex = slideId;
-        } else {
+        }
+        else {
           console.error('getNextSlide did not return an array with at least two elements');
+        }
+
+        // Check if the slideshow is paused before deciding to restart it
+        if (!isPaused) {
+          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
+            .textContent);
+          manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
 
@@ -107,72 +140,71 @@
         activeSlide.classList.add('pb__active');
       };
 
-      once('init-slides', slides).forEach(slide => {
-        let slideId = slide.id;
-        console.log(slideId);
-        let parentId = parseInt(slide.id.split('-')[1]);
-        let intervalId = slide.id.replaceAll('-', '');
-        let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
-          .textContent);
+      once('init-slides', slides)
+        .forEach(slide => {
+          let slideId = slide.id;
+          let parentId = parseInt(slide.id.split('-')[1]);
+          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
+            .textContent);
 
-        if (slideTime != 0) {
-          let stopOnHover = context.getElementById(slideId);
-          let playPause = context.getElementById(`btn-${parentId}`);
-          let btnClasses = playPause.classList;
+          manageAutoSlideInterval('start', parentId, slideTime);
 
-          btnClasses.add('pb__no-bottom-nav');
+          if (slideTime != 0) {
+            let stopOnHover = context.getElementById(slideId);
+            let playPause = context.getElementById(`btn-${parentId}`);
+            let btnClasses = playPause.classList;
+            btnClasses.add('pb__no-bottom-nav');
 
-          const autoSlideInterval = () => setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
+            const togglePlayPause = () => {
+              isPaused = !isPaused;
+              if (isPaused) {
+                playPause.classList.replace('pb__play', 'pb__pause');
+                playPause.innerHTML = '&#9654;';
+                manageAutoSlideInterval('clear');
+              }
+              else {
+                playPause.classList.replace('pb__pause', 'pb__play');
+                playPause.innerHTML = '&#10073;&nbsp;&#10073;';
+                manageAutoSlideInterval('start', parentId, slideTime);
+              }
+            };
 
-          intervalId = autoSlideInterval();
+            stopOnHover.addEventListener('mouseover', () => {
+              if (!isPaused) {
+                manageAutoSlideInterval('clear');
+              }
+            });
 
-          const clearAndSetInterval = () => {
-            if (playPause.classList.contains('pb__play')) {
-              clearInterval(intervalId);
-              intervalId = autoSlideInterval();
-            }
-          };
+            stopOnHover.addEventListener('mouseout', () => {
+              if (!isPaused) {
+                manageAutoSlideInterval('start', parentId, slideTime);
+              }
+            });
 
-          stopOnHover.addEventListener('mouseover', () => {
-            if (playPause.classList.contains('pb__play')) {
-              clearInterval(intervalId);
-            }
+            playPause.addEventListener('click', togglePlayPause);
+          }
+        });
+
+      once('init-pb__next', '.pb__slideshow-inner .pb__next', context)
+        .forEach(element => {
+          element.addEventListener('click', function(event) {
+            handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
           });
+        });
 
-          stopOnHover.addEventListener('mouseout', clearAndSetInterval);
-
-          playPause.addEventListener('click', function() {
-            if (this.classList.contains('pb__play')) {
-              this.classList.replace('pb__play', 'pb__pause');
-              this.innerHTML = '&#9654;';
-              clearInterval(intervalId);
-            } else {
-              this.classList.replace('pb__pause', 'pb__play');
-              this.innerHTML = '&#10073;&nbsp;&#10073;';
-              intervalId = autoSlideInterval();
-            }
+      once('init-pb__prev', '.pb__slideshow-inner .pb__prev', context)
+        .forEach(element => {
+          element.addEventListener('click', function(event) {
+            handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
           });
-        }
-
-      });
-
-      once('init-pb__next', '.pb__slideshow-inner .pb__next', context).forEach(element => {
-        element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
         });
-      });
 
-      once('init-pb__prev', '.pb__slideshow-inner .pb__prev', context).forEach(element => {
-        element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
+      once('init-bottom-nav', '.pb__slideshow-inner .pb__slide-bottom-btn', context)
+        .forEach(element => {
+          element.addEventListener('click', function(event) {
+            handleBottomNav(event.target.id, event.target.parentElement.id);
+          });
         });
-      });
-
-      once('init-bottom-nav', '.pb__slideshow-inner .pb__slide-bottom-btn', context).forEach(element => {
-        element.addEventListener('click', function(event) {
-          handleBottomNav(event.target.id, event.target.parentElement.id);
-        });
-      });
 
     }
   };

@@ -39,6 +39,11 @@
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next {
   margin-left: auto;
+  padding-right: var(--pb-px48);
+}
+
+.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__prev {
+  padding-left: var(--pb-px48);
 }
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav > .pb__active {
@@ -108,11 +113,11 @@
   background-color: var(--pb-bt-a, gray);
 }
 
-.paragraph--type--slideshow-bundle .pb__pp {
+.paragraph--type--slideshow-bundle .hide-0 {
   display: none;
 }
 
-.paragraph--type--slideshow-bundle .pb__pp.pb__no-bottom-nav {
+.paragraph--type--slideshow-bundle .pb__no-bottom-nav {
   display: inline;
   width: auto;
 }

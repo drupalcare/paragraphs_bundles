@@ -31,7 +31,7 @@ third_party_settings:
   field_group:
     group_pb_tabs_wrapper:
       children:
-        - group_pp_tab_content
+        - group_pb_tab_content
         - group_pb_tab_display
       label: 'Tabs Wrapper'
       region: content
@@ -44,7 +44,7 @@ third_party_settings:
         id: ''
         direction: horizontal
         width_breakpoint: 992
-    group_pp_tab_content:
+    group_pb_tab_content:
       children:
         - pb_content_title
         - pb_content_slideshow_section
@@ -62,6 +62,7 @@ third_party_settings:
         required_fields: true
     group_pb_tab_display:
       children:
+        - pb_display_bg_opacity
         - pb_display_bg
         - pb_display_bg_hover
         - pb_display_text
@@ -77,7 +78,6 @@ third_party_settings:
         - pb_display_bottom_navigation
         - pb_display_slide_animated_slides
         - pb_display_slide_play_stop
-        - pb_display_bg_opacity
         - pb_display_slide_active_item
         - pb_display_slide_prev_next
       label: Display
@@ -126,13 +126,13 @@ content:
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget
-    weight: 4
+    weight: 20
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_bg_hover:
     type: color_text_widget
-    weight: 5
+    weight: 21
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -144,92 +144,92 @@ content:
     third_party_settings: {  }
   pb_display_border:
     type: options_select
-    weight: 10
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_color:
     type: color_text_widget
-    weight: 8
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_hover:
     type: color_text_widget
-    weight: 9
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_border_radius:
     type: options_select
-    weight: 11
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_bottom_navigation:
     type: options_select
-    weight: 16
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_margin:
     type: options_select
-    weight: 12
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 13
+    weight: 29
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_shadow:
     type: options_select
-    weight: 15
+    weight: 31
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_active_item:
     type: color_text_widget
-    weight: 20
+    weight: 35
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_animated_slides:
     type: options_select
-    weight: 17
+    weight: 33
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_play_stop:
     type: options_select
-    weight: 18
+    weight: 34
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_slide_prev_next:
     type: boolean_checkbox
-    weight: 21
+    weight: 36
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   pb_display_text:
     type: color_text_widget
-    weight: 6
+    weight: 22
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_text_hover:
     type: color_text_widget
-    weight: 7
+    weight: 23
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
     type: options_select
-    weight: 14
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }

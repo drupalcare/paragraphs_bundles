@@ -6,17 +6,54 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+@media (min-width:68rem) {
+  .pb__tab-display > .details-wrapper {
+    padding: 0 !important;
+    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+  }
 
-.pb__tab-display > .details-wrapper {
-  padding: 0 !important;
-  gap: 16px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(50%, 1fr));
+  /* General rule for any child */
+  .pb__tab-display > .details-wrapper > * {
+    flex: 1 1 calc(50% - 16px);
+    max-width: calc(50% - 16px);
+  }
+
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-hover,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-text,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-text-hover,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-color,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-hover {
+    flex: 0 0 calc(25% - 16px);
+    max-width: calc(25% - 16px);
+  }
+
 }
 
-.pb__tab-display > .details-wrapper > * {
-  width: 100%;
-  margin: 0;
+@media (max-width:68rem) {
+  .pb__tab-display > .details-wrapper {
+    padding: 0 !important;
+    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(50%, 1fr));
+  }
+
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-opacity:first-child {
+    grid-column: 1 / -1;
+  }
+
+}
+
+@media (max-width:48rem) {
+  .pb__tab-display > .details-wrapper {
+    display: grid;
+    gap: 16px;
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+  }
+
 }
 
 .pb__tab-display .form-radios {
@@ -57,39 +94,35 @@
   padding: 0.5rem 1rem !important;
 }
 
-/* Max width 992 */
-@media (max-width:62rem) {
-  .pb__tab-display > .details-wrapper {
-    grid-auto-flow: row;
-    grid-template-columns: 1fr;
-  }
-
-}
-
-.pb__tabs-wrapper .horizontal-tabs .horizontal-tabs-list {
-  border-bottom-width: 5px;
-  border-color: #4caf50;
-}
-
-.pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
-  border-bottom-width: 5px;
-  border-color: #2196f3;
-}
-
-.pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
-  border-bottom-width: 5px;
-  border-color: #9c27b0;
-}
-
-.pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .pb__tabs-wrapper .horizontal-tabs-list {
-  border-bottom-width: 5px;
-  border-color: #ff5722;
-}
-
 .pb__tabs-wrapper .horizontal-tabs .pb__tab-display {
   box-sizing: border-box;
   width: 100%;
   min-width: initial;
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
+}
+
+.paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #007bff;
+  color: #ffffff;
+}
+
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #ffc107;
+  color: #333333;
+}
+
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #fd7e14;
+  color: #333333;
+}
+
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper  .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #dc3545;
+  color: #ffffff;
 }

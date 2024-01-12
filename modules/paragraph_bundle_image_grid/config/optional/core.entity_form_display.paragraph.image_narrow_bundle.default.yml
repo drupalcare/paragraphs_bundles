@@ -29,7 +29,7 @@ third_party_settings:
   field_group:
     group_pb_tabs_wrapper:
       children:
-        - group_pp_tab_content
+        - group_pb_tab_content
         - group_pb_tab_display
       label: 'Tabs Wrapper'
       region: content
@@ -42,7 +42,7 @@ third_party_settings:
         id: ''
         direction: horizontal
         width_breakpoint: 992
-    group_pp_tab_content:
+    group_pb_tab_content:
       children:
         - pb_content_image
         - pb_content_title

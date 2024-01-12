@@ -16,10 +16,10 @@ dependencies:
     - path
 third_party_settings:
   field_group:
-    group_tabs_wrapper:
+    group_pb_tabs_wrapper:
       children:
-        - group_content
-        - group_display
+        - group_pb_tab_content
+        - group_pb_tab_display
       label: 'Tabs Wrapper'
       region: content
       parent_name: ''
@@ -31,14 +31,14 @@ third_party_settings:
         id: ''
         direction: horizontal
         width_breakpoint: 992
-    group_content:
+    group_pb_tab_content:
       children:
         - title
         - pb_content_type_body
         - pb_content_reference_para_block
       label: Content
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 20
       format_type: tab
       format_settings:
@@ -48,7 +48,7 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
-    group_display:
+    group_pb_tab_display:
       children:
         - pb_display_disable_region
         - pb_display_content_bg
@@ -56,7 +56,7 @@ third_party_settings:
         - pb_display_content_width
       label: Display
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 21
       format_type: tab
       format_settings:
