@@ -74,8 +74,8 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
-        - pb_display_card_breakpoints
         - pb_display_card_layout_two
+        - pb_display_card_breakpoints
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -183,13 +183,13 @@ content:
     third_party_settings: {  }
   pb_display_card_breakpoints:
     type: options_select
-    weight: 31
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_card_layout_two:
     type: options_select
-    weight: 32
+    weight: 31
     region: content
     settings: {  }
     third_party_settings: {  }

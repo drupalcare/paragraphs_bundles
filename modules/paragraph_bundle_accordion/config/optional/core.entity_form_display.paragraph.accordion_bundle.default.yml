@@ -76,10 +76,10 @@ third_party_settings:
         - pb_display_width
         - pb_display_shadow
         - pb_display_accor_animated
+        - pb_display_accor_active_item
         - pb_display_accor_open_first
         - pb_display_accor_show_expand
         - pb_display_accor_indicator
-        - pb_display_accor_active_item
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -126,7 +126,7 @@ content:
     third_party_settings: {  }
   pb_display_accor_active_item:
     type: color_text_widget
-    weight: 33
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -138,21 +138,21 @@ content:
     third_party_settings: {  }
   pb_display_accor_indicator:
     type: boolean_checkbox
-    weight: 32
+    weight: 33
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   pb_display_accor_open_first:
     type: boolean_checkbox
-    weight: 30
+    weight: 31
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   pb_display_accor_show_expand:
     type: boolean_checkbox
-    weight: 31
+    weight: 32
     region: content
     settings:
       display_label: true

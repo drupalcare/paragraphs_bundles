@@ -8,7 +8,7 @@ id: paragraph.image_grid_bundle.pb_display_image_grid_gap
 field_name: pb_display_image_grid_gap
 entity_type: paragraph
 bundle: image_grid_bundle
-label: 'PB Display Grid Gap'
+label: 'Grid Gap'
 description: 'You have the ability to adjust the spacing between the image grids, which is initially set to 20px by default.'
 required: true
 translatable: false
