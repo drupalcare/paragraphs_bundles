@@ -68,17 +68,24 @@
  */
 #}
 
-
 {# Set the maximum width of the node #}
 {% set node_max_width = content.pb_display_content_width|render|striptags|trim  %}
 
-{# Set the background color of the node #}
-{% set pb_bg = content.pb_display_content_bg|render|striptags|trim %}
 
-{# Set the opacity of the background color #}
-{% set pb_bg_opacity = content.pb_display_content_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{# Set the background color of the node #}
+{% set pb_bg_value = content.pb_display_content_bg|render|striptags|trim %}
+
+{% set pb_bg_style = '' %}
+{% if pb_bg_value starts with '#' %}
+  {# Handling solid color (hex code) #}
+  {% set pb_bg_style = 'background-color: ' ~ pb_bg_value ~ ';' %}
+{% else %}
+  {# Set the opacity of the background color for non-solid colors #}
+  {% set pb_bg_opacity = content.pb_display_content_bg_opacity|render|striptags|trim %}
+  {% if pb_bg_opacity != '100' %}
+    {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+  {% endif %}
+  {% set pb_bg_style = 'background-color: rgba(' ~ pb_bg_value|trim ~ ', ' ~ pb_bg_opacity ~ ');' %}
 {% endif %}
 
 {% set classes = [
@@ -92,7 +99,7 @@
   ]
 %}
 
-<article {% if pb_bg %}style="background-color: rgba({{ pb_bg }}, {{ pb_bg_opacity }});" {% endif %} {{ attributes.addClass(classes) }}>
+<article {{ attributes.addClass(classes) }} {% if pb_bg_value %} style="{{ pb_bg_style }}" {% endif %}>
 
   {% if (label and not page) or display_submitted %}
 

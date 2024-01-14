@@ -44,7 +44,7 @@ content:
     weight: 4
     region: content
   pb_display_content_bg:
-    type: color_text_formatter
+    type: color_text_formatter_rgb
     label: hidden
     settings: {  }
     third_party_settings: {  }

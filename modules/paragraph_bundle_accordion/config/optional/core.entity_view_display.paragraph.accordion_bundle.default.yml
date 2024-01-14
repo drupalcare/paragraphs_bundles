@@ -50,7 +50,7 @@ content:
     weight: 18
     region: content
   pb_display_accor_active_item:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -94,14 +94,14 @@ content:
     weight: 15
     region: content
   pb_display_bg:
-    type: color_text_formatter
+    type: color_text_formatter_rgb
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 0
     region: content
   pb_display_bg_hover:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -122,14 +122,14 @@ content:
     weight: 7
     region: content
   pb_display_border_color:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
   pb_display_border_hover:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }
@@ -164,14 +164,14 @@ content:
     weight: 9
     region: content
   pb_display_text:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
   pb_display_text_hover:
-    type: color_text_formatter
+    type: color_text_formatter_hex
     label: hidden
     settings: {  }
     third_party_settings: {  }

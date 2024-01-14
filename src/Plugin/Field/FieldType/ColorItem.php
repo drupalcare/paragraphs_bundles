@@ -15,7 +15,7 @@ use Drupal\Core\TypedData\DataDefinition;
  *   module = "paragraphs_bundles",
  *   description = @Translation("Insert RGB Color in a a text field."),
  *   default_widget = "color_text_widget",
- *   default_formatter = "color_text_formatter"
+ *   default_formatter = "color_text_formatter_hex"
  * )
  */
 class ColorItem extends FieldItemBase {

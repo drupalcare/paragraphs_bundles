@@ -6,18 +6,18 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
 
 /**
- * Plugin implementation of the 'color_text_formatter' formatter.
+ * Plugin implementation for HEX color text formatter.
  *
  * @FieldFormatter(
- *   id = "color_text_formatter",
+ *   id = "color_text_formatter_hex",
  *   module = "paragraphs_bundles",
- *   label = @Translation("RGB Color"),
+ *   label = @Translation("HEX Color"),
  *   field_types = {
  *     "paragraphs_bundles_rgb"
  *   }
  * )
  */
-class ColorTextFormatter extends FormatterBase {
+class ColorTextFormatterHEX extends FormatterBase {
 
   /**
    * {@inheritdoc}
@@ -26,14 +26,11 @@ class ColorTextFormatter extends FormatterBase {
     $elements = [];
 
     foreach ($items as $delta => $item) {
-      $hex_val = trim($item->value, '#');
-      $r0 = hexdec($hex_val[0] . $hex_val[1]);
-      $g0 = hexdec($hex_val[2] . $hex_val[3]);
-      $b0 = hexdec($hex_val[4] . $hex_val[5]);
+      $hex_val = trim($item->value);
       $elements[$delta] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $r0 . ',' . $g0 . ',' . $b0,
+        '#value' => $hex_val,
       ];
     }
 

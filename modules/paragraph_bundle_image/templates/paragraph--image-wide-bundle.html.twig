@@ -93,11 +93,16 @@
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
+
     {% if value == 'pb_display_bg' %}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% elseif style starts with '#' %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
     {% else %}
+    {# In case widget was changed. #}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
+
   {% endif %}
 {% endfor %}
 
