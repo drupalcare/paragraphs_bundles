@@ -6,11 +6,15 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-
 form [data-drupal-selector="para-opacity-range"] {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+}
+
+form [data-drupal-selector="para-opacity-range"] > div {
+  width: 100%;
+  display: flex;
 }
 
 form [data-drupal-selector="para-opacity-range"] label {

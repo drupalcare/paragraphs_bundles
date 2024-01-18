@@ -6,12 +6,16 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-
 .pb__tab-display [data-drupal-selector="para-color-picker"] {
   display: inline-block;
   min-width: 150px;
   width: 100%;
   border-radius: 5px;
+}
+
+.pb__tab-display [data-drupal-selector="para-color-picker"] > div {
+  width: 100%;
+  display: flex;
 }
 
 .pb__tab-display [data-drupal-selector="para-color-picker"] .form-text {
