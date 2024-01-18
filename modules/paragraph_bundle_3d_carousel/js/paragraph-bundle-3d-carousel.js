@@ -20,6 +20,7 @@
       let currentWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
       let autoHelper = [];
       let n = 0;
+      let isPaused = false;
 
       // Centralized Interval Management
       const manageAutoSlideInterval = (carouselId, action, cTime) => {
@@ -28,7 +29,7 @@
           clearInterval(intervalId);
           intervalIds.delete(carouselId);
         }
-        else if (action === 'start' && cTime > 0) {
+        else if (action === 'start' && cTime > 0 && !isPaused) {
           intervalId = setInterval(() => autoPlay(carouselId), cTime);
           intervalIds.set(carouselId, intervalId);
         }
@@ -160,20 +161,22 @@
 
       let nextBtn = (carouselId) => {
         let cTimeId = carouselId.split('-')[2];
-        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`)
-          .textContent);
-        clearInterval(intervalIds.get(carouselId)); // Clear the interval
+        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`).textContent);
         navigateCarousel(carouselId, forward);
-        intervalIds.set(carouselId, setAutoPlayInterval(carouselId, cTime)); // Restart the interval
+        manageAutoSlideInterval(carouselId, 'clear');
+        if (!isPaused) {
+          manageAutoSlideInterval(carouselId, 'start', cTime);
+        }
       };
 
       let prevBtn = (carouselId) => {
         let cTimeId = carouselId.split('-')[2];
-        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`)
-          .textContent);
-        clearInterval(intervalIds.get(carouselId)); // Clear the interval
+        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`).textContent);
         navigateCarousel(carouselId, backward);
-        intervalIds.set(carouselId, setAutoPlayInterval(carouselId, cTime)); // Restart the interval
+        manageAutoSlideInterval(carouselId, 'clear');
+        if (!isPaused) {
+          manageAutoSlideInterval(carouselId, 'start', cTime);
+        }
       };
 
       let autoPlay = (carouselId) => {
@@ -243,14 +246,17 @@
             if (this.classList.contains('pb__play')) {
               this.classList.replace('pb__play', 'pb__pause');
               this.innerHTML = '&#9654;';
-              clearInterval(intervalIds.get(carouselId)); // Clear interval
+              isPaused = true;
+              manageAutoSlideInterval(carouselId, 'clear');
             }
             else {
               this.classList.replace('pb__pause', 'pb__play');
               this.innerHTML = '&#10073;&nbsp;&#10073;';
-              intervalIds.set(carouselId, setAutoPlayInterval(carouselId, cTime)); // Reset the interval
+              isPaused = false;
+              manageAutoSlideInterval(carouselId, 'start', cTime);
             }
           });
+
         }
       });
       const handleWindowResize = () => {
