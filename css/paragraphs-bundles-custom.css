@@ -36,7 +36,7 @@
 }
 
 .paragraph a.pb__link {
-  z-index: 1000;
+  z-index: 1;
 }
 
 .paragraph .pb__content-title {
