@@ -143,8 +143,9 @@
         </div>
       </a>
     </div>
+    {% endif %}
 
-    {% else %}
+    {% if pb_image %}
     <div class="pb__img-wrapper pb__card-image">
       {{ pb_image }}
       <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="pb__content-title">{{ content.pb_content_title }}</h3>

@@ -46,12 +46,12 @@
 {% set paragraph_id = 'pb__modal-id-' ~ paragraph.id.value %}
 {% set modal_warpper = 'pb__modal-wrapper-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__modal__inner' %}
+{% set classes_inner = 'paragraph__inner pb__modal__inner pb__content-full' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
-  'pb-modal-content',
+  'pb__modal-wrapper pb__content-full',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
@@ -111,18 +111,17 @@
 
 {# Set the main wrapper. #}
 {% set pb_animated_modal = content.pb_display_animated_modal|render|striptags|trim %}
-{% if pb_animated_modal %}
-  {% set classes = classes|merge([pb_animated_modal]) %}
-{% endif %}
+
 {# Set animated classes. #}
-<div id="{{ modal_warpper }}" class="paragraph pb__modal-wrapper pb__content-full">
+<div {{ attributes.addClass(classes).setAttribute('id', modal_warpper) }}>
+
 
   {% if content.pb_content_title|render %}
   <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
   {% endif %}
 
   <div class="pb-modal-button">
-    <button id="{{ paragraph_id }}" type="button" class="pb__button" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
+    <button id="{{ paragraph_id }}" type="button" class="pb__button" aria-expanded="false" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
       {{ content.pb_content_modal_button }}
     </button>
   </div>
@@ -130,7 +129,7 @@
   <div class="pb-modal" id="{{ paragraph_id }}-win" role="dialog" aria-labelledby="{{ paragraph_id }}-label" aria-hidden="true">
 
     {# Render the paragraph. #}
-    <div {{ attributes.addClass(classes) }}>
+    <div class="paragraph pb-modal-content {{ pb_animated_modal }}">
       <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
         <div class="pb-modal-header">
@@ -139,7 +138,7 @@
             {{ content.pb_content_modal_title }}
           </div>
           {% endif %}
-          <button class="pb__button">&times;</button>
+          <button data-dismiss="modal" class="pb__button">&times;</button>
         </div> {# End of pb-modal-header #}
 
         {% if content.pb_content_modal_body|render %}

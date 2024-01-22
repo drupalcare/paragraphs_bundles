@@ -121,7 +121,9 @@
         {{ pb_title }}
       </h3>
     </a>
-    {% else %}
+    {% endif %}
+
+    {% if pb_title  %}
     <h3 class="pb__content-title">
       {{ pb_title }}
     </h3>
