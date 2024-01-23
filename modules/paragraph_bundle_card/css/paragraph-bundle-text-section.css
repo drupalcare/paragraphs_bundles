@@ -1,0 +1,19 @@
+/**
+ * @file
+ * Paragraph Bundle Card.
+ *
+ * Filename:     paragraph-bundle-text-section.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph .pb-card-text-section__inner > div,
+.paragraph .pb-card-text-section__inner > a > div {
+  color: var(--pb-tx);
+  back-ground-color: var(--pb-bg);
+}
+
+.paragraph .pb-card-text-section__inner > div:hover,
+.paragraph .pb-card-text-section__inner > a > div:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
+  back-ground-color: var(--pb-bg-h, var(--pb-bg));
+}

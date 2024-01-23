@@ -4,6 +4,18 @@ paragraph-bundle-card:
     theme:
       css/paragraph-bundle-card.css: { }
 
+paragraph-bundle-image-section:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-image-section.css: { }
+
+paragraph-bundle-text-section:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-text-section.css: { }
+
 paragraph-bundle-card-pb__576:
   version: VERSION
   css:

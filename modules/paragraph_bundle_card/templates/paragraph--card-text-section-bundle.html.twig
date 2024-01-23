@@ -40,7 +40,7 @@
 
 {# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
-{{ attach_library('paragraph_bundle_card/paragraph-bundle-card') }}
+{{ attach_library('paragraph_bundle_card/paragraph-bundle-text-section') }}
 
 {# Set the paragraph id. #}
 {% set paragraph_id  = 'pb-card-text-section-' ~ paragraph.id.value %}
@@ -115,15 +115,13 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-    {% if pb_link and pb_title  %}
+    {% if pb_link and pb_title %}
     <a href="{{ pb_link }}" class="pb__link">
       <h3 class="pb__content-title">
         {{ pb_title }}
       </h3>
     </a>
-    {% endif %}
-
-    {% if pb_title  %}
+    {% elseif pb_title %}
     <h3 class="pb__content-title">
       {{ pb_title }}
     </h3>

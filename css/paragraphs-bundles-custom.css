@@ -37,12 +37,12 @@
 
 .paragraph a.pb__link {
   z-index: 1;
+  display: block;
 }
 
 .paragraph .pb__content-title {
-  display: flex;
-  flex-grow: 1;
-  flex-basis: 100%;
+  display: block;
+  width: 100%;
 }
 
 .pb__row:after,
@@ -62,10 +62,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.paragraph a.pb__link {
-  display: block;
 }
 
 .paragraph .field--name-pb-image-field {
