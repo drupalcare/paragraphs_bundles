@@ -2,10 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.pb_node_reference.pb_nf_body
     - field.field.node.pb_node_reference.pb_nf_image
+    - field.field.node.pb_node_reference.pb_nf_body
     - node.type.pb_node_reference
+    - responsive_image.styles.pb_responsive_image_wide
   module:
+    - responsive_image
     - text
     - user
 id: node.pb_node_reference.default
@@ -13,19 +15,14 @@ targetEntityType: node
 bundle: pb_node_reference
 mode: default
 content:
-  pb_nf_body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
   pb_nf_image:
-    type: entity_reference_entity_view
+    type: responsive_image
     label: hidden
     settings:
-      view_mode: pb_media_responsive_wide
-      link: false
+      responsive_image_style: pb_responsive_image_wide
+      image_link: ''
+      image_loading:
+        attribute: eager
     third_party_settings: {  }
     weight: 1
     region: content
@@ -33,6 +30,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 2
+    region: content
+  pb_nf_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   addtoany: true

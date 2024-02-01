@@ -3,10 +3,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.pb_slideshow
-    - field.field.node.pb_node_reference.pb_nf_body
     - field.field.node.pb_node_reference.pb_nf_image
+    - field.field.node.pb_node_reference.pb_nf_body
     - node.type.pb_node_reference
+    - responsive_image.styles.pb_responsive_image_wide
   module:
+    - responsive_image
     - user
 id: node.pb_node_reference.pb_slideshow
 targetEntityType: node
@@ -14,15 +16,17 @@ bundle: pb_node_reference
 mode: pb_slideshow
 content:
   pb_nf_image:
-    type: entity_reference_entity_view
+    type: responsive_image
     label: hidden
     settings:
-      view_mode: pb_media_responsive_wide
-      link: false
+      responsive_image_style: pb_responsive_image_wide
+      image_link: content
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   addtoany: true
-  pb_nf_body: true
   links: true
+  pb_nf_body: true

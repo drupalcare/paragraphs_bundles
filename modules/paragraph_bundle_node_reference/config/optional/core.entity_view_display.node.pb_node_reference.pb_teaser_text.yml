@@ -3,8 +3,8 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.pb_teaser_text
-    - field.field.node.pb_node_reference.pb_nf_body
     - field.field.node.pb_node_reference.pb_nf_image
+    - field.field.node.pb_node_reference.pb_nf_body
     - node.type.pb_node_reference
   module:
     - text

@@ -3,10 +3,12 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.pb_3d_carousel
-    - field.field.node.pb_node_reference.pb_nf_body
     - field.field.node.pb_node_reference.pb_nf_image
+    - field.field.node.pb_node_reference.pb_nf_body
+    - image.style.pb_nf_3d_carousel
     - node.type.pb_node_reference
   module:
+    - image
     - user
 id: node.pb_node_reference.pb_3d_carousel
 targetEntityType: node
@@ -14,15 +16,17 @@ bundle: pb_node_reference
 mode: pb_3d_carousel
 content:
   pb_nf_image:
-    type: entity_reference_entity_view
+    type: image
     label: hidden
     settings:
-      view_mode: pb_nf_3d_carousel
-      link: false
+      image_link: content
+      image_style: pb_nf_3d_carousel
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
     weight: 0
     region: content
 hidden:
   addtoany: true
-  pb_nf_body: true
   links: true
+  pb_nf_body: true
