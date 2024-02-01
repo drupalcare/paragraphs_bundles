@@ -81,6 +81,13 @@
   border-top-right-radius: 0 !important;
 }
 
+.pb__image-w__inner > a,
+.pb__image-n__inner > a,
+.pb__image__inner > a {
+  display: block;
+  height: 100%;
+}
+
 .pb__img-wrapper.pb__dis-radius {
   border-radius: 0 !important;
 }

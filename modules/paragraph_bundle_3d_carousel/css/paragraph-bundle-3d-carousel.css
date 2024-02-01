@@ -354,7 +354,7 @@
   pointer-events: none;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-item.pb__active:hover * {
+.paragraph--type--3d-carousel-bundle .pb__caro-item.pb__active:hover a {
   cursor: pointer;
   pointer-events: initial;
 }
