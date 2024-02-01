@@ -154,9 +154,13 @@
                 {{ section_body }}
                 {% endfor %}
               </div>
+
+              {% if item['#paragraph'].pb_content_slideshow_title.value %}
               <div class="pb__row pb__slide-title">
                 {{ item['#paragraph'].pb_content_slideshow_title.value }}
               </div>
+              {% endif %}
+
             </div>
           </div>
 
