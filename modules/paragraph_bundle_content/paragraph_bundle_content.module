@@ -92,7 +92,7 @@ function paragraph_bundle_content_preprocess_page(&$variables) {
           break;
 
         case 'bottom_regions':
-          unset($variables['page']['bottom_first'], $variables['page']['bottom_second'], $variables['page']['bottom_third'], $variables['page']['bottom_forth']);
+          unset($variables['page']['bottom_first'], $variables['page']['bottom_second'], $variables['page']['bottom_third'], $variables['page']['bottom_fourth']);
           break;
 
         case 'footer_regions':
