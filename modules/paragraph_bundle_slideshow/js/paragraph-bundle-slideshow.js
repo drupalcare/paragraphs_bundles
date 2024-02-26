@@ -27,8 +27,7 @@
             clearInterval(autoSlideIntervalId);
             autoSlideIntervalId = null;
           }
-        }
-        else if (action === 'start') {
+        } else if (action === 'start') {
           if (!autoSlideIntervalId && slideTime > 0) { // Check if slideTime is greater than 0
             autoSlideIntervalId = setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
           }
@@ -40,24 +39,23 @@
         return slideIndex;
       };
 
-      let getPreviousItemIndex = (totalSlides) => {
+      const getPreviousItemIndex = (totalSlides) => {
         slideIndex = slideIndex === 1 ? totalSlides : slideIndex - 1;
         return slideIndex;
       };
 
-      let getParentId = (element) => {
+      const getParentId = (element) => {
         return parseInt(element.split('-')[2]);
       };
 
-      let getElementId = (element) => {
+      const getElementId = (element) => {
         return parseInt(element.split('-')[3]);
       };
 
       const getSlideIndex = (slides) => {
         for (let i = 0; i < slides.length; i++) {
           const slide = context.getElementById(slides[i].id);
-          if (window.getComputedStyle(slide)
-            .display === 'block') {
+          if (window.getComputedStyle(slide).display === 'block') {
             slideIndex = i + 1;
             break;
           }
@@ -65,7 +63,7 @@
         return slideIndex;
       };
 
-      let getNextSlide = (parentId, slideId) => {
+      const getNextSlide = (parentId, slideId) => {
         const slidesSelector = `#pb__slides-${parentId}>.pb__slide-item`;
         const currentIdSelector = `#pb__slides-${parentId}>#pb__slide-item-${parentId}-${slideId}`;
         const activeButtonSelector = `#pb__slideshow-${parentId}>.pb__slide-nav>#pb__slide-bottom-btn-${slideId}`;
@@ -100,13 +98,12 @@
 
         // Resume auto-slide if it was playing
         if (!isPaused) {
-          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
-            .textContent);
+          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
 
-      let handleBottomNav = (e, p) => {
+      const handleBottomNav = (e, p) => {
         const slideId = getElementId(e);
         const parentId = getParentId(p);
         manageAutoSlideInterval('clear');
@@ -116,15 +113,13 @@
           slideAndActiveState[0].style.display = 'block';
           slideAndActiveState[1].classList.add('pb__active');
           slideIndex = slideId;
-        }
-        else {
+        } else {
           console.error('getNextSlide did not return an array with at least two elements');
         }
 
         // Check if the slideshow is paused before deciding to restart it
         if (!isPaused) {
-          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
-            .textContent);
+          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -140,72 +135,68 @@
         activeSlide.classList.add('pb__active');
       };
 
-      once('init-slides', slides)
-        .forEach(slide => {
-          let slideId = slide.id;
-          let parentId = parseInt(slide.id.split('-')[1]);
-          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`)
-            .textContent);
+      once('init-slides', slides).forEach(slide => {
+        let slideId = slide.id;
+        let parentId = parseInt(slide.id.split('-')[1]);
+        let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
 
-          manageAutoSlideInterval('start', parentId, slideTime);
+        manageAutoSlideInterval('start', parentId, slideTime);
 
-          if (slideTime != 0) {
-            let stopOnHover = context.getElementById(slideId);
-            let playPause = context.getElementById(`btn-${parentId}`);
-            let btnClasses = playPause.classList;
-            btnClasses.add('pb__no-bottom-nav');
+        if (slideTime != 0) {
+          let stopOnHover = context.getElementById(slideId);
+          let playPause = context.getElementById(`btn-${parentId}`);
+          let btnClasses = playPause.classList;
+          btnClasses.add('pb__no-bottom-nav');
 
-            const togglePlayPause = () => {
-              isPaused = !isPaused;
-              if (isPaused) {
-                playPause.classList.replace('pb__play', 'pb__pause');
-                playPause.innerHTML = '&#9654;';
-                manageAutoSlideInterval('clear');
-              }
-              else {
-                playPause.classList.replace('pb__pause', 'pb__play');
-                playPause.innerHTML = '&#10073;&nbsp;&#10073;';
-                manageAutoSlideInterval('start', parentId, slideTime);
-              }
-            };
+          const togglePlayPause = () => {
+            isPaused = !isPaused;
+            if (isPaused) {
+              playPause.classList.replace('pb__play', 'pb__pause');
+              playPause.innerHTML = '&#9654;';
+              manageAutoSlideInterval('clear');
+            } else {
+              playPause.classList.replace('pb__pause', 'pb__play');
+              playPause.innerHTML = '&#10073;&nbsp;&#10073;';
+              manageAutoSlideInterval('start', parentId, slideTime);
+            }
+          };
 
-            stopOnHover.addEventListener('mouseover', () => {
-              if (!isPaused) {
-                manageAutoSlideInterval('clear');
-              }
-            });
-
-            stopOnHover.addEventListener('mouseout', () => {
-              if (!isPaused) {
-                manageAutoSlideInterval('start', parentId, slideTime);
-              }
-            });
-
-            playPause.addEventListener('click', togglePlayPause);
-          }
-        });
-
-      once('init-pb__next', '.pb__slideshow-inner .pb__next', context)
-        .forEach(element => {
-          element.addEventListener('click', function(event) {
-            handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
+          stopOnHover.addEventListener('mouseover', () => {
+            if (!isPaused) {
+              manageAutoSlideInterval('clear');
+            }
           });
-        });
 
-      once('init-pb__prev', '.pb__slideshow-inner .pb__prev', context)
-        .forEach(element => {
-          element.addEventListener('click', function(event) {
-            handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
+          stopOnHover.addEventListener('mouseout', () => {
+            if (!isPaused) {
+              manageAutoSlideInterval('start', parentId, slideTime);
+            }
           });
-        });
 
-      once('init-bottom-nav', '.pb__slideshow-inner .pb__slide-bottom-btn', context)
-        .forEach(element => {
-          element.addEventListener('click', function(event) {
-            handleBottomNav(event.target.id, event.target.parentElement.id);
-          });
+          playPause.addEventListener('click', togglePlayPause);
+        }
+      });
+
+      once('init-pb__next', '.pb__slideshow-inner .pb__next', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
         });
+      });
+
+      once('init-pb__prev', '.pb__slideshow-inner .pb__prev', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
+        });
+      });
+
+      once('init-bottom-nav', '.pb__slideshow-inner .pb__slide-nav .pb__slide-bottom-btn', context).forEach(element => {
+        element.addEventListener('click', function(event) {
+          handleBottomNav(event.target.id, event.target.parentElement.id);
+        });
+      });
 
     }
   };
 })(Drupal, drupalSettings, once);
+
+
