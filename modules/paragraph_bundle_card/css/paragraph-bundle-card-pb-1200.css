@@ -79,3 +79,14 @@
   }
 
 }
+
+@media (max-width:75rem) {
+  .pb-image-top .pb-card-two-right {
+    order: -1;
+  }
+
+  .pb-image-top .pb-card-two-left {
+    order: 1;
+  }
+
+}
