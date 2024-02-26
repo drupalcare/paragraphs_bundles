@@ -13,15 +13,19 @@
   Drupal.behaviors.pbCard = {
     attach: (context, settings) => {
       // Use 'once' to ensure this behavior is applied only once per element.
-      once('pb-card-image-top', '.pb-card-two-right', context).forEach(rightCard => {
-        // Check if rightCard contains an element with the specific class
-        if (rightCard.querySelector('.paragraph--type--card-image-section-bundle')) {
+      once('pb-card-image-top', '.pb__card-two-columns', context).forEach(container => {
+        const rightCardContainsImage = container.querySelector('.pb-card-two-right .paragraph--type--card-image-section-bundle');
+        const leftCardContainsImage = container.querySelector('.pb-card-two-left .paragraph--type--card-image-section-bundle');
+
+        // Check if rightCard contains an image section and leftCard does not contain an image section
+        if (rightCardContainsImage && !leftCardContainsImage) {
           // Add the 'pb-image-top' class to the parent element
-          rightCard.closest('.pb__card-two-columns').classList.add('pb-image-top');
+          container.classList.add('pb-image-top');
         }
       });
     }
   };
 
 })(Drupal, drupalSettings, once);
+
 
