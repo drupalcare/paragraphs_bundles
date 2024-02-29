@@ -6,6 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+.page-node-type-pb-content ul.links,
 .page-node-type-pb-content .pb__content-full,
 .page-node-type-pb-content .block-local-tasks-block {
   width: 100%;
@@ -13,41 +14,49 @@
   margin-right: auto;
 }
 
+.page-node-type-pb-content .sw-100 ul.links,
 .page-node-type-pb-content .sw-100 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_100 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 100%;
 }
 
+.page-node-type-pb-content .sw-2560 ul.links,
 .page-node-type-pb-content .sw-2560 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_2560 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 160rem;
 }
 
+.page-node-type-pb-content .sw-1920 ul.links,
 .page-node-type-pb-content .sw-1920 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_1920 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 120rem;
 }
 
+.page-node-type-pb-content .sw-1600 ul.links,
 .page-node-type-pb-content .sw-1600 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_1600 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 100rem;
 }
 
+.page-node-type-pb-content .sw-1440 ul.links,
 .page-node-type-pb-content .sw-1440 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_1440 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 90rem;
 }
 
+.page-node-type-pb-content .sw-1280 ul.links,
 .page-node-type-pb-content .sw-1280 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_1280 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 80rem;
 }
 
+.page-node-type-pb-content .sw-1024 ul.links,
 .page-node-type-pb-content .sw-1024 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_1024 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 64rem;
 }
 
+.page-node-type-pb-content .sw-800 ul.links,
 .page-node-type-pb-content .sw-800 .block-local-tasks-block,
 .page-node-type-pb-content .node.pb__nmw_800 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   max-width: 50rem;
