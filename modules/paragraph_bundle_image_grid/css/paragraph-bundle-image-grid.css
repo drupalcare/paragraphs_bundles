@@ -252,3 +252,12 @@
 .pb__grid-lightbox .pb__modal-next {
   right: 20px;
 }
+
+@media (max-width:36rem) {
+  .pb__grid-lightbox .pb__modal-prev svg,
+  .pb__grid-lightbox .pb__modal-next svg {
+    width: 35px;
+    height: 40px;
+  }
+
+}
