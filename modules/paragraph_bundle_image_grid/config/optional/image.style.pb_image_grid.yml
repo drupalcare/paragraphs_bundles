@@ -10,11 +10,3 @@ effects:
     weight: 1
     data:
       extension: webp
-  06d9fa35-ff71-43a7-b135-067371c9fb09:
-    uuid: 06d9fa35-ff71-43a7-b135-067371c9fb09
-    id: image_scale
-    weight: 2
-    data:
-      width: 600
-      height: null
-      upscale: true
