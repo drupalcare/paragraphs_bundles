@@ -13,8 +13,16 @@
     attach: (context, settings) => {
       let currModal;
       let currBtn;
-      let currentIndex = -1; // Index of the currently shown item
+      let currentIndex = -1;
       let items; // Collection of items
+
+      const updateItemCountClass = () => {
+        const items = document.querySelectorAll('.paragraph--type--image-grid-section-bundle');
+        const gridLightbox = document.querySelector('.pb__grid-lightbox');
+        const itemCount = items.length;
+        gridLightbox.className = gridLightbox.className.replace(/grid-count-\d+/g, '');
+        gridLightbox.classList.add(`grid-count-${itemCount}`);
+      };
 
       const updateModalContent = (index) => {
         const modalContent = currModal.querySelector('.pb__grid-lightbox-content');
@@ -30,14 +38,12 @@
 
       const openModal = (event) => {
         const paragraphContent = event.currentTarget.closest('.paragraph--type--image-grid-section-bundle');
-        items = Array.from(document.querySelectorAll('.paragraph--type--image-grid-section-bundle')); // Collect all items
+        items = Array.from(document.querySelectorAll('.paragraph--type--image-grid-section-bundle'));
         currentIndex = items.indexOf(paragraphContent);
 
-        // Modal setup
         const modal = document.querySelector('.pb__grid-lightbox');
         currModal = modal;
         currBtn = event.currentTarget;
-        currBtn.style.display = 'none';
 
         updateModalContent(currentIndex);
 
@@ -52,10 +58,6 @@
         if (currModal) {
           currModal.style.display = 'none';
           currModal.setAttribute('aria-hidden', 'true');
-          if (currBtn) {
-            currBtn.setAttribute('aria-expanded', 'false');
-            currBtn.style.display = 'block';
-          }
           currModal = null;
           currBtn = null;
           currentIndex = -1;
@@ -64,7 +66,7 @@
       };
 
       const navigateModal = (direction) => {
-        const itemsLength = items.length; // Total number of items
+        const itemsLength = items.length;
 
         if (direction === 'next') {
           currentIndex = (currentIndex + 1) % itemsLength;
@@ -74,7 +76,6 @@
 
         updateModalContent(currentIndex);
       };
-
 
       once('paragraphBundleExpand', '.pb__expand-grid', context).forEach(button => {
         button.addEventListener('click', openModal);
@@ -99,7 +100,8 @@
           closeModal();
         }
       }, true);
+
+      window.addEventListener('load', updateItemCountClass);
     }
   };
 })(Drupal, once);
-

@@ -135,31 +135,49 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
+    {% if pb_link and pb_image %}
     <div class="pb__img-wrapper pb__image-grid">
-      {# print buttons #}
+
       <div class="pb__grid-btns">
-        <svg class="pb__close-grid" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-          <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/>
-        </svg>
-        <svg class="pb__expand-grid" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24">
-          <path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/>
-        </svg>
+        <button class="pb__close-grid">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </button>
+        <button class="pb__expand-grid">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
+        </button>
       </div>
-      {# print link #}
-      {% if pb_link %}
-        <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
-      {% endif %}
-      {# print image #}
-      {{ pb_image }}
+
+      <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+        {{ pb_image }}
       {# print title #}
       {% if content.pb_content_title|render %}
       <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
         <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       </div>
       {% endif %}
-      {# close link #}
-      {% if pb_link %}</a>{% endif %}
-    </div>{# End of pb__image-grid #}
+      </a>
+    </div>
+
+    {% else %}
+    <div class="pb__img-wrapper pb__image-grid not-clickable">
+      <div class="pb__grid-btns">
+        <button class="pb__close-grid">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
+        </button>
+        <button class="pb__expand-grid">
+          <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
+        </button>
+      </div>
+      {{ pb_image }}
+
+      {# print title #}
+      {% if content.pb_content_title|render %}
+      <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
+        <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
 
   </div>
 </div> {# End of main wrapper #}
