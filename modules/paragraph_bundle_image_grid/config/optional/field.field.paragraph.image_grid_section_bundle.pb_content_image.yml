@@ -10,7 +10,7 @@ field_name: pb_content_image
 entity_type: paragraph
 bundle: image_grid_section_bundle
 label: Image
-description: ''
+description: 'By default, thumbnails are interactive and can be clicked to open in a lightbox. However, if a link is associated with an image, only the expand icon will trigger the lightbox feature.'
 required: true
 translatable: false
 default_value: {  }
