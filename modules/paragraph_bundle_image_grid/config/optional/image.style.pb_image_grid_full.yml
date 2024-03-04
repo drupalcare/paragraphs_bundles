@@ -1,0 +1,12 @@
+langcode: en
+status: true
+dependencies: {  }
+name: pb_image_grid_full
+label: 'PB Image Grid Full'
+effects:
+  63d11abf-194b-4397-82bd-79efc8aa005e:
+    uuid: 63d11abf-194b-4397-82bd-79efc8aa005e
+    id: image_convert
+    weight: 1
+    data:
+      extension: webp

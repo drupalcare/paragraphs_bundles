@@ -15,7 +15,10 @@
 
 .pb__image-grid-wrapper a,
 .pb__image-grid-wrapper picture,
-.pb__image-grid-wrapper div:not(.field--name-pb-content-title, .paragraph__inner, .pb__grid-lightbox-content, .pb__grid-lightbox-content > div) {
+.pb__image-grid-wrapper div:not(.field--name-pb-content-title,
+.paragraph__inner,
+.pb__grid-lightbox-content,
+.pb__grid-lightbox-content > div) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -245,9 +248,14 @@
   right: 20px;
 }
 
-.pb__grid-lightbox.grid-count-1 .pb__modal-prev,
-.pb__grid-lightbox.grid-count-1 .pb__modal-next {
+.pb__image-grid-wrapper.grid-count-1 .pb__modal-prev,
+.pb__image-grid-wrapper.grid-count-1 .pb__modal-next {
   display: none;
+}
+
+.pb__grid-lightbox-content.fade-in {
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
 }
 
 @media (max-width:36rem) {

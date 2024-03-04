@@ -11,6 +11,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Implements hook_help().
@@ -34,4 +35,30 @@ function paragraph_bundle_image_grid_theme($existing, $type, $theme, $path) {
       'base hook' => 'paragraph',
     ],
   ];
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for paragraph templates.
+ */
+function paragraph_bundle_image_grid_preprocess_paragraph__image_grid_section_bundle(&$variables) {
+  $paragraph = $variables['paragraph'];
+  if ($paragraph->hasField('pb_content_image') && !$paragraph->pb_content_image->isEmpty()) {
+    $media_entity = $paragraph->pb_content_image->entity;
+    $image_field = $media_entity->pb_image_field;
+    if ($image_field && !$image_field->isEmpty()) {
+      $file = $image_field->entity;
+      $uri = $file->getFileUri();
+      $preferred_style = ImageStyle::load('pb_image_grid_full');
+      if ($preferred_style) {
+        $variables['pb_full_size_url'] = $preferred_style->buildUrl($uri);
+      }
+      else {
+        $fallback_style = ImageStyle::load('pb_original_size');
+        if ($fallback_style) {
+          $variables['pb_full_size_url'] = $fallback_style->buildUrl($uri);
+        }
+      }
+      $variables['#cache']['tags'][] = 'file:' . $file->id();
+    }
+  }
 }

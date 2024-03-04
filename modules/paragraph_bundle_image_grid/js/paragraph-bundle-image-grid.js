@@ -8,100 +8,87 @@
  */
 ((Drupal, once) => {
   'use strict';
-
   Drupal.behaviors.paragraphBundleImageGridModal = {
     attach: (context, settings) => {
-      let currModal;
-      let currBtn;
-      let currentIndex = -1;
-      let items; // Collection of items
+      const currModal = document.querySelector('.pb__grid-lightbox');
+      const modalContent = currModal.querySelector('.pb__grid-lightbox-content');
+      let currentIndex = -1; // This will be updated upon opening the modal
+      let items = Array.from(document.querySelectorAll('.paragraph--type--image-grid-section-bundle')); // Ensure this is updated if items can change
 
       const updateItemCountClass = () => {
-        const items = document.querySelectorAll('.paragraph--type--image-grid-section-bundle');
-        const gridLightbox = document.querySelector('.pb__grid-lightbox');
-        const itemCount = items.length;
-        gridLightbox.className = gridLightbox.className.replace(/grid-count-\d+/g, '');
-        gridLightbox.classList.add(`grid-count-${itemCount}`);
+          const wrappers = document.querySelectorAll('.pb__image-grid-wrapper');
+          wrappers.forEach(wrapper => {
+              const itemCount = wrapper.children.length - 1;
+              wrapper.className = wrapper.className.replace(/\bgrid-count-\d+\b/g, '');
+              wrapper.classList.add(`grid-count-${itemCount}`);
+          });
       };
 
-      const updateModalContent = (index) => {
-        const modalContent = currModal.querySelector('.pb__grid-lightbox-content');
-        modalContent.classList.remove('fade-in', 'fade-out');
-        modalContent.style.opacity = '0';
+      const updateModalContent = (fullImageUrl) => {
+        const clonedElement = items[currentIndex].cloneNode(true);
+        const imageElement = clonedElement.querySelector('img');
+        if (imageElement) {
+          imageElement.src = fullImageUrl;
+          // Reset height and width attributes
+          imageElement.removeAttribute('height');
+          imageElement.removeAttribute('width');
+        }
+
         modalContent.innerHTML = '';
-        modalContent.appendChild(items[index].cloneNode(true));
-        setTimeout(() => {
-          modalContent.style.opacity = '';
+        modalContent.appendChild(clonedElement);
+        modalContent.offsetHeight; // Trigger reflow
+        modalContent.style.opacity = '1';
+        modalContent.classList.remove('fade-in');
+        requestAnimationFrame(() => {
           modalContent.classList.add('fade-in');
-        }, 10);
+        });
       };
 
       const openModal = (event) => {
         const paragraphContent = event.currentTarget.closest('.paragraph--type--image-grid-section-bundle');
-        items = Array.from(document.querySelectorAll('.paragraph--type--image-grid-section-bundle'));
         currentIndex = items.indexOf(paragraphContent);
-
-        const modal = document.querySelector('.pb__grid-lightbox');
-        currModal = modal;
-        currBtn = event.currentTarget;
-
-        updateModalContent(currentIndex);
-
-        currBtn.setAttribute('aria-expanded', 'true');
+        const fullImageUrl = paragraphContent.getAttribute('data-full-image-url');
+        updateModalContent(fullImageUrl);
+        currModal.setAttribute('aria-expanded', 'true');
         currModal.setAttribute('aria-hidden', 'false');
         currModal.style.display = 'block';
-
         event.stopPropagation();
       };
 
       const closeModal = (event) => {
-        if (currModal) {
-          currModal.style.display = 'none';
-          currModal.setAttribute('aria-hidden', 'true');
-          currModal = null;
-          currBtn = null;
-          currentIndex = -1;
-        }
+        currModal.style.display = 'none';
+        currModal.setAttribute('aria-hidden', 'true');
+        currentIndex = -1; // Reset index
         if (event) event.stopPropagation();
       };
 
       const navigateModal = (direction) => {
-        const itemsLength = items.length;
-
+        // Adjust currentIndex based on direction
         if (direction === 'next') {
-          currentIndex = (currentIndex + 1) % itemsLength;
+          currentIndex = (currentIndex + 1) % items.length;
         } else if (direction === 'prev') {
-          currentIndex = (currentIndex - 1 + itemsLength) % itemsLength;
+          currentIndex = (currentIndex - 1 + items.length) % items.length;
         }
-
-        updateModalContent(currentIndex);
+        const fullImageUrl = items[currentIndex].getAttribute('data-full-image-url');
+        updateModalContent(fullImageUrl);
       };
 
-      once('paragraphBundleExpand', '.pb__expand-grid', context).forEach(button => {
-        button.addEventListener('click', openModal);
-      });
+      once('paragraphBundleExpand', '.pb__expand-grid', context).forEach(button => button.addEventListener('click', openModal));
+      once('modalNavigation', '.pb__modal-next, .pb__modal-prev', context).forEach(button => button.addEventListener('click', event => {
+        const direction = button.classList.contains('pb__modal-next') ? 'next' : 'prev';
+        navigateModal(direction);
+        event.stopPropagation();
+      }));
 
-      once('modalNavigation', '.pb__modal-next, .pb__modal-prev', context).forEach(button => {
-        button.addEventListener('click', (event) => {
-          const direction = button.classList.contains('pb__modal-next') ? 'next' : 'prev';
-          navigateModal(direction);
-          event.stopPropagation();
-        });
-      });
-
-      context.addEventListener('click', (event) => {
-        const closeBtnClicked = event.target.matches('.pb__close-grid') || event.target.closest('.pb__close-grid');
-        if (closeBtnClicked) {
+      context.addEventListener('click', event => {
+        if (event.target.matches('.pb__close-grid') || event.target.closest('.pb__close-grid') || event.target === currModal) {
           closeModal(event);
-          return;
         }
-
-        if (currModal && event.target === currModal) {
-          closeModal();
-        }
-      }, true);
+      });
 
       window.addEventListener('load', updateItemCountClass);
+
     }
   };
 })(Drupal, once);
+
