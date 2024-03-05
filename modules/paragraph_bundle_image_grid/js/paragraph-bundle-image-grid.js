@@ -81,7 +81,7 @@
       }));
 
       context.addEventListener('click', event => {
-        if (event.target.matches('.pb__close-grid') || event.target.closest('.pb__close-grid') || event.target === currModal) {
+        if (event.target.matches('.pb__close-grid') || event.target.closest('.pb__close-grid') || event.target === modalContent) {
           closeModal(event);
         }
       });
