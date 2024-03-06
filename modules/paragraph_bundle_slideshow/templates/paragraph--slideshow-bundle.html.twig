@@ -132,28 +132,27 @@
         {% if key|first != '#' %}
 
           <div id="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__slide-item">
-            <div class="pb__row pb__slide-item-inner">
-              {# Loop through all of the slideshow section bodies. #}
-              <div role="tabpanel" class="pb__slide-item-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
-                {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
-                {# Use the same render array as item and set the '#paragraph'. #}
-                {% set section_body = item %}
-                {% set lang = section_body['#paragraph'].langcode[0].value %}
-                {# Check if a translation exists #}
-                {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
-                {# Load the entity for the current translation #}
-                {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
-                {% else %}
-                  {# Load the source entity #}
-                {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
-                {% endif %}
-                {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
-                {# Remove the cache keys so it doesn't repeat the first value. #}
-                {% set section_body = section_body|merge({'#cache': {}}) %}
-                {# Print the compiled section body. #}
-                {{ section_body }}
-                {% endfor %}
-              </div>
+
+            {# Loop through all of the slideshow section bodies. #}
+            <div role="tabpanel" class="pb__row pb__slide-item-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
+              {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
+              {# Use the same render array as item and set the '#paragraph'. #}
+              {% set section_body = item %}
+              {% set lang = section_body['#paragraph'].langcode[0].value %}
+              {# Check if a translation exists #}
+              {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
+              {# Load the entity for the current translation #}
+              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
+              {% else %}
+                {# Load the source entity #}
+              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
+              {% endif %}
+              {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
+              {# Remove the cache keys so it doesn't repeat the first value. #}
+              {% set section_body = section_body|merge({'#cache': {}}) %}
+              {# Print the compiled section body. #}
+              {{ section_body }}
+              {% endfor %}
 
               {% if item['#paragraph'].pb_content_slideshow_title.value %}
               <div class="pb__row pb__slide-title">
