@@ -40,3 +40,8 @@
 .paragraph--type--parallax-section-bundle .pb__parallax-text {
   min-height: calc(3 * var(--pb-px32));
 }
+
+.page-node-type-pb-content .paragraph--type--parallax-bundle>div>div {
+  width: 100% !important;
+  max-width: 100% !important;
+}

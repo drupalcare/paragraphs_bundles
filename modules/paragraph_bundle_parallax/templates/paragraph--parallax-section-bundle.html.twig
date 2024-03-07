@@ -45,7 +45,7 @@
 {# Set the paragraph id. #}
 {% set paragraph_id  = 'pb__parallax-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__parallax__inner pb__content-full' %}
+{% set classes_inner = 'paragraph__inner pb__parallax__inner' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -121,11 +121,11 @@
 
     {% if pb_style_attributes|length > 0 %}
     <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" style="{{ pb_style_attributes|join(' ') }}">
-        {{ content.pb_content_body }}
-      </div>
+    <div class="pb__content-full">{{ content.pb_content_body }}</div>
+    </div>
     {% else %}
     <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
-      {{ content.pb_content_body }}
+      <div class="pb__content-full">{{ content.pb_content_body }}</div>
     </div>
     {% endif %}
 
