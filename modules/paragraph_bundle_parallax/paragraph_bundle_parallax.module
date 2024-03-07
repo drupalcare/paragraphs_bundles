@@ -27,6 +27,9 @@ function paragraph_bundle_parallax_help($route_name, RouteMatchInterface $route_
  */
 function paragraph_bundle_parallax_theme($existing, $type, $theme, $path) {
   return [
+    'paragraph__parallax_bundle' => [
+      'base hook' => 'paragraph',
+    ],
     'paragraph__parallax_section_bundle' => [
       'base hook' => 'paragraph',
     ],
