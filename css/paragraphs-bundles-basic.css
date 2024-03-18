@@ -115,33 +115,27 @@ body .page-wrapper li {
 /* Borders */
 .pb__circle {
   border-radius: 50%;
-  overflow: hidden;
 }
 
 .pb__round_small {
   border-radius: var(--pb-px2);
-  overflow: hidden;
 }
 
 .pb__round,
 .pb__round_medium {
   border-radius: var(--pb-px4);
-  overflow: hidden;
 }
 
 .pb__round_large {
   border-radius: var(--pb-px8);
-  overflow: hidden;
 }
 
 .pb__round_xlarge {
   border-radius: var(--pb-px16);
-  overflow: hidden;
 }
 
 .pb__round_xxlarge {
   border-radius: var(--pb-px32);
-  overflow: hidden;
 }
 
 .pb__border {
