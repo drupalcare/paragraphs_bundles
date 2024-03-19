@@ -133,9 +133,7 @@
   {% endif %}
 
   <div{{ content_attributes.addClass('pb__row node__content') }}>
-    <div{{ content_attributes.addClass('node__content') }}>
-      {{ content|without('pb_display_content_bg', 'pb_display_content_bg_opacity', 'pb_display_disable_region', 'pb_display_content_width') }}
-    </div>
+    {{ content|without('pb_display_content_bg', 'pb_display_content_bg_opacity', 'pb_display_disable_region', 'pb_display_content_width') }}
   </div>
 
 </article>
