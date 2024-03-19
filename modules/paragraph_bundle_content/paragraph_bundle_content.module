@@ -122,6 +122,41 @@ function paragraph_bundle_content_theme($existing, $type, $theme, $path) {
     'node__pb_content' => [
       'base hook' => 'node',
     ],
-
+    'field__pb_content__pb_content_reference_para_block' => [
+      'base hook' => 'field',
+      'template' => 'field--pb-content-reference-para-block',
+      'path' => \Drupal::service('extension.list.module')->getPath('paragraph_bundle_content') . '/templates',
+    ],
+    'field__pb_content__pb_content_type_body' => [
+      'base hook' => 'field',
+      'template' => 'field--pb-content-type-body',
+      'path' => \Drupal::service('extension.list.module')->getPath('paragraph_bundle_content') . '/templates',
+    ],
   ];
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for field templates.
+ */
+function paragraph_bundle_content_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // Define the fields we are targeting.
+  $targetFields = [
+    'pb_content_reference_para_block',
+    'pb_content_type_body',
+  ];
+
+  // The content type we are targeting.
+  $targetBundle = 'pb_content';
+
+  // The field name from the current render array.
+  $currentFieldName = $variables['element']['#field_name'] ?? '';
+
+  // Check if the current field is one of the target fields and if the bundle
+  // matches what we're targeting.
+  if (in_array($currentFieldName, $targetFields) &&
+      isset($variables['element']['#bundle']) &&
+      $variables['element']['#bundle'] === $targetBundle) {
+    // Add a suggestion for the current field and bundle.
+    $suggestions[] = 'field__' . $targetBundle . '__' . $currentFieldName;
+  }
 }
