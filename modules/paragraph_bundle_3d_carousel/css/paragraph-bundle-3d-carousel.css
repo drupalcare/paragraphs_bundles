@@ -28,7 +28,6 @@
 .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
   max-height: 38.125rem;
   perspective: 40rem;
-  margin: 0 auto;
   position: relative;
   width: 100%;
   z-index: 0;
