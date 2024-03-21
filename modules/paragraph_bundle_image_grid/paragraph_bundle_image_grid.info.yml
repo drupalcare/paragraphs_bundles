@@ -1,6 +1,6 @@
-name: Paragraph Bundle Image Grid
+name: Paragraph Bundle Image Grid (Image Gallery - Lightbox)
 type: module
-description: A reusable Paragraph Bundle Image Grid.
+description: A reusable Paragraph Bundle Image Grid and Image Gallery Lightbox.
 core_version_requirement: ^9.4 || ^10
 package: Paragraphs
 dependencies:
