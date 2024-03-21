@@ -139,22 +139,14 @@
     <div class="pb__img-wrapper pb__card-image">
       <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
         {{ pb_image }}
-        <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-      {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
-      {% if pb_content_title %}
-      <h3 class="pb__content-title">{{ pb_content_title }}</h3>
-      {% endif %}
+        <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         </div>
       </a>
     </div>
     {% elseif pb_image %}
     <div class="pb__img-wrapper pb__card-image">
       {{ pb_image }}
-      <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-      {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
-      {% if pb_content_title %}
-      <h3 class="pb__content-title">{{ pb_content_title }}</h3>
-      {% endif %}
+      <div class="pb__card-image-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}><h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       </div>
     </div>
     {% endif %}

@@ -136,9 +136,8 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-    {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
-    {% if pb_content_title %}
-    <h3 class="pb__content-title">{{ pb_content_title }}</h3>
+    {% if content.pb_content_title|render %}
+    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
     {% endif %}
 
     <div id="{{ carousel_id }}" class="pb__3d-carousel">

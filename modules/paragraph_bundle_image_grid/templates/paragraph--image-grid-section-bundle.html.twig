@@ -144,10 +144,7 @@
         {# print title #}
         {% if content.pb_content_title|render %}
         <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-          {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
-          {% if pb_content_title %}
-          <h3 class="pb__content-title">{{ pb_content_title }}</h3>
-          {% endif %}
+          <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         </div>
         {% endif %}
       </a>
@@ -162,10 +159,7 @@
       {# print title #}
       {% if content.pb_content_title|render %}
       <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-        {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
-        {% if pb_content_title %}
-        <h3 class="pb__content-title">{{ pb_content_title }}</h3>
-        {% endif %}
+        <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       </div>
       {% endif %}
     </div>
