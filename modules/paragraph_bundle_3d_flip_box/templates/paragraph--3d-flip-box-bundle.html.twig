@@ -114,9 +114,11 @@
 
     <div class="pb__content-full">
 
-      {% if content.pb_content_title|render %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
+      {% if pb_content_title %}
+      <h3 class="pb__content-title">{{ pb_content_title }}</h3>
       {% endif %}
+
       <div style="height: {{ pb_box_height }}px;" class="pb__flip-box {{ pb_flip_xy }}">
         <div class="pb__flip-box-inner">
           <div class="pb__3d-front">{{ content.pb_content_3d_box_front }}</div>

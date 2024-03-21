@@ -110,8 +110,9 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-      {% if content.pb_content_title|render %}
-      <h3 class="pb__content-title pb__content-full">{{ content.pb_content_title }}</h3>
+      {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
+      {% if pb_content_title %}
+      <h3 class="pb__content-title pb__content-full">{{ pb_content_title }}</h3>
       {% endif %}
       {# In the default template we remove unwanted fields. #}
       {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}

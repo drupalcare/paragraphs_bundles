@@ -15,7 +15,7 @@
 
 .pb__image-grid-wrapper a,
 .pb__image-grid-wrapper picture,
-.pb__image-grid-wrapper div:not(.field--name-pb-content-title,
+.pb__image-grid-wrapper div:not(h3.pb__content-title,
 .paragraph__inner,
 .pb__grid-lightbox-content,
 .pb__grid-lightbox-content > div) {
@@ -53,7 +53,7 @@
   z-index: -1;
 }
 
-.paragraph .pb__image-grid .field--name-pb-content-title {
+.paragraph .pb__image-grid h3.pb__content-title {
   padding: var(--pb-px12);
 }
 
@@ -69,7 +69,7 @@
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.paragraph .pb__image-grid:hover .field--name-pb-content-title {
+.paragraph .pb__image-grid:hover h3.pb__content-title {
   color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
 }

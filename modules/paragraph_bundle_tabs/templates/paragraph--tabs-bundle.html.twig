@@ -119,9 +119,9 @@
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     <div class="pb__content-full">
-      {# Render the content title if it exists. #}
-      {% if content.pb_content_title|render %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% set pb_content_title = content.pb_content_title|render|striptags|trim %}
+      {% if pb_content_title %}
+      <h3 class="pb__content-title">{{ pb_content_title }}</h3>
       {% endif %}
 
       {# Set the tab id. #}

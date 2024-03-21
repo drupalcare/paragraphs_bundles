@@ -108,21 +108,21 @@
 {% endfor %}
 
 {% set pb_close_button = content.pb_display_show_close_button|render|striptags|trim %}
-{% set pb_title = content.pb_content_title|render|striptags|trim %}
+{% set pb_content_title = content.pb_content_title|render|striptags|trim %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} aria-hidden="false">
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     <div class="pb__content-full pb__content-alert">
-    {% if pb_close_button == 'On' or pb_title %}
+    {% if pb_close_button == 'On' or pb_content_title %}
     <div class="pb__alert-top {{ pb_close_button }}">
       {% if pb_close_button == 'On' %}
       <button aria-label="Close" aria-expanded="true" aria-controls="{{ paragraph_id }}" type="button" class="pb__close-alert"><span class="visually-hidden">Close message</span></button>
       {% endif %}
 
-      {% if content.pb_content_title|render %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% if pb_content_title %}
+      <h3 class="pb__content-title">{{ pb_content_title }}</h3>
       {% endif %}
     </div>
     {% endif %}

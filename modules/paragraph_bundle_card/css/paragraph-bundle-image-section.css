@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 .pb__card-image-section__inner > .pb__card-image a,
-.pb__card-image-section__inner > .pb__card-image div:not(.field--name-pb-content-title) {
+.pb__card-image-section__inner > .pb__card-image div:not(h3.pb__content-title) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -43,7 +43,7 @@
   z-index: -1;
 }
 
-.pb__card-image-section__inner > .pb__card-image .field--name-pb-content-title {
+.pb__card-image-section__inner > .pb__card-image h3.pb__content-title {
   width: 100%;
   padding: var(--pb-px12);
 }
@@ -60,7 +60,7 @@
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.pb__card-image-section__inner > .pb__card-image:hover .field--name-pb-content-title {
+.pb__card-image-section__inner > .pb__card-image:hover h3.pb__content-title {
   color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
 }
