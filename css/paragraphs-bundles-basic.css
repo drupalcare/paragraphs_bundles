@@ -63,15 +63,15 @@ body .page-wrapper li {
   background-color: inherit;
 }
 
-.paragraph__inner .paragraph__inner,
-.paragraph__inner .paragraph__inner .paragraph__inner {
+.paragraph .paragraph__inner .paragraph__inner,
+.paragraph .paragraph__inner .paragraph__inner .paragraph__inner {
   --pb-bg: transparent;
 }
 
 .paragraph>.paragraph__inner {
   background-color: var(--pb-bg, inherit);
-  border-color: var(--pb-br, inherit);
-  color: var(--pb-tx, inherit);
+  border-color: var(--pb-br, var(--r-br, inherit));
+  color: var(--pb-tx, var(--r-tx, inherit));
 }
 
 .paragraph>.paragraph__inner:hover {
@@ -86,14 +86,16 @@ body .page-wrapper li {
 .paragraph .paragraph__inner h2,
 .paragraph .paragraph__inner h3,
 .paragraph .paragraph__inner div {
-  border-color: var(--pb-br, inherit);
+  border-color: var(--pb-br, var(--r-br, inherit));
   color: var(--pb-tx, var(--r-tx, inherit));
 }
 
-.paragraph p:hover,
-.paragraph a:hover,
-.paragraph .pb__content-title:hover,
-.paragraph>.paragraph__inner div:hover {
+.paragraph .paragraph__inner p:hover,
+.paragraph .paragraph__inner a:hover,
+.paragraph .paragraph__inner h1:hover,
+.paragraph .paragraph__inner h2:hover,
+.paragraph .paragraph__inner h3:hover,
+.paragraph .paragraph__inner div:hover {
   border-color: var(--pb-br, var(--pb-br-h));
   color: var(--pb-tx-h, var(--pb-tx));
 }
