@@ -31,7 +31,6 @@
 .paragraph h1,
 .paragraph h2,
 .paragraph h3 {
-  color: inherit !important;
   background-color: transparent !important;
 }
 

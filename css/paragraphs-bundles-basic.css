@@ -80,12 +80,14 @@ body .page-wrapper li {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph p,
-.paragraph a,
-.paragraph .pb__content-title,
-.paragraph>.paragraph__inner div {
+.paragraph .paragraph__inner p,
+.paragraph .paragraph__inner a,
+.paragraph .paragraph__inner h1,
+.paragraph .paragraph__inner h2,
+.paragraph .paragraph__inner h3,
+.paragraph .paragraph__inner div {
   border-color: var(--pb-br, inherit);
-  color: var(--pb-tx, inherit);
+  color: var(--pb-tx, var(--r-tx, inherit));
 }
 
 .paragraph p:hover,
