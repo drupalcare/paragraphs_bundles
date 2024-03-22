@@ -47,6 +47,12 @@
   --pb-px2: 0.125rem;
   --pb-px1: 0.063rem;
   --pb-px0: 0;
+  --pb-bg: initial;
+  --pb-bg-h: initial;
+  --pb-br: initial;
+  --pb-br-h: initial;
+  --pb-tx: initial;
+  --pb-tx-h: initial;
 }
 
 .paragraph * {
