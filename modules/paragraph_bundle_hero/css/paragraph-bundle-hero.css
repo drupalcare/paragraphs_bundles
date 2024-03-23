@@ -15,12 +15,26 @@
 
 .pb__hero-txt-wrapper-inner * {
   border-color: var(--pb-br);
-  color: var(--pb-tx);
+}
+
+.pb__hero-txt-wrapper-inner h2 {
+  color: var(--pb-tx, var(--r-h1, var(--r-tx)));
+}
+
+.pb__hero-txt-wrapper-inner h2:hover {
+  color: var(--pb-tx-h, var(--r-h1, var(--r-tx)));
+}
+
+.pb__hero-txt-wrapper-inner p {
+  color: var(--pb-tx, var(--r-tx, inherit));
+}
+
+.pb__hero-txt-wrapper-inner p:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
 }
 
 .pb__hero-txt-wrapper-inner:hover * {
   border-color: var(--pb-br-h, var(--pb-br));
-  color: var(--pb-tx-h, var(--pb-tx));
 }
 
 .pb__hero-txt-wrapper-inner {

@@ -66,7 +66,26 @@ body .page-wrapper hr,
 body .page-wrapper table,
 body .page-wrapper ul,
 body .page-wrapper li {
+  border-color: var(--pb-br, var(--r-br, inherit));
   background-color: inherit;
+}
+
+.paragraph .paragraph__inner p,
+.paragraph .paragraph__inner a,
+.paragraph .paragraph__inner h1,
+.paragraph .paragraph__inner h2,
+.paragraph .paragraph__inner h3,
+.paragraph .paragraph__inner div {
+  border-color: var(--pb-br, var(--r-br, inherit));
+}
+
+.paragraph .paragraph__inner a:hover,
+.paragraph .paragraph__inner p:hover,
+.paragraph .paragraph__inner h1:hover,
+.paragraph .paragraph__inner h2:hover,
+.paragraph .paragraph__inner h3:hover,
+.paragraph .paragraph__inner div:hover {
+  border-color: var(--pb-br-h, var(--pb-br, var(--r-br)));
 }
 
 .paragraph .paragraph__inner .paragraph__inner,
@@ -87,23 +106,48 @@ body .page-wrapper li {
 }
 
 .paragraph .paragraph__inner p,
-.paragraph .paragraph__inner a,
-.paragraph .paragraph__inner h1,
-.paragraph .paragraph__inner h2,
-.paragraph .paragraph__inner h3,
-.paragraph .paragraph__inner div {
-  border-color: var(--pb-br, var(--r-br, inherit));
+.paragraph .paragraph__inner div:not(h1 div,
+h2 div,
+h3 div,
+div h3,
+div h2,
+div h1) {
   color: var(--pb-tx, var(--r-tx, inherit));
 }
 
-.paragraph .paragraph__inner p:hover,
-.paragraph .paragraph__inner a:hover,
+.paragraph .paragraph__inner p:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
+}
+
+.paragraph .paragraph__inner a:not(h1 a,
+h2 a,
+h3 a) {
+  color: var(--pb-tx, var(--r-lk, var(--r-tx)));
+}
+
+.paragraph .paragraph__inner a:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
+}
+
+.paragraph .paragraph__inner h1,
+.paragraph .paragraph__inner h2,
+.paragraph .paragraph__inner h3 {
+  color: var(--pb-tx, var(--r-h1, var(--r-tx)));
+}
+
 .paragraph .paragraph__inner h1:hover,
 .paragraph .paragraph__inner h2:hover,
-.paragraph .paragraph__inner h3:hover,
-.paragraph .paragraph__inner div:hover {
-  border-color: var(--pb-br, var(--pb-br-h));
-  color: var(--pb-tx-h, var(--pb-tx));
+.paragraph .paragraph__inner h3:hover {
+  color: var(--pb-tx-h, var(--r-h1, var(--r-tx)));
+}
+
+.paragraph .paragraph__inner h1:hover div,
+.paragraph .paragraph__inner h2:hover div,
+.paragraph .paragraph__inner h3:hover div,
+.paragraph .paragraph__inner h1:hover span,
+.paragraph .paragraph__inner h2:hover span,
+.paragraph .paragraph__inner h3:hover span {
+  color: var(--pb-tx-h, var(--pb-tx, var(--r-h1)));
 }
 
 .pb__bar {
