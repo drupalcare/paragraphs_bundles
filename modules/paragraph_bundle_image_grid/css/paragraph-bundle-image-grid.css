@@ -270,3 +270,7 @@
   }
 
 }
+
+.pb__image-grid-wrapper .pb__image-grid img:not(.pb__grid-lightbox .pb__image-grid img) {
+  height: 100%;
+}
