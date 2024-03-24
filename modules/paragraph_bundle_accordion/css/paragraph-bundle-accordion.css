@@ -64,8 +64,9 @@
   flex-grow: 1;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button button {
-  font-size: var(--pb-px24);
+.paragraph--type--accordion-bundle .pb__ex-button button,
+.paragraph--type--accordion-bundle .pb__accor-btn > button > .pb__plus-minus {
+  font-size: var(--pb-px32);
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button .pb__minus,
