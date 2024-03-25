@@ -23,6 +23,7 @@
   display: flex;
   width: 100%;
   flex-grow: 1;
+  white-space: initial;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-btn > button > .pb__plus-minus {
