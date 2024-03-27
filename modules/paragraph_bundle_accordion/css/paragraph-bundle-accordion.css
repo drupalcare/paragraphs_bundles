@@ -18,8 +18,14 @@
   border-bottom: none;
 }
 
+.paragraph--type--accordion-bundle .pb__accor-btn {
+  cursor: pointer;
+  padding: var(--pb-px0);
+  width: 100%;
+}
+
 .paragraph--type--accordion-bundle .pb__accor-btn > button {
-  padding: var(--pb-px8) var(--pb-px4);
+  padding: var(--pb-px16) var(--pb-px12);
   display: flex;
   width: 100%;
   flex-grow: 1;
@@ -37,12 +43,6 @@
 
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
   display: grid;
-  width: 100%;
-}
-
-.paragraph--type--accordion-bundle .pb__accor-btn {
-  cursor: pointer;
-  padding: var(--pb-px8);
   width: 100%;
 }
 
