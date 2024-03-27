@@ -19,7 +19,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb__accor-btn > button {
-  padding: var(--pb-px24) var(--pb-px12);
+  padding: var(--pb-px8) var(--pb-px4);
   display: flex;
   width: 100%;
   flex-grow: 1;
