@@ -71,7 +71,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button button {
-  padding: var(--pb-px16) var(--pb-px10);
+  padding: var(--pb-px10);
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button .pb__minus,
