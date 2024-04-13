@@ -37,6 +37,7 @@
   margin: 0 !important;
   padding: 0 !important;
   z-index: 1000;
+  overflow: hidden;
 }
 
 .paragraph .pb__image-grid .pb__image-grid-title>* {
