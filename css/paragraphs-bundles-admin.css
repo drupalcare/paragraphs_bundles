@@ -126,3 +126,7 @@
   background-color: #dc3545;
   color: #ffffff;
 }
+
+.field--name-pb-content-title input {
+  width: 100%;
+}
