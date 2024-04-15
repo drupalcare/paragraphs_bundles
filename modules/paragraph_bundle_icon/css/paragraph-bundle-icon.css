@@ -13,15 +13,6 @@
   font-family: var(--solo-font);
 }
 
-.embossed {
-  text-shadow: 1px 1px 1px #aaa, -1px -1px 1px #fff;
-}
-
-.sharp-outline {
-  color: white;
-  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-}
-
 .pb__icon-header .pb__content-title {
   margin: 0;
 }
@@ -30,4 +21,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* animation */
+.paragraph--type--icon-bundle > .pb__icon__inner {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.paragraph--type--icon-bundle > .pb__icon__inner:hover {
+  box-shadow: 0 25px 50px 0 rgba(0, 0, 0, 0.35);
+  transform: scale(1.02);
 }
