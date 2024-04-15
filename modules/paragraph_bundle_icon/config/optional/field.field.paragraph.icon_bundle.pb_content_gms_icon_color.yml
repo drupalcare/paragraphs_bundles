@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_gms_icon_color
+    - paragraphs.paragraphs_type.icon_bundle
+  module:
+    - paragraphs_bundles
+id: paragraph.icon_bundle.pb_content_gms_icon_color
+field_name: pb_content_gms_icon_color
+entity_type: paragraph
+bundle: icon_bundle
+label: 'Icon Color'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: '#212121'
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_rgb

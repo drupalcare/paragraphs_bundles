@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Paragraph Bundle Icon.
+ *
+ * Filename:     paragraph_bundle_icon.module
+ * Website:      https://www.flashwebcenter.com
+ * Description:  template.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function paragraph_bundle_icon_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name === 'help.page.paragraph_bundle_icon') {
+    return paragraphs_bundles__helper_render_readme();
+  }
+  return NULL;
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function paragraph_bundle_icon_preprocess_page(&$variables) {
+  $admin_theme = \Drupal::config('system.theme')->get('admin') ?: \Drupal::config('system.theme')->get('default');
+
+  // No admin theme selected or value not existing. Cancel.
+  if (empty($admin_theme) || !\Drupal::service('theme_handler')->themeExists($admin_theme)) {
+    return;
+  }
+
+  $admin_theme_name = \Drupal::service('theme_handler')->getName($admin_theme);
+
+  $admin_context = \Drupal::service('router.admin_context');
+  if ($admin_context->isAdminRoute() && $admin_theme_name) {
+    $variables['#attached']['library'][] = 'paragraph_bundle_icon/paragraph-bundle-icon-admin';
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function paragraph_bundle_icon_theme($existing, $type, $theme, $path) {
+  return [
+    'paragraph__icon_bundle' => [
+      'base hook' => 'paragraph',
+    ],
+
+  ];
+}

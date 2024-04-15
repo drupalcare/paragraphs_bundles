@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_gms_fill
+    - paragraphs.paragraphs_type.icon_bundle
+id: paragraph.icon_bundle.pb_content_gms_fill
+field_name: pb_content_gms_fill
+entity_type: paragraph
+bundle: icon_bundle
+label: Fill
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

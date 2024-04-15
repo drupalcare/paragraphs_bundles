@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_gms_style
+    - paragraphs.paragraphs_type.icon_bundle
+  module:
+    - options
+id: paragraph.icon_bundle.pb_content_gms_style
+field_name: pb_content_gms_style
+entity_type: paragraph
+bundle: icon_bundle
+label: 'Material Symbols Style'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: outlined
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_width
+    - paragraphs.paragraphs_type.icon_bundle
+  module:
+    - options
+id: paragraph.icon_bundle.pb_display_width
+field_name: pb_display_width
+entity_type: paragraph
+bundle: icon_bundle
+label: 'Max Width'
+description: 'Change the max width for the paragraph wrapper.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

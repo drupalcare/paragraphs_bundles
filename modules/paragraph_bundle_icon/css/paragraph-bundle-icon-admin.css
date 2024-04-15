@@ -1,0 +1,42 @@
+/* Admin pages */
+.pb__gms_icon .field--name-pb-content-gms-icon-name input {
+  max-width: 100%;
+}
+
+.pb__gms_icon .field--name-pb-content-gms-fill,
+.pb__gms_icon .field--name-pb-content-gms-style,
+.pb__gms_icon .field--name-pb-content-gms-grade,
+.pb__gms_icon .field--name-pb-content-gms-weight,
+.pb__gms_icon .field--name-pb-content-gms-optical-size,
+.pb__gms_icon .field--name-pb-content-gms-icon-font-size,
+.pb__gms_icon .field--name-pb-content-gms-icon-color {
+  margin-right: 12px;
+}
+
+.pb__gms_icon .details-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.pb__gms_icon .details-wrapper > .field--name-pb-content-gms-icon-name {
+  flex: 0 0 100%;
+}
+
+.pb__gms_icon .details-wrapper > *:not(.field--name-pb-content-gms-icon-name) {
+  flex-basis: auto;
+}
+
+.pb__gms_icon .field--name-pb-content-gms-icon-color input {
+  float: left;
+}
+
+.pb__gms_icon .field--name-pb-content-gms-style select {
+  width: 100%;
+}
+
+.pb__gms_icon .field--name-pb-content-gms-grade input,
+.pb__gms_icon .field--name-pb-content-gms-weight input,
+.pb__gms_icon .field--name-pb-content-gms-optical-size input,
+.pb__gms_icon .field--name-pb-content-gms-icon-font-size input {
+  width: 100px;
+}

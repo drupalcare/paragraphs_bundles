@@ -19,7 +19,10 @@
 
 .pb__image-grid-wrapper a,
 .pb__image-grid-wrapper picture,
-.pb__image-grid-wrapper div:not(.field--name-pb-content-title, .paragraph__inner, .pb__grid-lightbox-content, .pb__grid-lightbox-content > div) {
+.pb__image-grid-wrapper div:not(.field--name-pb-content-title,
+.paragraph__inner,
+.pb__grid-lightbox-content,
+.pb__grid-lightbox-content > div) {
   margin: 0 !important;
   padding: 0 !important;
 }

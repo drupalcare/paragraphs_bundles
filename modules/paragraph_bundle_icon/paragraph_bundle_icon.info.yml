@@ -1,0 +1,7 @@
+name: Paragraph Bundle Icon
+type: module
+description: A reusable Paragraph Bundle Icon. It uses Google Material Symbols https://fonts.google.com/icons?icon.style=Outlined&icon.set=Material+Symbols.
+core_version_requirement: ^9.4 || ^10
+package: Paragraphs
+dependencies:
+  - paragraphs_bundles:paragraphs_bundles

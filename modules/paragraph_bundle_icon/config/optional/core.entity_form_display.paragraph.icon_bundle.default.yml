@@ -1,0 +1,324 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.icon_bundle.pb_content_body
+    - field.field.paragraph.icon_bundle.pb_content_gms_fill
+    - field.field.paragraph.icon_bundle.pb_content_gms_grade
+    - field.field.paragraph.icon_bundle.pb_content_gms_icon_color
+    - field.field.paragraph.icon_bundle.pb_content_gms_icon_font_size
+    - field.field.paragraph.icon_bundle.pb_content_gms_icon_name
+    - field.field.paragraph.icon_bundle.pb_content_gms_optical_size
+    - field.field.paragraph.icon_bundle.pb_content_gms_style
+    - field.field.paragraph.icon_bundle.pb_content_gms_weight
+    - field.field.paragraph.icon_bundle.pb_content_image_icon
+    - field.field.paragraph.icon_bundle.pb_content_link
+    - field.field.paragraph.icon_bundle.pb_content_title
+    - field.field.paragraph.icon_bundle.pb_display_bg
+    - field.field.paragraph.icon_bundle.pb_display_bg_hover
+    - field.field.paragraph.icon_bundle.pb_display_bg_opacity
+    - field.field.paragraph.icon_bundle.pb_display_border
+    - field.field.paragraph.icon_bundle.pb_display_border_color
+    - field.field.paragraph.icon_bundle.pb_display_border_hover
+    - field.field.paragraph.icon_bundle.pb_display_border_radius
+    - field.field.paragraph.icon_bundle.pb_display_margin
+    - field.field.paragraph.icon_bundle.pb_display_padding
+    - field.field.paragraph.icon_bundle.pb_display_shadow
+    - field.field.paragraph.icon_bundle.pb_display_text
+    - field.field.paragraph.icon_bundle.pb_display_text_hover
+    - field.field.paragraph.icon_bundle.pb_display_width
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.icon_bundle
+  module:
+    - field_group
+    - image
+    - link
+    - paragraphs_bundles
+    - text
+third_party_settings:
+  field_group:
+    group_pb_tabs_wrapper:
+      children:
+        - group_pb_tab_content
+        - group_pb_tab_display
+      label: 'Tabs Wrapper'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: pb__tabs-wrapper
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: 992
+    group_pb_tab_content:
+      children:
+        - group_icon_fields
+        - pb_content_title
+        - pb_content_body
+        - pb_content_link
+      label: Content
+      region: content
+      parent_name: group_pb_tabs_wrapper
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: pb__tab-content
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_tab_display:
+      children:
+        - pb_display_bg_opacity
+        - pb_display_bg
+        - pb_display_bg_hover
+        - pb_display_text
+        - pb_display_text_hover
+        - pb_display_border_color
+        - pb_display_border_hover
+        - pb_display_border
+        - pb_display_border_radius
+        - pb_display_margin
+        - pb_display_padding
+        - pb_display_width
+        - pb_display_shadow
+      label: Display
+      region: content
+      parent_name: group_pb_tabs_wrapper
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: pb__tab-display
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_icon_fields:
+      children:
+        - group_pb_google_material_symbols
+        - group_pb_image_icon
+      label: 'Icon Fields'
+      region: content
+      parent_name: group_pb_tab_content
+      weight: 20
+      format_type: tabs
+      format_settings:
+        classes: pb__icon_fields
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: 640
+    group_pb_image_icon:
+      children:
+        - pb_content_image_icon
+      label: 'Image Icon'
+      region: content
+      parent_name: group_icon_fields
+      weight: 22
+      format_type: tab
+      format_settings:
+        classes: pb__image_icon
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_google_material_symbols:
+      children:
+        - pb_content_gms_icon_name
+        - pb_content_gms_icon_color
+        - pb_content_gms_style
+        - pb_content_gms_icon_font_size
+        - pb_content_gms_grade
+        - pb_content_gms_weight
+        - pb_content_gms_optical_size
+        - pb_content_gms_fill
+      label: 'Google Material Symbols'
+      region: content
+      parent_name: group_icon_fields
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: pb__gms_icon
+        show_empty_fields: false
+        id: ''
+        formatter: open
+        description: ''
+        required_fields: true
+id: paragraph.icon_bundle.default
+targetEntityType: paragraph
+bundle: icon_bundle
+mode: default
+content:
+  pb_content_body:
+    type: text_textarea
+    weight: 27
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_gms_fill:
+    type: boolean_checkbox
+    weight: 31
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  pb_content_gms_grade:
+    type: number
+    weight: 28
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_gms_icon_color:
+    type: color_text_widget
+    weight: 25
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_content_gms_icon_font_size:
+    type: number
+    weight: 27
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_gms_icon_name:
+    type: string_textfield
+    weight: 24
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_gms_optical_size:
+    type: number
+    weight: 30
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_gms_style:
+    type: options_select
+    weight: 26
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_content_gms_weight:
+    type: number
+    weight: 29
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_image_icon:
+    type: image_image
+    weight: 32
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  pb_content_link:
+    type: link_default
+    weight: 28
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  pb_content_title:
+    type: string_textfield
+    weight: 26
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_bg:
+    type: color_text_widget
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_hover:
+    type: color_text_widget
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border:
+    type: options_select
+    weight: 23
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_color:
+    type: color_text_widget
+    weight: 21
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_hover:
+    type: color_text_widget
+    weight: 22
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_radius:
+    type: options_select
+    weight: 24
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_margin:
+    type: options_select
+    weight: 25
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_padding:
+    type: options_select
+    weight: 26
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_shadow:
+    type: options_select
+    weight: 28
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_text:
+    type: color_text_widget
+    weight: 19
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_text_hover:
+    type: color_text_widget
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_width:
+    type: options_select
+    weight: 27
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,33 @@
+.material-symbols-sharp {
+  --solo-font: 'Material Symbols Sharp' !important;
+  font-family: var(--solo-font);
+}
+
+.material-symbols-outlined {
+  --solo-font: 'Material Symbols Outlined' !important;
+  font-family: var(--solo-font);
+}
+
+.material-symbols-rounded {
+  --solo-font: 'Material Symbols Rounded' !important;
+  font-family: var(--solo-font);
+}
+
+.embossed {
+  text-shadow: 1px 1px 1px #aaa, -1px -1px 1px #fff;
+}
+
+.sharp-outline {
+  color: white;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.pb__icon-header .pb__content-title {
+  margin: 0;
+}
+
+.pb__icon-header .icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -51,35 +51,80 @@ of fields varies depending on the bundle type.
 
 ## BUNDLES
 
-The module supports 26 types of paragraph bundles, one content type and one
+The module supports types of paragraph bundles, one content type and one
 block type:
 
-1. 3D Carousel
-2. 3D Flip Box
-3. Accordion
-4. Alert
-5. Block Content
-6. Card Two Columns
-7. Card Three Columns
-8. Contact Form
-9. Drupal Block
-10. Hero
-11. Image (original size)
-12. Responsive Image Narrow
-13. Responsive Image Wide
-14. Image Grid
-15. Image Overlay
-16. Link
-17. Modal
-18. One Column
-19. Parallax
-20. Simple
-21. Slideshow
-22. Tabs
-23. Three Columns
-24. Two Columns
-25. Views
-26. Webform
+# Module Categories Description
+
+## 1. Display Formats
+These modules focus on presenting content in visually appealing and dynamic
+formats:
+
+- **3D Carousel**: Presents content in a rotating 3D carousel format.
+- **3D Flip Box**: Displays content in boxes that flip in a 3D space.
+- **Lightbox Image Grid**: Arranges images in a responsive grid layout and opens
+ each
+  image in a lightbox.
+- **Slideshow**: Showcases content in a slideshow format.
+- **Responsive Image Narrow**: Adapts images to fit different screen sizes,
+in square
+  formats.
+- **Responsive Image Wide**: Adapts images to fit different screen sizes, in
+rectangle
+  formats.
+- **Parallax**: Creates a parallax scrolling effect for images or other content.
+
+## 2. Interactive Elements
+Modules that enhance user interaction and engagement through dynamic and
+interactive
+features:
+
+- **Accordion**: Displays content in a collapsible format, allowing users to
+expand or
+  hide sections.
+- **Tabs**: Organizes content in a tabbed interface.
+- **Modal**: Displays content in a modal window, often used for login forms,
+  notifications, or additional information.
+- **Alert**: Shows alert messages or important information in an interactive
+ format.
+
+## 3. Layout Structures
+These modules provide different structural layouts to organize content on a
+ page:
+
+- **One Column**: A simple, single-column layout.
+- **Two Columns**: Divides content into two columns.
+- **Three Columns**: Arranges content in three separate columns.
+- **Card Two Columns**: Displays content in a card-style layout within two
+ columns.
+- **Card Three Columns**: Displays content in a card-style layout within three
+ columns.
+- **Hero**: Typically a large, full-width banner or image, often used at the
+ top of a
+  page.
+
+## 4. Content Integration
+Modules that are used to integrate or display specific types of content or
+ external
+services:
+
+- **Node Reference**: For referencing any content.
+- **Block Content**: For placing and arranging blocks of content.
+- **Drupal Block**: Integrates Drupal blocks into the layout.
+- **Image**: A module dedicated to displaying individual images.
+- **Image Overlay**: Adds overlay effects to images.
+- **Link**: Specifically for adding and managing hyperlinks.
+- **PB Content & PB Block**: Special modules for integrating Paragraph
+ Bundles' own
+  content and block system.
+- **Simple**: Likely a straightforward, minimalistic content display.
+- **Icon**: Display Google Material Symbols or upload an Image Icon.
+- **Views**: Integrates the Views module, a powerful Drupal tool for
+ organizing and
+  displaying content.
+- **Contact Form**: Embeds contact forms.
+- **Webform**: Embeds web forms for user input and interaction.
+
 
 Each bundle can be customized using the Content and Display tab options.
 
