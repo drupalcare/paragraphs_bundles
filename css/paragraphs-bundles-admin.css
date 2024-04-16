@@ -130,3 +130,7 @@
 .field--name-pb-content-title input {
   width: 100%;
 }
+
+.claro-details.horizontal-tabs-panes .horizontal-tabs-pane {
+  min-width: calc(100% - 2rem);
+}
