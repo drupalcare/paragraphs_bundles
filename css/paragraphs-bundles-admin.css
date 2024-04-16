@@ -131,6 +131,6 @@
   width: 100%;
 }
 
-.claro-details.horizontal-tabs-panes .horizontal-tabs-pane {
+.horizontal-tabs-panes .claro-details.horizontal-tabs-pane {
   min-width: calc(100% - 2rem);
 }
