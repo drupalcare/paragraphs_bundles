@@ -11,7 +11,7 @@ field_name: pb_content_link
 entity_type: paragraph
 bundle: icon_bundle
 label: Link
-description: 'Add a link here if you would like the title to be clickable.'
+description: 'Add a link here if you would like the title and the icon/image to be clickable. Also the title field will be used as a link title.'
 required: false
 translatable: false
 default_value: {  }
