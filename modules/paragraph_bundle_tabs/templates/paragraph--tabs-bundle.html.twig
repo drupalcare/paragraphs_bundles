@@ -132,8 +132,11 @@
         <div class="pb__bar pb__tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist">
         {% for key, item in content.pb_content_tab_section %}
         {% if key|first != '#' %}
-          <button id="{{ tab_id }}-{{ key + 1 }}" class="pb__button pb__tab-button" aria-controls="{{ item['#paragraph'].pb_content_tab_name.value }}" role="tab" data-toggle="tab">
-                {{ item['#paragraph'].pb_content_tab_name.value }}
+          <button id="{{ tab_id }}-{{ key + 1 }}" class="pb__button pb__tab-button"
+          aria-label="{{ item['#paragraph'].pb_content_tab_name.value }}"
+          aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
+          aria-controls="{{ tab_id }}-{{ key + 1 }}-pane"
+          type="button" role="tab" {% if key != 0 %}tabindex="-1"{% endif %}>{{ item['#paragraph'].pb_content_tab_name.value }}
           </button>
         {% endif %}
         {% endfor %}
@@ -143,7 +146,8 @@
         <div class="pb__row pb__tabs-pane">
         {% for key, item in content.pb_content_tab_section %}
         {% if key|first != '#' %}
-          <div role="tabpanel" class="pb__tab-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ tab_id }}-{{ key + 1 }}-pane">
+
+          <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb__tab-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}">
           {% for body_key, body_item in item['#paragraph'].pb_content_tab_body %}
           {% set section_body = item %}
           {% set lang = section_body['#paragraph'].langcode[0].value %}

@@ -63,6 +63,35 @@
         return slideIndex;
       };
 
+      const updateNavigationState = (parentId, activeSlideId) => {
+        const allButtons = context.querySelectorAll(`#pb__slideshow-${parentId}>.pb__slide-nav>.pb__slide-bottom-btn`);
+        allButtons.forEach(button => {
+          const buttonId = getElementId(button.id);
+          if (buttonId === activeSlideId) {
+            button.classList.add('pb__active');
+            button.removeAttribute('tabindex');
+            button.setAttribute('aria-selected', 'true');
+          } else {
+            button.classList.remove('pb__active');
+            button.setAttribute('tabindex', '-1');
+            button.setAttribute('aria-selected', 'false');
+          }
+        });
+      };
+
+      const updateSlideVisibility = (parentId, activeSlideId) => {
+        const slides = context.querySelectorAll(`#pb__slides-${parentId}>.pb__slide-item`);
+        slides.forEach((slide, index) => {
+          if (index + 1 === activeSlideId) {
+            slide.style.display = 'block';
+            slide.setAttribute('aria-hidden', 'false');
+          } else {
+            slide.style.display = 'none';
+            slide.setAttribute('aria-hidden', 'true');
+          }
+        });
+      };
+
       const getNextSlide = (parentId, slideId) => {
         const slidesSelector = `#pb__slides-${parentId}>.pb__slide-item`;
         const currentIdSelector = `#pb__slides-${parentId}>#pb__slide-item-${parentId}-${slideId}`;
@@ -91,10 +120,9 @@
         const slides = context.querySelectorAll(`#pb__slides-${parentId}>.pb__slide-item`);
         const totalSlides = slides.length;
         const slideId = itemFunction(totalSlides);
-        const [nextSlide, isActive] = getNextSlide(parentId, slideId);
 
-        nextSlide.style.display = 'block';
-        isActive.classList.add('pb__active');
+        updateSlideVisibility(parentId, slideId);
+        updateNavigationState(parentId, slideId);
 
         // Resume auto-slide if it was playing
         if (!isPaused) {
@@ -107,19 +135,24 @@
         const slideId = getElementId(e);
         const parentId = getParentId(p);
         manageAutoSlideInterval('clear');
-        const slideAndActiveState = getNextSlide(parentId, slideId);
 
-        if (slideAndActiveState && slideAndActiveState.length >= 2) {
-          slideAndActiveState[0].style.display = 'block';
-          slideAndActiveState[1].classList.add('pb__active');
-          slideIndex = slideId;
-        } else {
-          console.error('getNextSlide did not return an array with at least two elements');
-        }
+        const slides = context.querySelectorAll(`#pb__slides-${parentId}>.pb__slide-item`);
+        slides.forEach(slide => {
+          if (parseInt(slide.id.split('-').pop()) === slideId) {
+            slide.style.display = 'block';
+            slide.setAttribute('aria-hidden', 'false');
+          } else {
+            slide.style.display = 'none';
+            slide.setAttribute('aria-hidden', 'true');
+          }
+        });
 
-        // Check if the slideshow is paused before deciding to restart it
+        updateNavigationState(parentId, slideId);
+        slideIndex = slideId;
+
+        // Restart the auto-slide interval if the slideshow is not paused
         if (!isPaused) {
-          let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
+          const slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
         }
       };
@@ -129,10 +162,19 @@
         getSlideIndex(slides);
         const totalSlides = slides.length;
         const slideId = itemFunction(totalSlides);
-        const [nextSlide, activeSlide] = getNextSlide(parentId, slideId);
 
-        nextSlide.style.display = 'block';
-        activeSlide.classList.add('pb__active');
+        slides.forEach(slide => {
+          const currentSlideId = parseInt(slide.id.split('-').pop());
+          if (currentSlideId === slideId) {
+            slide.style.display = 'block';
+            slide.setAttribute('aria-hidden', 'false');
+          } else {
+            slide.style.display = 'none';
+            slide.setAttribute('aria-hidden', 'true');
+          }
+        });
+
+        updateNavigationState(parentId, slideId);
       };
 
       once('init-slides', slides).forEach(slide => {
@@ -198,5 +240,3 @@
     }
   };
 })(Drupal, drupalSettings, once);
-
-

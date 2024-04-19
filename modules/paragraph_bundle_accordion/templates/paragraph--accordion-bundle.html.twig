@@ -117,7 +117,7 @@
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" role="tablist" aria-multiselectable="true" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
     <div class="pb__content-full">
         {% set acc_id = 'pb__accor-' ~ paragraph.id.value %}
@@ -129,30 +129,40 @@
 
         {% if pb_expand_all == "On" %}
         <div class="pb__row pb__ex-button">
-          <button class="pb__button pb__plus">&#x0229E</button>
-          <button class="pb__button pb__minus">&#x0229F</button>
+            <button class="pb__button pb__plus" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="Expand all sections">
+                &#x0229E;
+            </button>
+            <button class="pb__button pb__minus" aria-expanded="true" aria-controls="{{ acc_id }}" aria-label="Collapse all sections">
+                &#x0229F;
+            </button>
         </div>
+
         {% endif %}
 
         {% for key, item in content.pb_content_accordion_section %}
         {% if key|first != '#' %}
+         {% set total_panels = total_panels + 1 %}
 
         <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item {% if key == 0 %} {{ pb_open_first == 'On' ? 'pb__active' : 'pb__active-no' }} {% else %} pb__active-no{% endif %}">
-          <div class="pb__row pb__accor-btn" role="tablist">
+          <div class="pb__row pb__accor-btn" role="tablist" aria-multiselectable="true">
           {# Loops through the accordion sections to print the tab section titles. #}
-          <button id="{{ acc_id }}-{{ key + 1 }}" class="pb__button pb__bar pb__accor-button" aria-controls="{{ item['#paragraph'].pb_content_accordion_title.value }}" role="tab" data-toggle="tab">
+          <button id="{{ acc_id }}-{{ key + 1 }}" class="pb__button pb__bar pb__accor-button"
+          aria-label="{{ item['#paragraph'].pb_content_accordion_title.value }}"
+          aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}"
+          aria-controls="{{ acc_id }}-{{ key + 1 }}-pane"
+          type="button" role="tab">
             {{ item['#paragraph'].pb_content_accordion_title.value }}
             {% if pb_show_indicator == "On" %}
             <div class="pb__plus-minus">
-              <span class="pb__minus">&#x02212</span>
-              <span class="pb__plus">&#x0002B</span>
+              <span aria-hidden="true" class="pb__minus">&#x02212</span>
+              <span aria-hidden="true" class="pb__plus">&#x0002B</span>
             </div>
             {% endif %}
            </button>
           </div>
 
           {# Loop through all of the accordion section bodies. #}
-          <div role="tabpanel" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ acc_id }}-{{ key + 1 }}-pane">
+          <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="tabpanel" aria-labelledby="{{ acc_id }}-{{ key + 1 }}"  aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">
             {% for body_key, body_item in item['#paragraph'].pb_content_accordion_body %}
             {# Use the same render array as item and set the '#paragraph'. #}
             {% set section_body = item %}

@@ -10,13 +10,13 @@
   'use strict';
 
   Drupal.behaviors.paragraphBundleTabs = {
-    attach: function (context, settings) {
+    attach: function(context, settings) {
       // Function to hide all panes
       function hideAllPanes(panes) {
         panes.forEach(pane => {
           if (pane) {
             pane.style.display = 'none';
-            pane.setAttribute('aria-hidden', 'true'); // Set aria-hidden attribute
+            pane.setAttribute('aria-hidden', 'true');
           }
         });
       }
@@ -26,7 +26,8 @@
         buttons.forEach(button => {
           if (button) {
             button.classList.remove('pb__active');
-            button.setAttribute('aria-expanded', 'false'); // Set aria-expanded attribute
+            button.setAttribute('tabindex', '-1');
+            button.setAttribute('aria-selected', 'false');
           }
         });
       }
@@ -47,11 +48,11 @@
           if (currentPane) {
             hideAllPanes(tabPanes);
             removeActiveClassFromButtons(tabButtons);
-
             currentPane.style.display = 'block';
             currentPane.setAttribute('aria-hidden', 'false');
             button.classList.add('pb__active');
-            button.setAttribute('aria-expanded', 'true');
+            button.removeAttribute('tabindex');
+            button.setAttribute('aria-selected', 'true');
           } else {
             console.warn(`Pane with ID ${paneId} not found.`);
           }
@@ -70,7 +71,7 @@
       firstChildButtons.forEach(button => {
         if (button) {
           button.classList.add('pb__active');
-          button.setAttribute('aria-expanded', 'true');
+          button.setAttribute('aria-selected', 'true');
         }
       });
     }

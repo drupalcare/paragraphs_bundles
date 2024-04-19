@@ -45,6 +45,7 @@
 {# Set paragraph id #}
 {% set paragraph_id = 'pb__slide-wrap-' ~ paragraph.id.value %}
 {% set slide_id = 'pb__slideshow-' ~ paragraph.id.value %}
+
 {# Set the inner classes for the paragraph. #}
 {% set classes_inner = 'paragraph__inner pb__slide-wrap__inner' %}
 
@@ -102,7 +103,6 @@
     {% elseif style starts with '#' %}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
     {% else %}
-    {# In case widget was changed. #}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
 
@@ -113,83 +113,87 @@
 {% set pb_prev_next = content.pb_display_slide_prev_next|render|striptags|trim %}
 {% set pb_bottom_nav = content.pb_display_bottom_navigation|render|striptags|trim %}
 {% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
-{% set pb_play_stop = content.pb_display_slide_play_stop|render|striptags|trim|default(0) %}
+{% set pb_play_stop = content.pb_display_slide_play_stop|render|striptags|trim|default('0') %}
 
 {# Main wrapper #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" role="tablist" aria-multiselectable="true" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
     <div class="pb__content-full">
       {% if content.pb_content_title|render %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+        <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
 
-
-      <div id="{{ slide_id }}" class="pb__slideshow-inner">
+      {% set total_slides = 0 %}
+      <div id="{{ slide_id }}" class="pb__slideshow-inner{{ pb_bottom_nav ? ' ' ~ pb_bottom_nav }}{{ pb_play_stop == 0 ? ' zero' : ' not-zero' }}">
 
         <div id="pb__slides-{{ paragraph.id.value }}" class="pb__slides">
-
-        {% for key, item in content.pb_content_slideshow_section %}
-        {% if key|first != '#' %}
-
-          <div id="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__slide-item">
-
-            {# Loop through all of the slideshow section bodies. #}
-            <div role="tabpanel" class="pb__row pb__slide-item-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
-              {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
-              {# Use the same render array as item and set the '#paragraph'. #}
-              {% set section_body = item %}
-              {% set lang = section_body['#paragraph'].langcode[0].value %}
-              {# Check if a translation exists #}
-              {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
-              {# Load the entity for the current translation #}
-              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
-              {% else %}
-                {# Load the source entity #}
-              {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
-              {% endif %}
-              {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
-              {# Remove the cache keys so it doesn't repeat the first value. #}
-              {% set section_body = section_body|merge({'#cache': {}}) %}
-              {# Print the compiled section body. #}
-              {{ section_body }}
-              {% endfor %}
-
-              {% if item['#paragraph'].pb_content_slideshow_title.value %}
-              <div class="pb__row pb__slide-title">
-                {{ item['#paragraph'].pb_content_slideshow_title.value }}
-              </div>
-              {% endif %}
-
-            </div>
-          </div>
-
-          {% endif %}
-          {% endfor %}
-
-        </div>{# End of pb__slides #}
-
-        <div id="pb__slide-nav-{{ paragraph.id.value }}" class="pb__bar pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
-          <button id="btn-{{ paragraph.id.value }}" class="pb__button hide-{{ pb_play_stop }} pb__play">&#10073;&nbsp;&#10073;</button>
           {% for key, item in content.pb_content_slideshow_section %}
-          {% if key|first != '#' %}
-          <button id="pb__slide-bottom-btn-{{ key + 1 }}" class="pb__button pb__slide-bottom-btn {% if key == 0 %} pb__active {% endif %}">
-            {{ key + 1 }}
-          </button>
-          {% endif %}
+            {% if key|first != '#' %}
+              {% set total_slides = total_slides + 1 %}
+
+              <div id="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" {% if pb_bottom_nav %}aria-labelledby="pb__slide-bottom-btn-{{ (key + 1) }}"{% endif %}  class="pb__row pb__slide-item">
+                {# Loop through all of the slideshow section bodies. #}
+                <div class="pb__row pb__slide-item-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
+                  {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
+                    {# Use the same render array as item and set the '#paragraph'. #}
+                    {% set section_body = item %}
+                    {% set lang = section_body['#paragraph'].langcode[0].value %}
+                    {# Check if a translation exists #}
+                    {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
+                      {# Load the entity for the current translation #}
+                      {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
+                    {% else %}
+                      {# Load the source entity #}
+                      {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
+                    {% endif %}
+                    {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
+                    {# Remove the cache keys so it doesn't repeat the first value. #}
+                    {% set section_body = section_body|merge({'#cache': {}}) %}
+                    {# Print the compiled section body. #}
+                    {{ section_body }}
+                  {% endfor %}
+                  {% if item['#paragraph'].pb_content_slideshow_title.value %}
+                    <div class="pb__row pb__slide-title">{{ item['#paragraph'].pb_content_slideshow_title.value }}</div>
+                  {% endif %}
+                </div>
+              </div>
+
+            {% endif %}
           {% endfor %}
-        </div>
+        </div> {# End of pb__slides #}
 
-        <div id="pb__slide-arrows-{{ paragraph.id.value }}" class="pb__bar pb__slide-arrows pb__prev-next-arrow-{{ pb_prev_next }}">
-          <a class="pb__prev pb__button">&#10094;</a>
-          <a class="pb__next pb__button">&#10095;</a>
-        </div>
+        {% if pb_bottom_nav or pb_play_stop > 0 %}
+          <div id="pb__slide-nav-{{ paragraph.id.value }}" role="tablist" aria-label="Slideshow Tabs" class="pb__bar pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
+            {% if pb_play_stop > 0 %}
+              <button id="btn-{{ paragraph.id.value }}" type="button" role="tab" aria-label="Stop automatic slide show" class="pb__button hide-{{ pb_play_stop }} pb__play">&#10073;&nbsp;&#10073;</button>
+            {% endif %}
+            {% if pb_bottom_nav %}
+              {% for key, item in content.pb_content_slideshow_section %}
+                {% if key|first != '#' %}
+                  <button id="pb__slide-bottom-btn-{{ key + 1 }}" type="button" role="tab"
+                          aria-label="Slide {{ key + 1 }}"
+                          aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
+                          aria-controls="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}"
+                          class="pb__button pb__slide-bottom-btn{% if key == 0 %} pb__active{% endif %}"
+                          {% if key != 0 %}tabindex="-1"{% endif %}>
+                    {{ key + 1 }}
+                  </button>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        {% endif %}
 
-        <div class="pb__ps-value">
-          {{ pb_play_stop }}
-        </div>
+        {% if pb_prev_next == "On" %}
+          <div id="pb__slide-arrows-{{ paragraph.id.value }}" class="pb__bar pb__slide-arrows pb__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="Slideshow Navigation">
+            <button class="pb__prev pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Previous Slide">❮</button>
+            <button class="pb__next pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Next Slide">❯</button>
+          </div>
+        {% endif %}
 
-      </div>{# End of pb__slideshow-inner #}
+        <div class="pb__ps-value">{{ pb_play_stop }}</div>
 
+      </div> {# End of pb__slideshow-inner #}
     </div>
   </div>
 </div> {# End of main wrapper #}

@@ -49,7 +49,10 @@
         currentIndex = items.indexOf(paragraphContent);
         const fullImageUrl = paragraphContent.getAttribute('data-full-image-url');
         updateModalContent(fullImageUrl);
-        currModal.setAttribute('aria-expanded', 'true');
+
+        const expandButton = event.currentTarget;
+        expandButton.setAttribute('aria-expanded', 'true');
+
         currModal.setAttribute('aria-hidden', 'false');
         currModal.style.display = 'block';
         event.stopPropagation();
@@ -58,9 +61,14 @@
       const closeModal = (event) => {
         currModal.style.display = 'none';
         currModal.setAttribute('aria-hidden', 'true');
+
+        const expandButtons = document.querySelectorAll('.pb__expand-grid');
+        expandButtons.forEach(button => button.setAttribute('aria-expanded', 'false')); // Reset all buttons
+
         currentIndex = -1; // Reset index
         if (event) event.stopPropagation();
       };
+
 
       const navigateModal = (direction) => {
         // Adjust currentIndex based on direction
