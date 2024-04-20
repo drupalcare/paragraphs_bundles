@@ -64,8 +64,8 @@
         }
         cells[0].classList.add('pb__active');
         indexNo.innerHTML = 1;
-        nextBtnId.style.display = 'inline';
-        prevBtnId.style.display = 'none';
+        nextBtnId.classList.remove('hidden');
+        prevBtnId.classList.add('hidden');
         rotateCarousel(carouselId, n);
       };
       const backward = (carouselId) => {
@@ -91,13 +91,13 @@
             }
             break;
           }
-          nextBtnId.style.display = 'inline';
+          nextBtnId.classList.remove('hidden');
           cells[i].classList.remove('pb__active');
           i -= 1;
           if (!cells[i]) continue;
           if (i === 0) {
-            prevBtnId.style.display = 'none';
-            nextBtnId.style.display = 'inline';
+            prevBtnId.classList.add('hidden');
+            nextBtnId.classList.remove('hidden');
           }
           cells[i].classList.add('pb__active');
           indexNo.innerHTML = i + 1;
@@ -133,15 +133,17 @@
               }
               break;
             }
-            prevBtnId.style.display = 'inline';
+            prevBtnId.classList.remove('hidden');
             cells[i].classList.remove('pb__active');
+            cells[i].setAttribute('aria-hidden', 'true');
             i++;
             if (cells[i]) {
               if (i == cellCount - 1) {
-                nextBtnId.style.display = 'none';
-                prevBtnId.style.display = 'inline';
+                nextBtnId.classList.add('hidden');
+                prevBtnId.classList.remove('hidden');
               }
               cells[i].classList.add('pb__active');
+              cells[i].setAttribute('aria-hidden', 'false');
               n = i;
               indexNo.innerHTML = n + 1;
               return n;
