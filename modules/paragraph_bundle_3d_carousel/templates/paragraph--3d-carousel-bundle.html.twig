@@ -145,7 +145,7 @@
 
       {% for key, item in content.pb_content_3d_car_body %}
       {% if key|first != '#' %}
-      <div id="item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__caro-item item-{{ paragraph.id.value }}-{{ key + 1 }}" role="tabpanel" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}">{{ item }}</div>
+      <div id="item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__caro-item item-{{ paragraph.id.value }}-{{ key + 1 }}" role="tabpanel">{{ item }}</div>
       {% endif %}
       {% endfor %}
 

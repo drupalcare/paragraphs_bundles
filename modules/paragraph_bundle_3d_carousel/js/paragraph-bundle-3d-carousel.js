@@ -135,7 +135,6 @@
             }
             prevBtnId.classList.remove('hidden');
             cells[i].classList.remove('pb__active');
-            cells[i].setAttribute('aria-hidden', 'true');
             i++;
             if (cells[i]) {
               if (i == cellCount - 1) {
@@ -143,7 +142,6 @@
                 prevBtnId.classList.remove('hidden');
               }
               cells[i].classList.add('pb__active');
-              cells[i].setAttribute('aria-hidden', 'false');
               n = i;
               indexNo.innerHTML = n + 1;
               return n;
