@@ -54,7 +54,7 @@ function paragraphs_bundles_theme($existing, $type, $theme, $path) {
       'base hook' => 'paragraph',
     ],
     'field__entity_reference_revisions' => [
-      'base hook' => 'paragraph',
+      'base hook' => 'field',
     ],
   ];
 }

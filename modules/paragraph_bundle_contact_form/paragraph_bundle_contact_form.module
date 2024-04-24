@@ -11,6 +11,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_help().
@@ -20,4 +21,34 @@ function paragraph_bundle_contact_form_help($route_name, RouteMatchInterface $ro
     return paragraphs_bundles__helper_render_readme();
   }
   return NULL;
+}
+
+/**
+ * Implements hook_theme() for the paragraph_bundle_contact_form submodule.
+ */
+function paragraph_bundle_contact_form_theme($existing, $type, $theme, $path) {
+  $template_directory = \Drupal::service('extension.path.resolver')->getPath('module', 'paragraphs_bundles') . '/templates';
+
+  return [
+    'paragraph__contact_form_bundle' => [
+      'base hook' => 'paragraph',
+      'template' => 'paragraph--default',
+      'path' => $template_directory
+    ],
+  ];
+}
+
+/**
+ * Implements hook_theme_suggestions_paragraph_alter() for paragraph templates
+ * in the paragraph_bundle_contact_form submodule.
+ */
+function paragraph_bundle_contact_form_theme_suggestions_paragraph_alter(array &$suggestions, array $variables) {
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $variables['elements']['#paragraph'];
+    $bundle = $paragraph->bundle();
+
+    // Add a template suggestion for paragraphs of type 'contact_form_bundle'
+    if ($bundle === 'contact_form_bundle') {
+       $suggestions[] = 'paragraph__contact_form_bundle';
+    }
 }
