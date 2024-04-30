@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_view_mode
+    - paragraphs.paragraphs_type.node_reference_bundle
+  module:
+    - options
+id: paragraph.node_reference_bundle.pb_content_view_mode
+field_name: pb_content_view_mode
+entity_type: paragraph
+bundle: node_reference_bundle
+label: 'PB Content View Mode'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: vm_title
+default_value_callback: ''
+settings: {  }
+field_type: list_string

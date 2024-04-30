@@ -2,10 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.node_reference_bundle.pb_content_nf_title_only
+    - field.field.paragraph.node_reference_bundle.pb_content_view_mode
     - field.field.paragraph.node_reference_bundle.pb_content_nf_3d_carousel
     - field.field.paragraph.node_reference_bundle.pb_content_nf_slideshow
     - field.field.paragraph.node_reference_bundle.pb_content_nf_teaser_text
+    - field.field.paragraph.node_reference_bundle.pb_content_nf_title_only
     - field.field.paragraph.node_reference_bundle.pb_content_title
     - field.field.paragraph.node_reference_bundle.pb_display_bg
     - field.field.paragraph.node_reference_bundle.pb_display_bg_hover
@@ -29,14 +30,6 @@ targetEntityType: paragraph
 bundle: node_reference_bundle
 mode: default
 content:
-  pb_content_nf_title_only:
-    type: entity_reference_label
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 17
-    region: content
   pb_content_nf_3d_carousel:
     type: entity_reference_entity_view
     label: hidden
@@ -44,7 +37,7 @@ content:
       view_mode: pb_3d_carousel
       link: false
     third_party_settings: {  }
-    weight: 16
+    weight: 17
     region: content
   pb_content_nf_slideshow:
     type: entity_reference_entity_view
@@ -53,7 +46,7 @@ content:
       view_mode: pb_slideshow
       link: false
     third_party_settings: {  }
-    weight: 15
+    weight: 16
     region: content
   pb_content_nf_teaser_text:
     type: entity_reference_entity_view
@@ -62,7 +55,15 @@ content:
       view_mode: pb_teaser_text
       link: false
     third_party_settings: {  }
-    weight: 14
+    weight: 15
+    region: content
+  pb_content_nf_title_only:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 18
     region: content
   pb_content_title:
     type: string
@@ -71,6 +72,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 13
+    region: content
+  pb_content_view_mode:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 14
     region: content
   pb_display_bg:
     type: color_text_formatter_rgb

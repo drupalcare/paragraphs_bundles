@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_content_view_mode
+field_name: pb_content_view_mode
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: vm_3d_carousel
+      label: 'Display (Title + Image) Narrow Mode'
+    -
+      value: vm_slideshow
+      label: 'Display (Title + Image) Wide Mode'
+    -
+      value: vm_teaser_text
+      label: 'Display (Title + Teaser)'
+    -
+      value: vm_title
+      label: 'Display (Title Only)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

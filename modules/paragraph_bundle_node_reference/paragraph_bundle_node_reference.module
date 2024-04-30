@@ -11,6 +11,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_help().
@@ -31,4 +32,76 @@ function paragraph_bundle_node_reference_theme($existing, $type, $theme, $path) 
       'base hook' => 'paragraph',
     ],
   ];
+}
+
+/**
+ * Implements hook_field_widget_WIDGET_TYPE_form_alter().
+ */
+function paragraph_bundle_node_reference_field_widget_single_element_options_select_form_alter(&$element, $form_state, $context) {
+  // Ensure all required components are present.
+  if (!isset($context['items']) || !($field_definition = $context['items']->getFieldDefinition()) || !($field_name = $field_definition->getName()) || !($entity = $context['items']->getEntity())) {
+    // Exit if essential components are missing.
+    return;
+  }
+
+  // Check if we are altering the correct field within the specified paragraph.
+  if ($field_name === 'pb_content_view_mode' && $entity instanceof Paragraph && $entity->bundle() === 'node_reference_bundle') {
+    $element['#attached']['library'][] = 'paragraph_bundle_node_reference/pb-conditional-fields';
+    // Ensure #field_name and subform are set.
+    if (!isset($element['#field_name'], $element['subform'])) {
+      // Exit if critical parts of the form are missing.
+      return;
+    }
+    $base_selector = ':input[name="' . $element['#field_name'] . '"]';
+    // Define visibility conditions based on the dropdown selection.
+    $states = [
+      'vm_title' => 'pb_content_nf_title_only',
+      'vm_teaser_text' => 'pb_content_nf_teaser_text',
+      'vm_slideshow' => 'pb_content_nf_slideshow',
+      'vm_3d_carousel' => 'pb_content_nf_3d_carousel',
+    ];
+
+    foreach ($states as $value => $fieldName) {
+      if (isset($element['subform'][$fieldName])) {
+        $element['subform'][$fieldName]['#states'] = [
+          'visible' => [
+            $base_selector => ['value' => $value],
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Updates view mode settings for existing node_reference_bundle paragraphs.
+ */
+function paragraph_bundle_node_reference_update_8001() {
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $paragraphs = $storage->loadByProperties(['type' => 'node_reference_bundle']);
+
+  foreach ($paragraphs as $paragraph) {
+    // Initialize the default view mode.
+    $view_mode_value = 'vm_title';
+
+    // Check each field and update the view mode if the field is not empty.
+    if (!empty($paragraph->pb_content_nf_3d_carousel->value)) {
+      $view_mode_value = 'vm_3d_carousel';
+    }
+    elseif (!empty($paragraph->pb_content_nf_slideshow->value)) {
+      $view_mode_value = 'vm_slideshow';
+    }
+    elseif (!empty($paragraph->pb_content_nf_teaser_text->value)) {
+      $view_mode_value = 'vm_teaser_text';
+    }
+    elseif (!empty($paragraph->pb_content_nf_title_only->value)) {
+      $view_mode_value = 'vm_title';
+    }
+
+    // Set the view mode field value and save the paragraph.
+    $paragraph->set('pb_content_view_mode', $view_mode_value);
+    $paragraph->save();
+  }
+
+  return t('Updated view mode settings for node_reference_bundle paragraphs.');
 }
