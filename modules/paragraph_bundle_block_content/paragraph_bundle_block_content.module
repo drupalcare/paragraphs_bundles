@@ -11,7 +11,6 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_help().
@@ -33,22 +32,21 @@ function paragraph_bundle_block_content_theme($existing, $type, $theme, $path) {
     'paragraph__block_content_bundle' => [
       'base hook' => 'paragraph',
       'template' => 'paragraph--default',
-      'path' => $template_directory
+      'path' => $template_directory,
     ],
   ];
 }
 
 /**
- * Implements hook_theme_suggestions_paragraph_alter() for paragraph templates
- * in the paragraph_bundle_block_content submodule.
+ * Implements hook_theme_suggestions_paragraph_alter() for block content.
  */
 function paragraph_bundle_block_content_theme_suggestions_paragraph_alter(array &$suggestions, array $variables) {
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-    $paragraph = $variables['elements']['#paragraph'];
-    $bundle = $paragraph->bundle();
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['elements']['#paragraph'];
+  $bundle = $paragraph->bundle();
 
-    // Add a template suggestion for paragraphs of type 'block_content_bundle'
-    if ($bundle === 'block_content_bundle') {
-       $suggestions[] = 'paragraph__block_content_bundle';
-    }
+  // Add a template suggestion for paragraphs of type 'block_content_bundle'.
+  if ($bundle === 'block_content_bundle') {
+    $suggestions[] = 'paragraph__block_content_bundle';
+  }
 }
