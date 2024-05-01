@@ -116,22 +116,42 @@
       {% if content.pb_content_title|render %}
       <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
+      {% set content_displayed = false %}
 
-      {% if view_mode == 'vm_title' %}
-      {{ content.pb_content_nf_title_only }}
+      {# Group One: Try each in order, render the first that has content #}
+      {% if view_mode == 'vm_title' and content.pb_content_nf_title_only|render %}
+        {{ content.pb_content_nf_title_only }}
+        {% set content_displayed = true %}
       {% endif %}
 
-      {% if view_mode == 'vm_teaser_text' %}
-      {{ content.pb_content_nf_teaser_text }}
+      {% if not content_displayed and view_mode == 'vm_teaser_text' and content.pb_content_nf_teaser_text|render %}
+        {{ content.pb_content_nf_teaser_text }}
+        {% set content_displayed = true %}
       {% endif %}
 
-      {% if view_mode == 'vm_slideshow' %}
-      {{ content.pb_content_nf_slideshow }}
+      {% if not content_displayed and view_mode == 'vm_slideshow' and content.pb_content_nf_slideshow|render %}
+        {{ content.pb_content_nf_slideshow }}
+        {% set content_displayed = true %}
       {% endif %}
 
-      {% if view_mode == 'vm_3d_carousel' %}
-      {{ content.pb_content_nf_3d_carousel }}
+      {% if not content_displayed and view_mode == 'vm_3d_carousel' and content.pb_content_nf_3d_carousel|render %}
+        {{ content.pb_content_nf_3d_carousel }}
+        {% set content_displayed = true %}
       {% endif %}
+
+      {% if not content_displayed %}
+        {# Group Two: Render the first available content in priority order #}
+        {% if content.pb_content_nf_title_only|render %}
+          {{ content.pb_content_nf_title_only }}
+        {% elseif content.pb_content_nf_3d_carousel|render %}
+          {{ content.pb_content_nf_3d_carousel }}
+        {% elseif content.pb_content_nf_slideshow|render %}
+          {{ content.pb_content_nf_slideshow }}
+        {% elseif content.pb_content_nf_teaser_text|render %}
+          {{ content.pb_content_nf_teaser_text }}
+        {% endif %}
+      {% endif %}
+
 
     </div>
 
