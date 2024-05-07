@@ -17,6 +17,9 @@
 .paragraph .pb__three-columns>div,
 .paragraph .pb__two-columns .paragraph,
 .paragraph .pb__three-columns .paragraph {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
   width: 100%;
   height: 100%;
 }

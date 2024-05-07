@@ -139,6 +139,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .paragraph--type--slideshow-bundle .pb__slide-nav .pb__play {
