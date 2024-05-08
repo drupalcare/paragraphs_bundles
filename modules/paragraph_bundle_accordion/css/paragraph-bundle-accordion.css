@@ -12,6 +12,7 @@
 
 .paragraph--type--accordion-bundle .pb__accor .pb__accor-wrap-btn-item {
   border-bottom: var(--pb-px2) solid var(--pb-br);
+  overflow: hidden;
 }
 
 .paragraph--type--accordion-bundle .pb__accor > div:last-child {
@@ -22,6 +23,7 @@
   cursor: pointer;
   padding: var(--pb-px0);
   width: 100%;
+  z-index: 1;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-btn > button {
@@ -51,6 +53,7 @@
   border-top: none;
   width: 100%;
   margin: 0 0 var(--pb-px10) 0;
+  overflow: hidden;
 }
 
 .paragraph--type--accordion-bundle  .pb__accor-wrap-btn-item.pb__active,

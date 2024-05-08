@@ -25,6 +25,11 @@
 
 .paragraph--type--tabs-bundle .pb__tabs-pane .pb__tab-pane {
   display: none;
+  overflow: hidden;
+}
+
+.paragraph--type--tabs-bundle .pb__tabs-pane {
+  overflow: hidden;
 }
 
 .paragraph--type--tabs-bundle .pb__tabs-pane > div:first-child {
