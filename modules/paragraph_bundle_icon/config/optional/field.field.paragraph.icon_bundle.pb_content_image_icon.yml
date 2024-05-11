@@ -11,7 +11,7 @@ field_name: pb_content_image_icon
 entity_type: paragraph
 bundle: icon_bundle
 label: 'Image Icon'
-description: 'When you upload an image, the option to select Google Material Symbols is automatically disabled. This ensures you can only choose either an image or a symbol, but not both.'
+description: 'When you upload an image, the Google Material Symbols will be hidden. This ensures that only the image or a symbol can be displayed, but not both.'
 required: false
 translatable: false
 default_value: {  }
