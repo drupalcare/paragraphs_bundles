@@ -53,9 +53,49 @@
             button.classList.add('pb__active');
             button.removeAttribute('tabindex');
             button.setAttribute('aria-selected', 'true');
+            button.focus();
           } else {
             console.warn(`Pane with ID ${paneId} not found.`);
           }
+        });
+      }
+
+      // Function to handle keyboard navigation
+      function handleKeyboardNavigation(tabs) {
+        tabs.forEach(tab => {
+          tab.addEventListener('keydown', (event) => {
+            const currentIndex = Array.prototype.indexOf.call(tabs, tab);
+            let newIndex;
+
+            switch (event.key) {
+              case 'ArrowRight':
+                newIndex = (currentIndex + 1) % tabs.length;
+                break;
+              case 'ArrowLeft':
+                newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                break;
+              case 'Home':
+                newIndex = 0;
+                break;
+              case 'End':
+                newIndex = tabs.length - 1;
+                break;
+              case 'Tab':
+                if (event.shiftKey) {
+                  newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                } else {
+                  newIndex = (currentIndex + 1) % tabs.length;
+                }
+                break;
+              default:
+                return;
+            }
+
+            tabs.forEach(t => t.setAttribute('tabindex', '-1'));
+            tabs[newIndex].setAttribute('tabindex', '0');
+            tabs[newIndex].focus();
+            event.preventDefault();
+          });
         });
       }
 
@@ -72,8 +112,21 @@
         if (button) {
           button.classList.add('pb__active');
           button.setAttribute('aria-selected', 'true');
+          button.setAttribute('tabindex', '0');
         }
       });
+
+      // Initialize tabindex for other buttons
+      const tabButtons = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
+      tabButtons.forEach((button, index) => {
+        if (!button.classList.contains('pb__active')) {
+          button.setAttribute('tabindex', '-1');
+        }
+      });
+
+      // Handle keyboard navigation
+      handleKeyboardNavigation(tabButtons);
     }
   };
 })(Drupal, drupalSettings, once);
+

@@ -129,10 +129,10 @@
 
         {% if pb_expand_all == "On" %}
         <div class="pb__row pb__ex-button">
-            <button class="pb__button pb__plus" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="Expand all sections">
+            <button class="pb__button pb__plus" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="Expand all sections" tabindex="0"><span class="visually-hidden">Expand all sections</span>
                 &#x0229E;
             </button>
-            <button class="pb__button pb__minus" aria-expanded="true" aria-controls="{{ acc_id }}" aria-label="Collapse all sections">
+            <button class="pb__button pb__minus" aria-expanded="true" aria-controls="{{ acc_id }}" aria-label="Collapse all sections" tabindex="-1"><span class="visually-hidden">Collapse all sections</span>
                 &#x0229F;
             </button>
         </div>
@@ -156,6 +156,7 @@
             <div class="pb__plus-minus">
               <span aria-hidden="true" class="pb__minus">&#x02212</span>
               <span aria-hidden="true" class="pb__plus">&#x0002B</span>
+              <span class="visually-hidden">Close or Open tab</span>
             </div>
             {% endif %}
            </button>

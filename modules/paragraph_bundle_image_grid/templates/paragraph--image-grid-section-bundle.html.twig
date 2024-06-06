@@ -136,7 +136,7 @@
 
     {% if pb_link and pb_image %}
     <div id="{{ paragraph_id }}" class="pb__img-wrapper pb__image-grid">
-      <button class="pb__expand-grid" aria-controls="{{ paragraph_id }}" aria-expanded="false" role="button" aria-label="Expand image grid">
+      <button class="pb__expand-grid" aria-controls="{{ paragraph_id }}" aria-expanded="false" role="button" aria-label="Expand image grid"><span class="visually-hidden">Expand image grid</span>
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
       </button>
       <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
@@ -152,7 +152,7 @@
 
     {% else %}
     <div id="{{ paragraph_id }}" class="pb__img-wrapper pb__image-grid not-clickable">
-      <button class="pb__expand-grid" aria-controls="{{ paragraph_id }}" aria-expanded="false" role="button" aria-label="Expand image grid">
+      <button class="pb__expand-grid" aria-controls="{{ paragraph_id }}" aria-expanded="false" role="button" aria-label="Expand image grid"><span class="visually-hidden">Expand image grid</span>
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
       </button>
       {{ pb_image }}

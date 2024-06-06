@@ -235,6 +235,34 @@
         element.addEventListener('click', function(event) {
           handleBottomNav(event.target.id, event.target.parentElement.id);
         });
+
+        // Adding keydown event listener for tab key navigation
+        element.addEventListener('keydown', function(event) {
+          if (event.key === 'Tab') {
+            const parentSlideshow = element.closest('.pb__slideshow-inner');
+            const allButtons = Array.from(parentSlideshow.querySelectorAll('.pb__slide-nav .pb__slide-bottom-btn'));
+            const currentIndex = allButtons.indexOf(event.target);
+
+            if (event.shiftKey) { // Shift + Tab to navigate backwards
+              if (currentIndex === 0) {
+                // Allow the user to leave the loop
+                return;
+              } else {
+                allButtons[currentIndex - 1].focus();
+                event.preventDefault();
+              }
+            } else { // Tab to navigate forwards
+              if (currentIndex === allButtons.length - 1) {
+                // Allow the user to leave the loop
+                return;
+              } else {
+                allButtons[currentIndex + 1].focus();
+                event.preventDefault();
+              }
+            }
+          }
+        });
+
       });
 
     }

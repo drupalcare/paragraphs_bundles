@@ -19,6 +19,15 @@
         return [wrapper, minusButton, plusButton];
       };
 
+      // Function to update the tabindex based on visibility
+      const updateTabindex = (button) => {
+        if (window.getComputedStyle(button).display === 'none') {
+          button.setAttribute('tabindex', '-1');
+        } else {
+          button.removeAttribute('tabindex');
+        }
+      };
+
       const toggleClassAndDisplay = (buttonSelector, addClass, removeClass, hideIndex, showIndex) => {
         once('toggleClassAndDisplay', buttonSelector, context).forEach((button) => {
           button.addEventListener('click', function(event) {
@@ -36,10 +45,16 @@
               if (contentPane) {
                 contentPane.setAttribute('aria-hidden', !isExpand);
               }
-
             });
-            minusButton.style.display = hideIndex === 1 ? "none" : "block";
-            plusButton.style.display = showIndex === 1 ? "none" : "block";
+
+            if (minusButton) {
+              minusButton.style.display = hideIndex === 1 ? "none" : "block";
+              updateTabindex(minusButton);
+            }
+            if (plusButton) {
+              plusButton.style.display = showIndex === 1 ? "none" : "block";
+              updateTabindex(plusButton);
+            }
           });
         });
       };
@@ -66,8 +81,14 @@
 
             // Ensure the correct display of expand/collapse all buttons
             const [_, minusButton, plusButton] = getElementsById(section.id);
-            plusButton.style.display = isCurrentlyActive ? "block" : "none";
-            minusButton.style.display = isCurrentlyActive ? "none" : "block";
+            if (plusButton) {
+              plusButton.style.display = isCurrentlyActive ? "block" : "none";
+              updateTabindex(plusButton);
+            }
+            if (minusButton) {
+              minusButton.style.display = isCurrentlyActive ? "none" : "block";
+              updateTabindex(minusButton);
+            }
           });
         });
       };
@@ -94,9 +115,13 @@
           // Update the display states of the global expand/collapse buttons
           const plusButton = context.querySelector(`#${accId} .pb__plus`);
           const minusButton = context.querySelector(`#${accId} .pb__minus`);
-          if (plusButton && minusButton) {
+          if (plusButton) {
             plusButton.style.display = isExpand ? 'none' : 'block';
+            updateTabindex(plusButton);
+          }
+          if (minusButton) {
             minusButton.style.display = isExpand ? 'block' : 'none';
+            updateTabindex(minusButton);
           }
         });
       });

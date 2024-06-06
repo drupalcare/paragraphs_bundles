@@ -121,7 +121,7 @@
   {% endif %}
 
   <div class="pb-modal-button">
-    <button id="{{ paragraph_id }}" type="button" class="pb__button" aria-expanded="false" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
+    <button id="{{ paragraph_id }}" type="button" class="pb__button" aria-expanded="false" data-toggle="modal" data-target="#{{ paragraph_id }}-win"> <span class="visually-hidden">Open</span>
       {{ content.pb_content_modal_button }}
     </button>
   </div>
@@ -138,7 +138,7 @@
             {{ content.pb_content_modal_title }}
           </div>
           {% endif %}
-          <button data-dismiss="modal" class="pb__button">&times;</button>
+          <button data-dismiss="modal" class="pb__button"><span class="visually-hidden">Close</span>&times;</button>
         </div> {# End of pb-modal-header #}
 
         {% if content.pb_content_modal_body|render %}
