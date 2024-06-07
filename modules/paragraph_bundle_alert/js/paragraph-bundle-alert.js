@@ -18,21 +18,39 @@
 
       alertBoxes.forEach(alertBox => {
         const closeButton = alertBox.querySelector('.pb__alert-top.On > button');
-        const paragraph = alertBox.querySelector('.paragraph');
+        const paragraphContent = alertBox.querySelector('.pb__content-full');
+        const focusableElements = paragraphContent.querySelectorAll('a, button, input, textarea, select');
 
-        if (closeButton && paragraph) {
+        const updateTabindex = (state) => {
+          focusableElements.forEach(element => {
+            element.setAttribute('tabindex', state ? '0' : '-1');
+          });
+        };
+
+        if (closeButton && paragraphContent) {
+          // Initialize aria-hidden based on the presence of the alert-is-closed class
+          if (alertBox.classList.contains('alert-is-closed')) {
+            alertBox.setAttribute('aria-hidden', 'true');
+            closeButton.setAttribute('aria-expanded', 'false');
+            updateTabindex(false);
+          } else {
+            alertBox.removeAttribute('aria-hidden');
+            closeButton.setAttribute('aria-expanded', 'true');
+            updateTabindex(true);
+          }
+
           closeButton.addEventListener('click', () => {
             // Toggle the visibility of the alert box using CSS class
             if (alertBox.classList.contains('alert-is-closed')) {
-              // Show the alert and update aria attributes
-              paragraph.removeAttribute('aria-hidden');
               alertBox.classList.remove('alert-is-closed');
+              alertBox.removeAttribute('aria-hidden');
               closeButton.setAttribute('aria-expanded', 'true');
+              updateTabindex(true);
             } else {
-              // Hide the alert and update aria attributes
-              paragraph.setAttribute('aria-hidden', 'true');
               alertBox.classList.add('alert-is-closed');
+              alertBox.setAttribute('aria-hidden', 'true');
               closeButton.setAttribute('aria-expanded', 'false');
+              updateTabindex(false);
             }
           });
         }
@@ -41,6 +59,5 @@
   };
 
 })(Drupal, once);
-
 
 

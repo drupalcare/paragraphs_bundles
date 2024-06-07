@@ -113,15 +113,16 @@
 {% set pb_animated_modal = content.pb_display_animated_modal|render|striptags|trim %}
 
 {# Set animated classes. #}
+{# Set animated classes. #}
 <div {{ attributes.addClass(classes).setAttribute('id', modal_warpper) }}>
-
 
   {% if content.pb_content_title|render %}
   <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
   {% endif %}
 
   <div class="pb-modal-button">
-    <button id="{{ paragraph_id }}" type="button" class="pb__button" aria-expanded="false" data-toggle="modal" data-target="#{{ paragraph_id }}-win"> <span class="visually-hidden">Open</span>
+    <button id="{{ paragraph_id }}" type="button" class="pb__button" aria-expanded="false" aria-controls="{{ paragraph_id }}-win" data-toggle="modal" data-target="#{{ paragraph_id }}-win">
+      <span class="visually-hidden">Open</span>
       {{ content.pb_content_modal_button }}
     </button>
   </div>
@@ -138,7 +139,7 @@
             {{ content.pb_content_modal_title }}
           </div>
           {% endif %}
-          <button data-dismiss="modal" class="pb__button"><span class="visually-hidden">Close</span>&times;</button>
+          <button type="button" class="pb__button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         </div> {# End of pb-modal-header #}
 
         {% if content.pb_content_modal_body|render %}
@@ -166,3 +167,4 @@
 
   </div> {# End of pb-modal div #}
 </div> {# End of pb__modal-wrapper div #}
+

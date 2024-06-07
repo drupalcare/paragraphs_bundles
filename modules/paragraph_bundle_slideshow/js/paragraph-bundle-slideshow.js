@@ -85,6 +85,7 @@
           if (index + 1 === activeSlideId) {
             slide.style.display = 'block';
             slide.setAttribute('aria-hidden', 'false');
+            slide.focus();
           } else {
             slide.style.display = 'none';
             slide.setAttribute('aria-hidden', 'true');
@@ -141,6 +142,7 @@
           if (parseInt(slide.id.split('-').pop()) === slideId) {
             slide.style.display = 'block';
             slide.setAttribute('aria-hidden', 'false');
+            slide.focus();
           } else {
             slide.style.display = 'none';
             slide.setAttribute('aria-hidden', 'true');
@@ -195,10 +197,12 @@
             if (isPaused) {
               playPause.classList.replace('pb__play', 'pb__pause');
               playPause.innerHTML = '&#9654;';
+              playPause.setAttribute('aria-label', 'Start automatic slide show');
               manageAutoSlideInterval('clear');
             } else {
               playPause.classList.replace('pb__pause', 'pb__play');
               playPause.innerHTML = '&#10073;&nbsp;&#10073;';
+              playPause.setAttribute('aria-label', 'Stop automatic slide show');
               manageAutoSlideInterval('start', parentId, slideTime);
             }
           };
@@ -244,27 +248,21 @@
             const currentIndex = allButtons.indexOf(event.target);
 
             if (event.shiftKey) { // Shift + Tab to navigate backwards
-              if (currentIndex === 0) {
-                // Allow the user to leave the loop
-                return;
-              } else {
+              if (currentIndex > 0) {
                 allButtons[currentIndex - 1].focus();
                 event.preventDefault();
               }
             } else { // Tab to navigate forwards
-              if (currentIndex === allButtons.length - 1) {
-                // Allow the user to leave the loop
-                return;
-              } else {
+              if (currentIndex < allButtons.length - 1) {
                 allButtons[currentIndex + 1].focus();
                 event.preventDefault();
               }
             }
           }
         });
-
       });
-
     }
   };
 })(Drupal, drupalSettings, once);
+
+

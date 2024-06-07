@@ -127,7 +127,7 @@
       });
 
       // Initialize toggle functions
-      toggleActiveState('.pb__accor-btn>button', 'pb__active', 'pb__active-no');
+      toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
       toggleClassAndDisplay('.pb__ex-button>button.pb__plus', 'pb__active', 'pb__active-no', 2, 1);
       toggleClassAndDisplay('.pb__ex-button>button.pb__minus', 'pb__active-no', 'pb__active', 1, 2);
     }

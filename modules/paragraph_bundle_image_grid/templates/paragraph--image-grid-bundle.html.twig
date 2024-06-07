@@ -125,8 +125,9 @@
       <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
 
-      <div class="pb__image-grid-wrapper" style="{{ pb_grid_width }} {{ pb_grid_gap }}">
-        <div class="pb__grid-lightbox" aria-hidden="true" style="display: none;">
+      <div class="pb__image-grid-wrapper" style="{{ pb_grid_width }} {{ pb_grid_gap }}" aria-label="Image Grid">
+        <div class="pb__grid-lightbox" aria-hidden="true" style="display: none;" role="dialog" aria-labelledby="lightbox-heading">
+          <h2 id="lightbox-heading" class="visually-hidden">Image Grid Lightbox</h2>
           <button class="pb__close-grid"><span class="visually-hidden">Close Grid</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
          </button>
@@ -147,3 +148,4 @@
     </div>
   </div>
 </div> {# End of main wrapper #}
+

@@ -10,7 +10,7 @@
   'use strict';
 
   Drupal.behaviors.paragraphBundleTabs = {
-    attach: function(context, settings) {
+    attach: function (context, settings) {
       // Function to hide all panes
       function hideAllPanes(panes) {
         panes.forEach(pane => {
@@ -28,6 +28,7 @@
             button.classList.remove('pb__active');
             button.setAttribute('tabindex', '-1');
             button.setAttribute('aria-selected', 'false');
+            button.setAttribute('aria-expanded', 'false');
           }
         });
       }
@@ -53,6 +54,7 @@
             button.classList.add('pb__active');
             button.removeAttribute('tabindex');
             button.setAttribute('aria-selected', 'true');
+            button.setAttribute('aria-expanded', 'true');
             button.focus();
           } else {
             console.warn(`Pane with ID ${paneId} not found.`);
@@ -61,72 +63,70 @@
       }
 
       // Function to handle keyboard navigation
-      function handleKeyboardNavigation(tabs) {
-        tabs.forEach(tab => {
+      function handleKeyboardNavigation(tabButtons) {
+        tabButtons.forEach((tab, index) => {
           tab.addEventListener('keydown', (event) => {
-            const currentIndex = Array.prototype.indexOf.call(tabs, tab);
+            const currentIndex = index;
             let newIndex;
 
             switch (event.key) {
               case 'ArrowRight':
-                newIndex = (currentIndex + 1) % tabs.length;
+                newIndex = (currentIndex + 1) % tabButtons.length;
                 break;
               case 'ArrowLeft':
-                newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+                newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
                 break;
               case 'Home':
                 newIndex = 0;
                 break;
               case 'End':
-                newIndex = tabs.length - 1;
-                break;
-              case 'Tab':
-                if (event.shiftKey) {
-                  newIndex = (currentIndex - 1 + tabs.length) % tabs.length;
-                } else {
-                  newIndex = (currentIndex + 1) % tabs.length;
-                }
+                newIndex = tabButtons.length - 1;
                 break;
               default:
                 return;
             }
 
-            tabs.forEach(t => t.setAttribute('tabindex', '-1'));
-            tabs[newIndex].setAttribute('tabindex', '0');
-            tabs[newIndex].focus();
+            tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
+            tabButtons[newIndex].setAttribute('tabindex', '0');
+            tabButtons[newIndex].focus();
             event.preventDefault();
           });
         });
       }
 
-      const tabContainers = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
+      const tabContainers = once('paragraphBundleTabs', '.pb__tabs-bundle', context);
       tabContainers.forEach(container => {
-        if (container) {
-          handleTabClicks(container);
-        }
-      });
+        const tabButtons = container.querySelectorAll('.pb__tab-button');
+        const tabPanes = container.querySelectorAll('.pb__tab-pane');
 
-      // Activating the first child buttons
-      const firstChildButtons = context.querySelectorAll('.pb__tabs-button > button:first-child');
-      firstChildButtons.forEach(button => {
-        if (button) {
-          button.classList.add('pb__active');
-          button.setAttribute('aria-selected', 'true');
-          button.setAttribute('tabindex', '0');
+        // Activate the first tab and pane by default
+        if (tabButtons.length > 0) {
+          tabButtons[0].classList.add('pb__active');
+          tabButtons[0].setAttribute('aria-selected', 'true');
+          tabButtons[0].setAttribute('aria-expanded', 'true');
+          tabButtons[0].setAttribute('tabindex', '0');
+          if (tabPanes.length > 0) {
+            tabPanes[0].style.display = 'block';
+            tabPanes[0].setAttribute('aria-hidden', 'false');
+          }
         }
-      });
 
-      // Initialize tabindex for other buttons
-      const tabButtons = context.querySelectorAll('.pb__tabs-button > .pb__tab-button');
-      tabButtons.forEach((button, index) => {
-        if (!button.classList.contains('pb__active')) {
-          button.setAttribute('tabindex', '-1');
-        }
-      });
+        // Initialize tabindex for other buttons
+        tabButtons.forEach((button, index) => {
+          if (!button.classList.contains('pb__active')) {
+            button.setAttribute('tabindex', '-1');
+          }
 
-      // Handle keyboard navigation
-      handleKeyboardNavigation(tabButtons);
+          // Attach click event listener
+          button.addEventListener('click', handleTabClicks.bind(null, container));
+        });
+
+        // Handle keyboard navigation
+        handleKeyboardNavigation(tabButtons);
+      });
     }
   };
 })(Drupal, drupalSettings, once);
+
+
 

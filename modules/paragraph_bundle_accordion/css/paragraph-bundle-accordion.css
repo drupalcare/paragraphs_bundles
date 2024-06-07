@@ -19,22 +19,18 @@
   border-bottom: none;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-btn {
-  cursor: pointer;
-  padding: var(--pb-px0);
-  width: 100%;
-  z-index: 1;
-}
-
-.paragraph--type--accordion-bundle .pb__accor-btn > button {
+.paragraph--type--accordion-bundle .pb__accor-button {
   padding: var(--pb-px16) var(--pb-px12);
   display: flex;
   width: 100%;
   flex-grow: 1;
   white-space: initial;
+  cursor: pointer;
+  z-index: 1;
+  text-align: left;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-btn > button > .pb__plus-minus {
+.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
   display: flex;
   margin-left: auto;
 }
@@ -46,6 +42,16 @@
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
   display: grid;
   width: 100%;
+}
+
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > button {
+  padding-bottom: 0;
+}
+
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
+  padding-top: 0;
 }
 
 .paragraph--type--accordion-bundle .pb__active .pb__accor-pane {
@@ -69,7 +75,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button button,
-.paragraph--type--accordion-bundle .pb__accor-btn > button > .pb__plus-minus {
+.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
   font-size: var(--pb-px32);
 }
 

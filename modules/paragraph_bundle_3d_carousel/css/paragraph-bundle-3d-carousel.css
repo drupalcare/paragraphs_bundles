@@ -221,6 +221,12 @@
   min-height: var(--pb-px48);
   font-weight: normal;
   transition: width 0.2s ease-in-out;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next.hidden,

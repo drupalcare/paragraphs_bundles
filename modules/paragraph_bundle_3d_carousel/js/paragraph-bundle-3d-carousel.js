@@ -45,14 +45,37 @@
         const rawNo = carouselId.split('-')[2];
         return [carousel, cells, cellCount, cellWidth, theta, radius, rawNo];
       };
+
       const getThisId = th => `pb__3d-carousel-${parseInt(th.slice(5))}`;
+
       let rotateCarousel = (carouselId, n) => {
         let [carousel, cells, cellCount, , theta, radius] = getCarInfo(carouselId);
         let angle = theta * n * -1;
-        //carousel.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
         carousel.style.transition = 'transform 0.8s ease-in-out';
         carousel.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
+
+        // Ensure index wraps correctly
+        if (n >= cellCount) n = 0;
+        if (n < 0) n = cellCount - 1;
+
+        // Update aria-hidden and tabindex for each cell
+        cells.forEach((cell, index) => {
+          if (index === n) {
+            cell.setAttribute('aria-hidden', 'false');
+            cell.setAttribute('tabindex', '0');
+          } else {
+            cell.setAttribute('aria-hidden', 'true');
+            cell.setAttribute('tabindex', '-1');
+          }
+        });
+
+        // Update the aria-label for the current slide number
+        const slideNumberElement = context.querySelector(`#index-${carouselId.split('-')[2]}`);
+        if (slideNumberElement) {
+          slideNumberElement.setAttribute('aria-label', `Slide ${n + 1} of ${cellCount}`);
+        }
       };
+
       let buildCarousel = (carouselId) => {
         let [_, cells, cellCount, , theta, radius, rawNo] = getCarInfo(carouselId);
         let indexNo = context.getElementById('index-' + rawNo);
@@ -65,9 +88,12 @@
         cells[0].classList.add('pb__active');
         indexNo.innerHTML = 1;
         nextBtnId.classList.remove('hidden');
+        nextBtnId.removeAttribute('tabindex');
         prevBtnId.classList.add('hidden');
-        rotateCarousel(carouselId, n);
+        prevBtnId.setAttribute('tabindex', '-1');
+        rotateCarousel(carouselId, 0);
       };
+
       const backward = (carouselId) => {
         const cells = context.querySelectorAll(`#${carouselId}>.pb__caro-item`);
         const cellCount = cells.length;
@@ -92,11 +118,13 @@
             break;
           }
           nextBtnId.classList.remove('hidden');
+          nextBtnId.removeAttribute('tabindex');
           cells[i].classList.remove('pb__active');
           i -= 1;
           if (!cells[i]) continue;
           if (i === 0) {
             prevBtnId.classList.add('hidden');
+            prevBtnId.setAttribute('tabindex', '-1');
             nextBtnId.classList.remove('hidden');
           }
           cells[i].classList.add('pb__active');
@@ -104,6 +132,7 @@
           return i;
         }
       };
+
       let forward = (carouselId) => {
         let cells = context.querySelectorAll(`#${carouselId}>.pb__caro-item`);
         let cellCount = cells.length;
@@ -134,11 +163,13 @@
               break;
             }
             prevBtnId.classList.remove('hidden');
+            prevBtnId.removeAttribute('tabindex');
             cells[i].classList.remove('pb__active');
             i++;
             if (cells[i]) {
               if (i == cellCount - 1) {
                 nextBtnId.classList.add('hidden');
+                nextBtnId.setAttribute('tabindex', '-1');
                 prevBtnId.classList.remove('hidden');
               }
               cells[i].classList.add('pb__active');
@@ -149,11 +180,13 @@
           }
         }
       };
+
       let getNumberId = (th) => {
         let idNu = th.split('-')[2];
         parseInt(idNu);
         return idNu;
       };
+
       let navigateCarousel = (carouselId, directionFunction) => {
         let n = directionFunction(carouselId);
         rotateCarousel(carouselId, n);
@@ -258,7 +291,18 @@
           });
 
         }
+
+        // Add keyboard navigation support
+        carouselC.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowRight') {
+            nextBtn(carouselId);
+          } else if (event.key === 'ArrowLeft') {
+            prevBtn(carouselId);
+          }
+        });
+
       });
+
       const handleWindowResize = () => {
         n = 0;
         let newWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
