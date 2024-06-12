@@ -66,6 +66,10 @@
 
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner {
   display: grid;
+}
+
+.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(.pb__card_4,
+.pb__card_2) {
   margin: 0 auto;
 }
 
