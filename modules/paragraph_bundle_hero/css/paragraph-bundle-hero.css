@@ -8,9 +8,17 @@
  */
 .paragraph--type--hero-bundle .hero-bundle-inner {
   overflow: hidden;
+  position: relative;
+}
+
+.paragraph--type--hero-bundle .hero-bundle-inner:not(.pb__margin,
+.pb__margin_top,
+.pb__margin_right,
+.pb__margin_bottom,
+.pb__margin_left,
+.pb__section) {
   width: 100% !important;
   margin: 0 auto !important;
-  position: relative;
 }
 
 .pb__hero-txt-wrapper-inner * {
