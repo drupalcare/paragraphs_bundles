@@ -22,6 +22,20 @@
       let n = 0;
       let isPaused = false;
 
+      // Utility function to update tabindex based on parent element's attributes
+      const updateTabIndexForElements = (parentElement) => {
+        const focusableElements = parentElement.querySelectorAll('button, a');
+        focusableElements.forEach(el => {
+          if (parentElement.getAttribute('aria-hidden') === 'true') {
+            el.setAttribute('tabindex', '-1');
+          } else if (parentElement.getAttribute('tabindex') === '0') {
+            el.setAttribute('tabindex', '0');
+          } else {
+            el.removeAttribute('tabindex');
+          }
+        });
+      };
+
       // Centralized Interval Management
       const manageAutoSlideInterval = (carouselId, action, cTime) => {
         let intervalId = intervalIds.get(carouselId);
@@ -67,6 +81,9 @@
             cell.setAttribute('aria-hidden', 'true');
             cell.setAttribute('tabindex', '-1');
           }
+
+          // Update tabindex for children
+          updateTabIndexForElements(cell);
         });
 
         // Update the aria-label for the current slide number
@@ -252,8 +269,7 @@
       carousels.forEach(carouselC => {
         let carouselId = carouselC.id;
         let cTimeId = carouselId.split('-')[2];
-        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`)
-          .textContent);
+        let cTime = parseInt(context.querySelector(`#co-${cTimeId} > .pb__ps-value`).textContent);
 
         cTime = parseInt(cTime);
         if (cTime != 0) {
