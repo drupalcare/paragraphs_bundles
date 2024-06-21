@@ -48,6 +48,7 @@
 
 @media (min-width:87.5rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -59,12 +60,15 @@
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-pane {
-    width: 70%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-button {
+    flex: 0 1 auto;
+    max-width: 30%;
+    min-width: 10%;
+    width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-button {
-    width: 30%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-pane {
+    flex: 1;
   }
 
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tab-button {
@@ -83,6 +87,7 @@
 
 @media (min-width:75rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -94,12 +99,15 @@
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-pane {
-    width: 70%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-button {
+    flex: 0 1 auto;
+    max-width: 30%;
+    min-width: 10%;
+    width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-button {
-    width: 30%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-pane {
+    flex: 1;
   }
 
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tab-button {
@@ -118,6 +126,7 @@
 
 @media (min-width:62rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -129,12 +138,15 @@
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-pane {
-    width: 70%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-button {
+    flex: 0 1 auto;
+    max-width: 30%;
+    min-width: 10%;
+    width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-button {
-    width: 30%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-pane {
+    flex: 1;
   }
 
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tab-button {
@@ -153,6 +165,7 @@
 
 @media (min-width:48rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -164,12 +177,15 @@
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-pane {
-    width: 70%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-button {
+    flex: 0 1 auto;
+    max-width: 30%;
+    min-width: 10%;
+    width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-button {
-    width: 30%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-pane {
+    flex: 1;
   }
 
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tab-button {
@@ -188,6 +204,7 @@
 
 @media (min-width:36rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -199,12 +216,15 @@
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-pane {
-    width: 70%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-button {
+    flex: 0 1 auto;
+    max-width: 30%;
+    min-width: 10%;
+    width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-button {
-    width: 30%;
+  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-pane {
+    flex: 1;
   }
 
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tab-button {
