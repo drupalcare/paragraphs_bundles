@@ -1,0 +1,139 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_main
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.image_background_bundle.pb_content_main
+field_name: pb_content_main
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'Main Content'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+    target_bundles_drag_drop:
+      3d_carousel_bundle:
+        weight: 39
+        enabled: false
+      3d_flip_box_bundle:
+        weight: 40
+        enabled: false
+      accordion_bundle:
+        weight: 41
+        enabled: false
+      accordion_section_bundle:
+        weight: 42
+        enabled: false
+      alert_bundle:
+        weight: 43
+        enabled: false
+      block_bundle:
+        weight: 44
+        enabled: false
+      block_content_bundle:
+        weight: 45
+        enabled: false
+      card_image_section_bundle:
+        weight: 46
+        enabled: false
+      card_text_section_bundle:
+        weight: 47
+        enabled: false
+      card_three_columns_bundle:
+        weight: 48
+        enabled: false
+      card_two_columns_bundle:
+        weight: 49
+        enabled: false
+      contact_form_bundle:
+        weight: 50
+        enabled: false
+      hero_bundle:
+        weight: 51
+        enabled: false
+      home_slide:
+        weight: 52
+        enabled: false
+      icon_bundle:
+        weight: 53
+        enabled: false
+      image_background_bundle:
+        weight: 54
+        enabled: false
+      image_bundle:
+        weight: 55
+        enabled: false
+      image_grid_bundle:
+        weight: 56
+        enabled: false
+      image_grid_section_bundle:
+        weight: 57
+        enabled: false
+      image_narrow_bundle:
+        weight: 58
+        enabled: false
+      image_overlay_bundle:
+        weight: 59
+        enabled: false
+      image_wide_bundle:
+        weight: 60
+        enabled: false
+      link_bundle:
+        weight: 61
+        enabled: false
+      link_section_bundle:
+        weight: 62
+        enabled: false
+      modal_bundle:
+        weight: 63
+        enabled: false
+      node_reference_bundle:
+        weight: 64
+        enabled: false
+      one_column_bundle:
+        weight: 65
+        enabled: false
+      parallax_bundle:
+        weight: 66
+        enabled: false
+      parallax_section_bundle:
+        weight: 67
+        enabled: false
+      simple_bundle:
+        weight: 68
+        enabled: false
+      slideshow_bundle:
+        weight: 69
+        enabled: false
+      slideshow_section_bundle:
+        weight: 70
+        enabled: false
+      tab_section_bundle:
+        weight: 72
+        enabled: false
+      tabs_bundle:
+        weight: 71
+        enabled: false
+      three_columns_bundle:
+        weight: 73
+        enabled: false
+      two_columns_bundle:
+        weight: 74
+        enabled: false
+      views_bundle:
+        weight: 75
+        enabled: false
+      webform_bundle:
+        weight: 76
+        enabled: false
+field_type: entity_reference_revisions

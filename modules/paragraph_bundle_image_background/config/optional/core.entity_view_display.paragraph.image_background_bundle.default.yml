@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_background_bundle.pb_content_main
+    - field.field.paragraph.image_background_bundle.pb_display_background_image
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - entity_reference_revisions
+    - image
+id: paragraph.image_background_bundle.default
+targetEntityType: paragraph
+bundle: image_background_bundle
+mode: default
+content:
+  pb_content_main:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_display_background_image:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

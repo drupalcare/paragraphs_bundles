@@ -117,6 +117,8 @@ services:
 - **PB Content & PB Block**: Special modules for integrating Paragraph
  Bundles' own
   content and block system.
+- **Image Background**: Likely a straightforward to build content with an image
+ background.
 - **Simple**: Likely a straightforward, minimalistic content display.
 - **Icon**: Display Google Material Symbols or upload an Image Icon.
 - **Views**: Integrates the Views module, a powerful Drupal tool for

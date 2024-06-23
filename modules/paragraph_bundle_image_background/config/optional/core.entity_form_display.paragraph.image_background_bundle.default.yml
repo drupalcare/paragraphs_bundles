@@ -1,0 +1,93 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_background_bundle.pb_content_main
+    - field.field.paragraph.image_background_bundle.pb_display_background_image
+    - image.style.thumbnail
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - field_group
+    - image
+    - paragraphs
+third_party_settings:
+  field_group:
+    group_tabs_wrapper:
+      children:
+        - group_content
+        - group_display
+      label: 'Tabs Wrapper'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: pb__tabs-wrapper
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: 992
+    group_content:
+      children:
+        - pb_content_main
+      label: Content
+      region: content
+      parent_name: group_tabs_wrapper
+      weight: 5
+      format_type: tab
+      format_settings:
+        classes: pb__tab-content
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_display:
+      children:
+        - pb_display_background_image
+      label: Display
+      region: content
+      parent_name: group_tabs_wrapper
+      weight: 6
+      format_type: tab
+      format_settings:
+        classes: pb__tab-display
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: paragraph.image_background_bundle.default
+targetEntityType: paragraph
+bundle: image_background_bundle
+mode: default
+content:
+  pb_content_main:
+    type: paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+      features:
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  pb_display_background_image:
+    type: image_image
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true
