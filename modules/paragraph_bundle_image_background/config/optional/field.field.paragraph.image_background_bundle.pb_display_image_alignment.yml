@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_image_alignment
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - options
+id: paragraph.image_background_bundle.pb_display_image_alignment
+field_name: pb_display_image_alignment
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'Image Alignment'
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: center_center
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,11 @@
+/**
+ * @file
+ * Paragraph Bundle Image Background.
+ *
+ * Filename:     paragraph-bundle-Image-background.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+.paragraph--type--image-background-bundle {
+  background-attachment: scroll;
+}

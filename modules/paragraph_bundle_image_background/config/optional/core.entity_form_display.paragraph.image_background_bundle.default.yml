@@ -2,14 +2,26 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.image_background_bundle.pb_display_background_blending
+    - field.field.paragraph.image_background_bundle.pb_display_background_image_sm
+    - field.field.paragraph.image_background_bundle.pb_display_filter_intensity
+    - field.field.paragraph.image_background_bundle.pb_display_image_alignment
+    - field.field.paragraph.image_background_bundle.pb_display_image_breakpoint
+    - field.field.paragraph.image_background_bundle.pb_display_image_filter
+    - field.field.paragraph.image_background_bundle.pb_display_image_min_height
+    - field.field.paragraph.image_background_bundle.pb_display_image_repetition
+    - field.field.paragraph.image_background_bundle.pb_display_image_sizing
     - field.field.paragraph.image_background_bundle.pb_content_main
     - field.field.paragraph.image_background_bundle.pb_display_background_image
+    - field.field.paragraph.image_background_bundle.pb_display_bg
+    - field.field.paragraph.image_background_bundle.pb_display_bg_opacity
     - image.style.thumbnail
     - paragraphs.paragraphs_type.image_background_bundle
   module:
     - field_group
     - image
     - paragraphs
+    - paragraphs_bundles
 third_party_settings:
   field_group:
     group_tabs_wrapper:
@@ -45,6 +57,17 @@ third_party_settings:
     group_display:
       children:
         - pb_display_background_image
+        - pb_display_background_image_sm
+        - pb_display_image_alignment
+        - pb_display_image_sizing
+        - pb_display_image_breakpoint
+        - pb_display_background_blending
+        - pb_display_image_repetition
+        - pb_display_image_min_height
+        - pb_display_image_filter
+        - pb_display_filter_intensity
+        - pb_display_bg
+        - pb_display_bg_opacity
       label: Display
       region: content
       parent_name: group_tabs_wrapper
@@ -62,6 +85,63 @@ targetEntityType: paragraph
 bundle: image_background_bundle
 mode: default
 content:
+  pb_display_background_blending:
+    type: options_select
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_background_image_sm:
+    type: image_image
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  pb_display_filter_intensity:
+    type: range_number_widget
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_alignment:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_breakpoint:
+    type: options_select
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_filter:
+    type: options_select
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_min_height:
+    type: number
+    weight: 8
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_image_repetition:
+    type: options_select
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_image_sizing:
+    type: options_select
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_content_main:
     type: paragraphs
     weight: 2
@@ -87,6 +167,18 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+    third_party_settings: {  }
+  pb_display_bg:
+    type: color_text_widget
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 12
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   created: true

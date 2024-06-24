@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_image_min_height
+    - paragraphs.paragraphs_type.image_background_bundle
+id: paragraph.image_background_bundle.pb_display_image_min_height
+field_name: pb_display_image_min_height
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'Image Min Height'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 1
+  max: null
+  prefix: ''
+  suffix: ' px'
+field_type: integer

@@ -2,17 +2,94 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.image_background_bundle.pb_display_background_blending
+    - field.field.paragraph.image_background_bundle.pb_display_background_image_sm
+    - field.field.paragraph.image_background_bundle.pb_display_filter_intensity
+    - field.field.paragraph.image_background_bundle.pb_display_image_alignment
+    - field.field.paragraph.image_background_bundle.pb_display_image_breakpoint
+    - field.field.paragraph.image_background_bundle.pb_display_image_filter
+    - field.field.paragraph.image_background_bundle.pb_display_image_min_height
+    - field.field.paragraph.image_background_bundle.pb_display_image_repetition
+    - field.field.paragraph.image_background_bundle.pb_display_image_sizing
     - field.field.paragraph.image_background_bundle.pb_content_main
     - field.field.paragraph.image_background_bundle.pb_display_background_image
+    - field.field.paragraph.image_background_bundle.pb_display_bg
+    - field.field.paragraph.image_background_bundle.pb_display_bg_opacity
     - paragraphs.paragraphs_type.image_background_bundle
   module:
     - entity_reference_revisions
     - image
+    - options
+    - paragraphs_bundles
 id: paragraph.image_background_bundle.default
 targetEntityType: paragraph
 bundle: image_background_bundle
 mode: default
 content:
+  pb_display_background_blending:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  pb_display_background_image_sm:
+    type: image_url
+    label: hidden
+    settings:
+      image_style: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_display_filter_intensity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  pb_display_image_alignment:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  pb_display_image_breakpoint:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  pb_display_image_filter:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  pb_display_image_min_height:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pb_display_image_repetition:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  pb_display_image_sizing:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
   pb_content_main:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -20,7 +97,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 1
+    weight: 12
     region: content
   pb_display_background_image:
     type: image_url
@@ -29,5 +106,19 @@ content:
       image_style: ''
     third_party_settings: {  }
     weight: 0
+    region: content
+  pb_display_bg:
+    type: color_text_formatter_rgb
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
     region: content
 hidden: {  }

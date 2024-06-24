@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_image_sizing
+field_name: pb_display_image_sizing
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: cover
+      label: Cover
+    -
+      value: contain
+      label: Contain
+    -
+      value: auto
+      label: Auto
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

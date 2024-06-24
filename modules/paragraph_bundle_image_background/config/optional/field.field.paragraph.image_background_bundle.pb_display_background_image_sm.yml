@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_background_image_sm
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - image
+id: paragraph.image_background_bundle.pb_display_background_image_sm
+field_name: pb_display_background_image_sm
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'Background Image (Small Screen)'
+description: 'This image will serve as the background for the main content on small screens.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg webp'
+  max_filesize: ''
+  max_resolution: ''
+  min_resolution: ''
+  alt_field: false
+  alt_field_required: false
+  title_field: false
+  title_field_required: false
+  default_image:
+    uuid: ''
+    alt: ''
+    title: ''
+    width: null
+    height: null
+field_type: image
