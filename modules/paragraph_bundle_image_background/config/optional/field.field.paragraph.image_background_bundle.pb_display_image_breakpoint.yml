@@ -11,7 +11,7 @@ field_name: pb_display_image_breakpoint
 entity_type: paragraph
 bundle: image_background_bundle
 label: 'Image Breakpoint'
-description: ''
+description: 'This field determines the screen width at which the small image will be displayed. This is only used if a small image is uploaded. '
 required: false
 translatable: false
 default_value:

@@ -30,6 +30,12 @@
     max-width: calc(25% - 16px);
   }
 
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height {
+    flex: 0 0 auto;
+    max-width: none;
+    align-self: flex-start;
+  }
+
 }
 
 @media (max-width:68rem) {
@@ -43,7 +49,9 @@
   .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-opacity:first-child {
     grid-column: 1 / -1;
   }
-
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height input {
+    width: calc(100% - 50px);
+  }
 }
 
 @media (max-width:48rem) {

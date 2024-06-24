@@ -2,21 +2,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.pb_display_image_filter
+    - field.storage.paragraph.pb_display_background_attachment
     - paragraphs.paragraphs_type.image_background_bundle
   module:
     - options
-id: paragraph.image_background_bundle.pb_display_image_filter
-field_name: pb_display_image_filter
+id: paragraph.image_background_bundle.pb_display_background_attachment
+field_name: pb_display_background_attachment
 entity_type: paragraph
 bundle: image_background_bundle
-label: 'Image Filter'
+label: 'Background Attachment'
 description: ''
 required: true
 translatable: false
 default_value:
   -
-    value: none
+    value: scroll
 default_value_callback: ''
 settings: {  }
 field_type: list_string

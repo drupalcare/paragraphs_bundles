@@ -3,3 +3,10 @@ paragraph-bundle-image-background:
   css:
     theme:
       css/paragraph-bundle-image-background.css: { }
+  js:
+    js/paragraph-bundle-image-background.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once

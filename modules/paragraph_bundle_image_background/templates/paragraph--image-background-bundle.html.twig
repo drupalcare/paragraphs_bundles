@@ -41,12 +41,8 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_image_background/paragraph-bundle-image-background') }}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__image-bg-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
+{% set paragraph_id = 'pb__image-bg-' ~ paragraph.id.value %}
 {% set classes_inner = 'paragraph__inner pb__image-bg__inner pb__content-full' %}
-
-{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
@@ -56,43 +52,66 @@
   paragraph_id,
 ] %}
 
-{# Set the background opacity for the paragraph. #}
 {% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
 {% if pb_bg_opacity != 100 %}
   {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
 {% endif %}
-
+{% set pb_image_position = content.pb_display_image_alignment|render|striptags|trim|capitalize %}
+{% set pb_image_position = pb_image_position|replace({'_': ' '}) %}
+{% set pb_image_position = pb_image_position|split(' ') %}
+{% set pb_image_position = pb_image_position|first|capitalize ~ ' ' ~ pb_image_position|last|capitalize %}
+{% set pb_image_repetition = content.pb_display_image_repetition|render|striptags|trim %}
+{% set pb_image_repetition = pb_image_repetition|replace({'_': '-'}) %}
 {% set pb_display_bg = content.pb_display_bg|render|striptags|trim %}
-
 {% set pb_image_url = content.pb_display_background_image|render|striptags|trim %}
 {% set pb_image_url_sm = content.pb_display_background_image_sm|render|striptags|trim %}
-
-{% set pb_image_filter = content.pb_display_image_filter|render|striptags|trim %}
-{% set pb_filter_intensity = content.pb_display_filter_intensity|render|striptags|trim %}
-
-{% set pb_blending = content.pb_display_background_blending|render|striptags|trim %}
-{% set pb_image_position = content.pb_display_image_alignment|render|striptags|trim %}
-{% set pb_image_repetition = content.pb_display_image_repetition|render|striptags|trim %}
+{% set pb_background_attachment = content.pb_display_background_attachment|render|striptags|trim %}
 {% set pb_image_sizing = content.pb_display_image_sizing|render|striptags|trim %}
-
 {% set pb_min_height = content.pb_display_image_min_height|render|striptags|trim %}
 
-{% set pb_breakpoint = content.pb_display_image_breakpoint|render|striptags|trim %}
+{# Checking if an image for small screen is provided #}
+{% if pb_image_url_sm %}
+  {% set pb_breakpoint = content.pb_display_image_breakpoint|render|striptags|trim %}
+  {% set pb_breakpoint = pb_breakpoint ?: 'pb__992' %} {# Default to pb__992 if no value is provided #}
+  {% set breakpoints = {
+    'pb__576': 576,
+    'pb__768': 768,
+    'pb__992': 992,
+    'pb__1200': 1200,
+    'pb__1400': 1400
+  } %}
+  {% set breakpoint_value = breakpoints[pb_breakpoint] %}
 
-{# Render the paragraph. #}
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}
-     style="
-       background-image: url('{{ pb_image_url }}');
-       background-blend-mode: {{ pb_blending }};
-       background-position: Center Center;
-       background-repeat: {{ pb_image_repetition }};
-       background-size: {{ pb_image_sizing }};
-       min-height: {{ pb_min_height }}px;
-       background-color: rgba({{ pb_display_bg }}, {{ pb_bg_opacity }});
-       filter: {{ pb_image_filter }}({{ pb_filter_intensity }});">
-  <div class="{{ classes_inner }}">
-    {{ content.pb_content_main }}
-  </div>
+  <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}
+       data-breakpoint="{{ breakpoint_value }}"
+       data-image-big="{{ pb_image_url }}"
+       data-image-small="{{ pb_image_url_sm }}"
+       style="
+         background-attachment: {{ pb_background_attachment }};
+         background-position: {{ pb_image_position }};
+         background-repeat: {{ pb_image_repetition }};
+         background-size: {{ pb_image_sizing }};
+         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}
+       ">
+{% else %}
+  <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}
+       data-image-big="{{ pb_image_url }}"
+       style="
+         background-image: url('{{ pb_image_url }}');
+         background-attachment: {{ pb_background_attachment }};
+         background-position: {{ pb_image_position }};
+         background-repeat: {{ pb_image_repetition }};
+         background-size: {{ pb_image_sizing }};
+         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}
+       ">
+{% endif %}
+
+{% if pb_display_bg %}
+  <div class="img-color-overlay" style="background-color: rgba({{ pb_display_bg }}, {{ pb_bg_opacity }});"></div>
+{% endif %}
+
+<div class="{{ classes_inner }}">
+  {{ content.pb_content_main }}
 </div>
-
+</div>
 

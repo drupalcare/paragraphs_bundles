@@ -12,6 +12,9 @@ settings:
   allowed_values:
     -
       value: pb__576
+      label: '576px / 36rem'
+    -
+      value: pb__768
       label: '768px / 48rem'
     -
       value: pb__992
