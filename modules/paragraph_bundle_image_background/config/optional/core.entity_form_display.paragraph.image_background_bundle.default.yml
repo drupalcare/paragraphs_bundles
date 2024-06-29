@@ -88,15 +88,17 @@ content:
     settings:
       title: Paragraph
       title_plural: Paragraphs
-      edit_mode: open
+      edit_mode: closed
       closed_mode: summary
-      autocollapse: none
+      autocollapse: all
       closed_mode_threshold: 0
-      add_mode: dropdown
+      add_mode: modal
       form_display_mode: default
-      default_paragraph_type: ''
+      default_paragraph_type: _none
       features:
+        add_above: add_above
         collapse_edit_all: collapse_edit_all
+        convert: convert
         duplicate: duplicate
     third_party_settings: {  }
   pb_display_background_attachment:
