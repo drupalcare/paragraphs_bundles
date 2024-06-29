@@ -64,10 +64,24 @@
 {% set pb_image_repetition = pb_image_repetition|replace({'_': '-'}) %}
 {% set pb_display_bg = content.pb_display_bg|render|striptags|trim %}
 {% set pb_image_url = content.pb_display_background_image|render|striptags|trim %}
+{% set pb_image_alt = content.pb_display_background_image['#attributes']['alt']|default('') %}
+{% set pb_image_title = content.pb_display_background_image['#attributes']['title']|default('') %}
 {% set pb_image_url_sm = content.pb_display_background_image_sm|render|striptags|trim %}
 {% set pb_background_attachment = content.pb_display_background_attachment|render|striptags|trim %}
 {% set pb_image_sizing = content.pb_display_image_sizing|render|striptags|trim %}
 {% set pb_min_height = content.pb_display_image_min_height|render|striptags|trim %}
+
+{# Set the display properties for the paragraph. #}
+{% set pb_displays = [
+  'pb_display_width',
+  'pb_display_padding',
+] %}
+
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
 
 {# Checking if an image for small screen is provided #}
 {% if pb_image_url_sm %}
@@ -86,24 +100,27 @@
        data-breakpoint="{{ breakpoint_value }}"
        data-image-big="{{ pb_image_url }}"
        data-image-small="{{ pb_image_url_sm }}"
+       {% if pb_image_title %} data-image-title="{{ pb_image_title }}"{% endif %}
+       {% if pb_image_alt %} data-image-alt="{{ pb_image_alt }}"{% endif %}
        style="
          background-attachment: {{ pb_background_attachment }};
          background-position: {{ pb_image_position }};
          background-repeat: {{ pb_image_repetition }};
          background-size: {{ pb_image_sizing }};
-         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}
-       ">
+         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}">
 {% else %}
   <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}
        data-image-big="{{ pb_image_url }}"
+       {% if pb_image_title %} data-image-title="{{ pb_image_title }}"{% endif %}
+       {% if pb_image_alt %} data-image-alt="{{ pb_image_alt }}"{% endif %}
+
        style="
          background-image: url('{{ pb_image_url }}');
          background-attachment: {{ pb_background_attachment }};
          background-position: {{ pb_image_position }};
          background-repeat: {{ pb_image_repetition }};
          background-size: {{ pb_image_sizing }};
-         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}
-       ">
+         {% if pb_min_height %} min-height: {{ pb_min_height }}px;{% endif %}">
 {% endif %}
 
 {% if pb_display_bg %}
@@ -114,4 +131,3 @@
   {{ content.pb_content_main }}
 </div>
 </div>
-

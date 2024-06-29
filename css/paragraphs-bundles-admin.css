@@ -6,64 +6,6 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (min-width:68rem) {
-  .pb__tab-display > .details-wrapper {
-    padding: 0 !important;
-    gap: 16px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  /* General rule for any child */
-  .pb__tab-display > .details-wrapper > * {
-    flex: 1 1 calc(50% - 16px);
-    max-width: calc(50% - 16px);
-  }
-
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg,
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-hover,
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-text,
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-text-hover,
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-color,
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-hover {
-    flex: 0 0 calc(25% - 16px);
-    max-width: calc(25% - 16px);
-  }
-
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height {
-    flex: 0 0 auto;
-    max-width: none;
-    align-self: flex-start;
-  }
-
-}
-
-@media (max-width:68rem) {
-  .pb__tab-display > .details-wrapper {
-    padding: 0 !important;
-    gap: 16px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(50%, 1fr));
-  }
-
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-opacity:first-child {
-    grid-column: 1 / -1;
-  }
-  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height input {
-    width: calc(100% - 50px);
-  }
-}
-
-@media (max-width:48rem) {
-  .pb__tab-display > .details-wrapper {
-    display: grid;
-    gap: 16px;
-    grid-auto-flow: row;
-    grid-template-columns: 1fr;
-  }
-
-}
-
 .pb__tab-display .form-radios {
   display: flex;
   flex-wrap: wrap;
@@ -141,4 +83,68 @@
 
 .horizontal-tabs-panes .claro-details.horizontal-tabs-pane {
   min-width: calc(100% - 2rem);
+}
+
+.horizontal-tabs-panes .pb__tab-display .claro-details {
+  width: auto;
+}
+
+.pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height input {
+  width: calc(100% - 40px);
+}
+
+@media (min-width:68rem) {
+  .pb__tab-display > .details-wrapper {
+    padding: 0 !important;
+    gap: 16px;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height > div {
+    width: 100%;
+  }
+
+  /* General rule for any child */
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-width+.field--name-pb-display-bg,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height,
+  .pb__tab-display > .details-wrapper > * {
+    flex: 1 1 calc(50% - 16px);
+    max-width: calc(50% - 16px);
+  }
+
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-hover,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-text,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-text-hover,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-color,
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-border-hover {
+    flex: 0 0 calc(25% - 16px);
+    max-width: calc(25% - 16px);
+  }
+
+}
+
+@media (max-width:68rem) {
+  .pb__tab-display > .details-wrapper {
+    padding: 0 !important;
+    gap: 16px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(50%, 1fr));
+  }
+
+  .pb__tab-display > .details-wrapper > .field--name-pb-display-bg-opacity:first-child {
+    grid-column: 1 / -1;
+  }
+
+}
+
+@media (max-width:48rem) {
+  .pb__tab-display > .details-wrapper {
+    display: grid;
+    gap: 16px;
+    grid-auto-flow: row;
+    grid-template-columns: 1fr;
+  }
+
 }

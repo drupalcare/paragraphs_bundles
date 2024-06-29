@@ -13,6 +13,8 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_image_min_height
     - field.field.paragraph.image_background_bundle.pb_display_image_repetition
     - field.field.paragraph.image_background_bundle.pb_display_image_sizing
+    - field.field.paragraph.image_background_bundle.pb_display_padding
+    - field.field.paragraph.image_background_bundle.pb_display_width
     - paragraphs.paragraphs_type.image_background_bundle
   module:
     - entity_reference_revisions
@@ -31,14 +33,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 13
+    weight: 12
     region: content
   pb_display_background_attachment:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 8
     region: content
   pb_display_background_image:
     type: image_url
@@ -82,21 +84,21 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 6
     region: content
   pb_display_image_min_height:
     type: number_unformatted
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 11
     region: content
   pb_display_image_repetition:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 7
     region: content
   pb_display_image_sizing:
     type: list_key
@@ -104,5 +106,19 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 5
+    region: content
+  pb_display_padding:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  pb_display_width:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
     region: content
 hidden: {  }

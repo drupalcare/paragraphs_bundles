@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_width
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - options
+id: paragraph.image_background_bundle.pb_display_width
+field_name: pb_display_width
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'Max Width'
+description: 'Change the max width for the content is going to be over the image.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

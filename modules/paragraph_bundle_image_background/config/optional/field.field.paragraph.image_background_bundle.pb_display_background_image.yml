@@ -6,8 +6,6 @@ dependencies:
     - paragraphs.paragraphs_type.image_background_bundle
   module:
     - image
-_core:
-  default_config_hash: iBoThSa0e5db42PJKD2xLZOd92MVqGvGH1e8hgFoKKU
 id: paragraph.image_background_bundle.pb_display_background_image
 field_name: pb_display_background_image
 entity_type: paragraph
