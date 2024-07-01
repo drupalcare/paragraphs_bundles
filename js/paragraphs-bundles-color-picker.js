@@ -41,10 +41,12 @@
   const updateLabelAttributes = (textInput, colorInput) => {
     const fieldID = textInput.id;
     const label = document.querySelector(`label[for="${fieldID}"]`);
-    label.removeAttribute('for');
-    label.setAttribute('id', `${fieldID}-label`);
-    textInput.setAttribute('aria-labelledby', `${fieldID}-label`);
-    colorInput.setAttribute('aria-labelledby', `${fieldID}-label`);
+    if (label) {
+      label.removeAttribute('for');
+      label.setAttribute('id', `${fieldID}-label`);
+      textInput.setAttribute('aria-labelledby', `${fieldID}-label`);
+      colorInput.setAttribute('aria-labelledby', `${fieldID}-label`);
+    }
   };
 
   const addInputEventListener = (textInput, colorInput) => {
@@ -63,6 +65,27 @@
     addInputEventListener(textInput, colorInput);
   };
 
+  const getDisplayWidth = () => {
+    const displayTabs = document.querySelectorAll('.pb__tab-display');
+
+    displayTabs.forEach(displayTab => {
+      if (displayTab.offsetParent !== null) {
+        const displayTabWidth = displayTab.getBoundingClientRect().width;
+
+        // Remove all previous size classes to prevent class duplication
+        displayTab.classList.remove('small', 'medium', 'large');
+
+        if (displayTabWidth <= 576) {
+          displayTab.classList.add('small'); // Small Devices
+        } else if (displayTabWidth >= 577 && displayTabWidth <= 992) {
+          displayTab.classList.add('medium'); // Medium Devices
+        } else if (displayTabWidth >= 993) {
+          displayTab.classList.add('large'); // Large Devices
+        }
+      }
+    });
+  };
+
   /**
    * Para Color Picker behavior.
    *
@@ -71,12 +94,18 @@
    *   Initializes color picker fields.
    */
   Drupal.behaviors.paraColorPicker = {
-    attach: () => {
+    attach: function (context, settings) {
       const colorTextInputs = once(
         'para-color-picker',
-        '[data-drupal-selector="para-color-picker"] input[type="text"]'
+        '[data-drupal-selector="para-color-picker"] input[type="text"]',
+        context
       );
       colorTextInputs.forEach(initColorPicker);
+
+      // Call getDisplayWidth initially
+      setTimeout(getDisplayWidth, 0);
+      window.addEventListener('resize', getDisplayWidth);
     }
   };
 })(Drupal, drupalSettings, once);
+
