@@ -69,19 +69,33 @@
     const displayTabs = document.querySelectorAll('.pb__tab-display');
 
     displayTabs.forEach(displayTab => {
-      if (displayTab.offsetParent !== null) {
-        const displayTabWidth = displayTab.getBoundingClientRect().width;
+      let displayTabWidth;
 
-        // Remove all previous size classes to prevent class duplication
-        displayTab.classList.remove('small', 'medium', 'large');
+      if (displayTab.style.display === 'none') {
+        // Get the sibling element with class 'pb__tab-content'
+        const sibling = displayTab.previousElementSibling;
 
-        if (displayTabWidth <= 576) {
-          displayTab.classList.add('small'); // Small Devices
-        } else if (displayTabWidth >= 577 && displayTabWidth <= 992) {
-          displayTab.classList.add('medium'); // Medium Devices
-        } else if (displayTabWidth >= 993) {
-          displayTab.classList.add('large'); // Large Devices
+        if (sibling && sibling.classList.contains('pb__tab-content')) {
+          // Use the width of the sibling element
+          displayTabWidth = sibling.getBoundingClientRect().width;
+        } else {
+          // Fallback width if sibling is not found
+          displayTabWidth = 500;
         }
+      } else {
+        // If the element is visible, use its actual width
+        displayTabWidth = displayTab.getBoundingClientRect().width;
+      }
+
+      // Remove all previous size classes to prevent class duplication
+      displayTab.classList.remove('small', 'medium', 'large');
+
+      if (displayTabWidth <= 575) {
+        displayTab.classList.add('small'); // Small Devices
+      } else if (displayTabWidth >= 576 && displayTabWidth <= 992) {
+        displayTab.classList.add('medium'); // Medium Devices
+      } else if (displayTabWidth >= 993) {
+        displayTab.classList.add('large'); // Large Devices
       }
     });
   };
@@ -102,10 +116,14 @@
       );
       colorTextInputs.forEach(initColorPicker);
 
-      // Call getDisplayWidth initially
-      setTimeout(getDisplayWidth, 0);
+      // Call getDisplayWidth after 1/2 second
+      setTimeout(() => {
+        getDisplayWidth();
+      }, 500);
       window.addEventListener('resize', getDisplayWidth);
     }
   };
+
+
 })(Drupal, drupalSettings, once);
 
