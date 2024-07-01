@@ -53,29 +53,35 @@
 }
 
 .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #007bff;
+  background-color: #007bff; /* Level 1 */
   color: #ffffff;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #28a745;
+  background-color: #28a745; /* Level 2 */
   color: #ffffff;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #ffc107;
+  background-color: #ffc107; /* Level 3 */
   color: #333333;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #fd7e14;
+  background-color: #fd7e14; /* Level 4 */
   color: #333333;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper  .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #dc3545;
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #dc3545; /* Level 5 */
   color: #ffffff;
 }
+
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+  background-color: #6f42c1; /* Level 6 */
+  color: #ffffff;
+}
+
 
 .field--name-pb-content-title input {
   width: 100%;
