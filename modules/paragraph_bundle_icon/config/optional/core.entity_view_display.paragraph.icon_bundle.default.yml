@@ -27,7 +27,6 @@ dependencies:
     - field.field.paragraph.icon_bundle.pb_display_text
     - field.field.paragraph.icon_bundle.pb_display_text_hover
     - field.field.paragraph.icon_bundle.pb_display_width
-    - image.style.pb_original_size
     - paragraphs.paragraphs_type.icon_bundle
   module:
     - image
@@ -112,9 +111,9 @@ content:
     label: hidden
     settings:
       image_link: ''
-      image_style: pb_original_size
+      image_style: ''
       image_loading:
-        attribute: lazy
+        attribute: eager
     third_party_settings: {  }
     weight: 22
     region: content
@@ -178,7 +177,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 11
     region: content
   pb_display_border_radius:
     type: list_key
@@ -220,7 +219,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   pb_display_width:
     type: list_key
