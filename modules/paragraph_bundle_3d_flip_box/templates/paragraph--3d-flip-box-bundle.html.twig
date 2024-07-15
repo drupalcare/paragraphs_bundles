@@ -107,6 +107,7 @@
 {# Set flip and height #}
 {% set pb_flip_xy = content.pb_display_flip_xy|render|striptags|trim %}
 {% set pb_box_height = content.pb_display_3d_height|render|striptags|trim %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
 
 {# Render the paragraph #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
@@ -114,7 +115,7 @@
 
     <div class="pb__content-full">
 
-      {% if content.pb_content_title|render %}
+      {% if pb_title %}
       <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
       <div style="height: {{ pb_box_height }}px;" class="pb__flip-box {{ pb_flip_xy }}">

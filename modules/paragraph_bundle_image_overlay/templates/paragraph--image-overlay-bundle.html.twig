@@ -113,6 +113,7 @@
 {# Title and link #}
 {% set pb_link = content.pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 
 {# Radius and padding #}
 {% set br_color         = content.pb_display_border_color|render|striptags|trim %}
@@ -139,7 +140,7 @@
       {% endif %}
 
       <div class="pb__row">
-        {% if content.pb_content_title|render %}
+        {% if pb_title %}
         <h3 {% if pb_title_class is not empty %}class="{{ pb_title_class }}"{% endif %} {% if pb_title_style is not empty %}style="{{ pb_title_style }}"{% endif %}>
           {{ content.pb_content_title }}
         </h3>

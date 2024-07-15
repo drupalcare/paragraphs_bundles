@@ -111,12 +111,13 @@
 
 {# Set the main wrapper. #}
 {% set pb_animated_modal = content.pb_display_animated_modal|render|striptags|trim %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 
 {# Set animated classes. #}
 {# Set animated classes. #}
 <div {{ attributes.addClass(classes).setAttribute('id', modal_warpper) }}>
 
-  {% if content.pb_content_title|render %}
+  {% if pb_title %}
   <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
   {% endif %}
 

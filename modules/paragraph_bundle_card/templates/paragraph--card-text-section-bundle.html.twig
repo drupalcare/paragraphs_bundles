@@ -118,12 +118,12 @@
     {% if pb_link and pb_title %}
     <a href="{{ pb_link }}" class="pb__link">
       <h3 class="pb__content-title">
-        {{ pb_title }}
+        {{ content.pb_content_title }}
       </h3>
     </a>
     {% elseif pb_title %}
     <h3 class="pb__content-title">
-      {{ pb_title }}
+      {{ content.pb_content_title }}
     </h3>
     {% endif %}
 

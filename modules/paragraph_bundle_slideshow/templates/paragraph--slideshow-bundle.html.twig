@@ -114,12 +114,13 @@
 {% set pb_bottom_nav = content.pb_display_bottom_navigation|render|striptags|trim %}
 {% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
 {% set pb_play_stop = content.pb_display_slide_play_stop|render|striptags|trim|default('0') %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 
 {# Main wrapper #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
     <div class="pb__content-full">
-      {% if content.pb_content_title|render %}
+      {% if pb_title %}
         <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
 

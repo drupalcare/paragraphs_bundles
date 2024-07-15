@@ -27,8 +27,7 @@
 .paragraph .pb__two-columns>div.plus-one>*:last-child,
 .paragraph .pb__three-columns>div.plus-one>*:last-child,
 .paragraph .pb__two-columns>div.plus-one .paragraph:last-child,
-.paragraph .pb__three-columns>div.plus-one .paragraph:last-child  {
+.paragraph .pb__three-columns>div.plus-one .paragraph:last-child {
   flex-grow: 1;
   height: 100%;
 }
-

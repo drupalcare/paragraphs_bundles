@@ -129,6 +129,7 @@
 {% set pb_padding = content.pb_display_padding|render|striptags|trim %}
 {% set pb_radius = content.pb_display_border_radius|render|striptags|trim %}
 {% set pb_image = content.pb_content_image %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('data-full-image-url', pb_full_size_url) }}>
@@ -142,7 +143,7 @@
       <a href="{{ pb_link }}" class="pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
         {{ pb_image }}
         {# print title #}
-        {% if content.pb_content_title|render %}
+        {% if pb_title %}
         <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
           <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         </div>

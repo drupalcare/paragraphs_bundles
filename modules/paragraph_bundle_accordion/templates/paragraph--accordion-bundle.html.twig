@@ -114,6 +114,7 @@
 {% set pb_show_indicator = content.pb_display_accor_indicator|render|striptags|trim %}
 {% set pb_open_first = content.pb_display_accor_open_first|render|striptags|trim %}
 {% set pb_animated_tab = content.pb_display_accor_animated|render|striptags|trim %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
@@ -123,7 +124,7 @@
         {% set acc_id = 'pb__accor-' ~ paragraph.id.value %}
         <div id="{{ acc_id }}" class="pb__accor pb__row">
 
-        {% if content.pb_content_title|render %}
+        {% if pb_title %}
         <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         {% endif %}
 

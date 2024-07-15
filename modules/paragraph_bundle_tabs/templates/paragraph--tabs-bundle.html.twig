@@ -113,6 +113,7 @@
 {% set pb_vertical_tabs = content.pb_display_tab_vertical_tabs|render|striptags|trim %}
 {% set pb_breakpoints = content.pb_display_tabs_breakpoints|render|striptags|trim|default('pb__992') %}
 {% set activate_vertical = pb_vertical_tabs == 'On' ? 'v__tabs ' ~ pb_breakpoints : '' %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
@@ -120,7 +121,7 @@
 
     <div class="pb__content-full">
       {# Render the content title if it exists. #}
-      {% if content.pb_content_title|render %}
+      {% if pb_title %}
       <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
       {% endif %}
 

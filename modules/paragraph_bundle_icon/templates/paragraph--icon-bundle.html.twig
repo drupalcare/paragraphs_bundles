@@ -117,7 +117,7 @@
 {% set gms_color = content.pb_content_gms_icon_color|render|striptags|trim %}
 {% set gms_size  = content.pb_content_gms_icon_font_size|render|striptags|trim %}
 {% set gms_opsz  = content.pb_content_gms_optical_size|render|striptags|trim %}
-{% set content_title  = content.pb_content_title|render|striptags|trim %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
 {% set icon_link = content.pb_content_link.0['#url'] %}
 
 
@@ -129,10 +129,10 @@
         {% if content.pb_content_image_icon|render %}
             <div class="pb__icon-header">
                 {% if icon_link %}
-                    <a href="{{ icon_link }}" {% if content_title %}title="{{ content_title }}"{% endif %}>
+                    <a href="{{ icon_link }}" {% if pb_title %}title="{{ pb_title }}"{% endif %}>
                 {% endif %}
-                {% if content_title %}
-                    <h3 class="pb__content-title">{{ content_title }}</h3>
+                {% if pb_title %}
+                    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
                 {% endif %}
                 {{ content.pb_content_image_icon }}
                 {% if icon_link %}
@@ -142,10 +142,10 @@
         {% else %}
             <div class="pb__icon-header">
                 {% if icon_link %}
-                    <a href="{{ icon_link }}" {% if content_title %}title="{{ content_title }}"{% endif %}>
+                    <a href="{{ icon_link }}" {% if pb_title %}title="{{ pb_title }}"{% endif %}>
                 {% endif %}
-                {% if content_title %}
-                    <h3 class="pb__content-title">{{ content_title }}</h3>
+                {% if pb_title %}
+                    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
                 {% endif %}
                 <div class="icon-wrapper" style="font-variation-settings: 'FILL' {{ gms_fill }}, 'wght' {{ gms_wght }}, 'GRAD' {{ gms_grad }}, 'opsz' {{ gms_opsz }};">
                     <span class="{{ gms_style }}" style="color: {{ gms_color }}; font-size: {{ gms_size }}rem;">{{ gms_name }}</span>
