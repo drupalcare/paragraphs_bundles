@@ -13,21 +13,24 @@
   display: grid;
 }
 
-.paragraph .pb__two-columns>div,
-.paragraph .pb__three-columns>div,
+.paragraph .pb__two-columns > div,
+.paragraph .pb__three-columns > div,
 .paragraph .pb__two-columns .paragraph,
 .paragraph .pb__three-columns .paragraph {
   display: flex;
   flex-direction: column;
   width: 100%;
   justify-content: flex-start;
-  align-items: flex-start;
 }
 
-.paragraph .pb__two-columns>div.plus-one>*:last-child,
-.paragraph .pb__three-columns>div.plus-one>*:last-child,
-.paragraph .pb__two-columns>div.plus-one .paragraph:last-child,
-.paragraph .pb__three-columns>div.plus-one .paragraph:last-child {
+.paragraph .pb__two-columns > div:not(.plus-one),
+.paragraph .pb__three-columns > div:not(.plus-one),
+.paragraph .pb__two-columns .paragraph:not(.plus-one),
+.paragraph .pb__three-columns .paragraph:not(.plus-one),
+.paragraph .pb__two-columns > div.plus-one > *:last-child,
+.paragraph .pb__three-columns > div.plus-one > *:last-child,
+.paragraph .pb__two-columns > div.plus-one .paragraph:last-child,
+.paragraph .pb__three-columns > div.plus-one .paragraph:last-child {
   flex-grow: 1;
   height: 100%;
 }
