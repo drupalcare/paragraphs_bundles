@@ -3,6 +3,13 @@ paragraph-bundle-layout:
   css:
     theme:
       css/paragraph-bundle-layout.css: { }
+  js:
+    js/paragraph-bundle-layout.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
 
 paragraph-bundle-layout-pb__576:
   version: VERSION
