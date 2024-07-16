@@ -129,9 +129,7 @@ h3 a) {
 .field--name-pb-media-image picture,
 .paragraph .pb__img-wrapper {
   float: none !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 .paragraph .field--name-pb-image-field {
