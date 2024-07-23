@@ -135,12 +135,12 @@
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
               <button id="{{ tab_id }}-{{ key + 1 }}" class="pb__button pb__tab-button"
-                aria-label="{{ item['#paragraph'].pb_content_tab_name.value }}"
+                aria-label="{{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}"
                 aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
                 aria-controls="{{ tab_id }}-{{ key + 1 }}-pane"
                 aria-expanded="{% if key == 0 %}true{% else %}false{% endif %}"
                 type="button" role="tab" {% if key != 0 %}tabindex="-1"{% endif %}>
-                {{ item['#paragraph'].pb_content_tab_name.value }}
+                {{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}
               </button>
             {% endif %}
           {% endfor %}
