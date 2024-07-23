@@ -148,11 +148,11 @@
 
           {# Loops through the accordion sections to print the tab section titles. #}
           <button id="{{ acc_id }}-{{ key + 1 }}" class="pb__button pb__bar pb__accor-button"
-          aria-label="{{ item['#paragraph'].pb_content_accordion_title.value }}"
+          aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}"
           aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}"
           aria-controls="{{ acc_id }}-{{ key + 1 }}-pane"
           type="button">
-            {{ item['#paragraph'].pb_content_accordion_title.value }}
+            {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
             {% if pb_show_indicator == "On" %}
             <div class="pb__plus-minus">
               <span aria-hidden="true" class="pb__minus">&#x02212</span>

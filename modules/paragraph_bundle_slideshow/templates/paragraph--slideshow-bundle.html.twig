@@ -146,7 +146,7 @@
                     {{ section_body }}
                   {% endfor %}
                   {% if item['#paragraph'].pb_content_slideshow_title.value %}
-                    <div class="pb__row pb__slide-title">{{ item['#paragraph'].pb_content_slideshow_title.value }}</div>
+                    <div class="pb__row pb__slide-title">{{ item['#paragraph'].pb_content_slideshow_title.value|decode_entities }}</div>
                   {% endif %}
                 </div>
               </div>
