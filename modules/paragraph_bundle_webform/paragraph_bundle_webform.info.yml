@@ -1,7 +1,7 @@
 name: Paragraph Bundle Webform
 type: module
 description: A reusable Paragraph Bundle Webform.
-core_version_requirement: ^9.4 || ^10
+core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
   - webform:webform

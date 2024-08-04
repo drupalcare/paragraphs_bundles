@@ -1,7 +1,7 @@
 name: Paragraph Bundle 3D Carousel
 type: module
 description: A reusable Paragraph Bundle 3D Carousel.
-core_version_requirement: ^9.4 || ^10
+core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
   - paragraphs_bundles:paragraphs_bundles

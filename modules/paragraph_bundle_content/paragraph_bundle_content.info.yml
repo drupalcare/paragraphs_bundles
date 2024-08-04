@@ -1,7 +1,7 @@
 name: Paragraph Bundle Content
 type: module
 description: A reusable Content Type for all Paragraphs Bundles to create full width content.
-core_version_requirement: ^9.4 || ^10
+core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
   - drupal:node

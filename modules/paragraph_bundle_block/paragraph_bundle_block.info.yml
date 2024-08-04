@@ -1,7 +1,7 @@
 name: Paragraph Bundle Block
 type: module
 description: A reusable Paragraph Drupal Block.
-core_version_requirement: ^9.4 || ^10
+core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
   - drupal:block

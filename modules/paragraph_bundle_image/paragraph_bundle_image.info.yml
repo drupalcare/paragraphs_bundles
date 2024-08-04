@@ -1,7 +1,7 @@
 name: Paragraph Bundle Image
 type: module
 description: A reusable Paragraph Bundle Image has three view modes wide, narrow and original size.
-core_version_requirement: ^9.4 || ^10
+core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
   - drupal:media
