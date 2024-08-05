@@ -23,7 +23,7 @@ class RangeNumberWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    */
-  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state) {
+  public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
     $element += [
       '#type' => 'number',
       '#default_value' => $items[$delta]->value ?? '100',
@@ -50,7 +50,7 @@ class RangeNumberWidget extends WidgetBase {
   /**
    * Validate opacity field.
    */
-  public function validate($element, FormStateInterface $form_state) {
+  public function validate($element, FormStateInterface $form_state): void {
     $value = $element['#value'];
     if ($value == '') {
       $form_state->setValueForElement($element, '');
