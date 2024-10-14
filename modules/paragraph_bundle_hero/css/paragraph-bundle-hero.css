@@ -102,8 +102,4 @@
     font-size: var(--pb-px16);
   }
 
-  .paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner {
-    width: 100% !important;
-  }
-
 }
