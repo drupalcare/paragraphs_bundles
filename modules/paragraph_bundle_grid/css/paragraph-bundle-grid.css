@@ -1,0 +1,29 @@
+/**
+ * @file
+ * Paragraph Bundle Grid.
+ *
+ * Filename:     paragraph-bundle-grid.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+.paragraph--type--grid-bundle .pb__grid-wrapper {
+  display: grid;
+  grid-auto-columns: 100%;
+  gap: 1rem; /* Adjust or make responsive if needed */
+  grid-auto-flow: row;
+  grid-template-rows: 1fr;
+  justify-content: start;
+  align-content: start;
+  justify-items: start;
+  align-items: start;
+}
+
+/* Flex layout for nested divs */
+.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraph,
+.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraph__inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: flex-start;
+}

@@ -1,0 +1,59 @@
+/**
+ * @file
+ * Paragraph Bundle Grid.
+ *
+ * Filename:     paragraph-bundle-grid.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+@media (min-width:36rem) {
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"] {
+    grid-template-columns: repeat(var(--pb-col-count), 1fr);
+  }
+
+  /* Example of how to set custom properties for each column count */
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-2 {
+    --pb-col-count: 2;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
+    --pb-col-count: 3;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-4 {
+    --pb-col-count: 4;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-5 {
+    --pb-col-count: 5;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-6 {
+    --pb-col-count: 6;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-7 {
+    --pb-col-count: 7;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-8 {
+    --pb-col-count: 8;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-9 {
+    --pb-col-count: 9;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-10 {
+    --pb-col-count: 10;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-11 {
+    --pb-col-count: 11;
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-12 {
+    --pb-col-count: 12;
+  }
+
+}

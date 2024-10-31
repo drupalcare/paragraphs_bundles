@@ -41,6 +41,7 @@ class RangeItem extends FieldItemBase {
 
   /**
    * {@inheritdoc}
+   *
    * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function isEmpty(): bool {

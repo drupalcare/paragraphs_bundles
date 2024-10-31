@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_grid_body
+    - paragraphs.paragraphs_type.grid_bundle
+  module:
+    - entity_reference_revisions
+id: paragraph.grid_bundle.pb_content_grid_body
+field_name: pb_content_grid_body
+entity_type: paragraph
+bundle: grid_bundle
+label: Content
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+    target_bundles_drag_drop: {  }
+field_type: entity_reference_revisions

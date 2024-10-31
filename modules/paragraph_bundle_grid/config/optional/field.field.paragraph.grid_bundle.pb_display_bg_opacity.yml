@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_bg_opacity
+    - paragraphs.paragraphs_type.grid_bundle
+  module:
+    - paragraphs_bundles
+id: paragraph.grid_bundle.pb_display_bg_opacity
+field_name: pb_display_bg_opacity
+entity_type: paragraph
+bundle: grid_bundle
+label: 'Background Color Opacity'
+description: 'Value 1 to 100'
+required: false
+translatable: false
+default_value:
+  -
+    value: '100'
+default_value_callback: ''
+settings: {  }
+field_type: paragraphs_bundles_range

@@ -1,0 +1,36 @@
+paragraph-bundle-grid:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid.css: { }
+
+
+paragraph-bundle-grid-pb__576:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid-pb-576.css: { }
+
+paragraph-bundle-grid-pb__768:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid-pb-768.css: { }
+
+paragraph-bundle-grid-pb__992:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid-pb-992.css: { }
+
+paragraph-bundle-grid-pb__1200:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid-pb-1200.css: { }
+
+paragraph-bundle-grid-pb__1400:
+  version: VERSION
+  css:
+    theme:
+      css/paragraph-bundle-grid-pb-1400.css: { }

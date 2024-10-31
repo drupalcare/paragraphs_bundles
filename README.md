@@ -92,6 +92,8 @@ expand or
 These modules provide different structural layouts to organize content on a
  page:
 
+- **Grid**: Displays content in a grid layout, adjustable between one and
+ twelve columns.
 - **One Column**: A simple, single-column layout.
 - **Two Columns**: Divides content into two columns.
 - **Three Columns**: Arranges content in three separate columns.
