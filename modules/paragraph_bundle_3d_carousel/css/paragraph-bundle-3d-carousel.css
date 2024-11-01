@@ -9,8 +9,11 @@
 
 /* 3d_carousel */
 .paragraph--type--3d-carousel-bundle {
+  display: flex;
+  justify-content: center;
   overflow: hidden;
   opacity: 0;
+  margin: 0 auto;
   animation: fadeIn 1s ease-in 0.4s forwards;
 }
 
@@ -31,6 +34,7 @@
   position: relative;
   width: 100%;
   z-index: 0;
+  box-sizing: border-box!important;
 }
 
 .paragraph--type--3d-carousel-bundle .pb__3d-carousel {
@@ -56,6 +60,7 @@
 .paragraph--type--3d-carousel-bundle .pb__caro-options {
   min-height: var(--pb-px48);
   width: 100%;
+  z-index: 1;
 }
 
 .paragraph--type--3d-carousel-bundle .pb__caro-options .hide-0 {
