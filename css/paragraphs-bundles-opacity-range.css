@@ -24,11 +24,17 @@ form [data-drupal-selector="para-opacity-range"] label {
 
 form [data-drupal-selector="para-opacity-range"] input[type="number"] {
   width: 90px;
-  border-radius: 8px 0 0 8px;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-end-start-radius: 8px;
 }
 
 form [data-drupal-selector="para-opacity-range"] input[type=range] {
-  border-radius: 0 8px 8px 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 8px;
+  border-end-end-radius: 8px;
+  border-end-start-radius: 0;
   height: 25px;
   -webkit-appearance: none;
   width: calc(100% - 90px);
@@ -58,7 +64,7 @@ form [data-drupal-selector="para-opacity-range"] input[type=range]::-webkit-slid
   background: #a1d0ff;
   cursor: pointer;
   -webkit-appearance: none;
-  margin-top: -7px;
+  margin-block-start: -7px;
 }
 
 form [data-drupal-selector="para-opacity-range"] input[type=range]:focus::-webkit-slider-runnable-track {
@@ -111,7 +117,7 @@ form [data-drupal-selector="para-opacity-range"] input[type=range]::-ms-fill-upp
 }
 
 form [data-drupal-selector="para-opacity-range"] input[type=range]::-ms-thumb {
-  margin-top: 1px;
+  margin-block-start: 1px;
   box-shadow: 0px 0px 0px #000000;
   border: 1px solid #2497e3;
   height: 18px;

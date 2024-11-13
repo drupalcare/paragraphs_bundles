@@ -21,8 +21,11 @@
 .pb__tab-display [data-drupal-selector="para-color-picker"] .form-text {
   display: inline-block;
   width: calc(100% - 50px);
-  border-radius: 8px 0 0 8px;
-  border-right: none;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-end-start-radius: 8px;
+  border-inline-end: none;
   box-sizing: border-box;
 }
 
@@ -30,8 +33,11 @@
   display: inline-block;
   width: 50px;
   vertical-align: bottom;
-  border-radius: 0 8px 8px 0;
-  border-left: none;
+  border-start-start-radius: 0;
+  border-start-end-radius: 8px;
+  border-end-end-radius: 8px;
+  border-end-start-radius: 0;
+  border-inline-start: none;
   padding: 5px;
   background-color: black;
   box-sizing: border-box;
@@ -44,7 +50,10 @@
 }
 
 .pb__tab-display [data-drupal-selector="para-color-picker"] label {
-  padding: 12px 16px 0 4px;
+  padding-block-start: 12px;
+  padding-inline-end: 16px;
+  padding-block-end: 0;
+  padding-inline-start: 4px;
   width: 100%;
-  text-align: left;
+  text-align: var(--pb-text-align-start);
 }

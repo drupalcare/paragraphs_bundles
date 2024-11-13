@@ -29,19 +29,19 @@
   appearance: none;
   border: var(--pb-px2) solid var(--pb-br, gray);
   border-radius: 50%;
-  float: right;
+  float: inline-end;
 }
 
 .paragraph--type--alert-bundle .pb__close-alert::before,
 .paragraph--type--alert-bundle .pb__close-alert::after {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  inset-block-start: 50%;
+  inset-inline-start: 50%;
   display: block;
   width: var(--pb-px32);
   height: 0;
   content: "";
-  border-top: solid var(--pb-px2) var(--pb-br, gray);
+  border-block-start: solid var(--pb-px2) var(--pb-br, gray);
 }
 
 .paragraph--type--alert-bundle .pb__close-alert::before {
@@ -63,7 +63,8 @@
 }
 
 .paragraph--type--alert-bundle .pb__alert-top.On .pb__content-title {
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
   width: calc(100% - var(--pb-px36));
   min-height: var(--pb-px36);
 }

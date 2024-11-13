@@ -10,7 +10,7 @@
 .pb__gms_icon .field--name-pb-content-gms-optical-size,
 .pb__gms_icon .field--name-pb-content-gms-icon-font-size,
 .pb__gms_icon .field--name-pb-content-gms-icon-color {
-  margin-right: 12px;
+  margin-inline-end: 12px;
 }
 
 .pb__gms_icon .details-wrapper {
@@ -27,7 +27,7 @@
 }
 
 .pb__gms_icon .field--name-pb-content-gms-icon-color input {
-  float: left;
+  float: inline-start;
 }
 
 .pb__gms_icon .field--name-pb-content-gms-style select {

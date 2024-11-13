@@ -29,12 +29,12 @@
 
 .paragraph .pb__image-grid .pb__image-grid-title {
   position: absolute;
-  bottom: 0;
-  left: 0;
+  inset-block-end: 0;
+  inset-inline-start: 0;
   width: 100%;
   display: grid;
   grid-auto-flow: column;
-  justify-content: left;
+  justify-content: start;
   align-items: end;
   height: 100%;
   margin: 0 !important;
@@ -88,7 +88,7 @@
 
 /* Image Grid light box */
 .paragraph .pb__image-grid .pb__link {
-  margin-top: 40px;
+  margin-block-start: 40px;
   height: 100%;
   z-index: 999;
 }
@@ -115,30 +115,30 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: end;
 }
 
 .paragraph .pb__grid-lightbox .pb__close-grid,
 .paragraph .pb__image-grid .pb__expand-grid {
   position: absolute;
   z-index: 3000;
-  right: 0;
-  top: 0;
+  inset-inline-end: 0;
+  inset-block-start: 0;
   cursor: pointer;
   text-decoration: none;
 }
 
 .paragraph .pb__grid-lightbox .pb__close-grid {
-  right: 20px;
+  inset-inline-end: 20px;
 }
 
 .pb__grid-lightbox {
   z-index: 10000 !important;
   display: none;
-  padding-top: calc(2 * var(--pb-px48));
+  padding-block-start: calc(2 * var(--pb-px48));
   position: fixed;
-  left: 0;
-  top: 0;
+  inset-inline-start: 0;
+  inset-block-start: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
@@ -150,7 +150,8 @@
 
 .pb__grid-lightbox-content {
   position: relative;
-  margin: 0 auto !important;
+  margin-block: 0 !important;
+  margin-inline: auto !important;
   padding: 20px !important;
   width: calc(100% - 120px) !important;
   height: 100%;
@@ -219,7 +220,7 @@
 .pb__grid-lightbox .pb__modal-prev,
 .pb__grid-lightbox .pb__modal-next {
   position: absolute;
-  top: calc(50% - 30px);
+  inset-block-start: calc(50% - 30px);
   z-index: 10000;
   background: transparent;
 }
@@ -239,11 +240,11 @@
 }
 
 .pb__grid-lightbox .pb__modal-prev {
-  left: 20px;
+  inset-inline-start: 20px;
 }
 
 .pb__grid-lightbox .pb__modal-next {
-  right: 20px;
+  inset-inline-end: 20px;
 }
 
 .pb__image-grid-wrapper.grid-count-1 .pb__modal-prev,
@@ -273,7 +274,7 @@
 
   .pb__grid-lightbox .pb__modal-prev,
   .pb__grid-lightbox .pb__modal-next {
-    top: calc(50% - 20px);
+    inset-block-start: calc(50% - 20px);
   }
 
   .pb__grid-lightbox-content {
@@ -290,7 +291,7 @@
 
 @media (max-width:20rem) {
   .paragraph .pb__image-grid .pb__image-grid-title {
-    align-items: flex-start;
+    align-items: start;
   }
 
   .paragraph .pb__image-grid .field--name-pb-content-title {

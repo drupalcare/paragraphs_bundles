@@ -24,16 +24,16 @@
   border-color: var(--pb-br);
   width: 100%;
   position: absolute;
-  left: 0;
-  bottom: calc(3 * var(--pb-px12));
+  inset-inline-start: 0;
+  inset-block-end: calc(3 * var(--pb-px12));
   z-index: 1000;
 }
 
 @media (max-width:36rem) {
   .node--view-mode-pb-slideshow > header,
   .node--view-mode-pb-3d-carousel > header {
-    bottom: initial;
-    top: 0;
+    inset-block-end: initial;
+    inset-block-start: 0;
   }
 
   .node--view-mode-pb-slideshow .node__content .field--type-image img,

@@ -12,7 +12,7 @@
 }
 
 .pb__tab-display .form-radios>* {
-  margin-right: 20px;
+  margin-inline-end: 20px;
   width: auto;
 }
 
@@ -24,7 +24,8 @@
   justify-content: center;
   align-items: center;
   max-width: 900px;
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
   display: grid;
   gap: 0.5rem;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -41,7 +42,8 @@
   flex-basis: 100%;
   justify-content: center;
   align-items: center;
-  padding: 0.5rem 1rem !important;
+  padding-block: 0.5rem !important;
+  padding-inline: 1rem !important;
 }
 
 .pb__tabs-wrapper .horizontal-tabs .pb__tab-display {
@@ -49,7 +51,8 @@
   width: 100%;
   min-width: initial;
   max-width: 1000px;
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
 }
 
 .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {

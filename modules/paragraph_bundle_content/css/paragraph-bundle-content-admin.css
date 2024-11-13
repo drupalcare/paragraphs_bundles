@@ -10,19 +10,19 @@
 .field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
   display: grid;
   grid-auto-flow: row;
-  justify-content: left;
+  justify-content: start;
   align-items: end;
   grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
 }
 
 .field-group-tab.pb-content-type-display .details-wrapper .form-radios .form-item input,
 .field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes .form-item input {
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 .field-group-tab.pb-content-type-display .details-wrapper .form-type--checkbox,
 .field-group-tab.pb-content-type-display .details-wrapper .form-type--radio {
-  margin-right: 20px;
+  margin-inline-end: 20px;
 }
 
 .field-group-tab.pb-content-type-display .field--name-pb-display-content-width {
@@ -36,7 +36,7 @@
   .field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-range {
     width: 49%;
     display: inline-block;
-    float: left;
+    float: inline-start;
   }
 
 }
@@ -50,17 +50,23 @@
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-text {
   display: inline-block;
   width: calc(100% - 70px);
-  border-radius: 12px 0 0 12px;
-  border-right: none;
+  border-start-start-radius: 12px;
+  border-end-start-radius: 0;
+  border-start-end-radius: 0;
+  border-end-end-radius: 12px;
+  border-inline-end: none;
 }
 
 .field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-color {
   display: inline-block;
   width: 40px;
-  margin-right: 20px;
+  margin-inline-end: 20px;
   vertical-align: bottom;
-  border-radius: 0 12px 12px 0;
-  border-left: none;
+  border-start-start-radius: 0;
+  border-start-end-radius: 12px;
+  border-end-start-radius: 12px;
+  border-end-end-radius: 0;
+  border-inline-start: none;
   padding: 5px;
   background-color: black;
   box-sizing: border-box;

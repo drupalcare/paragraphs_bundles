@@ -22,8 +22,8 @@
   width: 100%;
   height: 100%;
   flex-grow: 1;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: start;
+  align-items: start;
 }
 
 .paragraph--type--card-two-columns-bundle .pb__card-two-columns h3,

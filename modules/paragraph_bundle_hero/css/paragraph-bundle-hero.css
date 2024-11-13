@@ -18,7 +18,8 @@
 .pb__margin_left,
 .pb__section) {
   width: 100% !important;
-  margin: 0 auto !important;
+  margin-block: 0 !important;
+  margin-inline: auto !important;
 }
 
 .pb__hero-txt-wrapper-inner * {
@@ -55,10 +56,10 @@
 
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  inset-block-start: 0;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: 100%;
   width: 100%;
   overflow-x: auto;
@@ -70,7 +71,8 @@
 
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(.pb__card_4,
 .pb__card_2) {
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
 }
 
 .paragraph--type--hero-bundle .field--name-pb-content-image,
@@ -80,7 +82,7 @@
 }
 
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper > a {
-  float: left;
+  float: inline-start;
   height: 100%;
   width: 100%;
 }

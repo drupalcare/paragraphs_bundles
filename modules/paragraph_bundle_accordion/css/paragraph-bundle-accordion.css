@@ -11,28 +11,29 @@
 }
 
 .paragraph--type--accordion-bundle .pb__accor .pb__accor-wrap-btn-item {
-  border-bottom: var(--pb-px2) solid var(--pb-br);
+  border-block-end: var(--pb-px2) solid var(--pb-br);
   overflow: hidden;
 }
 
 .paragraph--type--accordion-bundle .pb__accor > div:last-child {
-  border-bottom: none;
+  border-block-end: none;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-button {
-  padding: var(--pb-px16) var(--pb-px12);
+  padding-block: var(--pb-px16);
+  padding-inline: var(--pb-px12);
   display: flex;
   width: 100%;
   flex-grow: 1;
   white-space: initial;
   cursor: pointer;
   z-index: 1;
-  text-align: left;
+  text-align: var(--pb-text-align-start);
 }
 
 .paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
   display: flex;
-  margin-left: auto;
+  margin-inline-start: auto;
 }
 
 .paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
@@ -45,20 +46,23 @@
 }
 
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > button {
-  padding-bottom: 0;
+  padding-block-end: 0;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
-  padding-top: 0;
+  padding-block-start: 0;
 }
 
 .paragraph--type--accordion-bundle .pb__active .pb__accor-pane {
   padding: var(--pb-px16);
-  border-top: none;
+  border-block-start: none;
   width: 100%;
-  margin: 0 0 var(--pb-px10) 0;
+  margin-block-start: 0;
+  margin-inline-end: 0;
+  margin-block-end: var(--pb-px10);
+  margin-inline-start: 0;
   overflow: hidden;
 }
 

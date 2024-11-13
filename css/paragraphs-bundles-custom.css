@@ -133,7 +133,7 @@ h3 a) {
 }
 
 .paragraph .field--name-pb-image-field {
-  margin-bottom: 0 !important;
+  margin-block-end: 0 !important;
 }
 
 .paragraph .field--name-pb-image-caption {
@@ -141,12 +141,12 @@ h3 a) {
 }
 
 .pparagraph .pb__img-wrapper div {
-  float: left;
+  float: inline-start;
 }
 
 .pb__img-wrapper.pb__dis-top-left-right {
-  border-top-left-radius: 0 !important;
-  border-top-right-radius: 0 !important;
+  border-block-start-left-radius: 0 !important;
+  border-block-start-right-radius: 0 !important;
 }
 
 .pb__image-w__inner > a,
@@ -210,8 +210,8 @@ h3 a) {
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner {
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_100,
@@ -222,8 +222,8 @@ h3 a) {
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_500,
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_400,
 .paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_300 {
-  margin-left: auto !important;
-  margin-right: auto !important;
+  margin-inline-start: auto !important;
+  margin-inline-end: auto !important;
 }
 
 @media (max-width:36rem) {

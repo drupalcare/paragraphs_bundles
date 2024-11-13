@@ -10,8 +10,8 @@
 .page-node-type-pb-content .pb__content-full,
 .page-node-type-pb-content .block-local-tasks-block {
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 .page-node-type-pb-content .sw-100 ul.links,
@@ -77,7 +77,8 @@
 
 #main-container-inner .pb-content,
 #main-container-inner .pb-content > div {
-  margin: 0 auto !important;
+  margin-block: 0 !important;
+  margin-inline: auto !important;
   padding: 0 !important;
 }
 
@@ -88,7 +89,7 @@ div.pb-content section.pb-block > article.node > header {
 
 .page-node-type-pb-content .node__header,
 .page-node-type-pb-content .node__content {
-  margin-bottom: 0 !important;
+  margin-block-end: 0 !important;
 }
 
 .page-node-type-pb-content .paragraph .field--type-entity-reference > div {
@@ -99,17 +100,19 @@ div.pb-content section.pb-block > article.node > header {
 .page-node-type-pb-content #main-container-inner.solo-col {
   gap: 0 !important;
   padding: 0 !important;
-  margin: 0 auto !important;
+  margin-block: 0 !important;
+  margin-inline: auto !important;
 }
 
 .page-node-type-pb-content .node__content .paragraph .pb__image-full {
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
+  margin-inline-start: calc(50% - 50vw);
+  margin-inline-end: calc(50% - 50vw);
 }
 
 .page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full,
 .page-node-type-pb-content .node__content .paragraph .paragraph .paragraph .pb__image-full {
-  margin: 0 auto;
+  margin-block: 0;
+  margin-inline: auto;
   width: 100%;
   max-width: 100%;
 }
