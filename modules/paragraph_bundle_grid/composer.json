@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraph_bundle_grid",
-    "description": "A reusable Paragraph Drupal block bundle. Displays content in a grid layout, adjustable between one and twelve columns",
+    "description": "A reusable Paragraph bundle. Displays content in a grid layout, adjustable between one and twelve columns",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "dev",

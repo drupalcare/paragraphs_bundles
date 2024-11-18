@@ -28,7 +28,7 @@
             autoSlideIntervalId = null;
           }
         } else if (action === 'start') {
-          if (!autoSlideIntervalId && slideTime > 0) { // Check if slideTime is greater than 0
+          if (!autoSlideIntervalId && slideTime > 0) {
             autoSlideIntervalId = setInterval(() => autoSlide(parentId, getNextItemIndex), slideTime);
           }
         }
@@ -81,16 +81,24 @@
 
       const updateSlideVisibility = (parentId, activeSlideId) => {
         const slides = context.querySelectorAll(`#pb__slides-${parentId}>.pb__slide-item`);
+        const slideshowContainer = document.querySelector(`#pb__slides-${parentId}`);
+
+        let activeSlideHeight = 0; // Variable to store the active slide's height
+
         slides.forEach((slide, index) => {
           if (index + 1 === activeSlideId) {
             slide.style.display = 'block';
             slide.setAttribute('aria-hidden', 'false');
             slide.focus();
+            activeSlideHeight = slide.offsetHeight; // Capture height of the active slide
           } else {
             slide.style.display = 'none';
             slide.setAttribute('aria-hidden', 'true');
           }
         });
+
+        // Smooth height adjustment
+        slideshowContainer.style.height = `${activeSlideHeight}px`;
       };
 
       const getNextSlide = (parentId, slideId) => {
@@ -125,7 +133,6 @@
         updateSlideVisibility(parentId, slideId);
         updateNavigationState(parentId, slideId);
 
-        // Resume auto-slide if it was playing
         if (!isPaused) {
           let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
@@ -152,7 +159,6 @@
         updateNavigationState(parentId, slideId);
         slideIndex = slideId;
 
-        // Restart the auto-slide interval if the slideshow is not paused
         if (!isPaused) {
           const slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
           manageAutoSlideInterval('start', parentId, slideTime);
@@ -177,6 +183,7 @@
         });
 
         updateNavigationState(parentId, slideId);
+        updateSlideVisibility(parentId, slideId); // Ensure dynamic height adjustment
       };
 
       once('init-slides', slides).forEach(slide => {
@@ -184,6 +191,7 @@
         let parentId = parseInt(slide.id.split('-')[1]);
         let slideTime = parseInt(context.querySelector(`#pb__slideshow-${parentId}>.pb__ps-value`).textContent);
 
+        updateSlideVisibility(parentId, slideIndex); // Initial height adjustment
         manageAutoSlideInterval('start', parentId, slideTime);
 
         if (slideTime != 0) {
@@ -240,19 +248,18 @@
           handleBottomNav(event.target.id, event.target.parentElement.id);
         });
 
-        // Adding keydown event listener for tab key navigation
         element.addEventListener('keydown', function(event) {
           if (event.key === 'Tab') {
             const parentSlideshow = element.closest('.pb__slideshow-inner');
             const allButtons = Array.from(parentSlideshow.querySelectorAll('.pb__slide-nav .pb__slide-bottom-btn'));
             const currentIndex = allButtons.indexOf(event.target);
 
-            if (event.shiftKey) { // Shift + Tab to navigate backwards
+            if (event.shiftKey) {
               if (currentIndex > 0) {
                 allButtons[currentIndex - 1].focus();
                 event.preventDefault();
               }
-            } else { // Tab to navigate forwards
+            } else {
               if (currentIndex < allButtons.length - 1) {
                 allButtons[currentIndex + 1].focus();
                 event.preventDefault();
@@ -264,5 +271,3 @@
     }
   };
 })(Drupal, drupalSettings, once);
-
-
