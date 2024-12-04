@@ -155,8 +155,8 @@
             {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
             {% if pb_show_indicator == "On" %}
             <div class="pb__plus-minus">
-              <span aria-hidden="true" class="pb__minus">&#x02212</span>
-              <span aria-hidden="true" class="pb__plus">&#x0002B</span>
+              <span aria-hidden="{{ key == 0 and pb_open_first ? 'false' : 'true' }}" class="pb__minus" {% if key != 0 or not pb_open_first %}style="display:none;"{% endif %}>&#x02212;</span>
+              <span aria-hidden="{{ key == 0 and pb_open_first ? 'true' : 'false' }}" class="pb__plus" {% if key == 0 and pb_open_first %}style="display:none;"{% endif %}>&#x0002B;</span>
               <span class="visually-hidden">Close or Open tab</span>
             </div>
             {% endif %}

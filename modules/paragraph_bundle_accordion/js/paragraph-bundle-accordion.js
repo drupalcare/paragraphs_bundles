@@ -61,33 +61,34 @@
 
       const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
         once('toggleActiveState', buttonSelector, context).forEach((button) => {
-          button.addEventListener('click', function(event) {
+          button.addEventListener('click', function (event) {
             const element = event.target.closest('.pb__accor-wrap-btn-item');
-            const section = event.target.closest('.pb__accor'); // It should reference the individual panel's parent, not just any ancestor.
             const toggleButton = element.querySelector('.pb__accor-button');
             const contentPane = element.querySelector('.pb__accor-pane');
+            const plusMinus = element.querySelector('.pb__plus-minus'); // Target plus-minus container
 
             const isCurrentlyActive = toggleButton.getAttribute('aria-expanded') === 'true';
 
-            if (isCurrentlyActive) {
-              element.classList.replace(activeClass, inactiveClass);
-              toggleButton.setAttribute('aria-expanded', 'false');
-              contentPane.setAttribute('aria-hidden', 'true');
-            } else {
-              element.classList.replace(inactiveClass, activeClass);
-              toggleButton.setAttribute('aria-expanded', 'true');
-              contentPane.setAttribute('aria-hidden', 'false');
+            // Update classes and ARIA attributes for the button
+            element.classList.toggle(activeClass, !isCurrentlyActive);
+            element.classList.toggle(inactiveClass, isCurrentlyActive);
+            toggleButton.setAttribute('aria-expanded', String(!isCurrentlyActive));
+            if (contentPane) {
+              contentPane.setAttribute('aria-hidden', String(isCurrentlyActive));
             }
 
-            // Ensure the correct display of expand/collapse all buttons
-            const [_, minusButton, plusButton] = getElementsById(section.id);
-            if (plusButton) {
-              plusButton.style.display = isCurrentlyActive ? "block" : "none";
-              updateTabindex(plusButton);
-            }
-            if (minusButton) {
-              minusButton.style.display = isCurrentlyActive ? "none" : "block";
-              updateTabindex(minusButton);
+            // Update plus/minus visibility and aria-hidden attributes
+            if (plusMinus) {
+              const plus = plusMinus.querySelector('.pb__plus');
+              const minus = plusMinus.querySelector('.pb__minus');
+              if (plus && minus) {
+                plus.style.display = isCurrentlyActive ? 'block' : 'none';
+                minus.style.display = isCurrentlyActive ? 'none' : 'block';
+
+                // Explicitly set aria-hidden for plus/minus spans
+                plus.setAttribute('aria-hidden', String(!isCurrentlyActive));
+                minus.setAttribute('aria-hidden', String(isCurrentlyActive));
+              }
             }
           });
         });
