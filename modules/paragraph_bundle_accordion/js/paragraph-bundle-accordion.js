@@ -100,30 +100,34 @@
           const accId = button.getAttribute('aria-controls');
           const elements = context.querySelectorAll(`#${accId} .pb__accor-wrap-btn-item`);
 
+          // Update all accordion items
           elements.forEach(element => {
             const toggleButton = element.querySelector('.pb__accor-button');
+            const contentPane = element.querySelector('.pb__accor-pane');
+            const plusMinus = element.querySelector('.pb__plus-minus');
+
+            // Toggle active/inactive classes and ARIA attributes
+            element.classList.toggle('pb__active', isExpand);
+            element.classList.toggle('pb__active-no', !isExpand);
             if (toggleButton) {
               toggleButton.setAttribute('aria-expanded', isExpand);
             }
-            const contentPane = element.querySelector('.pb__accor-pane');
             if (contentPane) {
               contentPane.setAttribute('aria-hidden', !isExpand);
             }
-            element.classList.toggle('pb__active', isExpand);
-            element.classList.toggle('pb__active-no', !isExpand);
-          });
 
-          // Update the display states of the global expand/collapse buttons
-          const plusButton = context.querySelector(`#${accId} .pb__plus`);
-          const minusButton = context.querySelector(`#${accId} .pb__minus`);
-          if (plusButton) {
-            plusButton.style.display = isExpand ? 'none' : 'block';
-            updateTabindex(plusButton);
-          }
-          if (minusButton) {
-            minusButton.style.display = isExpand ? 'block' : 'none';
-            updateTabindex(minusButton);
-          }
+            // Update plus/minus visibility for each item
+            if (plusMinus) {
+              const plus = plusMinus.querySelector('.pb__plus');
+              const minus = plusMinus.querySelector('.pb__minus');
+              if (plus && minus) {
+                plus.style.display = isExpand ? 'none' : 'block';
+                minus.style.display = isExpand ? 'block' : 'none';
+                plus.setAttribute('aria-hidden', isExpand);
+                minus.setAttribute('aria-hidden', !isExpand);
+              }
+            }
+          });
         });
       });
 
