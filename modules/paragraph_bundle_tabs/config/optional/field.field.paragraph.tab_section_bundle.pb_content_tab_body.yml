@@ -10,7 +10,7 @@ id: paragraph.tab_section_bundle.pb_content_tab_body
 field_name: pb_content_tab_body
 entity_type: paragraph
 bundle: tab_section_bundle
-label: 'Tab Section Body'
+label: 'Tab Body Section'
 description: ''
 required: true
 translatable: false
