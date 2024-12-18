@@ -11,7 +11,7 @@ field_name: pb_display_grid_breakpoints
 entity_type: paragraph
 bundle: grid_bundle
 label: 'Available Breakpoints'
-description: 'Use them to adjust the grid layout for a particular screen or device size.'
+description: 'Use them to adjust the grid layout for a particular screen or device size. Dynamically adjusts the grid layout for screens larger than 36rem, even column counts (4, 6, 8, 10, 12) display as 2 columns, and odd column counts (3, 5, 7, 9, 11) display as 3 columns.'
 required: true
 translatable: false
 default_value:

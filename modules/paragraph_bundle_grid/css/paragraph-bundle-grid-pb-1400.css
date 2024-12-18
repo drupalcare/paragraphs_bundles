@@ -6,6 +6,25 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+@media (min-width: 36rem) and (max-width: 87.5rem) {
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-4"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-6"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-8"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-10"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-12"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Three columns for odd numbers */
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-3"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-5"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-7"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-9"],
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-11"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (min-width:87.5rem) {
   .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"] {
     grid-template-columns: repeat(var(--pb-col-count), 1fr);
