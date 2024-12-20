@@ -6,24 +6,37 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (min-width: 36rem) and (max-width: 75rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-4"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-6"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-8"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-10"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-12"] {
+
+@media (min-width: 36rem) and (max-width: 48rem) {
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2) {
     grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  /* Three columns for odd numbers */
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-3"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-5"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-7"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-9"],
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-11"] {
+@media (min-width: 48rem) and (max-width: 62rem) {
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2):not(.col-3) {
     grid-template-columns: repeat(3, 1fr);
   }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
+
+@media (min-width: 62rem) and (max-width: 75rem) {
+  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2):not(.col-3):not(.col-4) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-4 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 
 @media (min-width:75rem) {
   .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"] {
