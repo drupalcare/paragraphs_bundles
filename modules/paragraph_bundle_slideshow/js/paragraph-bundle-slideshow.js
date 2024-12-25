@@ -204,12 +204,12 @@
             isPaused = !isPaused;
             if (isPaused) {
               playPause.classList.replace('pb__play', 'pb__pause');
-              playPause.innerHTML = '&#9654;';
+              playPause.innerHTML = '<span>&#9654;</span>';
               playPause.setAttribute('aria-label', 'Start automatic slide show');
               manageAutoSlideInterval('clear');
             } else {
               playPause.classList.replace('pb__pause', 'pb__play');
-              playPause.innerHTML = '&#10073;&nbsp;&#10073;';
+              playPause.innerHTML = '<span>&#10073;&nbsp;&#10073;</span>';
               playPause.setAttribute('aria-label', 'Stop automatic slide show');
               manageAutoSlideInterval('start', parentId, slideTime);
             }
@@ -233,26 +233,26 @@
 
       once('init-pb__next', '.pb__slideshow-inner .pb__next', context).forEach(element => {
         element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getNextItemIndex);
+          handlePrevNextBtn(event.currentTarget.parentElement.id, getNextItemIndex);
         });
       });
 
       once('init-pb__prev', '.pb__slideshow-inner .pb__prev', context).forEach(element => {
         element.addEventListener('click', function(event) {
-          handlePrevNextBtn(event.target.parentElement.id, getPreviousItemIndex);
+          handlePrevNextBtn(event.currentTarget.parentElement.id, getPreviousItemIndex);
         });
       });
 
       once('init-bottom-nav', '.pb__slideshow-inner .pb__slide-nav .pb__slide-bottom-btn', context).forEach(element => {
         element.addEventListener('click', function(event) {
-          handleBottomNav(event.target.id, event.target.parentElement.id);
+          handleBottomNav(event.currentTarget.id, event.currentTarget.parentElement.id);
         });
 
         element.addEventListener('keydown', function(event) {
           if (event.key === 'Tab') {
             const parentSlideshow = element.closest('.pb__slideshow-inner');
             const allButtons = Array.from(parentSlideshow.querySelectorAll('.pb__slide-nav .pb__slide-bottom-btn'));
-            const currentIndex = allButtons.indexOf(event.target);
+            const currentIndex = allButtons.indexOf(event.currentTarget);
 
             if (event.shiftKey) {
               if (currentIndex > 0) {

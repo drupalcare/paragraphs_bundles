@@ -19,7 +19,7 @@
   border-block-end: none;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-button {
+.paragraph.paragraph--type--accordion-bundle .pb__accor-button {
   padding-block: var(--pb-px16);
   padding-inline: var(--pb-px12);
   display: flex;
@@ -31,12 +31,12 @@
   text-align: var(--pb-text-align-start);
 }
 
-.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
+.paragraph.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
   display: flex;
   margin-inline-start: auto;
 }
 
-.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
+.paragraph.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
   display: none;
 }
 

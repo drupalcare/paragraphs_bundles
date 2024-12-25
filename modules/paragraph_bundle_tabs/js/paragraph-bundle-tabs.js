@@ -127,6 +127,3 @@
     }
   };
 })(Drupal, drupalSettings, once);
-
-
-

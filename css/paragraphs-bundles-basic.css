@@ -77,7 +77,7 @@
 /* Button */
 .paragraph .button,
 .paragraph .pb__button {
-  display: inline-block;
+  display: inline-flex;
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
   line-height: inherit;

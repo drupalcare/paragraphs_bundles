@@ -294,13 +294,13 @@
           playPause.addEventListener('click', function() {
             if (this.classList.contains('pb__play')) {
               this.classList.replace('pb__play', 'pb__pause');
-              this.innerHTML = '&#9654;';
+              this.innerHTML = '<span>&#9654;</span>';
               isPaused = true;
               manageAutoSlideInterval(carouselId, 'clear');
             }
             else {
               this.classList.replace('pb__pause', 'pb__play');
-              this.innerHTML = '&#10073;&nbsp;&#10073;';
+              this.innerHTML = '<span>&#10073;&nbsp;&#10073;</span>';
               isPaused = false;
               manageAutoSlideInterval(carouselId, 'start', cTime);
             }
@@ -331,14 +331,14 @@
       once('init-pb__next', '.pb__caro-options .pb__next', context)
         .forEach(element => {
           element.addEventListener('click', function(event) {
-            nextBtn(getThisId(event.target.id));
+            nextBtn(getThisId(event.currentTarget.id));
           });
         });
 
       once('init-pb__prev', '.pb__caro-options .pb__prev', context)
         .forEach(element => {
           element.addEventListener('click', function(event) {
-            prevBtn(getThisId(event.target.id));
+            prevBtn(getThisId(event.currentTarget.id));
           });
         });
 

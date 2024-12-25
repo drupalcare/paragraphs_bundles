@@ -132,11 +132,11 @@
         <div class="pb__row pb__ex-button">
           <button class="pb__button pb__plus" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="{{ 'Expand all sections'|t }}" tabindex="0">
             <span class="visually-hidden">{{ 'Expand all sections'|t }}</span>
-            &#x0229E;
+            <span>&#x0229E;</span>
           </button>
           <button class="pb__button pb__minus" aria-expanded="true" aria-controls="{{ acc_id }}" aria-label="{{ 'Collapse all sections'|t }}" tabindex="-1">
             <span class="visually-hidden">{{ 'Collapse all sections'|t }}</span>
-            &#x0229F;
+            <span>&#x0229F;</span>
           </button>
         </div>
 
@@ -149,20 +149,43 @@
         <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item {% if key == 0 %} {{ pb_open_first == 'On' ? 'pb__active' : 'pb__active-no' }} {% else %} pb__active-no{% endif %}">
 
           {# Loops through the accordion sections to print the tab section titles. #}
-          <button id="{{ acc_id }}-{{ key + 1 }}" class="pb__button pb__bar pb__accor-button"
+        <button
+          id="{{ acc_id }}-{{ key + 1 }}"
+          class="pb__button pb__bar pb__accor-button"
           aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}"
           aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}"
           aria-controls="{{ acc_id }}-{{ key + 1 }}-pane"
           type="button">
+
+          <!-- Button Title -->
+          <span class="pb__button-title">
             {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
-            {% if pb_show_indicator == "On" %}
-            <div class="pb__plus-minus">
-              <span aria-hidden="{{ key == 0 and pb_open_first ? 'false' : 'true' }}" class="pb__minus" {% if key != 0 or not pb_open_first %}style="display:none;"{% endif %}>&#x02212;</span>
-              <span aria-hidden="{{ key == 0 and pb_open_first ? 'true' : 'false' }}" class="pb__plus" {% if key == 0 and pb_open_first %}style="display:none;"{% endif %}>&#x0002B;</span>
-              <span class="visually-hidden">Close or Open tab</span>
-            </div>
-            {% endif %}
-           </button>
+          </span>
+
+          <!-- Plus-Minus Indicator -->
+          {% if pb_show_indicator == "On" %}
+          <div class="pb__plus-minus" aria-hidden="true">
+            <!-- Minus Symbol -->
+            <span
+              class="pb__minus"
+              {% if key != 0 or not pb_open_first %}style="display:none;"{% endif %}
+              aria-hidden="{{ key == 0 and pb_open_first ? 'false' : 'true' }}">
+              &#x02212;
+            </span>
+
+            <!-- Plus Symbol -->
+            <span
+              class="pb__plus"
+              {% if key == 0 and pb_open_first %}style="display:none;"{% endif %}
+              aria-hidden="{{ key == 0 and pb_open_first ? 'true' : 'false' }}">
+              &#x0002B;
+            </span>
+
+            <!-- Hidden Accessible Text -->
+            <span class="visually-hidden">Close or Open tab</span>
+          </div>
+          {% endif %}
+        </button>
 
           {# Loop through all of the accordion section bodies. #}
           <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}"  aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">

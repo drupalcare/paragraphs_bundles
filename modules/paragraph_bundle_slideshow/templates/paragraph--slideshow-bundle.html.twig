@@ -158,7 +158,10 @@
         {% if pb_bottom_nav or pb_play_stop > 0 %}
           <div id="pb__slide-nav-{{ paragraph.id.value }}" role="tablist" aria-label="Slideshow Tabs" class="pb__bar pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
             {% if pb_play_stop > 0 %}
-              <button id="btn-{{ paragraph.id.value }}" type="button" role="tab" aria-label="Stop automatic slide show" class="pb__button hide-{{ pb_play_stop }} pb__play playing" aria-live="polite"><span class="visually-hidden">Play and Stop Slideshow</span>&#10073;&nbsp;&#10073;</button>
+              <button id="btn-{{ paragraph.id.value }}" type="button" role="tab" aria-label="Stop automatic slide show" class="pb__button hide-{{ pb_play_stop }} pb__play playing" aria-live="polite">
+                <span class="visually-hidden">Play and Stop Slideshow</span>
+                <span>&#10073;&nbsp;&#10073;</span>
+              </button>
             {% endif %}
             {% if pb_bottom_nav %}
               {% for key, item in content.pb_content_slideshow_section %}
@@ -169,7 +172,7 @@
                           aria-controls="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}"
                           class="pb__button pb__slide-bottom-btn{% if key == 0 %} pb__active{% endif %}"
                           {% if key != 0 %}tabindex="-1"{% endif %}>
-                    {{ key + 1 }}
+                    <span>{{ key + 1 }}</span>
                   </button>
                 {% endif %}
               {% endfor %}
@@ -179,8 +182,14 @@
 
         {% if pb_prev_next == "On" %}
           <div id="pb__slide-arrows-{{ paragraph.id.value }}" class="pb__bar pb__slide-arrows pb__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="Slideshow Navigation">
-            <button class="pb__prev pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Previous Slide"><span class="visually-hidden">Previous Slide</span>❮</button>
-            <button class="pb__next pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Next Slide"><span class="visually-hidden">Next Slide</span>❯</button>
+            <button class="pb__prev pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Previous Slide">
+              <span class="visually-hidden">Previous Slide</span>
+              <span>❮</span>
+            </button>
+            <button class="pb__next pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="Next Slide">
+              <span class="visually-hidden">Next Slide</span>
+              <span>❯</span>
+            </button>
           </div>
         {% endif %}
 

@@ -140,7 +140,7 @@
                 aria-controls="{{ tab_id }}-{{ key + 1 }}-pane"
                 aria-expanded="{% if key == 0 %}true{% else %}false{% endif %}"
                 type="button" role="tab" {% if key != 0 %}tabindex="-1"{% endif %}>
-                {{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}
+                <span>{{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}</span>
               </button>
             {% endif %}
           {% endfor %}
