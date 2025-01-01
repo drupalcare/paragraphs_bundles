@@ -20,6 +20,8 @@
       let slideIndex = 1;
       let autoSlideIntervalId = null;
       let isPaused = false;
+      let previousWidth = window.innerWidth;
+      let resizeTimeout;
 
       const manageAutoSlideInterval = (action, parentId, slideTime) => {
         if (action === 'clear') {
@@ -268,6 +270,34 @@
           }
         });
       });
+
+      // Function to reset slide height
+      const resetHeight = () => {
+        slides.forEach(slide => {
+          try {
+            const parentId = parseInt(slide.id.split('-')[1]);
+            updateSlideVisibility(parentId, slideIndex); // Adjust slide height
+          } catch (error) {
+            console.warn('Error resetting height for slide:', slide, error);
+          }
+        });
+      };
+
+      // Debounce logic for resize
+      const debounceResize = () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+          const currentWidth = window.innerWidth;
+          if (Math.abs(currentWidth - previousWidth) > 10) {
+            previousWidth = currentWidth;
+            resetHeight(); // Trigger height adjustment on significant resize
+          }
+        }, 200); // 200ms debounce interval
+      };
+
+      // Attach resize event listener
+      window.addEventListener('resize', debounceResize);
+
     }
   };
 })(Drupal, drupalSettings, once);
