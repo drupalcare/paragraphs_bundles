@@ -7,12 +7,6 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media (min-width: 36rem) and (max-width: 48rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (min-width:48rem) {
   .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"] {
     grid-template-columns: repeat(var(--pb-col-count), 1fr);

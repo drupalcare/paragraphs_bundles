@@ -7,53 +7,13 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 /* Two columns for medium screens */
-@media (min-width: 36rem) and (max-width: 48rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Three columns for larger screens, with exceptions */
-@media (min-width: 48rem) and (max-width: 62rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2):not(.col-3) {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Four columns for even larger screens, with exceptions */
-@media (min-width: 62rem) and (max-width: 75rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2):not(.col-3):not(.col-4) {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
+@media (min-width: 48rem) and (max-width: 87.5rem) {
+  /* Default 3-column layout for most column classes */
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-12,
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-10,
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-8,
+  .paragraph--type--grid-bundle .pb__grid-wrapper.col-6,
   .paragraph--type--grid-bundle .pb__grid-wrapper.col-4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-/* Five columns for extra-large screens, with exceptions */
-@media (min-width: 75rem) and (max-width: 87.5rem) {
-  .paragraph--type--grid-bundle .pb__grid-wrapper[class*="col-"]:not(.col-1):not(.col-2):not(.col-3):not(.col-4):not(.col-5) {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .paragraph--type--grid-bundle .pb__grid-wrapper.col-5 {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .paragraph--type--grid-bundle .pb__grid-wrapper.col-4 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .paragraph--type--grid-bundle .pb__grid-wrapper.col-3 {
     grid-template-columns: repeat(2, 1fr);
   }
 }
