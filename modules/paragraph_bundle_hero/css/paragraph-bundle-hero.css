@@ -26,24 +26,28 @@
   border-color: var(--pb-br);
 }
 
-.pb__hero-txt-wrapper-inner h2 {
+.pb__hero-txt-wrapper-inner h2,
+.page-wrapper .pb__hero-txt-wrapper-inner h2 {
   color: var(--pb-tx, var(--r-h1, var(--r-tx)));
 }
 
-.pb__hero-txt-wrapper-inner h2:hover {
-  color: var(--pb-tx-h, var(--r-h1, var(--r-tx)));
+.pb__hero-txt-wrapper-inner h2:hover,
+.page-wrapper .pb__hero-txt-wrapper-inner h2:hover {
+  color: var(--pb-tx-h, var(--pb-tx, var(--r-h1), var(--r-tx)));
 }
 
-.pb__hero-txt-wrapper-inner p {
+.pb__hero-txt-wrapper-inner p,
+.page-wrapper .pb__hero-txt-wrapper-inner p {
   color: var(--pb-tx, var(--r-tx, inherit));
 }
 
-.pb__hero-txt-wrapper-inner p:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
+.pb__hero-txt-wrapper-inner p:hover,
+.page-wrapper .pb__hero-txt-wrapper-inner p:hover {
+  color: var(--pb-tx-h, var(--pb-tx), var(--r-tx));
 }
 
 .pb__hero-txt-wrapper-inner:hover * {
-  border-color: var(--pb-br-h, var(--pb-br));
+  border-color: var(--pb-br-h, var(--pb-br), var(--r-br));
 }
 
 .pb__hero-txt-wrapper-inner {
