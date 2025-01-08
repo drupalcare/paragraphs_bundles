@@ -1,5 +1,4 @@
 paragraph-bundle-hero:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-hero.css: { }

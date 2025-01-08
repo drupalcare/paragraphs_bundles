@@ -1,5 +1,4 @@
 paragraph-bundle-card:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card.css: { }
@@ -7,43 +6,36 @@ paragraph-bundle-card:
     js/paragraph-bundle-card.js: { }
 
 paragraph-bundle-image-section:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-image-section.css: { }
 
 paragraph-bundle-text-section:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-text-section.css: { }
 
 paragraph-bundle-card-pb__576:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-576.css: { }
 
 paragraph-bundle-card-pb__768:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-768.css: { }
 
 paragraph-bundle-card-pb__992:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-992.css: { }
 
 paragraph-bundle-card-pb__1200:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-1200.css: { }
 
 paragraph-bundle-card-pb__1400:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-card-pb-1400.css: { }

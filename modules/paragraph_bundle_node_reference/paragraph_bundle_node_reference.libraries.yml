@@ -1,11 +1,9 @@
 paragraph-bundle-node-reference:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-node-reference.css: { }
 
 pb-conditional-fields:
-  version: VERSION
   js:
     js/pb-conditional-field.js: { }
   dependencies:

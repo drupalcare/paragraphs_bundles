@@ -1,5 +1,4 @@
 paragraph-bundle-alert:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-alert.css: { }

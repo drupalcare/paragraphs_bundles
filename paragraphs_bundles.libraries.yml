@@ -1,18 +1,15 @@
 paragraphs-bundles:
-  version: VERSION
   css:
     theme:
       css/paragraphs-bundles-basic.css: { }
       css/paragraphs-bundles-custom.css: { }
 
 paragraphs-bundles-admin:
-  version: VERSION
   css:
     theme:
       css/paragraphs-bundles-admin.css: { }
 
 color-picker:
-  version: VERSION
   css:
     theme:
       css/paragraphs-bundles-color-picker.css: { }
@@ -25,7 +22,6 @@ color-picker:
     - core/once
 
 opacity-range:
-  version: VERSION
   css:
     theme:
       css/paragraphs-bundles-opacity-range.css: { }

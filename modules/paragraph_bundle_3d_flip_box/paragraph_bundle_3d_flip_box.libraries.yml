@@ -1,5 +1,4 @@
 paragraph-bundle-3d-flip-box:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-3d-flip-box.css: { }

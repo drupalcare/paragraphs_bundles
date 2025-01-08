@@ -1,23 +1,19 @@
 paragraph-bundle-content-admin:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-content-admin.css: { }
 
 paragraph-bundle-content-base:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-content-base.css: { }
 
 hide-footer-menu:
-  version: VERSION
   css:
     theme:
       css/hide-footer-menu.css: { }
 
 hide-copyright:
-  version: VERSION
   css:
     theme:
       css/hide-copyright.css: { }

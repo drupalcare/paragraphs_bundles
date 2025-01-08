@@ -1,5 +1,4 @@
 paragraph-bundle-accordion:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-accordion.css: { }

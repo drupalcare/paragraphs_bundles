@@ -1,5 +1,4 @@
 paragraph-bundle-tabs:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-tabs.css: { }

@@ -1,5 +1,4 @@
 paragraph-bundle-modal:
-  version: VERSION
   css:
     theme:
       css/paragraph-bundle-modal.css: { }
