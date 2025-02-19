@@ -6,20 +6,19 @@ paragraph-bundle-icon:
 paragraph-bundle-icon-outlined:
   css:
     theme:
-      'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200': { type: external, minified: true }
+      css/material-symbols-outlined.css: {}
 
 paragraph-bundle-icon-rounded:
   css:
     theme:
-      'https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200': { type: external, minified: true }
+      css/material-symbols-rounded.css: {}
 
 paragraph-bundle-icon-sharp:
   css:
     theme:
-      'https://fonts.googleapis.com/css2?family=Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200': { type: external, minified: true }
+      css/material-symbols-sharp.css: {}
 
 paragraph-bundle-icon-admin:
-  version: 1.0
   css:
     theme:
       css/paragraph-bundle-icon-admin.css: {}

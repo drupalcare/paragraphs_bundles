@@ -1,18 +1,3 @@
-.material-symbols-sharp {
-  --solo-font: 'Material Symbols Sharp' !important;
-  font-family: var(--solo-font);
-}
-
-.material-symbols-outlined {
-  --solo-font: 'Material Symbols Outlined' !important;
-  font-family: var(--solo-font);
-}
-
-.material-symbols-rounded {
-  --solo-font: 'Material Symbols Rounded' !important;
-  font-family: var(--solo-font);
-}
-
 .pb__icon-header .pb__content-title {
   margin: 0;
 }
@@ -27,13 +12,13 @@
 .paragraph--type--icon-bundle > .pb__icon__inner {
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .paragraph--type--icon-bundle > .pb__icon__inner:hover {
-  box-shadow: 0 25px 50px 0 rgba(0, 0, 0, 0.35);
-  transform: scale(1.02);
+  box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.35);
+  transform: scale(1.01);
 }
