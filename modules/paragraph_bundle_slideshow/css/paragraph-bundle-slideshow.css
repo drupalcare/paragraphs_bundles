@@ -64,6 +64,8 @@
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav > .pb__active {
   font-weight: bold;
   text-decoration: underline;
+  pointer-events: none;
+  cursor: none;
 }
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On {
