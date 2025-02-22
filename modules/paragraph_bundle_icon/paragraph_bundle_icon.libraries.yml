@@ -2,6 +2,13 @@ paragraph-bundle-icon:
   css:
     theme:
       css/paragraph-bundle-icon.css: { }
+  js:
+    js/paragraph-bundle-icon.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
 
 paragraph-bundle-icon-outlined:
   css:
