@@ -153,7 +153,7 @@
           id="{{ acc_id }}-{{ key + 1 }}"
           class="pb__button pb__bar pb__accor-button"
           aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}"
-          aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}"
+          aria-expanded="{% if key == 0 and pb_open_first == 'On' %}true{% else %}false{% endif %}"
           aria-controls="{{ acc_id }}-{{ key + 1 }}-pane"
           type="button">
 
@@ -162,28 +162,18 @@
             {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
           </span>
 
-          <!-- Plus-Minus Indicator -->
           {% if pb_show_indicator == "On" %}
-          <div class="pb__plus-minus" aria-hidden="true">
+          <span class="pb__plus-minus">
             <!-- Minus Symbol -->
-            <span
-              class="pb__minus"
-              {% if key != 0 or not pb_open_first %}style="display:none;"{% endif %}
-              aria-hidden="{{ key == 0 and pb_open_first ? 'false' : 'true' }}">
-              &#x02212;
+            <span class="pb__minus"{% if key == 0 and pb_open_first == 'On' %} style="display:inline;" aria-hidden="false"{% else %} style="display:none;" aria-hidden="true"{% endif %}>&#x02212;
             </span>
 
             <!-- Plus Symbol -->
-            <span
-              class="pb__plus"
-              {% if key == 0 and pb_open_first %}style="display:none;"{% endif %}
-              aria-hidden="{{ key == 0 and pb_open_first ? 'true' : 'false' }}">
-              &#x0002B;
+            <span class="pb__plus" {% if key == 0 and pb_open_first == 'On' %} style="display:none;" aria-hidden="true"{% else %} style="display:inline;" aria-hidden="false"{% endif %}>&#x0002B;
             </span>
-
             <!-- Hidden Accessible Text -->
             <span class="visually-hidden">Close or Open tab</span>
-          </div>
+          </span>
           {% endif %}
         </button>
 

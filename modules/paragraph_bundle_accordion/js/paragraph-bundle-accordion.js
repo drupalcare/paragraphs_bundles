@@ -65,27 +65,30 @@
             const element = event.target.closest('.pb__accor-wrap-btn-item');
             const toggleButton = element.querySelector('.pb__accor-button');
             const contentPane = element.querySelector('.pb__accor-pane');
-            const plusMinus = element.querySelector('.pb__plus-minus'); // Target plus-minus container
+            const plusMinus = element.querySelector('.pb__plus-minus');
 
-            const isCurrentlyActive = toggleButton.getAttribute('aria-expanded') === 'true';
+            const isCurrentlyActive = element.classList.contains(activeClass);
 
-            // Update classes and ARIA attributes for the button
+            // Toggle active/inactive classes
             element.classList.toggle(activeClass, !isCurrentlyActive);
             element.classList.toggle(inactiveClass, isCurrentlyActive);
-            toggleButton.setAttribute('aria-expanded', String(!isCurrentlyActive));
+
+            // Set ARIA attributes
+            if (toggleButton) {
+              toggleButton.setAttribute('aria-expanded', String(!isCurrentlyActive));
+            }
             if (contentPane) {
               contentPane.setAttribute('aria-hidden', String(isCurrentlyActive));
             }
 
-            // Update plus/minus visibility and aria-hidden attributes
+            // Ensure proper plus/minus display
             if (plusMinus) {
               const plus = plusMinus.querySelector('.pb__plus');
               const minus = plusMinus.querySelector('.pb__minus');
               if (plus && minus) {
-                plus.style.display = isCurrentlyActive ? 'block' : 'none';
-                minus.style.display = isCurrentlyActive ? 'none' : 'block';
+                plus.style.display = !isCurrentlyActive ? 'none' : 'block';
+                minus.style.display = !isCurrentlyActive ? 'block' : 'none';
 
-                // Explicitly set aria-hidden for plus/minus spans
                 plus.setAttribute('aria-hidden', String(!isCurrentlyActive));
                 minus.setAttribute('aria-hidden', String(isCurrentlyActive));
               }
