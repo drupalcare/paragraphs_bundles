@@ -10,120 +10,128 @@
   'use strict';
 
   Drupal.behaviors.paragraphBundleTabs = {
-    attach: function (context, settings) {
-      // Function to hide all panes
-      function hideAllPanes(panes) {
-        panes.forEach(pane => {
-          if (pane) {
+    attach(context) {
+      const tabContainers = once('paragraphBundleTabs', '.pb__tabs-bundle', context);
+
+      tabContainers.forEach((tabContainer) => {
+        const tabButtons = tabContainer.querySelectorAll('.pb__tab-button');
+        const tabPanes = tabContainer.querySelectorAll('.pb__tab-pane');
+
+        if (tabButtons.length === 0 || tabPanes.length === 0) {
+          return; // Nothing to do if no buttons/panes.
+        }
+
+        /**
+         * Hide all panes within this container.
+         */
+        function hideAllPanes() {
+          tabPanes.forEach((pane) => {
             pane.style.display = 'none';
             pane.setAttribute('aria-hidden', 'true');
-          }
-        });
-      }
+          });
+        }
 
-      // Function to remove active class from buttons
-      function removeActiveClassFromButtons(buttons) {
-        buttons.forEach(button => {
-          if (button) {
+        /**
+         * Remove active class and reset attributes on all buttons.
+         */
+        function removeActiveClassFromButtons() {
+          tabButtons.forEach((button) => {
             button.classList.remove('pb__active');
             button.setAttribute('tabindex', '-1');
             button.setAttribute('aria-selected', 'false');
             button.setAttribute('aria-expanded', 'false');
-          }
-        });
-      }
+          });
+        }
 
-      // Function to handle tab clicks with event delegation
-      function handleTabClicks(tabContainer) {
-        tabContainer.addEventListener('click', event => {
-          const button = event.target.closest('.pb__tab-button');
-          if (!button) return;
-
-          const btnId = button.id;
-          const paneId = `${btnId}-pane`;
-          const currentPane = document.getElementById(paneId);
-          const parentId = `#pb__tab-${btnId.split('-')[1]}`;
-          const tabPanes = document.querySelectorAll(`${parentId} .pb__tab-pane`);
-          const tabButtons = document.querySelectorAll(`${parentId} .pb__tab-button`);
+        /**
+         * Activate the given tab and its corresponding pane.
+         */
+        function activateTab(button) {
+          const paneId = `${button.id}-pane`;
+          const currentPane = tabContainer.querySelector(`#${paneId}`);
 
           if (currentPane) {
-            hideAllPanes(tabPanes);
-            removeActiveClassFromButtons(tabButtons);
+            hideAllPanes();
+            removeActiveClassFromButtons();
+
             currentPane.style.display = 'block';
             currentPane.setAttribute('aria-hidden', 'false');
+
             button.classList.add('pb__active');
             button.removeAttribute('tabindex');
             button.setAttribute('aria-selected', 'true');
             button.setAttribute('aria-expanded', 'true');
             button.focus();
-          } else {
-            console.warn(`Pane with ID ${paneId} not found.`);
           }
-        });
-      }
-
-      // Function to handle keyboard navigation
-      function handleKeyboardNavigation(tabButtons) {
-        tabButtons.forEach((tab, index) => {
-          tab.addEventListener('keydown', (event) => {
-            const currentIndex = index;
-            let newIndex;
-
-            switch (event.key) {
-              case 'ArrowRight':
-                newIndex = (currentIndex + 1) % tabButtons.length;
-                break;
-              case 'ArrowLeft':
-                newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
-                break;
-              case 'Home':
-                newIndex = 0;
-                break;
-              case 'End':
-                newIndex = tabButtons.length - 1;
-                break;
-              default:
-                return;
-            }
-
-            tabButtons.forEach(t => t.setAttribute('tabindex', '-1'));
-            tabButtons[newIndex].setAttribute('tabindex', '0');
-            tabButtons[newIndex].focus();
-            event.preventDefault();
-          });
-        });
-      }
-
-      const tabContainers = once('paragraphBundleTabs', '.pb__tabs-bundle', context);
-      tabContainers.forEach(container => {
-        const tabButtons = container.querySelectorAll('.pb__tab-button');
-        const tabPanes = container.querySelectorAll('.pb__tab-pane');
-
-        // Activate the first tab and pane by default
-        if (tabButtons.length > 0) {
-          tabButtons[0].classList.add('pb__active');
-          tabButtons[0].setAttribute('aria-selected', 'true');
-          tabButtons[0].setAttribute('aria-expanded', 'true');
-          tabButtons[0].setAttribute('tabindex', '0');
-          if (tabPanes.length > 0) {
-            tabPanes[0].style.display = 'block';
-            tabPanes[0].setAttribute('aria-hidden', 'false');
+          else {
+            Drupal.debug && Drupal.debug(`Pane with ID ${paneId} not found within this tabContainer.`);
           }
         }
 
-        // Initialize tabindex for other buttons
+        /**
+         * Handle tab button clicks via event delegation.
+         */
+        tabContainer.addEventListener('click', (event) => {
+          const button = event.target.closest('.pb__tab-button');
+          if (button && tabContainer.contains(button)) {
+            activateTab(button);
+          }
+        });
+
+        /**
+         * Handle keyboard navigation between tabs.
+         */
+        function handleKeyboardNavigation(event, currentIndex) {
+          let newIndex;
+
+          switch (event.key) {
+            case 'ArrowRight':
+              newIndex = (currentIndex + 1) % tabButtons.length;
+              break;
+
+            case 'ArrowLeft':
+              newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
+              break;
+
+            case 'Home':
+              newIndex = 0;
+              break;
+
+            case 'End':
+              newIndex = tabButtons.length - 1;
+              break;
+
+            default:
+              return; // Ignore keys that aren't navigation-related.
+          }
+
+          event.preventDefault();
+
+          tabButtons.forEach((button) => button.setAttribute('tabindex', '-1'));
+          tabButtons[newIndex].setAttribute('tabindex', '0');
+          tabButtons[newIndex].focus();
+        }
+
+        // Initialize tab buttons.
         tabButtons.forEach((button, index) => {
-          if (!button.classList.contains('pb__active')) {
+          if (index === 0) {
+            button.classList.add('pb__active');
+            button.setAttribute('aria-selected', 'true');
+            button.setAttribute('aria-expanded', 'true');
+            button.setAttribute('tabindex', '0');
+          }
+          else {
             button.setAttribute('tabindex', '-1');
           }
 
-          // Attach click event listener
-          button.addEventListener('click', handleTabClicks.bind(null, container));
+          button.addEventListener('keydown', (event) => handleKeyboardNavigation(event, index));
         });
 
-        // Handle keyboard navigation
-        handleKeyboardNavigation(tabButtons);
+        // Ensure first pane is visible by default.
+        tabPanes[0].style.display = 'block';
+        tabPanes[0].setAttribute('aria-hidden', 'false');
       });
     }
   };
 })(Drupal, drupalSettings, once);
+

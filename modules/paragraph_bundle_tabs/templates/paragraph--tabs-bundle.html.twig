@@ -130,8 +130,8 @@
       <div id="{{ tab_id }}" class="pb__row pb__tabs-bundle {{ activate_vertical }}">
 
         {# Render the tab buttons. #}
-        <div class="pb__bar pb__tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist" aria-label="Tab List">
-          <span class="visually-hidden">Use the arrow keys to navigate between tabs</span>
+        <div class="pb__bar pb__tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist" aria-label="{{ 'Tab List'|t }}">
+          <span class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
               <button id="{{ tab_id }}-{{ key + 1 }}" class="pb__button pb__tab-button"
@@ -178,4 +178,3 @@
     </div>
   </div>
 </div> {# End of main wrapper #}
-
