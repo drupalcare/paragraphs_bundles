@@ -9,14 +9,12 @@
 
 ((Drupal, drupalSettings, once) => {
   'use strict';
-
   Drupal.behaviors.paragraphSlideshowBundle = {
     attach(context) {
       const slideshows = once('paragraphSlideshowBundle', '.pb__slides', context);
       if (!slideshows.length) {
         return;
       }
-
       slideshows.forEach((slideshowContainer) => {
         const parentId = parseInt(slideshowContainer.id.split('-')[1]);
         const slides = slideshowContainer.querySelectorAll('.pb__slide-item');
@@ -24,18 +22,17 @@
         const slideTime = parseInt(slideshowContainer.closest('.pb__slideshow-inner').querySelector('.pb__ps-value')?.dataset.slideTime, 10) || 0;
         const announcer = slideshowContainer.closest('.pb__slideshow-inner').querySelector('.pb__announcer');
         const totalSlides = slides.length;
-
         let slideIndex = 1;
         let autoSlideIntervalId = null;
         let isPaused = false;
-
+        // Check for reduced motion preference once.
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const updateSlideVisibility = () => {
           slides.forEach((slide, index) => {
             const isActive = (index + 1 === slideIndex);
             slide.style.display = isActive ? 'block' : 'none';
             slide.setAttribute('aria-hidden', String(!isActive));
             slide.classList.toggle('active', isActive);
-
             const focusableElements = slide.querySelectorAll('a, button, input, textarea, select');
             if (isActive) {
               slide.removeAttribute('inert');
@@ -48,13 +45,11 @@
               focusableElements.forEach(el => el.setAttribute('tabindex', '-1'));
             }
           });
-
           if (announcer) {
             announcer.textContent = `Slide ${slideIndex} selected`;
           }
           updateNavigationState();
         };
-
         const updateNavigationState = () => {
           const buttons = slideshowContainer.closest('.pb__slideshow-inner').querySelectorAll('.pb__slide-bottom-btn');
           buttons.forEach((button, index) => {
@@ -62,7 +57,6 @@
             button.setAttribute('aria-selected', String(index + 1 === slideIndex));
           });
         };
-
         const startAutoSlide = () => {
           stopAutoSlide();
           if (slideTime > 0 && !isPaused) {
@@ -72,24 +66,20 @@
             }, slideTime);
           }
         };
-
         const stopAutoSlide = () => {
           clearInterval(autoSlideIntervalId);
           autoSlideIntervalId = null;
         };
-
         const showNextSlide = () => {
           slideIndex = (slideIndex % totalSlides) + 1;
           updateSlideVisibility();
           startAutoSlide();
         };
-
         const showPreviousSlide = () => {
           slideIndex = (slideIndex === 1) ? totalSlides : slideIndex - 1;
           updateSlideVisibility();
           startAutoSlide();
         };
-
         const togglePlayPause = (event) => {
           event.preventDefault();
           isPaused = !isPaused;
@@ -104,14 +94,11 @@
           }
           playPauseButton?.blur();
         };
-
         if (playPauseButton) {
           playPauseButton.addEventListener('click', togglePlayPause);
         }
-
         const nextButton = slideshowContainer.closest('.pb__slideshow-inner').querySelector('.pb__next');
         const prevButton = slideshowContainer.closest('.pb__slideshow-inner').querySelector('.pb__prev');
-
         if (nextButton) {
           nextButton.addEventListener('click', (event) => {
             event.preventDefault();
@@ -119,7 +106,6 @@
             nextButton.blur();
           });
         }
-
         if (prevButton) {
           prevButton.addEventListener('click', (event) => {
             event.preventDefault();
@@ -127,7 +113,6 @@
             prevButton.blur();
           });
         }
-
         slideshowContainer.closest('.pb__slideshow-inner').querySelectorAll('.pb__slide-bottom-btn').forEach((button, index) => {
           button.addEventListener('click', (event) => {
             event.preventDefault();
@@ -137,10 +122,8 @@
             button.blur();
           });
         });
-
         slideshowContainer.addEventListener('mouseover', stopAutoSlide);
         slideshowContainer.addEventListener('mouseout', startAutoSlide);
-
         slideshowContainer.addEventListener('keydown', (event) => {
           if (event.key === 'ArrowRight') {
             showNextSlide();
@@ -151,7 +134,6 @@
             togglePlayPause(event);
           }
         });
-
         let touchStartX = 0;
         slideshowContainer.addEventListener('touchstart', (event) => {
           touchStartX = event.touches[0].clientX;
@@ -164,20 +146,34 @@
             showNextSlide();
           }
         });
-
         const resetHeight = () => {
           updateSlideVisibility();
         };
-
         window.addEventListener('resize', () => {
           clearTimeout(slideshowContainer.resizeTimeout);
           slideshowContainer.resizeTimeout = setTimeout(resetHeight, 200);
         });
-
+        // Apply reduced motion preference (this only affects CSS transitions, not the logic).
+        if (prefersReducedMotion) {
+          slides.forEach(slide => {
+            slide.style.transition = 'none';
+          });
+          slideshowContainer.style.transition = 'none';
+        }
+        // Visibility change handling (pause when hidden, resume when visible).
+        if (!document.paragraphSlideshowVisibilityAttached) {
+          document.paragraphSlideshowVisibilityAttached = true;
+          document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+              stopAutoSlide();
+            } else if (!isPaused) {
+              startAutoSlide();
+            }
+          });
+        }
         updateSlideVisibility();
         startAutoSlide();
       });
     }
   };
-
 })(Drupal, drupalSettings, once);
