@@ -11,20 +11,23 @@
  */
 ((Drupal, drupalSettings, once) => {
   'use strict';
-
   const carouselStates = new Map();
   let lastKnownWidth = window.innerWidth;
+  let resizeTimeout;
 
   Drupal.behaviors.paragraphBundleCarousel = {
     attach(context) {
       once('paragraphBundleCarousel', '.pb__3d-carousel', context).forEach(initCarousel);
+      if (!document.vvjCarouselVisibilityAttached) {
+        document.vvjCarouselVisibilityAttached = true;
+        document.addEventListener('visibilitychange', handleVisibilityChange);
+      }
     }
   };
 
   function initCarousel(carousel) {
     const carouselId = carousel.id;
     const uniqueId = carouselId.split('-')[2];
-
     const state = {
       container: carousel,
       cells: carousel.querySelectorAll('.pb__caro-item'),
@@ -38,19 +41,16 @@
       nextButton: document.getElementById(`next-${uniqueId}`),
       playPauseButton: document.getElementById(`btn-${uniqueId}`)
     };
-
     carouselStates.set(carousel.id, state);
-
     if (state.rotationDelay <= 0) {
       state.isPaused = true;
       updatePlayPauseButton(state, true);
     }
-
     buildCarousel(state);
     setupControls(state);
+    setupTouchEvents(state);
     updateSlide(state);
     startAutoPlay(state);
-
     Drupal.debug && Drupal.debug(`3D Carousel initialized: ${carouselId}`);
   }
 
@@ -59,19 +59,28 @@
     const theta = 360 / cells.length;
     const radius = Math.round(container.offsetWidth / 2 / Math.tan(Math.PI / cells.length));
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     cells.forEach((cell, i) => {
       cell.style.opacity = '1';
       cell.style.transform = `rotateY(${theta * i}deg) translateZ(${radius}px)`;
+
+      if (reducedMotion) {
+        cell.style.transition = 'none';
+      }
     });
 
-    cells[0].classList.add('pb__active');
+    if (reducedMotion) {
+      container.style.transition = 'none';
+    }
+
+    cells[0].classList.add('active');
     updateNavVisibility(state);
   }
 
   function setupControls(state) {
     state.nextButton?.addEventListener('click', () => manualAdvance(state, 1));
     state.prevButton?.addEventListener('click', () => manualAdvance(state, -1));
-
     if (state.playPauseButton) {
       state.playPauseButton.style.display = 'flex';
       state.playPauseButton.addEventListener('click', () => togglePlayPause(state));
@@ -82,7 +91,6 @@
         }
       });
     }
-
     state.container.addEventListener('keydown', (event) => {
       if (event.key === 'ArrowRight') {
         manualAdvance(state, 1);
@@ -90,7 +98,6 @@
         manualAdvance(state, -1);
       }
     });
-
     state.container.addEventListener('mouseenter', () => pauseAutoPlay(state));
     state.container.addEventListener('mouseleave', () => resumeAutoPlay(state));
   }
@@ -102,48 +109,49 @@
   }
 
   function advanceSlide(state) {
-    const { cells } = state;
+    const {
+      cells
+    } = state;
     const cellCount = cells.length;
-
     state.currentIndex += state.direction;
-
     if (state.currentIndex >= cellCount) {
-      state.currentIndex = cellCount - 1;
+      // Bounce immediately to previous slide.
+      state.currentIndex = cellCount - 2;
       state.direction = -1;
     } else if (state.currentIndex < 0) {
-      state.currentIndex = 0;
+      // Bounce immediately to next slide.
+      state.currentIndex = 1;
       state.direction = 1;
     }
-
     updateSlide(state);
   }
 
   function updateSlide(state) {
-    const { cells, currentIndex, slideNumberElement, container } = state;
+    const {
+      cells,
+      currentIndex,
+      slideNumberElement,
+      container
+    } = state;
     const theta = 360 / cells.length;
     const radius = Math.round(container.offsetWidth / 2 / Math.tan(Math.PI / cells.length));
     const angle = theta * currentIndex * -1;
-
     container.style.transition = 'transform 0.8s ease-in-out';
     container.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
-
     cells.forEach((cell, index) => {
       const isActive = index === currentIndex;
       cell.setAttribute('aria-hidden', !isActive);
       updateFocusableElements(cell, isActive);
-
       if (isActive) {
         cell.classList.add('pb__active');
       } else {
         cell.classList.remove('pb__active');
       }
     });
-
     if (slideNumberElement) {
       slideNumberElement.setAttribute('aria-label', `Slide ${currentIndex + 1} of ${cells.length}`);
       slideNumberElement.textContent = currentIndex + 1;
     }
-
     updateNavVisibility(state);
   }
 
@@ -154,8 +162,12 @@
   }
 
   function updateNavVisibility(state) {
-    const { currentIndex, prevButton, nextButton, cells } = state;
-
+    const {
+      currentIndex,
+      prevButton,
+      nextButton,
+      cells
+    } = state;
     if (prevButton) {
       if (currentIndex === 0) {
         prevButton.classList.add('hidden');
@@ -165,7 +177,6 @@
         prevButton.setAttribute('tabindex', '0');
       }
     }
-
     if (nextButton) {
       if (currentIndex === cells.length - 1) {
         nextButton.classList.add('hidden');
@@ -180,7 +191,6 @@
   function togglePlayPause(state) {
     state.isPaused = !state.isPaused;
     updatePlayPauseButton(state, state.isPaused);
-
     if (state.isPaused) {
       pauseAutoPlay(state);
     } else {
@@ -192,7 +202,6 @@
     if (!state.playPauseButton) {
       return;
     }
-
     if (isPaused) {
       state.playPauseButton.classList.remove('pb__pause');
       state.playPauseButton.classList.add('pb__play');
@@ -205,6 +214,31 @@
       state.playPauseButton.innerHTML = '<span>&#10073;&#10073;</span>';
       state.playPauseButton.setAttribute('aria-label', 'Pause slideshow');
       state.playPauseButton.setAttribute('aria-pressed', 'true');
+    }
+  }
+
+  function setupTouchEvents(state) {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    state.container.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+    });
+    state.container.addEventListener('touchmove', (e) => {
+      touchEndX = e.touches[0].clientX;
+    });
+    state.container.addEventListener('touchend', () => {
+      handleSwipe(state, touchStartX, touchEndX);
+    });
+  }
+
+  function handleSwipe(state, startX, endX) {
+    const swipeThreshold = 50; // Minimum distance to count as a swipe.
+    if (startX - endX > swipeThreshold) {
+      // Swiped left = next slide.
+      manualAdvance(state, 1);
+    } else if (endX - startX > swipeThreshold) {
+      // Swiped right = previous slide.
+      manualAdvance(state, -1);
     }
   }
 
@@ -225,20 +259,35 @@
     }
   }
 
+  function handleVisibilityChange() {
+    carouselStates.forEach((state) => {
+      if (document.hidden) {
+        pauseAutoPlay(state);
+      } else {
+        updateSlide(state);
+        startAutoPlay(state);
+      }
+    });
+  }
+
   function restartAutoPlay(state) {
     pauseAutoPlay(state);
     startAutoPlay(state);
   }
 
   window.addEventListener('resize', () => {
-    const newWidth = window.innerWidth;
-    if (Math.abs(newWidth - lastKnownWidth) >= 50) {
-      carouselStates.forEach((state) => {
-        buildCarousel(state);
-        updateSlide(state);
-      });
-      lastKnownWidth = newWidth;
-    }
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      const newWidth = window.innerWidth;
+      if (Math.abs(newWidth - lastKnownWidth) >= 50) {
+        carouselStates.forEach((state) => {
+          buildCarousel(state);
+          updateSlide(state);
+        });
+        lastKnownWidth = newWidth;
+      }
+    }, 200);  // Throttle to 200ms
   });
+
 
 })(Drupal, drupalSettings, once);
