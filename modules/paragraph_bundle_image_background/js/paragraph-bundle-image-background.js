@@ -9,27 +9,24 @@
 ((Drupal, once) => {
   'use strict';
   Drupal.behaviors.paragraphImageBackground = {
-    attach: (context, settings) => {
-      once('paragraphImageBackground', '.paragraph--type--image-background-bundle', context).forEach((element) => {
-        function checkBreakpoint(paragraph) {
-          var windowWidth = window.innerWidth;
-          var breakpoint = parseInt(paragraph.dataset.breakpoint || 0, 10);
-          var imageBig = paragraph.dataset.imageBig;
-          var imageSmall = paragraph.dataset.imageSmall || imageBig; // Fallback to big screen image if small screen image is not provided
+    attach: (context) => {
+      once('paragraphImageBackground', '.paragraph--type--image-background-bundle', context).forEach((paragraph) => {
+        const breakpoint = parseInt(paragraph.dataset.breakpoint || 0, 10);
+        const imageBig = paragraph.dataset.imageBig;
+        const imageSmall = paragraph.dataset.imageSmall || imageBig;
 
-          if (windowWidth <= breakpoint && breakpoint !== 0) {
-            paragraph.style.backgroundImage = 'url(' + imageSmall + ')';
+        function checkBreakpoint() {
+          if (window.innerWidth <= breakpoint && breakpoint !== 0) {
+            paragraph.style.backgroundImage = `url(${imageSmall})`;
           } else {
-            paragraph.style.backgroundImage = 'url(' + imageBig + ')';
+            paragraph.style.backgroundImage = `url(${imageBig})`;
           }
         }
 
-        // Initial check
-        checkBreakpoint(element);
-
-        // Check on window resize
-        window.addEventListener('resize', () => checkBreakpoint(element));
+        checkBreakpoint();
+        window.addEventListener('resize', checkBreakpoint);
       });
     }
   };
 })(Drupal, once);
+
