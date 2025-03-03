@@ -145,10 +145,15 @@
     {% endif %}
 
     <!-- Carousel Container -->
-    <div id="{{ carousel_id }}" class="pb__3d-carousel" role="group" aria-roledescription="carousel" aria-labelledby="index-{{ paragraph.id.value }}">
+    <div id="{{ carousel_id }}"
+         class="pb__3d-carousel"
+         role="group"
+         aria-roledescription="carousel"
+         aria-labelledby="index-{{ paragraph.id.value }}"
+         data-rotation-delay="{{ pb_play_stop }}">
 
       {% for key, item in valid_slides %}
-      <div id="item-{{ paragraph.id.value }}-{{ loop.index }}" class="pb__caro-item item-{{ paragraph.id.value }}-{{ loop.index }}" role="tabpanel" aria-hidden="{% if loop.first %}false{% else %}true{% endif %}" tabindex="{% if loop.first %}0{% else %}-1{% endif %}" aria-labelledby="label-item-{{ paragraph.id.value }}-{{ loop.index }}">
+      <div id="item-{{ paragraph.id.value }}-{{ loop.index }}" class="pb__caro-item item-{{ paragraph.id.value }}-{{ loop.index }}" role="group" aria-hidden="{% if loop.first %}false{% else %}true{% endif %}" tabindex="{% if loop.first %}0{% else %}-1{% endif %}" aria-labelledby="label-item-{{ paragraph.id.value }}-{{ loop.index }}">
         <div id="label-item-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">Slide {{ loop.index }} of {{ total_slides }}</div>
         {{ item }}
       </div>
@@ -162,21 +167,22 @@
           <span class="visually-hidden">Previous Slide</span>
           <span>&#10094;</span>
         </button>
-        <span id="index-{{ paragraph.id.value }}" class="pb__slide-number" aria-label="Slide 1 of {{ total_slides }}" aria-live="polite"></span>
+        <span id="index-{{ paragraph.id.value }}" class="pb__slide-number" aria-label="Slide 1 of {{ total_slides }}" role="status" aria-live="polite"></span>
+
         {% if pb_play_stop > 0 %}
-          <button id="btn-{{ paragraph.id.value }}" class="pb__button hide-{{ pb_play_stop }} pb__play" aria-controls="{{ carousel_id }}" aria-label="Play Slideshow">
-            <span class="visually-hidden">Play Pause Slideshow</span>
-            <span>&#10073;&nbsp;&#10073;</span>
-          </button>
+        <button id="btn-{{ paragraph.id.value }}"
+                class="pb__button hide-{{ pb_play_stop }} pb__pause"
+                aria-controls="{{ carousel_id }}"
+                aria-label="{{ 'Pause slideshow'|t }}"
+                aria-pressed="true">
+          <span class="visually-hidden">{{ 'Pause slideshow'|t }}</span>
+          <span>&#10073;&nbsp;&#10073;</span>
+        </button>
         {% endif %}
         <button id="next-{{ paragraph.id.value }}" role="button" class="pb__button pb__next" aria-controls="{{ carousel_id }}" aria-label="Next Slide">
           <span class="visually-hidden">Next Slide</span>
           <span>&#10095;</span>
         </button>
-      </div>
-
-      <div class="pb__ps-value" aria-hidden="true">
-        {{ pb_play_stop }}
       </div>
     </div>
 
