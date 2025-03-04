@@ -8,6 +8,14 @@
  */
 ((Drupal, drupalSettings, once) => {
   'use strict';
+
+  function debounce(func, delay) {
+    let timer;
+    return function() {
+      clearTimeout(timer);
+      timer = setTimeout(func, delay);
+    };
+  }
   Drupal.behaviors.paragraphSlideshowBundle = {
     attach(context) {
       const slideshows = once('paragraphSlideshowBundle', '.pb__slideshow-inner', context);
@@ -27,7 +35,8 @@
         let slideIndex = 1;
         let isPaused = slideTime === 0;
         let autoSlideIntervalId = null;
-        let resizeTimeout;
+        let previousVisibility = false;
+        let isVisible = true;
         const updateSlideVisibility = () => {
           slides.forEach((slide, index) => {
             const isActive = (index + 1 === slideIndex);
@@ -45,18 +54,13 @@
         };
         const adjustHeight = () => {
           const computedStyle = window.getComputedStyle(slideshow);
-
           const contentHeight = slides[slideIndex - 1].offsetHeight;
-
           const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
           const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
           const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
           const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0;
-
           const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
-
           slideshow.style.height = `${totalHeight}px`;
-
         };
         const announceSlide = () => {
           announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
@@ -69,7 +73,7 @@
         };
         const startAutoSlide = () => {
           stopAutoSlide();
-          if (slideTime > 0 && !isPaused) {
+          if (slideTime > 0 && !isPaused && isVisible) {
             autoSlideIntervalId = setInterval(nextSlide, slideTime);
           }
         };
@@ -95,6 +99,26 @@
           updateSlideVisibility();
           startAutoSlide();
         };
+        const applyReducedMotion = () => {
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            isPaused = true;
+            stopAutoSlide();
+            slideshow.classList.add('reduced-motion');
+            playPauseButton.innerHTML = '<span>&#9654;</span>';
+          }
+        };
+        const observer = new IntersectionObserver((entries) => {
+          const entry = entries[0];
+          isVisible = entry.isIntersecting;
+          if (isVisible && !isPaused) {
+            startAutoSlide();
+          } else {
+            stopAutoSlide();
+          }
+        }, {
+          threshold: 0.5
+        });
+        observer.observe(slideshowInner);
         playPauseButton?.addEventListener('click', togglePlayPause);
         nextButton?.addEventListener('click', nextSlide);
         prevButton?.addEventListener('click', prevSlide);
@@ -119,22 +143,54 @@
             togglePlayPause();
           }
         });
-        window.addEventListener('resize', () => {
-          clearTimeout(resizeTimeout);
-          resizeTimeout = setTimeout(adjustHeight, 200);
-        });
-        document.addEventListener('visibilitychange', () => {
-          document.hidden ? stopAutoSlide() : startAutoSlide();
-        });
+
+        function handleSlideshowVisibilityChange() {
+          if (document.hidden) {
+            stopAutoSlide();
+          } else {
+            isVisible = isMostlyVisible(slideshowInner);
+            if (isVisible && !isPaused) {
+              startAutoSlide();
+            }
+          }
+        }
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           isPaused = true;
           stopAutoSlide();
           slideshow.classList.add('reduced-motion');
           playPauseButton.innerHTML = '<span>&#9654;</span>';
         }
+        const isMostlyVisible = (element) => {
+          const rect = element.getBoundingClientRect();
+          const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+          return visibleHeight / rect.height > 0.2;
+        };
+
+        function handleVisibility() {
+          const currentlyVisible = isMostlyVisible(slideshowInner);
+          if (currentlyVisible !== previousVisibility) {
+            previousVisibility = currentlyVisible;
+            if (currentlyVisible && !isPaused) {
+              startAutoSlide();
+            } else {
+              stopAutoSlide();
+            }
+          }
+        }
+
+        function setupListeners() {
+          document.addEventListener('scroll', debounce(handleVisibility, 200));
+          window.addEventListener('resize', debounce(() => {
+            adjustHeight();
+            handleVisibility();
+          }, 200));
+          document.addEventListener('visibilitychange', handleSlideshowVisibilityChange);
+        }
         // Initialize
+        applyReducedMotion();
         updateSlideVisibility();
         startAutoSlide();
+        setupListeners();
       });
     }
   };

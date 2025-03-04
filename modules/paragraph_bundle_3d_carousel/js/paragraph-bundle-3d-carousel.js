@@ -12,8 +12,17 @@
 ((Drupal, drupalSettings, once) => {
   'use strict';
   const carouselStates = new Map();
+  const previousVisibility = new Map();
   let lastKnownWidth = window.innerWidth;
   let resizeTimeout;
+
+  function debounce(func, delay) {
+    let timer;
+    return function() {
+      clearTimeout(timer);
+      timer = setTimeout(func, delay);
+    };
+  }
   Drupal.behaviors.paragraphBundleCarousel = {
     attach(context) {
       once('paragraphBundleCarousel', '.pb__3d-carousel', context).forEach(initCarousel);
@@ -40,6 +49,8 @@
       nextButton: document.getElementById(`next-${uniqueId}`),
       playPauseButton: document.getElementById(`btn-${uniqueId}`)
     };
+    const initiallyVisible = isMostlyVisible(state.container);
+    previousVisibility.set(carousel.id, initiallyVisible);
     carouselStates.set(carousel.id, state);
     if (state.rotationDelay <= 0) {
       state.isPaused = true;
@@ -49,7 +60,10 @@
     setupControls(state);
     setupTouchEvents(state);
     updateSlide(state);
-    startAutoPlay(state);
+    // Only start autoPlay if it's visible and not paused.
+    if (initiallyVisible && !state.isPaused) {
+      startAutoPlay(state);
+    }
     Drupal.debug && Drupal.debug(`3D Carousel initialized: ${carouselId}`);
   }
 
@@ -260,7 +274,7 @@
     carouselStates.forEach((state) => {
       if (document.hidden) {
         pauseAutoPlay(state);
-      } else {
+      } else if (isMostlyVisible(state.container) && !state.isPaused) {
         updateSlide(state);
         startAutoPlay(state);
       }
@@ -271,7 +285,6 @@
     pauseAutoPlay(state);
     startAutoPlay(state);
   }
-
   const resetCarousel = () => {
     carouselStates.forEach((state) => {
       state.currentIndex = 0;
@@ -281,7 +294,26 @@
       restartAutoPlay(state);
     });
   };
+  const isMostlyVisible = (element) => {
+    const rect = element.getBoundingClientRect();
+    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+    return visibleHeight / rect.height > 0.2;
+  };
 
+  function handleCarouselVisibility() {
+    carouselStates.forEach((state, carouselId) => {
+      const currentlyVisible = isMostlyVisible(state.container);
+      const wasVisible = previousVisibility.get(carouselId) ?? false;
+      if (currentlyVisible !== wasVisible) {
+        previousVisibility.set(carouselId, currentlyVisible);
+        if (currentlyVisible && !state.isPaused) {
+          startAutoPlay(state);
+        } else {
+          pauseAutoPlay(state);
+        }
+      }
+    });
+  }
   const handleResizeOrRotate = () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
@@ -292,9 +324,10 @@
       }
     }, 200);
   };
-
-  window.addEventListener('resize', handleResizeOrRotate);
-  window.addEventListener('orientationchange', handleResizeOrRotate);
-
-
+  document.addEventListener('scroll', debounce(handleCarouselVisibility, 200));
+  window.addEventListener('orientationchange', debounce(handleResizeOrRotate, 200));
+  window.addEventListener('resize', debounce(() => {
+    handleCarouselVisibility();
+    handleResizeOrRotate();
+  }, 200));
 })(Drupal, drupalSettings, once);
