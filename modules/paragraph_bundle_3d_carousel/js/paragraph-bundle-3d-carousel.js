@@ -14,7 +14,6 @@
   const carouselStates = new Map();
   let lastKnownWidth = window.innerWidth;
   let resizeTimeout;
-
   Drupal.behaviors.paragraphBundleCarousel = {
     attach(context) {
       once('paragraphBundleCarousel', '.pb__3d-carousel', context).forEach(initCarousel);
@@ -55,25 +54,23 @@
   }
 
   function buildCarousel(state) {
-    const { cells, container } = state;
+    const {
+      cells,
+      container
+    } = state;
     const theta = 360 / cells.length;
     const radius = Math.round(container.offsetWidth / 2 / Math.tan(Math.PI / cells.length));
-
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
     cells.forEach((cell, i) => {
       cell.style.opacity = '1';
       cell.style.transform = `rotateY(${theta * i}deg) translateZ(${radius}px)`;
-
       if (reducedMotion) {
         cell.style.transition = 'none';
       }
     });
-
     if (reducedMotion) {
       container.style.transition = 'none';
     }
-
     cells[0].classList.add('active');
     updateNavVisibility(state);
   }
@@ -274,7 +271,6 @@
     pauseAutoPlay(state);
     startAutoPlay(state);
   }
-
   window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
@@ -286,8 +282,6 @@
         });
         lastKnownWidth = newWidth;
       }
-    }, 200);  // Throttle to 200ms
+    }, 200); // Throttle to 200ms
   });
-
-
 })(Drupal, drupalSettings, once);
