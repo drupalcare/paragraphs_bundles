@@ -44,7 +44,19 @@
           adjustHeight();
         };
         const adjustHeight = () => {
-          slideshow.style.height = `${slides[slideIndex - 1].offsetHeight}px`;
+          const computedStyle = window.getComputedStyle(slideshow);
+
+          const contentHeight = slides[slideIndex - 1].offsetHeight;
+
+          const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
+          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
+          const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
+          const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0;
+
+          const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+
+          slideshow.style.height = `${totalHeight}px`;
+
         };
         const announceSlide = () => {
           announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
