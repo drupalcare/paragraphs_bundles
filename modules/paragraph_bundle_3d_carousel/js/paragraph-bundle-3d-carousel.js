@@ -271,17 +271,30 @@
     pauseAutoPlay(state);
     startAutoPlay(state);
   }
-  window.addEventListener('resize', () => {
+
+  const resetCarousel = () => {
+    carouselStates.forEach((state) => {
+      state.currentIndex = 0;
+      state.direction = 1;
+      buildCarousel(state);
+      updateSlide(state);
+      restartAutoPlay(state);
+    });
+  };
+
+  const handleResizeOrRotate = () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       const newWidth = window.innerWidth;
       if (Math.abs(newWidth - lastKnownWidth) >= 50) {
-        carouselStates.forEach((state) => {
-          buildCarousel(state);
-          updateSlide(state);
-        });
+        resetCarousel();
         lastKnownWidth = newWidth;
       }
-    }, 200); // Throttle to 200ms
-  });
+    }, 200);
+  };
+
+  window.addEventListener('resize', handleResizeOrRotate);
+  window.addEventListener('orientationchange', handleResizeOrRotate);
+
+
 })(Drupal, drupalSettings, once);
