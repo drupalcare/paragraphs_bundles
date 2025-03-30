@@ -23,6 +23,12 @@
   position: relative;
 }
 
+.paragraph--type--slideshow-bundle .pb__slide-item-inner {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  overflow: hidden;
+}
+
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows {
   background-color: transparent !important;
   width: 100%;
