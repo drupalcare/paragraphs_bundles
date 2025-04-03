@@ -45,10 +45,6 @@
   width: 100%;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > button {
-  padding-block-end: 0;
-}
-
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
