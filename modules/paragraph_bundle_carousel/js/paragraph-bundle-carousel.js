@@ -129,11 +129,9 @@
   function setWrapperSize(state) {
     const itemsVisible = getItemsVisible(state);
     if (!state.items.length) return;
-
     const visibleItems = getVisibleItems(state);
     const gap = state.config.gap || 0;
     const totalGap = (itemsVisible - 1) * gap;
-
     if (state.config.orientation === 'vertical') {
       const totalHeight = visibleItems.reduce((sum, item) => {
         return sum + item.getBoundingClientRect().height;
@@ -147,7 +145,6 @@
       state.wrapper.style.width = `${totalWidth + totalGap}px`;
       state.wrapper.style.height = '';
     }
-
     if (state.wrapper.style.visibility !== 'visible') {
       state.wrapper.style.visibility = 'visible';
       state.wrapper.classList.add('is-visible');
@@ -215,8 +212,23 @@
   }
 
   function bindNavigation(state) {
-    state.nextButton?.addEventListener('click', () => nextSlide(state));
-    state.prevButton?.addEventListener('click', () => prevSlide(state));
+    const shouldAutoplay = state.config.slideTime > 0 &&
+      state.config.slideTime >= 1000 &&
+      state.config.slideTime <= 15000;
+    const resetAutoSlide = () => {
+      if (shouldAutoplay && state.autoSlideTimer) {
+        clearInterval(state.autoSlideTimer);
+        bindAutoSlide(state);
+      }
+    };
+    state.nextButton?.addEventListener('click', () => {
+      nextSlide(state);
+      resetAutoSlide();
+    });
+    state.prevButton?.addEventListener('click', () => {
+      prevSlide(state);
+      resetAutoSlide();
+    });
   }
 
   function bindTouch(state) {
