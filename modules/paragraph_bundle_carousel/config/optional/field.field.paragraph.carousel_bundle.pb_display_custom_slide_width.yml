@@ -1,0 +1,25 @@
+uuid: 6ce2482c-a5fe-4c85-afe1-a4a70e8e468a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_custom_slide_width
+    - paragraphs.paragraphs_type.carousel_bundle
+id: paragraph.carousel_bundle.pb_display_custom_slide_width
+field_name: pb_display_custom_slide_width
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Slide Width'
+description: 'Add fixed-width for each slide for design precision (e.g., 220px), leave it zero and the item will have auto width.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: px
+field_type: integer

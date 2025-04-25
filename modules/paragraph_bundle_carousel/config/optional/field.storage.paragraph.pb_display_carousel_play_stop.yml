@@ -1,0 +1,68 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_carousel_play_stop
+field_name: pb_display_carousel_play_stop
+entity_type: paragraph
+type: list_integer
+settings:
+  allowed_values:
+    -
+      value: 0
+      label: '0 s'
+    -
+      value: 1000
+      label: '1 s'
+    -
+      value: 2000
+      label: '2 s'
+    -
+      value: 3000
+      label: '3 s'
+    -
+      value: 4000
+      label: '4 s'
+    -
+      value: 5000
+      label: '5 s'
+    -
+      value: 6000
+      label: '6 s'
+    -
+      value: 7000
+      label: '7 s'
+    -
+      value: 8000
+      label: '8 s'
+    -
+      value: 9000
+      label: '9 s'
+    -
+      value: 10000
+      label: 10s
+    -
+      value: 11000
+      label: '11 s'
+    -
+      value: 12000
+      label: '12 s'
+    -
+      value: 13000
+      label: '13 s'
+    -
+      value: 14000
+      label: '14 s'
+    -
+      value: 15000
+      label: '15 s'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

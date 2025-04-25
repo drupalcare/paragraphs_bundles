@@ -1,0 +1,18 @@
+uuid: b889f2fe-3cd8-4556-b495-e3d01d57132a
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+id: paragraph.pb_display_activate_looping
+field_name: pb_display_activate_looping
+entity_type: paragraph
+type: boolean
+settings: {  }
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -1,0 +1,21 @@
+uuid: c4ac102c-0729-4f51-adb5-d278343630fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_activate_looping
+    - paragraphs.paragraphs_type.carousel_bundle
+id: paragraph.carousel_bundle.pb_display_activate_looping
+field_name: pb_display_activate_looping
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Activate Looping'
+description: 'This feature only works if you set the field "Time in seconds" number bigger than zero.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

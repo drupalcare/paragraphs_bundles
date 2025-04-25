@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_border_radius
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - options
+id: paragraph.carousel_bundle.pb_display_border_radius
+field_name: pb_display_border_radius
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Border Radius'
+description: 'Incorporate pre-set custom CSS classes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,205 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
+    - field.field.paragraph.carousel_bundle.pb_content_carousel_body
+    - field.field.paragraph.carousel_bundle.pb_content_title
+    - field.field.paragraph.carousel_bundle.pb_display_activate_looping
+    - field.field.paragraph.carousel_bundle.pb_display_bg
+    - field.field.paragraph.carousel_bundle.pb_display_bg_hover
+    - field.field.paragraph.carousel_bundle.pb_display_bg_opacity
+    - field.field.paragraph.carousel_bundle.pb_display_big_screen
+    - field.field.paragraph.carousel_bundle.pb_display_border
+    - field.field.paragraph.carousel_bundle.pb_display_border_color
+    - field.field.paragraph.carousel_bundle.pb_display_border_hover
+    - field.field.paragraph.carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_breakpoints
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_play_stop
+    - field.field.paragraph.carousel_bundle.pb_display_custom_slide_width
+    - field.field.paragraph.carousel_bundle.pb_display_margin
+    - field.field.paragraph.carousel_bundle.pb_display_padding
+    - field.field.paragraph.carousel_bundle.pb_display_shadow
+    - field.field.paragraph.carousel_bundle.pb_display_small_screen
+    - field.field.paragraph.carousel_bundle.pb_display_text
+    - field.field.paragraph.carousel_bundle.pb_display_text_hover
+    - field.field.paragraph.carousel_bundle.pb_display_vertical_carousel
+    - field.field.paragraph.carousel_bundle.pb_display_width
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - entity_reference_revisions
+    - options
+    - paragraphs_bundles
+id: paragraph.carousel_bundle.default
+targetEntityType: paragraph
+bundle: carousel_bundle
+mode: default
+content:
+  pb_display_slide_gap:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  pb_content_carousel_body:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 22
+    region: content
+  pb_content_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  pb_display_activate_looping:
+    type: boolean
+    label: hidden
+    settings:
+      format: boolean
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  pb_display_bg:
+    type: color_text_formatter_rgb
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_display_bg_hover:
+    type: color_text_formatter_hex
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  pb_display_bg_opacity:
+    type: range_number_formatter
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  pb_display_big_screen:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  pb_display_border:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pb_display_border_color:
+    type: color_text_formatter_hex
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  pb_display_border_hover:
+    type: color_text_formatter_hex
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  pb_display_border_radius:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  pb_display_carousel_breakpoints:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  pb_display_carousel_play_stop:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  pb_display_custom_slide_width:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  pb_display_margin:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 11
+    region: content
+  pb_display_padding:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 12
+    region: content
+  pb_display_shadow:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 13
+    region: content
+  pb_display_small_screen:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  pb_display_text:
+    type: color_text_formatter_hex
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  pb_display_text_hover:
+    type: color_text_formatter_hex
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  pb_display_vertical_carousel:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  pb_display_width:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 14
+    region: content
+hidden: {  }

@@ -1,0 +1,181 @@
+/* Base Carousel Styles */
+.paragraph--type--carousel-bundle .pb__carousel-outer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+  width: auto; /* Will be set dynamically in JS */
+  height: auto; /* Will be set dynamically in JS */
+  margin: 0 auto;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-wrapper {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-wrapper.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-items {
+  display: flex;
+  will-change: transform;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(0); /* or translateY(0) for vertical */
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-item {
+  flex: 0 0 auto;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  scroll-snap-align: start;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-item.active-slide {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-item.non-active-slide {
+  opacity: 0.25;
+  pointer-events: none;
+}
+
+/* Horizontal Layout */
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-items {
+  flex-direction: row;
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-outer {
+  padding: 0 50px;
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__button {
+  pointer-events: all;
+}
+
+/* Vertical Layout */
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-items {
+  flex-direction: column;
+  transform: translateY(0);
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-outer {
+  padding: 50px 0;
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-item {
+  width: 100%;
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options .pb__button {
+  pointer-events: all;
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel button svg {
+  transform: rotate(-90deg);
+}
+
+/* Hybrid Layout */
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-items {
+  flex-direction: row;
+}
+
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-outer {
+  padding: 0 50px;
+}
+
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  pointer-events: none;
+  padding: 0;
+  margin: 0;
+  z-index: 1;
+}
+
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options .pb__button {
+  pointer-events: all;
+}
+
+/* Carousel Button Styles */
+.paragraph--type--carousel-bundle .pb__carousel-options .pb__button {
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  padding: 0;
+  margin: 0;
+  transition: all 0.3s ease;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-options button svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Reduced motion accessibility */
+.paragraph--type--carousel-bundle .reduced-motion .pb__carousel-item {
+  transition: none !important;
+}
+
+/* Optional: Hide scrollbars */
+.paragraph--type--carousel-bundle .pb__carousel-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-options .pb__button[style*='visibility:hidden'] {
+  opacity: 0;
+  pointer-events: none;
+}

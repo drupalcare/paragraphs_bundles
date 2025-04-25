@@ -1,0 +1,36 @@
+paragraph-bundle-carousel:
+  css:
+    theme:
+      css/paragraph-bundle-carousel.css: { }
+  js:
+    js/paragraph-bundle-carousel.js: { }
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+
+paragraph-bundle-carousel-pb__576:
+  css:
+    theme:
+      css/paragraph-bundle-carousel-pb-576.css: { weight: 202 }
+
+paragraph-bundle-carousel-pb__768:
+  css:
+    theme:
+      css/paragraph-bundle-carousel-pb-768.css: { weight: 202 }
+
+paragraph-bundle-carousel-pb__992:
+  css:
+    theme:
+      css/paragraph-bundle-carousel-pb-992.css: { weight: 202 }
+
+paragraph-bundle-carousel-pb__1200:
+  css:
+    theme:
+      css/paragraph-bundle-carousel-pb-1200.css: { weight: 202 }
+
+paragraph-bundle-carousel-pb__1400:
+  css:
+    theme:
+      css/paragraph-bundle-carousel-pb-1400.css: { weight: 202 }

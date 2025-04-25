@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_carousel_breakpoints
+field_name: pb_display_carousel_breakpoints
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: pb__576
+      label: '576px / 36rem'
+    -
+      value: pb__768
+      label: '768px / 48rem'
+    -
+      value: pb__992
+      label: '992px / 62rem'
+    -
+      value: pb__1200
+      label: '1200px / 75rem'
+    -
+      value: pb__1400
+      label: '1400px / 87.5rem'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

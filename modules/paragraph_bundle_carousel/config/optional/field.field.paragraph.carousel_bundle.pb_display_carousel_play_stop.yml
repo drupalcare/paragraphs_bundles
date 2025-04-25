@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_carousel_play_stop
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - options
+id: paragraph.carousel_bundle.pb_display_carousel_play_stop
+field_name: pb_display_carousel_play_stop
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Time in seconds'
+description: 'By default, the carousel scroll every 5 seconds. You can modify this interval. If set between 1-15 seconds, a play/pause button appears and the carousel pauses on mouse hover. To stop the carousel, set the field value to 0.'
+required: true
+translatable: false
+default_value:
+  -
+    value: 5000
+default_value_callback: ''
+settings: {  }
+field_type: list_integer

@@ -1,0 +1,39 @@
+/**
+ * @file
+ * Paragraph bUndle caRoUsel.
+ *
+ * Filename:     paragraph-bundle-carousel-pb-576.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+@media (max-width:36rem) {
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-outer {
+    padding: 50px 0;
+  }
+
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-items {
+    flex-direction: column;
+    transform: translateY(0);
+  }
+
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-item {
+    width: 100%;
+  }
+
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options {
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+  }
+
+  .paragraph--type--carousel-bundle.hybrid-carousel button svg {
+    transform: rotate(-90deg);
+  }
+
+}

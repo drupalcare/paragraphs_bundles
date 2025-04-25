@@ -1,0 +1,266 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
+    - field.field.paragraph.carousel_bundle.pb_content_carousel_body
+    - field.field.paragraph.carousel_bundle.pb_content_title
+    - field.field.paragraph.carousel_bundle.pb_display_activate_looping
+    - field.field.paragraph.carousel_bundle.pb_display_bg
+    - field.field.paragraph.carousel_bundle.pb_display_bg_hover
+    - field.field.paragraph.carousel_bundle.pb_display_bg_opacity
+    - field.field.paragraph.carousel_bundle.pb_display_big_screen
+    - field.field.paragraph.carousel_bundle.pb_display_border
+    - field.field.paragraph.carousel_bundle.pb_display_border_color
+    - field.field.paragraph.carousel_bundle.pb_display_border_hover
+    - field.field.paragraph.carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_breakpoints
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_play_stop
+    - field.field.paragraph.carousel_bundle.pb_display_custom_slide_width
+    - field.field.paragraph.carousel_bundle.pb_display_margin
+    - field.field.paragraph.carousel_bundle.pb_display_padding
+    - field.field.paragraph.carousel_bundle.pb_display_shadow
+    - field.field.paragraph.carousel_bundle.pb_display_small_screen
+    - field.field.paragraph.carousel_bundle.pb_display_text
+    - field.field.paragraph.carousel_bundle.pb_display_text_hover
+    - field.field.paragraph.carousel_bundle.pb_display_vertical_carousel
+    - field.field.paragraph.carousel_bundle.pb_display_width
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - field_group
+    - paragraphs
+    - paragraphs_bundles
+third_party_settings:
+  field_group:
+    group_pb_tabs_wrapper:
+      children:
+        - group_pb_tab_content
+        - group_pb_tab_display
+      label: 'Tabs Wrapper'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: pb__tabs-wrapper
+        show_empty_fields: false
+        id: ''
+        direction: horizontal
+        width_breakpoint: 992
+    group_pb_tab_content:
+      children:
+        - pb_content_title
+        - pb_content_carousel_body
+      label: Content
+      region: content
+      parent_name: group_pb_tabs_wrapper
+      weight: 20
+      format_type: tab
+      format_settings:
+        classes: pb__tab-content
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_tab_display:
+      children:
+        - pb_display_bg_opacity
+        - pb_display_bg
+        - pb_display_bg_hover
+        - pb_display_text
+        - pb_display_text_hover
+        - pb_display_border_color
+        - pb_display_border_hover
+        - pb_display_border
+        - pb_display_border_radius
+        - pb_display_margin
+        - pb_display_padding
+        - pb_display_width
+        - pb_display_shadow
+        - pb_display_carousel_play_stop
+        - pb_display_carousel_breakpoints
+        - pb_display_vertical_carousel
+        - pb_display_custom_slide_width
+        - pb_display_big_screen
+        - pb_display_small_screen
+        - pb_display_slide_gap
+        - pb_display_activate_looping
+      label: Display
+      region: content
+      parent_name: group_pb_tabs_wrapper
+      weight: 21
+      format_type: tab
+      format_settings:
+        classes: pb__tab-display
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: paragraph.carousel_bundle.default
+targetEntityType: paragraph
+bundle: carousel_bundle
+mode: default
+content:
+  pb_display_slide_gap:
+    type: number
+    weight: 26
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_carousel_body:
+    type: paragraphs
+    weight: 2
+    region: content
+    settings:
+      title: 'Carousel item'
+      title_plural: 'Carousel items'
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: all
+      closed_mode_threshold: 0
+      add_mode: modal
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        add_above: add_above
+        collapse_edit_all: collapse_edit_all
+        duplicate: duplicate
+    third_party_settings: {  }
+  pb_content_title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_activate_looping:
+    type: boolean_checkbox
+    weight: 27
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  pb_display_bg:
+    type: color_text_widget
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_hover:
+    type: color_text_widget
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_bg_opacity:
+    type: range_number_widget
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_big_screen:
+    type: number
+    weight: 24
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_border:
+    type: options_select
+    weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_color:
+    type: color_text_widget
+    weight: 12
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_hover:
+    type: color_text_widget
+    weight: 13
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_border_radius:
+    type: options_select
+    weight: 15
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_carousel_breakpoints:
+    type: options_select
+    weight: 21
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_carousel_play_stop:
+    type: options_select
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_custom_slide_width:
+    type: number
+    weight: 23
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_margin:
+    type: options_select
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_padding:
+    type: options_select
+    weight: 17
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_shadow:
+    type: options_select
+    weight: 19
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_small_screen:
+    type: number
+    weight: 25
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_text:
+    type: color_text_widget
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_text_hover:
+    type: color_text_widget
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_vertical_carousel:
+    type: options_select
+    weight: 22
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_width:
+    type: options_select
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

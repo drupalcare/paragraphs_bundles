@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_vertical_carousel
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - options
+id: paragraph.carousel_bundle.pb_display_vertical_carousel
+field_name: pb_display_vertical_carousel
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Carousel Layout'
+description: 'Change the carousel to vertical on big and small screen or change it to vertical on small screen only'
+required: true
+translatable: false
+default_value:
+  -
+    value: horizontal
+default_value_callback: ''
+settings: {  }
+field_type: list_string

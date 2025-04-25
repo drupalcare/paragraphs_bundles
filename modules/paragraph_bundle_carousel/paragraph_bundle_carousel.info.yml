@@ -1,0 +1,7 @@
+name: Paragraph Bundle Carousel
+type: module
+description: A reusable Paragraph Bundle Carousel.
+core_version_requirement: ^9.4 || ^10 || ^11
+package: Paragraphs
+dependencies:
+  - paragraphs_bundles:paragraphs_bundles

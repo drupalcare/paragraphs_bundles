@@ -1,0 +1,194 @@
+{#
+/**
+* @file
+* Default theme implementation to display a 'carousel' paragraph.
+*
+* Available variables:
+* - paragraph: Full paragraph entity.
+*   Only method names starting with "get", "has", or "is" and a few common
+*   methods such as "id", "label", and "bundle" are available. For example:
+*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+*   - paragraph.id(): The paragraph ID.
+*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+*   - paragraph.getOwnerId(): The user ID of the paragraph author.
+*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+*   and methods for the paragraph object.
+* - content: All paragraph items. Use {{ content }} to print them all,
+*   or print a subset such as {{ content.field_example }}. Use
+*   {{ content|without('field_example') }} to temporarily suppress the printing
+*   of a given child element.
+* - attributes: HTML attributes for the containing element.
+*   The attributes.class element may contain one or more of the following
+*   classes:
+*   - paragraphs: The current template type (also known as a "theming hook").
+*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+*     "Image" it would result in "paragraphs--type--image". Note that the machine
+*     name will often be in a short form of the human readable label.
+*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+*     preview would result in: "paragraphs--view-mode--preview", and
+*     default: "paragraphs--view-mode--default".
+* - view_mode: View mode; for example, "preview" or "full".
+* - logged_in: Flag for authenticated user status. Will be true when the
+*   current user is a logged-in member.
+* - is_admin: Flag for admin user status. Will be true when the current user
+*   is an administrator.
+*
+* @see template_preprocess_paragraph()
+*
+* @ingroup themeable
+#}
+
+{# Attach the necessary library. #}
+{{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
+{{ attach_library('paragraph_bundle_carousel/paragraph-bundle-carousel') }}
+
+{% set breakpoints_raw = content.pb_display_carousel_breakpoints|render|striptags|trim %}
+{% set breakpoints = breakpoints_raw|replace({'pb__': ''}) %}
+{% set pb_breakpoints = 'paragraph_bundle_carousel/paragraph-bundle-carousel-' ~ breakpoints_raw %}
+{{ attach_library(pb_breakpoints) }}
+
+{# Set the paragraph id. #}
+{% set paragraph_id  = 'pb__carousel-' ~ paragraph.id.value %}
+{# Set the inner classes for the paragraph. #}
+{% set classes_inner = 'paragraph__inner pb__carousel__inner pb__content-full' %}
+{# Get the trimmed value of the vertical field. #}
+{% set vertical_carousel = content.pb_display_vertical_carousel|render|striptags|trim %}
+{# Set the base classes for the paragraph. #}
+{% set classes = [
+  'paragraph',
+  'paragraph--type--carousel-bundle',
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished',
+  'paragraph--id--' ~ paragraph.id.value,
+  vertical_carousel == 'vertical' ? 'vertical-carousel' : (vertical_carousel == 'hybrid' ? 'hybrid-carousel' : 'horizontal-carousel'),
+  paragraph_id
+] %}
+
+
+
+{# Set the color styles for the paragraph. #}
+{% set pb_styles = {
+  'pb-bg': 'pb_display_bg',
+  'pb-bg-h': 'pb_display_bg_hover',
+  'pb-br': 'pb_display_border_color',
+  'pb-br-h': 'pb_display_border_hover',
+  'pb-tx': 'pb_display_text',
+  'pb-tx-h': 'pb_display_text_hover'
+} %}
+
+{# Set the display properties for the paragraph. #}
+{% set pb_displays = [
+  'pb_display_width',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_shadow',
+] %}
+
+{# Add display properties to the inner classes if they exist. #}
+{% for pb_display in pb_displays %}
+  {% set display_value = content[pb_display]|render|striptags|trim %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+{% endfor %}
+
+{# Set the background opacity for the paragraph. #}
+{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
+{% if pb_bg_opacity != 100 %}
+  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
+{% endif %}
+
+{# Set the style attributes for the paragraph. #}
+{% set pb_style_attributes = [] %}
+{% for key, value in pb_styles %}
+  {% set style = content[value]|render|striptags|trim %}
+  {% if style %}
+
+    {% if value == 'pb_display_bg' %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
+    {% elseif style starts with '#' %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
+    {% else %}
+    {# In case widget was changed. #}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
+
+  {% endif %}
+{% endfor %}
+
+{# End of margin and height #}
+{% set pb_play_stop    = content.pb_display_carousel_play_stop|render|striptags|trim %}
+{% set pb_big_screen   = content.pb_display_big_screen|render|striptags|trim %}
+{% set pb_small_screen = content.pb_display_small_screen|render|striptags|trim %}
+{% set pb_looping      = content.pb_display_activate_looping|render|striptags|trim %}
+{% set item_width      = content.pb_display_custom_slide_width|render|striptags|trim %}
+{% set item_gap        = content.pb_display_slide_gap|render|striptags|trim %}
+{% set pb_title        = content.pb_content_title|render|striptags|trim %}
+{% set carousel_id     = 'pb__carousel-' ~ paragraph.id.value %}
+{% set items_id        = 'pb__carousel-items-' ~ paragraph.id.value %}
+{% set valid_slides    = content.pb_content_carousel_body|filter((item, key) => key|first != '#') %}
+{% set total_slides    = valid_slides|length %}
+
+<div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="Carousel" tabindex="0">
+  <div class="{{ classes_inner }}" hidden {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+    {% if pb_title %}
+    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+    {% endif %}
+
+    <!-- Carousel Outer -->
+    <div class="pb__carousel-outer">
+      <div class="pb__carousel-wrapper">
+        {% set items_gap = item_gap > 0 ? 'gap:' ~ item_gap ~ 'px;' : '' %}
+        <div id="{{ items_id }}"
+             class="pb__carousel-items{{ pb_play_stop == 0 ? ' zero' : ' not-zero' }}"
+             role="group"
+             aria-roledescription="carousel"
+             aria-labelledby="index-{{ paragraph.id.value }}"
+             data-slide-time="{{ pb_play_stop }}"
+             data-small-screen="{{ pb_small_screen }}"
+             data-big-screen="{{ pb_big_screen }}"
+             data-breakpoints="{{ breakpoints }}"
+             data-total-slides="{{ total_slides }}"
+             data-carousel-loop="{{ pb_looping }}"
+             data-gap="{{ item_gap }}"
+            {% if vertical_carousel %}data-orientation="{{ vertical_carousel }}"{% endif %}
+            {% if items_gap %}style="{{ items_gap }}"{% endif %}>
+
+            {% for key, item in valid_slides %}
+              {% set item_id = 'item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
+              {% set item_classes = 'pb__carousel-item item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
+              {% set item_style = item_width > 0 ? 'width:' ~ item_width ~ 'px;' : '' %}
+
+              <div
+                id="{{ item_id }}"
+                class="{{ item_classes }}"
+                role="group"
+                aria-labelledby="label-{{ item_id }}"
+                {% if item_style %}style="{{ item_style }}"{% endif %}>
+
+                <div id="label-{{ item_id }}" class="visually-hidden">
+                  Slide {{ loop.index }} of {{ total_slides }}
+                </div>
+
+                {{ item }}
+              </div>
+            {% endfor %}
+        </div>
+      </div>
+      <div class="pb__carousel-announcer visually-hidden" aria-live="polite"></div>
+      <div class="pb__carousel-options" aria-label="Carousel Controls">
+
+          <button id="prev-{{ paragraph.id.value }}" role="button" class="pb__button pb__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+            <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
+            {{ include('@paragraph_bundle_carousel/svg/svg-prev.svg') }}
+          </button>
+
+          <button id="next-{{ paragraph.id.value }}" role="button" class="pb__button pb__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+            <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
+            {{ include('@paragraph_bundle_carousel/svg/svg-next.svg') }}
+          </button>
+
+      </div>
+    </div>
+  </div>
+</div> {# End of main wrapper #}
