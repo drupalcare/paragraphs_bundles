@@ -6,13 +6,18 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  flex-direction: column;
+}
+
+.paragraph--type--carousel-bundle.pb-no-arrows .pb__carousel-outer {
+  padding: 0;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-wrapper {
   position: relative;
   overflow: hidden;
-  width: auto; /* Will be set dynamically in JS */
-  height: auto; /* Will be set dynamically in JS */
+  width: auto;
+  height: auto;
   margin: 0 auto;
 }
 
@@ -31,7 +36,7 @@
   display: flex;
   will-change: transform;
   transition: transform 0.5s ease-in-out;
-  transform: translateX(0); /* or translateY(0) for vertical */
+  transform: translateX(0);
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-item {
@@ -55,7 +60,7 @@
   flex-direction: row;
 }
 
-.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-outer {
+.paragraph--type--carousel-bundle.horizontal-carousel.pb-has-arrows .pb__carousel-outer {
   padding: 0 50px;
 }
 
@@ -84,7 +89,7 @@
   transform: translateY(0);
 }
 
-.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-outer {
+.paragraph--type--carousel-bundle.vertical-carousel.pb-has-arrows .pb__carousel-outer {
   padding: 50px 0;
 }
 
@@ -121,7 +126,7 @@
   flex-direction: row;
 }
 
-.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-outer {
+.paragraph--type--carousel-bundle.hybrid-carousel.pb-has-arrows .pb__carousel-outer {
   padding: 0 50px;
 }
 
@@ -178,4 +183,36 @@
 .paragraph--type--carousel-bundle .pb__carousel-options .pb__button[style*='visibility:hidden'] {
   opacity: 0;
   pointer-events: none;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+  gap: 1rem;
+  padding: 0;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  padding: 0;
+  margin: 0;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dot.pb__active {
+  background-color: #333;
+  transform: scale(1.2);
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dot:focus {
+  outline: 2px solid #666;
+  outline-offset: 2px;
 }

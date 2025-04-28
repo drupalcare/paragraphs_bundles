@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
+    - field.field.paragraph.carousel_bundle.pb_display_navigation
     - field.field.paragraph.carousel_bundle.pb_content_carousel_body
     - field.field.paragraph.carousel_bundle.pb_content_title
     - field.field.paragraph.carousel_bundle.pb_display_activate_looping
@@ -20,6 +20,7 @@ dependencies:
     - field.field.paragraph.carousel_bundle.pb_display_margin
     - field.field.paragraph.carousel_bundle.pb_display_padding
     - field.field.paragraph.carousel_bundle.pb_display_shadow
+    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
     - field.field.paragraph.carousel_bundle.pb_display_small_screen
     - field.field.paragraph.carousel_bundle.pb_display_text
     - field.field.paragraph.carousel_bundle.pb_display_text_hover
@@ -35,12 +36,12 @@ targetEntityType: paragraph
 bundle: carousel_bundle
 mode: default
 content:
-  pb_display_slide_gap:
-    type: number_unformatted
+  pb_display_navigation:
+    type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 18
+    weight: 16
     region: content
   pb_content_carousel_body:
     type: entity_reference_revisions_entity_view
@@ -49,7 +50,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 22
+    weight: 23
     region: content
   pb_content_title:
     type: string
@@ -57,7 +58,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 21
+    weight: 22
     region: content
   pb_display_activate_looping:
     type: boolean
@@ -67,7 +68,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 20
+    weight: 21
     region: content
   pb_display_bg:
     type: color_text_formatter_rgb
@@ -95,7 +96,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 16
+    weight: 17
     region: content
   pb_display_border:
     type: list_key
@@ -144,7 +145,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 19
+    weight: 20
     region: content
   pb_display_margin:
     type: list_key
@@ -167,12 +168,19 @@ content:
     third_party_settings: {  }
     weight: 13
     region: content
+  pb_display_slide_gap:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
+    region: content
   pb_display_small_screen:
     type: number_unformatted
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 17
+    weight: 18
     region: content
   pb_display_text:
     type: color_text_formatter_hex

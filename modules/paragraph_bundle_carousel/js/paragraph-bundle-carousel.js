@@ -31,6 +31,8 @@
     bindKeyboard(state);
     requestAnimationFrame(() => {
       updateLayout(state);
+      createDots(state);
+      bindDots(state);
       state.container.removeAttribute('hidden');
     });
     if ('ResizeObserver' in window && state.items.length > 0) {
@@ -40,6 +42,8 @@
     window.addEventListener('resize', debounce(() => {
       clampPageIndex(state);
       updateLayout(state);
+      createDots(state);
+      bindDots(state);
     }, 300));
   }
 
@@ -62,7 +66,8 @@
       totalSlides: parseInt(dataset.totalSlides, 10),
       slideTime: parseInt(dataset.slideTime, 10),
       gap: parseInt(dataset.gap, 10),
-      looping: dataset.carouselLoop === '1'
+      looping: dataset.carouselLoop === '1',
+      navigation: dataset.navigation || 'arrows',
     };
     return {
       container,
@@ -171,20 +176,41 @@
       item.classList.toggle('active-slide', i >= start && i < end);
       item.classList.toggle('non-active-slide', i < start || i >= end);
     });
+    // Update dots active state
+    if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
+      const dots = state.container.querySelectorAll('.pb__carousel-dot');
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('pb__active', index === state.pageIndex);
+      });
+    }
     updateNavVisibility(state);
     announceVisible(state, start, end);
     scrollToPage(state);
   }
 
   function updateNavVisibility(state) {
+    if (state.config.navigation !== 'arrows' && state.config.navigation !== 'both') {
+      // No arrows used, do nothing.
+      return;
+    }
+
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
+
     if (!state.config.looping) {
-      state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' : 'visible';
-      state.nextButton.style.visibility = state.pageIndex >= maxPage ? 'hidden' : 'visible';
+      if (state.prevButton) {
+        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' : 'visible';
+      }
+      if (state.nextButton) {
+        state.nextButton.style.visibility = state.pageIndex >= maxPage ? 'hidden' : 'visible';
+      }
     } else {
-      state.prevButton.style.visibility = 'visible';
-      state.nextButton.style.visibility = 'visible';
+      if (state.prevButton) {
+        state.prevButton.style.visibility = 'visible';
+      }
+      if (state.nextButton) {
+        state.nextButton.style.visibility = 'visible';
+      }
     }
   }
 
@@ -246,6 +272,48 @@
       } else if (state.config.orientation === 'vertical') {
         deltaY < -50 ? nextSlide(state) : deltaY > 50 && prevSlide(state);
       }
+    });
+  }
+
+  function createDots(state) {
+    const navigationType = state.config.navigation;
+    const dotsContainer = state.container.querySelector('.pb__carousel-dots');
+    if (!dotsContainer) return;
+
+    if (navigationType !== 'dots' && navigationType !== 'both') {
+      // If user chose arrows only or none, do not create dots
+      dotsContainer.innerHTML = '';
+      return;
+    }
+
+    dotsContainer.innerHTML = '';
+
+    const itemsVisible = getItemsVisible(state);
+    const totalPages = Math.ceil(state.config.totalSlides / itemsVisible);
+
+    for (let i = 0; i < totalPages; i++) {
+      const dot = document.createElement('button');
+      dot.className = 'pb__carousel-dot';
+      dot.setAttribute('aria-label', `Go to slide group ${i + 1}`);
+      dot.dataset.slideGroup = i;
+      dotsContainer.appendChild(dot);
+    }
+  }
+
+  function bindDots(state) {
+    if (state.config.navigation !== 'dots' && state.config.navigation !== 'both') {
+      return;
+    }
+
+    const dotsContainer = state.container.querySelector('.pb__carousel-dots');
+    if (!dotsContainer) return;
+
+    dotsContainer.querySelectorAll('.pb__carousel-dot').forEach(dot => {
+      dot.addEventListener('click', () => {
+        const groupIndex = parseInt(dot.dataset.slideGroup, 10);
+        state.pageIndex = groupIndex;
+        updateLayout(state);
+      });
     });
   }
 

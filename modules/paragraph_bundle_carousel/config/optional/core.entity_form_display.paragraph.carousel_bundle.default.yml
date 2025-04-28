@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
+    - field.field.paragraph.carousel_bundle.pb_display_navigation
     - field.field.paragraph.carousel_bundle.pb_content_carousel_body
     - field.field.paragraph.carousel_bundle.pb_content_title
     - field.field.paragraph.carousel_bundle.pb_display_activate_looping
@@ -20,6 +20,7 @@ dependencies:
     - field.field.paragraph.carousel_bundle.pb_display_margin
     - field.field.paragraph.carousel_bundle.pb_display_padding
     - field.field.paragraph.carousel_bundle.pb_display_shadow
+    - field.field.paragraph.carousel_bundle.pb_display_slide_gap
     - field.field.paragraph.carousel_bundle.pb_display_small_screen
     - field.field.paragraph.carousel_bundle.pb_display_text
     - field.field.paragraph.carousel_bundle.pb_display_text_hover
@@ -81,10 +82,11 @@ third_party_settings:
         - pb_display_carousel_play_stop
         - pb_display_carousel_breakpoints
         - pb_display_vertical_carousel
+        - pb_display_navigation
         - pb_display_custom_slide_width
+        - pb_display_slide_gap
         - pb_display_big_screen
         - pb_display_small_screen
-        - pb_display_slide_gap
         - pb_display_activate_looping
       label: Display
       region: content
@@ -103,12 +105,11 @@ targetEntityType: paragraph
 bundle: carousel_bundle
 mode: default
 content:
-  pb_display_slide_gap:
-    type: number
-    weight: 26
+  pb_display_navigation:
+    type: options_select
+    weight: 23
     region: content
-    settings:
-      placeholder: ''
+    settings: {  }
     third_party_settings: {  }
   pb_content_carousel_body:
     type: paragraphs
@@ -139,7 +140,7 @@ content:
     third_party_settings: {  }
   pb_display_activate_looping:
     type: boolean_checkbox
-    weight: 27
+    weight: 28
     region: content
     settings:
       display_label: true
@@ -164,7 +165,7 @@ content:
     third_party_settings: {  }
   pb_display_big_screen:
     type: number
-    weight: 24
+    weight: 26
     region: content
     settings:
       placeholder: ''
@@ -207,7 +208,7 @@ content:
     third_party_settings: {  }
   pb_display_custom_slide_width:
     type: number
-    weight: 23
+    weight: 24
     region: content
     settings:
       placeholder: ''
@@ -230,9 +231,16 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pb_display_small_screen:
+  pb_display_slide_gap:
     type: number
     weight: 25
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_small_screen:
+    type: number
+    weight: 27
     region: content
     settings:
       placeholder: ''

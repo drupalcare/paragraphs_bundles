@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 @media (max-width:36rem) {
-  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-outer {
+  .paragraph--type--carousel-bundle.hybrid-carousel.pb-has-arrows .pb__carousel-outer {
     padding: 50px 0;
   }
 

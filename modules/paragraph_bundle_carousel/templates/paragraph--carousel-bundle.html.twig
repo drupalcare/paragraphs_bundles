@@ -47,13 +47,23 @@
 {% set pb_breakpoints = 'paragraph_bundle_carousel/paragraph-bundle-carousel-' ~ breakpoints_raw %}
 {{ attach_library(pb_breakpoints) }}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__carousel-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__carousel__inner pb__content-full' %}
-{# Get the trimmed value of the vertical field. #}
+
+{% set paragraph_id      = 'pb__carousel-' ~ paragraph.id.value %}
+{% set classes_inner     = 'paragraph__inner pb__carousel__inner pb__content-full' %}
 {% set vertical_carousel = content.pb_display_vertical_carousel|render|striptags|trim %}
-{# Set the base classes for the paragraph. #}
+{% set pb_navigation     = content.pb_display_navigation|render|striptags|trim %}
+{% set pb_play_stop      = content.pb_display_carousel_play_stop|render|striptags|trim %}
+{% set pb_big_screen     = content.pb_display_big_screen|render|striptags|trim %}
+{% set pb_small_screen   = content.pb_display_small_screen|render|striptags|trim %}
+{% set pb_looping        = content.pb_display_activate_looping|render|striptags|trim %}
+{% set item_width        = content.pb_display_custom_slide_width|render|striptags|trim %}
+{% set item_gap          = content.pb_display_slide_gap|render|striptags|trim %}
+{% set pb_title          = content.pb_content_title|render|striptags|trim %}
+{% set carousel_id       = 'pb__carousel-' ~ paragraph.id.value %}
+{% set items_id          = 'pb__carousel-items-' ~ paragraph.id.value %}
+{% set valid_slides      = content.pb_content_carousel_body|filter((item, key) => key|first != '#') %}
+{% set total_slides      = valid_slides|length %}
+
 {% set classes = [
   'paragraph',
   'paragraph--type--carousel-bundle',
@@ -61,6 +71,7 @@
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
   vertical_carousel == 'vertical' ? 'vertical-carousel' : (vertical_carousel == 'hybrid' ? 'hybrid-carousel' : 'horizontal-carousel'),
+  pb_navigation in ['arrows', 'both'] ? 'pb-has-arrows' : 'pb-no-arrows',
   paragraph_id
 ] %}
 
@@ -116,19 +127,6 @@
   {% endif %}
 {% endfor %}
 
-{# End of margin and height #}
-{% set pb_play_stop    = content.pb_display_carousel_play_stop|render|striptags|trim %}
-{% set pb_big_screen   = content.pb_display_big_screen|render|striptags|trim %}
-{% set pb_small_screen = content.pb_display_small_screen|render|striptags|trim %}
-{% set pb_looping      = content.pb_display_activate_looping|render|striptags|trim %}
-{% set item_width      = content.pb_display_custom_slide_width|render|striptags|trim %}
-{% set item_gap        = content.pb_display_slide_gap|render|striptags|trim %}
-{% set pb_title        = content.pb_content_title|render|striptags|trim %}
-{% set carousel_id     = 'pb__carousel-' ~ paragraph.id.value %}
-{% set items_id        = 'pb__carousel-items-' ~ paragraph.id.value %}
-{% set valid_slides    = content.pb_content_carousel_body|filter((item, key) => key|first != '#') %}
-{% set total_slides    = valid_slides|length %}
-
 <div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="Carousel" tabindex="0">
   <div class="{{ classes_inner }}" hidden {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
     {% if pb_title %}
@@ -150,6 +148,7 @@
              data-breakpoints="{{ breakpoints }}"
              data-total-slides="{{ total_slides }}"
              data-carousel-loop="{{ pb_looping }}"
+             data-navigation="{{ pb_navigation }}"
              data-gap="{{ item_gap }}"
             {% if vertical_carousel %}data-orientation="{{ vertical_carousel }}"{% endif %}
             {% if items_gap %}style="{{ items_gap }}"{% endif %}>
@@ -176,8 +175,15 @@
         </div>
       </div>
       <div class="pb__carousel-announcer visually-hidden" aria-live="polite"></div>
-      <div class="pb__carousel-options" aria-label="Carousel Controls">
 
+    {% if pb_navigation in ['dots', 'both'] %}
+      <div class="pb__carousel-dots" aria-label="{{ 'Slide navigation'|t }}">
+        {# Dots will be dynamically populated by JavaScript #}
+      </div>
+    {% endif %}
+
+      {% if pb_navigation in ['arrows', 'both'] %}
+      <div class="pb__carousel-options" aria-label="{{ 'Carousel Controls'|t }}">
           <button id="prev-{{ paragraph.id.value }}" role="button" class="pb__button pb__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-prev.svg') }}
@@ -187,8 +193,9 @@
             <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-next.svg') }}
           </button>
-
       </div>
+      {% endif %}
+
     </div>
   </div>
 </div> {# End of main wrapper #}

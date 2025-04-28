@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_navigation
+    - paragraphs.paragraphs_type.carousel_bundle
+  module:
+    - options
+id: paragraph.carousel_bundle.pb_display_navigation
+field_name: pb_display_navigation
+entity_type: paragraph
+bundle: carousel_bundle
+label: Navigation
+description: ''
+required: true
+translatable: false
+default_value:
+  -
+    value: arrows
+default_value_callback: ''
+settings: {  }
+field_type: list_string
