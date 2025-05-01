@@ -149,12 +149,17 @@
         <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item {% if key == 0 %} {{ pb_open_first == 'On' ? 'pb__active' : 'pb__active-no' }} {% else %} pb__active-no{% endif %}">
 
           {# Loops through the accordion sections to print the tab section titles. #}
+        {% set tab_index = key + 1 %}
+        {% set raw_slug = item['#paragraph'].pb_content_accordion_title.value|lower|replace({' ': '-', '?': '', ',': '', '.': '', '/': '-'}) %}
+        {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
+        {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
         <button
-          id="{{ acc_id }}-{{ key + 1 }}"
+          id="{{ acc_id }}-{{ tab_index }}"
           class="pb__button pb__bar pb__accor-button"
+          data-fragment="{{ tab_slug }}"
           aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}"
           aria-expanded="{% if key == 0 and pb_open_first == 'On' %}true{% else %}false{% endif %}"
-          aria-controls="{{ acc_id }}-{{ key + 1 }}-pane"
+          aria-controls="{{ acc_id }}-{{ tab_index }}-pane"
           type="button">
 
           <!-- Button Title -->

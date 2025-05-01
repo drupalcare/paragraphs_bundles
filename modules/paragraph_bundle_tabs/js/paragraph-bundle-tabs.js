@@ -62,6 +62,14 @@
             button.setAttribute('aria-selected', 'true');
             button.setAttribute('aria-expanded', 'true');
             button.focus();
+
+            // ADDED: Update hash in URL to use data-fragment if available
+            const slug = button.getAttribute('data-fragment');
+            if (slug) {
+              history.replaceState(null, '', `#${slug}`);
+            } else {
+              history.replaceState(null, '', `#${button.id}`);
+            }
           }
           else {
             Drupal.debug && Drupal.debug(`Pane with ID ${paneId} not found within this tabContainer.`);
@@ -127,6 +135,21 @@
           button.addEventListener('keydown', (event) => handleKeyboardNavigation(event, index));
         });
 
+        // ADDED: Hash-based tab activation using ID or data-fragment
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          // Try matching by ID
+          let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
+          // Fallback to matching by data-fragment
+          if (!button) {
+            button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
+          }
+          if (button) {
+            activateTab(button);
+            return; // Skip default activation
+          }
+        }
+
         // Ensure first pane is visible by default.
         tabPanes[0].style.display = 'block';
         tabPanes[0].setAttribute('aria-hidden', 'false');
@@ -134,4 +157,3 @@
     }
   };
 })(Drupal, drupalSettings, once);
-

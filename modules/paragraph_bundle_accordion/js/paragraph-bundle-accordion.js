@@ -12,7 +12,6 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
@@ -116,6 +115,12 @@
                   minus.setAttribute('aria-hidden', String(isCurrentlyActive));
                 }
               }
+
+              // ADDED: Update URL hash using data-fragment, if available
+              const slug = button.getAttribute('data-fragment');
+              if (slug) {
+                history.replaceState(null, '', `#${slug}`);
+              }
             });
           });
         };
@@ -159,6 +164,16 @@
           });
         });
 
+        // ADDED: Deep link support — open accordion item based on hash
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          const button = accordionContainer.querySelector(`[data-fragment="${CSS.escape(hash)}"]`);
+          if (button && button.classList.contains('pb__accor-button')) {
+            button.click();
+            button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+
         // Initialize accordion interaction for this container.
         toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
         toggleClassAndDisplay('.pb__ex-button>button.pb__plus', 'pb__active', 'pb__active-no', 2, 1);
@@ -170,4 +185,3 @@
     }
   };
 })(Drupal, drupalSettings, once);
-
