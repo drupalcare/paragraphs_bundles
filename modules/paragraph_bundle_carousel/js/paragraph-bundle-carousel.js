@@ -39,12 +39,16 @@
       const observer = new ResizeObserver(() => updateLayout(state));
       observer.observe(state.items[0]);
     }
-    window.addEventListener('resize', debounce(() => {
-      clampPageIndex(state);
-      updateLayout(state);
+    const refreshDots = debounce(() => {
       createDots(state);
       bindDots(state);
-    }, 300));
+    }, 300);
+
+    window.addEventListener('resize', () => {
+      clampPageIndex(state);
+      updateLayout(state);
+      refreshDots();
+    });
   }
 
   function createState(container) {
@@ -91,6 +95,10 @@
     return 'horizontal';
   }
 
+  function getItemSize(item, isVertical) {
+    return isVertical ? item.offsetHeight : item.offsetWidth;
+  }
+
   function getItemsVisible(state) {
     return window.innerWidth <= state.config.breakpoints ? state.config.itemsSmall : state.config.itemsBig;
   }
@@ -104,7 +112,7 @@
   function getMaxItemSize(state) {
     const isVertical = state.config.orientation === 'vertical';
     return getVisibleItems(state).reduce((max, item) => {
-      const size = isVertical ? item.getBoundingClientRect().height : item.getBoundingClientRect().width;
+      const size = getItemSize(item, isVertical);
       return Math.max(max, size);
     }, 0);
   }
@@ -114,20 +122,22 @@
     const isVertical = state.config.orientation === 'vertical';
     const gap = state.config.gap || 0;
     let offset = 0;
+
     for (let page = 0; page < state.pageIndex; page++) {
       const start = page * itemsVisible;
       const end = start + itemsVisible;
+
       for (let i = start; i < end && i < state.items.length; i++) {
-        const size = isVertical ?
-          state.items[i].getBoundingClientRect().height :
-          state.items[i].getBoundingClientRect().width;
+        const size = getItemSize(state.items[i], isVertical);
         offset += size;
         if (i < end - 1) offset += gap;
       }
+
       if (end < state.items.length) {
         offset += gap;
       }
     }
+
     return offset;
   }
 
@@ -137,19 +147,21 @@
     const visibleItems = getVisibleItems(state);
     const gap = state.config.gap || 0;
     const totalGap = (itemsVisible - 1) * gap;
+
     if (state.config.orientation === 'vertical') {
       const totalHeight = visibleItems.reduce((sum, item) => {
-        return sum + item.getBoundingClientRect().height;
+        return sum + getItemSize(item, true);
       }, 0);
       state.wrapper.style.height = `${totalHeight + totalGap}px`;
       state.wrapper.style.width = '';
     } else {
       const totalWidth = visibleItems.reduce((sum, item) => {
-        return sum + item.getBoundingClientRect().width;
+        return sum + getItemSize(item, false);
       }, 0);
       state.wrapper.style.width = `${totalWidth + totalGap}px`;
       state.wrapper.style.height = '';
     }
+
     if (state.wrapper.style.visibility !== 'visible') {
       state.wrapper.style.visibility = 'visible';
       state.wrapper.classList.add('is-visible');
@@ -180,7 +192,9 @@
     if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
       const dots = state.container.querySelectorAll('.pb__carousel-dot');
       dots.forEach((dot, index) => {
-        dot.classList.toggle('pb__active', index === state.pageIndex);
+        const isActive = index === state.pageIndex;
+        dot.classList.toggle('pb__active', isActive);
+        dot.setAttribute('aria-current', isActive ? 'true' : 'false');
       });
     }
     updateNavVisibility(state);
