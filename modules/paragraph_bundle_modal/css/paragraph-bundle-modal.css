@@ -40,7 +40,7 @@
 }
 
 .pb__modal__inner.pb__pmw_100 {
-  max-width: 62.5rem!important;
+  max-width: 61.99875.5rem!important;
 }
 
 .pb-modal-content .pb__modal__inner>* {
@@ -102,7 +102,7 @@
   max-width: var(--pb-px992);
 }
 
-@media (max-width:36rem) {
+@media (max-width:35.99875rem) {
   .pb-modal-content {
     margin-block: 0;
     margin-inline: var(--pb-px10);
@@ -114,7 +114,7 @@
 
 }
 
-@media (max-width:48rem) {
+@media (max-width:47.99875rem) {
   .pb-modal {
     padding-block-start: var(--pb-px48);
   }

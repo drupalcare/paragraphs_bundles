@@ -267,7 +267,7 @@
   flex-direction: column;
 }
 
-@media (max-width:36rem) {
+@media (max-width:35.99875rem) {
   .paragraph .pb__image-grid .pb__image-grid-title {
     align-items: center;
   }

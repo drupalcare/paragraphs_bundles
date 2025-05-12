@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media (min-width: 48rem) and (max-width: 75rem) {
+@media (min-width: 48rem) and (max-width: 74.99875rem) {
   /* Default 3-column layout for most column classes */
   .paragraph--type--grid-bundle .pb__grid-wrapper.col-12,
   .paragraph--type--grid-bundle .pb__grid-wrapper.col-10,

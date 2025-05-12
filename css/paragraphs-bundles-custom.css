@@ -226,7 +226,7 @@ h3 a) {
   --pb-width: 56.25rem;
 }
 
-@media (max-width:36rem) {
+@media (max-width:35.99875rem) {
   .paragraph .button,
   .paragraph .pb__button {
     white-space: normal;

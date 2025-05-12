@@ -29,7 +29,7 @@
   z-index: 1000;
 }
 
-@media (max-width:36rem) {
+@media (max-width:35.99875rem) {
   .node--view-mode-pb-slideshow > header,
   .node--view-mode-pb-3d-carousel > header {
     inset-block-end: initial;

@@ -91,7 +91,7 @@
   width: 100%;
 }
 
-@media (max-width:62rem) {
+@media (max-width:61.99875rem) {
   .paragraph--type--hero-bundle .pb__hero-txt-wrapper h1 {
     font-size: var(--pb-px28);
   }
