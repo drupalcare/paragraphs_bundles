@@ -335,20 +335,45 @@
     let interval = parseInt(state.config.slideTime, 10);
     if (interval === 0) return;
     if (isNaN(interval) || interval < 1000 || interval > 15000) {
-      console.warn('Invalid slideTime detected. Falling back to 5000ms.');
       interval = 5000;
     }
+
+    let isVisible = true;
+
     const start = () => {
       clearInterval(state.autoSlideTimer);
       state.autoSlideTimer = setInterval(() => nextSlide(state), interval);
     };
+
     const stop = () => clearInterval(state.autoSlideTimer);
+
     start();
+
     state.wrapper.addEventListener('mouseenter', stop);
-    state.wrapper.addEventListener('mouseleave', start);
-    document.addEventListener('visibilitychange', () => {
-      document.hidden ? stop() : start();
+    state.wrapper.addEventListener('mouseleave', () => {
+      if (isVisible) start();
     });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else if (isVisible) {
+        start();
+      }
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      isVisible = entries[0].isIntersecting;
+      if (isVisible) {
+        start();
+      } else {
+        stop();
+      }
+    }, {
+      threshold: 0.3
+    });
+
+    observer.observe(state.container);
   }
 
   function bindKeyboard(state) {
