@@ -72,10 +72,9 @@
   'paragraph--id--' ~ paragraph.id.value,
   vertical_carousel == 'vertical' ? 'vertical-carousel' : (vertical_carousel == 'hybrid' ? 'hybrid-carousel' : 'horizontal-carousel'),
   pb_navigation in ['arrows', 'both'] ? 'pb-has-arrows' : 'pb-no-arrows',
+  breakpoints_raw,
   paragraph_id
 ] %}
-
-
 
 {# Set the color styles for the paragraph. #}
 {% set pb_styles = {
@@ -156,7 +155,7 @@
             {% for key, item in valid_slides %}
               {% set item_id = 'item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
               {% set item_classes = 'pb__carousel-item item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
-              {% set item_style = item_width > 0 ? 'width:' ~ item_width ~ 'px;' : '' %}
+              {% set item_style = item_width > 0 ? 'max-width:' ~ item_width ~ 'px;' : '' %}
 
               <div
                 id="{{ item_id }}"

@@ -9,8 +9,8 @@ id: paragraph.carousel_bundle.pb_display_custom_slide_width
 field_name: pb_display_custom_slide_width
 entity_type: paragraph
 bundle: carousel_bundle
-label: 'Slide Width'
-description: 'Add fixed-width for each slide for design precision (e.g., 220px), leave it zero and the item will have auto width.'
+label: 'Max Slide Width'
+description: 'Add max-width for each slide for design precision (e.g., 220px), leave it zero and the item will have auto width.'
 required: false
 translatable: false
 default_value:

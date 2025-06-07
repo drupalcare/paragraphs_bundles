@@ -152,14 +152,16 @@
       const totalHeight = visibleItems.reduce((sum, item) => {
         return sum + getItemSize(item, true);
       }, 0);
-      state.wrapper.style.height = `${totalHeight + totalGap}px`;
-      state.wrapper.style.width = '';
+      state.wrapper.style.maxHeight = `${totalHeight + totalGap}px`;
+      state.wrapper.style.height = '';
+      state.wrapper.style.maxWidth = '';
     } else {
       const totalWidth = visibleItems.reduce((sum, item) => {
         return sum + getItemSize(item, false);
       }, 0);
-      state.wrapper.style.width = `${totalWidth + totalGap}px`;
-      state.wrapper.style.height = '';
+      state.wrapper.style.maxWidth = `${totalWidth + totalGap}px`;
+      state.wrapper.style.width = '';
+      state.wrapper.style.maxHeight = '';
     }
 
     if (state.wrapper.style.visibility !== 'visible') {
