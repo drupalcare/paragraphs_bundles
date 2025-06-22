@@ -18,7 +18,8 @@
   }
   Drupal.behaviors.paragraphCarouselBundle = {
     attach(context) {
-      const carousels = once('paragraphCarouselBundle', '.pb__carousel__inner', context);
+      const carousels = once('paragraphCarouselBundle',
+        '.pb__carousel__inner', context);
       carousels.forEach(initCarousel);
     }
   };
@@ -30,20 +31,24 @@
     bindAutoSlide(state);
     bindKeyboard(state);
     requestAnimationFrame(() => {
-      updateLayout(state);
-      createDots(state);
-      bindDots(state);
-      state.container.removeAttribute('hidden');
+      requestAnimationFrame(() => {
+        updateLayout(state);
+        createDots(state);
+        bindDots(state);
+        state.container.removeAttribute('hidden');
+        setTimeout(() => {
+          updateLayout(state);
+        }, 100);
+      });
     });
-    if ('ResizeObserver' in window && state.items.length > 0) {
+    if ('ResizeObserver' in window && state.wrapper) {
       const observer = new ResizeObserver(() => updateLayout(state));
-      observer.observe(state.items[0]);
+      observer.observe(state.wrapper);
     }
     const refreshDots = debounce(() => {
       createDots(state);
       bindDots(state);
     }, 300);
-
     window.addEventListener('resize', () => {
       clampPageIndex(state);
       updateLayout(state);
@@ -100,7 +105,28 @@
   }
 
   function getItemsVisible(state) {
-    return window.innerWidth <= state.config.breakpoints ? state.config.itemsSmall : state.config.itemsBig;
+    const isVertical = state.config.orientation === 'vertical';
+    const isHybrid = state.config.rawOrientation === 'hybrid';
+    const max = window.innerWidth <= state.config.breakpoints ?
+      state.config.itemsSmall :
+      state.config.itemsBig;
+    // Disable dynamic fitting for vertical or hybrid modes
+    if (isVertical || isHybrid) {
+      return max;
+    }
+    const containerSize = state.container.offsetWidth;
+    const gap = state.config.gap || 0;
+    let total = 0;
+    let count = 0;
+    for (let i = 0; i < state.items.length; i++) {
+      const itemSize = state.items[i].offsetWidth;
+      if (i > 0) total += gap;
+      total += itemSize;
+      if (total > containerSize) break;
+      count++;
+      if (count >= max) break;
+    }
+    return Math.max(1, count);
   }
 
   function getVisibleItems(state) {
@@ -122,22 +148,18 @@
     const isVertical = state.config.orientation === 'vertical';
     const gap = state.config.gap || 0;
     let offset = 0;
-
     for (let page = 0; page < state.pageIndex; page++) {
       const start = page * itemsVisible;
       const end = start + itemsVisible;
-
       for (let i = start; i < end && i < state.items.length; i++) {
         const size = getItemSize(state.items[i], isVertical);
         offset += size;
         if (i < end - 1) offset += gap;
       }
-
       if (end < state.items.length) {
         offset += gap;
       }
     }
-
     return offset;
   }
 
@@ -147,7 +169,6 @@
     const visibleItems = getVisibleItems(state);
     const gap = state.config.gap || 0;
     const totalGap = (itemsVisible - 1) * gap;
-
     if (state.config.orientation === 'vertical') {
       const totalHeight = visibleItems.reduce((sum, item) => {
         return sum + getItemSize(item, true);
@@ -155,15 +176,18 @@
       state.wrapper.style.maxHeight = `${totalHeight + totalGap}px`;
       state.wrapper.style.height = '';
       state.wrapper.style.maxWidth = '';
+      state.centerOffset = 0;
     } else {
-      const totalWidth = visibleItems.reduce((sum, item) => {
-        return sum + getItemSize(item, false);
+      const totalWidth = visibleItems.reduce((sum, item, idx) => {
+        return sum + getItemSize(item, false) + (idx > 0 ? gap : 0);
       }, 0);
-      state.wrapper.style.maxWidth = `${totalWidth + totalGap}px`;
+      const wrapperWidth = state.wrapper.offsetWidth;
+      const centerOffset = (wrapperWidth - totalWidth) / 2;
+      state.centerOffset = centerOffset > 0 ? centerOffset : 0;
+      state.wrapper.style.maxWidth = '';
       state.wrapper.style.width = '';
       state.wrapper.style.maxHeight = '';
     }
-
     if (state.wrapper.style.visibility !== 'visible') {
       state.wrapper.style.visibility = 'visible';
       state.wrapper.classList.add('is-visible');
@@ -172,11 +196,12 @@
 
   function scrollToPage(state) {
     const offset = getGroupOffset(state);
-    const transform = `-${offset}px`;
+    const centering = state.centerOffset || 0;
+    const transform = centering - offset;
     if (state.config.orientation === 'vertical') {
-      state.itemsContainer.style.transform = `translateY(${transform})`;
+      state.itemsContainer.style.transform = `translateY(${-offset}px)`;
     } else {
-      state.itemsContainer.style.transform = `translateX(${transform})`;
+      state.itemsContainer.style.transform = `translateX(${transform}px)`;
     }
   }
 
@@ -191,7 +216,8 @@
       item.classList.toggle('non-active-slide', i < start || i >= end);
     });
     // Update dots active state
-    if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
+    if (state.config.navigation === 'dots' || state.config.navigation ===
+      'both') {
       const dots = state.container.querySelectorAll('.pb__carousel-dot');
       dots.forEach((dot, index) => {
         const isActive = index === state.pageIndex;
@@ -205,20 +231,21 @@
   }
 
   function updateNavVisibility(state) {
-    if (state.config.navigation !== 'arrows' && state.config.navigation !== 'both') {
+    if (state.config.navigation !== 'arrows' && state.config.navigation !==
+      'both') {
       // No arrows used, do nothing.
       return;
     }
-
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
-
     if (!state.config.looping) {
       if (state.prevButton) {
-        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' : 'visible';
+        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' :
+          'visible';
       }
       if (state.nextButton) {
-        state.nextButton.style.visibility = state.pageIndex >= maxPage ? 'hidden' : 'visible';
+        state.nextButton.style.visibility = state.pageIndex >= maxPage ?
+          'hidden' : 'visible';
       }
     } else {
       if (state.prevButton) {
@@ -232,7 +259,8 @@
 
   function announceVisible(state, start, end) {
     const total = state.config.totalSlides;
-    state.announcer.textContent = `Showing slides ${start + 1} to ${Math.min(end, total)} of ${total}`;
+    state.announcer.textContent =
+      `Showing slides ${start + 1} to ${Math.min(end, total)} of ${total}`;
   }
 
   function nextSlide(state) {
@@ -295,18 +323,14 @@
     const navigationType = state.config.navigation;
     const dotsContainer = state.container.querySelector('.pb__carousel-dots');
     if (!dotsContainer) return;
-
     if (navigationType !== 'dots' && navigationType !== 'both') {
       // If user chose arrows only or none, do not create dots
       dotsContainer.innerHTML = '';
       return;
     }
-
     dotsContainer.innerHTML = '';
-
     const itemsVisible = getItemsVisible(state);
     const totalPages = Math.ceil(state.config.totalSlides / itemsVisible);
-
     for (let i = 0; i < totalPages; i++) {
       const dot = document.createElement('button');
       dot.className = 'pb__carousel-dot';
@@ -317,13 +341,12 @@
   }
 
   function bindDots(state) {
-    if (state.config.navigation !== 'dots' && state.config.navigation !== 'both') {
+    if (state.config.navigation !== 'dots' && state.config.navigation !==
+      'both') {
       return;
     }
-
     const dotsContainer = state.container.querySelector('.pb__carousel-dots');
     if (!dotsContainer) return;
-
     dotsContainer.querySelectorAll('.pb__carousel-dot').forEach(dot => {
       dot.addEventListener('click', () => {
         const groupIndex = parseInt(dot.dataset.slideGroup, 10);
@@ -339,23 +362,17 @@
     if (isNaN(interval) || interval < 1000 || interval > 15000) {
       interval = 5000;
     }
-
     let isVisible = true;
-
     const start = () => {
       clearInterval(state.autoSlideTimer);
       state.autoSlideTimer = setInterval(() => nextSlide(state), interval);
     };
-
     const stop = () => clearInterval(state.autoSlideTimer);
-
     start();
-
     state.wrapper.addEventListener('mouseenter', stop);
     state.wrapper.addEventListener('mouseleave', () => {
       if (isVisible) start();
     });
-
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         stop();
@@ -363,7 +380,6 @@
         start();
       }
     });
-
     const observer = new IntersectionObserver((entries) => {
       isVisible = entries[0].isIntersecting;
       if (isVisible) {
@@ -374,7 +390,6 @@
     }, {
       threshold: 0.3
     });
-
     observer.observe(state.container);
   }
 

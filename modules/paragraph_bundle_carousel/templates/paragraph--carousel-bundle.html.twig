@@ -49,7 +49,7 @@
 
 
 {% set paragraph_id      = 'pb__carousel-' ~ paragraph.id.value %}
-{% set classes_inner     = 'paragraph__inner pb__carousel__inner pb__content-full' %}
+{% set classes_inner     = 'paragraph__inner pb__carousel__inner' %}
 {% set vertical_carousel = content.pb_display_vertical_carousel|render|striptags|trim %}
 {% set pb_navigation     = content.pb_display_navigation|render|striptags|trim %}
 {% set pb_play_stop      = content.pb_display_carousel_play_stop|render|striptags|trim %}
@@ -133,7 +133,7 @@
     {% endif %}
 
     <!-- Carousel Outer -->
-    <div class="pb__carousel-outer">
+    <div class="pb__carousel-outer pb__content-full">
       <div class="pb__carousel-wrapper">
         {% set items_gap = item_gap > 0 ? 'gap:' ~ item_gap ~ 'px;' : '' %}
         <div id="{{ items_id }}"
@@ -175,13 +175,13 @@
       </div>
       <div class="pb__carousel-announcer visually-hidden" aria-live="polite"></div>
 
-    {% if pb_navigation in ['dots', 'both'] %}
+    {% if total_slides > 1 and pb_navigation in ['dots', 'both'] %}
       <div class="pb__carousel-dots" aria-label="{{ 'Slide navigation'|t }}">
         {# Dots will be dynamically populated by JavaScript #}
       </div>
     {% endif %}
 
-      {% if pb_navigation in ['arrows', 'both'] %}
+      {% if total_slides > 1 and pb_navigation in ['arrows', 'both'] %}
       <div class="pb__carousel-options" aria-label="{{ 'Carousel Controls'|t }}">
           <button id="prev-{{ paragraph.id.value }}" role="button" class="pb__button pb__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>

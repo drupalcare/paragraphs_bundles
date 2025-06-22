@@ -14,17 +14,14 @@
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-wrapper {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease;
   position: relative;
   overflow: hidden;
   width: auto;
   height: auto;
   margin: 0 auto;
-}
-
-.paragraph--type--carousel-bundle .pb__carousel-wrapper {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.4s ease;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-wrapper.is-visible {
@@ -51,7 +48,7 @@
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-item.non-active-slide {
-  opacity: 0.25;
+  opacity: 0.15;
   pointer-events: none;
 }
 
