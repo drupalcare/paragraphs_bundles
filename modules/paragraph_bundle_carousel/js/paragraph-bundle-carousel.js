@@ -107,25 +107,39 @@
   function getItemsVisible(state) {
     const isVertical = state.config.orientation === 'vertical';
     const isHybrid = state.config.rawOrientation === 'hybrid';
-    const max = window.innerWidth <= state.config.breakpoints ?
-      state.config.itemsSmall :
-      state.config.itemsBig;
-    // Disable dynamic fitting for vertical or hybrid modes
-    if (isVertical || isHybrid) {
+    const isSmallScreen = window.innerWidth <= state.config.breakpoints;
+
+    const max = isSmallScreen
+      ? state.config.itemsSmall
+      : state.config.itemsBig;
+
+    // For vertical layout, always return max
+    if (isVertical) {
       return max;
     }
+
+    // For hybrid layout, act as vertical on small screens (return max),
+    // but act as horizontal (apply fitting) on large screens.
+    if (isHybrid && isSmallScreen) {
+      return max;
+    }
+
+    // Horizontal (or hybrid in horizontal layout): smart fit logic
     const containerSize = state.container.offsetWidth;
     const gap = state.config.gap || 0;
     let total = 0;
     let count = 0;
+
     for (let i = 0; i < state.items.length; i++) {
       const itemSize = state.items[i].offsetWidth;
       if (i > 0) total += gap;
       total += itemSize;
+
       if (total > containerSize) break;
       count++;
       if (count >= max) break;
     }
+
     return Math.max(1, count);
   }
 

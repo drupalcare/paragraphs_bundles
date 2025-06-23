@@ -81,8 +81,8 @@
   --pb-content-width: 50rem;
 }
 
-.page-node-type-pb-content .node .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full),
-.page-node-type-pb-content .node .pb__content-full .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
+.page-node-type-pb-content .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full),
+.page-node-type-pb-content .pb__content-full .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   --pb-content-width: initial;
 }
 
