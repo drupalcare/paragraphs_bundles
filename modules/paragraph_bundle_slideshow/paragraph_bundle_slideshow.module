@@ -37,11 +37,6 @@ function paragraph_bundle_slideshow_theme($existing, $type, $theme, $path) {
 }
 
 /**
- * Update allowed values for pb_display_bottom_navigation.
- *
- * @return void
- */
-/**
  * Update and reorder allowed values for pb_display_bottom_navigation.
  */
 function paragraph_bundle_slideshow_update_8101() {
@@ -57,7 +52,7 @@ function paragraph_bundle_slideshow_update_8101() {
   $settings = $field_storage->get('settings');
   $allowed_values = $settings['allowed_values'] ?? [];
 
-  // Must be associative format: 'key' => 'label'
+  // Must be associative format: 'key' => 'label'.
   if (!is_array($allowed_values) || array_values($allowed_values) === $allowed_values) {
     \Drupal::logger('paragraph_bundle_slideshow')->error('Allowed values format is not associative. Update aborted.');
     return;
@@ -71,13 +66,13 @@ function paragraph_bundle_slideshow_update_8101() {
     'nav_play' => 'Numbers only (no Play/Pause button)',
   ];
 
-  $changed = false;
+  $changed = FALSE;
 
   // Apply label updates and add missing values.
   foreach ($final_labels as $key => $label) {
     if (!isset($allowed_values[$key]) || $allowed_values[$key] !== $label) {
       $allowed_values[$key] = $label;
-      $changed = true;
+      $changed = TRUE;
     }
   }
 
@@ -100,4 +95,3 @@ function paragraph_bundle_slideshow_update_8101() {
     \Drupal::logger('paragraph_bundle_slideshow')->notice('No changes needed for pb_display_bottom_navigation.');
   }
 }
-
