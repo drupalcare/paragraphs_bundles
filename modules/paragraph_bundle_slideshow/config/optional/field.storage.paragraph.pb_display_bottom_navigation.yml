@@ -11,20 +11,21 @@ type: list_string
 settings:
   allowed_values:
     -
+      value: play
+      label: 'Play/Pause button only (requires non-zero slide time)'
+    -
       value: dot
-      label: 'Show navigation dots with Play/Pause button'
-    -
-      value: nav
-      label: 'Show numbered navigation with Play/Pause button'
-    -
-      value: nav_play
-      label: 'Show numbered navigation only (no Play/Pause)'
+      label: 'Dots with Play/Pause button'
     -
       value: dot_play
-      label: 'Show navigation dots only (no Play/Pause)'
+      label: 'Dots only (no Play/Pause button)'
     -
-      value: play
-      label: 'Show only the Play/Pause button (requires non-zero slide time)'
+      value: nav
+      label: 'Numbers with Play/Pause button'
+    -
+      value: nav_play
+      label: 'Numbers only (no Play/Pause button)'
+
   allowed_values_function: ''
 module: options
 locked: false

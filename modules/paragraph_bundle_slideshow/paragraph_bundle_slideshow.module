@@ -35,3 +35,69 @@ function paragraph_bundle_slideshow_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Update allowed values for pb_display_bottom_navigation.
+ *
+ * @return void
+ */
+/**
+ * Update and reorder allowed values for pb_display_bottom_navigation.
+ */
+function paragraph_bundle_slideshow_update_8101() {
+  $field_storage = \Drupal::entityTypeManager()
+    ->getStorage('field_storage_config')
+    ->load('paragraph.pb_display_bottom_navigation');
+
+  if (!$field_storage) {
+    \Drupal::logger('paragraph_bundle_slideshow')->warning('pb_display_bottom_navigation field storage not found.');
+    return;
+  }
+
+  $settings = $field_storage->get('settings');
+  $allowed_values = $settings['allowed_values'] ?? [];
+
+  // Must be associative format: 'key' => 'label'
+  if (!is_array($allowed_values) || array_values($allowed_values) === $allowed_values) {
+    \Drupal::logger('paragraph_bundle_slideshow')->error('Allowed values format is not associative. Update aborted.');
+    return;
+  }
+
+  $final_labels = [
+    'play'     => 'Play/Pause button only (requires a non-zero slide time)',
+    'dot'      => 'Dots with Play/Pause button',
+    'dot_play' => 'Dots only (no Play/Pause button)',
+    'nav'      => 'Numbers with Play/Pause button',
+    'nav_play' => 'Numbers only (no Play/Pause button)',
+  ];
+
+  $changed = false;
+
+  // Apply label updates and add missing values.
+  foreach ($final_labels as $key => $label) {
+    if (!isset($allowed_values[$key]) || $allowed_values[$key] !== $label) {
+      $allowed_values[$key] = $label;
+      $changed = true;
+    }
+  }
+
+  // Reorder final allowed_values based on desired custom order.
+  $ordered = [];
+  foreach (array_keys($final_labels) as $key) {
+    if (isset($allowed_values[$key])) {
+      $ordered[$key] = $allowed_values[$key];
+    }
+  }
+
+  if ($changed) {
+    $settings['allowed_values'] = $ordered;
+    $field_storage->set('settings', $settings);
+    $field_storage->save();
+
+    \Drupal::logger('paragraph_bundle_slideshow')->notice('Final allowed values updated and reordered for pb_display_bottom_navigation.');
+  }
+  else {
+    \Drupal::logger('paragraph_bundle_slideshow')->notice('No changes needed for pb_display_bottom_navigation.');
+  }
+}
+
