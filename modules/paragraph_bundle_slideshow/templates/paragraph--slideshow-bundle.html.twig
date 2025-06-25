@@ -155,23 +155,34 @@
           {% endfor %}
         </div>
         <div class="pb__announcer visually-hidden" aria-live="polite"></div>
-        {% if pb_bottom_nav or pb_slide_time > 0 %}
-          <div id="pb__slide-nav-{{ paragraph.id.value }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="pb__bar pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
-            {% if pb_slide_time > 0 %}
-            <button id="btn-{{ paragraph.id.value }}" type="button" role="tab" aria-label="{{ 'Stop Auto Play'|t }}" class="pb__button hide-{{ pb_slide_time }} pb__play playing" aria-live="polite">
-              <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
-              <span>&#10073;&nbsp;&#10073;</span>
-            </button>
 
+        {% set show_play_button = pb_bottom_nav in ['dot', 'nav', 'play'] and pb_slide_time > 0 %}
+        {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
+
+        {% if show_play_button or show_navigation_buttons %}
+          <div id="pb__slide-nav-{{ paragraph.id.value }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="pb__slide-nav pb__slide-number {{ pb_bottom_nav }}">
+
+            {# Play button if enabled #}
+
+            {% if show_play_button %}
+              <button id="btn-{{ paragraph.id.value }}" type="button" role="tab"
+                      aria-label="{{ 'Pause slideshow'|t }}"
+                      class="pb__button pb__play is-playing {% if pb_slide_time == 0 %} hide-{{ pb_slide_time }}{% endif %}"
+                      aria-live="polite">
+                <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
+                <span>{{ include('@paragraph_bundle_slideshow/svg/svg-pause.svg') }}</span>
+              </button>
             {% endif %}
-            {% if pb_bottom_nav %}
+
+            {# Navigation dots or numbers #}
+            {% if show_navigation_buttons %}
               {% for key, item in content.pb_content_slideshow_section %}
                 {% if key|first != '#' %}
                   <button id="pb__slide-bottom-btn-{{ key + 1 }}" type="button" role="tab"
-                          aria-label="{{ 'Slide '|t }} {{ key + 1 }}"
-                          aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
+                          aria-label="{{ 'Slide '|t ~ (key + 1) }}"
+                          aria-selected="{{ key == 0 ? 'true' : 'false' }}"
                           aria-controls="pb__slide-item-{{ paragraph.id.value }}-{{ key + 1 }}"
-                          class="pb__button pb__slide-bottom-btn{% if key == 0 %} pb__active{% endif %}"
+                          class="pb__button pb__slide-bottom-btn{{ key == 0 ? ' pb__active' : '' }}"
                           {% if key != 0 %}tabindex="-1"{% endif %}>
                     <span>{{ key + 1 }}</span>
                   </button>
@@ -185,11 +196,11 @@
           <div id="pb__slide-arrows-{{ paragraph.id.value }}" class="pb__bar pb__slide-arrows pb__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
             <button class="pb__prev pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
               <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
-              <span>❮</span>
+              <span>{{ include('@paragraph_bundle_slideshow/svg/svg-prev.svg') }}</span>
             </button>
             <button class="pb__next pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="{{ 'Next Slide'|t }}">
-               <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
-              <span>❯</span>
+              <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
+              <span>{{ include('@paragraph_bundle_slideshow/svg/svg-next.svg') }}</span>
             </button>
           </div>
         {% endif %}
@@ -198,3 +209,4 @@
     </div>
   </div>
 </div>
+

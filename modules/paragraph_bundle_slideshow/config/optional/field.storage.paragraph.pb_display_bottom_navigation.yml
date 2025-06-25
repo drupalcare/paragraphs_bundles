@@ -12,10 +12,19 @@ settings:
   allowed_values:
     -
       value: dot
-      label: 'Show the bottom nav as dots.'
+      label: 'Show navigation dots with Play/Pause button'
     -
       value: nav
-      label: 'Show the bottom nav as numbers.'
+      label: 'Show numbered navigation with Play/Pause button'
+    -
+      value: nav_play
+      label: 'Show numbered navigation only (no Play/Pause)'
+    -
+      value: dot_play
+      label: 'Show navigation dots only (no Play/Pause)'
+    -
+      value: play
+      label: 'Show only the Play/Pause button (requires non-zero slide time)'
   allowed_values_function: ''
 module: options
 locked: false
