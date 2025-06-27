@@ -48,6 +48,13 @@
 
 {# Set the inner classes for the paragraph. #}
 {% set classes_inner = 'paragraph__inner pb__slide-wrap__inner' %}
+{# Slideshow fields #}
+{% set pb_prev_next = content.pb_display_slide_prev_next|render|striptags|trim %}
+{% set pb_bottom_nav = content.pb_display_bottom_navigation|render|striptags|trim %}
+{% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
+{% set pb_slide_time = content.pb_display_slide_play_stop|render|striptags|trim|default('0') %}
+{% set pb_title  = content.pb_content_title|render|striptags|trim %}
+{% set has_bottom_nav = pb_bottom_nav != '' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -56,6 +63,7 @@
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
+  has_bottom_nav ? 'has-bottom-nav',
   paragraph_id,
 ] %}
 
@@ -109,13 +117,6 @@
   {% endif %}
 {% endfor %}
 
-{# Slideshow fields #}
-{% set pb_prev_next = content.pb_display_slide_prev_next|render|striptags|trim %}
-{% set pb_bottom_nav = content.pb_display_bottom_navigation|render|striptags|trim %}
-{% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
-{% set pb_slide_time = content.pb_display_slide_play_stop|render|striptags|trim|default('0') %}
-{% set pb_title  = content.pb_content_title|render|striptags|trim %}
-
 {# Main wrapper #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
@@ -125,7 +126,7 @@
       {% endif %}
 
       {% set total_slides = 0 %}
-      <div id="{{ slide_id }}" class="pb__slideshow-inner{{ pb_bottom_nav ? ' ' ~ pb_bottom_nav }}{{ pb_slide_time == 0 ? ' zero' : ' not-zero' }}">
+      <div id="{{ slide_id }}" class="pb__slideshow-inner{{ pb_bottom_nav ? ' ' ~ pb_bottom_nav }}{{ pb_slide_time == 0 ? ' zero' : ' not-zero' }}" data-slide-time="{{ pb_slide_time }}">
         <div id="pb__slides-{{ paragraph.id.value }}" class="pb__slides">
           {% for key, item in content.pb_content_slideshow_section %}
             {% if key|first != '#' %}
@@ -204,7 +205,6 @@
             </button>
           </div>
         {% endif %}
-        <div class="pb__ps-value" data-slide-time="{{ pb_slide_time }}"></div>
       </div>
     </div>
   </div>

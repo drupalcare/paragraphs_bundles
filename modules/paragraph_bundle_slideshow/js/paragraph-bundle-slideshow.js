@@ -39,7 +39,7 @@
         const nextButton = slideshowInner.querySelector('.pb__next');
         const prevButton = slideshowInner.querySelector('.pb__prev');
         const dots = slideshowInner.querySelectorAll('.pb__slide-bottom-btn');
-        const slideTime = parseInt(slideshowInner.querySelector('.pb__ps-value')?.dataset.slideTime, 10) || 0;
+        const slideTime = parseInt(slideshowInner.dataset.slideTime, 10) || 0;
         const totalSlides = slides.length;
         let slideIndex = 1;
         let isPaused = slideTime === 0;
