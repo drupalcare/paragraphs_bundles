@@ -22,6 +22,7 @@
   width: auto;
   height: auto;
   margin: 0 auto;
+  transition: all 0.3s ease;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-wrapper.is-visible {
