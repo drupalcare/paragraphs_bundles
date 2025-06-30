@@ -185,6 +185,7 @@
 
 .paragraph--type--carousel-bundle .pb__carousel-dots {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   width: 100%;
