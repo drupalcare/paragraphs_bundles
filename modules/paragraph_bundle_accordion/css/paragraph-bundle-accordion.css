@@ -64,7 +64,7 @@
 
 .paragraph--type--accordion-bundle  .pb__accor-wrap-btn-item.pb__active,
 .paragraph--type--accordion-bundle  .pb__accor-wrap-btn-item.pb__active div {
-  background-color: var(--pb-bt-a);
+  background-color: var(--pb-bt-a, gray);
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button {
