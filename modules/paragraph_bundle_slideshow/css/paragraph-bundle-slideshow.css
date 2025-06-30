@@ -24,8 +24,7 @@
 }
 
 .paragraph--type--slideshow-bundle .pb__slide-item-inner {
-  padding-top: 1px;
-  padding-bottom: 1px;
+  min-height: 1px;
   overflow: hidden;
 }
 
