@@ -51,7 +51,7 @@
 .paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active {
   font-weight: bold;
   text-decoration: underline;
-  background-color: var(--pb-bt-a, gray);
+  background-color: var(--pb-bt-a);
 }
 
 @media (min-width:87.5rem) {
