@@ -158,7 +158,7 @@
         <div class="pb__row pb__tabs-pane">
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
-              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb__tab-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if key == 0 %} aria-live="polite"{% endif %}>
+              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb__tab-pane{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if key == 0 %} aria-live="polite"{% endif %}>
                 {% for body_key, body_item in item['#paragraph'].pb_content_tab_body %}
                   {% set section_body = item %}
                   {% set lang = section_body['#paragraph'].langcode[0].value %}

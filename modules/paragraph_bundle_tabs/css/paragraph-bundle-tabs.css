@@ -36,8 +36,12 @@
   overflow: hidden;
 }
 
+.paragraph--type--tabs-bundle .pb__tabs-pane > div {
+  flex-direction: column;
+}
+
 .paragraph--type--tabs-bundle .pb__tabs-pane > div:first-child {
-  display: block;
+  display: flex;
 }
 
 .paragraph--type--tabs-bundle .pb__tabs-button > button {

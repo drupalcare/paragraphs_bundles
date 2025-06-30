@@ -54,7 +54,7 @@
             hideAllPanes();
             removeActiveClassFromButtons();
 
-            currentPane.style.display = 'block';
+            currentPane.style.display = 'flex';
             currentPane.setAttribute('aria-hidden', 'false');
 
             button.classList.add('pb__active');
@@ -151,7 +151,7 @@
         }
 
         // Ensure first pane is visible by default.
-        tabPanes[0].style.display = 'block';
+        tabPanes[0].style.display = 'flex';
         tabPanes[0].setAttribute('aria-hidden', 'false');
       });
     }
