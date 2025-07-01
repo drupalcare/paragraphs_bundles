@@ -69,11 +69,11 @@
               });
 
               if (minusButton) {
-                minusButton.style.display = hideIndex === 1 ? 'none' : 'block';
+                minusButton.style.display = hideIndex === 1 ? 'none' : 'inline-flex';
                 updateTabindex(minusButton);
               }
               if (plusButton) {
-                plusButton.style.display = showIndex === 1 ? 'none' : 'block';
+                plusButton.style.display = showIndex === 1 ? 'none' : 'inline-flex';
                 updateTabindex(plusButton);
               }
             });
@@ -108,8 +108,8 @@
                 const minus = plusMinus.querySelector('.pb__minus');
 
                 if (plus && minus) {
-                  plus.style.display = !isCurrentlyActive ? 'none' : 'block';
-                  minus.style.display = !isCurrentlyActive ? 'block' : 'none';
+                  plus.style.display = !isCurrentlyActive ? 'none' : 'inline-flex';
+                  minus.style.display = !isCurrentlyActive ? 'inline-flex' : 'none';
 
                   plus.setAttribute('aria-hidden', String(!isCurrentlyActive));
                   minus.setAttribute('aria-hidden', String(isCurrentlyActive));
@@ -154,8 +154,8 @@
                 const minus = plusMinus.querySelector('.pb__minus');
 
                 if (plus && minus) {
-                  plus.style.display = isExpand ? 'none' : 'block';
-                  minus.style.display = isExpand ? 'block' : 'none';
+                  plus.style.display = isExpand ? 'none' : 'inline-flex';
+                  minus.style.display = isExpand ? 'inline-flex' : 'none';
                   plus.setAttribute('aria-hidden', isExpand);
                   minus.setAttribute('aria-hidden', !isExpand);
                 }

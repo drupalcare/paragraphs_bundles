@@ -132,11 +132,11 @@
         <div class="pb__row pb__ex-button">
           <button class="pb__button pb__plus" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="{{ 'Expand all sections'|t }}" tabindex="0">
             <span class="visually-hidden">{{ 'Expand all sections'|t }}</span>
-            <span>&#x0229E;</span>
+            <span class="pb__plus-svg">{{ include('@paragraph_bundle_accordion/svg/svg-all-expand.svg') }}</span>
           </button>
           <button class="pb__button pb__minus" aria-expanded="true" aria-controls="{{ acc_id }}" aria-label="{{ 'Collapse all sections'|t }}" tabindex="-1">
             <span class="visually-hidden">{{ 'Collapse all sections'|t }}</span>
-            <span>&#x0229F;</span>
+            <span class="pb__minus-svg">{{ include('@paragraph_bundle_accordion/svg/svg-all-collapse.svg') }}</span>
           </button>
         </div>
 
@@ -170,11 +170,13 @@
           {% if pb_show_indicator == "On" %}
           <span class="pb__plus-minus">
             <!-- Minus Symbol -->
-            <span class="pb__minus"{% if key == 0 and pb_open_first == 'On' %} style="display:inline;" aria-hidden="false"{% else %} style="display:none;" aria-hidden="true"{% endif %}>&#x02212;
+            <span class="pb__minus"{% if key == 0 and pb_open_first == 'On' %} style="display:inline-flex;" aria-hidden="false"{% else %} style="display:none;" aria-hidden="true"{% endif %}>
+              {{ include('@paragraph_bundle_accordion/svg/svg-panel-collapse.svg') }}
             </span>
 
             <!-- Plus Symbol -->
-            <span class="pb__plus" {% if key == 0 and pb_open_first == 'On' %} style="display:none;" aria-hidden="true"{% else %} style="display:inline;" aria-hidden="false"{% endif %}>&#x0002B;
+            <span class="pb__plus" {% if key == 0 and pb_open_first == 'On' %} style="display:none;" aria-hidden="true"{% else %} style="display:inline-flex;" aria-hidden="false"{% endif %}>
+              {{ include('@paragraph_bundle_accordion/svg/svg-panel-expand.svg') }}
             </span>
             <!-- Hidden Accessible Text -->
             <span class="visually-hidden">{{ 'Close or Open tab'|t }}</span>
