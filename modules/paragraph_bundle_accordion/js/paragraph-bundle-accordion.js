@@ -37,9 +37,49 @@
         const updateTabindex = (button) => {
           if (window.getComputedStyle(button).display === 'none') {
             button.setAttribute('tabindex', '-1');
-          }
-          else {
+          } else {
             button.removeAttribute('tabindex');
+          }
+        };
+
+        /**
+         * Open a specific accordion item programmatically.
+         */
+        const openAccordionItem = (button) => {
+          const element = button.closest('.pb__accor-wrap-btn-item');
+          if (!element || element.classList.contains('pb__active')) {
+            return;
+          }
+
+          element.classList.add('pb__active');
+          element.classList.remove('pb__active-no');
+
+          const toggleButton = element.querySelector('.pb__accor-button');
+          const contentPane = element.querySelector('.pb__accor-pane');
+          const plusMinus = element.querySelector('.pb__plus-minus');
+
+          if (toggleButton) {
+            toggleButton.setAttribute('aria-expanded', 'true');
+          }
+          if (contentPane) {
+            contentPane.setAttribute('aria-hidden', 'false');
+          }
+          if (plusMinus) {
+            const plus = plusMinus.querySelector('.pb__plus');
+            const minus = plusMinus.querySelector('.pb__minus');
+            if (plus && minus) {
+              plus.style.display = 'none';
+              minus.style.display = 'inline-flex';
+              plus.setAttribute('aria-hidden', 'true');
+              minus.setAttribute('aria-hidden', 'false');
+            }
+          }
+
+          button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+          const slug = button.getAttribute('data-fragment');
+          if (slug) {
+            history.replaceState(null, '', `#${slug}`);
           }
         };
 
@@ -48,8 +88,8 @@
          */
         const toggleClassAndDisplay = (buttonSelector, addClass, removeClass, hideIndex, showIndex) => {
           once('toggleClassAndDisplay', buttonSelector, accordionContainer).forEach((button) => {
-            button.addEventListener('click', (event) => {
-              const classId = event.target.closest('.pb__accor').id;
+            button.addEventListener('click', () => {
+              const classId = button.getAttribute('aria-controls');
               const [wrapper, minusButton, plusButton] = getElementsById(classId);
 
               wrapper.forEach((element) => {
@@ -87,14 +127,16 @@
           once('toggleActiveState', buttonSelector, accordionContainer).forEach((button) => {
             button.addEventListener('click', (event) => {
               const element = event.target.closest('.pb__accor-wrap-btn-item');
-              const toggleButton = element.querySelector('.pb__accor-button');
-              const contentPane = element.querySelector('.pb__accor-pane');
-              const plusMinus = element.querySelector('.pb__plus-minus');
+              if (!element) return;
 
               const isCurrentlyActive = element.classList.contains(activeClass);
 
               element.classList.toggle(activeClass, !isCurrentlyActive);
               element.classList.toggle(inactiveClass, isCurrentlyActive);
+
+              const toggleButton = element.querySelector('.pb__accor-button');
+              const contentPane = element.querySelector('.pb__accor-pane');
+              const plusMinus = element.querySelector('.pb__plus-minus');
 
               if (toggleButton) {
                 toggleButton.setAttribute('aria-expanded', String(!isCurrentlyActive));
@@ -102,21 +144,17 @@
               if (contentPane) {
                 contentPane.setAttribute('aria-hidden', String(isCurrentlyActive));
               }
-
               if (plusMinus) {
                 const plus = plusMinus.querySelector('.pb__plus');
                 const minus = plusMinus.querySelector('.pb__minus');
-
                 if (plus && minus) {
                   plus.style.display = !isCurrentlyActive ? 'none' : 'inline-flex';
                   minus.style.display = !isCurrentlyActive ? 'inline-flex' : 'none';
-
                   plus.setAttribute('aria-hidden', String(!isCurrentlyActive));
                   minus.setAttribute('aria-hidden', String(isCurrentlyActive));
                 }
               }
 
-              // ADDED: Update URL hash using data-fragment, if available
               const slug = button.getAttribute('data-fragment');
               if (slug) {
                 history.replaceState(null, '', `#${slug}`);
@@ -125,59 +163,18 @@
           });
         };
 
-        /**
-         * Expand or collapse all items in this accordion container.
-         */
-        once('expand-collapse-all', '.pb__ex-button > button', accordionContainer).forEach((button) => {
-          button.addEventListener('click', () => {
-            const isExpand = button.classList.contains('pb__plus');
-            const accId = button.getAttribute('aria-controls');
-            const elements = accordionContainer.querySelectorAll(`#${accId} .pb__accor-wrap-btn-item`);
-
-            elements.forEach((element) => {
-              const toggleButton = element.querySelector('.pb__accor-button');
-              const contentPane = element.querySelector('.pb__accor-pane');
-              const plusMinus = element.querySelector('.pb__plus-minus');
-
-              element.classList.toggle('pb__active', isExpand);
-              element.classList.toggle('pb__active-no', !isExpand);
-
-              if (toggleButton) {
-                toggleButton.setAttribute('aria-expanded', isExpand);
-              }
-              if (contentPane) {
-                contentPane.setAttribute('aria-hidden', !isExpand);
-              }
-
-              if (plusMinus) {
-                const plus = plusMinus.querySelector('.pb__plus');
-                const minus = plusMinus.querySelector('.pb__minus');
-
-                if (plus && minus) {
-                  plus.style.display = isExpand ? 'none' : 'inline-flex';
-                  minus.style.display = isExpand ? 'inline-flex' : 'none';
-                  plus.setAttribute('aria-hidden', isExpand);
-                  minus.setAttribute('aria-hidden', !isExpand);
-                }
-              }
-            });
-          });
-        });
-
-        // ADDED: Deep link support — open accordion item based on hash
-        const hash = window.location.hash.replace('#', '');
-        if (hash) {
-          const button = accordionContainer.querySelector(`[data-fragment="${CSS.escape(hash)}"]`);
-          if (button && button.classList.contains('pb__accor-button')) {
-            button.click();
-            button.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }
-
-        // Initialize accordion interaction for this container.
         toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
         toggleClassAndDisplay('.pb__ex-button>button.pb__plus', 'pb__active', 'pb__active-no', 2, 1);
         toggleClassAndDisplay('.pb__ex-button>button.pb__minus', 'pb__active-no', 'pb__active', 1, 2);
+
+        // Hash-based deep link open on page load.
+        const hash = window.location.hash.replace('#', '');
+        if (hash) {
+          const button = accordionContainer.querySelector(`.pb__accor-button[data-fragment="${CSS.escape(hash)}"]`);
+          if (button) {
+            openAccordionItem(button);
+          }
+        }
 
         // Optional log for debugging during development (remove for production).
         Drupal.debug && Drupal.debug('Paragraphs Accordion initialized for one container.');

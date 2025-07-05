@@ -6,6 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
@@ -63,13 +64,8 @@
             button.setAttribute('aria-expanded', 'true');
             button.focus();
 
-            // ADDED: Update hash in URL to use data-fragment if available
-            const slug = button.getAttribute('data-fragment');
-            if (slug) {
-              history.replaceState(null, '', `#${slug}`);
-            } else {
-              history.replaceState(null, '', `#${button.id}`);
-            }
+            const slug = button.getAttribute('data-fragment') || button.id;
+            history.replaceState(null, '', `#${slug}`);
           }
           else {
             Drupal.debug && Drupal.debug(`Pane with ID ${paneId} not found within this tabContainer.`);
@@ -91,68 +87,93 @@
          */
         function handleKeyboardNavigation(event, currentIndex) {
           let newIndex;
-
           switch (event.key) {
             case 'ArrowRight':
               newIndex = (currentIndex + 1) % tabButtons.length;
               break;
-
             case 'ArrowLeft':
               newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
               break;
-
             case 'Home':
               newIndex = 0;
               break;
-
             case 'End':
               newIndex = tabButtons.length - 1;
               break;
-
             default:
-              return; // Ignore keys that aren't navigation-related.
+              return;
           }
-
           event.preventDefault();
-
-          tabButtons.forEach((button) => button.setAttribute('tabindex', '-1'));
+          tabButtons.forEach((b) => b.setAttribute('tabindex', '-1'));
           tabButtons[newIndex].setAttribute('tabindex', '0');
           tabButtons[newIndex].focus();
         }
 
-        // Initialize tab buttons.
+        // Initialize tab buttons with ARIA and keyboard support.
         tabButtons.forEach((button, index) => {
           if (index === 0) {
             button.classList.add('pb__active');
             button.setAttribute('aria-selected', 'true');
             button.setAttribute('aria-expanded', 'true');
             button.setAttribute('tabindex', '0');
-          }
-          else {
+          } else {
             button.setAttribute('tabindex', '-1');
           }
-
-          button.addEventListener('keydown', (event) => handleKeyboardNavigation(event, index));
+          button.addEventListener('keydown', (e) => handleKeyboardNavigation(e, index));
         });
 
-        // ADDED: Hash-based tab activation using ID or data-fragment
+        /**
+         * Activate tab based on hash in URL if present.
+         */
         const hash = window.location.hash.replace('#', '');
         if (hash) {
-          // Try matching by ID
           let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
-          // Fallback to matching by data-fragment
           if (!button) {
             button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
           }
           if (button) {
             activateTab(button);
-            return; // Skip default activation
+            return; // Skip default activation if hash tab activated.
           }
         }
 
-        // Ensure first pane is visible by default.
+        // Show the first pane by default if no hash match.
         tabPanes[0].style.display = 'flex';
         tabPanes[0].setAttribute('aria-hidden', 'false');
+      });
+
+      /**
+       * Global in-page hash link handler for immediate tab activation on in-page clicks,
+       * wrapped with `once()` for Drupal best practices.
+       */
+      once('paragraphBundleTabsGlobal', document).forEach(() => {
+        document.addEventListener('click', (event) => {
+          const anchor = event.target.closest('a[href^="#"]');
+          if (!anchor) return;
+
+          const hash = anchor.getAttribute('href').slice(1);
+          if (!hash) return;
+
+          let tabActivated = false;
+
+          tabContainers.forEach((tabContainer) => {
+            const tabButtons = tabContainer.querySelectorAll('.pb__tab-button');
+            let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
+            if (!button) {
+              button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
+            }
+            if (button) {
+              event.preventDefault(); // Prevent native jump to hidden content.
+              button.click(); // Trigger your existing delegation to activateTab.
+              button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              tabActivated = true;
+            }
+          });
+
+          if (tabActivated) {
+            history.replaceState(null, '', `#${hash}`);
+          }
+        });
       });
     }
   };
