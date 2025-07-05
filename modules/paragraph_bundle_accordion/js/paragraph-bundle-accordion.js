@@ -6,12 +6,13 @@
  * ensures proper ARIA attributes for accessibility, and supports
  * multiple instances on the page.
  *
- * This follows Drupal best practices for behaviors in contrib modules.
+ * Follows Drupal 11 contrib best practices.
  *
  * Filename:     paragraph-bundle-accordion.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
@@ -21,59 +22,30 @@
 
       accordionContainers.forEach((accordionContainer) => {
 
-        /**
-         * Helper to get accordion elements within a specific container.
-         */
-        const getElementsById = (id) => {
-          const wrapper = accordionContainer.querySelectorAll(`#${id} > .pb__accor-wrap-btn-item`);
-          const minusButton = accordionContainer.querySelector(`#${id} > .pb__ex-button > button.pb__minus`);
-          const plusButton = accordionContainer.querySelector(`#${id} > .pb__ex-button > button.pb__plus`);
-          return [wrapper, minusButton, plusButton];
+        const togglePlusMinus = (plus, minus, isExpanded) => {
+          if (!plus || !minus) return;
+          plus.setAttribute('aria-hidden', String(isExpanded));
+          minus.setAttribute('aria-hidden', String(!isExpanded));
         };
 
-        /**
-         * Update button tabindex based on visibility.
-         */
-        const updateTabindex = (button) => {
-          if (window.getComputedStyle(button).display === 'none') {
-            button.setAttribute('tabindex', '-1');
-          } else {
-            button.removeAttribute('tabindex');
-          }
-        };
-
-        /**
-         * Open a specific accordion item programmatically.
-         */
         const openAccordionItem = (button) => {
           const element = button.closest('.pb__accor-wrap-btn-item');
-          if (!element || element.classList.contains('pb__active')) {
-            return;
-          }
+          if (!element || element.classList.contains('pb__active')) return;
 
           element.classList.add('pb__active');
           element.classList.remove('pb__active-no');
 
           const toggleButton = element.querySelector('.pb__accor-button');
           const contentPane = element.querySelector('.pb__accor-pane');
-          const plusMinus = element.querySelector('.pb__plus-minus');
+          const plus = element.querySelector('.pb__plus-minus .pb__plus');
+          const minus = element.querySelector('.pb__plus-minus .pb__minus');
 
-          if (toggleButton) {
-            toggleButton.setAttribute('aria-expanded', 'true');
-          }
+          toggleButton?.setAttribute('aria-expanded', 'true');
+          contentPane?.setAttribute('aria-hidden', 'false');
           if (contentPane) {
-            contentPane.setAttribute('aria-hidden', 'false');
+            Drupal.paragraphBundleAccordion.slideDown(contentPane);
           }
-          if (plusMinus) {
-            const plus = plusMinus.querySelector('.pb__plus');
-            const minus = plusMinus.querySelector('.pb__minus');
-            if (plus && minus) {
-              plus.style.display = 'none';
-              minus.style.display = 'inline-flex';
-              plus.setAttribute('aria-hidden', 'true');
-              minus.setAttribute('aria-hidden', 'false');
-            }
-          }
+          togglePlusMinus(plus, minus, true);
 
           button.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
@@ -83,77 +55,32 @@
           }
         };
 
-        /**
-         * Toggle all accordion items between active/inactive.
-         */
-        const toggleClassAndDisplay = (buttonSelector, addClass, removeClass, hideIndex, showIndex) => {
-          once('toggleClassAndDisplay', buttonSelector, accordionContainer).forEach((button) => {
-            button.addEventListener('click', () => {
-              const classId = button.getAttribute('aria-controls');
-              const [wrapper, minusButton, plusButton] = getElementsById(classId);
-
-              wrapper.forEach((element) => {
-                element.classList.remove(removeClass);
-                element.classList.add(addClass);
-
-                const isExpand = addClass === 'pb__active';
-                const toggleButton = element.querySelector('.pb__accor-button');
-                const contentPane = element.querySelector('.pb__accor-pane');
-
-                if (toggleButton) {
-                  toggleButton.setAttribute('aria-expanded', isExpand);
-                }
-                if (contentPane) {
-                  contentPane.setAttribute('aria-hidden', !isExpand);
-                }
-              });
-
-              if (minusButton) {
-                minusButton.style.display = hideIndex === 1 ? 'none' : 'inline-flex';
-                updateTabindex(minusButton);
-              }
-              if (plusButton) {
-                plusButton.style.display = showIndex === 1 ? 'none' : 'inline-flex';
-                updateTabindex(plusButton);
-              }
-            });
-          });
-        };
-
-        /**
-         * Toggle a single accordion item.
-         */
         const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
           once('toggleActiveState', buttonSelector, accordionContainer).forEach((button) => {
-            button.addEventListener('click', (event) => {
-              const element = event.target.closest('.pb__accor-wrap-btn-item');
+            button.addEventListener('click', () => {
+              const element = button.closest('.pb__accor-wrap-btn-item');
               if (!element) return;
 
-              const isCurrentlyActive = element.classList.contains(activeClass);
-
-              element.classList.toggle(activeClass, !isCurrentlyActive);
-              element.classList.toggle(inactiveClass, isCurrentlyActive);
+              const isActive = element.classList.contains(activeClass);
+              element.classList.toggle(activeClass, !isActive);
+              element.classList.toggle(inactiveClass, isActive);
 
               const toggleButton = element.querySelector('.pb__accor-button');
               const contentPane = element.querySelector('.pb__accor-pane');
-              const plusMinus = element.querySelector('.pb__plus-minus');
+              const plus = element.querySelector('.pb__plus-minus .pb__plus');
+              const minus = element.querySelector('.pb__plus-minus .pb__minus');
 
-              if (toggleButton) {
-                toggleButton.setAttribute('aria-expanded', String(!isCurrentlyActive));
-              }
+              toggleButton?.setAttribute('aria-expanded', String(!isActive));
+              contentPane?.setAttribute('aria-hidden', String(isActive));
+
               if (contentPane) {
-                contentPane.setAttribute('aria-hidden', String(isCurrentlyActive));
-              }
-              if (plusMinus) {
-                const plus = plusMinus.querySelector('.pb__plus');
-                const minus = plusMinus.querySelector('.pb__minus');
-                if (plus && minus) {
-                  plus.style.display = !isCurrentlyActive ? 'none' : 'inline-flex';
-                  minus.style.display = !isCurrentlyActive ? 'inline-flex' : 'none';
-                  plus.setAttribute('aria-hidden', String(!isCurrentlyActive));
-                  minus.setAttribute('aria-hidden', String(isCurrentlyActive));
+                if (!isActive) {
+                  Drupal.paragraphBundleAccordion.slideDown(contentPane);
+                } else {
+                  Drupal.paragraphBundleAccordion.slideUp(contentPane);
                 }
               }
+              togglePlusMinus(plus, minus, !isActive);
 
               const slug = button.getAttribute('data-fragment');
               if (slug) {
@@ -163,21 +90,66 @@
           });
         };
 
-        toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
-        toggleClassAndDisplay('.pb__ex-button>button.pb__plus', 'pb__active', 'pb__active-no', 2, 1);
-        toggleClassAndDisplay('.pb__ex-button>button.pb__minus', 'pb__active-no', 'pb__active', 1, 2);
+        const toggleExpandCollapseAll = (buttonSelector) => {
+          once('toggleExpandCollapseAll', buttonSelector, accordionContainer).forEach((button) => {
+            button.addEventListener('click', () => {
+              const wrapper = button.closest('.pb__ex-button');
+              if (!wrapper) return;
 
-        // Hash-based deep link open on page load.
-        const hash = window.location.hash.replace('#', '');
-        if (hash) {
-          const button = accordionContainer.querySelector(`.pb__accor-button[data-fragment="${CSS.escape(hash)}"]`);
-          if (button) {
-            openAccordionItem(button);
-          }
+              const isExpanding = wrapper.classList.contains('expand-all');
+              const accordionItems = accordionContainer.querySelectorAll('.pb__accor-wrap-btn-item');
+
+              accordionItems.forEach((item) => {
+                const contentPane = item.querySelector('.pb__accor-pane');
+                const toggleButton = item.querySelector('.pb__accor-button');
+                const plus = item.querySelector('.pb__plus-minus .pb__plus');
+                const minus = item.querySelector('.pb__plus-minus .pb__minus');
+
+                if (isExpanding && !item.classList.contains('pb__active')) {
+                  item.classList.add('pb__active');
+                  item.classList.remove('pb__active-no');
+                  toggleButton?.setAttribute('aria-expanded', 'true');
+                  contentPane?.setAttribute('aria-hidden', 'false');
+                  if (contentPane) {
+                    Drupal.paragraphBundleAccordion.slideDown(contentPane);
+                  }
+                  togglePlusMinus(plus, minus, true);
+                } else if (!isExpanding && item.classList.contains('pb__active')) {
+                  item.classList.remove('pb__active');
+                  item.classList.add('pb__active-no');
+                  toggleButton?.setAttribute('aria-expanded', 'false');
+                  contentPane?.setAttribute('aria-hidden', 'true');
+                  if (contentPane) {
+                    Drupal.paragraphBundleAccordion.slideUp(contentPane);
+                  }
+                  togglePlusMinus(plus, minus, false);
+                }
+              });
+
+              wrapper.classList.toggle('expand-all', !isExpanding);
+              wrapper.classList.toggle('collapse-all', isExpanding);
+            });
+          });
+        };
+
+        toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
+        toggleExpandCollapseAll('.pb__ex-button .pb__toggle-all');
+
+        // Ensure only the first matching initially open pane is animated open on load
+        const initiallyOpenPane = accordionContainer.querySelector('.pb__accor-pane[aria-hidden="false"]');
+        if (initiallyOpenPane) {
+          Drupal.paragraphBundleAccordion.slideDown(initiallyOpenPane);
         }
 
-        // Optional log for debugging during development (remove for production).
-        Drupal.debug && Drupal.debug('Paragraphs Accordion initialized for one container.');
+        if (window.location.hash) {
+          const hash = decodeURIComponent(window.location.hash.slice(1));
+          requestAnimationFrame(() => {
+            const button = accordionContainer.querySelector(`.pb__accor-button[data-fragment="${CSS.escape(hash)}"]`);
+            if (button) {
+              openAccordionItem(button);
+            }
+          });
+        }
       });
     }
   };

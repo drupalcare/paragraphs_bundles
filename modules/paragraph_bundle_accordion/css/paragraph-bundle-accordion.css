@@ -4,31 +4,62 @@
  *
  * Filename:     paragraph-bundle-accordion.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+
+/* ---------------------------------
+   Structure and layout
+--------------------------------- */
 .paragraph--type--accordion-bundle {
   overflow: hidden;
 }
 
-.paragraph--type--accordion-bundle .pb__accor .pb__accor-wrap-btn-item {
-  border-block-end: var(--pb-px2) solid var(--pb-br);
-  overflow: hidden;
+.paragraph--type--accordion-bundle .pb__accor {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.paragraph--type--accordion-bundle .pb__accor > div {
+  width: 100%;
 }
 
 .paragraph--type--accordion-bundle .pb__accor > div:last-child {
   border-block-end: none;
 }
 
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
+  display: grid;
+  width: 100%;
+  border-block-end: var(--pb-px2) solid var(--pb-br);
+  overflow: hidden;
+  transition: background-color 0.3s ease;
+}
+
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active,
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active div {
+  background-color: var(--pb-bt-a);
+}
+
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
+  padding-block-start: 0;
+}
+
+/* ---------------------------------
+   Accordion button
+--------------------------------- */
 .paragraph.paragraph--type--accordion-bundle .pb__accor-button {
-  padding-block: var(--pb-px16);
-  padding-inline: var(--pb-px12);
   display: flex;
   width: 100%;
   flex-grow: 1;
-  white-space: initial;
+  align-items: center;
+  padding-block: var(--pb-px16);
+  padding-inline: var(--pb-px12);
   cursor: pointer;
-  z-index: 1;
+  white-space: initial;
   text-align: var(--pb-text-align-start);
+  z-index: 1;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-button > * {
@@ -39,74 +70,100 @@
   margin-inline-start: auto;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button .pb__minus-svg,
-.paragraph--type--accordion-bundle .pb__ex-button .pb__plus-svg,
-.paragraph--type--accordion-bundle .pb__plus-minus > span {
-  transition: all 0.4s ease;
-}
-
-
+/* ---------------------------------
+   Accordion pane
+--------------------------------- */
 .paragraph.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
   display: none;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
-  display: grid;
-  width: 100%;
-}
-
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
-  padding-block-start: 0;
-}
-
 .paragraph--type--accordion-bundle .pb__active .pb__accor-pane {
   padding: var(--pb-px16);
-  border-block-start: none;
-  width: 100%;
-  margin-block-start: 0;
-  margin-inline-end: 0;
+  margin: 0;
   margin-block-end: var(--pb-px10);
-  margin-inline-start: 0;
   overflow: hidden;
+  width: 100%;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active div {
-  background-color: var(--pb-bt-a);
-}
-
+/* ---------------------------------
+   Expand/collapse all buttons
+--------------------------------- */
 .paragraph--type--accordion-bundle .pb__ex-button {
-  justify-content: end;
-  align-items: center;
   display: flex;
-  flex-grow: 1;
+  justify-content: flex-end;
+  align-items: center;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button button {
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--pb-px10);
+  background: none;
+  border: none;
+  cursor: pointer;
+  line-height: 1;
+  min-width: 50px;
+  min-height: 50px;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button button span {
-  display: inline-flex;
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__minus-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transform-origin: center center;
+
 }
 
-.paragraph--type--accordion-bundle .pb__plus-minus span {
+/* ---------------------------------
+   Plus/minus icon animations
+--------------------------------- */
+.paragraph--type--accordion-bundle .pb__plus-minus {
+  position: relative;
+  display: inline-flex;
+  width: 1.5em;
+  height: 1.5em;
+}
+
+.paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
+.paragraph--type--accordion-bundle .pb__plus-minus .pb__minus {
+  position: absolute;
+  inset: 0;
+  display: flex;
   align-items: center;
   justify-content: center;
-
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform-origin: center center;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button .pb__minus,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item .pb__plus-minus span {
-  display: none;
-
+/* Default: show plus, hide minus */
+.paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
+.paragraph--type--accordion-bundle .pb__ex-button.expand-all .pb__button .pb__plus-svg {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
+}
+.paragraph--type--accordion-bundle .pb__plus-minus .pb__minus,
+.paragraph--type--accordion-bundle .pb__ex-button.expand-all .pb__button .pb__minus-svg {
+  opacity: 0;
+  transform: rotate(-180deg) scale(0.8);
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus span.pb__minus,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active-no .pb__plus-minus span.pb__plus {
-  display: inline-flex;
+/* When collapsing: show minus, hide plus */
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__plus,
+.paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__plus-svg {
+  opacity: 0;
+  transform: rotate(180deg) scale(0.8);
+}
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__minus,
+.paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__minus-svg {
+  opacity: 1;
+  transform: rotate(0deg) scale(1);
 }

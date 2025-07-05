@@ -3,6 +3,7 @@ paragraph-bundle-accordion:
     theme:
       css/paragraph-bundle-accordion.css: { }
   js:
+    js/paragraph-bundle-accordion-utils.js: { }
     js/paragraph-bundle-accordion.js: { }
   dependencies:
     - core/drupal
