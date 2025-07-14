@@ -136,9 +136,18 @@
         toggleExpandCollapseAll('.pb__ex-button .pb__toggle-all');
 
         // Ensure only the first matching initially open pane is animated open on load
-        const initiallyOpenPane = accordionContainer.querySelector('.pb__accor-pane[aria-hidden="false"]');
-        if (initiallyOpenPane) {
-          Drupal.paragraphBundleAccordion.slideDown(initiallyOpenPane);
+        // Open first item if the "pb--open-first" class is set on the accordion container.
+        if (accordionContainer.classList.contains('pb--open-first')) {
+          const firstButton = accordionContainer.querySelector('.pb__accor-button');
+          if (firstButton) {
+            openAccordionItem(firstButton);
+          }
+        } else {
+          // Fallback: ensure any pre-opened item gets animated open.
+          const initiallyOpenPane = accordionContainer.querySelector('.pb__accor-pane[aria-hidden="false"]');
+          if (initiallyOpenPane) {
+            Drupal.paragraphBundleAccordion.slideDown(initiallyOpenPane);
+          }
         }
 
         if (window.location.hash) {

@@ -46,6 +46,12 @@
 {% set paragraph_id = 'pb__accor-wrap-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
 {% set classes_inner = 'paragraph__inner pb__accor-wrap__inner' %}
+{% set pb_animated_tab = content.pb_display_accor_animated|render|striptags|trim %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
+
+{% set pb_expand_all = content.pb_display_accor_show_expand|render|striptags|trim %}
+{% set pb_show_indicator = content.pb_display_accor_indicator|render|striptags|trim %}
+{% set pb_open_first = content.pb_display_accor_open_first|render|striptags|trim %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -55,7 +61,12 @@
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
   paragraph_id,
+  pb_expand_all == 'On' ? 'pb--expand-all',
+  pb_show_indicator == 'On' ? 'pb--show-indicator',
+  pb_open_first == 'On' ? 'pb--open-first',
 ] %}
+
+
 
 {# Set the color styles for the paragraph. #}
 {% set pb_styles = {
@@ -143,46 +154,35 @@
         {% if key|first != '#' %}
          {% set total_panels = total_panels + 1 %}
 
-        <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item {% if key == 0 %} {{ pb_open_first == 'On' ? 'pb__active' : 'pb__active-no' }} {% else %} pb__active-no{% endif %}">
+        <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item{% if key == 0 and pb_open_first == 'On' %} pb__active{% else %} pb__active-no{% endif %}">
 
           {# Loops through the accordion sections to print the tab section titles. #}
         {% set tab_index = key + 1 %}
         {% set raw_slug = item['#paragraph'].pb_content_accordion_title.value|lower|replace({' ': '-', '?': '', ',': '', '.': '', '/': '-'}) %}
         {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
         {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
-        <button
-          id="{{ acc_id }}-{{ tab_index }}"
-          class="pb__button pb__bar pb__accor-button"
-          data-fragment="{{ tab_slug }}"
-          aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}"
-          aria-expanded="{% if key == 0 and pb_open_first == 'On' %}true{% else %}false{% endif %}"
-          aria-controls="{{ acc_id }}-{{ tab_index }}-pane"
-          type="button">
+          <button id="{{ acc_id }}-{{ tab_index }}" class="pb__button pb__bar pb__accor-button" data-fragment="{{ tab_slug }}" aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}" aria-expanded="{% if key == 0 and pb_open_first == 'On' %}true{% else %}false{% endif %}" aria-controls="{{ acc_id }}-{{ tab_index }}-pane" type="button">
 
           <!-- Button Title -->
           <span class="pb__button-title">
             {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
           </span>
 
-          {% if pb_show_indicator == "On" %}
-          <span class="pb__plus-minus">
-            <!-- Minus Symbol -->
-            <span class="pb__minus"{% if key == 0 and pb_open_first == 'On' %} aria-hidden="false"{% else %} aria-hidden="true"{% endif %}>
-              {{ include('@paragraph_bundle_accordion/svg/svg-panel-collapse.svg') }}
+            {% if pb_show_indicator == "On" %}
+            <span class="pb__plus-minus">
+              <span class="pb__minus" aria-hidden="{{ key == 0 and pb_open_first == 'On' ? 'false' : 'true' }}">
+                {{ include('@paragraph_bundle_accordion/svg/svg-panel-collapse.svg') }}
+              </span>
+              <span class="pb__plus" aria-hidden="{{ key == 0 and pb_open_first == 'On' ? 'true' : 'false' }}">
+                {{ include('@paragraph_bundle_accordion/svg/svg-panel-expand.svg') }}
+              </span>
+              <span class="visually-hidden">{{ 'Close or Open tab'|t }}</span>
             </span>
-
-            <!-- Plus Symbol -->
-            <span class="pb__plus" {% if key == 0 and pb_open_first == 'On' %} aria-hidden="true"{% else %} aria-hidden="false"{% endif %}>
-              {{ include('@paragraph_bundle_accordion/svg/svg-panel-expand.svg') }}
-            </span>
-            <!-- Hidden Accessible Text -->
-            <span class="visually-hidden">{{ 'Close or Open tab'|t }}</span>
-          </span>
-          {% endif %}
-        </button>
+            {% endif %}
+          </button>
 
           {# Loop through all of the accordion section bodies. #}
-          <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}"  aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">
+          <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}" aria-hidden="{% if key == 0 and pb_open_first == 'On' %}false{% else %}true{% endif %}" data-index="{{ key }}">
             {% for body_key, body_item in item['#paragraph'].pb_content_accordion_body %}
             {# Use the same render array as item and set the '#paragraph'. #}
             {% set section_body = item %}

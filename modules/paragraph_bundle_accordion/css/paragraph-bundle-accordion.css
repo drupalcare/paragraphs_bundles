@@ -78,7 +78,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb__active .pb__accor-pane {
-  padding: var(--pb-px16);
+  padding: 0 var(--pb-px16);
   margin: 0;
   margin-block-end: var(--pb-px10);
   overflow: hidden;
