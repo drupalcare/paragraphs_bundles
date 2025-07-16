@@ -10,77 +10,56 @@
   width: 100%;
 }
 
-.page-node-type-pb-content ul.links,
-.page-node-type-pb-content .pb__content-full,
-.page-node-type-pb-content .block-local-tasks-block {
+/* Base block and content width behavior */
+.page-node-type-pb-content .sidebar-box-main-inner > .solo-block {
   width: 100%;
   margin-inline-start: auto;
   margin-inline-end: auto;
 }
 
-.page-node-type-pb-content .sw-100 ul.links,
-.page-node-type-pb-content .sw-100 .block-local-tasks-block,
-.page-node-type-pb-content .node .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+/* Shared rule for solo-block and content-full elements with exclusions */
+.page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
+.page-node-type-pb-content .node--view-mode-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full, .pb__slide-wrap__inner > .pb__content-full) {
   max-width: var(--pb-content-width);
+  width: 100%;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
-.page-node-type-pb-content .sw-100 ul.links,
-.page-node-type-pb-content .sw-100 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_100 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+/* Node max-width modifier classes */
+.page-node-type-pb-content.pb-nmw-100 {
   --pb-content-width: 100%;
 }
 
-.page-node-type-pb-content .sw-2560 ul.links,
-.page-node-type-pb-content .sw-2560 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_2560 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-2560 {
   --pb-content-width: 160rem;
 }
 
-.page-node-type-pb-content .sw-1920 ul.links,
-.page-node-type-pb-content .sw-1920 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_1920 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-1920 {
   --pb-content-width: 120rem;
 }
 
-.page-node-type-pb-content .sw-1600 ul.links,
-.page-node-type-pb-content .sw-1600 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_1600 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-1600 {
   --pb-content-width: 100rem;
 }
 
-.page-node-type-pb-content .sw-1440 ul.links,
-.page-node-type-pb-content .sw-1440 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_1440 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-1440 {
   --pb-content-width: 90rem;
 }
 
-.page-node-type-pb-content .sw-1280 ul.links,
-.page-node-type-pb-content .sw-1280 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_1280 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-1280 {
   --pb-content-width: 80rem;
 }
 
-.page-node-type-pb-content .sw-1024 ul.links,
-.page-node-type-pb-content .sw-1024 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_1024 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-1024 {
   --pb-content-width: 64rem;
 }
 
-.page-node-type-pb-content .sw-800 ul.links,
-.page-node-type-pb-content .sw-800 .block-local-tasks-block,
-.page-node-type-pb-content .node.pb__nmw_800 .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full,
-.pb__slide-wrap__inner>.pb__content-full) {
+.page-node-type-pb-content.pb-nmw-800 {
   --pb-content-width: 50rem;
 }
 
+/* Reset nested .pb__content-full widths */
 .page-node-type-pb-content .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full),
 .page-node-type-pb-content .pb__content-full .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
   --pb-content-width: initial;

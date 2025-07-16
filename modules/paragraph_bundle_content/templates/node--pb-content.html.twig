@@ -68,10 +68,6 @@
  */
 #}
 
-{# Set the maximum width of the node #}
-{% set node_max_width = content.pb_display_content_width|render|striptags|trim  %}
-
-
 {# Set the background color of the node #}
 {% set pb_bg_value = content.pb_display_content_bg|render|striptags|trim %}
 
@@ -90,7 +86,6 @@
 
 {% set classes = [
     'node pb__row',
-    node_max_width,
     'node--type-' ~ node.bundle|clean_class,
     node.isPromoted() ? 'node--promoted',
     node.isSticky() ? 'node--sticky',
