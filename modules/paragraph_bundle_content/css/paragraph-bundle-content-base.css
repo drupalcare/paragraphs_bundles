@@ -19,6 +19,8 @@
 
 /* Shared rule for solo-block and content-full elements with exclusions */
 .page-node-type-pb-content .sidebar-box-main-inner > nav>*,
+.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb__slide-title,
+.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb__content-title,
 .page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
 .page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full>.node__content>*:not(.paragraph),
 .page-node-type-pb-content .node--view-mode-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full, .pb__slide-wrap__inner > .pb__content-full) {
@@ -62,9 +64,12 @@
 }
 
 /* Reset nested .pb__content-full widths */
-.page-node-type-pb-content .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full),
-.page-node-type-pb-content .pb__content-full .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full) {
+.page-node-type-pb-content .pb__content-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full, .paragraph--type--carousel-bundle .pb__content-full, .paragraph--type--slideshow-bundle .pb__content-full) {
   --pb-content-width: initial;
+}
+
+.page-node-type-pb-content .paragraph--type--carousel-bundle .pb__carousel-item > div {
+  max-width: calc(var(--pb-content-width) - 100px);
 }
 
 #main-container-inner .pb-content,
