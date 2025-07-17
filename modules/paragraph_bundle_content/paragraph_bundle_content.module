@@ -13,6 +13,7 @@
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\Entity\Node;
 use Drupal\Component\Utility\Html;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_help().
@@ -163,35 +164,23 @@ function paragraph_bundle_content_theme_suggestions_field_alter(array &$suggesti
 }
 
 /**
- * Preprocess node to store max-width value for body class.
- */
-function paragraph_bundle_content_preprocess_node(array &$variables): void {
-  if (
-    $variables['view_mode'] === 'full' &&
-    $variables['page'] &&
-    $variables['node']->bundle() === 'pb_content'
-  ) {
-    $node = $variables['node'];
-    if (
-      $node->hasField('pb_display_content_width') &&
-      !$node->get('pb_display_content_width')->isEmpty()
-    ) {
-      $width = $node->get('pb_display_content_width')->value;
-      $static = &drupal_static('paragraph_bundle_content_node_max_width');
-      $static = $width;
-    }
-  }
-}
-
-/**
- * Preprocess HTML to append body class from node max-width.
+ * Preprocess HTML to append page width class from pb_content node.
  */
 function paragraph_bundle_content_preprocess_html(array &$variables): void {
-  $static = &drupal_static('paragraph_bundle_content_node_max_width');
-  if (!empty($static)) {
-    // Remove leading 'pb__' if present.
-    $trimmed = preg_replace('/^pb__/', '', $static);
-    $safe = Html::getClass($trimmed);
-    $variables['attributes']['class'][] = 'pb-' . $safe;
+  $routeMatch = \Drupal::routeMatch();
+  $node = $routeMatch->getParameter('node') ?? $routeMatch->getParameter('node_preview');
+
+  // Only apply for full pb_content nodes with the width field.
+  if ($node instanceof NodeInterface && $node->bundle() === 'pb_content') {
+    if ($node->hasField('pb_display_content_width') && !$node->get('pb_display_content_width')->isEmpty()) {
+      $value = $node->get('pb_display_content_width')->value;
+
+      // Remove 'pb__' prefix and sanitize the rest.
+      $trimmed = preg_replace('/^pb__/', '', $value);
+      $safe = Html::getClass($trimmed);
+
+      // Append as a body class.
+      $variables['attributes']['class'][] = 'pb-' . $safe;
+    }
   }
 }
