@@ -4,7 +4,7 @@
   font-style: normal;
   font-weight: 100 700;
   src: url(../fonts/gNMVW2J8Roq16WD5tFNRaeLQk6-SHQ_R00k4aWHSSmlN.woff2) format('woff2');
-  font-display: block;
+  font-display: swap;
 }
 
 body .material-symbols-sharp {
