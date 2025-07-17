@@ -19,6 +19,7 @@
 
 /* Shared rule for solo-block and content-full elements with exclusions */
 .page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
+.page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full>.node__content>*:not(.paragraph),
 .page-node-type-pb-content .node--view-mode-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full, .pb__slide-wrap__inner > .pb__content-full) {
   max-width: var(--pb-content-width);
   width: 100%;
@@ -27,10 +28,6 @@
 }
 
 /* Node max-width modifier classes */
-.page-node-type-pb-content.pb-nmw-100 {
-  --pb-content-width: 100%;
-}
-
 .page-node-type-pb-content.pb-nmw-2560 {
   --pb-content-width: 160rem;
 }
@@ -57,6 +54,10 @@
 
 .page-node-type-pb-content.pb-nmw-800 {
   --pb-content-width: 50rem;
+}
+
+.page-node-type-pb-content.pb-nmw-100 {
+  --pb-content-width: 100%;
 }
 
 /* Reset nested .pb__content-full widths */
