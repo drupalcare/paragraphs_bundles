@@ -119,6 +119,7 @@
 
     {{ content.pb_content_body }}
     {{ content.pb_content_link }}
+    {{ content|without('pb_content_title', 'pb_content_body', 'pb_content_link', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
     </div>
 
