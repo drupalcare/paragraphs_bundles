@@ -8,6 +8,8 @@
  */
 .paragraph--type--parallax-bundle {
   overflow: hidden;
+  width: 100%;
+  min-width: 100%;
 }
 
 .paragraph--type--parallax-bundle .pb__parallax-text {
@@ -22,26 +24,65 @@
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph--type--parallax-section-bundle .paragraph__inner {
-  position: relative;
-}
-
-.paragraph--type--parallax-section-bundle .pb__parallax-bg {
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
 .paragraph--type--parallax-section-bundle .pb__parallax-bg {
   min-height: calc(6 * var(--pb-px48));
 }
 
 .paragraph--type--parallax-section-bundle .pb__parallax-text {
+  max-width: var(--pb-width);
+  margin: 0 auto;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
   min-height: calc(3 * var(--pb-px32));
+  transition: all 0.3s ease;
 }
 
 .page-node-type-pb-content .paragraph--type--parallax-bundle>div>div {
   width: 100% !important;
   max-width: 100% !important;
+}
+
+.paragraph--type--parallax-section-bundle .pb__parallax-bg.image-url-empty {
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  text-align: center;
+  z-index: 5;
+  height: 100vh;
+}
+
+.paragraph--type--parallax-section-bundle > div {
+  position: relative;
+  overflow: hidden !important;
+  min-height: var(--section-height, 400px);
+}
+
+.paragraph--type--parallax-section-bundle.parallax-js .pb__parallax-text {
+  position: relative;
+  opacity: 1;
+  transform: none;
+}
+
+.paragraph--type--parallax-section-bundle.parallax-js .pb__parallax-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-position: var(--background-position, center);
+  background-size: cover;
+  transition: var(--animation-speed, 0.6s) var(--animation-easing, ease);
+  will-change: transform;
+}
+
+.paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

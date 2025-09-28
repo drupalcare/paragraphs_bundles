@@ -2,6 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_anim_easing
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_bg_anim_speed
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_bg_position
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_height_unit
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_breakpoints
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_scroll
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_speed
     - field.field.paragraph.parallax_section_bundle.pb_content_body
     - field.field.paragraph.parallax_section_bundle.pb_content_image
     - field.field.paragraph.parallax_section_bundle.pb_display_bg
@@ -33,7 +40,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 14
+    weight: 22
     region: content
   pb_content_image:
     type: entity_reference_entity_view
@@ -42,7 +49,7 @@ content:
       view_mode: pb_media_parallax
       link: false
     third_party_settings: {  }
-    weight: 15
+    weight: 21
     region: content
   pb_display_bg:
     type: color_text_formatter_rgb
@@ -63,14 +70,14 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 12
+    weight: 6
     region: content
   pb_display_border:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 6
+    weight: 7
     region: content
   pb_display_border_color:
     type: color_text_formatter_hex
@@ -91,21 +98,56 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 7
+    weight: 8
     region: content
   pb_display_margin:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 9
+    weight: 10
     region: content
   pb_display_padding:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 11
+    region: content
+  pb_display_para_anim_easing:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  pb_display_para_bg_anim_speed:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 15
+    region: content
+  pb_display_para_height_unit:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  pb_display_parallax_bg_position:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  pb_display_parallax_breakpoints:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
     region: content
   pb_display_parallax_height:
     type: number_unformatted
@@ -114,12 +156,26 @@ content:
     third_party_settings: {  }
     weight: 13
     region: content
+  pb_display_parallax_scroll:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  pb_display_parallax_speed:
+    type: number_unformatted
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 14
+    region: content
   pb_display_shadow:
     type: list_key
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 8
+    weight: 9
     region: content
   pb_display_text:
     type: color_text_formatter_hex
@@ -140,6 +196,6 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
 hidden: {  }

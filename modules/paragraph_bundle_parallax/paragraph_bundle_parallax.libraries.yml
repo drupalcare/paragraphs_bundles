@@ -2,3 +2,40 @@ paragraph-bundle-parallax:
   css:
     theme:
       css/paragraph-bundle-parallax.css: { }
+  js:
+    js/paragraph-bundle-parallax.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.ajax
+    - core/drupalSettings
+    - core/once
+
+paragraph-bundle-parallax__all:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-all.css: { }
+
+paragraph-bundle-parallax__576:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-576.css: { weight: 202 }
+
+paragraph-bundle-parallax__768:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-768.css: { weight: 202 }
+
+paragraph-bundle-parallax__992:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-992.css: { weight: 202 }
+
+paragraph-bundle-parallax__1200:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-1200.css: { weight: 202 }
+
+paragraph-bundle-parallax__1400:
+  css:
+    theme:
+      css/paragraph-bundle-parallax-1400.css: { weight: 202 }

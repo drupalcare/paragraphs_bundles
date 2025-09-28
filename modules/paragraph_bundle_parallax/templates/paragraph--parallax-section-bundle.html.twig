@@ -2,50 +2,28 @@
 /**
 * @file
 * Default theme implementation to display a 'parallax' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
 #}
+
+{# New Fields Added with proper value conversion. #}
+{% set pb_anim_easeing   = content.pb_display_para_anim_easing|render|striptags|trim ?: 'ease' %}
+{% set pb_anim_speed     = content.pb_display_para_bg_anim_speed|render|striptags|trim ?: '0.3' %}
+{% set pb_bg_height_unit = content.pb_display_para_height_unit|render|striptags|trim ?: 'px' %}
+{% set pb_bg_position    = content.pb_display_parallax_bg_position|render|striptags|trim ?: 'center' %}
+{% set pb_breakpoints    = content.pb_display_parallax_breakpoints|render|striptags|trim ?: 'all' %}
+{% set pb_scroll_affect  = content.pb_display_parallax_scroll|render|striptags|trim ?: 'legacy' %}
+{% set pb_parallax_speed = content.pb_display_parallax_speed|render|striptags|trim ?: '0.7' %}
 
 {# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax') }}
+{% if pb_breakpoints %}
+{{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax__' ~ pb_breakpoints) }}
+{% endif %}
 
 {# Set the paragraph id. #}
 {% set paragraph_id  = 'pb__parallax-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__parallax__inner' %}
+{% set classes_inner = '' %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -66,6 +44,32 @@
   'pb-tx': 'pb_display_text',
   'pb-tx-h': 'pb_display_text_hover'
 } %}
+
+
+{# Convert field values to proper CSS values #}
+{% set pb_height_unit_css = pb_bg_height_unit == 'pr' ? '%' : pb_bg_height_unit %}
+{% set pb_easing_css = pb_anim_easeing|replace({'_': '-'}) %}
+{% set pb_effect_css = pb_scroll_affect|replace({'_': '-'}) %}
+
+{# Set effect and breakpoint classes #}
+{% set effect_class = pb_effect_css ~ '-effect' %}
+{% set breakpoint_class = 'br-' ~ pb_breakpoints %}
+
+
+{# Add the appropriate mode class based on scroll effect selection #}
+{% if pb_scroll_affect == 'legacy' %}
+  {% set classes = classes|merge(['parallax-css']) %}
+{% else %}
+  {% set classes = classes|merge(['parallax-js']) %}
+{% endif %}
+
+{# Add other styling classes #}
+{% set classes = classes|merge([
+  breakpoint_class,
+  'easing-' ~ pb_easing_css,
+  'bg-pos-' ~ pb_bg_position|replace({' ': '-', '%': 'pct', '_': '-'}),
+  'height-unit-' ~ pb_height_unit_css|replace({'_': '-'})
+]) %}
 
 {# Set the display properties for the paragraph. #}
 {% set pb_displays = [
@@ -94,16 +98,13 @@
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
   {% if style %}
-
     {% if value == 'pb_display_bg' %}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
     {% elseif style starts with '#' %}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
     {% else %}
-    {# In case widget was changed. #}
       {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
     {% endif %}
-
   {% endif %}
 {% endfor %}
 
@@ -111,17 +112,41 @@
 {% set pb_image_url = content.pb_content_image|render|striptags|trim %}
 {% set pb_image_height = content.pb_display_parallax_height|render|striptags|trim %}
 
+{# Set CSS custom properties for new fields #}
+{% set pb_css_vars = [] %}
+{% set section_height = '' %}
+{% if pb_anim_speed %}
+  {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed ~ 's;']) %}
+{% endif %}
+{% if pb_anim_easeing %}
+  {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css ~ ';']) %}
+{% endif %}
+{% if pb_bg_position %}
+  {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position ~ ';']) %}
+{% endif %}
+{% if pb_image_height and pb_bg_height_unit %}
+  {% set section_height = '--section-height: ' ~ pb_image_height ~ pb_height_unit_css %}
+{% endif %}
+
+{# Normalize data attributes #}
+{% set data_breakpoint = pb_breakpoints %}
+{% set data_speed = pb_parallax_speed %}
+{% set data_effect = pb_effect_css %}
+
 {# Render the paragraph. #}
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="paragraph__inner pb__parallax-section__inner">
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id).setAttribute('data-breakpoint', data_breakpoint).setAttribute('data-parallax-speed', data_speed).setAttribute('data-parallax-effect', data_effect) }}>
+  <div class="paragraph__inner pb__parallax-section__inner {{ effect_class }}" style="{{ section_height }};">
 
     {% if pb_image_url %}
-    <div class="pb__parallax-bg" style="background-image: url( {{ pb_image_url }} ); min-height: {{ pb_image_height }}px;"></div>
+    <div class="pb__parallax-bg" style="background-image: url({{ pb_image_url }}); {{ pb_css_vars|join(' ') }}"></div>
+    {% else %}
+    <div class="pb__parallax-bg image-url-empty" style="{{ pb_css_vars|join(' ') }}">
+    </div>
     {% endif %}
 
     {% if pb_style_attributes|length > 0 %}
     <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" style="{{ pb_style_attributes|join(' ') }}">
-    <div class="pb__content-full">{{ content.pb_content_body }}</div>
+      <div class="pb__content-full">{{ content.pb_content_body }}</div>
     </div>
     {% else %}
     <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
@@ -130,4 +155,4 @@
     {% endif %}
 
   </div>
-</div> {# End of main wrapper #}
+</div>

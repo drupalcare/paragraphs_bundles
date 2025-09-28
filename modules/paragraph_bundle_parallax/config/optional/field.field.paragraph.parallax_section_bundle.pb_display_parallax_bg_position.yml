@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_parallax_bg_position
+    - paragraphs.paragraphs_type.parallax_section_bundle
+  module:
+    - options
+id: paragraph.parallax_section_bundle.pb_display_parallax_bg_position
+field_name: pb_display_parallax_bg_position
+entity_type: paragraph
+bundle: parallax_section_bundle
+label: 'Background Position'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: center
+default_value_callback: ''
+settings: {  }
+field_type: list_string

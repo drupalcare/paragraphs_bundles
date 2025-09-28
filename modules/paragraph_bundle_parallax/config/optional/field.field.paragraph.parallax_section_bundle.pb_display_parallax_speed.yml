@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_parallax_speed
+    - paragraphs.paragraphs_type.parallax_section_bundle
+id: paragraph.parallax_section_bundle.pb_display_parallax_speed
+field_name: pb_display_parallax_speed
+entity_type: paragraph
+bundle: parallax_section_bundle
+label: 'Parallax Speed'
+description: 'Set the speed of the parallax effect (e.g., 0.1 for slow, 2 for fast).'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0.6
+default_value_callback: ''
+settings:
+  min: 0.1
+  max: 2.0
+  prefix: ''
+  suffix: ''
+field_type: decimal

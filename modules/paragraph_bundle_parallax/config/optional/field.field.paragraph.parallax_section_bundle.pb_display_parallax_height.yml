@@ -9,9 +9,9 @@ field_name: pb_display_parallax_height
 entity_type: paragraph
 bundle: parallax_section_bundle
 label: 'Background Image Height'
-description: 'Numbers only. Enter the background image height. Height is per pixel.  Example: 500'
+description: 'Enter the numeric value for the height.'
 required: true
-translatable: false
+translatable: true
 default_value:
   -
     value: 400

@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_para_anim_easing
+field_name: pb_display_para_anim_easing
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: ease
+      label: Ease
+    -
+      value: ease_in
+      label: Ease-In
+    -
+      value: ease_out
+      label: Ease-Out
+    -
+      value: ease_in_out
+      label: Ease-In-Out
+    -
+      value: linear
+      label: Linear
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

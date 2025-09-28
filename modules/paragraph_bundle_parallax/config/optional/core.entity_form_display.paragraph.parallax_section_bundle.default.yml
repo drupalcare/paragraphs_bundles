@@ -2,6 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_anim_easing
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_bg_anim_speed
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_bg_position
+    - field.field.paragraph.parallax_section_bundle.pb_display_para_height_unit
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_breakpoints
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_scroll
+    - field.field.paragraph.parallax_section_bundle.pb_display_parallax_speed
     - field.field.paragraph.parallax_section_bundle.pb_content_body
     - field.field.paragraph.parallax_section_bundle.pb_content_image
     - field.field.paragraph.parallax_section_bundle.pb_display_bg
@@ -72,7 +79,14 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_parallax_bg_position
+        - pb_display_para_anim_easing
+        - pb_display_parallax_scroll
+        - pb_display_parallax_breakpoints
         - pb_display_parallax_height
+        - pb_display_para_height_unit
+        - pb_display_parallax_speed
+        - pb_display_para_bg_anim_speed
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -159,9 +173,53 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_para_anim_easing:
+    type: options_select
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_para_bg_anim_speed:
+    type: number
+    weight: 36
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_para_height_unit:
+    type: options_select
+    weight: 34
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_parallax_bg_position:
+    type: options_select
+    weight: 29
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_parallax_breakpoints:
+    type: options_select
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   pb_display_parallax_height:
     type: number
-    weight: 29
+    weight: 33
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_parallax_scroll:
+    type: options_select
+    weight: 31
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_parallax_speed:
+    type: number
+    weight: 35
     region: content
     settings:
       placeholder: ''
@@ -187,6 +245,11 @@ content:
   pb_display_width:
     type: options_select
     weight: 27
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  translation:
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
