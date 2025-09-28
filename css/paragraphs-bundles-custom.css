@@ -187,41 +187,49 @@ h3 a) {
 }
 
 .paragraph > .pb__pmw_100,
+.paragraph .pb__parallax-text.pb__pmw_100,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_100 {
   --pb-width: 100%;
 }
 
 .paragraph > .pb__pmw_300,
+.paragraph .pb__parallax-text.pb__pmw_300,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_300 {
   --pb-width: 18.75rem;
 }
 
 .paragraph > .pb__pmw_400,
+.paragraph .pb__parallax-text.pb__pmw_400,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_400 {
   --pb-width: 25rem;
 }
 
 .paragraph > .pb__pmw_500,
+.paragraph .pb__parallax-text.pb__pmw_500,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_500 {
   --pb-width: 31.25rem;
 }
 
 .paragraph > .pb__pmw_600,
+.paragraph .pb__parallax-text.pb__pmw_600,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_600 {
   --pb-width: 37.5rem;
 }
 
 .paragraph > .pb__pmw_700,
+.paragraph .pb__parallax-text.pb__pmw_700,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_700 {
   --pb-width: 43.75rem;
 }
 
 .paragraph > .pb__pmw_800,
+.paragraph .pb__parallax-text.pb__pmw_800,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_800 {
   --pb-width: 50rem;
 }
 
 .paragraph > .pb__pmw_900,
+.paragraph .pb__parallax-text.pb__pmw_900,
 .paragraph .pb__hero-txt-wrapper-inner.pb__pmw_900 {
   --pb-width: 56.25rem;
 }
