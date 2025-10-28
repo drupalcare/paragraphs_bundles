@@ -23,7 +23,7 @@ form [data-drupal-selector="para-opacity-range"] label {
 }
 
 form [data-drupal-selector="para-opacity-range"] input[type="number"] {
-  width: 90px;
+  width: 90px!important;
   border-start-start-radius: 8px;
   border-start-end-radius: 0;
   border-end-end-radius: 0;

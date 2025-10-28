@@ -6,19 +6,23 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.pb__tab-display [data-drupal-selector="para-color-picker"] {
+form [data-drupal-selector="para-color-picker"] {
+  max-width: 300px;
+}
+
+form [data-drupal-selector="para-color-picker"] {
   display: inline-block;
   min-width: 150px;
   width: 100%;
   border-radius: 5px;
 }
 
-.pb__tab-display [data-drupal-selector="para-color-picker"] > div {
+form [data-drupal-selector="para-color-picker"] > div {
   width: 100%;
   display: flex;
 }
 
-.pb__tab-display [data-drupal-selector="para-color-picker"] .form-text {
+form [data-drupal-selector="para-color-picker"] .form-text {
   display: inline-block;
   width: calc(100% - 50px);
   border-start-start-radius: 8px;
@@ -29,9 +33,9 @@
   box-sizing: border-box;
 }
 
-.pb__tab-display [data-drupal-selector="para-color-picker"] .form-color {
+form [data-drupal-selector="para-color-picker"] .form-color {
   display: inline-block;
-  width: 50px;
+  width: 50px !important;
   vertical-align: bottom;
   border-start-start-radius: 0;
   border-start-end-radius: 8px;
@@ -43,13 +47,13 @@
   box-sizing: border-box;
 }
 
-.pb__tab-display [data-drupal-selector="para-color-picker"]label,
-.pb__tab-display [data-drupal-selector="para-color-picker"] div {
+form [data-drupal-selector="para-color-picker"]label,
+form [data-drupal-selector="para-color-picker"] div {
   display: block;
   width: 100%;
 }
 
-.pb__tab-display [data-drupal-selector="para-color-picker"] label {
+form [data-drupal-selector="para-color-picker"] label {
   padding-block-start: 12px;
   padding-inline-end: 16px;
   padding-block-end: 0;
