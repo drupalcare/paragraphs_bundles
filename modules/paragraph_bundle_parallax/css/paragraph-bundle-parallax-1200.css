@@ -1,21 +1,23 @@
 /**
  * @file
- * Paragraph Bundle Parallax 1200.
+ * Paragraph Bundle Parallax 1200 - Production Ready.
  *
  * Filename:     paragraph-bundle-parallax-1200.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+@media (min-width:75rem) {
 
-@media (min-width: 75rem) {
-  /* Effect-specific styles */
+  /* ==========================================================================
+     Text Animation Effects - JS Mode
+     ========================================================================== */
+
+  /* Fade Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-effect .pb__parallax-text {
     opacity: 0;
     transform: translateY(50px);
     filter: blur(5px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                filter 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), filter 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
   }
 
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-effect.visible .pb__parallax-text {
@@ -24,36 +26,55 @@
     filter: blur(0);
   }
 
+  /* Scale Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .scale-effect .pb__parallax-text {
+    opacity: 0;
     transform: scale(0.8);
-    transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .scale-effect.visible .pb__parallax-text {
+    opacity: 1;
     transform: scale(1);
   }
 
+  /* Rotate Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .rotate-effect .pb__parallax-text {
+    opacity: 0;
     transform: rotate(10deg) scale(0.9);
-    transition: transform 0.7s ease-out;
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
   }
 
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .rotate-effect.visible .pb__parallax-text {
+    opacity: 1;
     transform: rotate(0) scale(1);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-scale-effect .pb__parallax-text {
+  /* Translate Effect */
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .translate-effect .pb__parallax-text {
     opacity: 0;
-    transform: scale(0.8) translateY(50px) rotate(-10deg);
-    transition: opacity 0.7s ease-in-out, transform 0.7s ease-in-out;
+    transform: translateY(50px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-scale-effect.visible .pb__parallax-text {
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .translate-effect.visible .pb__parallax-text {
     opacity: 1;
-    transform: scale(1) translateY(0) rotate(0);
+    transform: translateY(0);
   }
 
-  /* More complex effects */
+  /* Smooth Effect */
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .smooth-effect .pb__parallax-text {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+  }
+
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .smooth-effect.visible .pb__parallax-text {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* 3D Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .three-d-effect .pb__parallax-text {
     opacity: 0;
     transform: perspective(600px) rotateX(15deg) translateY(50px);
@@ -65,6 +86,7 @@
     transform: perspective(600px) rotateX(0deg) translateY(0);
   }
 
+  /* Shadow Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .shadow-effect .pb__parallax-text {
     opacity: 0;
     transform: translateY(50px);
@@ -78,6 +100,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
+  /* Glow Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .glow-effect .pb__parallax-text {
     opacity: 0;
     transform: translateY(50px);
@@ -91,18 +114,7 @@
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .smooth-effect .pb__parallax-text {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
-  }
-
-  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .smooth-effect.visible .pb__parallax-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
+  /* Hover Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .hover-effect .pb__parallax-text {
     opacity: 0;
     transform: translateY(50px);
@@ -119,11 +131,12 @@
     transition: transform 0.3s ease;
   }
 
+  /* Combined Effect */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .combined-effect .pb__parallax-text {
     opacity: 0;
     transform: translateY(50px) rotate(-10deg);
-    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
   }
 
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .combined-effect.visible .pb__parallax-text {
@@ -132,36 +145,50 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
-  /* Legacy mode styles */
-  .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .fade-effect .pb__parallax-text {
+  /* Blur Effect */
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .blur-effect .pb__parallax-text {
     opacity: 0;
-    transform: translateY(50px);
-    filter: blur(5px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                filter 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+    filter: blur(10px);
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .fade-effect.visible .pb__parallax-text {
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .blur-effect.visible .pb__parallax-text {
     opacity: 1;
+    filter: blur(0);
     transform: translateY(0);
+  }
+
+  /* Opacity Effect */
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .opacity-effect .pb__parallax-text {
+    opacity: 0;
+    transition: opacity 0.7s ease;
+  }
+
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .opacity-effect.visible .pb__parallax-text {
+    opacity: 1;
+  }
+
+  /* Fade + Scale Effect */
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-scale-effect .pb__parallax-text {
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+    filter: blur(4px);
+    transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+  }
+
+  .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .fade-scale-effect.visible .pb__parallax-text {
+    opacity: 1;
+    transform: translateY(0) scale(1);
     filter: blur(0);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .smooth-effect .pb__parallax-text {
-    opacity: 0;
-    transform: translateY(50px);
-    transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
-                transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
-  }
-
-  .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .smooth-effect.visible .pb__parallax-text {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-@media (max-width: 74.99875rem) {
+/* ==========================================================================
+ Mobile Fallback - Below Breakpoint
+ ========================================================================== */
+@media (max-width:74.99875rem) {
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .paragraph__inner,
   .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .paragraph__inner {
     display: grid;
@@ -174,16 +201,15 @@
 
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .pb__parallax-bg,
   .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .pb__parallax-bg {
-    height: 0;
-    width: 0;
     display: none;
   }
 
-  /* Ensure text is visible on mobile */
+  /* Ensure text is always visible on mobile */
   .paragraph--type--parallax-section-bundle.parallax-js.br-1200 .pb__parallax-text,
   .paragraph--type--parallax-section-bundle.parallax-css.br-1200 .pb__parallax-text {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;
   }
+
 }

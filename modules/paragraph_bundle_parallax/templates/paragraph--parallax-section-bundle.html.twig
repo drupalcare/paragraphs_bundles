@@ -2,6 +2,11 @@
 /**
 * @file
 * Default theme implementation to display a 'parallax' paragraph.
+*
+* Filename:     paragraph--parallax-section-bundle.html.twig
+* Website:      https://www.flashwebcenter.com
+* Developer:    Alaa Haddad https://www.alaahaddad.com.
+*/
 #}
 
 {# New Fields Added with proper value conversion. #}
@@ -112,18 +117,20 @@
 {% set pb_image_url = content.pb_content_image|render|striptags|trim %}
 {% set pb_image_height = content.pb_display_parallax_height|render|striptags|trim %}
 
-{# Set CSS custom properties for new fields #}
+{# Set CSS custom properties for new fields - ONLY for JS mode #}
 {% set pb_css_vars = [] %}
-{% set section_height = '' %}
-{% if pb_anim_speed %}
-  {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed ~ 's;']) %}
+{% if pb_scroll_affect != 'legacy' %}
+  {% if pb_anim_speed %}
+    {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed ~ 's;']) %}
+  {% endif %}
+  {% if pb_anim_easeing %}
+    {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css ~ ';']) %}
+  {% endif %}
+  {% if pb_bg_position %}
+    {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position ~ ';']) %}
+  {% endif %}
 {% endif %}
-{% if pb_anim_easeing %}
-  {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css ~ ';']) %}
-{% endif %}
-{% if pb_bg_position %}
-  {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position ~ ';']) %}
-{% endif %}
+
 {% if pb_image_height and pb_bg_height_unit %}
   {% set section_height = '--section-height: ' ~ pb_image_height ~ pb_height_unit_css %}
 {% endif %}

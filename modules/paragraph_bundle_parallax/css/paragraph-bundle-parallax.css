@@ -1,11 +1,15 @@
 /**
  * @file
- * Paragraph Bundle Parallax.
+ * Paragraph Bundle Parallax - Production Ready.
  *
  * Filename:     paragraph-bundle-parallax.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
 
 .paragraph--type--parallax-bundle {
   overflow: hidden;
@@ -25,8 +29,11 @@
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
+/* ==========================================================================
+   Section Bundle Styles
+   ========================================================================== */
 .paragraph--type--parallax-section-bundle .pb__parallax-bg {
-  min-height: calc(6 * var(--pb-px48));
+  min-height: calc(6 * var(--pb-px48, 48px));
 }
 
 .paragraph--type--parallax-section-bundle .pb__parallax-text {
@@ -37,7 +44,7 @@
   align-items: center;
   justify-content: center;
   height: 100%;
-  min-height: calc(3 * var(--pb-px32));
+  min-height: calc(3 * var(--pb-px32, 32px));
   transition: all 0.3s ease;
 }
 
@@ -63,6 +70,9 @@
   min-height: var(--section-height, 400px);
 }
 
+/* ==========================================================================
+   JavaScript Mode Styles
+   ========================================================================== */
 .paragraph--type--parallax-section-bundle.parallax-js .pb__parallax-text {
   position: relative;
   opacity: 1;
@@ -77,10 +87,14 @@
   height: 100%;
   background-position: var(--background-position, center);
   background-size: cover;
+  background-repeat: no-repeat;
   transition: var(--animation-speed, 0.6s) var(--animation-easing, ease);
   will-change: transform;
 }
 
+/* ==========================================================================
+   Legacy CSS Mode Styles
+   ========================================================================== */
 .paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-bg {
   background-attachment: fixed;
   background-position: center;
@@ -88,13 +102,21 @@
   background-size: cover;
 }
 
-/* Accessibility: Respect reduced motion preferences */
-@media (prefers-reduced-motion: reduce) {
+.paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-text {
+  position: relative;
+  z-index: 2;
+}
+
+/* ==========================================================================
+   Accessibility: Reduced Motion
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce) {
   .paragraph--type--parallax-section-bundle .pb__parallax-bg {
     background-attachment: scroll !important;
     transform: none !important;
     transition: none !important;
     filter: none !important;
+    opacity: 1 !important;
   }
 
   .paragraph--type--parallax-section-bundle .pb__parallax-text {
@@ -110,10 +132,20 @@
     transition: none !important;
   }
 
-  /* Ensure content is always visible when reduced motion is preferred */
   .paragraph--type--parallax-section-bundle .paragraph__inner .pb__parallax-text {
     opacity: 1 !important;
     transform: none !important;
     filter: blur(0) !important;
   }
+
+}
+
+/* ==========================================================================
+   iOS Fix: background-attachment: fixed fallback
+   ========================================================================== */
+@supports (-webkit-touch-callout:none) {
+  .paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-bg {
+    background-attachment: scroll;
+  }
+
 }

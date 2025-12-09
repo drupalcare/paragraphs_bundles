@@ -14,40 +14,50 @@ settings:
       value: legacy
       label: 'CSS Legacy Mode'
     -
+      value: blur
+      label: 'Blur'
+    -
+      value: combined
+      label: 'Combined Effects'
+    -
       value: fade
       label: 'Fade In'
-    -
-      value: scale
-      label: 'Scale Up'
-    -
-      value: rotate
-      label: Rotate
     -
       value: fade_scale
       label: 'Fade In and Scale Up'
     -
-      value: three_d
-      label: '3D transformations'
-    -
-      value: shadow
-      label: 'Shadow Effects'
-    -
       value: glow
       label: 'Glow Effects'
-    -
-      value: smooth
-      label: 'Smooth Transition and Timing Functions'
     -
       value: hover
       label: 'Hover Interactions'
     -
-      value: combined
-      label: 'Combined Effects'
+      value: opacity
+      label: 'Opacity Fade'
+    -
+      value: rotate
+      label: Rotate
+    -
+      value: scale
+      label: 'Scale Up'
+    -
+      value: shadow
+      label: 'Shadow Effects'
+    -
+      value: smooth
+      label: 'Smooth Transition and Timing Functions'
+    -
+      value: three_d
+      label: '3D Transformations'
+    -
+      value: translate
+      label: 'Translate / Slide Up'
+
   allowed_values_function: ''
 module: options
 locked: false
 cardinality: 1
 translatable: true
-indexes: {  }
+indexes: { }
 persist_with_no_fields: false
 custom_storage: false
