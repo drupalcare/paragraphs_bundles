@@ -6,6 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
 .paragraph--type--parallax-bundle {
   overflow: hidden;
   width: 100%;
@@ -40,7 +41,7 @@
   transition: all 0.3s ease;
 }
 
-.page-node-type-pb-content .paragraph--type--parallax-bundle>div>div {
+.page-node-type-pb-content .paragraph--type--parallax-bundle > div > div {
   width: 100% !important;
   max-width: 100% !important;
 }
@@ -85,4 +86,34 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+
+/* Accessibility: Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--parallax-section-bundle .pb__parallax-bg {
+    background-attachment: scroll !important;
+    transform: none !important;
+    transition: none !important;
+    filter: none !important;
+  }
+
+  .paragraph--type--parallax-section-bundle .pb__parallax-text {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    filter: none !important;
+  }
+
+  .paragraph--type--parallax-section-bundle .paragraph__inner {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Ensure content is always visible when reduced motion is preferred */
+  .paragraph--type--parallax-section-bundle .paragraph__inner .pb__parallax-text {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: blur(0) !important;
+  }
 }

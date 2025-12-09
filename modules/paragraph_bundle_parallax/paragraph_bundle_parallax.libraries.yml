@@ -1,19 +1,18 @@
 paragraph-bundle-parallax:
   css:
     theme:
-      css/paragraph-bundle-parallax.css: { }
+      css/paragraph-bundle-parallax.css: {}
   js:
     js/paragraph-bundle-parallax.js: {}
   dependencies:
     - core/drupal
-    - core/drupal.ajax
     - core/drupalSettings
     - core/once
 
 paragraph-bundle-parallax__all:
   css:
     theme:
-      css/paragraph-bundle-parallax-all.css: { }
+      css/paragraph-bundle-parallax-all.css: {}
 
 paragraph-bundle-parallax__576:
   css:
