@@ -55,7 +55,7 @@
 {% set pb_play_stop      = content.pb_display_carousel_play_stop|render|striptags|trim %}
 {% set pb_big_screen     = content.pb_display_big_screen|render|striptags|trim %}
 {% set pb_small_screen   = content.pb_display_small_screen|render|striptags|trim %}
-{% set pb_looping        = content.pb_display_activate_looping|render|striptags|trim %}
+{% set pb_looping        = not paragraph.pb_display_activate_looping.isEmpty and paragraph.pb_display_activate_looping.value %}
 {% set item_width        = content.pb_display_custom_slide_width|render|striptags|trim %}
 {% set item_gap          = content.pb_display_slide_gap|render|striptags|trim %}
 {% set pb_title          = content.pb_content_title|render|striptags|trim %}

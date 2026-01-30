@@ -49,6 +49,8 @@
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button svg {
   min-height: calc(2 * var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
 }
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button span {
@@ -59,6 +61,10 @@
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button {
   inset-block-start: calc(50% - var(--pb-px18));
+}
+
+.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button:hover svg {
+  opacity: 0.9;
 }
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next {

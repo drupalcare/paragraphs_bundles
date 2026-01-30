@@ -49,7 +49,7 @@
 {# Set the inner classes for the paragraph. #}
 {% set classes_inner = 'paragraph__inner pb__slide-wrap__inner' %}
 {# Slideshow fields #}
-{% set pb_prev_next = content.pb_display_slide_prev_next|render|striptags|trim %}
+{% set pb_prev_next = not paragraph.pb_display_slide_prev_next.isEmpty and paragraph.pb_display_slide_prev_next.value %}
 {% set pb_bottom_nav = content.pb_display_bottom_navigation|render|striptags|trim %}
 {% set pb_animated_tab = content.pb_display_slide_animated_slides|render|striptags|trim %}
 {% set pb_slide_time = content.pb_display_slide_play_stop|render|striptags|trim|default('0') %}
@@ -193,7 +193,7 @@
           </div>
         {% endif %}
 
-        {% if pb_prev_next == "On" %}
+        {% if pb_prev_next %}
           <div id="pb__slide-arrows-{{ paragraph.id.value }}" class="pb__bar pb__slide-arrows pb__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
             <button class="pb__prev pb__button" role="button" aria-controls="pb__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
               <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>

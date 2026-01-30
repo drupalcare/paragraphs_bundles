@@ -109,11 +109,12 @@
 {% endfor %}
 
 {# Animated Tab Display #}
-{% set pb_animated_tab = content.pb_display_tab_animated_tabs|render|striptags|trim %}
-{% set pb_vertical_tabs = content.pb_display_tab_vertical_tabs|render|striptags|trim %}
-{% set pb_breakpoints = content.pb_display_tabs_breakpoints|render|striptags|trim|default('pb__992') %}
-{% set activate_vertical = (pb_vertical_tabs == 'On' ? 'v__tabs ' : 'h__tabs ') ~ pb_breakpoints %}
-{% set pb_title  = content.pb_content_title|render|striptags|trim %}
+{% set pb_animated_tab   = content.pb_display_tab_animated_tabs|render|striptags|trim %}
+{% set pb_breakpoints    = content.pb_display_tabs_breakpoints|render|striptags|trim|default('pb__992') %}
+{% set pb_titl           = content.pb_content_title|render|striptags|trim %}
+{% set is_vertical       = not paragraph.pb_display_tab_vertical_tabs.isEmpty and paragraph.pb_display_tab_vertical_tabs.value %}
+{% set activate_vertical = (is_vertical ? 'v__tabs ' : 'h__tabs ') ~ pb_breakpoints %}
+
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>

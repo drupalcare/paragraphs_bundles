@@ -113,7 +113,7 @@
 {% set gms_style = 'material-symbols-' ~ icon_style %}
 {% set gms_wght  = content.pb_content_gms_weight|render|striptags|trim %}
 {% set gms_grad  = content.pb_content_gms_grade|render|striptags|trim %}
-{% set gms_fill  = content.pb_content_gms_fill|render|striptags|trim %}
+{% set gms_fill  = not paragraph.pb_content_gms_fill.isEmpty and paragraph.pb_content_gms_fill.value %}
 {% set gms_color = content.pb_content_gms_icon_color|render|striptags|trim %}
 {% set gms_size  = content.pb_content_gms_icon_font_size|render|striptags|trim %}
 {% set gms_opsz  = content.pb_content_gms_optical_size|render|striptags|trim %}

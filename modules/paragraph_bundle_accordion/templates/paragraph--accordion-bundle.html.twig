@@ -48,10 +48,9 @@
 {% set classes_inner = 'paragraph__inner pb__accor-wrap__inner' %}
 {% set pb_animated_tab = content.pb_display_accor_animated|render|striptags|trim %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
-
-{% set pb_expand_all = content.pb_display_accor_show_expand|render|striptags|trim %}
-{% set pb_show_indicator = content.pb_display_accor_indicator|render|striptags|trim %}
-{% set pb_open_first = content.pb_display_accor_open_first|render|striptags|trim %}
+{% set pb_expand_all = not paragraph.pb_display_accor_show_expand.isEmpty and paragraph.pb_display_accor_show_expand.value %}
+{% set pb_show_indicator = not paragraph.pb_display_accor_indicator.isEmpty and paragraph.pb_display_accor_indicator.value %}
+{% set pb_open_first = not paragraph.pb_display_accor_open_first.isEmpty and paragraph.pb_display_accor_open_first.value %}
 
 {# Set the classes for the paragraph. #}
 {% set classes = [
@@ -59,11 +58,11 @@
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
+  pb_expand_all ? 'pb--expand-all',
+  pb_show_indicator ? 'pb--show-indicator',
+  pb_open_first ? 'pb--open-first',
   'paragraph--id--' ~ paragraph.id.value,
   paragraph_id,
-  pb_expand_all == 'On' ? 'pb--expand-all',
-  pb_show_indicator == 'On' ? 'pb--show-indicator',
-  pb_open_first == 'On' ? 'pb--open-first',
 ] %}
 
 
@@ -119,14 +118,6 @@
   {% endif %}
 {% endfor %}
 
-{# End of margin and height #}
-{# Display or hide expand all #}
-{% set pb_expand_all = content.pb_display_accor_show_expand|render|striptags|trim %}
-{% set pb_show_indicator = content.pb_display_accor_indicator|render|striptags|trim %}
-{% set pb_open_first = content.pb_display_accor_open_first|render|striptags|trim %}
-{% set pb_animated_tab = content.pb_display_accor_animated|render|striptags|trim %}
-{% set pb_title = content.pb_content_title|render|striptags|trim %}
-
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
@@ -139,7 +130,7 @@
         <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
         {% endif %}
 
-        {% if pb_expand_all == "On" %}
+        {% if pb_expand_all %}
         <div class="pb__row pb__ex-button expand-all">
           <button class="pb__button pb__toggle-all" aria-expanded="false" aria-controls="{{ acc_id }}" aria-label="{{ 'Toggle all sections'|t }}" tabindex="0">
             <span class="visually-hidden">{{ 'Toggle all sections'|t }}</span>
@@ -154,26 +145,26 @@
         {% if key|first != '#' %}
          {% set total_panels = total_panels + 1 %}
 
-        <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item{% if key == 0 and pb_open_first == 'On' %} pb__active{% else %} pb__active-no{% endif %}">
+        <div id="pb__accor-wrap-btn-item-{{ paragraph.id.value }}-{{ key + 1 }}" class="pb__row pb__accor-wrap-btn-item{% if key == 0 and pb_open_first %} pb__active{% else %} pb__active-no{% endif %}">
 
           {# Loops through the accordion sections to print the tab section titles. #}
         {% set tab_index = key + 1 %}
         {% set raw_slug = item['#paragraph'].pb_content_accordion_title.value|lower|replace({' ': '-', '?': '', ',': '', '.': '', '/': '-'}) %}
         {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
         {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
-          <button id="{{ acc_id }}-{{ tab_index }}" class="pb__button pb__bar pb__accor-button" data-fragment="{{ tab_slug }}" aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}" aria-expanded="{% if key == 0 and pb_open_first == 'On' %}true{% else %}false{% endif %}" aria-controls="{{ acc_id }}-{{ tab_index }}-pane" type="button">
+          <button id="{{ acc_id }}-{{ tab_index }}" class="pb__button pb__bar pb__accor-button" data-fragment="{{ tab_slug }}" aria-label="{{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}" aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}" aria-controls="{{ acc_id }}-{{ tab_index }}-pane" type="button">
 
           <!-- Button Title -->
           <span class="pb__button-title">
             {{ item['#paragraph'].pb_content_accordion_title.value|decode_entities }}
           </span>
 
-            {% if pb_show_indicator == "On" %}
+            {% if pb_show_indicator %}
             <span class="pb__plus-minus">
-              <span class="pb__minus" aria-hidden="{{ key == 0 and pb_open_first == 'On' ? 'false' : 'true' }}">
+              <span class="pb__minus" aria-hidden="{{ key == 0 and pb_open_first ? 'false' : 'true' }}">
                 {{ include('@paragraph_bundle_accordion/svg/svg-panel-collapse.svg') }}
               </span>
-              <span class="pb__plus" aria-hidden="{{ key == 0 and pb_open_first == 'On' ? 'true' : 'false' }}">
+              <span class="pb__plus" aria-hidden="{{ key == 0 and pb_open_first ? 'true' : 'false' }}">
                 {{ include('@paragraph_bundle_accordion/svg/svg-panel-expand.svg') }}
               </span>
               <span class="visually-hidden">{{ 'Close or Open tab'|t }}</span>
@@ -182,7 +173,7 @@
           </button>
 
           {# Loop through all of the accordion section bodies. #}
-          <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}" aria-hidden="{% if key == 0 and pb_open_first == 'On' %}false{% else %}true{% endif %}" data-index="{{ key }}">
+          <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb__row pb__accor-pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}" aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">
             {% for body_key, body_item in item['#paragraph'].pb_content_accordion_body %}
             {# Use the same render array as item and set the '#paragraph'. #}
             {% set section_body = item %}
