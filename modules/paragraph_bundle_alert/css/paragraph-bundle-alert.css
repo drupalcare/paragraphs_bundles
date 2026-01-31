@@ -43,6 +43,12 @@
   border: none;
 }
 
+.pb__close-alert svg {
+  transition: opacity 0.3s ease;
+  opacity: 0.6;
+  fill: var(--pb-tx, var(--r-tx, inherit));
+}
+
 .paragraph--type--alert-bundle button.pb__close-alert {
   padding: 0;
   margin: 0;
@@ -61,6 +67,7 @@
 }
 
 .paragraph--type--alert-bundle button.pb__close-alert:hover {
+  opacity: 1;
   transform: scale(1.1);
 }
 

@@ -16,21 +16,42 @@
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
+  /**
+   * Drupal behavior for accordion functionality.
+   *
+   * @type {Drupal~behavior}
+   */
   Drupal.behaviors.paragraphsAccordionBundle = {
     attach(context) {
       const accordionContainers = once('paragraphsAccordionBundle', '.pb__accor', context);
 
       accordionContainers.forEach((accordionContainer) => {
 
+        /**
+         * Toggles the visibility of plus/minus icons.
+         *
+         * @param {HTMLElement|null} plus - The plus icon element.
+         * @param {HTMLElement|null} minus - The minus icon element.
+         * @param {boolean} isExpanded - Whether the accordion item is expanded.
+         */
         const togglePlusMinus = (plus, minus, isExpanded) => {
-          if (!plus || !minus) return;
+          if (!plus || !minus) {
+            return;
+          }
           plus.setAttribute('aria-hidden', String(isExpanded));
           minus.setAttribute('aria-hidden', String(!isExpanded));
         };
 
+        /**
+         * Opens a specific accordion item.
+         *
+         * @param {HTMLElement} button - The accordion button to activate.
+         */
         const openAccordionItem = (button) => {
           const element = button.closest('.pb__accor-wrap-btn-item');
-          if (!element || element.classList.contains('pb__active')) return;
+          if (!element || element.classList.contains('pb__active')) {
+            return;
+          }
 
           element.classList.add('pb__active');
           element.classList.remove('pb__active-no');
@@ -55,11 +76,20 @@
           }
         };
 
+        /**
+         * Sets up toggle functionality for accordion buttons.
+         *
+         * @param {string} buttonSelector - CSS selector for the toggle buttons.
+         * @param {string} activeClass - Class name for active state.
+         * @param {string} inactiveClass - Class name for inactive state.
+         */
         const toggleActiveState = (buttonSelector, activeClass, inactiveClass) => {
           once('toggleActiveState', buttonSelector, accordionContainer).forEach((button) => {
             button.addEventListener('click', () => {
               const element = button.closest('.pb__accor-wrap-btn-item');
-              if (!element) return;
+              if (!element) {
+                return;
+              }
 
               const isActive = element.classList.contains(activeClass);
               element.classList.toggle(activeClass, !isActive);
@@ -90,11 +120,18 @@
           });
         };
 
+        /**
+         * Sets up expand/collapse all functionality.
+         *
+         * @param {string} buttonSelector - CSS selector for the expand/collapse button.
+         */
         const toggleExpandCollapseAll = (buttonSelector) => {
           once('toggleExpandCollapseAll', buttonSelector, accordionContainer).forEach((button) => {
             button.addEventListener('click', () => {
               const wrapper = button.closest('.pb__ex-button');
-              if (!wrapper) return;
+              if (!wrapper) {
+                return;
+              }
 
               const isExpanding = wrapper.classList.contains('expand-all');
               const accordionItems = accordionContainer.querySelectorAll('.pb__accor-wrap-btn-item');
@@ -132,24 +169,25 @@
           });
         };
 
+        // Initialize toggle behaviors
         toggleActiveState('.pb__accor-button', 'pb__active', 'pb__active-no');
         toggleExpandCollapseAll('.pb__ex-button .pb__toggle-all');
 
-        // Ensure only the first matching initially open pane is animated open on load
-        // Open first item if the "pb--open-first" class is set on the accordion container.
+        // Open first item if the "pb--open-first" class is set on the accordion container
         if (accordionContainer.classList.contains('pb--open-first')) {
           const firstButton = accordionContainer.querySelector('.pb__accor-button');
           if (firstButton) {
             openAccordionItem(firstButton);
           }
         } else {
-          // Fallback: ensure any pre-opened item gets animated open.
+          // Fallback: ensure any pre-opened item gets animated open
           const initiallyOpenPane = accordionContainer.querySelector('.pb__accor-pane[aria-hidden="false"]');
           if (initiallyOpenPane) {
             Drupal.paragraphBundleAccordion.slideDown(initiallyOpenPane);
           }
         }
 
+        // Handle URL hash navigation
         if (window.location.hash) {
           const hash = decodeURIComponent(window.location.hash.slice(1));
           requestAnimationFrame(() => {

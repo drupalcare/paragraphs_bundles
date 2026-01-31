@@ -7,9 +7,10 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
-/* ---------------------------------
-   Structure and layout
---------------------------------- */
+/* ==========================================================================
+   Structure and Layout
+   ========================================================================== */
+
 .paragraph--type--accordion-bundle {
   overflow: hidden;
 }
@@ -51,9 +52,10 @@
   padding-block-start: 0;
 }
 
-/* ---------------------------------
-   Accordion button
---------------------------------- */
+/* ==========================================================================
+   Accordion Button
+   ========================================================================== */
+
 .paragraph.paragraph--type--accordion-bundle .pb__accor-button {
   display: flex;
   width: 100%;
@@ -65,6 +67,7 @@
   white-space: initial;
   text-align: var(--pb-text-align-start);
   z-index: 1;
+  transition: background-color 0.2s ease-out;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-button > * {
@@ -75,9 +78,17 @@
   margin-inline-start: auto;
 }
 
-/* ---------------------------------
-   Accordion pane
---------------------------------- */
+
+/* Button focus state for accessibility */
+.paragraph.paragraph--type--accordion-bundle .pb__accor-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* ==========================================================================
+   Accordion Pane
+   ========================================================================== */
+
 .paragraph.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
   display: none;
 }
@@ -91,9 +102,10 @@
   min-width: 0;
 }
 
-/* ---------------------------------
-   Expand/collapse all buttons
---------------------------------- */
+/* ==========================================================================
+   Expand/Collapse All Buttons
+   ========================================================================== */
+
 .paragraph--type--accordion-bundle .pb__ex-button {
   display: flex;
   justify-content: flex-end;
@@ -112,6 +124,24 @@
   line-height: 1;
   min-width: 50px;
   min-height: 50px;
+  transition: transform 0.2s ease-out;
+}
+
+/* Expand/collapse button hover effect */
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button:hover {
+  transform: scale(1.1);
+}
+
+/* Expand/collapse button active effect */
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button:active {
+  transform: scale(0.95);
+}
+
+/* Expand/collapse button focus state */
+.paragraph--type--accordion-bundle .pb__ex-button .pb__button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+  border-radius: var(--pb-px4);
 }
 
 .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
@@ -126,12 +156,12 @@
   justify-content: center;
   transition: opacity 0.4s ease, transform 0.4s ease;
   transform-origin: center center;
-
 }
 
-/* ---------------------------------
-   Plus/minus icon animations
---------------------------------- */
+/* ==========================================================================
+   Plus/Minus Icon Animations
+   ========================================================================== */
+
 .paragraph--type--accordion-bundle .pb__plus-minus {
   position: relative;
   display: inline-flex;
@@ -156,20 +186,43 @@
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
+
 .paragraph--type--accordion-bundle .pb__plus-minus .pb__minus,
 .paragraph--type--accordion-bundle .pb__ex-button.expand-all .pb__button .pb__minus-svg {
   opacity: 0;
   transform: rotate(-180deg) scale(0.8);
 }
 
-/* When collapsing: show minus, hide plus */
+/* When expanded: show minus, hide plus */
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__plus,
 .paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__plus-svg {
   opacity: 0;
   transform: rotate(180deg) scale(0.8);
 }
+
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__minus,
 .paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__minus-svg {
   opacity: 1;
   transform: rotate(0deg) scale(1);
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item,
+  .paragraph.paragraph--type--accordion-bundle .pb__accor-button,
+  .paragraph--type--accordion-bundle .pb__ex-button .pb__button,
+  .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
+  .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__minus-svg,
+  .paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
+  .paragraph--type--accordion-bundle .pb__plus-minus .pb__minus {
+    transition: none;
+  }
+
+  .paragraph--type--accordion-bundle .pb__ex-button .pb__button:hover,
+  .paragraph--type--accordion-bundle .pb__ex-button .pb__button:active {
+    transform: none;
+  }
 }

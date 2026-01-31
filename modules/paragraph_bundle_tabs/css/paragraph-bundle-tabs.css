@@ -6,6 +6,11 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+/* ==========================================================================
+   Base Structure
+   ========================================================================== */
+
 .paragraph--type--tabs-bundle {
   overflow: hidden;
 }
@@ -27,6 +32,10 @@
   flex-direction: row-reverse;
 }
 
+/* ==========================================================================
+   Tab Panes
+   ========================================================================== */
+
 .paragraph--type--tabs-bundle .pb__tabs-pane .pb__tab-pane {
   display: none;
   overflow: hidden;
@@ -44,17 +53,43 @@
   display: flex;
 }
 
+/* ==========================================================================
+   Tab Buttons
+   ========================================================================== */
+
 .paragraph--type--tabs-bundle .pb__tabs-button > button {
   float: inline-start;
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out;
 }
 
+}
+
+/* Tab button focus state for accessibility */
+.paragraph--type--tabs-bundle .pb__tabs-button > button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* Active tab button */
 .paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active {
   font-weight: bold;
   text-decoration: underline;
+  text-underline-offset: 3px;
   background-color: var(--pb-bt-a);
 }
 
-@media (min-width:87.5rem) {
+/* Active tab doesn't need hover effect */
+.paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active:hover {
+  background-color: var(--pb-bt-a);
+}
+
+/* ==========================================================================
+   Vertical Tabs - 1400px Breakpoint
+   ========================================================================== */
+
+@media (min-width: 87.5rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 {
     width: 100%;
     display: flex;
@@ -92,10 +127,13 @@
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tab-pane {
     height: 100%;
   }
-
 }
 
-@media (min-width:75rem) {
+/* ==========================================================================
+   Vertical Tabs - 1200px Breakpoint
+   ========================================================================== */
+
+@media (min-width: 75rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 {
     width: 100%;
     display: flex;
@@ -133,10 +171,13 @@
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tab-pane {
     height: 100%;
   }
-
 }
 
-@media (min-width:62rem) {
+/* ==========================================================================
+   Vertical Tabs - 992px Breakpoint
+   ========================================================================== */
+
+@media (min-width: 62rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 {
     width: 100%;
     display: flex;
@@ -175,10 +216,13 @@
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tab-pane {
     height: 100%;
   }
-
 }
 
-@media (min-width:48rem) {
+/* ==========================================================================
+   Vertical Tabs - 768px Breakpoint
+   ========================================================================== */
+
+@media (min-width: 48rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 {
     width: 100%;
     display: flex;
@@ -216,10 +260,13 @@
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tab-pane {
     height: 100%;
   }
-
 }
 
-@media (min-width:36rem) {
+/* ==========================================================================
+   Vertical Tabs - 576px Breakpoint
+   ========================================================================== */
+
+@media (min-width: 36rem) {
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 {
     width: 100%;
     display: flex;
@@ -257,5 +304,14 @@
   .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tab-pane {
     height: 100%;
   }
+}
 
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--tabs-bundle .pb__tabs-button > button {
+    transition: none;
+  }
 }

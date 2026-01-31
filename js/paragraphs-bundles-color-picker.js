@@ -88,13 +88,13 @@
       }
 
       // Remove all previous size classes to prevent class duplication
-      displayTab.classList.remove('small', 'medium', 'large');
+      displayTab.classList.remove('small', 'medium', 'large', 'x-large');
 
-      if (displayTabWidth <= 575) {
+      if (displayTabWidth <= 520) {
         displayTab.classList.add('small'); // Small Devices
-      } else if (displayTabWidth >= 576 && displayTabWidth <= 992) {
+      } else if (displayTabWidth >= 520 && displayTabWidth <= 768) {
         displayTab.classList.add('medium'); // Medium Devices
-      } else if (displayTabWidth >= 993) {
+      } else if (displayTabWidth >= 768) {
         displayTab.classList.add('large'); // Large Devices
       }
     });

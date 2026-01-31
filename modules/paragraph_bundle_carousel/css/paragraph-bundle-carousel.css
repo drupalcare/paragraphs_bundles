@@ -1,4 +1,16 @@
-/* Base Carousel Styles */
+/**
+ * @file
+ * Paragraph Bundle Carousel.
+ *
+ * Filename:     paragraph-bundle-carousel.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+/* ==========================================================================
+   Base Carousel Styles
+   ========================================================================== */
+
 .paragraph--type--carousel-bundle .pb__carousel-outer {
   position: relative;
   display: flex;
@@ -53,7 +65,10 @@
   pointer-events: none;
 }
 
-/* Horizontal Layout */
+/* ==========================================================================
+   Horizontal Layout
+   ========================================================================== */
+
 .paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-items {
   flex-direction: row;
 }
@@ -81,7 +96,10 @@
   pointer-events: all;
 }
 
-/* Vertical Layout */
+/* ==========================================================================
+   Vertical Layout
+   ========================================================================== */
+
 .paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-items {
   flex-direction: column;
   transform: translateY(0);
@@ -119,7 +137,10 @@
   transform: rotate(-90deg);
 }
 
-/* Hybrid Layout */
+/* ==========================================================================
+   Hybrid Layout
+   ========================================================================== */
+
 .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-items {
   flex-direction: row;
 }
@@ -147,7 +168,10 @@
   pointer-events: all;
 }
 
-/* Carousel Button Styles */
+/* ==========================================================================
+   Carousel Button Styles
+   ========================================================================== */
+
 .paragraph--type--carousel-bundle .pb__carousel-options .pb__button {
   width: 48px;
   height: 48px;
@@ -160,28 +184,62 @@
   border-radius: 50%;
   padding: 0;
   margin: 0;
-  transition: all 0.3s ease;
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s ease;
 }
 
-.paragraph--type--carousel-bundle .pb__carousel-options button svg {
-  width: 32px;
-  height: 32px;
-}
-
-/* Reduced motion accessibility */
-.paragraph--type--carousel-bundle .reduced-motion .pb__carousel-item {
-  transition: none !important;
-}
-
-/* Optional: Hide scrollbars */
-.paragraph--type--carousel-bundle .pb__carousel-wrapper::-webkit-scrollbar {
-  display: none;
+.paragraph--type--carousel-bundle .pb__carousel-options .pb__button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-options .pb__button[style*='visibility:hidden'] {
   opacity: 0;
   pointer-events: none;
 }
+
+.paragraph--type--carousel-bundle .pb__carousel-options button svg {
+  width: 32px;
+  height: 32px;
+  transition: opacity 0.3s ease;
+  opacity: 0.7;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-options button:hover svg {
+  opacity: 1;
+}
+
+/* Horizontal layout - arrows move left/right */
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__next:hover {
+  transform: translateX(4px);
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__prev:hover {
+  transform: translateX(-4px);
+}
+
+/* Vertical layout - arrows move up/down (SVG is rotated in markup) */
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options .pb__next:hover {
+  transform: translateY(4px);
+}
+
+.paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options .pb__prev:hover {
+  transform: translateY(-4px);
+}
+
+/* Hybrid layout - horizontal by default, switches to vertical at breakpoints */
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options .pb__next:hover {
+  transform: translateX(4px);
+}
+
+.paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options .pb__prev:hover {
+  transform: translateX(-4px);
+}
+
+/* ==========================================================================
+   Dot Navigation
+   ========================================================================== */
 
 .paragraph--type--carousel-bundle .pb__carousel-dots {
   display: flex;
@@ -201,17 +259,70 @@
   background-color: #ccc;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.3s;
   padding: 0;
   margin: 0;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dot:hover {
+  transform: scale(1.3);
+  background-color: #999;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-dot.pb__active {
   background-color: #333;
   transform: scale(1.2);
+  width: 20px;
+  border-radius: 5px;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-dot:focus {
   outline: 2px solid #666;
   outline-offset: 2px;
+}
+
+.paragraph--type--carousel-bundle .pb__carousel-dot:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   Scrollbar and Utility
+   ========================================================================== */
+
+.paragraph--type--carousel-bundle .pb__carousel-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+.paragraph--type--carousel-bundle .reduced-motion .pb__carousel-item {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--carousel-bundle .pb__carousel-wrapper,
+  .paragraph--type--carousel-bundle .pb__carousel-items,
+  .paragraph--type--carousel-bundle .pb__carousel-item,
+  .paragraph--type--carousel-bundle .pb__carousel-options .pb__button,
+  .paragraph--type--carousel-bundle .pb__carousel-options button svg,
+  .paragraph--type--carousel-bundle .pb__carousel-dot {
+    transition: none;
+  }
+
+  .paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__next:hover,
+  .paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__prev:hover,
+  .paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options .pb__next:hover,
+  .paragraph--type--carousel-bundle.vertical-carousel .pb__carousel-options .pb__prev:hover,
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options .pb__next:hover,
+  .paragraph--type--carousel-bundle.hybrid-carousel .pb__carousel-options .pb__prev:hover,
+  .paragraph--type--carousel-bundle .pb__carousel-dot:hover,
+  .paragraph--type--carousel-bundle .pb__carousel-dot.pb__active {
+    transform: none;
+  }
 }

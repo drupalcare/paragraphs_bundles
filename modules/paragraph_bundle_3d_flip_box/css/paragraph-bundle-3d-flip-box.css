@@ -1,11 +1,18 @@
 /**
  * @file
- * Paragraph Bundle 3D Flip box.
+ * Paragraph Bundle 3D Flip Box.
  *
- * Filename:     paragraphs-bundle-3d-flip-box.css
+ * Provides 3D flip card effect with X and Y axis rotation options.
+ *
+ * Filename:     paragraph-bundle-3d-flip-box.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+/* ==========================================================================
+   Base Styles
+   ========================================================================== */
+
 .paragraph--type--3d-flip-box-bundle .pb__flip-box {
   overflow: hidden;
   background-color: transparent;
@@ -17,10 +24,14 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   transform-style: preserve-3d;
   transform: translateZ(0);
 }
+
+/* ==========================================================================
+   Flip Animations - Hover
+   ========================================================================== */
 
 .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_x:hover .pb__flip-box-inner {
   transform: rotateX(180deg);
@@ -29,6 +40,28 @@
 .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_y:hover .pb__flip-box-inner {
   transform: rotateY(180deg);
 }
+
+/* ==========================================================================
+   Flip Animations - Focus (Keyboard Accessibility)
+   ========================================================================== */
+
+.paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_x:focus-within .pb__flip-box-inner {
+  transform: rotateX(180deg);
+}
+
+.paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_y:focus-within .pb__flip-box-inner {
+  transform: rotateY(180deg);
+}
+
+/* Focus outline on the flip box container */
+.paragraph--type--3d-flip-box-bundle .pb__flip-box:focus-within {
+  outline: 2px solid currentColor;
+  outline-offset: 4px;
+}
+
+/* ==========================================================================
+   Front and Back Faces
+   ========================================================================== */
 
 .paragraph--type--3d-flip-box-bundle .pb__3d-front,
 .paragraph--type--3d-flip-box-bundle .pb__3d-back {
@@ -50,9 +83,53 @@
   transform: rotateX(180deg);
 }
 
+/* ==========================================================================
+   Content Sizing
+   ========================================================================== */
+
 .paragraph--type--3d-flip-box-bundle article,
 .paragraph--type--3d-flip-box-bundle .pb__flip-box-inner .paragraph,
 .paragraph--type--3d-flip-box-bundle .field--name-field-image img {
   width: 100%;
   height: 100%;
+}
+
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box-inner {
+    transition: none;
+  }
+
+  /* Instead of 3D flip, show/hide with opacity for reduced motion users */
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_x:hover .pb__flip-box-inner,
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_y:hover .pb__flip-box-inner,
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_x:focus-within .pb__flip-box-inner,
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box.flip_y:focus-within .pb__flip-box-inner {
+    transform: none;
+  }
+
+  .paragraph--type--3d-flip-box-bundle .pb__3d-front,
+  .paragraph--type--3d-flip-box-bundle .pb__3d-back {
+    backface-visibility: visible !important;
+    -webkit-backface-visibility: visible !important;
+  }
+
+  .paragraph--type--3d-flip-box-bundle .pb__3d-back.flip_y,
+  .paragraph--type--3d-flip-box-bundle .pb__3d-back.flip_x {
+    transform: none;
+    opacity: 0;
+  }
+
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box:hover .pb__3d-front,
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box:focus-within .pb__3d-front {
+    opacity: 0;
+  }
+
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box:hover .pb__3d-back,
+  .paragraph--type--3d-flip-box-bundle .pb__flip-box:focus-within .pb__3d-back {
+    opacity: 1;
+  }
 }

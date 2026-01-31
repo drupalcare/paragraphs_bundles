@@ -2,7 +2,7 @@
  * @file
  * Lightweight slide helpers for smooth animations without jQuery.
  *
- * Provides reusable slideUp and slideDown utilities.
+ * Provides reusable slideUp and slideDown utilities for accordion animations.
  *
  * Filename:     paragraph-bundle-accordion-utils.js
  * Website:      https://www.flashwebcenter.com
@@ -12,8 +12,18 @@
 ((Drupal) => {
   'use strict';
 
+  /**
+   * Initialize the accordion namespace if it doesn't exist.
+   *
+   * @namespace Drupal.paragraphBundleAccordion
+   */
   Drupal.paragraphBundleAccordion = Drupal.paragraphBundleAccordion || {};
 
+  /**
+   * CSS styles applied during slide animations to collapse elements.
+   *
+   * @type {Object<string, string>}
+   */
   const cssStyles = {
     overflow: 'hidden',
     height: '0',
@@ -23,18 +33,42 @@
     marginBottom: '0'
   };
 
+  /**
+   * Removes transition-related inline styles from an element.
+   *
+   * @param {HTMLElement} target - The element to clean up.
+   */
   const removeStyles = (target) => {
-    const styles = ['height', 'paddingTop', 'paddingBottom', 'marginTop', 'marginBottom', 'overflow', 'transitionDuration', 'transitionProperty'];
+    const styles = [
+      'height',
+      'paddingTop',
+      'paddingBottom',
+      'marginTop',
+      'marginBottom',
+      'overflow',
+      'transitionDuration',
+      'transitionProperty'
+    ];
     styles.forEach(style => target.style.removeProperty(style));
   };
 
+  /**
+   * Animates an element to collapse (slide up) and hides it.
+   *
+   * @param {HTMLElement} target - The element to collapse.
+   * @param {number} [duration=300] - Animation duration in milliseconds.
+   */
   const slideUp = (target, duration = 300) => {
+    if (!target) {
+      return;
+    }
+
     target.style.transitionProperty = 'height, margin, padding';
     target.style.transitionDuration = `${duration}ms`;
     target.style.transitionTimingFunction = 'ease-in-out';
     target.style.boxSizing = 'border-box';
     target.style.height = `${target.offsetHeight}px`;
-    target.offsetHeight; // force reflow
+    target.offsetHeight; // Force reflow
 
     target.setAttribute('aria-hidden', 'true');
 
@@ -48,10 +82,23 @@
     }, duration);
   };
 
+  /**
+   * Animates an element to expand (slide down) and shows it.
+   *
+   * @param {HTMLElement} target - The element to expand.
+   * @param {string} [display='block'] - The display value to use when showing.
+   * @param {number} [duration=300] - Animation duration in milliseconds.
+   */
   const slideDown = (target, display = 'block', duration = 300) => {
+    if (!target) {
+      return;
+    }
+
     target.style.removeProperty('display');
     let computedDisplay = window.getComputedStyle(target).display;
-    if (computedDisplay === 'none') computedDisplay = display;
+    if (computedDisplay === 'none') {
+      computedDisplay = display;
+    }
     target.style.display = computedDisplay;
 
     const height = target.offsetHeight;
@@ -59,7 +106,7 @@
       target.style[style] = cssStyles[style];
     });
 
-    target.offsetHeight; // force reflow
+    target.offsetHeight; // Force reflow
     target.style.transitionProperty = 'height, margin, padding';
     target.style.transitionDuration = `${duration}ms`;
     target.style.transitionTimingFunction = 'ease-in-out';
@@ -68,13 +115,18 @@
 
     target.setAttribute('aria-hidden', 'false');
 
-    ['paddingTop', 'paddingBottom', 'marginTop', 'marginBottom'].forEach(prop => target.style.removeProperty(prop));
+    ['paddingTop', 'paddingBottom', 'marginTop', 'marginBottom'].forEach(prop => {
+      target.style.removeProperty(prop);
+    });
 
     setTimeout(() => {
-      ['height', 'overflow', 'transitionDuration', 'transitionProperty'].forEach(prop => target.style.removeProperty(prop));
+      ['height', 'overflow', 'transitionDuration', 'transitionProperty'].forEach(prop => {
+        target.style.removeProperty(prop);
+      });
     }, duration);
   };
 
+  // Export utilities to Drupal namespace
   Drupal.paragraphBundleAccordion.slideUp = slideUp;
   Drupal.paragraphBundleAccordion.slideDown = slideDown;
 

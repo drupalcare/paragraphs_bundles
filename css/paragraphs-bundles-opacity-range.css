@@ -37,7 +37,7 @@ form [data-drupal-selector="para-opacity-range"] input[type=range] {
   border-end-start-radius: 0;
   height: 25px;
   -webkit-appearance: none;
-  width: calc(100% - 90px);
+  width: calc(100% - 106px);
 }
 
 form [data-drupal-selector="para-opacity-range"] input[type=range]:focus {

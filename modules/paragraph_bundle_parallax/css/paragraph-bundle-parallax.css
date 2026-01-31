@@ -21,6 +21,7 @@
   background-color: var(--pb-bg);
   border-color: var(--pb-br);
   color: var(--pb-tx);
+  transition: background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
 }
 
 .paragraph--type--parallax-bundle .pb__parallax-text:hover {
@@ -32,6 +33,7 @@
 /* ==========================================================================
    Section Bundle Styles
    ========================================================================== */
+
 .paragraph--type--parallax-section-bundle .pb__parallax-bg {
   min-height: calc(6 * var(--pb-px48, 48px));
 }
@@ -73,6 +75,7 @@
 /* ==========================================================================
    JavaScript Mode Styles
    ========================================================================== */
+
 .paragraph--type--parallax-section-bundle.parallax-js .pb__parallax-text {
   position: relative;
   opacity: 1;
@@ -95,6 +98,7 @@
 /* ==========================================================================
    Legacy CSS Mode Styles
    ========================================================================== */
+
 .paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-bg {
   background-attachment: fixed;
   background-position: center;
@@ -110,7 +114,12 @@
 /* ==========================================================================
    Accessibility: Reduced Motion
    ========================================================================== */
-@media (prefers-reduced-motion:reduce) {
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--parallax-bundle .pb__parallax-text {
+    transition: none;
+  }
+
   .paragraph--type--parallax-section-bundle .pb__parallax-bg {
     background-attachment: scroll !important;
     transform: none !important;
@@ -137,15 +146,14 @@
     transform: none !important;
     filter: blur(0) !important;
   }
-
 }
 
 /* ==========================================================================
    iOS Fix: background-attachment: fixed fallback
    ========================================================================== */
-@supports (-webkit-touch-callout:none) {
+
+@supports (-webkit-touch-callout: none) {
   .paragraph--type--parallax-section-bundle.parallax-css .pb__parallax-bg {
     background-attachment: scroll;
   }
-
 }

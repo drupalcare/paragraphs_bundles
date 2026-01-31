@@ -17,6 +17,7 @@
 }
 
 .pb__tab-display .form-select {
+  box-sizing: border-box;
   width: 100%;
 }
 
@@ -106,11 +107,17 @@
 }
 
 /* Responsive layout */
+.pb__tab-display .details-wrapper > * {
+  min-width: 0;
+}
+
 .pb__tab-display.large > .details-wrapper {
   padding: 0 !important;
   gap: 16px;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  justify-content: start;
 }
 
 .pb__tab-display.large > .details-wrapper > .field--name-pb-display-image-min-height > div {
@@ -156,6 +163,21 @@
 .pb__tab-display.small > .details-wrapper > *,
 .pb__tab-display.medium > .details-wrapper > * {
   min-width: 0;
+}
+.pb__tab-display .field--name-pb-display-bg-opacity .form-item {
+  margin: 0;
+}
+.pb__tab-display .field--name-pb-display-bg-opacity .form-item__description{
+  margin: 0!important;
+}
+
+.pb__tab-display.medium .form-select {
+  min-width: 230px;
+  width: initial;
+}
+
+form .pb__tab-display.medium [data-drupal-selector="para-color-picker"] {
+  max-width: 230px !important;
 }
 
 

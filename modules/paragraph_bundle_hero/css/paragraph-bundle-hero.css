@@ -2,33 +2,54 @@
  * @file
  * Paragraph Bundle Hero.
  *
+ * Provides hero banner functionality with image background and
+ * overlay text content with customizable positioning.
+ *
  * Filename:     paragraph-bundle-hero.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+/* ==========================================================================
+   Base Structure
+   ========================================================================== */
+
 .paragraph--type--hero-bundle .hero-bundle-inner {
   overflow: hidden;
   position: relative;
 }
 
-.paragraph--type--hero-bundle .hero-bundle-inner:not(.pb__margin,
-.pb__margin_top,
-.pb__margin_right,
-.pb__margin_bottom,
-.pb__margin_left,
-.pb__section) {
+.paragraph--type--hero-bundle .hero-bundle-inner:not(
+  .pb__margin,
+  .pb__margin_top,
+  .pb__margin_right,
+  .pb__margin_bottom,
+  .pb__margin_left,
+  .pb__section
+) {
   width: 100% !important;
   margin-block: 0 !important;
   margin-inline: auto !important;
 }
 
+/* ==========================================================================
+   Text Wrapper Styling
+   ========================================================================== */
+
 .pb__hero-txt-wrapper-inner * {
   border-color: var(--pb-br);
+  transition: border-color 0.2s ease-out;
 }
 
+.pb__hero-txt-wrapper-inner:hover * {
+  border-color: var(--pb-br-h, var(--pb-br), var(--r-br));
+}
+
+/* Headings */
 .pb__hero-txt-wrapper-inner h2,
 .page-wrapper .pb__hero-txt-wrapper-inner h2 {
   color: var(--pb-tx, var(--r-h1, var(--r-tx)));
+  transition: color 0.2s ease-out;
 }
 
 .pb__hero-txt-wrapper-inner h2:hover,
@@ -36,9 +57,11 @@
   color: var(--pb-tx-h, var(--pb-tx, var(--r-h1), var(--r-tx)));
 }
 
+/* Paragraphs */
 .pb__hero-txt-wrapper-inner p,
 .page-wrapper .pb__hero-txt-wrapper-inner p {
   color: var(--pb-tx, var(--r-tx, inherit));
+  transition: color 0.2s ease-out;
 }
 
 .pb__hero-txt-wrapper-inner p:hover,
@@ -46,17 +69,19 @@
   color: var(--pb-tx-h, var(--pb-tx), var(--r-tx));
 }
 
-.pb__hero-txt-wrapper-inner:hover * {
-  border-color: var(--pb-br-h, var(--pb-br), var(--r-br));
-}
-
+/* Background */
 .pb__hero-txt-wrapper-inner {
   background-color: var(--pb-bg);
+  transition: background-color 0.2s ease-out;
 }
 
 .pb__hero-txt-wrapper-inner:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
+
+/* ==========================================================================
+   Text Wrapper Layout
+   ========================================================================== */
 
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper {
   position: absolute;
@@ -77,11 +102,17 @@
   min-width: 0;
 }
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(.pb__card_4,
-.pb__card_2) {
+.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(
+  .pb__card_4,
+  .pb__card_2
+) {
   margin-block: 0;
   margin-inline: auto;
 }
+
+/* ==========================================================================
+   Image Styling
+   ========================================================================== */
 
 .paragraph--type--hero-bundle .field--name-pb-content-image,
 .paragraph--type--hero-bundle .field--name-pb-content-image div,
@@ -89,13 +120,27 @@
   width: 100%;
 }
 
+/* ==========================================================================
+   Link Styling
+   ========================================================================== */
+
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper > a {
   float: inline-start;
   height: 100%;
   width: 100%;
 }
 
-@media (max-width:61.99875rem) {
+/* Focus state for the link */
+.paragraph--type--hero-bundle .pb__hero-txt-wrapper > a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+/* ==========================================================================
+   Responsive Typography
+   ========================================================================== */
+
+@media (max-width: 61.99875rem) {
   .paragraph--type--hero-bundle .pb__hero-txt-wrapper h1 {
     font-size: var(--pb-px28);
   }
@@ -111,5 +156,19 @@
   .paragraph--type--hero-bundle .pb__hero-txt-wrapper p {
     font-size: var(--pb-px16);
   }
+}
 
+/* ==========================================================================
+   Reduced Motion
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .pb__hero-txt-wrapper-inner,
+  .pb__hero-txt-wrapper-inner *,
+  .pb__hero-txt-wrapper-inner h2,
+  .page-wrapper .pb__hero-txt-wrapper-inner h2,
+  .pb__hero-txt-wrapper-inner p,
+  .page-wrapper .pb__hero-txt-wrapper-inner p {
+    transition: none;
+  }
 }

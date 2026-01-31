@@ -2,6 +2,9 @@
  * @file
  * Paragraph Bundle Tabs.
  *
+ * Provides tab functionality with keyboard navigation, ARIA support,
+ * URL hash navigation, and support for both horizontal and vertical layouts.
+ *
  * Filename:     paragraph-bundle-tabs.js
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
@@ -10,6 +13,11 @@
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
+  /**
+   * Drupal behavior for tabs functionality.
+   *
+   * @type {Drupal~behavior}
+   */
   Drupal.behaviors.paragraphBundleTabs = {
     attach(context) {
       const tabContainers = once('paragraphBundleTabs', '.pb__tabs-bundle', context);
@@ -19,11 +27,11 @@
         const tabPanes = tabContainer.querySelectorAll('.pb__tab-pane');
 
         if (tabButtons.length === 0 || tabPanes.length === 0) {
-          return; // Nothing to do if no buttons/panes.
+          return; // Nothing to do if no buttons/panes
         }
 
         /**
-         * Hide all panes within this container.
+         * Hides all panes within this container.
          */
         function hideAllPanes() {
           tabPanes.forEach((pane) => {
@@ -33,7 +41,7 @@
         }
 
         /**
-         * Remove active class and reset attributes on all buttons.
+         * Removes active class and resets attributes on all buttons.
          */
         function removeActiveClassFromButtons() {
           tabButtons.forEach((button) => {
@@ -45,11 +53,13 @@
         }
 
         /**
-         * Activate the given tab and its corresponding pane.
+         * Activates the given tab and its corresponding pane.
+         *
+         * @param {HTMLElement} button - The tab button to activate.
          */
         function activateTab(button) {
           const paneId = `${button.id}-pane`;
-          const currentPane = tabContainer.querySelector(`#${paneId}`);
+          const currentPane = tabContainer.querySelector(`#${CSS.escape(paneId)}`);
 
           if (currentPane) {
             hideAllPanes();
@@ -66,14 +76,15 @@
 
             const slug = button.getAttribute('data-fragment') || button.id;
             history.replaceState(null, '', `#${slug}`);
-          }
-          else {
+          } else {
             Drupal.debug && Drupal.debug(`Pane with ID ${paneId} not found within this tabContainer.`);
           }
         }
 
         /**
-         * Handle tab button clicks via event delegation.
+         * Handles tab button clicks via event delegation.
+         *
+         * @param {Event} event - The click event.
          */
         tabContainer.addEventListener('click', (event) => {
           const button = event.target.closest('.pb__tab-button');
@@ -83,10 +94,14 @@
         });
 
         /**
-         * Handle keyboard navigation between tabs.
+         * Handles keyboard navigation between tabs.
+         *
+         * @param {KeyboardEvent} event - The keyboard event.
+         * @param {number} currentIndex - The index of the currently focused tab.
          */
         function handleKeyboardNavigation(event, currentIndex) {
           let newIndex;
+
           switch (event.key) {
             case 'ArrowRight':
               newIndex = (currentIndex + 1) % tabButtons.length;
@@ -103,13 +118,14 @@
             default:
               return;
           }
+
           event.preventDefault();
           tabButtons.forEach((b) => b.setAttribute('tabindex', '-1'));
           tabButtons[newIndex].setAttribute('tabindex', '0');
           tabButtons[newIndex].focus();
         }
 
-        // Initialize tab buttons with ARIA and keyboard support.
+        // Initialize tab buttons with ARIA and keyboard support
         tabButtons.forEach((button, index) => {
           if (index === 0) {
             button.classList.add('pb__active');
@@ -123,7 +139,7 @@
         });
 
         /**
-         * Activate tab based on hash in URL if present.
+         * Activates tab based on hash in URL if present.
          */
         const hash = window.location.hash.replace('#', '');
         if (hash) {
@@ -133,38 +149,46 @@
           }
           if (button) {
             activateTab(button);
-            return; // Skip default activation if hash tab activated.
+            return; // Skip default activation if hash tab activated
           }
         }
 
-        // Show the first pane by default if no hash match.
-        tabPanes[0].style.display = 'flex';
-        tabPanes[0].setAttribute('aria-hidden', 'false');
+        // Show the first pane by default if no hash match
+        if (tabPanes[0]) {
+          tabPanes[0].style.display = 'flex';
+          tabPanes[0].setAttribute('aria-hidden', 'false');
+        }
       });
 
       /**
-       * Global in-page hash link handler for immediate tab activation on in-page clicks,
-       * wrapped with `once()` for Drupal best practices.
+       * Global in-page hash link handler for immediate tab activation on in-page clicks.
+       * Wrapped with `once()` for Drupal best practices.
        */
       once('paragraphBundleTabsGlobal', document).forEach(() => {
         document.addEventListener('click', (event) => {
           const anchor = event.target.closest('a[href^="#"]');
-          if (!anchor) return;
+          if (!anchor) {
+            return;
+          }
 
           const hash = anchor.getAttribute('href').slice(1);
-          if (!hash) return;
+          if (!hash) {
+            return;
+          }
 
           let tabActivated = false;
 
           tabContainers.forEach((tabContainer) => {
             const tabButtons = tabContainer.querySelectorAll('.pb__tab-button');
             let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
+
             if (!button) {
               button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
             }
+
             if (button) {
-              event.preventDefault(); // Prevent native jump to hidden content.
-              button.click(); // Trigger your existing delegation to activateTab.
+              event.preventDefault(); // Prevent native jump to hidden content
+              button.click(); // Trigger existing delegation to activateTab
               button.scrollIntoView({ behavior: 'smooth', block: 'start' });
               tabActivated = true;
             }

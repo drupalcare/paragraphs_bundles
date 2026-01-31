@@ -2,6 +2,10 @@
  * @file
  * Paragraph Bundle Carousel.
  *
+ * Provides carousel functionality with support for horizontal, vertical,
+ * and hybrid layouts, touch/swipe navigation, keyboard controls, and
+ * optional dot navigation.
+ *
  * Filename:     paragraph-bundle-carousel.js
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
@@ -9,27 +13,49 @@
 ((Drupal, drupalSettings, once) => {
   'use strict';
 
+  /**
+   * Debounce utility to limit function execution frequency.
+   *
+   * @param {Function} func - The function to debounce.
+   * @param {number} delay - Delay in milliseconds.
+   * @returns {Function} Debounced function.
+   */
   function debounce(func, delay) {
     let timer;
-    return function() {
+    return function(...args) {
       clearTimeout(timer);
-      timer = setTimeout(func, delay);
+      timer = setTimeout(() => func.apply(this, args), delay);
     };
   }
+
+  /**
+   * Drupal behavior for carousel functionality.
+   *
+   * @type {Drupal~behavior}
+   */
   Drupal.behaviors.paragraphCarouselBundle = {
     attach(context) {
-      const carousels = once('paragraphCarouselBundle',
-        '.pb__carousel__inner', context);
+      const carousels = once('paragraphCarouselBundle', '.pb__carousel__inner', context);
       carousels.forEach(initCarousel);
     }
   };
 
+  /**
+   * Initializes a single carousel instance.
+   *
+   * @param {HTMLElement} carouselInner - The carousel container element.
+   */
   function initCarousel(carouselInner) {
     const state = createState(carouselInner);
+    if (!state) {
+      return;
+    }
+
     bindNavigation(state);
     bindTouch(state);
     bindAutoSlide(state);
     bindKeyboard(state);
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         updateLayout(state);
@@ -41,14 +67,18 @@
         }, 100);
       });
     });
+
+    // Observe wrapper resize for responsive updates
     if ('ResizeObserver' in window && state.wrapper) {
       const observer = new ResizeObserver(() => updateLayout(state));
       observer.observe(state.wrapper);
     }
+
     const refreshDots = debounce(() => {
       createDots(state);
       bindDots(state);
     }, 300);
+
     window.addEventListener('resize', () => {
       clampPageIndex(state);
       updateLayout(state);
@@ -56,28 +86,40 @@
     });
   }
 
+  /**
+   * Creates the state object for a carousel instance.
+   *
+   * @param {HTMLElement} container - The carousel container element.
+   * @returns {Object|undefined} The carousel state object or undefined if invalid.
+   */
   function createState(container) {
     const wrapper = container.querySelector('.pb__carousel-wrapper');
-    const itemsContainer = wrapper.querySelector('.pb__carousel-items');
-    if (!wrapper || !itemsContainer) return;
+    const itemsContainer = wrapper?.querySelector('.pb__carousel-items');
+
+    if (!wrapper || !itemsContainer) {
+      return;
+    }
+
     const items = itemsContainer.querySelectorAll('.pb__carousel-item');
     const nextButton = container.querySelector('.pb__next');
     const prevButton = container.querySelector('.pb__prev');
     const announcer = container.querySelector('.pb__carousel-announcer');
     const dataset = itemsContainer.dataset;
-    const breakpoints = parseInt(dataset.breakpoints, 10);
+    const breakpoints = parseInt(dataset.breakpoints, 10) || 0;
+
     const config = {
       rawOrientation: dataset.orientation,
       orientation: 'horizontal',
       breakpoints,
-      itemsSmall: parseInt(dataset.smallScreen, 10),
-      itemsBig: parseInt(dataset.bigScreen, 10),
-      totalSlides: parseInt(dataset.totalSlides, 10),
-      slideTime: parseInt(dataset.slideTime, 10),
-      gap: parseInt(dataset.gap, 10),
+      itemsSmall: parseInt(dataset.smallScreen, 10) || 1,
+      itemsBig: parseInt(dataset.bigScreen, 10) || 1,
+      totalSlides: parseInt(dataset.totalSlides, 10) || 0,
+      slideTime: parseInt(dataset.slideTime, 10) || 0,
+      gap: parseInt(dataset.gap, 10) || 0,
       looping: dataset.carouselLoop === '1',
       navigation: dataset.navigation || 'arrows',
     };
+
     return {
       container,
       wrapper,
@@ -88,22 +130,47 @@
       announcer,
       config,
       pageIndex: 0,
-      autoSlideTimer: null
+      autoSlideTimer: null,
+      centerOffset: 0
     };
   }
 
+  /**
+   * Resolves the current orientation based on viewport width and settings.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {string} The resolved orientation ('horizontal' or 'vertical').
+   */
   function resolveOrientation(state) {
     const raw = state.config.rawOrientation;
     const bp = state.config.breakpoints;
-    if (raw === 'vertical') return 'vertical';
-    if (raw === 'hybrid' && window.innerWidth <= bp) return 'vertical';
+
+    if (raw === 'vertical') {
+      return 'vertical';
+    }
+    if (raw === 'hybrid' && window.innerWidth <= bp) {
+      return 'vertical';
+    }
     return 'horizontal';
   }
 
+  /**
+   * Gets the size of an item based on orientation.
+   *
+   * @param {HTMLElement} item - The carousel item element.
+   * @param {boolean} isVertical - Whether the carousel is in vertical mode.
+   * @returns {number} The item's height or width.
+   */
   function getItemSize(item, isVertical) {
     return isVertical ? item.offsetHeight : item.offsetWidth;
   }
 
+  /**
+   * Calculates the number of visible items based on viewport and settings.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {number} The number of items visible at once.
+   */
   function getItemsVisible(state) {
     const isVertical = state.config.orientation === 'vertical';
     const isHybrid = state.config.rawOrientation === 'hybrid';
@@ -132,23 +199,41 @@
 
     for (let i = 0; i < state.items.length; i++) {
       const itemSize = state.items[i].offsetWidth;
-      if (i > 0) total += gap;
+      if (i > 0) {
+        total += gap;
+      }
       total += itemSize;
 
-      if (total > containerSize) break;
+      if (total > containerSize) {
+        break;
+      }
       count++;
-      if (count >= max) break;
+      if (count >= max) {
+        break;
+      }
     }
 
     return Math.max(1, count);
   }
 
+  /**
+   * Gets the currently visible items based on page index.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {HTMLElement[]} Array of visible item elements.
+   */
   function getVisibleItems(state) {
     const itemsVisible = getItemsVisible(state);
     const start = state.pageIndex * itemsVisible;
     return Array.from(state.items).slice(start, start + itemsVisible);
   }
 
+  /**
+   * Gets the maximum item size among visible items.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {number} The maximum item size.
+   */
   function getMaxItemSize(state) {
     const isVertical = state.config.orientation === 'vertical';
     return getVisibleItems(state).reduce((max, item) => {
@@ -157,18 +242,27 @@
     }, 0);
   }
 
+  /**
+   * Calculates the scroll offset for the current page.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {number} The offset in pixels.
+   */
   function getGroupOffset(state) {
     const itemsVisible = getItemsVisible(state);
     const isVertical = state.config.orientation === 'vertical';
     const gap = state.config.gap || 0;
     let offset = 0;
+
     for (let page = 0; page < state.pageIndex; page++) {
       const start = page * itemsVisible;
       const end = start + itemsVisible;
       for (let i = start; i < end && i < state.items.length; i++) {
         const size = getItemSize(state.items[i], isVertical);
         offset += size;
-        if (i < end - 1) offset += gap;
+        if (i < end - 1) {
+          offset += gap;
+        }
       }
       if (end < state.items.length) {
         offset += gap;
@@ -177,12 +271,21 @@
     return offset;
   }
 
+  /**
+   * Sets the wrapper size based on visible items.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function setWrapperSize(state) {
     const itemsVisible = getItemsVisible(state);
-    if (!state.items.length) return;
+    if (!state.items.length) {
+      return;
+    }
+
     const visibleItems = getVisibleItems(state);
     const gap = state.config.gap || 0;
     const totalGap = (itemsVisible - 1) * gap;
+
     if (state.config.orientation === 'vertical') {
       const totalHeight = visibleItems.reduce((sum, item) => {
         return sum + getItemSize(item, true);
@@ -202,16 +305,23 @@
       state.wrapper.style.width = '';
       state.wrapper.style.maxHeight = '';
     }
+
     if (state.wrapper.style.visibility !== 'visible') {
       state.wrapper.style.visibility = 'visible';
       state.wrapper.classList.add('is-visible');
     }
   }
 
+  /**
+   * Scrolls to the current page position.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function scrollToPage(state) {
     const offset = getGroupOffset(state);
     const centering = state.centerOffset || 0;
     const transform = centering - offset;
+
     if (state.config.orientation === 'vertical') {
       state.itemsContainer.style.transform = `translateY(${-offset}px)`;
     } else {
@@ -219,19 +329,28 @@
     }
   }
 
+  /**
+   * Updates the entire carousel layout and state.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function updateLayout(state) {
     state.config.orientation = resolveOrientation(state);
     setWrapperSize(state);
+
     const itemsVisible = getItemsVisible(state);
     const start = state.pageIndex * itemsVisible;
     const end = start + itemsVisible;
+
     state.items.forEach((item, i) => {
-      item.classList.toggle('active-slide', i >= start && i < end);
-      item.classList.toggle('non-active-slide', i < start || i >= end);
+      const isActive = i >= start && i < end;
+      item.classList.toggle('active-slide', isActive);
+      item.classList.toggle('non-active-slide', !isActive);
+      item.setAttribute('aria-hidden', String(!isActive));
     });
+
     // Update dots active state
-    if (state.config.navigation === 'dots' || state.config.navigation ===
-      'both') {
+    if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
       const dots = state.container.querySelectorAll('.pb__carousel-dot');
       dots.forEach((dot, index) => {
         const isActive = index === state.pageIndex;
@@ -239,27 +358,32 @@
         dot.setAttribute('aria-current', isActive ? 'true' : 'false');
       });
     }
+
     updateNavVisibility(state);
     announceVisible(state, start, end);
     scrollToPage(state);
   }
 
+  /**
+   * Updates the visibility of navigation buttons.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function updateNavVisibility(state) {
-    if (state.config.navigation !== 'arrows' && state.config.navigation !==
-      'both') {
-      // No arrows used, do nothing.
+    if (state.config.navigation !== 'arrows' && state.config.navigation !== 'both') {
+      // No arrows used, do nothing
       return;
     }
+
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
+
     if (!state.config.looping) {
       if (state.prevButton) {
-        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' :
-          'visible';
+        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' : 'visible';
       }
       if (state.nextButton) {
-        state.nextButton.style.visibility = state.pageIndex >= maxPage ?
-          'hidden' : 'visible';
+        state.nextButton.style.visibility = state.pageIndex >= maxPage ? 'hidden' : 'visible';
       }
     } else {
       if (state.prevButton) {
@@ -271,97 +395,164 @@
     }
   }
 
+  /**
+   * Announces the currently visible slides to screen readers.
+   *
+   * @param {Object} state - The carousel state object.
+   * @param {number} start - Start index of visible items.
+   * @param {number} end - End index of visible items.
+   */
   function announceVisible(state, start, end) {
+    if (!state.announcer) {
+      return;
+    }
     const total = state.config.totalSlides;
-    state.announcer.textContent =
-      `Showing slides ${start + 1} to ${Math.min(end, total)} of ${total}`;
+    state.announcer.textContent = `Showing slides ${start + 1} to ${Math.min(end, total)} of ${total}`;
   }
 
+  /**
+   * Advances to the next slide/page.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function nextSlide(state) {
     const itemsVisible = getItemsVisible(state);
     const totalPages = Math.ceil(state.config.totalSlides / itemsVisible);
-    state.pageIndex = (state.pageIndex >= totalPages - 1) ?
-      (state.config.looping ? 0 : totalPages - 1) :
-      state.pageIndex + 1;
+
+    state.pageIndex = (state.pageIndex >= totalPages - 1)
+      ? (state.config.looping ? 0 : totalPages - 1)
+      : state.pageIndex + 1;
+
     updateLayout(state);
   }
 
+  /**
+   * Goes to the previous slide/page.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function prevSlide(state) {
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
-    state.pageIndex = (state.pageIndex > 0) ?
-      state.pageIndex - 1 :
-      (state.config.looping ? maxPage : 0);
+
+    state.pageIndex = (state.pageIndex > 0)
+      ? state.pageIndex - 1
+      : (state.config.looping ? maxPage : 0);
+
     updateLayout(state);
   }
 
+  /**
+   * Binds click events to navigation buttons.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function bindNavigation(state) {
     const shouldAutoplay = state.config.slideTime > 0 &&
       state.config.slideTime >= 1000 &&
       state.config.slideTime <= 15000;
+
     const resetAutoSlide = () => {
       if (shouldAutoplay && state.autoSlideTimer) {
         clearInterval(state.autoSlideTimer);
         bindAutoSlide(state);
       }
     };
+
     state.nextButton?.addEventListener('click', () => {
       nextSlide(state);
       resetAutoSlide();
     });
+
     state.prevButton?.addEventListener('click', () => {
       prevSlide(state);
       resetAutoSlide();
     });
   }
 
+  /**
+   * Binds touch/swipe events for mobile navigation.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function bindTouch(state) {
-    let startX = 0,
-      startY = 0;
-    state.wrapper.addEventListener('touchstart', e => {
+    let startX = 0;
+    let startY = 0;
+
+    state.wrapper.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
-    });
-    state.wrapper.addEventListener('touchend', e => {
+    }, { passive: true });
+
+    state.wrapper.addEventListener('touchend', (e) => {
       const deltaX = e.changedTouches[0].clientX - startX;
       const deltaY = e.changedTouches[0].clientY - startY;
+
       if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        deltaX < -50 ? nextSlide(state) : deltaX > 50 && prevSlide(state);
+        if (deltaX < -50) {
+          nextSlide(state);
+        } else if (deltaX > 50) {
+          prevSlide(state);
+        }
       } else if (state.config.orientation === 'vertical') {
-        deltaY < -50 ? nextSlide(state) : deltaY > 50 && prevSlide(state);
+        if (deltaY < -50) {
+          nextSlide(state);
+        } else if (deltaY > 50) {
+          prevSlide(state);
+        }
       }
     });
   }
 
+  /**
+   * Creates dot navigation elements.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function createDots(state) {
     const navigationType = state.config.navigation;
     const dotsContainer = state.container.querySelector('.pb__carousel-dots');
-    if (!dotsContainer) return;
+
+    if (!dotsContainer) {
+      return;
+    }
+
     if (navigationType !== 'dots' && navigationType !== 'both') {
       // If user chose arrows only or none, do not create dots
       dotsContainer.innerHTML = '';
       return;
     }
+
     dotsContainer.innerHTML = '';
     const itemsVisible = getItemsVisible(state);
     const totalPages = Math.ceil(state.config.totalSlides / itemsVisible);
+
     for (let i = 0; i < totalPages; i++) {
       const dot = document.createElement('button');
       dot.className = 'pb__carousel-dot';
       dot.setAttribute('aria-label', `Go to slide group ${i + 1}`);
+      dot.setAttribute('type', 'button');
       dot.dataset.slideGroup = i;
       dotsContainer.appendChild(dot);
     }
   }
 
+  /**
+   * Binds click events to dot navigation.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function bindDots(state) {
-    if (state.config.navigation !== 'dots' && state.config.navigation !==
-      'both') {
+    if (state.config.navigation !== 'dots' && state.config.navigation !== 'both') {
       return;
     }
+
     const dotsContainer = state.container.querySelector('.pb__carousel-dots');
-    if (!dotsContainer) return;
-    dotsContainer.querySelectorAll('.pb__carousel-dot').forEach(dot => {
+    if (!dotsContainer) {
+      return;
+    }
+
+    dotsContainer.querySelectorAll('.pb__carousel-dot').forEach((dot) => {
       dot.addEventListener('click', () => {
         const groupIndex = parseInt(dot.dataset.slideGroup, 10);
         state.pageIndex = groupIndex;
@@ -370,23 +561,47 @@
     });
   }
 
+  /**
+   * Sets up automatic slide advancement.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function bindAutoSlide(state) {
     let interval = parseInt(state.config.slideTime, 10);
-    if (interval === 0) return;
+
+    if (interval === 0) {
+      return;
+    }
+
     if (isNaN(interval) || interval < 1000 || interval > 15000) {
       interval = 5000;
     }
+
     let isVisible = true;
+
     const start = () => {
-      clearInterval(state.autoSlideTimer);
+      if (state.autoSlideTimer) {
+        clearInterval(state.autoSlideTimer);
+      }
       state.autoSlideTimer = setInterval(() => nextSlide(state), interval);
     };
-    const stop = () => clearInterval(state.autoSlideTimer);
+
+    const stop = () => {
+      if (state.autoSlideTimer) {
+        clearInterval(state.autoSlideTimer);
+        state.autoSlideTimer = null;
+      }
+    };
+
     start();
+
     state.wrapper.addEventListener('mouseenter', stop);
     state.wrapper.addEventListener('mouseleave', () => {
-      if (isVisible) start();
+      if (isVisible) {
+        start();
+      }
     });
+
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) {
         stop();
@@ -394,6 +609,7 @@
         start();
       }
     });
+
     const observer = new IntersectionObserver((entries) => {
       isVisible = entries[0].isIntersecting;
       if (isVisible) {
@@ -404,13 +620,21 @@
     }, {
       threshold: 0.3
     });
+
     observer.observe(state.container);
   }
 
+  /**
+   * Binds keyboard navigation events.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function bindKeyboard(state) {
     state.container.setAttribute('tabindex', '0'); // Make focusable
+
     state.container.addEventListener('keydown', (e) => {
       const orientation = state.config.orientation;
+
       if (
         (orientation === 'horizontal' && e.key === 'ArrowRight') ||
         (orientation === 'vertical' && e.key === 'ArrowDown')
@@ -418,6 +642,7 @@
         e.preventDefault();
         nextSlide(state);
       }
+
       if (
         (orientation === 'horizontal' && e.key === 'ArrowLeft') ||
         (orientation === 'vertical' && e.key === 'ArrowUp')
@@ -428,9 +653,15 @@
     });
   }
 
+  /**
+   * Clamps the page index to valid bounds after resize.
+   *
+   * @param {Object} state - The carousel state object.
+   */
   function clampPageIndex(state) {
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
-    state.pageIndex = Math.min(state.pageIndex, maxPage);
+    state.pageIndex = Math.min(state.pageIndex, Math.max(0, maxPage));
   }
+
 })(Drupal, drupalSettings, once);

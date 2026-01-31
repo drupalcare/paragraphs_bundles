@@ -1,12 +1,14 @@
 /**
  * @file
- * Paragraph bUndle caRoUsel.
+ * Paragraph Bundle Carousel - 576px Breakpoint.
+ *
+ * Hybrid layout switches to vertical at this breakpoint.
  *
  * Filename:     paragraph-bundle-carousel-pb-576.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (max-width:35.99875rem) {
+@media (max-width: 35.99875rem) {
   .paragraph--type--carousel-bundle.pb__576.hybrid-carousel.pb-has-arrows .pb__carousel-outer {
     padding: 50px 0;
   }
@@ -36,4 +38,19 @@
     transform: rotate(-90deg);
   }
 
+  /* Arrow hover - vertical direction when hybrid switches to vertical */
+  .paragraph--type--carousel-bundle.pb__576.hybrid-carousel .pb__carousel-options .pb__next:hover {
+    transform: translateY(4px);
+  }
+
+  .paragraph--type--carousel-bundle.pb__576.hybrid-carousel .pb__carousel-options .pb__prev:hover {
+    transform: translateY(-4px);
+  }
+}
+
+@media (max-width: 35.99875rem) and (prefers-reduced-motion: reduce) {
+  .paragraph--type--carousel-bundle.pb__576.hybrid-carousel .pb__carousel-options .pb__next:hover,
+  .paragraph--type--carousel-bundle.pb__576.hybrid-carousel .pb__carousel-options .pb__prev:hover {
+    transform: none;
+  }
 }
