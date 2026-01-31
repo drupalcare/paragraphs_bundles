@@ -39,6 +39,10 @@
   display: grid;
 }
 
+.pb-modal-content .pb__modal__inner > 0 {
+  min-width: 0;
+}
+
 .pb__modal__inner.pb__pmw_100 {
   max-width: 61.99875.5rem!important;
 }

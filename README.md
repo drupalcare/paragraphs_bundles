@@ -144,21 +144,27 @@ settings and comprises two group field horizontal tabs: Content and Display.
 Works with Solo Theme Only.
 
 ### Understanding Blocks Types in Drupal (PB Block & PB Block Content)
-Drupal provides two different block systems, and this often causes confusion when using PB Block or PB Block Content inside Paragraph Bundles.
+Drupal provides two different block systems, and this often causes confusion 
+when using PB Block or PB Block Content inside Paragraph Bundles.
 
 Drupal Blocks (Plugin-Based)
 
 These blocks are provided by modules (menus, Views blocks, forms, etc.).
-They are controlled by theme regions. If a Drupal block is enabled in a region, it will always appear there — even when the same block is also rendered inside a paragraph.
+They are controlled by theme regions. If a Drupal block is enabled in a region, 
+it will always appear there — even when the same block is also rendered 
+inside a paragraph.
 
 Block Content (Custom Block Entities)
 
-These are content entities created in Structure → Block Layout → Custom Block Library.
-If the same block content entity is assigned to a theme region, it will also appear both in the region and inside the paragraph.
+These are content entities created in Structure → Block Layout → Custom 
+Block Library.
+If the same block content entity is assigned to a theme region, it will also 
+appear both in the region and inside the paragraph.
 
 Why Duplication Happens
 
-If a block is placed inside a PB paragraph and also assigned to any theme region, Drupal will render it twice:
+If a block is placed inside a PB paragraph and also assigned to any theme 
+region, Drupal will render it twice:
 
 In the theme region
 
@@ -168,8 +174,10 @@ This is normal Drupal behavior and not specific to Paragraph Bundles.
 
 Recommended Setup
 
-To avoid duplication, keep any block intended for use inside PB paragraphs enabled but assigned to a hidden region.
-This ensures the block is available to Drupal but only appears within the paragraph bundle.
+To avoid duplication, keep any block intended for use inside PB paragraphs 
+enabled but assigned to a hidden region.
+This ensures the block is available to Drupal but only appears within the 
+paragraph bundle.
 
 #### Display Tab
 

@@ -36,6 +36,7 @@
 }
 
 .pb__card-image-section__inner > .pb__card-image .pb__card-image-title>* {
+  min-width: 0;
   width: 100%;
 }
 

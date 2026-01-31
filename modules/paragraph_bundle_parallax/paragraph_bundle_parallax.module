@@ -2,12 +2,6 @@
 
 /**
  * @file
- */
-
-declare(strict_types=1);
-
-/**
- * @file
  * Paragraph Bundle Parallax.
  *
  * Filename:     paragraph_bundle_parallax.module
@@ -15,6 +9,8 @@ declare(strict_types=1);
  * Description:  template.
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+declare(strict_types=1);
 
 use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -110,17 +106,6 @@ function paragraph_bundle_parallax_update_8103() {
     'field.field.paragraph.parallax_section_bundle.pb_display_parallax_speed',
   ];
 
-  // List of new field names.
-  $new_field_names = [
-    'pb_display_para_anim_easing',
-    'pb_display_para_bg_anim_speed',
-    'pb_display_parallax_bg_position',
-    'pb_display_para_height_unit',
-    'pb_display_parallax_breakpoints',
-    'pb_display_parallax_scroll',
-    'pb_display_parallax_speed',
-  ];
-
   // Create the fields.
   _paragraph_bundle_parallax_update_fields_from_yml('paragraph_bundle_parallax', $field_configs);
   $messages[] = 'Created field storages and field instances';
@@ -133,7 +118,8 @@ function paragraph_bundle_parallax_update_8103() {
     );
 
     if ($new_form_config) {
-      // Completely replace with YAML configuration to ensure exact field ordering.
+      // Completely replace with YAML configuration to ensure exact field
+      // ordering.
       $form_display->set('content', $new_form_config['content']);
       $form_display->set('hidden', $new_form_config['hidden']);
       $form_display->set('third_party_settings', $new_form_config['third_party_settings']);
@@ -154,7 +140,8 @@ function paragraph_bundle_parallax_update_8103() {
     );
 
     if ($new_view_config) {
-      // Completely replace with YAML configuration to ensure exact field ordering.
+      // Completely replace with YAML configuration to ensure exact field
+      // ordering.
       $view_display->set('content', $new_view_config['content']);
       $view_display->set('hidden', $new_view_config['hidden']);
       $view_display->save();

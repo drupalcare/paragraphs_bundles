@@ -20,6 +20,7 @@
 }
 
 .paragraph--type--accordion-bundle .pb__accor > div {
+  min-width: 0;
   width: 100%;
 }
 
@@ -33,6 +34,10 @@
   border-block-end: var(--pb-px2) solid var(--pb-br);
   overflow: hidden;
   transition: background-color 0.3s ease;
+}
+
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
+  min-width: 0;
 }
 
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active,
@@ -83,6 +88,7 @@
   margin-block-end: var(--pb-px10);
   overflow: hidden;
   width: 100%;
+  min-width: 0;
 }
 
 /* ---------------------------------

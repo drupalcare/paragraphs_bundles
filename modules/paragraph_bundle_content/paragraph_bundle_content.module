@@ -49,7 +49,7 @@ function paragraph_bundle_content_preprocess_page(&$variables) {
 
     $selected_regions = array_column($node->pb_display_disable_region->getValue(), 'value');
 
-    foreach ($selected_regions as $x => $selected_region) {
+    foreach ($selected_regions as $selected_region) {
 
       switch ($selected_region) {
 

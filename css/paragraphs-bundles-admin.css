@@ -31,6 +31,10 @@
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
+.paragraphs-add-dialog .paragraphs-add-dialog-list > {
+  min-width: 0;
+}
+
 .paragraphs-add-dialog .paragraphs-add-dialog-list li {
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
   border-radius: 0.5rem;
@@ -148,6 +152,12 @@
   grid-auto-flow: row;
   grid-template-columns: 1fr;
 }
+
+.pb__tab-display.small > .details-wrapper > *,
+.pb__tab-display.medium > .details-wrapper > * {
+  min-width: 0;
+}
+
 
 @media(max-width:47.99875rem) {
   .pb__tabs-wrapper .horizontal-tabs .pb__tab-display {

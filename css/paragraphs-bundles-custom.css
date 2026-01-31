@@ -105,6 +105,11 @@ h3 a) {
   grid-template-columns: 1fr;
 }
 
+.paragraph > *,
+.paragraph .pb__one-column > * {
+  min-width: 0;
+}
+
 .paragraph > .paragraph__inner {
   display: flex;
   flex-grow: 1;

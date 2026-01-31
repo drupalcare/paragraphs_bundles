@@ -6,15 +6,41 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+
+/* Base state - visible */
+.paragraph--type--alert-bundle {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    opacity 0.3s ease-out,
+    grid-template-rows 0.3s ease-out;
+}
+
+/* Closed state - collapsed with animation */
 .paragraph--type--alert-bundle.alert-is-closed {
-  display: none;
-  height: 0;
-  width: 0;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.paragraph--type--alert-bundle > .paragraph__inner {
+  overflow: hidden;
 }
 
 .paragraph--type--alert-bundle .pb__content-alert {
   display: grid;
   grid-auto-flow: row;
+}
+
+.paragraph--type--alert-bundle .pb__content-alert > * {
+  min-width: 0;
+}
+
+.paragraph--type--alert-bundle[aria-hidden="true"] * {
+  margin: 0;
+  padding: 0;
+  border: none;
 }
 
 .paragraph--type--alert-bundle button.pb__close-alert {
@@ -31,6 +57,16 @@
   border: none;
   border-radius: 50%;
   float: inline-end;
+  transition: transform 0.2s ease-out;
+}
+
+.paragraph--type--alert-bundle button.pb__close-alert:hover {
+  transform: scale(1.1);
+}
+
+.paragraph--type--alert-bundle button.pb__close-alert:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .paragraph--type--alert-bundle .pb__close-alert:hover svg {
@@ -46,4 +82,15 @@
   margin-inline: auto;
   width: calc(100% - var(--pb-px36));
   min-height: var(--pb-px36);
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .paragraph--type--alert-bundle {
+    transition: none;
+  }
+
+  .paragraph--type--alert-bundle button.pb__close-alert {
+    transition: none;
+  }
 }

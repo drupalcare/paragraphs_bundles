@@ -1,6 +1,6 @@
 /**
  * @file
- * Paragraph Bundle Accordion.
+ * Paragraph Bundle Alert.
  *
  * Filename:     paragraph-bundle-alert.js
  * Website:      https://www.flashwebcenter.com
@@ -17,8 +17,14 @@
       }
 
       alertBoxes.forEach(alertBox => {
-        const closeButton = alertBox.querySelector('.pb__alert-top.On > button');
+        // Fixed selector: target button directly by its class instead of parent class
+        const closeButton = alertBox.querySelector('button.pb__close-alert');
         const paragraphContent = alertBox.querySelector('.pb__content-full');
+
+        if (!closeButton || !paragraphContent) {
+          return;
+        }
+
         const focusableElements = paragraphContent.querySelectorAll('a, button, input, textarea, select');
 
         const updateTabindex = (state) => {
@@ -27,33 +33,31 @@
           });
         };
 
-        if (closeButton && paragraphContent) {
-          // Initialize aria-hidden based on the presence of the alert-is-closed class
+        // Initialize aria-hidden based on the presence of the alert-is-closed class
+        if (alertBox.classList.contains('alert-is-closed')) {
+          alertBox.setAttribute('aria-hidden', 'true');
+          closeButton.setAttribute('aria-expanded', 'false');
+          updateTabindex(false);
+        } else {
+          alertBox.removeAttribute('aria-hidden');
+          closeButton.setAttribute('aria-expanded', 'true');
+          updateTabindex(true);
+        }
+
+        closeButton.addEventListener('click', () => {
+          // Toggle the visibility of the alert box using CSS class
           if (alertBox.classList.contains('alert-is-closed')) {
-            alertBox.setAttribute('aria-hidden', 'true');
-            closeButton.setAttribute('aria-expanded', 'false');
-            updateTabindex(false);
-          } else {
+            alertBox.classList.remove('alert-is-closed');
             alertBox.removeAttribute('aria-hidden');
             closeButton.setAttribute('aria-expanded', 'true');
             updateTabindex(true);
+          } else {
+            alertBox.classList.add('alert-is-closed');
+            alertBox.setAttribute('aria-hidden', 'true');
+            closeButton.setAttribute('aria-expanded', 'false');
+            updateTabindex(false);
           }
-
-          closeButton.addEventListener('click', () => {
-            // Toggle the visibility of the alert box using CSS class
-            if (alertBox.classList.contains('alert-is-closed')) {
-              alertBox.classList.remove('alert-is-closed');
-              alertBox.removeAttribute('aria-hidden');
-              closeButton.setAttribute('aria-expanded', 'true');
-              updateTabindex(true);
-            } else {
-              alertBox.classList.add('alert-is-closed');
-              alertBox.setAttribute('aria-hidden', 'true');
-              closeButton.setAttribute('aria-expanded', 'false');
-              updateTabindex(false);
-            }
-          });
-        }
+        });
       });
     }
   };

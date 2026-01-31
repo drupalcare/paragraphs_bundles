@@ -199,6 +199,11 @@
     min-height: initial !important;
   }
 
+  .paragraph--type--parallax-section-bundle.parallax-js.br-576 .paragraph__inner > *,
+  .paragraph--type--parallax-section-bundle.parallax-css.br-576 .paragraph__inner > * {
+    min-width: 0
+  }
+
   .paragraph--type--parallax-section-bundle.parallax-js.br-576 .pb__parallax-bg,
   .paragraph--type--parallax-section-bundle.parallax-css.br-576 .pb__parallax-bg {
     display: none;

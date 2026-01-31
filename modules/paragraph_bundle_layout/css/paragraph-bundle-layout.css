@@ -13,6 +13,11 @@
   display: grid;
 }
 
+.paragraph .pb__two-columns > *,
+.paragraph .pb__three-columns > * {
+  min-width: 0;
+}
+
 .paragraph .pb__two-columns > div,
 .paragraph .pb__three-columns > div,
 .paragraph .pb__two-columns .paragraph,

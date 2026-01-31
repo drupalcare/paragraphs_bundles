@@ -13,6 +13,11 @@
   grid-auto-flow: row;
 }
 
+.paragraph--type--card-two-columns-bundle .pb__card-two-columns > *,
+.paragraph--type--card-three-columns-bundle .pb__card-three-columns > * {
+  min-width: 0;
+}
+
 .paragraph--type--card-two-columns-bundle .pb__card-two-columns>div,
 .paragraph--type--card-three-columns-bundle .pb__card-three-columns>div,
 .paragraph--type--card-two-columns-bundle .pb__card-two-columns .paragraph,

@@ -73,6 +73,10 @@
   display: grid;
 }
 
+.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner > * {
+  min-width: 0;
+}
+
 .paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(.pb__card_4,
 .pb__card_2) {
   margin-block: 0;

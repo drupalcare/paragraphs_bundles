@@ -44,6 +44,7 @@
 }
 
 .paragraph .pb__image-grid .pb__image-grid-title>* {
+  min-width: 0;
   width: 100%;
 }
 
@@ -74,6 +75,10 @@
 
 .paragraph .pb__image-grid-wrapper {
   display: grid;
+}
+
+.paragraph .pb__image-grid-wrapper > * {
+  min-width: 0;
 }
 
 .paragraph .pb__image-grid-wrapper,
