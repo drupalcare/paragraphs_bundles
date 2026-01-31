@@ -31,10 +31,14 @@
   transition: opacity 0.4s ease;
   position: relative;
   overflow: hidden;
-  width: auto;
+  max-width: 100%;
   height: auto;
   margin: 0 auto;
   transition: all 0.3s ease;
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-wrapper {
+  width: 100%;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-wrapper.is-visible {
@@ -53,6 +57,7 @@
   flex: 0 0 auto;
   transition: transform 0.5s ease, opacity 0.5s ease;
   scroll-snap-align: start;
+  box-sizing: border-box;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-item.active-slide {
@@ -238,29 +243,58 @@
 }
 
 /* ==========================================================================
-   Dot Navigation
+   Dot Navigation - Scrollable Single Row (Best Practice)
    ========================================================================== */
 
 .paragraph--type--carousel-bundle .pb__carousel-dots {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
   align-items: center;
   width: 100%;
-  margin-top: 1rem;
-  gap: 1rem;
-  padding: 0;
+  max-width: 100%;
+  margin-block-start: 1rem;
+  gap: 0.75rem;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* Center dots when they fit, scroll when they overflow */
+  scroll-snap-type: x proximity;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.paragraph--type--carousel-bundle .pb__carousel-dots::-webkit-scrollbar {
+  display: none;
+}
+
+/* Center dots container when content fits */
+.paragraph--type--carousel-bundle .pb__carousel-dots::before,
+.paragraph--type--carousel-bundle .pb__carousel-dots::after {
+  content: '';
+  flex: 1 0 0;
+  min-width: 0;
 }
 
 .paragraph--type--carousel-bundle .pb__carousel-dot {
+  flex: 0 0 auto;
   width: 10px;
   height: 10px;
+  min-width: 10px;
   border-radius: 50%;
   background-color: #ccc;
   border: none;
   cursor: pointer;
   padding: 0;
   margin: 0;
+  scroll-snap-align: center;
   transition:
     background-color 0.3s ease,
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
@@ -276,6 +310,7 @@
   background-color: #333;
   transform: scale(1.2);
   width: 20px;
+  min-width: 20px;
   border-radius: 5px;
 }
 
@@ -298,6 +333,24 @@
 }
 
 /* ==========================================================================
+   Small Screen Centering Fix for Horizontal Layout
+   ========================================================================== */
+
+/* When showing single item on small screens, ensure proper centering */
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-wrapper.pb__small-screen .pb__carousel-items {
+  justify-content: flex-start;
+}
+
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-wrapper.pb__small-screen .pb__carousel-item {
+  max-width: 100%;
+}
+
+/* Ensure items with fixed max-width still center properly */
+.paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-wrapper.pb__small-screen .pb__carousel-item[style*="max-width"] {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
    Reduced Motion
    ========================================================================== */
 
@@ -311,8 +364,10 @@
   .paragraph--type--carousel-bundle .pb__carousel-item,
   .paragraph--type--carousel-bundle .pb__carousel-options .pb__button,
   .paragraph--type--carousel-bundle .pb__carousel-options button svg,
-  .paragraph--type--carousel-bundle .pb__carousel-dot {
+  .paragraph--type--carousel-bundle .pb__carousel-dot,
+  .paragraph--type--carousel-bundle .pb__carousel-dots {
     transition: none;
+    scroll-behavior: auto;
   }
 
   .paragraph--type--carousel-bundle.horizontal-carousel .pb__carousel-options .pb__next:hover,

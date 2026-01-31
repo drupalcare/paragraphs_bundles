@@ -8,6 +8,13 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
+@media (min-width:36rem) {
+  .paragraph--type--carousel-bundle.pb__576.hybrid-carousel .pb__carousel-wrapper {
+    width: 100%;
+  }
+
+}
+
 @media (max-width: 35.99875rem) {
   .paragraph--type--carousel-bundle.pb__576.hybrid-carousel.pb-has-arrows .pb__carousel-outer {
     padding: 50px 0;

@@ -59,6 +59,7 @@
         const playPauseButton = slideshowInner.querySelector(`#btn-${slideshowInner.id.split('-').pop()}`);
         const nextButton = slideshowInner.querySelector('.pb__next');
         const prevButton = slideshowInner.querySelector('.pb__prev');
+        const dotsContainer = slideshowInner.querySelector('.pb__slide-nav');
         const dots = slideshowInner.querySelectorAll('.pb__slide-bottom-btn');
         const slideTime = parseInt(slideshowInner.dataset.slideTime, 10) || 0;
         const totalSlides = slides.length;
@@ -122,14 +123,51 @@
         };
 
         /**
-         * Updates the active state for navigation dots.
+         * Updates the active state for navigation dots and scrolls active into view.
          */
         const updateDots = () => {
           dots.forEach((dot, index) => {
             const isActive = index + 1 === slideIndex;
             dot.classList.toggle('pb__active', isActive);
             dot.setAttribute('aria-selected', String(isActive));
+
+            // Scroll active dot into view
+            if (isActive && dotsContainer) {
+              scrollDotIntoView(dotsContainer, dot);
+            }
           });
+        };
+
+        /**
+         * Scrolls the active dot into view within the dots container.
+         *
+         * @param {HTMLElement} container - The dots container element.
+         * @param {HTMLElement} dot - The active dot element.
+         */
+        const scrollDotIntoView = (container, dot) => {
+          const containerRect = container.getBoundingClientRect();
+          const dotRect = dot.getBoundingClientRect();
+
+          // Calculate dot position relative to container
+          const dotLeft = dotRect.left - containerRect.left + container.scrollLeft;
+          const dotRight = dotLeft + dotRect.width;
+          const containerWidth = container.clientWidth;
+          const scrollLeft = container.scrollLeft;
+
+          // Check if dot is outside visible area
+          if (dotLeft < scrollLeft) {
+            // Dot is to the left of visible area
+            container.scrollTo({
+              left: dotLeft - 16,
+              behavior: 'smooth'
+            });
+          } else if (dotRight > scrollLeft + containerWidth) {
+            // Dot is to the right of visible area
+            container.scrollTo({
+              left: dotRight - containerWidth + 16,
+              behavior: 'smooth'
+            });
+          }
         };
 
         /**

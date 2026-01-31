@@ -120,16 +120,44 @@
 }
 
 /* ==========================================================================
-   Bottom Navigation Container
+   Bottom Navigation Container - Scrollable Single Row (Best Practice)
    ========================================================================== */
 
 .paragraph--type--slideshow-bundle .pb__slide-nav {
   min-height: calc(2 * var(--pb-px20));
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: flex-start;
   gap: var(--pb-px4);
+  width: 100%;
+  max-width: 100%;
+  padding-block: 0.5rem;
+  padding-inline: 1rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* Hide scrollbar but keep functionality */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  /* Snap behavior for dots */
+  scroll-snap-type: x proximity;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.paragraph--type--slideshow-bundle .pb__slide-nav::-webkit-scrollbar {
+  display: none;
+}
+
+/* Center navigation items when they fit */
+.paragraph--type--slideshow-bundle .pb__slide-nav::before,
+.paragraph--type--slideshow-bundle .pb__slide-nav::after {
+  content: '';
+  flex: 1 0 0;
+  min-width: 0;
 }
 
 .paragraph--type--slideshow-bundle .pb__no-bottom-nav {
@@ -155,6 +183,7 @@
 
 .paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play {
   position: relative;
+  flex: 0 0 auto;
   cursor: pointer;
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -230,9 +259,11 @@
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn,
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn,
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn {
+  flex: 0 0 auto;
   opacity: 100;
   border-radius: var(--pb-px4);
   margin-left: var(--pb-px4);
+  scroll-snap-align: center;
 }
 
 /* ==========================================================================
@@ -301,6 +332,7 @@
   margin-block: 0;
   margin-inline: var(--pb-px6);
   width: var(--pb-px10) !important;
+  min-width: var(--pb-px10);
   height: var(--pb-px10) !important;
   border-radius: 50% !important;
   font-size: 0 !important;
@@ -309,6 +341,7 @@
   cursor: pointer;
   transition:
     width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    min-width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     border-radius 0.35s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.3s ease-out,
@@ -334,6 +367,7 @@
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn.pb__active,
 .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn.pb__active {
   width: calc(2.5 * var(--pb-px10)) !important;
+  min-width: calc(2.5 * var(--pb-px10));
   height: var(--pb-px10) !important;
   border-radius: calc(var(--pb-px10) / 2) !important;
   background-color: var(--pb-bt-a, var(--pb-dot-active, #333));
@@ -355,8 +389,10 @@
   .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn,
   .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn,
   .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On {
+  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On,
+  .paragraph--type--slideshow-bundle .pb__slide-nav {
     transition: none;
+    scroll-behavior: auto;
   }
 
   .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next:hover,

@@ -155,6 +155,16 @@
   }
 
   /**
+   * Checks if the current viewport is considered a small screen.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {boolean} True if viewport is at or below the breakpoint.
+   */
+  function isSmallScreen(state) {
+    return window.innerWidth <= state.config.breakpoints;
+  }
+
+  /**
    * Gets the size of an item based on orientation.
    *
    * @param {HTMLElement} item - The carousel item element.
@@ -174,24 +184,29 @@
   function getItemsVisible(state) {
     const isVertical = state.config.orientation === 'vertical';
     const isHybrid = state.config.rawOrientation === 'hybrid';
-    const isSmallScreen = window.innerWidth <= state.config.breakpoints;
+    const smallScreen = isSmallScreen(state);
 
-    const max = isSmallScreen
+    const max = smallScreen
       ? state.config.itemsSmall
       : state.config.itemsBig;
 
-    // For vertical layout, always return max
+    // For vertical layout, always return the configured max
     if (isVertical) {
-      return max;
+      return Math.min(max, state.items.length);
     }
 
-    // For hybrid layout, act as vertical on small screens (return max),
-    // but act as horizontal (apply fitting) on large screens.
-    if (isHybrid && isSmallScreen) {
-      return max;
+    // For hybrid layout on small screens (acts as vertical), return max
+    if (isHybrid && smallScreen) {
+      return Math.min(max, state.items.length);
     }
 
-    // Horizontal (or hybrid in horizontal layout): smart fit logic
+    // On small screens with pure horizontal layout, trust the configured value
+    // This prevents the smart-fit logic from causing centering issues
+    if (smallScreen) {
+      return Math.min(max, state.items.length);
+    }
+
+    // Large screen horizontal (or hybrid in horizontal mode): smart fit logic
     const containerSize = state.wrapper.offsetWidth;
     const gap = state.config.gap || 0;
     let total = 0;
@@ -239,6 +254,21 @@
     return getVisibleItems(state).reduce((max, item) => {
       const size = getItemSize(item, isVertical);
       return Math.max(max, size);
+    }, 0);
+  }
+
+  /**
+   * Calculates the total width of visible items including gaps.
+   *
+   * @param {Object} state - The carousel state object.
+   * @returns {number} The total width in pixels.
+   */
+  function getVisibleItemsTotalWidth(state) {
+    const visibleItems = getVisibleItems(state);
+    const gap = state.config.gap || 0;
+
+    return visibleItems.reduce((sum, item, idx) => {
+      return sum + getItemSize(item, false) + (idx > 0 ? gap : 0);
     }, 0);
   }
 
@@ -295,12 +325,20 @@
       state.wrapper.style.maxWidth = '';
       state.centerOffset = 0;
     } else {
+      // Horizontal mode
       const totalWidth = visibleItems.reduce((sum, item, idx) => {
         return sum + getItemSize(item, false) + (idx > 0 ? gap : 0);
       }, 0);
       const wrapperWidth = state.wrapper.offsetWidth;
-      const centerOffset = (wrapperWidth - totalWidth) / 2;
-      state.centerOffset = centerOffset > 0 ? centerOffset : 0;
+
+      // Calculate centering offset
+      if (totalWidth > 0 && totalWidth <= wrapperWidth) {
+        state.centerOffset = Math.max(0, (wrapperWidth - totalWidth) / 2);
+      } else {
+        // Items exceed wrapper width - no centering, align to start
+        state.centerOffset = 0;
+      }
+
       state.wrapper.style.maxWidth = '';
       state.wrapper.style.width = '';
       state.wrapper.style.maxHeight = '';
@@ -336,6 +374,12 @@
    */
   function updateLayout(state) {
     state.config.orientation = resolveOrientation(state);
+
+    // Apply small screen class for CSS targeting
+    const smallScreen = isSmallScreen(state);
+    state.wrapper.classList.toggle('pb__small-screen', smallScreen);
+    state.wrapper.classList.toggle('pb__large-screen', !smallScreen);
+
     setWrapperSize(state);
 
     const itemsVisible = getItemsVisible(state);
@@ -349,19 +393,58 @@
       item.setAttribute('aria-hidden', String(!isActive));
     });
 
-    // Update dots active state
+    // Update dots active state and scroll active dot into view
     if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
+      const dotsContainer = state.container.querySelector('.pb__carousel-dots');
       const dots = state.container.querySelectorAll('.pb__carousel-dot');
+
       dots.forEach((dot, index) => {
         const isActive = index === state.pageIndex;
         dot.classList.toggle('pb__active', isActive);
         dot.setAttribute('aria-current', isActive ? 'true' : 'false');
+
+        // Scroll active dot into view within the container
+        if (isActive && dotsContainer) {
+          scrollDotIntoView(dotsContainer, dot);
+        }
       });
     }
 
     updateNavVisibility(state);
     announceVisible(state, start, end);
     scrollToPage(state);
+  }
+
+  /**
+   * Scrolls the active dot into view within the dots container.
+   *
+   * @param {HTMLElement} container - The dots container element.
+   * @param {HTMLElement} dot - The active dot element.
+   */
+  function scrollDotIntoView(container, dot) {
+    const containerRect = container.getBoundingClientRect();
+    const dotRect = dot.getBoundingClientRect();
+
+    // Calculate dot position relative to container
+    const dotLeft = dotRect.left - containerRect.left + container.scrollLeft;
+    const dotRight = dotLeft + dotRect.width;
+    const containerWidth = container.clientWidth;
+    const scrollLeft = container.scrollLeft;
+
+    // Check if dot is outside visible area
+    if (dotLeft < scrollLeft) {
+      // Dot is to the left of visible area
+      container.scrollTo({
+        left: dotLeft - 16,
+        behavior: 'smooth'
+      });
+    } else if (dotRight > scrollLeft + containerWidth) {
+      // Dot is to the right of visible area
+      container.scrollTo({
+        left: dotRight - containerWidth + 16,
+        behavior: 'smooth'
+      });
+    }
   }
 
   /**
