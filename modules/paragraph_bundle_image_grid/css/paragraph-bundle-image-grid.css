@@ -103,17 +103,18 @@
   opacity: 0.5;
   width: 30px;
   height: 30px;
+  transition: all 0.3s ease;
 }
 
+.pb__grid-lightbox .pb__modal-prev svg,
+.pb__grid-lightbox .pb__modal-next svg,
 .paragraph .pb__grid-lightbox .pb__close-grid svg {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
   width: 60px;
   height: 60px;
   fill: #fff;
-}
-
-.paragraph .pb__image-grid .pb__expand-grid:hover svg {
-  fill: var(--pb-tx-h, var(--r-tx));
-  opacity: 1;
+  transition: all 0.3s ease;
 }
 
 .paragraph .pb__image-grid.not-clickable .pb__expand-grid {
@@ -131,6 +132,8 @@
   inset-block-start: 0;
   cursor: pointer;
   text-decoration: none;
+  line-height: 1;
+  transition: all 0.3s ease;
 }
 
 .paragraph .pb__grid-lightbox .pb__close-grid {
@@ -235,13 +238,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.pb__grid-lightbox .pb__modal-prev svg,
-.pb__grid-lightbox .pb__modal-next svg {
-  width: 60px;
-  height: 60px;
-  fill: #fff;
+  line-height: 1;
+  transition: all 0.3s ease;
 }
 
 .pb__grid-lightbox .pb__modal-prev {
@@ -255,6 +253,15 @@
 .pb__image-grid-wrapper.grid-count-1 .pb__modal-prev,
 .pb__image-grid-wrapper.grid-count-1 .pb__modal-next {
   display: none;
+}
+
+.pb__grid-lightbox .pb__modal-prev:hover svg,
+.pb__grid-lightbox .pb__modal-next:hover svg,
+.paragraph .pb__image-grid .pb__expand-grid:hover svg,
+.paragraph .pb__grid-lightbox .pb__close-grid:hover svg {
+  opacity: 1;
+  fill: var(--pb-tx, var(--r-tx))!important;
+  background-color: var(--r-bg)!important;
 }
 
 .pb__grid-lightbox-content.fade-in {
