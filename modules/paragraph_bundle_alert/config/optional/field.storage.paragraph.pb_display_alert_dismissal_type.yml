@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_alert_dismissal_type
+field_name: pb_display_alert_dismissal_type
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: none
+      label: 'None (manual close only)'
+    -
+      value: date_range
+      label: 'Date range (show between start and end date)'
+    -
+      value: countdown
+      label: 'Countdown (auto-hide after X seconds)'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

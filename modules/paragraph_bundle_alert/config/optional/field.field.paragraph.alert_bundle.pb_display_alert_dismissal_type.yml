@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_dismissal_type
+    - paragraphs.paragraphs_type.alert_bundle
+  module:
+    - options
+id: paragraph.alert_bundle.pb_display_alert_dismissal_type
+field_name: pb_display_alert_dismissal_type
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Dismissal type'
+description: 'Choose how the alert is dismissed. Date range and countdown are mutually exclusive; if one is set, the other has no effect.'
+required: false
+translatable: false
+default_value:
+  -
+    value: none
+default_value_callback: ''
+settings: {  }
+field_type: list_string

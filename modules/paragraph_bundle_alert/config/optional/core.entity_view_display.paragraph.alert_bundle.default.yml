@@ -3,8 +3,13 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.alert_bundle.pb_content_alert_body
-    - field.field.paragraph.alert_bundle.pb_display_show_close_button
     - field.field.paragraph.alert_bundle.pb_content_title
+    - field.field.paragraph.alert_bundle.pb_display_alert_close_persist
+    - field.field.paragraph.alert_bundle.pb_display_alert_countdown_sec
+    - field.field.paragraph.alert_bundle.pb_display_alert_dismissal_type
+    - field.field.paragraph.alert_bundle.pb_display_alert_end_date
+    - field.field.paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
+    - field.field.paragraph.alert_bundle.pb_display_alert_start_date
     - field.field.paragraph.alert_bundle.pb_display_bg
     - field.field.paragraph.alert_bundle.pb_display_bg_hover
     - field.field.paragraph.alert_bundle.pb_display_bg_opacity
@@ -15,12 +20,15 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_margin
     - field.field.paragraph.alert_bundle.pb_display_padding
     - field.field.paragraph.alert_bundle.pb_display_shadow
+    - field.field.paragraph.alert_bundle.pb_display_show_close_button
     - field.field.paragraph.alert_bundle.pb_display_text
     - field.field.paragraph.alert_bundle.pb_display_text_hover
     - field.field.paragraph.alert_bundle.pb_display_width
     - paragraphs.paragraphs_type.alert_bundle
   module:
+    - datetime
     - entity_reference_revisions
+    - file
     - options
     - paragraphs_bundles
 id: paragraph.alert_bundle.default
@@ -37,16 +45,6 @@ content:
     third_party_settings: {  }
     weight: 15
     region: content
-  pb_display_show_close_button:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 12
-    region: content
   pb_content_title:
     type: string
     label: hidden
@@ -54,6 +52,55 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 14
+    region: content
+  pb_display_alert_close_persist:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 16
+    region: content
+  pb_display_alert_countdown_sec:
+    type: file_size
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 18
+    region: content
+  pb_display_alert_dismissal_type:
+    type: list_key
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
+  pb_display_alert_end_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 20
+    region: content
+  pb_display_alert_show_cdown_lbl:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  pb_display_alert_start_date:
+    type: datetime_default
+    label: hidden
+    settings:
+      timezone_override: ''
+      format_type: medium
+    third_party_settings: {  }
+    weight: 21
     region: content
   pb_display_bg:
     type: color_text_formatter_rgb
@@ -124,6 +171,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
+    region: content
+  pb_display_show_close_button:
+    type: boolean
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 12
     region: content
   pb_display_text:
     type: color_text_formatter_hex

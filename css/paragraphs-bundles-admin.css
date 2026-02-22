@@ -187,3 +187,8 @@ form .pb__tab-display.medium [data-drupal-selector="para-color-picker"] {
   }
 
 }
+
+.field--name-pb-display-alert-end-date .paragraph-bundle-alert-clear-date,
+.field--name-pb-display-alert-start-date .paragraph-bundle-alert-clear-date {
+  float: right;
+}

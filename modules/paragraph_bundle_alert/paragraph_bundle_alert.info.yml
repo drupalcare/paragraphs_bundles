@@ -4,4 +4,6 @@ description: A reusable Paragraph Bundle Alert.
 core_version_requirement: ^9.4 || ^10 || ^11
 package: Paragraphs
 dependencies:
+  - drupal:datetime
+  - drupal:options
   - paragraphs_bundles:paragraphs_bundles

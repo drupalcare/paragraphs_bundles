@@ -4,6 +4,12 @@ dependencies:
   config:
     - field.field.paragraph.alert_bundle.pb_content_alert_body
     - field.field.paragraph.alert_bundle.pb_content_title
+    - field.field.paragraph.alert_bundle.pb_display_alert_close_persist
+    - field.field.paragraph.alert_bundle.pb_display_alert_countdown_sec
+    - field.field.paragraph.alert_bundle.pb_display_alert_dismissal_type
+    - field.field.paragraph.alert_bundle.pb_display_alert_end_date
+    - field.field.paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
+    - field.field.paragraph.alert_bundle.pb_display_alert_start_date
     - field.field.paragraph.alert_bundle.pb_display_bg
     - field.field.paragraph.alert_bundle.pb_display_bg_hover
     - field.field.paragraph.alert_bundle.pb_display_bg_opacity
@@ -20,6 +26,7 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_width
     - paragraphs.paragraphs_type.alert_bundle
   module:
+    - datetime
     - field_group
     - paragraphs
     - paragraphs_bundles
@@ -44,7 +51,7 @@ third_party_settings:
       children:
         - pb_content_title
         - pb_content_alert_body
-      label: 'Content'
+      label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 20
@@ -71,8 +78,14 @@ third_party_settings:
         - pb_display_padding
         - pb_display_width
         - pb_display_shadow
+        - pb_display_alert_dismissal_type
+        - pb_display_alert_close_persist
+        - pb_display_alert_start_date
+        - pb_display_alert_end_date
+        - pb_display_alert_show_cdown_lbl
         - pb_display_show_close_button
-      label: 'Display'
+        - pb_display_alert_countdown_sec
+      label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
@@ -115,6 +128,44 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  pb_display_alert_close_persist:
+    type: options_select
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_alert_countdown_sec:
+    type: number
+    weight: 35
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  pb_display_alert_dismissal_type:
+    type: options_select
+    weight: 29
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_alert_end_date:
+    type: datetime_default
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_alert_show_cdown_lbl:
+    type: boolean_checkbox
+    weight: 33
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  pb_display_alert_start_date:
+    type: datetime_default
+    weight: 31
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget
@@ -178,7 +229,7 @@ content:
     third_party_settings: {  }
   pb_display_show_close_button:
     type: boolean_checkbox
-    weight: 29
+    weight: 34
     region: content
     settings:
       display_label: true

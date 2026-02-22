@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_end_date
+    - paragraphs.paragraphs_type.alert_bundle
+  module:
+    - datetime
+id: paragraph.alert_bundle.pb_display_alert_end_date
+field_name: pb_display_alert_end_date
+entity_type: paragraph
+bundle: alert_bundle
+label: 'End date'
+description: 'Hide the alert after this date/time. Used only when Dismissal type is "Date range". Leave empty for no end date.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

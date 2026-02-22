@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_close_persist
+    - paragraphs.paragraphs_type.alert_bundle
+  module:
+    - options
+id: paragraph.alert_bundle.pb_display_alert_close_persist
+field_name: pb_display_alert_close_persist
+entity_type: paragraph
+bundle: alert_bundle
+label: 'When user closes'
+description: 'If the user clicks the close button, when should the alert appear again?'
+required: false
+translatable: false
+default_value:
+  -
+    value: none
+default_value_callback: ''
+settings: {  }
+field_type: list_string

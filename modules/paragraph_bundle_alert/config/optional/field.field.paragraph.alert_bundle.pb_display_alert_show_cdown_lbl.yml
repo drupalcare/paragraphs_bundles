@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_show_cdown_lbl
+    - paragraphs.paragraphs_type.alert_bundle
+id: paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
+field_name: pb_display_alert_show_cdown_lbl
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Show countdown label'
+description: 'Display the remaining seconds (e.g. in the upper right) until auto-close. Used only when Dismissal type is "Countdown".'
+required: false
+translatable: false
+default_value:
+  -
+    value: true
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean
