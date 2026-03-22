@@ -10,7 +10,134 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
+declare(strict_types=1);
+
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Form/view display settings for content-tab "open link in new tab" booleans.
+ *
+ * @return array<string, array{field_name: string, insert_after: string, weight: int}>
+ */
+function _paragraph_bundle_card_new_tab_display_meta(): array {
+  return [
+    'card_image_section_bundle' => [
+      'field_name' => 'pb_content_image_link_new_tab',
+      'insert_after' => 'pb_content_image_link_title',
+      'weight' => 7,
+    ],
+    'card_text_section_bundle' => [
+      'field_name' => 'pb_content_link_new_tab',
+      'insert_after' => 'pb_content_link',
+      'weight' => 6,
+    ],
+  ];
+}
+
+/**
+ * Create field configs from YAML files in config/optional.
+ */
+function _paragraph_bundle_card_update_fields_from_yml(string $module_name, array $config_names): void {
+  $module_handler = \Drupal::moduleHandler();
+  $config_storage = new FileStorage(
+    $module_handler->getModule($module_name)->getPath() . '/config/optional'
+  );
+
+  foreach ($config_names as $config_name) {
+    $existing = \Drupal::configFactory()->get($config_name);
+    if (!$existing->isNew()) {
+      continue;
+    }
+
+    $config_record = $config_storage->read($config_name);
+    if (!$config_record) {
+      continue;
+    }
+
+    $entity_type = \Drupal::service('config.manager')->getEntityTypeIdByName($config_name);
+    if ($entity_type === NULL) {
+      continue;
+    }
+    $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+    $entity = $storage->createFromStorageRecord($config_record);
+    $entity->save();
+  }
+}
+
+/**
+ * Wires form and view displays for pb_content_*_new_tab fields on card sections.
+ */
+function _paragraph_bundle_card_apply_new_tab_displays(): void {
+  $meta = _paragraph_bundle_card_new_tab_display_meta();
+  foreach ($meta as $bundle => $info) {
+    $field_name = $info['field_name'];
+    $form_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+    if (!$form_display) {
+      continue;
+    }
+    $content = $form_display->get('content');
+    if (!isset($content[$field_name])) {
+      $content[$field_name] = [
+        'type' => 'boolean_checkbox',
+        'weight' => $info['weight'],
+        'region' => 'content',
+        'settings' => ['display_label' => TRUE],
+        'third_party_settings' => [],
+      ];
+    }
+    $form_display->set('content', $content);
+
+    $tps = $form_display->get('third_party_settings');
+    if (isset($tps['field_group']['group_tab_content']['children'])) {
+      $children = $tps['field_group']['group_tab_content']['children'];
+      if (!in_array($field_name, $children, TRUE)) {
+        $insert_after = $info['insert_after'];
+        $idx = array_search($insert_after, $children, TRUE);
+        if ($idx !== FALSE) {
+          array_splice($children, $idx + 1, 0, [$field_name]);
+        }
+        else {
+          $children[] = $field_name;
+        }
+        $tps['field_group']['group_tab_content']['children'] = $children;
+        $form_display->set('third_party_settings', $tps);
+      }
+    }
+    $form_display->save();
+
+    $view_display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+    if (!$view_display) {
+      continue;
+    }
+    $hidden = $view_display->get('hidden');
+    if (!isset($hidden[$field_name])) {
+      $hidden[$field_name] = TRUE;
+      $view_display->set('hidden', $hidden);
+      $view_display->save();
+    }
+  }
+}
+
+/**
+ * Add "open link in new tab" booleans (pb_content_*) to card image and card text sections.
+ */
+function paragraph_bundle_card_update_8101(): string {
+  $field_configs = [
+    'field.storage.paragraph.pb_content_image_link_new_tab',
+    'field.storage.paragraph.pb_content_link_new_tab',
+    'field.field.paragraph.card_image_section_bundle.pb_content_image_link_new_tab',
+    'field.field.paragraph.card_text_section_bundle.pb_content_link_new_tab',
+  ];
+  _paragraph_bundle_card_update_fields_from_yml('paragraph_bundle_card', $field_configs);
+  _paragraph_bundle_card_apply_new_tab_displays();
+
+  \Drupal::service('plugin.manager.field.widget')->clearCachedDefinitions();
+  \Drupal::service('plugin.manager.field.formatter')->clearCachedDefinitions();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+
+  return (string) t('Added pb_content_image_link_new_tab and pb_content_link_new_tab to Card Image Section and Card Text Section.');
+}
 
 /**
  * Implements hook_help().

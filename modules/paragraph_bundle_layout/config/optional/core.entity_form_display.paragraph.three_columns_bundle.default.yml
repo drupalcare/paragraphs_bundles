@@ -21,6 +21,21 @@ dependencies:
     - field.field.paragraph.three_columns_bundle.pb_display_text_hover
     - field.field.paragraph.three_columns_bundle.pb_display_three_columns
     - field.field.paragraph.three_columns_bundle.pb_display_width
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_stk_top
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn_pos
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim_ms
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_expand
     - paragraphs.paragraphs_type.three_columns_bundle
   module:
     - field_group
@@ -78,6 +93,21 @@ third_party_settings:
         - pb_display_shadow
         - pb_display_three_columns
         - pb_display_layout_breakpoints
+        - pb_display_3c_l_tgl
+        - pb_display_3c_m_tgl
+        - pb_display_3c_r_tgl
+        - pb_display_3c_l_def
+        - pb_display_3c_m_def
+        - pb_display_3c_r_def
+        - pb_display_3c_l_stk
+        - pb_display_3c_m_stk
+        - pb_display_3c_r_stk
+        - pb_display_3c_stk_top
+        - pb_display_3c_icn
+        - pb_display_3c_icn_pos
+        - pb_display_3c_anim
+        - pb_display_3c_anim_ms
+        - pb_display_3c_expand
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -250,6 +280,97 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_3c_l_tgl:
+    type: boolean_checkbox
+    weight: 33
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_m_tgl:
+    type: boolean_checkbox
+    weight: 34
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_r_tgl:
+    type: boolean_checkbox
+    weight: 35
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_l_def:
+    type: options_select
+    weight: 36
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_m_def:
+    type: options_select
+    weight: 37
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_r_def:
+    type: options_select
+    weight: 38
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_l_stk:
+    type: boolean_checkbox
+    weight: 39
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_m_stk:
+    type: boolean_checkbox
+    weight: 40
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_r_stk:
+    type: boolean_checkbox
+    weight: 41
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_3c_stk_top:
+    type: number
+    weight: 42
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  pb_display_3c_icn:
+    type: options_select
+    weight: 43
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_icn_pos:
+    type: options_select
+    weight: 44
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_anim:
+    type: options_select
+    weight: 45
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_3c_anim_ms:
+    type: number
+    weight: 46
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  pb_display_3c_expand:
+    type: boolean_checkbox
+    weight: 47
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+
 hidden:
   created: true
   status: true

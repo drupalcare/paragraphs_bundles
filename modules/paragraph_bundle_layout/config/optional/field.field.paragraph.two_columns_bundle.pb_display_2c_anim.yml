@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_anim
+    - paragraphs.paragraphs_type.two_columns_bundle
+  module:
+    - options
+id: paragraph.two_columns_bundle.pb_display_2c_anim
+field_name: pb_display_2c_anim
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Toggle animation effect'
+description: 'Animation effect used when toggling columns.'
+required: true
+translatable: false
+default_value:
+  -
+    value: slide
+default_value_callback: ''
+settings: {  }
+field_type: list_string

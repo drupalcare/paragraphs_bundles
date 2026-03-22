@@ -20,6 +20,18 @@ dependencies:
     - field.field.paragraph.two_columns_bundle.pb_display_text_hover
     - field.field.paragraph.two_columns_bundle.pb_display_two_columns
     - field.field.paragraph.two_columns_bundle.pb_display_width
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_l_tgl
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_r_tgl
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_l_def
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_r_def
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_l_stk
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_r_stk
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_stk_top
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_icn
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_icn_pos
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_anim
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_anim_ms
+    - field.field.paragraph.two_columns_bundle.pb_display_2c_expand
     - paragraphs.paragraphs_type.two_columns_bundle
   module:
     - field_group
@@ -76,6 +88,18 @@ third_party_settings:
         - pb_display_shadow
         - pb_display_two_columns
         - pb_display_layout_breakpoints
+        - pb_display_2c_l_tgl
+        - pb_display_2c_r_tgl
+        - pb_display_2c_l_def
+        - pb_display_2c_r_def
+        - pb_display_2c_l_stk
+        - pb_display_2c_r_stk
+        - pb_display_2c_stk_top
+        - pb_display_2c_icn
+        - pb_display_2c_icn_pos
+        - pb_display_2c_anim
+        - pb_display_2c_anim_ms
+        - pb_display_2c_expand
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -229,6 +253,79 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_display_2c_l_tgl:
+    type: boolean_checkbox
+    weight: 33
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_2c_r_tgl:
+    type: boolean_checkbox
+    weight: 34
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_2c_l_def:
+    type: options_select
+    weight: 35
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_2c_r_def:
+    type: options_select
+    weight: 36
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_2c_l_stk:
+    type: boolean_checkbox
+    weight: 37
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_2c_r_stk:
+    type: boolean_checkbox
+    weight: 38
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+  pb_display_2c_stk_top:
+    type: number
+    weight: 39
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  pb_display_2c_icn:
+    type: options_select
+    weight: 40
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_2c_icn_pos:
+    type: options_select
+    weight: 41
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_2c_anim:
+    type: options_select
+    weight: 42
+    region: content
+    settings: {}
+    third_party_settings: {  }
+  pb_display_2c_anim_ms:
+    type: number
+    weight: 43
+    region: content
+    settings: { placeholder: '' }
+    third_party_settings: {  }
+  pb_display_2c_expand:
+    type: boolean_checkbox
+    weight: 44
+    region: content
+    settings: { display_label: true }
+    third_party_settings: {  }
+
 hidden:
   created: true
   status: true

@@ -5,6 +5,7 @@ dependencies:
     - field.field.paragraph.card_image_section_bundle.pb_content_image
     - field.field.paragraph.card_image_section_bundle.pb_content_image_link
     - field.field.paragraph.card_image_section_bundle.pb_content_image_link_title
+    - field.field.paragraph.card_image_section_bundle.pb_content_image_link_new_tab
     - field.field.paragraph.card_image_section_bundle.pb_content_title
     - field.field.paragraph.card_image_section_bundle.pb_display_bg
     - field.field.paragraph.card_image_section_bundle.pb_display_bg_hover
@@ -48,6 +49,7 @@ third_party_settings:
         - pb_content_image
         - pb_content_image_link
         - pb_content_image_link_title
+        - pb_content_image_link_new_tab
       label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -114,6 +116,13 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  pb_content_image_link_new_tab:
+    type: boolean_checkbox
+    weight: 7
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_content_title:
     type: string_textfield

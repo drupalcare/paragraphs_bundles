@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_image_link_new_tab
+    - paragraphs.paragraphs_type.card_image_section_bundle
+  module:
+    - paragraphs
+id: paragraph.card_image_section_bundle.pb_content_image_link_new_tab
+field_name: pb_content_image_link_new_tab
+entity_type: paragraph
+bundle: card_image_section_bundle
+label: 'Open image link in new tab'
+description: 'When checked, the image link opens in a new browser tab.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

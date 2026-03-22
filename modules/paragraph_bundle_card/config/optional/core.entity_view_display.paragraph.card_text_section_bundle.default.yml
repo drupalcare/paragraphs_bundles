@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.card_text_section_bundle.pb_content_body
     - field.field.paragraph.card_text_section_bundle.pb_content_link
+    - field.field.paragraph.card_text_section_bundle.pb_content_link_new_tab
     - field.field.paragraph.card_text_section_bundle.pb_content_title
     - field.field.paragraph.card_text_section_bundle.pb_display_bg
     - field.field.paragraph.card_text_section_bundle.pb_display_bg_hover
@@ -147,4 +148,5 @@ content:
     third_party_settings: {  }
     weight: 11
     region: content
-hidden: {  }
+hidden:
+  pb_content_link_new_tab: true

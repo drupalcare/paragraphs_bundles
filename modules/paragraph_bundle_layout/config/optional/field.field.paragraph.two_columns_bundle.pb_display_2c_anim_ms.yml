@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_anim_ms
+    - paragraphs.paragraphs_type.two_columns_bundle
+id: paragraph.two_columns_bundle.pb_display_2c_anim_ms
+field_name: pb_display_2c_anim_ms
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Animation duration (ms)'
+description: 'Animation duration in milliseconds.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 300
+default_value_callback: ''
+settings:
+  min: 100
+  max: 1200
+  prefix: ''
+  suffix: ' ms'
+field_type: integer

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_l_stk
+    - paragraphs.paragraphs_type.two_columns_bundle
+id: paragraph.two_columns_bundle.pb_display_2c_l_stk
+field_name: pb_display_2c_l_stk
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Left sticky'
+description: 'Make left column sticky while scrolling.'
+required: false
+translatable: false
+default_value:
+  -
+    value: false
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

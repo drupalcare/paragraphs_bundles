@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3c_stk_top
+    - paragraphs.paragraphs_type.three_columns_bundle
+id: paragraph.three_columns_bundle.pb_display_3c_stk_top
+field_name: pb_display_3c_stk_top
+entity_type: paragraph
+bundle: three_columns_bundle
+label: 'Sticky top offset'
+description: 'Top offset in px used by sticky columns.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  min: 0
+  max: 300
+  prefix: ''
+  suffix: ' px'
+field_type: integer

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_icn_pos
+    - paragraphs.paragraphs_type.two_columns_bundle
+  module:
+    - options
+id: paragraph.two_columns_bundle.pb_display_2c_icn_pos
+field_name: pb_display_2c_icn_pos
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Toggle icon position'
+description: 'Choose where the toggle icon appears.'
+required: false
+translatable: false
+default_value:
+  -
+    value: edge
+default_value_callback: ''
+settings: {  }
+field_type: list_string

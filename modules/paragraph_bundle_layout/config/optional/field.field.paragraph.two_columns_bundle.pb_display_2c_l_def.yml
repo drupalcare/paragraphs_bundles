@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_l_def
+    - paragraphs.paragraphs_type.two_columns_bundle
+  module:
+    - options
+id: paragraph.two_columns_bundle.pb_display_2c_l_def
+field_name: pb_display_2c_l_def
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Left default state'
+description: 'Default visibility state for left column.'
+required: false
+translatable: false
+default_value:
+  -
+    value: open
+default_value_callback: ''
+settings: {  }
+field_type: list_string

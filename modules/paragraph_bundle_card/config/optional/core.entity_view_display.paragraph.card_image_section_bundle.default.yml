@@ -5,6 +5,7 @@ dependencies:
     - field.field.paragraph.card_image_section_bundle.pb_content_image
     - field.field.paragraph.card_image_section_bundle.pb_content_image_link
     - field.field.paragraph.card_image_section_bundle.pb_content_image_link_title
+    - field.field.paragraph.card_image_section_bundle.pb_content_image_link_new_tab
     - field.field.paragraph.card_image_section_bundle.pb_content_title
     - field.field.paragraph.card_image_section_bundle.pb_display_bg
     - field.field.paragraph.card_image_section_bundle.pb_display_bg_hover
@@ -157,4 +158,5 @@ content:
     third_party_settings: {  }
     weight: 11
     region: content
-hidden: {  }
+hidden:
+  pb_content_image_link_new_tab: true

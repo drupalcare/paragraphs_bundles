@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_2c_icn
+    - paragraphs.paragraphs_type.two_columns_bundle
+  module:
+    - options
+id: paragraph.two_columns_bundle.pb_display_2c_icn
+field_name: pb_display_2c_icn
+entity_type: paragraph
+bundle: two_columns_bundle
+label: 'Toggle icon style'
+description: 'Choose toggle icon style.'
+required: false
+translatable: false
+default_value:
+  -
+    value: chevron
+default_value_callback: ''
+settings: {  }
+field_type: list_string

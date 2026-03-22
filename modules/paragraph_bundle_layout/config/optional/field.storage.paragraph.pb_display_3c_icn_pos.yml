@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_3c_icn_pos
+field_name: pb_display_3c_icn_pos
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: edge
+      label: Edge
+    -
+      value: inside_top
+      label: Inside top
+    -
+      value: inside_center
+      label: Inside center
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

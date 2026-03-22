@@ -11,11 +11,12 @@
   grid-auto-flow: row;
   gap: var(--pb-px16);
   display: grid;
+  align-items: start;
 }
 
 .paragraph .pb__two-columns > *,
 .paragraph .pb__three-columns > * {
-  min-width: 0;
+  min-inline-size: 0;
 }
 
 .paragraph .pb__two-columns > div,
@@ -24,7 +25,7 @@
 .paragraph .pb__three-columns .paragraph {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  inline-size: 100%;
   justify-content: start;
 }
 
@@ -37,5 +38,14 @@
 .paragraph .pb__two-columns > div.plus-one .paragraph:last-child,
 .paragraph .pb__three-columns > div.plus-one .paragraph:last-child {
   flex-grow: 1;
-  height: 100%;
+  block-size: 100%;
+}
+
+.paragraph .pb__two-columns__inner,
+.paragraph .pb__three-columns__inner {
+  overflow-anchor: none;
+}
+
+.paragraph .pb-col-toggle {
+  display: none;
 }

@@ -1,0 +1,26 @@
+{#
+/**
+ * @file
+ * Column toggle icons (Material-style SVGs, same include pattern as slideshow).
+ *
+ * Available variables:
+ * - icon_style: chevron|caret|plus_minus|angle
+ */
+#}
+{% set st = icon_style|default('chevron') %}
+<span class="pb-col-toggle__svg" aria-hidden="true">
+{% if st == 'chevron' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-less.svg') }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-more.svg') }}</span>
+{% elseif st == 'caret' %}
+  <span class="pb-col-toggle__caret-wrap">{{ include('@paragraph_bundle_layout/svg/svg-col-arrow-drop-down.svg') }}</span>
+{% elseif st == 'plus_minus' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-remove.svg') }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-add.svg') }}</span>
+{% elseif st == 'angle' %}
+  <span class="pb-col-toggle__angle-wrap">{{ include('@paragraph_bundle_layout/svg/svg-col-keyboard-arrow-left.svg') }}</span>
+{% else %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-less.svg') }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-more.svg') }}</span>
+{% endif %}
+</span>

@@ -21,6 +21,21 @@ dependencies:
     - field.field.paragraph.three_columns_bundle.pb_display_text_hover
     - field.field.paragraph.three_columns_bundle.pb_display_three_columns
     - field.field.paragraph.three_columns_bundle.pb_display_width
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_stk_top
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn_pos
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim_ms
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_expand
     - paragraphs.paragraphs_type.three_columns_bundle
   module:
     - entity_reference_revisions
@@ -171,4 +186,19 @@ content:
     third_party_settings: {  }
     weight: 11
     region: content
-hidden: {  }
+hidden:
+  pb_display_3c_l_tgl: true
+  pb_display_3c_m_tgl: true
+  pb_display_3c_r_tgl: true
+  pb_display_3c_l_def: true
+  pb_display_3c_m_def: true
+  pb_display_3c_r_def: true
+  pb_display_3c_l_stk: true
+  pb_display_3c_m_stk: true
+  pb_display_3c_r_stk: true
+  pb_display_3c_stk_top: true
+  pb_display_3c_icn: true
+  pb_display_3c_icn_pos: true
+  pb_display_3c_anim: true
+  pb_display_3c_anim_ms: true
+  pb_display_3c_expand: true

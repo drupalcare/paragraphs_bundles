@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3c_r_tgl
+    - paragraphs.paragraphs_type.three_columns_bundle
+id: paragraph.three_columns_bundle.pb_display_3c_r_tgl
+field_name: pb_display_3c_r_tgl
+entity_type: paragraph
+bundle: three_columns_bundle
+label: 'Right toggle'
+description: 'Enable show/hide toggle for right column.'
+required: false
+translatable: false
+default_value:
+  -
+    value: false
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

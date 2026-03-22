@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_3c_icn
+field_name: pb_display_3c_icn
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: chevron
+      label: Chevron
+    -
+      value: caret
+      label: Caret
+    -
+      value: plus_minus
+      label: Plus/minus
+    -
+      value: angle
+      label: Angle
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

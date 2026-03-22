@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.card_text_section_bundle.pb_content_body
     - field.field.paragraph.card_text_section_bundle.pb_content_link
+    - field.field.paragraph.card_text_section_bundle.pb_content_link_new_tab
     - field.field.paragraph.card_text_section_bundle.pb_content_title
     - field.field.paragraph.card_text_section_bundle.pb_display_bg
     - field.field.paragraph.card_text_section_bundle.pb_display_bg_hover
@@ -46,6 +47,7 @@ third_party_settings:
         - pb_content_title
         - pb_content_body
         - pb_content_link
+        - pb_content_link_new_tab
       label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -105,6 +107,13 @@ content:
     settings:
       placeholder_url: ''
       placeholder_title: ''
+    third_party_settings: {  }
+  pb_content_link_new_tab:
+    type: boolean_checkbox
+    weight: 6
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_content_title:
     type: string_textfield

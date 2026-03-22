@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_3c_anim
+field_name: pb_display_3c_anim
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: none
+      label: 'No animation'
+    -
+      value: slide
+      label: Slide
+    -
+      value: fade
+      label: Fade
+    -
+      value: slide_fade
+      label: Slide + fade
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

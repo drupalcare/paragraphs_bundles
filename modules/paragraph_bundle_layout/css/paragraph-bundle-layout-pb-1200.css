@@ -1,81 +1,343 @@
 /**
  * @file
- * Paragraph Bundle Layout.
+ * Paragraph Bundle Layout — 1200px breakpoint.
  *
- * Filename:     paragraph-bundle-layout.css
+ * Filename:     paragraph-bundle-layout-pb-1200.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
 @media (min-width:75rem) {
-  .pb__two-columns.two-l6_l6,
-  .pb__two-columns.two-l4_l8,
-  .pb__two-columns.two-l8_l4,
-  .pb__two-columns.two-l3_l9,
-  .pb__two-columns.two-l9_l3,
-  .pb__three-columns.three-l4_l4_l4,
-  .pb__three-columns.three-l2_l8_l2,
-  .pb__three-columns.three-l2_l2_l8,
-  .pb__three-columns.three-l8_l2_l2,
-  .pb__three-columns.three-l3_l6_l3,
-  .pb__three-columns.three-l6_l3_l3,
-  .pb__three-columns.three-l3_l3_l6 {
+  .paragraph.pb__1200 .pb__two-columns.two-l6_l6,
+  .paragraph.pb__1200 .pb__two-columns.two-l4_l8,
+  .paragraph.pb__1200 .pb__two-columns.two-l8_l4,
+  .paragraph.pb__1200 .pb__two-columns.two-l3_l9,
+  .paragraph.pb__1200 .pb__two-columns.two-l9_l3,
+  .paragraph.pb__1200 .pb__three-columns.three-l4_l4_l4,
+  .paragraph.pb__1200 .pb__three-columns.three-l2_l8_l2,
+  .paragraph.pb__1200 .pb__three-columns.three-l2_l2_l8,
+  .paragraph.pb__1200 .pb__three-columns.three-l8_l2_l2,
+  .paragraph.pb__1200 .pb__three-columns.three-l3_l6_l3,
+  .paragraph.pb__1200 .pb__three-columns.three-l6_l3_l3,
+  .paragraph.pb__1200 .pb__three-columns.three-l3_l3_l6 {
     grid-auto-flow: column;
   }
 
-  .pb__two-columns.two-l6_l6 {
-    grid-template-columns: repeat(2, 1fr);
+  .paragraph.pb__1200 .pb__two-columns.two-l6_l6 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .pb__two-columns.two-l4_l8 {
-    grid-template-columns: 1fr 2fr;
+  .paragraph.pb__1200 .pb__two-columns.two-l4_l8 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   }
 
-  .pb__two-columns.two-l8_l4 {
-    grid-template-columns: 2fr 1fr;
+  .paragraph.pb__1200 .pb__two-columns.two-l8_l4 {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 
-  .pb__two-columns.two-l3_l9 {
-    grid-template-columns: 1fr 3fr;
+  .paragraph.pb__1200 .pb__two-columns.two-l3_l9 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
   }
 
-  .pb__two-columns.two-l9_l3 {
-    grid-template-columns: 3fr 1fr;
+  .paragraph.pb__1200 .pb__two-columns.two-l9_l3 {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l4_l4_l4 {
-    grid-template-columns: repeat(3, 1fr);
+  .paragraph.pb__1200 .pb__three-columns.three-l4_l4_l4 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l2_l8_l2 {
-    grid-template-columns: 1fr 4fr 1fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l2_l8_l2 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l2_l2_l8 {
-    grid-template-columns: 1fr 1fr 4fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l2_l2_l8 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 4fr);
   }
 
-  .pb__three-columns.three-l8_l2_l2 {
-    grid-template-columns: 4fr 1fr 1fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l8_l2_l2 {
+    grid-template-columns: minmax(0, 4fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l3_l6_l3 {
-    grid-template-columns: 1fr 3fr 1fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l3_l6_l3 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l6_l3_l3 {
-    grid-template-columns: 3fr 1fr 1fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l6_l3_l3 {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .pb__three-columns.three-l3_l3_l6 {
-    grid-template-columns: 1fr 1fr 3fr;
+  .paragraph.pb__1200 .pb__three-columns.three-l3_l3_l6 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 3fr);
   }
 
-  .pb__two-columns .paragraph,
-  .pb__three-columns .paragraph,
-  .pb__two-columns .paragraph__inner,
-  .pb__three-columns .paragraph__inner {
+  .paragraph.pb__1200 .pb__two-columns .paragraph,
+  .paragraph.pb__1200 .pb__three-columns .paragraph,
+  .paragraph.pb__1200 .pb__two-columns .paragraph__inner,
+  .paragraph.pb__1200 .pb__three-columns .paragraph__inner {
     display: flex;
+  }
+/* ==========================================================================
+   Sticky columns — always active, independent of collapse feature.
+   ========================================================================== */
+
+.paragraph.pb__1200 .pb__two-columns > [data-col].is-sticky,
+.paragraph.pb__1200 .pb__three-columns > [data-col].is-sticky {
+  position: sticky;
+  inset-block-start: var(--pb-col-sticky-top, 0px);
+  align-self: start;
+  block-size: auto;
+  z-index: 2;
+}
+
+.paragraph.pb__1200.pb-has-sticky-col,
+.paragraph.pb__1200.pb-has-sticky-col > .paragraph__inner,
+.paragraph.pb__1200.pb-has-sticky-col .pb__content-full,
+.paragraph.pb__1200.pb-has-sticky-col .pb__two-columns,
+.paragraph.pb__1200.pb-has-sticky-col .pb__three-columns {
+  overflow: visible;
+}
+
+/* ==========================================================================
+   Column toggle — custom properties.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb__two-columns,
+  .paragraph.pb__1200 .pb__three-columns {
+    --pb-col-anim-ms: 300ms;
+    --pb-col-sticky-top: 0px;
+  }
+
+  .paragraph.pb__1200 .pb__two-columns > [data-col],
+  .paragraph.pb__1200 .pb__three-columns > [data-col] {
+    overflow-anchor: none;
+  }
+
+/* ==========================================================================
+   Column toggle — toolbar.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb-col-toolbar {
+    position: relative;
+    z-index: 5;
+  }
+
+  .paragraph.pb__1200 .pb-col-toolbar.pb__two-columns [data-col-toggle="left"] {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .paragraph.pb__1200 .pb-col-toolbar.pb__two-columns [data-col-toggle="right"] {
+    grid-column: 2;
+    justify-self: end;
+  }
+
+  .paragraph.pb__1200 .pb-col-toolbar.pb__three-columns [data-col-toggle="left"] {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .paragraph.pb__1200 .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+    grid-column: 2;
+    justify-self: center;
+  }
+
+  .paragraph.pb__1200 .pb-col-toolbar.pb__three-columns [data-col-toggle="right"] {
+    grid-column: 3;
+    justify-self: end;
+  }
+
+/* ==========================================================================
+   Column toggle — toolbar position: inside_top.
+   ========================================================================== */
+
+  .paragraph.pb__1200.pb-col-icon-pos-inside_top .pb-col-toolbar {
+    margin-block-end: 0.5rem;
+  }
+
+/* ==========================================================================
+   Column toggle — toolbar position: inside_center.
+   ========================================================================== */
+
+  .paragraph.pb__1200.pb-col-icon-pos-inside_center .pb__content-full {
+    position: relative;
+  }
+
+  .paragraph.pb__1200.pb-col-icon-pos-inside_center .pb-col-toolbar {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .paragraph.pb__1200.pb-col-icon-pos-inside_center .pb-col-toolbar .pb-col-toggle {
+    pointer-events: auto;
+  }
+
+/* ==========================================================================
+   Column toggle — toolbar position: edge.
+   ========================================================================== */
+
+  .paragraph.pb__1200.pb-col-icon-pos-edge .pb__content-full {
+    position: relative;
+  }
+
+  .paragraph.pb__1200.pb-col-icon-pos-edge .pb-col-toolbar {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline: -2rem;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .paragraph.pb__1200.pb-col-icon-pos-edge .pb-col-toolbar .pb-col-toggle {
+    pointer-events: auto;
+  }
+
+  .paragraph.pb__1200.pb-col-icon-pos-edge .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+    justify-self: end;
+  }
+
+/* ==========================================================================
+   Column toggle — button base.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb-col-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: 2rem;
+    block-size: 2rem;
+    padding: 0;
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    z-index: 3;
+  }
+
+  .paragraph.pb__1200 .pb-col-toggle:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+  }
+
+/* ==========================================================================
+   Column toggle — SVG icon.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb-col-toggle__svg {
+    display: grid;
+    place-items: center;
+    inline-size: 1.25rem;
+    block-size: 1.25rem;
+    pointer-events: none;
+  }
+
+  .paragraph.pb__1200 .pb-col-toggle__svg svg {
+    inline-size: 100%;
+    block-size: 100%;
+    display: block;
+  }
+
+  .paragraph.pb__1200 .pb-col-toggle svg {
+    opacity: 0.85;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .paragraph.pb__1200 .pb-col-toggle:hover svg {
+    opacity: 1;
+  }
+
+  .paragraph.pb__1200 .pb-col-icon-caret .pb-col-toggle__caret-wrap {
+    display: flex;
+    transition: transform var(--pb-col-anim-ms, 300ms) ease;
+  }
+
+  .paragraph.pb__1200 .pb-col-icon-angle .pb-col-toggle__angle-wrap {
+    display: flex;
+    transition: transform var(--pb-col-anim-ms, 300ms) ease;
+  }
+
+/* ==========================================================================
+   Column toggle — collapsed state.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb__two-columns > [data-col][data-collapsed],
+  .paragraph.pb__1200 .pb__three-columns > [data-col][data-collapsed] {
+    z-index: 4;
+  }
+
+  .paragraph.pb__1200 [data-col][data-collapsed] > .pb-col-content {
+    max-block-size: 0;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .paragraph.pb__1200 .pb-col-toggle:not([data-collapsed]) .pb-col-toggle__state--collapsed {
+    display: none;
+  }
+  .paragraph.pb__1200 .pb-col-toggle[data-collapsed] .pb-col-toggle__state--expanded {
+    display: none;
+  }
+  .paragraph.pb__1200 .pb-col-toggle:not([data-collapsed]) .pb-col-toggle__state--expanded {
+    display: block;
+  }
+  .paragraph.pb__1200 .pb-col-toggle[data-collapsed] .pb-col-toggle__state--collapsed {
+    display: block;
+  }
+
+  .paragraph.pb__1200 .pb-col-icon-caret .pb-col-toggle[data-collapsed] .pb-col-toggle__caret-wrap {
+    transform: rotate(180deg);
+  }
+  .paragraph.pb__1200 .pb-col-icon-angle .pb-col-toggle[data-collapsed] .pb-col-toggle__angle-wrap {
+    transform: rotate(180deg);
+  }
+
+/* ==========================================================================
+   Column toggle — expand mode.
+   ========================================================================== */
+
+  .paragraph.pb__1200 .pb__two-columns.has-single-visible-col > [data-col][data-collapsed],
+  .paragraph.pb__1200 .pb__two-columns.has-single-visible-col > [data-col]:not([data-collapsed]),
+  .paragraph.pb__1200 .pb__three-columns.has-single-visible-col > [data-col][data-collapsed],
+  .paragraph.pb__1200 .pb__three-columns.has-single-visible-col > [data-col]:not([data-collapsed]) {
+    min-inline-size: 0;
+  }
+
+  .paragraph.pb__1200 .pb__two-columns.has-single-visible-col > [data-col][data-collapsed],
+  .paragraph.pb__1200 .pb__three-columns.has-single-visible-col > [data-col][data-collapsed] {
+    overflow: visible;
+  }
+
+/* ==========================================================================
+   Column toggle — all-collapsed states.
+   ========================================================================== */
+
+
+  .paragraph--type--two-columns-bundle.pb__1200.left-right-collapsed .pb__two-columns:not(.pb-col-icon-pos-inside_top),
+  .paragraph--type--three-columns-bundle.pb__1200.left-right-middle-collapsed .pb__three-columns:not(.pb-col-icon-pos-inside_top) {
+    inline-size: 100%;
+    min-block-size: 32px;
+    margin-block-end: 1rem;
+    margin-inline: auto;
+  }
+
+/* ==========================================================================
+   Column toggle — reduced motion.
+   ========================================================================== */
+
+  @media (prefers-reduced-motion: reduce) {
+    .paragraph.pb__1200 .pb-col-icon-caret .pb-col-toggle__caret-wrap,
+    .paragraph.pb__1200 .pb-col-icon-angle .pb-col-toggle__angle-wrap {
+      transition: none;
+    }
+
+    .paragraph.pb__1200 .pb-col-toggle svg {
+      transition: none;
+    }
   }
 
 }
