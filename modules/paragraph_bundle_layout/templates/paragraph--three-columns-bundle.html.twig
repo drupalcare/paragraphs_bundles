@@ -160,9 +160,13 @@
           <button type="button"
                   class="pb-col-toggle"
                   data-col-toggle="left"
+                  data-label-expand="{{ 'Expand left column'|t }}"
+                  data-label-collapse="{{ 'Collapse left column'|t }}"
                   aria-controls="{{ paragraph_id }}-col-left"
-                  aria-expanded="{{ pb_3c_l_def == 'closed' ? 'false' : 'true' }}">
-            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn }, false) }}
+                  aria-expanded="{{ pb_3c_l_def == 'closed' ? 'false' : 'true' }}"
+                  aria-label="{{ pb_3c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}"
+                  title="{{ pb_3c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}">
+            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn, col_side: 'left' }, false) }}
             <span class="visually-hidden">{{ 'Toggle left column'|t }}</span>
           </button>
         {% endif %}
@@ -170,9 +174,13 @@
           <button type="button"
                   class="pb-col-toggle"
                   data-col-toggle="middle"
+                  data-label-expand="{{ 'Expand middle column'|t }}"
+                  data-label-collapse="{{ 'Collapse middle column'|t }}"
                   aria-controls="{{ paragraph_id }}-col-middle"
-                  aria-expanded="{{ pb_3c_m_def == 'closed' ? 'false' : 'true' }}">
-            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn }, false) }}
+                  aria-expanded="{{ pb_3c_m_def == 'closed' ? 'false' : 'true' }}"
+                  aria-label="{{ pb_3c_m_def == 'closed' ? 'Expand middle column'|t : 'Collapse middle column'|t }}"
+                  title="{{ pb_3c_m_def == 'closed' ? 'Expand middle column'|t : 'Collapse middle column'|t }}">
+            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn, col_side: 'middle' }, false) }}
             <span class="visually-hidden">{{ 'Toggle middle column'|t }}</span>
           </button>
         {% endif %}
@@ -180,9 +188,13 @@
           <button type="button"
                   class="pb-col-toggle"
                   data-col-toggle="right"
+                  data-label-expand="{{ 'Expand right column'|t }}"
+                  data-label-collapse="{{ 'Collapse right column'|t }}"
                   aria-controls="{{ paragraph_id }}-col-right"
-                  aria-expanded="{{ pb_3c_r_def == 'closed' ? 'false' : 'true' }}">
-            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn }, false) }}
+                  aria-expanded="{{ pb_3c_r_def == 'closed' ? 'false' : 'true' }}"
+                  aria-label="{{ pb_3c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}"
+                  title="{{ pb_3c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}">
+            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_3c_icn, col_side: 'right' }, false) }}
             <span class="visually-hidden">{{ 'Toggle right column'|t }}</span>
           </button>
         {% endif %}

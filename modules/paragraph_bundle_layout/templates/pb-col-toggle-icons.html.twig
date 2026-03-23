@@ -8,19 +8,30 @@
  */
 #}
 {% set st = icon_style|default('chevron') %}
+{% set col = col_side|default('middle') %}
 <span class="pb-col-toggle__svg" aria-hidden="true">
 {% if st == 'chevron' %}
-  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-less.svg') }}</span>
-  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-more.svg') }}</span>
+  {% set expanded_icon = col == 'right' ? '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_right.svg' : '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_left.svg' %}
+  {% set collapsed_icon = col == 'right' ? '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_left.svg' : '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_right.svg' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include(expanded_icon) }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include(collapsed_icon) }}</span>
 {% elseif st == 'caret' %}
-  <span class="pb-col-toggle__caret-wrap">{{ include('@paragraph_bundle_layout/svg/svg-col-arrow-drop-down.svg') }}</span>
+  {% set expanded_icon = col == 'right' ? '@paragraph_bundle_layout/svg/caret/arrow_right.svg' : '@paragraph_bundle_layout/svg/caret/arrow_left.svg' %}
+  {% set collapsed_icon = col == 'right' ? '@paragraph_bundle_layout/svg/caret/arrow_left.svg' : '@paragraph_bundle_layout/svg/caret/arrow_right.svg' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include(expanded_icon) }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include(collapsed_icon) }}</span>
 {% elseif st == 'plus_minus' %}
-  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-remove.svg') }}</span>
-  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-add.svg') }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/plus-minus/minus.svg') }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/plus-minus/plus.svg') }}</span>
 {% elseif st == 'angle' %}
-  <span class="pb-col-toggle__angle-wrap">{{ include('@paragraph_bundle_layout/svg/svg-col-keyboard-arrow-left.svg') }}</span>
+  {% set expanded_icon = '@paragraph_bundle_layout/svg/angle/collapse.svg' %}
+  {% set collapsed_icon = '@paragraph_bundle_layout/svg/angle/expand.svg' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include(expanded_icon) }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include(collapsed_icon) }}</span>
 {% else %}
-  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-less.svg') }}</span>
-  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include('@paragraph_bundle_layout/svg/svg-col-expand-more.svg') }}</span>
+  {% set expanded_icon = col == 'right' ? '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_right.svg' : '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_left.svg' %}
+  {% set collapsed_icon = col == 'right' ? '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_left.svg' : '@paragraph_bundle_layout/svg/chevron/keyboard_arrow_right.svg' %}
+  <span class="pb-col-toggle__state pb-col-toggle__state--expanded">{{ include(expanded_icon) }}</span>
+  <span class="pb-col-toggle__state pb-col-toggle__state--collapsed">{{ include(collapsed_icon) }}</span>
 {% endif %}
 </span>

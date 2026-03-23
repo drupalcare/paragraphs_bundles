@@ -14,6 +14,25 @@
   align-items: start;
 }
 
+/* Collapsed tracks are 0fr but grid gap still applies between every track.
+ * With column-gap: 0, add a single gutter between adjacent visible columns
+ * using padding-inline-start on the second+ visible column (general sibling).
+ * Set on the grid by paragraph-bundle-layout.js: .has-collapsed-col. */
+.paragraph .pb__two-columns.has-collapsed-col,
+.paragraph .pb__three-columns.has-collapsed-col {
+  column-gap: 0;
+}
+
+.paragraph .pb__two-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]),
+.paragraph .pb__three-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]) {
+  padding-inline-start: var(--pb-px16);
+}
+
+/* Grid modifiers from JS (see setGridColumns):
+ * .has-collapsed-col — any column collapsed
+ * .has-single-visible-col — expand mode, only one column visible
+ * .has-two-visible-cols — three-column grid, exactly two columns visible */
+
 .paragraph .pb__two-columns > *,
 .paragraph .pb__three-columns > * {
   min-inline-size: 0;

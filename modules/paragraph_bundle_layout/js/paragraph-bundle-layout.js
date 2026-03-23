@@ -124,130 +124,117 @@
   }
 
   /**
-   * Update grid-template-columns for expand mode.
+   * Parse column ratios from the grid's layout class name.
    *
-   * When expand is enabled and only one column is visible, collapsed
-   * tracks are set to 0fr so the visible column fills the width.
+   * Reads classes like "two-l6_l6" or "three-l2_l8_l2" and extracts
+   * the numeric ratios for use as fr values in grid-template-columns.
    *
    * @param {HTMLElement} grid
    *   The grid container.
+   *
+   * @return {number[]}
+   *   Array of ratio numbers (e.g. [6, 6] or [2, 8, 2]).
    */
-  function updateExpandedGrid(grid) {
-    if (!grid) {
+  function parseRatios(grid) {
+    var classes = grid.className.split(/\s+/);
+    var i, match;
+    for (i = 0; i < classes.length; i++) {
+      match = classes[i].match(/^(?:two|three)-l(\d+)(?:_l(\d+))?(?:_l(\d+))?$/);
+      if (match) {
+        var ratios = [parseInt(match[1], 10)];
+        if (match[2]) {
+          ratios.push(parseInt(match[2], 10));
+        }
+        if (match[3]) {
+          ratios.push(parseInt(match[3], 10));
+        }
+        return ratios;
+      }
+    }
+    // Fallback: equal ratios based on column count.
+    var count = grid.querySelectorAll(':scope > [data-col]').length;
+    var result = [];
+    for (i = 0; i < count; i++) {
+      result.push(1);
+    }
+    return result;
+  }
+
+  /**
+   * Compute and apply grid-template-columns based on collapse state.
+   *
+   * Sets inline grid-template-columns using fr values so that CSS
+   * transitions animate column widths smoothly. Collapsed columns
+   * get 0fr, visible columns get their original ratio as Xfr.
+   *
+   * Toggles modifier classes on the grid for CSS hooks:
+   * - has-collapsed-col: any collapsed column
+   * - has-single-visible-col: expand mode and exactly one visible column
+   * - has-two-visible-cols: three columns and exactly two visible
+   *
+   * @param {HTMLElement} grid
+   *   The grid container.
+   * @param {number[]} ratios
+   *   Column ratios parsed from the layout class.
+   */
+  function setGridColumns(grid, ratios) {
+    if (!grid || !ratios || ratios.length === 0) {
       return;
     }
 
-    var expand = grid.getAttribute('data-col-expand') === '1';
     var columns = grid.querySelectorAll(':scope > [data-col]');
+    var expand = grid.getAttribute('data-col-expand') === '1';
     var visibleCount = 0;
+    var hasCollapsed = false;
+    var parts = [];
     var i;
 
     for (i = 0; i < columns.length; i++) {
-      if (!isCollapsed(columns[i])) {
+      if (isCollapsed(columns[i])) {
+        parts.push('0fr');
+        hasCollapsed = true;
+      }
+      else {
+        parts.push((ratios[i] || 1) + 'fr');
         visibleCount++;
       }
     }
 
-    var singleVisible = expand && visibleCount === 1;
+    var singleVisible = expand && visibleCount === 1 && hasCollapsed;
+    var twoVisibleInThree =
+      columns.length === 3 && visibleCount === 2 && hasCollapsed;
+    grid.classList.toggle('has-collapsed-col', hasCollapsed);
     grid.classList.toggle('has-single-visible-col', singleVisible);
+    grid.classList.toggle('has-two-visible-cols', twoVisibleInThree);
 
-    if (!expand) {
-      grid.style.removeProperty('grid-template-columns');
+    if (!hasCollapsed) {
+      // All columns expanded — set fr values for transition continuity.
+      grid.style.gridTemplateColumns = parts.join(' ');
       return;
     }
 
-    var min = grid.getAttribute('data-col-layout-min') || '62rem';
-    var mqMatches = false;
+    // Expand mode: remaining column fills full width.
+    if (singleVisible) {
+      var min = grid.getAttribute('data-col-layout-min') || '62rem';
+      var mqMatches = false;
 
-    try {
-      mqMatches = window.matchMedia('(min-width: ' + min + ')').matches;
-    }
-    catch (e) {
-      mqMatches = true;
+      try {
+        mqMatches = window.matchMedia('(min-width: ' + min + ')').matches;
+      }
+      catch (e) {
+        mqMatches = true;
+      }
+
+      if (mqMatches) {
+        for (i = 0; i < parts.length; i++) {
+          if (parts[i] !== '0fr') {
+            parts[i] = '1fr';
+          }
+        }
+      }
     }
 
-    if (!singleVisible || !mqMatches) {
-      grid.style.removeProperty('grid-template-columns');
-      return;
-    }
-
-    var parts = [];
-    for (i = 0; i < columns.length; i++) {
-      parts.push(isCollapsed(columns[i]) ? '0fr' : 'minmax(0, 1fr)');
-    }
     grid.style.gridTemplateColumns = parts.join(' ');
-  }
-
-  /**
-   * Animate column content using the Web Animations API.
-   *
-   * @param {HTMLElement} content
-   *   The .pb-col-content element.
-   * @param {boolean} collapsing
-   *   True when collapsing, false when expanding.
-   * @param {string} anim
-   *   Animation type: 'slide', 'fade', 'slide_fade', or 'none'.
-   * @param {number} animMs
-   *   Duration in milliseconds.
-   *
-   * @return {Promise}
-   *   Resolves when the animation finishes or is skipped.
-   */
-  function animateContent(content, collapsing, anim, animMs) {
-    var prefersReduced =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (
-      !content ||
-      animMs <= 0 ||
-      anim === 'none' ||
-      prefersReduced ||
-      typeof content.animate !== 'function'
-    ) {
-      return Promise.resolve();
-    }
-
-    var height = content.scrollHeight;
-    var useSlide = anim === 'slide' || anim === 'slide_fade';
-    var useFade = anim === 'fade' || anim === 'slide_fade';
-
-    var fromState = {
-      maxHeight: collapsing ? height + 'px' : '0px',
-      overflow: 'hidden',
-    };
-    var toState = {
-      maxHeight: collapsing ? '0px' : height + 'px',
-      overflow: 'hidden',
-    };
-
-    if (useFade) {
-      fromState.opacity = collapsing ? 1 : 0;
-      toState.opacity = collapsing ? 0 : 1;
-    }
-    if (useSlide) {
-      fromState.transform = collapsing
-        ? 'translateY(0)'
-        : 'translateY(-6px)';
-      toState.transform = collapsing
-        ? 'translateY(-6px)'
-        : 'translateY(0)';
-    }
-
-    var animation = content.animate([fromState, toState], {
-      duration: animMs,
-      easing: 'ease',
-      fill: 'forwards',
-    });
-
-    return new Promise(function (resolve) {
-      animation.onfinish = function () {
-        animation.cancel();
-        resolve();
-      };
-      animation.oncancel = function () {
-        resolve();
-      };
-    });
   }
 
   /**
@@ -264,6 +251,13 @@
     var collapsed = isCollapsed(col);
     toggleButton.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     content.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
+    var expandLabel = toggleButton.getAttribute('data-label-expand');
+    var collapseLabel = toggleButton.getAttribute('data-label-collapse');
+    var actionLabel = collapsed ? expandLabel : collapseLabel;
+    if (actionLabel) {
+      toggleButton.setAttribute('aria-label', actionLabel);
+      toggleButton.setAttribute('title', actionLabel);
+    }
   }
 
   /**
@@ -323,7 +317,8 @@
       }
     }
     updateCollapseClass(grid);
-    updateExpandedGrid(grid);
+    grid.style.removeProperty('grid-template-columns');
+    grid.classList.remove('has-collapsed-col', 'has-single-visible-col', 'has-two-visible-cols');
   }
 
   /**
@@ -334,8 +329,10 @@
    *
    * @param {HTMLElement} grid
    *   The grid container.
+   * @param {number[]} ratios
+   *   Column ratios parsed from the layout class.
    */
-  function restoreDefaultStates(grid) {
+  function restoreDefaultStates(grid, ratios) {
     var toolbar = getToolbar(grid);
     var columns = grid.querySelectorAll(':scope > [data-col]');
     var i;
@@ -359,14 +356,16 @@
       }
     }
     updateCollapseClass(grid);
-    updateExpandedGrid(grid);
+    setGridColumns(grid, ratios);
   }
 
   /**
    * Initialize toggle buttons for a two- or three-column grid.
    *
    * Reads configuration from data attributes on the grid, sets up
-   * click handlers with animation, and manages collapse state classes.
+   * click handlers, and manages collapse state classes. The column
+   * width animation is handled entirely by CSS transitions on
+   * grid-template-columns; content fades via CSS opacity transition.
    * Toggle functionality is disabled below the layout breakpoint.
    *
    * @param {HTMLElement} grid
@@ -385,6 +384,8 @@
     if (!toolbar) {
       return;
     }
+
+    var ratios = parseRatios(grid);
 
     /** @type {MediaQueryList|null} */
     var mq = null;
@@ -411,7 +412,12 @@
     grid.classList.add.apply(grid.classList, iconClasses);
     toolbar.classList.add.apply(toolbar.classList, iconClasses);
 
-    if (!Number.isNaN(animMs)) {
+    // Set custom properties for CSS transitions.
+    if (anim === 'none' || animMs <= 0) {
+      grid.style.setProperty('--pb-col-anim-ms', '0ms');
+      toolbar.style.setProperty('--pb-col-anim-ms', '0ms');
+    }
+    else if (!Number.isNaN(animMs)) {
       grid.style.setProperty('--pb-col-anim-ms', animMs + 'ms');
       toolbar.style.setProperty('--pb-col-anim-ms', animMs + 'ms');
     }
@@ -441,6 +447,7 @@
     // Enable or disable collapse feature based on breakpoint.
     if (aboveBreakpoint) {
       updateCollapseClass(grid);
+      setGridColumns(grid, ratios);
     }
     else {
       expandAllColumns(grid);
@@ -459,61 +466,28 @@
           return;
         }
 
-        var animating = false;
-
         syncAriaState(col, toggleButton, content);
 
         toggleButton.addEventListener('click', function () {
           // Do nothing below the layout breakpoint.
-          if (!aboveBreakpoint || animating) {
+          if (!aboveBreakpoint) {
             return;
           }
 
           var sx = window.scrollX;
           var sy = window.scrollY;
           var collapsing = !isCollapsed(col);
-          var shouldAnimate = anim !== 'none' && animMs > 0;
 
-          if (!shouldAnimate) {
-            setCollapsed(col, collapsing);
-            toggleButton.toggleAttribute('data-collapsed', collapsing);
-            updateCollapseClass(grid);
-            syncAriaState(col, toggleButton, content);
-            updateExpandedGrid(grid);
-            restoreScrollAfterLayout(sx, sy);
-            return;
-          }
-
-          animating = true;
-
-          if (collapsing) {
-            animateContent(content, true, anim, animMs).then(function () {
-              setCollapsed(col, true);
-              toggleButton.setAttribute('data-collapsed', '');
-              updateCollapseClass(grid);
-              syncAriaState(col, toggleButton, content);
-              updateExpandedGrid(grid);
-              restoreScrollAfterLayout(sx, sy);
-              animating = false;
-            });
-          }
-          else {
-            setCollapsed(col, false);
-            toggleButton.removeAttribute('data-collapsed');
-            updateCollapseClass(grid);
-            syncAriaState(col, toggleButton, content);
-            updateExpandedGrid(grid);
-            restoreScrollAfterLayout(sx, sy);
-            animateContent(content, false, anim, animMs).then(function () {
-              restoreScrollAfterLayout(sx, sy);
-              animating = false;
-            });
-          }
+          // Toggle state — CSS transitions handle the visual animation.
+          setCollapsed(col, collapsing);
+          toggleButton.toggleAttribute('data-collapsed', collapsing);
+          updateCollapseClass(grid);
+          syncAriaState(col, toggleButton, content);
+          setGridColumns(grid, ratios);
+          restoreScrollAfterLayout(sx, sy);
         });
       })(columns[j]);
     }
-
-    updateExpandedGrid(grid);
 
     // Listen for breakpoint changes: toggle feature on/off.
     if (mq && typeof mq.addEventListener === 'function') {
@@ -521,7 +495,7 @@
         aboveBreakpoint = e.matches;
         if (aboveBreakpoint) {
           // Crossed above breakpoint: restore user-configured defaults.
-          restoreDefaultStates(grid);
+          restoreDefaultStates(grid, ratios);
         }
         else {
           // Crossed below breakpoint: expand all, disable toggles.
