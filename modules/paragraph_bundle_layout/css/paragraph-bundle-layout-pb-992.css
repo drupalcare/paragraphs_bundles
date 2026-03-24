@@ -160,19 +160,29 @@
   }
 
 /* ==========================================================================
-   Column toggle — toolbar position: inside_top.
-   Normal flow toolbar above the grid. Buttons sit in the toolbar row.
+   Column toggle — toolbar position: edge_top.
+   Toolbar overlaid at the top, with inline margin so buttons sit outside the grid.
+   Middle button aligned to end of its column.
    ========================================================================== */
 
-  /* Pull toolbar row toward the grid; keeps controls visually tight to the top area. */
-  .paragraph.pb__992.pb-col-icon-pos-inside_top .pb-col-toolbar {
-    margin-block-end: -24px;
+  .paragraph.pb__992.pb-col-icon-pos-edge_top .pb__content-full {
+    position: relative;
   }
 
-  /* No negative pull when all columns are collapsed (toolbar-only strip layout). */
-  .paragraph--type--two-columns-bundle.pb__992.pb-col-icon-pos-inside_top.left-right-collapsed .pb-col-toolbar,
-  .paragraph--type--three-columns-bundle.pb__992.pb-col-icon-pos-inside_top.left-right-middle-collapsed .pb-col-toolbar {
-    margin-block-end: 0;
+  .paragraph.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: -2rem;
+    pointer-events: none;
+  }
+
+  .paragraph.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar .pb-col-toggle {
+    pointer-events: auto;
+  }
+
+  /* Edge top: middle button right-aligned in its column. */
+  .paragraph.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+    justify-self: end;
   }
 
 /* ==========================================================================
@@ -338,12 +348,17 @@
    ========================================================================== */
 
 
-  .paragraph--type--two-columns-bundle.pb__992.left-right-collapsed .pb__two-columns:not(.pb-col-icon-pos-inside_top),
-  .paragraph--type--three-columns-bundle.pb__992.left-right-middle-collapsed .pb__three-columns:not(.pb-col-icon-pos-inside_top) {
+  .paragraph--type--two-columns-bundle.pb__992.left-right-collapsed .pb-col-toolbar,
+  .paragraph--type--three-columns-bundle.pb__992.left-right-middle-collapsed .pb-col-toolbar {
+    position: relative;
+    inset-block-start: auto;
+    inset-inline: auto;
+    transform: none;
+    pointer-events: auto;
     inline-size: 100%;
     min-block-size: 32px;
-    margin-block-end: 1rem;
-    margin-inline: auto;
+    padding: 0;
+    margin: 0;
   }
 
 /* ==========================================================================

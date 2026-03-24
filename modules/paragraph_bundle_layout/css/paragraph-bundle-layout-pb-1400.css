@@ -150,16 +150,26 @@
   }
 
 /* ==========================================================================
-   Column toggle — toolbar position: inside_top.
+   Column toggle — toolbar position: edge_top.
    ========================================================================== */
 
-  .paragraph.pb__1400.pb-col-icon-pos-inside_top .pb-col-toolbar {
-    margin-block-end: -24px;
+  .paragraph.pb__1400.pb-col-icon-pos-edge_top .pb__content-full {
+    position: relative;
   }
 
-  .paragraph--type--two-columns-bundle.pb__1400.pb-col-icon-pos-inside_top.left-right-collapsed .pb-col-toolbar,
-  .paragraph--type--three-columns-bundle.pb__1400.pb-col-icon-pos-inside_top.left-right-middle-collapsed .pb-col-toolbar {
-    margin-block-end: 0;
+  .paragraph.pb__1400.pb-col-icon-pos-edge_top .pb-col-toolbar {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: -2rem;
+    pointer-events: none;
+  }
+
+  .paragraph.pb__1400.pb-col-icon-pos-edge_top .pb-col-toolbar .pb-col-toggle {
+    pointer-events: auto;
+  }
+
+  .paragraph.pb__1400.pb-col-icon-pos-edge_top .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+    justify-self: end;
   }
 
 /* ==========================================================================
@@ -319,12 +329,17 @@
    ========================================================================== */
 
 
-  .paragraph--type--two-columns-bundle.pb__1400.left-right-collapsed .pb__two-columns:not(.pb-col-icon-pos-inside_top),
-  .paragraph--type--three-columns-bundle.pb__1400.left-right-middle-collapsed .pb__three-columns:not(.pb-col-icon-pos-inside_top) {
+  .paragraph--type--two-columns-bundle.pb__1400.left-right-collapsed .pb-col-toolbar,
+  .paragraph--type--three-columns-bundle.pb__1400.left-right-middle-collapsed .pb-col-toolbar {
+    position: relative;
+    inset-block-start: auto;
+    inset-inline: auto;
+    transform: none;
+    pointer-events: auto;
     inline-size: 100%;
     min-block-size: 32px;
-    margin-block-end: 1rem;
-    margin-inline: auto;
+    padding: 0;
+    margin: 0;
   }
 
 /* ==========================================================================
