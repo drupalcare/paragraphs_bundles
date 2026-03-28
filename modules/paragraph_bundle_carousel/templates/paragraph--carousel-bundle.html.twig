@@ -129,7 +129,7 @@
 <div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="Carousel" tabindex="0">
   <div class="{{ classes_inner }}" hidden {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
     {% if pb_title %}
-    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+    {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
     {% endif %}
 
     <!-- Carousel Outer -->

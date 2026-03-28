@@ -127,6 +127,19 @@ h3 a) {
   width: 100%;
 }
 
+/* Alignment: use start/end so “left/right” follow inline direction (LTR vs RTL). */
+.paragraph .pb__content-title--align-left {
+  text-align: start;
+}
+
+.paragraph .pb__content-title--align-center {
+  text-align: center;
+}
+
+.paragraph .pb__content-title--align-right {
+  text-align: end;
+}
+
 .pb__img-auto .field--name-pb-media-image img {
   width: auto !important;
 }

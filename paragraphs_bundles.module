@@ -10,7 +10,9 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Implements hook_help().
@@ -76,4 +78,242 @@ function paragraphs_bundles_preprocess_page(&$variables) {
   if ($admin_context->isAdminRoute() && $admin_theme_name) {
     $variables['#attached']['library'][] = 'paragraphs_bundles/paragraphs-bundles-admin';
   }
+}
+
+/**
+ * Imports one optional config entity if it is not already active.
+ *
+ * Used by update hooks in this module and in paragraph_bundle_* modules.
+ */
+function paragraphs_bundles_import_optional_config_if_missing(string $module_name, string $config_name): void {
+  $existing = \Drupal::configFactory()->get($config_name);
+  if (!$existing->isNew()) {
+    return;
+  }
+  $module_handler = \Drupal::moduleHandler();
+  if (!$module_handler->moduleExists($module_name)) {
+    return;
+  }
+  $config_storage = new FileStorage($module_handler->getModule($module_name)->getPath() . '/config/optional');
+  $config_record = $config_storage->read($config_name);
+  if (!$config_record) {
+    return;
+  }
+  $entity_type = \Drupal::service('config.manager')->getEntityTypeIdByName($config_name);
+  if ($entity_type === NULL) {
+    return;
+  }
+  $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+  $entity = $storage->createFromStorageRecord($config_record);
+  $entity->save();
+}
+
+/**
+ * Ensures shared field storages for pb_content_title_tag and pb_content_title_alignment.
+ */
+function paragraphs_bundles_ensure_pb_title_storages(): void {
+  foreach ([
+    'field.storage.paragraph.pb_content_title_tag',
+    'field.storage.paragraph.pb_content_title_alignment',
+  ] as $config_name) {
+    paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', $config_name);
+  }
+}
+
+/**
+ * Imports optional field instances for title tag + alignment for one bundle.
+ */
+function paragraphs_bundles_pb_title_import_instances_for_bundle(string $module_name, string $bundle): void {
+  foreach ([
+    'field.field.paragraph.' . $bundle . '.pb_content_title_tag',
+    'field.field.paragraph.' . $bundle . '.pb_content_title_alignment',
+  ] as $config_name) {
+    paragraphs_bundles_import_optional_config_if_missing($module_name, $config_name);
+  }
+}
+
+/**
+ * Adds title tag/alignment widgets after pb_content_title; hides them on default view.
+ */
+function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
+  $em = \Drupal::entityTypeManager();
+  $form_id = 'paragraph.' . $bundle . '.default';
+  $fd = $em->getStorage('entity_form_display')->load($form_id);
+  if (!$fd) {
+    return;
+  }
+  $content = $fd->get('content');
+  if (!isset($content['pb_content_title'])) {
+    return;
+  }
+
+  $wt = $content['pb_content_title']['weight'] ?? 1;
+  if (!isset($content['pb_content_title_tag'])) {
+    $content['pb_content_title_tag'] = [
+      'type' => 'options_select',
+      'weight' => $wt,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  if (!isset($content['pb_content_title_alignment'])) {
+    $content['pb_content_title_alignment'] = [
+      'type' => 'options_select',
+      'weight' => $wt,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  $fd->set('content', $content);
+
+  $third = $fd->get('third_party_settings');
+  if (!empty($third['field_group']) && is_array($third['field_group'])) {
+    foreach ($third['field_group'] as $gid => $gdef) {
+      if (empty($gdef['children']) || !is_array($gdef['children'])) {
+        continue;
+      }
+      $children = $gdef['children'];
+      $idx = array_search('pb_content_title', $children, TRUE);
+      if ($idx !== FALSE && !in_array('pb_content_title_tag', $children, TRUE)) {
+        array_splice($children, $idx + 1, 0, ['pb_content_title_tag', 'pb_content_title_alignment']);
+        $third['field_group'][$gid]['children'] = $children;
+      }
+    }
+    $fd->set('third_party_settings', $third);
+  }
+
+  $dependencies = $fd->get('dependencies');
+  if (!isset($dependencies['config'])) {
+    $dependencies['config'] = [];
+  }
+  foreach ([
+    'field.field.paragraph.' . $bundle . '.pb_content_title_tag',
+    'field.field.paragraph.' . $bundle . '.pb_content_title_alignment',
+  ] as $dep) {
+    if (!in_array($dep, $dependencies['config'], TRUE)) {
+      $dependencies['config'][] = $dep;
+    }
+  }
+  sort($dependencies['config']);
+  $fd->set('dependencies', $dependencies);
+  $fd->save();
+
+  $vd = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($vd) {
+    $hidden = $vd->get('hidden');
+    $hidden['pb_content_title_tag'] = TRUE;
+    $hidden['pb_content_title_alignment'] = TRUE;
+    $vd->set('hidden', $hidden);
+    $deps = $vd->get('dependencies');
+    if (!isset($deps['config'])) {
+      $deps['config'] = [];
+    }
+    foreach ([
+      'field.field.paragraph.' . $bundle . '.pb_content_title_tag',
+      'field.field.paragraph.' . $bundle . '.pb_content_title_alignment',
+    ] as $dep) {
+      if (!in_array($dep, $deps['config'], TRUE)) {
+        $deps['config'][] = $dep;
+      }
+    }
+    sort($deps['config']);
+    $vd->set('dependencies', $deps);
+    $vd->save();
+  }
+}
+
+/**
+ * Clears field widget/formatter and entity field definition caches.
+ */
+function paragraphs_bundles_clear_field_caches(): void {
+  \Drupal::service('plugin.manager.field.widget')->clearCachedDefinitions();
+  \Drupal::service('plugin.manager.field.formatter')->clearCachedDefinitions();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Installs shared storages + simple_bundle title tag/alignment (parent owns pb_content_title storage).
+ */
+function paragraphs_bundles_update_9001(): string {
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraphs_bundles', 'simple_bundle');
+  paragraphs_bundles_pb_title_wire_bundle('simple_bundle');
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Installed shared title tag/alignment field storages and simple_bundle field instances.');
+}
+
+/**
+ * Legacy update: title tag/alignment SQL backfill was removed (Twig uses H3/left when unset).
+ */
+function paragraphs_bundles_update_9002(): string {
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Field caches cleared (title tag/alignment values are no longer mass-updated in the database).');
+}
+
+/**
+ * Ensures title tag/alignment stay optional (required flag breaks saving older content).
+ */
+function paragraphs_bundles_update_9003(): string {
+  $storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', ['pb_content_title_tag', 'pb_content_title_alignment'], 'IN')
+    ->execute();
+  foreach ($storage->loadMultiple($ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    if ($field->isRequired()) {
+      $field->setRequired(FALSE);
+      $field->save();
+    }
+  }
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Title tag and alignment are optional; unset values use H3 and left alignment in the template.');
+}
+
+/**
+ * Adds pb_content_title help text; clears default values on tag/alignment (None = Twig H3/left).
+ */
+function paragraphs_bundles_update_9004(): string {
+  $storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $desc = paragraphs_bundles_pb_content_title_help_description();
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', 'pb_content_title')
+    ->execute();
+  foreach ($storage->loadMultiple($ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    $field->setDescription($desc);
+    $field->save();
+  }
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', ['pb_content_title_tag', 'pb_content_title_alignment'], 'IN')
+    ->execute();
+  foreach ($storage->loadMultiple($ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    $field->setDefaultValue([]);
+    $field->save();
+  }
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Updated title field description; title tag/alignment default to None (template uses H3 and left when unset).');
+}
+
+/**
+ * Help text for the shared pb_content_title field (config + update 9004).
+ *
+ * Stored as English on the field; use configuration translation if needed.
+ */
+function paragraphs_bundles_pb_content_title_help_description(): string {
+  return 'Use Title tag and Title alignment to set the heading level and text alignment. None is the default for those fields; if they are unset, the bundle Twig template renders this title as H3 with left alignment.';
 }

@@ -115,10 +115,12 @@
 {% set pb_style_attributes = [] %}
 {% for key, value in pb_styles %}
   {% set style = content[value]|render|striptags|trim %}
-  {% if style starts with '#' %}
-    {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-  {% else %}
-    {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+  {% if style %}
+    {% if style starts with '#' %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
+    {% else %}
+      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
+    {% endif %}
   {% endif %}
 {% endfor %}
 
@@ -130,6 +132,7 @@
 {% set pb_radius = content.pb_display_border_radius|render|striptags|trim %}
 {% set pb_image = content.pb_content_image %}
 {% set pb_title  = content.pb_content_title|render|striptags|trim %}
+{% set pb_full_size_url = pb_full_size_url|default('') %}
 
 {# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('data-full-image-url', pb_full_size_url) }}>
@@ -145,7 +148,7 @@
         {# print title #}
         {% if pb_title %}
         <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-          <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+          {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
         </div>
         {% endif %}
       </a>
@@ -160,13 +163,13 @@
       {# print title #}
       {% if content.pb_content_title|render %}
       <div class="pb__image-grid-title" {% if pb_image_attributes|length > 0 %}style="{{ pb_image_attributes|join(' ') }}"{% endif %}>
-        <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+        {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
       </div>
       {% endif %}
     </div>
     {% endif %}
 
-    {{ content|without('pb_content_title', 'pb_content_image', 'pb_content_image_link', 'pb_content_image_link_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+    {{ content|without('pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment', 'pb_content_image', 'pb_content_image_link', 'pb_content_image_link_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
   </div>
 </div> {# End of main wrapper #}

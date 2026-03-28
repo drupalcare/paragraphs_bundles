@@ -9,7 +9,7 @@ field_name: pb_content_tab_name
 entity_type: paragraph
 bundle: tab_section_bundle
 label: 'Tab Name Section'
-description: ''
+description: 'Plain text tab label when “Use icon” is unchecked. When “Use icon” is checked, enter icon markup only (not visible text): Font Awesome — v4: fa fa-home; v5+: fas fa-house. Google Material Icons / Symbols: material-icons:home or material-symbols-outlined:home (colon separates the font class from the glyph name). You must load Font Awesome and/or Material in your theme; class names differ by major version. If you use the Solo theme, you can enable Font Awesome from the theme settings.'
 required: true
 translatable: false
 default_value: {  }

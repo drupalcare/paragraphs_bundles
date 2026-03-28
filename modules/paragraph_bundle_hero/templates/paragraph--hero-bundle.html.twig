@@ -107,10 +107,9 @@
   {% endif %}
 {% endfor %}
 
-{# Title, link and radius #}
+{# Title, link and layout #}
 {% set pb_link = content.pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_round = content.pb_display_border_radius|render|striptags|trim %}
 {% set pb_margin = content.pb_display_margin|render|striptags|trim %}
 {% set pb_title = content.pb_content_title|render|striptags|trim  %}
 {# Render the paragraph. #}
@@ -129,7 +128,7 @@
         {% endif %}
 
         {% if pb_title %}
-        <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+        {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
         {% endif %}
 
         {{ content.pb_content_body }}
@@ -141,7 +140,7 @@
       </div>
     </div>
 
-    {{ content|without('pb_content_title', 'pb_display_hero', 'pb_content_body', 'pb_content_image', 'pb_content_image_link', 'pb_content_image_link_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+    {{ content|without('pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment', 'pb_display_hero', 'pb_content_body', 'pb_content_image', 'pb_content_image_link', 'pb_content_image_link_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
   </div>
 </div> {# End of main wrapper #}

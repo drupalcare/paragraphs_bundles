@@ -32,3 +32,14 @@ function paragraph_bundle_carousel_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Installs title tag + alignment for carousel_bundle (storages live in paragraphs_bundles).
+ */
+function paragraph_bundle_carousel_update_8001(): string {
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraph_bundle_carousel', 'carousel_bundle');
+  paragraphs_bundles_pb_title_wire_bundle('carousel_bundle');
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Installed title tag and alignment for carousel_bundle.');
+}

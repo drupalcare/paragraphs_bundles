@@ -132,7 +132,7 @@
                     <a href="{{ icon_link }}" {% if pb_title %}title="{{ pb_title }}"{% endif %}>
                 {% endif %}
                 {% if pb_title %}
-                    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+                    {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
                 {% endif %}
                 {{ content.pb_content_image_icon }}
                 {% if icon_link %}
@@ -145,7 +145,7 @@
                     <a href="{{ icon_link }}" {% if pb_title %}title="{{ pb_title }}"{% endif %}>
                 {% endif %}
                 {% if pb_title %}
-                    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+                    {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
                 {% endif %}
                 <div class="icon-wrapper material-icons-hidden" style="font-variation-settings: 'FILL' {{ gms_fill }}, 'wght' {{ gms_wght }}, 'GRAD' {{ gms_grad }}, 'opsz' {{ gms_opsz }};">
                     <span class="{{ gms_style }}" style="color: {{ gms_color }}; font-size: {{ gms_size }}rem;">{{ gms_name }}</span>
@@ -156,6 +156,37 @@
             </div>
         {% endif %}
         {{ content.pb_content_body }}
+
+        {# New fields on this bundle render here until the template is updated. #}
+        {{ content|without(
+          'pb_content_body',
+          'pb_content_image_icon',
+          'pb_content_link',
+          'pb_content_title',
+          'pb_content_title_tag',
+          'pb_content_title_alignment',
+          'pb_content_gms_fill',
+          'pb_content_gms_grade',
+          'pb_content_gms_icon_color',
+          'pb_content_gms_icon_font_size',
+          'pb_content_gms_icon_name',
+          'pb_content_gms_optical_size',
+          'pb_content_gms_style',
+          'pb_content_gms_weight',
+          'pb_display_bg',
+          'pb_display_bg_hover',
+          'pb_display_bg_opacity',
+          'pb_display_border',
+          'pb_display_border_color',
+          'pb_display_border_hover',
+          'pb_display_border_radius',
+          'pb_display_margin',
+          'pb_display_padding',
+          'pb_display_shadow',
+          'pb_display_text',
+          'pb_display_text_hover',
+          'pb_display_width'
+        ) }}
     </div>
 
 

@@ -9,7 +9,7 @@ field_name: pb_content_title
 entity_type: paragraph
 bundle: hero_bundle
 label: Title
-description: ''
+description: 'Use Title tag and Title alignment to set the heading level and text alignment. None is the default for those fields; if they are unset, the bundle Twig template renders this title as H3 with left alignment.'
 required: false
 translatable: false
 default_value: {  }

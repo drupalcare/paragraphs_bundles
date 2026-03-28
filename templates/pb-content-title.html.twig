@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * Renders pb_content_title with configurable heading tag and alignment.
+ *
+ * When Title tag or Title alignment are empty (None in the form), output uses
+ * heading H3 and left alignment.
+ *
+ * Available variables:
+ * - paragraph: The paragraph entity.
+ * - content: The paragraph render array (must include pb_content_title).
+ * - title_extra_classes: Optional extra classes (space-separated) appended to the title.
+ * - title_style: Optional inline style attribute value (no HTML escaping of quotes needed).
+ */
+#}
+{% set _tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div'] %}
+{% if paragraph.hasField('pb_content_title_tag') and not paragraph.pb_content_title_tag.isEmpty() %}
+  {% set _tag = paragraph.pb_content_title_tag.value %}
+{% else %}
+  {% set _tag = 'h3' %}
+{% endif %}
+{% if _tag not in _tags %}
+  {% set _tag = 'h3' %}
+{% endif %}
+
+{% set _aligns = ['left', 'center', 'right'] %}
+{% if paragraph.hasField('pb_content_title_alignment') and not paragraph.pb_content_title_alignment.isEmpty() %}
+  {% set _align = paragraph.pb_content_title_alignment.value %}
+{% else %}
+  {% set _align = 'left' %}
+{% endif %}
+{% if _align not in _aligns %}
+  {% set _align = 'left' %}
+{% endif %}
+
+{% set _base = 'pb__content-title pb__content-title--align-' ~ _align %}
+{% set _extra = title_extra_classes|default('')|trim %}
+{% set _style = title_style|default('')|trim %}
+
+<{{ _tag }} class="{{ _base }}{{ _extra ? ' ' ~ _extra : '' }}"{% if _style %} style="{{ _style }}"{% endif %}>{{ content.pb_content_title }}</{{ _tag }}>

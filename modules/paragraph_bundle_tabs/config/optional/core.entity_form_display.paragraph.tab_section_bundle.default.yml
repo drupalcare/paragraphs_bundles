@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.tab_section_bundle.pb_content_tab_body
     - field.field.paragraph.tab_section_bundle.pb_content_tab_name
+    - field.field.paragraph.tab_section_bundle.pb_content_tab_name_icon
     - paragraphs.paragraphs_type.tab_section_bundle
   module:
     - paragraphs
@@ -12,6 +13,22 @@ targetEntityType: paragraph
 bundle: tab_section_bundle
 mode: default
 content:
+  pb_content_tab_name:
+    type: string_textfield
+    label: hidden
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_tab_name_icon:
+    type: boolean_checkbox
+    weight: 0
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   pb_content_tab_body:
     type: paragraphs
     weight: 1
@@ -30,14 +47,6 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
-    third_party_settings: {  }
-  pb_content_tab_name:
-    type: string_textfield
-    weight: 0
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true

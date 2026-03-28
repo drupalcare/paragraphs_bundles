@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.tab_section_bundle.pb_content_tab_body
     - field.field.paragraph.tab_section_bundle.pb_content_tab_name
+    - field.field.paragraph.tab_section_bundle.pb_content_tab_name_icon
     - paragraphs.paragraphs_type.tab_section_bundle
   module:
     - entity_reference_revisions
@@ -29,4 +30,5 @@ content:
     third_party_settings: {  }
     weight: 0
     region: content
-hidden: {  }
+hidden:
+  pb_content_tab_name_icon: true

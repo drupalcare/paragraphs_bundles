@@ -42,9 +42,9 @@
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 
 {# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__default-' ~ paragraph.id.value %}
+{% set paragraph_id  = 'pb__parallax-' ~ paragraph.id.value %}
 {# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__default__inner' %}
+{% set classes_inner = 'paragraph__inner pb__parallax-bundle__inner' %}
 {# Set the classes for the paragraph. #}
 
 {% set classes = [
@@ -112,10 +112,10 @@
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
       {% if pb_title %}
-      <h3 class="pb__content-title pb__content-full">{{ content.pb_content_title }}</h3>
+      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content, title_extra_classes: 'pb__content-full' } only %}
       {% endif %}
       {# In the default template we remove unwanted fields. #}
-      {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+      {{ content|without('pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
   </div>
 </div> {# End of main wrapper. #}

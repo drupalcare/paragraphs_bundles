@@ -38,3 +38,17 @@ function paragraph_bundle_image_theme($existing, $type, $theme, $path) {
     ],
   ];
 }
+
+/**
+ * Installs title tag + alignment for image bundles (storages live in paragraphs_bundles).
+ */
+function paragraph_bundle_image_update_8001(): string {
+  paragraphs_bundles_ensure_pb_title_storages();
+  $module = 'paragraph_bundle_image';
+  foreach (['image_bundle', 'image_narrow_bundle', 'image_wide_bundle'] as $bundle) {
+    paragraphs_bundles_pb_title_import_instances_for_bundle($module, $bundle);
+    paragraphs_bundles_pb_title_wire_bundle($bundle);
+  }
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Installed title tag and alignment for image, image narrow, and image wide bundles.');
+}

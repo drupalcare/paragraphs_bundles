@@ -50,3 +50,14 @@ function paragraph_bundle_block_content_theme_suggestions_paragraph_alter(array 
     $suggestions[] = 'paragraph__block_content_bundle';
   }
 }
+
+/**
+ * Installs title tag + alignment for block_content_bundle (storages live in paragraphs_bundles).
+ */
+function paragraph_bundle_block_content_update_8001(): string {
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraph_bundle_block_content', 'block_content_bundle');
+  paragraphs_bundles_pb_title_wire_bundle('block_content_bundle');
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Installed title tag and alignment for block_content_bundle.');
+}

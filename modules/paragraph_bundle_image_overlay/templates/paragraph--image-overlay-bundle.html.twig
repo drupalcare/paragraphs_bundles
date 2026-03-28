@@ -122,7 +122,6 @@
 {% set pb_br_color      = br_color ? 'border-color:rgb(' ~ br_color ~ ')' : '' %}
 {% set pb_overlay_class = pb_br_radius ? 'pb__overlay-container ' ~ pb_br_radius : 'pb__overlay-container' %}
 {% set pb_overlay_style = pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
-{% set pb_title_class   = pb_padding ? 'pb__content-title pb__overlay-title ' ~ pb_padding : 'pb__content-title pb__overlay-title' %}
 {% set pb_title_style   = pb_image_overlay == 'pb__image-overlay-title' and pb_style_attributes|length > 0 ? pb_style_attributes|join(' ') : '' %}
 
 {# Render the paragraph. #}
@@ -136,14 +135,13 @@
     <div {% if pb_overlay_class is not empty %}class="{{ pb_overlay_class }}"{% endif %} {% if pb_overlay_style is not empty %}style="{{ pb_overlay_style }}"{% endif %}>
 
       {% if pb_link %}
-      <a href="{{ pb_link }}" class="pb__row pb__link" title="{{ pb_link_title }}">
+      <a href="{{ pb_link }}" class="pb__row pb__link"{% if pb_link_title %} title="{{ pb_link_title }}"{% endif %}>
       {% endif %}
 
       <div class="pb__row">
         {% if pb_title %}
-        <h3 {% if pb_title_class is not empty %}class="{{ pb_title_class }}"{% endif %} {% if pb_title_style is not empty %}style="{{ pb_title_style }}"{% endif %}>
-          {{ content.pb_content_title }}
-        </h3>
+        {% set _overlay_title_extra = pb_padding ? 'pb__overlay-title ' ~ pb_padding : 'pb__overlay-title' %}
+        {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content, title_extra_classes: _overlay_title_extra, title_style: pb_title_style } only %}
         {% endif %}
       </div>
 
@@ -151,6 +149,27 @@
       </a>
       {% endif %}
     </div>
+
+    {# New fields on this bundle render here until the template is updated. #}
+    {{ content|without(
+      'pb_content_image',
+      'pb_content_image_link',
+      'pb_content_image_link_title',
+      'pb_content_title',
+      'pb_content_title_tag',
+      'pb_content_title_alignment',
+      'pb_display_bg',
+      'pb_display_bg_opacity',
+      'pb_display_border',
+      'pb_display_border_color',
+      'pb_display_border_radius',
+      'pb_display_image_overlay',
+      'pb_display_margin',
+      'pb_display_padding',
+      'pb_display_shadow',
+      'pb_display_text',
+      'pb_display_width'
+    ) }}
 
   </div>
 </div> {# End of main wrapper #}

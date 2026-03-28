@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_title_tag
+    - paragraphs.paragraphs_type.icon_bundle
+id: paragraph.icon_bundle.pb_content_title_tag
+field_name: pb_content_title_tag
+entity_type: paragraph
+bundle: icon_bundle
+label: 'Title tag'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

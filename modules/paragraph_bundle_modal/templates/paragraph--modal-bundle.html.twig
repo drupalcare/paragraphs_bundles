@@ -118,7 +118,7 @@
 <div {{ attributes.addClass(classes).setAttribute('id', modal_warpper) }}>
 
   {% if pb_title %}
-  <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+  {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
   {% endif %}
 
   <div class="pb-modal-button">

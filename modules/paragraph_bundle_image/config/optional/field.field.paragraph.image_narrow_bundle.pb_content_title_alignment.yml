@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_title_alignment
+    - paragraphs.paragraphs_type.image_narrow_bundle
+id: paragraph.image_narrow_bundle.pb_content_title_alignment
+field_name: pb_content_title_alignment
+entity_type: paragraph
+bundle: image_narrow_bundle
+label: 'Title alignment'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -151,7 +151,7 @@
 
     <div class="pb__content-full">
       {% if pb_title %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
       {% endif %}
 
       {% if pb_3c_l_tgl or pb_3c_m_tgl or pb_3c_r_tgl %}

@@ -113,10 +113,10 @@
     <div class="pb__content-full">
 
       {% if pb_title %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
       {% endif %}
       {# In the default template we remove unwanted fields. #}
-      {{ content|without('pb_content_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+      {{ content|without('pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
 
     </div>
 

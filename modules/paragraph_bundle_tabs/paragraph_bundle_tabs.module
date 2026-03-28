@@ -11,6 +11,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\field\Entity\FieldConfig;
 
 /**
  * Implements hook_help().
@@ -34,4 +35,111 @@ function paragraph_bundle_tabs_theme($existing, $type, $theme, $path) {
       'base hook' => 'paragraph',
     ],
   ];
+}
+
+/**
+ * Tabs: title tag/alignment for tabs_bundle; tab name icon + wiring for tab_section_bundle.
+ *
+ * Single hook so a fresh DB / reimport runs all tab schema changes once.
+ */
+function paragraph_bundle_tabs_update_8001(): string {
+  $messages = [];
+
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraph_bundle_tabs', 'tabs_bundle');
+  paragraphs_bundles_pb_title_wire_bundle('tabs_bundle');
+  $messages[] = (string) t('Installed title tag and alignment for tabs_bundle.');
+
+  $module = 'paragraph_bundle_tabs';
+  paragraphs_bundles_import_optional_config_if_missing($module, 'field.storage.paragraph.pb_content_tab_name_icon');
+  paragraphs_bundles_import_optional_config_if_missing($module, 'field.field.paragraph.tab_section_bundle.pb_content_tab_name_icon');
+
+  $icon_field = FieldConfig::load('paragraph.tab_section_bundle.pb_content_tab_name_icon');
+  if ($icon_field) {
+    $icon_field->setLabel('Use icon');
+    $icon_field->setDescription('');
+    $icon_field->save();
+  }
+
+  $name_field = FieldConfig::load('paragraph.tab_section_bundle.pb_content_tab_name');
+  if ($name_field) {
+    $name_field->setDescription('Plain text tab label when “Use icon” is unchecked. When “Use icon” is checked, enter icon markup only (not visible text): Font Awesome — v4: fa fa-home; v5+: fas fa-house. Google Material Icons / Symbols: material-icons:home or material-symbols-outlined:home (colon separates the font class from the glyph name). You must load Font Awesome and/or Material in your theme; class names differ by major version. If you use the Solo theme, you can enable Font Awesome from the theme settings.');
+    $name_field->save();
+  }
+
+  $em = \Drupal::entityTypeManager();
+  $fd = $em->getStorage('entity_form_display')->load('paragraph.tab_section_bundle.default');
+  if ($fd) {
+    $content = $fd->get('content');
+    if (!isset($content['pb_content_tab_name_icon'])) {
+      $content['pb_content_tab_name_icon'] = [
+        'type' => 'boolean_checkbox',
+        'weight' => 0,
+        'region' => 'content',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'third_party_settings' => [],
+      ];
+    }
+    if (isset($content['pb_content_tab_name'])) {
+      $content['pb_content_tab_name']['label'] = 'hidden';
+      $content['pb_content_tab_name']['weight'] = 0;
+    }
+    $content['pb_content_tab_name_icon']['weight'] = 0;
+    if (isset($content['pb_content_tab_body'])) {
+      $content['pb_content_tab_body']['weight'] = 1;
+    }
+    $order = [
+      'pb_content_tab_name',
+      'pb_content_tab_name_icon',
+      'pb_content_tab_body',
+    ];
+    $ordered = [];
+    foreach ($order as $key) {
+      if (isset($content[$key])) {
+        $ordered[$key] = $content[$key];
+      }
+    }
+    foreach ($content as $key => $definition) {
+      if (!isset($ordered[$key])) {
+        $ordered[$key] = $definition;
+      }
+    }
+    $fd->set('content', $ordered);
+    $deps = $fd->get('dependencies');
+    if (!isset($deps['config'])) {
+      $deps['config'] = [];
+    }
+    $dep = 'field.field.paragraph.tab_section_bundle.pb_content_tab_name_icon';
+    if (!in_array($dep, $deps['config'], TRUE)) {
+      $deps['config'][] = $dep;
+    }
+    sort($deps['config']);
+    $fd->set('dependencies', $deps);
+    $fd->save();
+  }
+
+  $vd = $em->getStorage('entity_view_display')->load('paragraph.tab_section_bundle.default');
+  if ($vd) {
+    $hidden = $vd->get('hidden');
+    $hidden['pb_content_tab_name_icon'] = TRUE;
+    $vd->set('hidden', $hidden);
+    $vdeps = $vd->get('dependencies');
+    if (!isset($vdeps['config'])) {
+      $vdeps['config'] = [];
+    }
+    $vdep = 'field.field.paragraph.tab_section_bundle.pb_content_tab_name_icon';
+    if (!in_array($vdep, $vdeps['config'], TRUE)) {
+      $vdeps['config'][] = $vdep;
+    }
+    sort($vdeps['config']);
+    $vd->set('dependencies', $vdeps);
+    $vd->save();
+  }
+
+  $messages[] = (string) t('Installed Tab name icon option (pb_content_tab_name_icon) for tab_section_bundle.');
+
+  paragraphs_bundles_clear_field_caches();
+  return implode(' ', $messages);
 }

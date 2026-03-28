@@ -91,7 +91,7 @@
 }
 
 .field--name-pb-content-title input {
-  width: 100%;
+  inline-size: 100%;
 }
 
 .horizontal-tabs-panes .claro-details.horizontal-tabs-pane {
@@ -190,5 +190,67 @@ form .pb__tab-display.medium [data-drupal-selector="para-color-picker"] {
 
 .field--name-pb-display-alert-end-date .paragraph-bundle-alert-clear-date,
 .field--name-pb-display-alert-start-date .paragraph-bundle-alert-clear-date {
-  float: right;
+  float: inline-end;
+}
+
+/* Content tab: Title + tag + alignment selects on one row (paragraph bundles with pb_content_title). */
+details.pb__tab-content .field--name-pb-content-title,
+details.pb__tab-content .field--name-pb-content-title-tag,
+details.pb__tab-content .field--name-pb-content-title-alignment {
+  display: inline-block;
+  vertical-align: bottom;
+  box-sizing: border-box;
+}
+
+details.pb__tab-content .field--name-pb-content-title {
+  inline-size: calc(100% - 270px);
+  margin-inline-end: 0;
+}
+
+details.pb__tab-content .field--name-pb-content-title-tag,
+details.pb__tab-content .field--name-pb-content-title-alignment {
+  inline-size: 125px;
+  margin-inline-end: 0;
+  vertical-align: top;
+}
+
+details.pb__tab-content .field--name-pb-content-title-tag .form-select,
+details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
+  inline-size: 100%;
+  max-inline-size: 125px;
+  box-sizing: border-box;
+}
+
+/* Title tag select: amber highlight for H1 — reserve for true page title; misuse hurts SEO and a11y. */
+.field--name-pb-content-title-tag select.form-select option[value="h1"] {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.field--name-pb-content-title-tag select.form-select:has(option:checked[value="h1"]) {
+  color: #b45309;
+  border-color: #d97706;
+  font-weight: 600;
+}
+
+/* Tab section bundle: Tab Name Section + Use icon on one row (tab_section_bundle). */
+.field--name-pb-content-tab-name,
+.field--name-pb-content-tab-name-icon {
+  display: inline-block;
+  vertical-align: bottom;
+  box-sizing: border-box;
+}
+
+.field--name-pb-content-tab-name {
+  inline-size: calc(100% - 170px);
+  margin-inline-end: 0;
+}
+
+.field--name-pb-content-tab-name-icon {
+  inline-size: 150px;
+  margin-inline-end: 0;
+}
+
+.field--name-pb-content-tab-name-icon .form-item {
+  margin-block: 0;
 }

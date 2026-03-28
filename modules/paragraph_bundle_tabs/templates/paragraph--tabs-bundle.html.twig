@@ -111,7 +111,7 @@
 {# Animated Tab Display #}
 {% set pb_animated_tab   = content.pb_display_tab_animated_tabs|render|striptags|trim %}
 {% set pb_breakpoints    = content.pb_display_tabs_breakpoints|render|striptags|trim|default('pb__992') %}
-{% set pb_titl           = content.pb_content_title|render|striptags|trim %}
+{% set pb_title           = content.pb_content_title|render|striptags|trim %}
 {% set is_vertical       = not paragraph.pb_display_tab_vertical_tabs.isEmpty and paragraph.pb_display_tab_vertical_tabs.value %}
 {% set activate_vertical = (is_vertical ? 'v__tabs ' : 'h__tabs ') ~ pb_breakpoints %}
 
@@ -123,7 +123,7 @@
     <div class="pb__content-full">
       {# Render the content title if it exists. #}
       {% if pb_title %}
-      <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
+      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
       {% endif %}
 
       {# Set the tab id. #}
@@ -131,25 +131,54 @@
       <div id="{{ tab_id }}" class="pb__row pb__tabs-bundle {{ activate_vertical }}">
 
         {# Render the tab buttons. #}
-        <div class="pb__bar pb__tabs-button{{ pb_display_active == '' ? '' : ' ' ~ pb_display_active }}" role="tablist" aria-label="{{ 'Tab List'|t }}">
+        <div class="pb__bar pb__tabs-button" role="tablist" aria-label="{{ 'Tab List'|t }}">
           <span class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
 
               {% set tab_index = key + 1 %}
-              {% set raw_slug = item['#paragraph'].pb_content_tab_name.value|lower|replace({' ': '-', '?': '', ',': '', '.': '', '/': '-'}) %}
-              {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
+              {% set tab_para = item['#paragraph'] %}
+              {% set use_tab_icon = tab_para.hasField('pb_content_tab_name_icon') and not tab_para.pb_content_tab_name_icon.isEmpty() and tab_para.pb_content_tab_name_icon.value %}
+              {% set tab_label_raw = tab_para.pb_content_tab_name.value|default('') %}
+
+              {% if use_tab_icon %}
+                {% set raw_slug = 'icon-' ~ paragraph.id.value ~ '-' ~ tab_index %}
+                {% set base_slug = raw_slug|clean_id %}
+              {% else %}
+                {% set raw_slug = tab_label_raw %}
+                {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
+              {% endif %}
+
               {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
 
               <button id="{{ tab_id }}-{{ tab_index }}"
                 class="pb__button pb__tab-button"
                 data-fragment="{{ tab_slug }}"
-                aria-label="{{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}"
+                {% if use_tab_icon %}
+                  aria-label="{{ 'Tab @n'|t({'@n': tab_index}) }}"
+                {% endif %}
                 aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
-                aria-controls="{{ tab_id }}-{{ tab_index }}-pane"
                 aria-expanded="{% if key == 0 %}true{% else %}false{% endif %}"
-                type="button" role="tab" {% if key != 0 %}tabindex="-1"{% endif %}>
-                <span>{{ item['#paragraph'].pb_content_tab_name.value|decode_entities }}</span>
+                aria-controls="{{ tab_id }}-{{ tab_index }}-pane"
+                type="button"
+                role="tab"
+                {% if key != 0 %}tabindex="-1"{% endif %}>
+                {% if use_tab_icon %}
+                  {% set _tn = tab_label_raw|trim %}
+                  {% if ':' in _tn %}
+                    {% set _parts = _tn|split(':', 2) %}
+                    {% set _class = _parts[0]|trim %}
+                    {% if _class starts with 'material-icons' or _class starts with 'material-symbols' %}
+                      <span class="{{ _class|e('html_attr') }}" aria-hidden="true">{{ _parts[1]|trim|e }}</span>
+                    {% else %}
+                      <i class="{{ _tn|e('html_attr') }}" aria-hidden="true"></i>
+                    {% endif %}
+                  {% else %}
+                    <i class="{{ _tn|e('html_attr') }}" aria-hidden="true"></i>
+                  {% endif %}
+                {% else %}
+                  <span>{{ tab_label_raw|decode_entities }}</span>
+                {% endif %}
               </button>
             {% endif %}
           {% endfor %}

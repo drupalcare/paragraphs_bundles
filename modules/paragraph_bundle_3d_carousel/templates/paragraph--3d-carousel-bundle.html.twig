@@ -124,7 +124,6 @@
 {% endif %}
 
 
-{% set pb_title = content.pb_content_title|render|striptags|trim %}
 {% set pb_sheight = content.pb_content_3dcar_sheight|render|striptags|trim %}
 {% if pb_sheight %}
   {% set pb_sheight  = 'pb__3d-caro-s-' ~ pb_sheight %}
@@ -139,10 +138,6 @@
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} role="region" aria-label="Image Carousel">
   <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
-
-    {% if pb_title %}
-    <h3 class="pb__content-title">{{ content.pb_content_title }}</h3>
-    {% endif %}
 
     <!-- Carousel Container -->
     <div id="{{ carousel_id }}"
