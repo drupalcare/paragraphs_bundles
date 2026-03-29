@@ -128,15 +128,15 @@ h3 a) {
 }
 
 /* Alignment: use start/end so “left/right” follow inline direction (LTR vs RTL). */
-.paragraph .pb__content-title--align-left {
+.paragraph .pb__content-title--align-left > .field--name-pb-content-title {
   text-align: start;
 }
 
-.paragraph .pb__content-title--align-center {
+.paragraph .pb__content-title--align-center > .field--name-pb-content-title {
   text-align: center;
 }
 
-.paragraph .pb__content-title--align-right {
+.paragraph .pb__content-title--align-right > .field--name-pb-content-title {
   text-align: end;
 }
 

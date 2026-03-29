@@ -237,7 +237,7 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 .field--name-pb-content-tab-name,
 .field--name-pb-content-tab-name-icon {
   display: inline-block;
-  vertical-align: bottom;
+  vertical-align: top;
   box-sizing: border-box;
 }
 
@@ -246,9 +246,25 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
   margin-inline-end: 0;
 }
 
+.field--name-pb-content-tab-name input,
+.field--name-pb-content-tab-name .form-item__description {
+  width: 100%;
+  max-width: 100%;
+}
+
 .field--name-pb-content-tab-name-icon {
   inline-size: 150px;
   margin-inline-end: 0;
+}
+
+.field--name-pb-content-tab-name-icon .form-type--checkbox {
+    display: flex !important;
+    gap: 12px;
+    flex-direction: column-reverse;
+    align-self: end;
+    justify-content: end;
+    width: 100px;
+    margin-inline-start: 24px!important;
 }
 
 .field--name-pb-content-tab-name-icon .form-item {
