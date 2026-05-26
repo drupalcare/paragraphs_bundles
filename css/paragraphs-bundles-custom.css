@@ -17,43 +17,43 @@ body .page-wrapper li {
   background-color: inherit;
 }
 
-.paragraph .paragraph__inner p,
-.paragraph .paragraph__inner a,
-.paragraph .paragraph__inner h1,
-.paragraph .paragraph__inner h2,
-.paragraph .paragraph__inner h3,
-.paragraph .paragraph__inner div {
+.paragraphs-bundles .paragraph__inner p,
+.paragraphs-bundles .paragraph__inner a,
+.paragraphs-bundles .paragraph__inner h1,
+.paragraphs-bundles .paragraph__inner h2,
+.paragraphs-bundles .paragraph__inner h3,
+.paragraphs-bundles .paragraph__inner div {
   border-color: var(--pb-br, var(--r-br, inherit));
 }
 
-.paragraph .paragraph__inner a:hover,
-.paragraph .paragraph__inner p:hover,
-.paragraph .paragraph__inner h1:hover,
-.paragraph .paragraph__inner h2:hover,
-.paragraph .paragraph__inner h3:hover,
-.paragraph .paragraph__inner div:hover {
+.paragraphs-bundles .paragraph__inner a:hover,
+.paragraphs-bundles .paragraph__inner p:hover,
+.paragraphs-bundles .paragraph__inner h1:hover,
+.paragraphs-bundles .paragraph__inner h2:hover,
+.paragraphs-bundles .paragraph__inner h3:hover,
+.paragraphs-bundles .paragraph__inner div:hover {
   border-color: var(--pb-br-h, var(--pb-br, var(--r-br)));
 }
 
-.paragraph .paragraph__inner .paragraph__inner,
-.paragraph .paragraph__inner .paragraph__inner .paragraph__inner {
+.paragraphs-bundles .paragraph__inner .paragraph__inner,
+.paragraphs-bundles .paragraph__inner .paragraph__inner .paragraph__inner {
   --pb-bg: transparent;
 }
 
-.paragraph>.paragraph__inner {
+.paragraphs-bundles>.paragraph__inner {
   background-color: var(--pb-bg, inherit);
   border-color: var(--pb-br, var(--r-br, inherit));
   color: var(--pb-tx, var(--r-tx, inherit));
 }
 
-.paragraph>.paragraph__inner:hover {
+.paragraphs-bundles>.paragraph__inner:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph .paragraph__inner p,
-.paragraph .paragraph__inner div:not(h1 div,
+.paragraphs-bundles .paragraph__inner p,
+.paragraphs-bundles .paragraph__inner div:not(h1 div,
 h2 div,
 h3 div,
 div h3,
@@ -62,81 +62,81 @@ div h1) {
   color: var(--pb-tx, var(--r-tx, inherit));
 }
 
-.paragraph .paragraph__inner p:hover {
+.paragraphs-bundles .paragraph__inner p:hover {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph .paragraph__inner a:not(h1 a,
+.paragraphs-bundles .paragraph__inner a:not(h1 a,
 h2 a,
 h3 a) {
   color: var(--pb-tx, var(--r-lk, var(--r-tx)));
 }
 
-.paragraph .paragraph__inner a:hover {
+.paragraphs-bundles .paragraph__inner a:hover {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph .paragraph__inner h1,
-.paragraph .paragraph__inner h2,
-.paragraph .paragraph__inner h3 {
+.paragraphs-bundles .paragraph__inner h1,
+.paragraphs-bundles .paragraph__inner h2,
+.paragraphs-bundles .paragraph__inner h3 {
   color: var(--pb-tx, var(--r-h1, var(--r-tx)));
 }
 
-.paragraph .paragraph__inner h1:hover,
-.paragraph .paragraph__inner h2:hover,
-.paragraph .paragraph__inner h3:hover {
+.paragraphs-bundles .paragraph__inner h1:hover,
+.paragraphs-bundles .paragraph__inner h2:hover,
+.paragraphs-bundles .paragraph__inner h3:hover {
   color: var(--pb-tx-h, var(--r-h1, var(--r-tx)));
 }
 
-.paragraph .paragraph__inner h1:hover div,
-.paragraph .paragraph__inner h2:hover div,
-.paragraph .paragraph__inner h3:hover div,
-.paragraph .paragraph__inner h1:hover span,
-.paragraph .paragraph__inner h2:hover span,
-.paragraph .paragraph__inner h3:hover span {
+.paragraphs-bundles .paragraph__inner h1:hover div,
+.paragraphs-bundles .paragraph__inner h2:hover div,
+.paragraphs-bundles .paragraph__inner h3:hover div,
+.paragraphs-bundles .paragraph__inner h1:hover span,
+.paragraphs-bundles .paragraph__inner h2:hover span,
+.paragraphs-bundles .paragraph__inner h3:hover span {
   color: var(--pb-tx-h, var(--pb-tx, var(--r-h1)));
 }
 
-.paragraph,
-.paragraph .pb__one-column {
+.paragraphs-bundles,
+.paragraphs-bundles .pb__one-column {
   margin: 0;
   display: grid;
   grid-auto-flow: row;
   grid-template-columns: 1fr;
 }
 
-.paragraph > *,
-.paragraph .pb__one-column > * {
+.paragraphs-bundles > *,
+.paragraphs-bundles .pb__one-column > * {
   min-width: 0;
 }
 
-.paragraph > .paragraph__inner {
+.paragraphs-bundles > .paragraph__inner {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
 }
 
-.paragraph h1,
-.paragraph h2,
-.paragraph h3 {
+.paragraphs-bundles h1,
+.paragraphs-bundles h2,
+.paragraphs-bundles h3 {
   background-color: transparent !important;
 }
 
-.paragraph .pb__content-title {
+.paragraphs-bundles .pb__content-title {
   display: block;
   width: 100%;
 }
 
 /* Alignment: use start/end so “left/right” follow inline direction (LTR vs RTL). */
-.paragraph .pb__content-title--align-left > .field--name-pb-content-title {
+.paragraphs-bundles .pb__content-title--align-left > .field--name-pb-content-title {
   text-align: start;
 }
 
-.paragraph .pb__content-title--align-center > .field--name-pb-content-title {
+.paragraphs-bundles .pb__content-title--align-center > .field--name-pb-content-title {
   text-align: center;
 }
 
-.paragraph .pb__content-title--align-right > .field--name-pb-content-title {
+.paragraphs-bundles .pb__content-title--align-right > .field--name-pb-content-title {
   text-align: end;
 }
 
@@ -145,16 +145,16 @@ h3 a) {
 }
 
 .field--name-pb-media-image picture,
-.paragraph .pb__img-wrapper {
+.paragraphs-bundles .pb__img-wrapper {
   float: none !important;
   display: block;
 }
 
-.paragraph .field--name-pb-image-field {
+.paragraphs-bundles .field--name-pb-image-field {
   margin-block-end: 0 !important;
 }
 
-.paragraph .field--name-pb-image-caption {
+.paragraphs-bundles .field--name-pb-image-caption {
   font-size: var(--pb-px12);
 }
 
@@ -178,83 +178,83 @@ h3 a) {
   border-radius: 0 !important;
 }
 
-.paragraph:not(.page-node-type-pb-content .paragraph) > .simple__inner {
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .simple__inner {
   margin-inline-start: auto;
   margin-inline-end: auto;
   width: 100%;
   max-width: 100%;
 }
 
-.paragraph .pb__hero-txt-wrapper-inner:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
+.paragraphs-bundles .pb__hero-txt-wrapper-inner:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
   width: 100%;
   max-width: var(--pb-width);
 }
 
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_100,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_900,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_800,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_700,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_600,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_500,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_400,
-.paragraph:not(.page-node-type-pb-content .paragraph) > .pb__pmw_300 {
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_100,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_900,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_800,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_700,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_600,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_500,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_400,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_300 {
   margin-inline-start: auto !important;
   margin-inline-end: auto !important;
   width: 100%;
   max-width: var(--pb-width);
 }
 
-.paragraph > .pb__pmw_100,
-.paragraph .pb__parallax-text.pb__pmw_100,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_100 {
+.paragraphs-bundles > .pb__pmw_100,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_100,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_100 {
   --pb-width: 100%;
 }
 
-.paragraph > .pb__pmw_300,
-.paragraph .pb__parallax-text.pb__pmw_300,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_300 {
+.paragraphs-bundles > .pb__pmw_300,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_300,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_300 {
   --pb-width: 18.75rem;
 }
 
-.paragraph > .pb__pmw_400,
-.paragraph .pb__parallax-text.pb__pmw_400,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_400 {
+.paragraphs-bundles > .pb__pmw_400,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_400,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_400 {
   --pb-width: 25rem;
 }
 
-.paragraph > .pb__pmw_500,
-.paragraph .pb__parallax-text.pb__pmw_500,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_500 {
+.paragraphs-bundles > .pb__pmw_500,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_500,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_500 {
   --pb-width: 31.25rem;
 }
 
-.paragraph > .pb__pmw_600,
-.paragraph .pb__parallax-text.pb__pmw_600,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_600 {
+.paragraphs-bundles > .pb__pmw_600,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_600,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_600 {
   --pb-width: 37.5rem;
 }
 
-.paragraph > .pb__pmw_700,
-.paragraph .pb__parallax-text.pb__pmw_700,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_700 {
+.paragraphs-bundles > .pb__pmw_700,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_700,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_700 {
   --pb-width: 43.75rem;
 }
 
-.paragraph > .pb__pmw_800,
-.paragraph .pb__parallax-text.pb__pmw_800,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_800 {
+.paragraphs-bundles > .pb__pmw_800,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_800,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_800 {
   --pb-width: 50rem;
 }
 
-.paragraph > .pb__pmw_900,
-.paragraph .pb__parallax-text.pb__pmw_900,
-.paragraph .pb__hero-txt-wrapper-inner.pb__pmw_900 {
+.paragraphs-bundles > .pb__pmw_900,
+.paragraphs-bundles .pb__parallax-text.pb__pmw_900,
+.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_900 {
   --pb-width: 56.25rem;
 }
 
 @media (max-width:35.99875rem) {
-  .paragraph .button,
-  .paragraph .pb__button {
+  .paragraphs-bundles .button,
+  .paragraphs-bundles .pb__button {
     white-space: normal;
   }
 

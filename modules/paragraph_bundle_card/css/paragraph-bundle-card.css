@@ -20,8 +20,8 @@
 
 .paragraph--type--card-two-columns-bundle .pb__card-two-columns>div,
 .paragraph--type--card-three-columns-bundle .pb__card-three-columns>div,
-.paragraph--type--card-two-columns-bundle .pb__card-two-columns .paragraph,
-.paragraph--type--card-three-columns-bundle .pb__card-three-columns .paragraph {
+.paragraph--type--card-two-columns-bundle .pb__card-two-columns .paragraphs-bundles,
+.paragraph--type--card-three-columns-bundle .pb__card-three-columns .paragraphs-bundles {
   display: flex;
   flex-direction: column;
   width: 100%;

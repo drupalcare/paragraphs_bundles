@@ -22,7 +22,7 @@
 .page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb__slide-title,
 .page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb__content-title,
 .page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
-.page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full>.node__content>*:not(.paragraph),
+.page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full>.node__content>*:not(.paragraphs-bundles),
 .page-node-type-pb-content .node--view-mode-full .pb__content-full:not(.pb__caro-wrap__inner.pb__content-full, .pb__slide-wrap__inner > .pb__content-full) {
   max-width: var(--pb-content-width);
   width: 100%;
@@ -89,7 +89,7 @@ div.pb-content section.pb-block > article.node > header {
   margin-block-end: 0 !important;
 }
 
-.page-node-type-pb-content .paragraph .field--type-entity-reference > div {
+.page-node-type-pb-content .paragraphs-bundles .field--type-entity-reference > div {
   width: 100%;
 }
 
@@ -101,22 +101,22 @@ div.pb-content section.pb-block > article.node > header {
   margin-inline: auto !important;
 }
 
-.page-node-type-pb-content .node__content .paragraph .pb__image-full {
+.page-node-type-pb-content .node__content .paragraphs-bundles .pb__image-full {
   margin-inline-start: calc(50% - 50vw);
   margin-inline-end: calc(50% - 50vw);
 }
 
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full,
-.page-node-type-pb-content .node__content .paragraph .paragraph .paragraph .pb__image-full {
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb__image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .paragraphs-bundles .pb__image-full {
   margin-block: 0;
   margin-inline: auto;
   width: 100%;
   max-width: 100%;
 }
 
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full,
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full div,
-.page-node-type-pb-content .node__content .paragraph .paragraph .pb__image-full div img {
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb__image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb__image-full div,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb__image-full div img {
   width: 100%;
 }
 

@@ -344,7 +344,7 @@
    Carousel Item Inner Content
    ========================================================================== */
 
-.pb__caro-item > .paragraph,
+.pb__caro-item > .paragraphs-bundles,
 .pb__caro-item .pb__content-full,
 .pb__caro-item .paragraph--type--hero-bundle .pb__caro-wrap__inner,
 .pb__caro-item .paragraph--type--hero-bundle .pb__caro-wrap__inner div,
@@ -354,7 +354,7 @@
   overflow: hidden;
 }
 
-.pb__caro-item .paragraph .pb__content-full {
+.pb__caro-item .paragraphs-bundles .pb__content-full {
   height: 100%;
   overflow: hidden;
 }
@@ -378,10 +378,10 @@
    Card Variants
    ========================================================================== */
 
-.pb__caro-item > .paragraph.pb__card_2,
-.pb__caro-item > .paragraph > .pb__card_2,
-.pb__caro-item > .paragraph.pb__card_4,
-.pb__caro-item > .paragraph > .pb__card_4 {
+.pb__caro-item > .paragraphs-bundles.pb__card_2,
+.pb__caro-item > .paragraphs-bundles > .pb__card_2,
+.pb__caro-item > .paragraphs-bundles.pb__card_4,
+.pb__caro-item > .paragraphs-bundles > .pb__card_4 {
   margin-block: 0;
   margin-inline: auto;
   width: 100%;
@@ -389,25 +389,25 @@
 }
 
 @media (max-width: 35.99875rem) {
-  .pb__caro-item > .paragraph.pb__card_2,
-  .pb__caro-item > .paragraph > .pb__card_2,
-  .pb__caro-item > .paragraph.pb__card_4,
-  .pb__caro-item > .paragraph > .pb__card_4 {
+  .pb__caro-item > .paragraphs-bundles.pb__card_2,
+  .pb__caro-item > .paragraphs-bundles > .pb__card_2,
+  .pb__caro-item > .paragraphs-bundles.pb__card_4,
+  .pb__caro-item > .paragraphs-bundles > .pb__card_4 {
     box-shadow: none;
   }
 }
 
 @media (min-width: 36rem) {
-  .pb__caro-item > .paragraph.pb__card_2,
-  .pb__caro-item > .paragraph > .pb__card_2 {
+  .pb__caro-item > .paragraphs-bundles.pb__card_2,
+  .pb__caro-item > .paragraphs-bundles > .pb__card_2 {
     margin-block: var(--pb-px10);
     margin-inline: auto;
     width: calc(100% - var(--pb-px24));
     height: calc(100% - var(--pb-px24));
   }
 
-  .pb__caro-item > .paragraph.pb__card_4,
-  .pb__caro-item > .paragraph > .pb__card_4 {
+  .pb__caro-item > .paragraphs-bundles.pb__card_4,
+  .pb__caro-item > .paragraphs-bundles > .pb__card_4 {
     margin-block: var(--pb-px20);
     margin-inline: auto;
     height: calc(100% - var(--pb-px48));

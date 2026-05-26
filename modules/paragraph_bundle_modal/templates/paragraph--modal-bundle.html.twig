@@ -51,6 +51,7 @@
 {# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
+  'paragraphs-bundles',
   'pb__modal-wrapper pb__content-full',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
@@ -131,7 +132,7 @@
   <div class="pb-modal" id="{{ paragraph_id }}-win" role="dialog" aria-labelledby="{{ paragraph_id }}-label" aria-hidden="true">
 
     {# Render the paragraph. #}
-    <div class="paragraph pb-modal-content {{ pb_animated_modal }}">
+    <div class="paragraph paragraphs-bundles pb-modal-content {{ pb_animated_modal }}">
       <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
         <div class="pb-modal-header">

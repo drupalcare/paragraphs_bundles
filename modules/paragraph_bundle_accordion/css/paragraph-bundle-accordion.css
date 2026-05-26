@@ -48,7 +48,7 @@
 
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
 .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraph > .paragraph__inner {
+.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraphs-bundles > .paragraph__inner {
   padding-block-start: 0;
 }
 
@@ -56,7 +56,7 @@
    Accordion Button
    ========================================================================== */
 
-.paragraph.paragraph--type--accordion-bundle .pb__accor-button {
+.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button {
   display: flex;
   width: 100%;
   flex-grow: 1;
@@ -74,13 +74,13 @@
   display: flex;
 }
 
-.paragraph.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
+.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
   margin-inline-start: auto;
 }
 
 
 /* Button focus state for accessibility */
-.paragraph.paragraph--type--accordion-bundle .pb__accor-button:focus-visible {
+.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: -2px;
 }
@@ -89,7 +89,7 @@
    Accordion Pane
    ========================================================================== */
 
-.paragraph.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
+.paragraphs-bundles.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
   display: none;
 }
 
@@ -212,7 +212,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item,
-  .paragraph.paragraph--type--accordion-bundle .pb__accor-button,
+  .paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button,
   .paragraph--type--accordion-bundle .pb__ex-button .pb__button,
   .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
   .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__minus-svg,

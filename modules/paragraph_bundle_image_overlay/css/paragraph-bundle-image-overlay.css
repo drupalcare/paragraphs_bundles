@@ -15,7 +15,7 @@
   height: 100%;
 }
 
-.paragraph div:hover a.pb__link {
+.paragraphs-bundles div:hover a.pb__link {
   cursor: pointer;
 }
 

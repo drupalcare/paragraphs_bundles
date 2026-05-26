@@ -66,7 +66,7 @@
   z-index: 1001;
 }
 
-.paragraph .pb__card-image-section__inner .pb__img-wrapper {
+.paragraphs-bundles .pb__card-image-section__inner .pb__img-wrapper {
   width: 100%;
   display: block;
 }

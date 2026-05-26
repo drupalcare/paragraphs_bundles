@@ -62,17 +62,17 @@
   }
 
   /**
-   * Compute and apply the single collapse state class on the .paragraph wrapper.
+   * Compute and apply the single collapse state class on the .paragraphs-bundles wrapper.
    *
    * Reads which columns have [data-collapsed], builds the class name
    * (e.g. "left-is-collapsed", "left-right-collapsed"), and sets it
-   * on the closest .paragraph ancestor. Removes all other state classes first.
+   * on the closest .paragraphs-bundles ancestor. Removes all other state classes first.
    *
    * @param {HTMLElement} grid
    *   The grid container (.pb__two-columns or .pb__three-columns).
    */
   function updateCollapseClass(grid) {
-    var paragraph = grid.closest('.paragraph');
+    var paragraph = grid.closest('.paragraphs-bundles');
     if (!paragraph) {
       return;
     }
@@ -515,7 +515,7 @@
    *   The sticky column element.
    */
   function fixStickyAncestors(stickyEl) {
-    var paragraph = stickyEl.closest('.paragraph');
+    var paragraph = stickyEl.closest('.paragraphs-bundles');
     var el = stickyEl.parentElement;
     while (el && paragraph && paragraph.contains(el)) {
       if (getComputedStyle(el).overflow !== 'visible') {

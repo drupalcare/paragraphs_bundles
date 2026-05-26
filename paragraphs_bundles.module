@@ -45,6 +45,79 @@ function paragraphs_bundles__helper_render_readme() {
 }
 
 /**
+ * Paragraph bundle machine names provided by Paragraphs Bundles (and submodules).
+ *
+ * Built from optional paragraphs.paragraphs_type.*.yml config in enabled modules.
+ *
+ * @return string[]
+ *   Sorted unique bundle IDs.
+ */
+function paragraphs_bundles_get_bundle_machine_names(): array {
+  static $bundles = NULL;
+  if ($bundles !== NULL) {
+    return $bundles;
+  }
+
+  $bundles = [];
+  $module_handler = \Drupal::moduleHandler();
+  $extension_list = \Drupal::service('extension.list.module');
+
+  $module_names = ['paragraphs_bundles'];
+  foreach (array_keys($module_handler->getModuleList()) as $name) {
+    if (str_starts_with($name, 'paragraph_bundle_')) {
+      $module_names[] = $name;
+    }
+  }
+
+  foreach (array_unique($module_names) as $module_name) {
+    if (!$module_handler->moduleExists($module_name)) {
+      continue;
+    }
+    $optional_path = $extension_list->getPath($module_name) . '/config/optional';
+    if (!is_dir($optional_path)) {
+      continue;
+    }
+    foreach (glob($optional_path . '/paragraphs.paragraphs_type.*.yml') ?: [] as $file) {
+      if (preg_match('/paragraphs\.paragraphs_type\.(.+)\.yml$/', basename($file), $matches)) {
+        $bundles[] = $matches[1];
+      }
+    }
+  }
+
+  $bundles = array_values(array_unique($bundles));
+  sort($bundles);
+  return $bundles;
+}
+
+/**
+ * Whether a paragraph bundle is owned by Paragraphs Bundles.
+ */
+function paragraphs_bundles_paragraph_is_managed_bundle(string $bundle): bool {
+  return in_array($bundle, paragraphs_bundles_get_bundle_machine_names(), TRUE);
+}
+
+/**
+ * Implements hook_preprocess_paragraph().
+ */
+function paragraphs_bundles_preprocess_paragraph(array &$variables): void {
+  if (empty($variables['paragraph']) || !paragraphs_bundles_paragraph_is_managed_bundle($variables['paragraph']->bundle())) {
+    return;
+  }
+  $classes = &$variables['attributes']['class'];
+  // attributes['class'] may be unset (NULL) or a single string at preprocess
+  // time; normalize before manipulating it.
+  if (!is_array($classes)) {
+    $classes = (array) $classes;
+  }
+  // Pin the order to "paragraph paragraphs-bundles …". attributes are merged
+  // ahead of the Twig classes array and addClass() de-dupes keeping the first
+  // occurrence, so seeding both here (in order) fixes their position whether or
+  // not the template — including a theme override — also lists them.
+  $classes = array_values(array_diff($classes, ['paragraph', 'paragraphs-bundles']));
+  array_unshift($classes, 'paragraph', 'paragraphs-bundles');
+}
+
+/**
  * Implements hook_theme().
  */
 function paragraphs_bundles_theme($existing, $type, $theme, $path) {

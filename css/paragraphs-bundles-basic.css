@@ -64,12 +64,30 @@
   --pb-text-align-end: left;
 }
 
-.paragraph * {
+.paragraphs-bundles,
+.paragraphs-bundles * {
   box-sizing: border-box;
 }
 
-.paragraph a,
-.paragraph button {
+/*
+ * Reset theme button/link styles only on Paragraphs Bundles controls.
+ * Scope to .paragraphs-bundles — not bare .paragraphs-bundles (used by all paragraph types).
+ */
+.paragraphs-bundles :is(
+  a.pb__link,
+  .pb__button,
+  .pb__tab-button,
+  .pb__accor-button,
+  .pb__toggle-all,
+  .pb-col-toggle,
+  .pb__close-alert,
+  .pb__expand-grid,
+  .pb__close-grid,
+  .pb__modal-prev,
+  .pb__modal-next
+),
+.paragraphs-bundles.paragraph--type--icon-bundle .pb__icon-header > a,
+.paragraphs-bundles.paragraph--type--simple-bundle .field--name-pb-content-link a {
   all: unset;
   outline: revert;
   box-sizing: border-box;
@@ -77,8 +95,8 @@
 }
 
 /* Button */
-.paragraph .button,
-.paragraph .pb__button {
+.paragraphs-bundles .button,
+.paragraphs-bundles .pb__button {
   display: inline-flex;
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
@@ -100,30 +118,30 @@
   user-select: none;
 }
 
-.paragraph a.pb__link {
+.paragraphs-bundles a.pb__link {
   z-index: 1;
   display: block;
 }
 
-.paragraph .pb__row:after,
-.paragraph .pb__row:before {
+.paragraphs-bundles .pb__row:after,
+.paragraphs-bundles .pb__row:before {
   content: "";
   display: table;
   clear: both;
 }
 
-.paragraph .pb__bar {
+.paragraphs-bundles .pb__bar {
   width: 100%;
   overflow: hidden;
 }
 
-.paragraph .pb__bar .button,
-.paragraph .pb__bar .pb__button {
+.paragraphs-bundles .pb__bar .button,
+.paragraphs-bundles .pb__bar .pb__button {
   white-space: normal;
 }
 
-.paragraph .pb__bar:before,
-.paragraph .pb__bar:after {
+.paragraphs-bundles .pb__bar:before,
+.paragraphs-bundles .pb__bar:after {
   content: "";
   display: table;
   clear: both;

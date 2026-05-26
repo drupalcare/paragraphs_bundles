@@ -24,7 +24,7 @@
 }
 
 /* Flex layout for nested divs */
-.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraph,
+.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraphs-bundles,
 .paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraph__inner {
   display: flex;
   flex-direction: column;

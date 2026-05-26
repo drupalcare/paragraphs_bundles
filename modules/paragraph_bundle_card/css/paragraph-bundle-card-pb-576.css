@@ -71,8 +71,8 @@
     grid-template-columns: 1fr 1fr 3fr;
   }
 
-  .pb__card-two-columns .paragraph,
-  .pb__card-three-columns .paragraph,
+  .pb__card-two-columns .paragraphs-bundles,
+  .pb__card-three-columns .paragraphs-bundles,
   .pb__card-two-columns .paragraph__inner,
   .pb__card-three-columns .paragraph__inner {
     display: flex;

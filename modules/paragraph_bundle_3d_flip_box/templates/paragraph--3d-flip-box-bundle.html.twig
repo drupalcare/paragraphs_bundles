@@ -49,6 +49,7 @@
 {# Set paragraph classes #}
 {% set classes = [
   'paragraph',
+  'paragraphs-bundles',
   'paragraph--type--3d-flip-box-bundle',
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',

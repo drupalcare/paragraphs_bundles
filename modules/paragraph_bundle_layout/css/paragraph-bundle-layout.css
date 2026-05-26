@@ -6,8 +6,8 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph .pb__two-columns,
-.paragraph .pb__three-columns {
+.paragraphs-bundles .pb__two-columns,
+.paragraphs-bundles .pb__three-columns {
   grid-auto-flow: row;
   gap: var(--pb-px16);
   display: grid;
@@ -18,13 +18,13 @@
  * With column-gap: 0, add a single gutter between adjacent visible columns
  * using padding-inline-start on the second+ visible column (general sibling).
  * Set on the grid by paragraph-bundle-layout.js: .has-collapsed-col. */
-.paragraph .pb__two-columns.has-collapsed-col,
-.paragraph .pb__three-columns.has-collapsed-col {
+.paragraphs-bundles .pb__two-columns.has-collapsed-col,
+.paragraphs-bundles .pb__three-columns.has-collapsed-col {
   column-gap: 0;
 }
 
-.paragraph .pb__two-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]),
-.paragraph .pb__three-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]) {
+.paragraphs-bundles .pb__two-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]),
+.paragraphs-bundles .pb__three-columns.has-collapsed-col > [data-col]:not([data-collapsed]) ~ [data-col]:not([data-collapsed]) {
   padding-inline-start: var(--pb-px16);
 }
 
@@ -33,38 +33,38 @@
  * .has-single-visible-col — expand mode, only one column visible
  * .has-two-visible-cols — three-column grid, exactly two columns visible */
 
-.paragraph .pb__two-columns > *,
-.paragraph .pb__three-columns > * {
+.paragraphs-bundles .pb__two-columns > *,
+.paragraphs-bundles .pb__three-columns > * {
   min-inline-size: 0;
 }
 
-.paragraph .pb__two-columns > div,
-.paragraph .pb__three-columns > div,
-.paragraph .pb__two-columns .paragraph,
-.paragraph .pb__three-columns .paragraph {
+.paragraphs-bundles .pb__two-columns > div,
+.paragraphs-bundles .pb__three-columns > div,
+.paragraphs-bundles .pb__two-columns .paragraphs-bundles,
+.paragraphs-bundles .pb__three-columns .paragraphs-bundles {
   display: flex;
   flex-direction: column;
   inline-size: 100%;
   justify-content: start;
 }
 
-.paragraph .pb__two-columns > div:not(.plus-one),
-.paragraph .pb__three-columns > div:not(.plus-one),
-.paragraph .pb__two-columns .paragraph:not(.plus-one),
-.paragraph .pb__three-columns .paragraph:not(.plus-one),
-.paragraph .pb__two-columns > div.plus-one > *:last-child,
-.paragraph .pb__three-columns > div.plus-one > *:last-child,
-.paragraph .pb__two-columns > div.plus-one .paragraph:last-child,
-.paragraph .pb__three-columns > div.plus-one .paragraph:last-child {
+.paragraphs-bundles .pb__two-columns > div:not(.plus-one),
+.paragraphs-bundles .pb__three-columns > div:not(.plus-one),
+.paragraphs-bundles .pb__two-columns .paragraphs-bundles:not(.plus-one),
+.paragraphs-bundles .pb__three-columns .paragraphs-bundles:not(.plus-one),
+.paragraphs-bundles .pb__two-columns > div.plus-one > *:last-child,
+.paragraphs-bundles .pb__three-columns > div.plus-one > *:last-child,
+.paragraphs-bundles .pb__two-columns > div.plus-one .paragraphs-bundles:last-child,
+.paragraphs-bundles .pb__three-columns > div.plus-one .paragraphs-bundles:last-child {
   flex-grow: 1;
   block-size: 100%;
 }
 
-.paragraph .pb__two-columns__inner,
-.paragraph .pb__three-columns__inner {
+.paragraphs-bundles .pb__two-columns__inner,
+.paragraphs-bundles .pb__three-columns__inner {
   overflow-anchor: none;
 }
 
-.paragraph .pb-col-toggle {
+.paragraphs-bundles .pb-col-toggle {
   display: none;
 }
