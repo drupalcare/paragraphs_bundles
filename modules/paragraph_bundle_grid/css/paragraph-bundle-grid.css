@@ -2,12 +2,14 @@
  * @file
  * Paragraph Bundle Grid.
  *
+ * Scoping contract: `.paragraphs-bundles.pb-grid` - never `.paragraph--type--*`.
+ *
  * Filename:     paragraph-bundle-grid.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-.paragraph--type--grid-bundle .pb__grid-wrapper {
+.paragraphs-bundles.pb-grid .pb-grid__wrapper {
   display: grid;
   grid-auto-columns: 100%;
   gap: 1rem;
@@ -19,15 +21,31 @@
   align-items: start;
 }
 
-.paragraph--type--grid-bundle .pb__grid-wrapper > * {
+.paragraphs-bundles.pb-grid .pb-grid__wrapper > * {
   min-width: 0;
 }
 
-/* Flex layout for nested divs */
-.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraphs-bundles,
-.paragraph--type--grid-bundle .pb__grid-wrapper .pb__multi-column .paragraph__inner {
+/* Flex layout for nested layout columns inside grid cells. */
+.paragraphs-bundles.pb-grid .pb-grid__wrapper .pb-layout__multi-column .paragraphs-bundles,
+.paragraphs-bundles.pb-grid .pb-grid__wrapper .pb-layout__multi-column .pb-ui-inner {
   display: flex;
   flex-direction: column;
   width: 100%;
   justify-content: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Grid layout only; no motion. */
+}
+
+@media (prefers-contrast: high) {
+  /* Grid layout only. */
+}
+
+@media (forced-colors: active) {
+  /* Grid layout only. */
+}
+
+@media print {
+  /* Grid layout only. */
 }

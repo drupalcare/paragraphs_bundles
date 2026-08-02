@@ -1,7 +1,10 @@
-name: Paragraph Bundle Grid
+name: 'Paragraph Bundle Grid'
 type: module
-description: A reusable Paragraph Bundle Grid. Displays content in a grid layout, adjustable between one and twelve columns.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Responsive CSS grid paragraph with configurable columns, gap, and nested body items.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
