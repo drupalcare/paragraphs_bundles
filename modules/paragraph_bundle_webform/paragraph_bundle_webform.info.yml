@@ -1,8 +1,8 @@
-name: Paragraph Bundle Webform
+name: 'Paragraph Bundle Webform'
 type: module
-description: A reusable Paragraph Bundle Webform.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Embed a Webform inside a paragraph.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - webform:webform
   - paragraphs_bundles:paragraphs_bundles

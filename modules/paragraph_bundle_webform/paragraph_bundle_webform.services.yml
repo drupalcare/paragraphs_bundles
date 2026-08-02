@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_webform\Hook\PbwThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_webform\Hook\PbwThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_webform\Hook\PbwHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

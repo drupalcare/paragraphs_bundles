@@ -1,24 +1,12 @@
 {
     "name": "drupal/paragraph_bundle_webform",
-    "description": "A reusable Paragraph bundle Webform.",
+    "description": "Embed a Webform inside a paragraph.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
-    "authors": [
-        {
-            "name": "Alaa Haddad (alaahaddad.com)",
-            "homepage": "https://www.drupal.org/u/flashwebcenter",
-            "role": "Maintainer"
-        }
-    ],
-    "homepage": "https://drupal.org/project/paragraph_bundle_webform",
-  "require": {
-    "drupal/core": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
-    "support": {
-        "issues": "https://drupal.org/project/issues/paragraph_bundle_webform",
-        "source": "https://git.drupalcode.org/project/paragraph_bundle_webform"
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*",
+        "drupal/webform": "^6.2"
     }
 }
-
