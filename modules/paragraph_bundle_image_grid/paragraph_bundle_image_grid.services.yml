@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_image_grid\Hook\PbigThemeHook: {}
+
+  Drupal\paragraph_bundle_image_grid\Hook\PbigHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
+
+  Drupal\paragraph_bundle_image_grid\Hook\PbigPreprocessSectionHook:
+    arguments:
+      - '@entity_type.manager'
