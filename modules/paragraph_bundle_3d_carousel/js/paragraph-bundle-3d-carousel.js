@@ -1,539 +1,535 @@
 /**
  * @file
- * Provides 3D carousel functionality for paragraph bundle.
+ * Paragraph Bundle 3D Carousel.
  *
- * Supports multiple carousels on the page, auto-rotation, keyboard navigation,
- * and both infinite loop and optional rewind behavior.
- * Ping-Pong Carousel: Plays forward to the last slide, then reverses back to the first slide.
+ * 3D ring carousel with autoplay, keyboard navigation, touch, and
+ * ping-pong slide behavior at the ends.
  *
  * Filename:     paragraph-bundle-3d-carousel.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-((Drupal, drupalSettings, once) => {
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
+
+((Drupal, once) => {
   'use strict';
 
-  /**
-   * Map to store carousel state objects keyed by carousel ID.
-   *
-   * @type {Map<string, Object>}
-   */
-  const carouselStates = new Map();
+  const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
+  const PB_3D_CAROUSEL = 'pb-3d-carousel';
+  const PB_3D_CAROUSEL__RING = 'pb-3d-carousel__ring';
+  const PB_3D_CAROUSEL__SLIDE = 'pb-3d-carousel__slide';
+  const PB_NAV__PLAY = 'pb-nav__play';
+  const PB_NAV__PAUSE = 'pb-nav__pause';
+  const PB_NAV__PLAY_ICON = 'pb-nav__play-icon';
+  const PB_NAV__PAUSE_ICON = 'pb-nav__pause-icon';
+  const PB_NAV__PREV = 'pb-nav__prev';
+  const PB_NAV__NEXT = 'pb-nav__next';
+  const PB_IS_ACTIVE = 'pb-is-active';
 
-  /**
-   * Map to track previous visibility state for each carousel.
-   *
-   * @type {Map<string, boolean>}
-   */
-  const previousVisibility = new Map();
+  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL =
+    `.${PARAGRAPHS_BUNDLES}.${PB_3D_CAROUSEL}`;
+  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING =
+    `${PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL} .${PB_3D_CAROUSEL__RING}`;
 
-  /**
-   * Last known window width for resize detection.
-   *
-   * @type {number}
-   */
-  let lastKnownWidth = window.innerWidth;
+  const PB_3D_CAROUSEL__RING_OWNED_SLIDE =
+    `:scope > .${PB_3D_CAROUSEL__SLIDE}`;
 
-  /**
-   * Timeout ID for resize debouncing.
-   *
-   * @type {number|undefined}
-   */
-  let resizeTimeout;
+  const ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING =
+    'pb-paragraph-bundle-3d-carousel-ring';
 
   /**
    * Debounce utility to limit function execution frequency.
    *
    * @param {Function} func - The function to debounce.
    * @param {number} delay - Delay in milliseconds.
-   * @returns {Function} Debounced function.
+   * @return {Function} Debounced function.
    */
-  function debounce(func, delay) {
+  const debounce = (func, delay) => {
     let timer;
-    return function(...args) {
+    return (...args) => {
       clearTimeout(timer);
-      timer = setTimeout(() => func.apply(this, args), delay);
+      timer = setTimeout(() => func(...args), delay);
     };
-  }
-
-  /**
-   * SVG icon for play button state.
-   *
-   * @type {string}
-   */
-  const playIcon = `
-    <span class="visually-hidden">Play and Stop Slideshow</span>
-    <span><svg class="svg-play" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor" aria-hidden="true">
-      <path d="m380-300 280-180-280-180v360ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path>
-    </svg></span>`;
-
-  /**
-   * SVG icon for pause button state.
-   *
-   * @type {string}
-   */
-  const pauseIcon = `
-    <span class="visually-hidden">Play and Stop Slideshow</span>
-    <span><svg class="svg-pause" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor" aria-hidden="true"><path d="M360-320h80v-320h-80v320Zm160 0h80v-320h-80v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg></span>`;
-
-  /**
-   * Drupal behavior for 3D Carousel initialization.
-   */
-  Drupal.behaviors.paragraphBundleCarousel = {
-    attach(context) {
-      once('paragraphBundleCarousel', '.pb__3d-carousel', context).forEach(initCarousel);
-
-      // Attach visibility change listener only once globally
-      if (!document.vvjCarouselVisibilityAttached) {
-        document.vvjCarouselVisibilityAttached = true;
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-      }
-    }
   };
 
-  /**
-   * Initializes a single carousel instance.
-   *
-   * @param {HTMLElement} carousel - The carousel container element.
-   */
-  function initCarousel(carousel) {
-    const carouselId = carousel.id;
-    const uniqueId = carouselId.split('-')[2];
-
-    const state = {
-      container: carousel,
-      cells: carousel.querySelectorAll('.pb__caro-item'),
-      currentIndex: 0,
-      isPaused: false,
-      intervalId: null,
-      direction: 1,
-      rotationDelay: parseInt(carousel.getAttribute('data-rotation-delay'), 10) || 0,
-      slideNumberElement: document.getElementById(`index-${uniqueId}`),
-      prevButton: document.getElementById(`prev-${uniqueId}`),
-      nextButton: document.getElementById(`next-${uniqueId}`),
-      playPauseButton: document.getElementById(`btn-${uniqueId}`)
-    };
-
-    // Early exit if no cells
-    if (state.cells.length === 0) {
-      return;
-    }
-
-    const initiallyVisible = isMostlyVisible(state.container);
-    previousVisibility.set(carousel.id, initiallyVisible);
-    carouselStates.set(carousel.id, state);
-
-    if (state.rotationDelay <= 0) {
-      state.isPaused = true;
-      updatePlayPauseButton(state, true);
-    }
-
-    buildCarousel(state);
-    setupControls(state);
-    setupTouchEvents(state);
-    updateSlide(state);
-
-    // Only start autoPlay if it's visible and not paused
-    if (initiallyVisible && !state.isPaused) {
-      startAutoPlay(state);
-    }
-
-    Drupal.debug && Drupal.debug(`3D Carousel initialized: ${carouselId}`);
-  }
-
-  /**
-   * Builds the 3D carousel layout by positioning cells in a circle.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function buildCarousel(state) {
-    const { cells, container } = state;
-    const cellCount = cells.length;
-
-    if (cellCount === 0) {
-      return;
-    }
-
-    const theta = 360 / cellCount;
-    const radius = Math.round(container.offsetWidth / 2 / Math.tan(Math.PI / cellCount));
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    cells.forEach((cell, i) => {
-      cell.style.opacity = '1';
-      cell.style.transform = `rotateY(${theta * i}deg) translateZ(${radius}px)`;
-      if (reducedMotion) {
-        cell.style.transition = 'none';
-      }
-    });
-
-    if (reducedMotion) {
-      container.style.transition = 'none';
-    }
-
-    cells[0].classList.add('active');
-    updateNavVisibility(state);
-  }
-
-  /**
-   * Sets up control button event listeners.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function setupControls(state) {
-    state.nextButton?.addEventListener('click', () => manualAdvance(state, 1));
-    state.prevButton?.addEventListener('click', () => manualAdvance(state, -1));
-
-    if (state.playPauseButton) {
-      state.playPauseButton.style.display = 'flex';
-      state.playPauseButton.addEventListener('click', () => togglePlayPause(state));
-      state.playPauseButton.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          togglePlayPause(state);
-        }
-      });
-    }
-
-    // Scoped keyboard navigation
-    state.container.addEventListener('keydown', (event) => {
-      if (event.key === 'ArrowRight') {
-        manualAdvance(state, 1);
-      } else if (event.key === 'ArrowLeft') {
-        manualAdvance(state, -1);
-      }
-    });
-
-    // Pause on hover
-    state.container.addEventListener('mouseenter', () => pauseAutoPlay(state));
-    state.container.addEventListener('mouseleave', () => resumeAutoPlay(state));
-  }
-
-  /**
-   * Handles manual slide advancement via controls.
-   *
-   * @param {Object} state - The carousel state object.
-   * @param {number} direction - Direction to advance (1 for next, -1 for previous).
-   */
-  function manualAdvance(state, direction) {
-    state.direction = direction;
-    advanceSlide(state);
-    restartAutoPlay(state);
-  }
-
-  /**
-   * Advances the carousel to the next/previous slide with ping-pong behavior.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function advanceSlide(state) {
-    const { cells } = state;
-    const cellCount = cells.length;
-
-    state.currentIndex += state.direction;
-
-    if (state.currentIndex >= cellCount) {
-      // Bounce immediately to previous slide
-      state.currentIndex = cellCount - 2;
-      state.direction = -1;
-    } else if (state.currentIndex < 0) {
-      // Bounce immediately to next slide
-      state.currentIndex = 1;
-      state.direction = 1;
-    }
-
-    updateSlide(state);
-  }
-
-  /**
-   * Updates the visual state of the carousel to reflect the current slide.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function updateSlide(state) {
-    const { cells, currentIndex, slideNumberElement, container } = state;
-    const cellCount = cells.length;
-
-    if (cellCount === 0) {
-      return;
-    }
-
-    const theta = 360 / cellCount;
-    const radius = Math.round(container.offsetWidth / 2 / Math.tan(Math.PI / cellCount));
-    const angle = theta * currentIndex * -1;
-
-    container.style.transition = 'transform 0.8s ease-in-out';
-    container.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
-
-    cells.forEach((cell, index) => {
-      const isActive = index === currentIndex;
-      cell.setAttribute('aria-hidden', String(!isActive));
-      updateFocusableElements(cell, isActive);
-      if (isActive) {
-        cell.classList.add('pb__active');
-      } else {
-        cell.classList.remove('pb__active');
-      }
-    });
-
-    if (slideNumberElement) {
-      slideNumberElement.setAttribute('aria-label', `Slide ${currentIndex + 1} of ${cellCount}`);
-      slideNumberElement.textContent = currentIndex + 1;
-    }
-
-    updateNavVisibility(state);
-  }
-
-  /**
-   * Updates tabindex for focusable elements within a cell.
-   *
-   * @param {HTMLElement} cell - The carousel cell element.
-   * @param {boolean} isActive - Whether the cell is currently active.
-   */
-  function updateFocusableElements(cell, isActive) {
-    cell.querySelectorAll('a, button, input, textarea, select, [tabindex]').forEach(el => {
-      el.setAttribute('tabindex', isActive ? '0' : '-1');
-    });
-  }
-
-  /**
-   * Updates the visibility of prev/next navigation buttons.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function updateNavVisibility(state) {
-    const { currentIndex, prevButton, nextButton, cells } = state;
-
-    if (prevButton) {
-      if (currentIndex === 0) {
-        prevButton.classList.add('btn-hidden');
-        prevButton.setAttribute('tabindex', '-1');
-      } else {
-        prevButton.classList.remove('btn-hidden');
-        prevButton.setAttribute('tabindex', '0');
-      }
-    }
-
-    if (nextButton) {
-      if (currentIndex === cells.length - 1) {
-        nextButton.classList.add('btn-hidden');
-        nextButton.setAttribute('tabindex', '-1');
-      } else {
-        nextButton.classList.remove('btn-hidden');
-        nextButton.setAttribute('tabindex', '0');
-      }
-    }
-  }
-
-  /**
-   * Toggles the play/pause state of the carousel.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function togglePlayPause(state) {
-    state.isPaused = !state.isPaused;
-    updatePlayPauseButton(state, state.isPaused);
-
-    if (state.isPaused) {
-      pauseAutoPlay(state);
-    } else {
-      restartAutoPlay(state);
-    }
-  }
-
-  /**
-   * Updates the play/pause button visual state.
-   *
-   * @param {Object} state - The carousel state object.
-   * @param {boolean} isPaused - Whether the carousel is paused.
-   */
-  function updatePlayPauseButton(state, isPaused) {
-    if (!state.playPauseButton) {
-      return;
-    }
-
-    if (isPaused) {
-      state.playPauseButton.classList.remove('pb__pause');
-      state.playPauseButton.classList.add('pb__play');
-      state.playPauseButton.innerHTML = playIcon;
-      state.playPauseButton.setAttribute('aria-label', 'Play slideshow');
-      state.playPauseButton.setAttribute('aria-pressed', 'false');
-    } else {
-      state.playPauseButton.classList.remove('pb__play');
-      state.playPauseButton.classList.add('pb__pause');
-      state.playPauseButton.innerHTML = pauseIcon;
-      state.playPauseButton.setAttribute('aria-label', 'Pause slideshow');
-      state.playPauseButton.setAttribute('aria-pressed', 'true');
-    }
-  }
-
-  /**
-   * Sets up touch event listeners for swipe navigation.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function setupTouchEvents(state) {
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    state.container.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-    }, { passive: true });
-
-    state.container.addEventListener('touchmove', (e) => {
-      touchEndX = e.touches[0].clientX;
-    }, { passive: true });
-
-    state.container.addEventListener('touchend', () => {
-      handleSwipe(state, touchStartX, touchEndX);
-    });
-  }
-
-  /**
-   * Handles swipe gestures for navigation.
-   *
-   * @param {Object} state - The carousel state object.
-   * @param {number} startX - Starting X coordinate of the touch.
-   * @param {number} endX - Ending X coordinate of the touch.
-   */
-  function handleSwipe(state, startX, endX) {
-    const swipeThreshold = 50; // Minimum distance to count as a swipe
-
-    if (startX - endX > swipeThreshold) {
-      // Swiped left = next slide
-      manualAdvance(state, 1);
-    } else if (endX - startX > swipeThreshold) {
-      // Swiped right = previous slide
-      manualAdvance(state, -1);
-    }
-  }
-
-  /**
-   * Starts the automatic slide rotation.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function startAutoPlay(state) {
-    if (state.intervalId) {
-      clearInterval(state.intervalId);
-      state.intervalId = null;
-    }
-
-    if (state.rotationDelay > 0 && !state.isPaused) {
-      state.intervalId = setInterval(() => advanceSlide(state), state.rotationDelay);
-    }
-  }
-
-  /**
-   * Pauses the automatic slide rotation.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function pauseAutoPlay(state) {
-    if (state.intervalId) {
-      clearInterval(state.intervalId);
-      state.intervalId = null;
-    }
-  }
-
-  /**
-   * Resumes automatic rotation if not manually paused.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function resumeAutoPlay(state) {
-    if (!state.isPaused) {
-      startAutoPlay(state);
-    }
-  }
-
-  /**
-   * Handles document visibility changes (tab switching).
-   */
-  function handleVisibilityChange() {
-    carouselStates.forEach((state) => {
-      if (document.hidden) {
-        pauseAutoPlay(state);
-      } else if (isMostlyVisible(state.container) && !state.isPaused) {
-        updateSlide(state);
-        startAutoPlay(state);
-      }
-    });
-  }
-
-  /**
-   * Restarts autoplay by stopping and starting again.
-   *
-   * @param {Object} state - The carousel state object.
-   */
-  function restartAutoPlay(state) {
-    pauseAutoPlay(state);
-    startAutoPlay(state);
-  }
-
-  /**
-   * Resets all carousels to their initial state.
-   */
-  const resetCarousel = () => {
-    carouselStates.forEach((state) => {
-      state.currentIndex = 0;
-      state.direction = 1;
-      buildCarousel(state);
-      updateSlide(state);
-      restartAutoPlay(state);
-    });
-  };
+  /** @type {WeakMap<HTMLElement, () => void>} */
+  const ringCleanupHandlers = new WeakMap();
 
   /**
    * Checks if an element is mostly visible in the viewport.
    *
    * @param {HTMLElement} element - The element to check.
-   * @returns {boolean} True if more than 20% of the element is visible.
+   * @return {boolean} True if more than 20% of the element is visible.
    */
   const isMostlyVisible = (element) => {
     const rect = element.getBoundingClientRect();
-    const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+    if (rect.height <= 0) {
+      return false;
+    }
+    const visibleHeight = Math.min(rect.bottom, window.innerHeight)
+      - Math.max(rect.top, 0);
     return visibleHeight / rect.height > 0.2;
   };
 
-  /**
-   * Handles carousel visibility changes during scrolling.
-   */
-  function handleCarouselVisibility() {
-    carouselStates.forEach((state, carouselId) => {
-      const currentlyVisible = isMostlyVisible(state.container);
-      const wasVisible = previousVisibility.get(carouselId) ?? false;
+  Drupal.behaviors.paragraphBundle3dCarousel = {
+    attach(context) {
+      const rings = once(
+        ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING,
+        PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING,
+        context,
+      );
 
-      if (currentlyVisible !== wasVisible) {
-        previousVisibility.set(carouselId, currentlyVisible);
-        if (currentlyVisible && !state.isPaused) {
-          startAutoPlay(state);
-        } else {
-          pauseAutoPlay(state);
+      rings.forEach((ring) => {
+        const abortController = new AbortController();
+        const { signal } = abortController;
+
+        const ringId = ring.id;
+        const uniqueId = ringId.replace(/^pb-3d-carousel-ring-/, '');
+        const cells = ring.querySelectorAll(PB_3D_CAROUSEL__RING_OWNED_SLIDE);
+        const cellCount = cells.length;
+
+        if (cellCount === 0) {
+          return;
         }
-      }
-    });
-  }
 
-  /**
-   * Handles window resize and orientation changes.
-   */
-  const handleResizeOrRotate = () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      const newWidth = window.innerWidth;
-      if (Math.abs(newWidth - lastKnownWidth) >= 50) {
-        resetCarousel();
-        lastKnownWidth = newWidth;
+        const root = ring.closest(PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL);
+        const slideNumberElement = document.getElementById(`index-${uniqueId}`);
+        const prevButton = document.getElementById(`prev-${uniqueId}`);
+        const nextButton = document.getElementById(`next-${uniqueId}`);
+        const playPauseButton = document.getElementById(`btn-${uniqueId}`);
+        const playIcon = playPauseButton?.querySelector(
+          `:scope > .${PB_NAV__PLAY_ICON}`,
+        ) ?? null;
+        const pauseIcon = playPauseButton?.querySelector(
+          `:scope > .${PB_NAV__PAUSE_ICON}`,
+        ) ?? null;
+
+        let currentIndex = 0;
+        let direction = 1;
+        let isPaused = false;
+        let intervalId = null;
+        let previousVisibility = isMostlyVisible(ring);
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let lastKnownWidth = window.innerWidth;
+        let resizeTimeout = null;
+
+        const rotationDelay = Number.parseInt(
+          ring.getAttribute('data-rotation-delay'),
+          10,
+        ) || 0;
+
+        if (rotationDelay <= 0) {
+          isPaused = true;
+        }
+
+        // Respect prefers-reduced-motion: start paused so autoplay never runs
+        // automatically; the play/pause control still lets users opt in.
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          isPaused = true;
+        }
+
+        /**
+         * @return {boolean}
+         */
+        const prefersReducedMotion = () =>
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /**
+         * Clears autoplay interval.
+         */
+        const pauseAutoPlay = () => {
+          if (intervalId) {
+            clearInterval(intervalId);
+            intervalId = null;
+          }
+        };
+
+        /**
+         * Starts autoplay when allowed.
+         */
+        const startAutoPlay = () => {
+          pauseAutoPlay();
+          if (
+            cellCount > 1
+            && rotationDelay > 0
+            && !isPaused
+            && isMostlyVisible(ring)
+          ) {
+            intervalId = setInterval(() => advanceSlide(), rotationDelay);
+          }
+        };
+
+        /**
+         * Restarts autoplay after manual navigation.
+         */
+        const restartAutoPlay = () => {
+          pauseAutoPlay();
+          startAutoPlay();
+        };
+
+        /**
+         * Updates play/pause button visuals.
+         *
+         * @param {boolean} paused - Whether autoplay is paused.
+         */
+        const updatePlayPauseButton = (paused) => {
+          if (!playPauseButton) {
+            return;
+          }
+
+          playPauseButton.classList.toggle(PB_NAV__PAUSE, !paused);
+          playPauseButton.classList.toggle(PB_NAV__PLAY, paused);
+          playIcon?.toggleAttribute('hidden', !paused);
+          pauseIcon?.toggleAttribute('hidden', paused);
+          playPauseButton.setAttribute(
+            'aria-label',
+            paused ? Drupal.t('Play slideshow') : Drupal.t('Pause slideshow'),
+          );
+          playPauseButton.setAttribute('aria-pressed', String(!paused));
+        };
+
+        /**
+         * Updates tabindex for focusable elements within a cell.
+         *
+         * @param {HTMLElement} cell - Slide element.
+         * @param {boolean} isActive - Whether the slide is active.
+         */
+        const updateFocusableElements = (cell, isActive) => {
+          cell.querySelectorAll(
+            'a, button, input, textarea, select, [tabindex]',
+          ).forEach((el) => {
+            el.setAttribute('tabindex', isActive ? '0' : '-1');
+          });
+        };
+
+        /**
+         * Updates prev/next button visibility at ends.
+         */
+        const updateNavVisibility = () => {
+          if (prevButton) {
+            const hidden = currentIndex === 0;
+            prevButton.classList.toggle('pb-is-hidden', hidden);
+            prevButton.setAttribute('tabindex', hidden ? '-1' : '0');
+          }
+
+          if (nextButton) {
+            const hidden = currentIndex === cellCount - 1;
+            nextButton.classList.toggle('pb-is-hidden', hidden);
+            nextButton.setAttribute('tabindex', hidden ? '-1' : '0');
+          }
+        };
+
+        /**
+         * Gets stable carousel geometry for the current slide count.
+         *
+         * @return {{theta: number, radius: number}}
+         *   Rotation angle and Z radius.
+         */
+        const getCarouselGeometry = () => {
+          if (cellCount <= 1) {
+            return { theta: 0, radius: 0 };
+          }
+
+          const theta = 360 / cellCount;
+          const radius = Math.round(
+            ring.offsetWidth / 2 / Math.tan(Math.PI / cellCount),
+          );
+
+          return { theta, radius };
+        };
+
+        /**
+         * Positions cells in the 3D ring.
+         */
+        const buildCarousel = () => {
+          const { theta, radius } = getCarouselGeometry();
+          const reducedMotion = prefersReducedMotion();
+
+          cells.forEach((cell, index) => {
+            cell.style.opacity = '1';
+            cell.style.transform =
+              `rotateY(${theta * index}deg) translateZ(${radius}px)`;
+            cell.style.transition = reducedMotion ? 'none' : '';
+          });
+
+          ring.style.transition = reducedMotion ? 'none' : '';
+          cells.forEach((cell) => cell.classList.remove(PB_IS_ACTIVE));
+          cells[0]?.classList.add(PB_IS_ACTIVE);
+          updateNavVisibility();
+        };
+
+        /**
+         * Updates ring transform and slide state.
+         */
+        const updateSlide = () => {
+          const { theta, radius } = getCarouselGeometry();
+          const angle = theta * currentIndex * -1;
+          const reducedMotion = prefersReducedMotion();
+
+          ring.style.transition = reducedMotion
+            ? 'none'
+            : 'transform 0.8s ease-in-out';
+          ring.style.transform =
+            `translateZ(${-radius}px) rotateY(${angle}deg)`;
+
+          cells.forEach((cell, index) => {
+            const isActive = index === currentIndex;
+            cell.setAttribute('aria-hidden', String(!isActive));
+            cell.toggleAttribute('inert', !isActive);
+            updateFocusableElements(cell, isActive);
+            cell.classList.toggle(PB_IS_ACTIVE, isActive);
+          });
+
+          if (slideNumberElement) {
+            slideNumberElement.setAttribute(
+              'aria-label',
+              Drupal.t('Slide @current of @total', {
+                '@current': currentIndex + 1,
+                '@total': cellCount,
+              }),
+            );
+            slideNumberElement.textContent = String(currentIndex + 1);
+          }
+
+          updateNavVisibility();
+        };
+
+        /**
+         * Advances slide with ping-pong behavior.
+         */
+        const advanceSlide = () => {
+          if (cellCount <= 1) {
+            currentIndex = 0;
+            direction = 1;
+            updateSlide();
+            return;
+          }
+
+          currentIndex += direction;
+
+          if (currentIndex >= cellCount) {
+            currentIndex = cellCount - 2;
+            direction = -1;
+          }
+          else if (currentIndex < 0) {
+            currentIndex = 1;
+            direction = 1;
+          }
+
+          updateSlide();
+        };
+
+        /**
+         * Manual navigation handler.
+         *
+         * @param {number} step - Direction step (-1 or 1).
+         */
+        const manualAdvance = (step) => {
+          if (cellCount <= 1) {
+            return;
+          }
+
+          direction = step;
+          advanceSlide();
+          restartAutoPlay();
+        };
+
+        /**
+         * Toggles autoplay.
+         */
+        const togglePlayPause = () => {
+          isPaused = !isPaused;
+          updatePlayPauseButton(isPaused);
+          if (isPaused) {
+            pauseAutoPlay();
+          }
+          else {
+            restartAutoPlay();
+          }
+        };
+
+        /**
+         * Handles swipe gestures.
+         */
+        const handleSwipe = () => {
+          const swipeThreshold = 50;
+          if (touchStartX - touchEndX > swipeThreshold) {
+            manualAdvance(1);
+          }
+          else if (touchEndX - touchStartX > swipeThreshold) {
+            manualAdvance(-1);
+          }
+        };
+
+        /**
+         * Pauses or resumes autoplay based on viewport visibility.
+         */
+        const handleCarouselVisibility = () => {
+          const currentlyVisible = isMostlyVisible(ring);
+          if (currentlyVisible !== previousVisibility) {
+            previousVisibility = currentlyVisible;
+            if (currentlyVisible && !isPaused) {
+              startAutoPlay();
+            }
+            else {
+              pauseAutoPlay();
+            }
+          }
+        };
+
+        /**
+         * Resets ring layout after significant resize.
+         */
+        const handleResizeOrRotate = () => {
+          clearTimeout(resizeTimeout);
+          resizeTimeout = setTimeout(() => {
+            const newWidth = window.innerWidth;
+            if (Math.abs(newWidth - lastKnownWidth) >= 50) {
+              currentIndex = 0;
+              direction = 1;
+              buildCarousel();
+              updateSlide();
+              restartAutoPlay();
+              lastKnownWidth = newWidth;
+            }
+          }, 200);
+        };
+
+        /**
+         * Pauses autoplay when the tab is hidden.
+         */
+        const handleVisibilityChange = () => {
+          if (document.hidden) {
+            pauseAutoPlay();
+          }
+          else if (isMostlyVisible(ring) && !isPaused) {
+            updateSlide();
+            startAutoPlay();
+          }
+        };
+
+        const debouncedHandleVisibility = debounce(handleCarouselVisibility, 200);
+        const debouncedResize = debounce(() => {
+          handleCarouselVisibility();
+          handleResizeOrRotate();
+        }, 200);
+
+        buildCarousel();
+        updatePlayPauseButton(isPaused);
+
+        if (playPauseButton) {
+          playPauseButton.style.display = 'flex';
+        }
+
+        updateSlide();
+
+        if (previousVisibility && !isPaused) {
+          startAutoPlay();
+        }
+
+        nextButton?.addEventListener(
+          'click',
+          () => manualAdvance(1),
+          { signal },
+        );
+        prevButton?.addEventListener(
+          'click',
+          () => manualAdvance(-1),
+          { signal },
+        );
+        playPauseButton?.addEventListener('click', togglePlayPause, { signal });
+        playPauseButton?.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            togglePlayPause();
+          }
+        }, { signal });
+
+        ring.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowRight') {
+            event.preventDefault();
+            manualAdvance(1);
+          }
+          else if (event.key === 'ArrowLeft') {
+            event.preventDefault();
+            manualAdvance(-1);
+          }
+        }, { signal });
+
+        ring.addEventListener('mouseenter', pauseAutoPlay, { signal });
+        ring.addEventListener('mouseleave', () => {
+          if (!isPaused) {
+            startAutoPlay();
+          }
+        }, { signal });
+
+        ring.addEventListener('touchstart', (event) => {
+          touchStartX = event.touches[0].clientX;
+        }, { passive: true, signal });
+        ring.addEventListener('touchmove', (event) => {
+          touchEndX = event.touches[0].clientX;
+        }, { passive: true, signal });
+        ring.addEventListener('touchend', handleSwipe, { signal });
+
+        document.addEventListener(
+          'scroll',
+          debouncedHandleVisibility,
+          { passive: true, signal },
+        );
+        window.addEventListener(
+          'orientationchange',
+          debouncedResize,
+          { signal },
+        );
+        window.addEventListener('resize', debouncedResize, { signal });
+        document.addEventListener(
+          'visibilitychange',
+          handleVisibilityChange,
+          { signal },
+        );
+
+        ringCleanupHandlers.set(ring, () => {
+          abortController.abort();
+          pauseAutoPlay();
+          clearTimeout(resizeTimeout);
+          ring.style.transform = '';
+          ring.style.transition = '';
+          cells.forEach((cell) => {
+            cell.style.opacity = '';
+            cell.style.transform = '';
+            cell.style.transition = '';
+            cell.classList.remove(PB_IS_ACTIVE);
+            cell.setAttribute('aria-hidden', 'true');
+            cell.removeAttribute('inert');
+          });
+          if (root instanceof HTMLElement) {
+            root.querySelectorAll(
+              `#prev-${uniqueId}, #next-${uniqueId}, #btn-${uniqueId}`,
+            ).forEach((button) => {
+              button.classList.remove('pb-is-hidden');
+              button.setAttribute('tabindex', '0');
+            });
+          }
+        });
+      });
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
       }
-    }, 200);
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING,
+        PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING,
+        context,
+      ).forEach((ring) => {
+        ringCleanupHandlers.get(ring)?.();
+        ringCleanupHandlers.delete(ring);
+      });
+    },
   };
-
-  // Global event listeners
-  document.addEventListener('scroll', debounce(handleCarouselVisibility, 200), { passive: true });
-  window.addEventListener('orientationchange', debounce(handleResizeOrRotate, 200));
-  window.addEventListener('resize', debounce(() => {
-    handleCarouselVisibility();
-    handleResizeOrRotate();
-  }, 200));
-
-})(Drupal, drupalSettings, once);
+})(Drupal, once);

@@ -11,7 +11,7 @@
    Base 3D Carousel Structure
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle {
+.paragraphs-bundles.pb-3d-carousel {
   display: flex;
   justify-content: center;
   overflow: hidden;
@@ -31,7 +31,7 @@
   }
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner {
   max-height: 38.125rem;
   perspective: 40rem;
   position: relative;
@@ -40,7 +40,7 @@
   box-sizing: border-box !important;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring {
   width: 100%;
   height: 100%;
   margin-block: 0;
@@ -49,7 +49,7 @@
   transition: transform 1s;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   max-width: 71.875rem;
   max-height: 34.375rem;
   position: absolute;
@@ -65,20 +65,18 @@
    Carousel Item Content Styles
    ========================================================================== */
 
-.pb__caro-item .paragraph--type--image-bundle div,
-.pb__caro-item .paragraph--type--image-bundle img,
-.pb__caro-item .paragraph--type--image-wide-bundle div,
-.pb__caro-item .paragraph--type--image-wide-bundle img,
-.pb__caro-item .paragraph--type--image-narrow-bundle div,
-.pb__caro-item .paragraph--type--image-narrow-bundle img,
-.pb__caro-item .paragraph--type--node-reference-bundle img {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper div,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper img,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .field--name-pb-image-field img,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .field--name-pb-media-image img,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .field--name-pb-node-reference img {
   height: 100%;
 }
 
-.pb__caro-item article,
-.pb__caro-item article .field,
-.pb__caro-item .pb__content-full,
-.pb__caro-item .field--name-pb-image-field img {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide article,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide article .field,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-content__full,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .field--name-pb-image-field img {
   width: 100%;
   height: 100%;
 }
@@ -87,93 +85,93 @@
    Height Variants
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-100 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-100 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h100 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h100 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 10rem; /* 160px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-100 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h100 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 6.25rem; /* 100px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-150 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-150 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h150 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h150 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 13.125rem; /* 210px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-150 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h150 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 9.375rem; /* 150px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-200 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-200 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h200 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h200 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 16.25rem; /* 260px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-200 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h200 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 12.5rem; /* 200px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-250 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-250 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h250 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h250 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 19.375rem; /* 310px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-250 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h250 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 15.625rem; /* 250px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-300 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-300 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h300 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h300 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 22.5rem; /* 360px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-300 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h300 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 18.75rem; /* 300px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-350 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-350 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h350 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h350 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 25.625rem; /* 410px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-350 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h350 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 21.875rem; /* 350px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-400 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-400 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h400 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h400 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 28.75rem; /* 460px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-400 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h400 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 25rem; /* 400px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-450 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-450 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h450 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h450 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 31.875rem; /* 510px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-450 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h450 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 28.125rem; /* 450px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-500 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-500 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h500 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h500 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 35rem; /* 560px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-500 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h500 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 31.25rem; /* 500px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-550 > .pb__caro-wrap__inner,
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-550 > .pb__caro-wrap__inner > .pb__3d-carousel {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h550 > .pb-3d-carousel__inner,
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h550 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
   height: 38.125rem; /* 610px / 16px */
 }
 
-.paragraph--type--3d-carousel-bundle.pb__3d-caro-550 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--h550 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   height: 34.375rem; /* 550px / 16px */
 }
 
@@ -181,17 +179,17 @@
    Media/Image Styles
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle .field--name-pb-media-image .field__item {
+.paragraphs-bundles.pb-3d-carousel .field--name-pb-media-image .field__item {
   display: flex;
   justify-content: center;
 }
 
-.paragraph--type--3d-carousel-bundle .field--name-pb-media-image .field__item img {
+.paragraphs-bundles.pb-3d-carousel .field--name-pb-media-image .field__item img {
   display: block;
   width: auto !important;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__img-wrapper div {
+.paragraphs-bundles.pb-3d-carousel .pb-image__wrapper div {
   width: 100%;
 }
 
@@ -199,42 +197,65 @@
    Carousel Options/Controls
    ========================================================================== */
 
-.pb__caro-options .pb__button {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
   all: unset;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options {
   width: 100%;
   z-index: 1;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .hide-0 {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-u-hide-0 {
   display: none;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options div {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options div {
   text-align: center;
   width: 100%;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options > div > * {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-3d-carousel__options-inner > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   line-height: 1;
   min-width: var(--pb-px24);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options button span {
-  width: 100%;
-  height: 100%;
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn > span:not(.visually-hidden, [hidden]) {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: auto;
+  height: auto;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options button span svg {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play-icon[hidden],
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause-icon[hidden] {
+  display: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play-icon:not([hidden]),
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause-icon:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button span svg {
   min-width: var(--pb-px24);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options > .pb__prev-next-arrow-Off,
-.paragraph--type--3d-carousel-bundle .pb__caro-options > .pb__ps-value {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-u-prev-next-arrow-off,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-slideshow__progress-value {
   opacity: 0;
   height: 0;
   padding: 0;
@@ -244,21 +265,13 @@
   line-height: 0;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options button.pp {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button.pp {
   text-align: center;
   display: none;
   font-weight: normal;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options button {
-  transition: opacity 0.5s, visibility 0.5s;
-  opacity: 1;
-  visibility: visible;
-  padding-block: var(--pb-px3);
-  padding-inline: var(--pb-px12);
-}
-
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__button {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
   font-weight: normal;
   transition: all 0.3s ease-in-out;
   border: none;
@@ -266,35 +279,42 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 1;
+  visibility: visible;
+  padding-block: var(--pb-px3);
+  padding-inline: var(--pb-px12);
 }
 
 /* Button focus state for accessibility */
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__button:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
   border-radius: var(--pb-px4);
 }
 
 /* Play/Pause button hover effects */
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play,
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause {
+  position: relative;
+  min-width: var(--pb-px24);
+  min-height: var(--pb-px24);
   transition:
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     background-color 0.2s ease-out;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play:hover,
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause:hover {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play:hover,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause:hover {
   transform: scale(1.1);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play:active,
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause:active {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play:active,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause:active {
   transform: scale(0.95);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next,
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__prev {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev {
   opacity: 1;
   visibility: visible;
   transform: translateX(0);
@@ -305,36 +325,23 @@
 }
 
 /* Arrow hover - move in arrow direction */
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next:hover {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next:hover {
   transform: translateX(4px);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__prev:hover {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev:hover {
   transform: translateX(-4px);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next.btn-hidden,
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__prev.btn-hidden {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-hidden,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-hidden {
   opacity: 0;
   transform: translateX(-20px);
   visibility: hidden;
   pointer-events: none;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-options > div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-}
-
-.paragraph--type--3d-carousel-bundle .pb__caro-options > div > * {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.paragraph--type--3d-carousel-bundle .pb__caro-options .pb__slide-number {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-slideshow__number {
   padding-block: var(--pb-px3);
   padding-inline: var(--pb-px6);
   font-size: var(--pb-px14);
@@ -344,33 +351,31 @@
    Carousel Item Inner Content
    ========================================================================== */
 
-.pb__caro-item > .paragraphs-bundles,
-.pb__caro-item .pb__content-full,
-.pb__caro-item .paragraph--type--hero-bundle .pb__caro-wrap__inner,
-.pb__caro-item .paragraph--type--hero-bundle .pb__caro-wrap__inner div,
-.pb__caro-item .paragraph--type--image-overlay-bundle > div > .pb__img-wrapper,
-.pb__caro-item .paragraph--type--image-overlay-bundle > div > .pb__img-wrapper div {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-content__full,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-hero__text-inner,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-hero__text-inner div,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper div {
   height: 100%;
   overflow: hidden;
 }
 
-.pb__caro-item .paragraphs-bundles .pb__content-full {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .paragraphs-bundles .pb-content__full {
   height: 100%;
   overflow: hidden;
 }
 
-.pb__caro-item .paragraph--type--simple-bundle .pb__content-full {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-content__full {
   overflow-y: auto;
 }
 
-.pb__caro-item .paragraph--type--hero-bundle .pb__hero-txt-wrapper div {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-hero__text-wrapper div {
   height: auto !important;
   width: auto !important;
 }
 
-.pb__caro-item > .paragraph--type--image-bundle,
-.pb__caro-item > .paragraph--type--image-wide-bundle,
-.pb__caro-item > .paragraph--type--image-narrow-bundle {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles {
   overflow: hidden;
 }
 
@@ -378,10 +383,10 @@
    Card Variants
    ========================================================================== */
 
-.pb__caro-item > .paragraphs-bundles.pb__card_2,
-.pb__caro-item > .paragraphs-bundles > .pb__card_2,
-.pb__caro-item > .paragraphs-bundles.pb__card_4,
-.pb__caro-item > .paragraphs-bundles > .pb__card_4 {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--2,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--2,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--4,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--4 {
   margin-block: 0;
   margin-inline: auto;
   width: 100%;
@@ -389,25 +394,25 @@
 }
 
 @media (max-width: 35.99875rem) {
-  .pb__caro-item > .paragraphs-bundles.pb__card_2,
-  .pb__caro-item > .paragraphs-bundles > .pb__card_2,
-  .pb__caro-item > .paragraphs-bundles.pb__card_4,
-  .pb__caro-item > .paragraphs-bundles > .pb__card_4 {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--2,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--2,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--4,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--4 {
     box-shadow: none;
   }
 }
 
 @media (min-width: 36rem) {
-  .pb__caro-item > .paragraphs-bundles.pb__card_2,
-  .pb__caro-item > .paragraphs-bundles > .pb__card_2 {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--2,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--2 {
     margin-block: var(--pb-px10);
     margin-inline: auto;
     width: calc(100% - var(--pb-px24));
     height: calc(100% - var(--pb-px24));
   }
 
-  .pb__caro-item > .paragraphs-bundles.pb__card_4,
-  .pb__caro-item > .paragraphs-bundles > .pb__card_4 {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--4,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--4 {
     margin-block: var(--pb-px20);
     margin-inline: auto;
     height: calc(100% - var(--pb-px48));
@@ -419,32 +424,32 @@
    Image Overlay Effects on Hover
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-fade .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--fade .pb-overlay__container {
   opacity: 1;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-zoom .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--zoom .pb-overlay__container {
   transform: scale(1);
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-title .pb__overlay-title {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--title .pb-overlay__title {
   opacity: 1;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-slide_top .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--slide-top .pb-overlay__container {
   inset-block-end: 0;
   height: 100%;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-slide_bottom .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--slide-bottom .pb-overlay__container {
   height: 100%;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-slide_left .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--slide-left .pb-overlay__container {
   width: 100%;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-wrap__inner:hover .pb__active .pb__image-overlay-slide_right .pb__overlay-container {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__inner:hover .pb-is-active .pb-image-overlay--slide-right .pb-overlay__container {
   width: 100%;
   inset-inline-start: 0;
 }
@@ -453,43 +458,43 @@
    Width Variants with Perspective
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_300 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--300 {
   max-width: 18.75rem;
   perspective: 22rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_400 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--400 {
   max-width: 25rem;
   perspective: 24rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_500 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--500 {
   max-width: 31.25rem;
   perspective: 26rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_600 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--600 {
   max-width: 37.5rem;
   perspective: 28rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_700 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--700 {
   max-width: 43.75rem;
   perspective: 30rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_800 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--800 {
   max-width: 50rem;
   perspective: 32rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_900 {
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--900 {
   max-width: 56.25rem;
   perspective: 34rem;
 }
 
-.paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner.pb__pmw_100 {
-  max-width: 61.99875.5rem !important;
+.paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--100 {
+  max-width: 100% !important;
   perspective: 40rem;
 }
 
@@ -497,12 +502,12 @@
    Interaction States
    ========================================================================== */
 
-.paragraph--type--3d-carousel-bundle .pb__caro-item:hover * {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide:hover * {
   cursor: default;
   pointer-events: none;
 }
 
-.paragraph--type--3d-carousel-bundle .pb__caro-item.pb__active:hover a {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide.pb-is-active:hover a {
   cursor: pointer;
   pointer-events: initial;
 }
@@ -511,15 +516,15 @@
    Button SVG Styles
    ========================================================================== */
 
-.pb__caro-options button svg {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button svg {
   transition:
     opacity 0.3s ease,
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0.7;
-  fill: var(--pb-tx, var(--r-tx, inherit));
+  fill: var(--pb-tx, inherit);
 }
 
-.pb__caro-options button:hover svg {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button:hover svg {
   opacity: 1;
   transform: scale(1.1);
 }
@@ -529,30 +534,30 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .paragraph--type--3d-carousel-bundle {
+  .paragraphs-bundles.pb-3d-carousel {
     animation: none;
     opacity: 1;
   }
 
-  .paragraph--type--3d-carousel-bundle .pb__3d-carousel,
-  .paragraph--type--3d-carousel-bundle .pb__3d-carousel > .pb__caro-item,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options button,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__button,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__prev,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause,
-  .pb__caro-options button svg {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring > .pb-3d-carousel__slide,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button svg {
     transition: none;
   }
 
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__next:hover,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__prev:hover,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play:hover,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause:hover,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__play:active,
-  .paragraph--type--3d-carousel-bundle .pb__caro-options .pb__pause:active,
-  .pb__caro-options button:hover svg {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next:hover,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev:hover,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play:hover,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause:hover,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__play:active,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__pause:active,
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button:hover svg {
     transform: none;
   }
 }

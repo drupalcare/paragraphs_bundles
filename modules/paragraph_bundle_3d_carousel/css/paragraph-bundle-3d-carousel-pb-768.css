@@ -7,92 +7,92 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 @media (max-width:47.99875rem) {
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh500 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh500 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 35rem; /* 560px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-500 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh500 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 31.25rem; /* 500px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh450 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh450 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 31.875rem; /* 510px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-450 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh450 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 28.125rem; /* 450px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh400 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh400 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 28.75rem; /* 460px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-400 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh400 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 25rem; /* 400px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh350 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh350 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 25.625rem; /* 410px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-350 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh350 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 21.875rem; /* 350px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh300 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh300 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 22.5rem; /* 360px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-300 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh300 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 18.75rem; /* 300px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh250 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh250 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 19.375rem; /* 310px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-250 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh250 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 15.625rem; /* 250px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh200 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh200 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 16.25rem; /* 260px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-200 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh200 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 12.5rem; /* 200px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh150 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh150 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 13.125rem; /* 210px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-150 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh150 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 9.375rem; /* 150px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner,
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh100 > .pb-3d-carousel__inner,
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh100 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 10rem; /* 160px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle.pb__3d-caro-s-100 > .pb__caro-wrap__inner > .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh100 > .pb-3d-carousel__inner > .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     height: 6.25rem; /* 100px / 16px */
   }
 
-  .paragraph--type--3d-carousel-bundle > .pb__caro-wrap__inner {
+  .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner {
     overflow: hidden;
   }
 
-  .paragraph--type--3d-carousel-bundle .pb__3d-carousel > .pb__caro-item {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring > .pb-3d-carousel__slide {
     padding-block: 0;
     padding-inline: var(--pb-px16);
   }

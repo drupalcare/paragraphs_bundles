@@ -7,7 +7,6 @@ paragraph-bundle-3d-carousel:
   dependencies:
     - core/drupal
     - core/drupal.ajax
-    - core/drupalSettings
     - core/once
 
 paragraph-bundle-3d-carousel-pb__576:

@@ -1,79 +1,56 @@
 {#
 /**
-* @file
-* Default theme implementation to display a '3d-carousel' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
+ * @file
+ * `3d_carousel_bundle` paragraph template (v2).
+ *
+ * v1 Twig audit (display field -> DOM target -> CSS source):
+ *
+ * | Field / vars                         | DOM target           | v2 mechanism |
+ * |--------------------------------------|----------------------|--------------|
+ * | pb_display_* (list)                  | `.pb-ui-inner`  | entity field values |
+ * | pb_display_bg/text/border/link*      | `.pb-ui-inner`  | dynamic CSS |
+ * | pb_display_3d_car_perspective        | `.pb-ui-inner`  | inline `perspective` (px) |
+ * | pb_display_3d_caro_breakpoints       | outer wrapper        | breakpoint library |
+ * | pb_content_3dcar_lheight/sheight     | outer wrapper class  | entity field values |
+ * | pb_display_3d_play_stop              | `data-rotation-delay`| entity integer value |
+ *
+ * Dynamic CSS selector: `#pb-3d-carousel-{id} > .pb-ui-inner`
+ *
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set pb_breakpoints = content.pb_display_3d_caro_breakpoints|render|striptags|trim %}
-{% set pb_breakpoints = 'paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ pb_breakpoints %}
-{{ attach_library(pb_breakpoints) }}
+{% set breakpoints_raw = paragraph|pb_field_value('pb_display_3d_caro_breakpoints') %}
+{% if breakpoints_raw %}
+  {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ breakpoints_raw) }}
+{% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__caro-wrap-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__caro-wrap__inner pb__content-full' %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb-3d-carousel-' ~ paragraph.id.value %}
+{% set classes_inner = 'pb-ui-inner pb-3d-carousel__inner pb-content__full' %}
+{% set pb_play_stop = paragraph|pb_field_value('pb_display_3d_play_stop', 0) %}
 
-{# Set the classes for the paragraph. #}
+{% set pb_lheight_raw = paragraph|pb_field_value('pb_content_3dcar_lheight') %}
+{% set pb_sheight_raw = paragraph|pb_field_value('pb_content_3dcar_sheight') %}
+
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
-  'paragraph--type--3d-carousel-bundle',
+  'pb-3d-carousel',
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
-   paragraph_id,
+  paragraph_id,
+  pb_lheight_raw ? 'pb-3d-carousel--h' ~ pb_lheight_raw,
+  pb_sheight_raw ? 'pb-3d-carousel--sh' ~ pb_sheight_raw,
 ] %}
 
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-pr':'pb_display_3d_car_perspective',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
-} %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -82,105 +59,67 @@
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
-
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif value == 'pb_display_3d_car_perspective' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['perspective:' ~ style ~ 'px;']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-    {# In case widget was changed. #}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-
-  {% endif %}
-{% endfor %}
-
-{# End of margin and height #}
-{% set pb_play_stop = content.pb_display_3d_play_stop|render|striptags|trim|default(0) %}
-
-{% set pb_lheight = content.pb_content_3dcar_lheight|render|striptags|trim %}
-{% if pb_lheight %}
-  {% set pb_lheight  = 'pb__3d-caro-' ~ pb_lheight %}
-  {% set classes = classes|merge([pb_lheight]) %}
-{% endif %}
-
-
-{% set pb_sheight = content.pb_content_3dcar_sheight|render|striptags|trim %}
-{% if pb_sheight %}
-  {% set pb_sheight  = 'pb__3d-caro-s-' ~ pb_sheight %}
-  {% set classes = classes|merge([pb_sheight]) %}
-{% endif %}
-
-{% set carousel_id  = 'pb__3d-carousel-' ~ paragraph.id.value %}
-{% set co_id  = 'co-' ~ paragraph.id.value %}
-
+{% set carousel_id = 'pb-3d-carousel-ring-' ~ paragraph.id.value %}
+{% set co_id = 'co-' ~ paragraph.id.value %}
 {% set valid_slides = content.pb_content_3d_car_body|filter((item, key) => key|first != '#') %}
 {% set total_slides = valid_slides|length %}
 
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} role="region" aria-label="Image Carousel">
-  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} role="region" aria-label="{{ 'Image Carousel'|t }}">
+  <div class="{{ classes_inner }}">
 
-    <!-- Carousel Container -->
     <div id="{{ carousel_id }}"
-         class="pb__3d-carousel"
+         class="pb-3d-carousel__ring"
          role="group"
          aria-roledescription="carousel"
          aria-labelledby="index-{{ paragraph.id.value }}"
          data-rotation-delay="{{ pb_play_stop }}">
 
       {% for key, item in valid_slides %}
-      <div id="item-{{ paragraph.id.value }}-{{ loop.index }}" class="pb__caro-item item-{{ paragraph.id.value }}-{{ loop.index }}" role="group" aria-hidden="{% if loop.first %}false{% else %}true{% endif %}" tabindex="{% if loop.first %}0{% else %}-1{% endif %}" aria-labelledby="label-item-{{ paragraph.id.value }}-{{ loop.index }}">
-        <div id="label-item-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">Slide {{ loop.index }} of {{ total_slides }}</div>
-        {{ item }}
-      </div>
+        <div id="item-{{ paragraph.id.value }}-{{ loop.index }}"
+             class="pb-3d-carousel__slide item-{{ paragraph.id.value }}-{{ loop.index }}"
+             role="group"
+             aria-hidden="{{ loop.first ? 'false' : 'true' }}"
+             tabindex="{{ loop.first ? 0 : -1 }}"
+             aria-labelledby="label-item-{{ paragraph.id.value }}-{{ loop.index }}">
+          <div id="label-item-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">{{ 'Slide @current of @total'|t({'@current': loop.index, '@total': total_slides}) }}</div>
+          {{ item }}
+        </div>
       {% endfor %}
 
     </div>
 
-    <div id="{{ co_id }}" class="pb__caro-options" aria-label="Carousel Controls">
-      <div class="pb__row pb__caro-options-inner">
-        <button id="prev-{{ paragraph.id.value }}" role="button" class="pb__button pb__prev" aria-controls="{{ carousel_id }}" aria-label="Previous Slide">
-          <span class="visually-hidden">Previous Slide</span>
+    <div id="{{ co_id }}" class="pb-3d-carousel__options" aria-label="{{ 'Carousel Controls'|t }}">
+      <div class="pb-ui-row pb-3d-carousel__options-inner">
+        <button id="prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+          <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-prev.svg') }}</span>
         </button>
-        <span id="index-{{ paragraph.id.value }}" class="pb__slide-number" aria-label="Slide 1 of {{ total_slides }}" role="status" aria-live="polite"></span>
+        <span id="index-{{ paragraph.id.value }}" class="pb-slideshow__number" aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
 
         {% if pb_play_stop > 0 %}
-        <button id="btn-{{ paragraph.id.value }}"
-                class="pb__button hide-{{ pb_play_stop }} pb__pause"
-                aria-controls="{{ carousel_id }}"
-                aria-label="{{ 'Pause slideshow'|t }}"
-                aria-pressed="true">
-          <span class="visually-hidden">{{ 'Pause slideshow'|t }}</span>
-          <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-pause.svg') }}</span>
-        </button>
+          <button id="btn-{{ paragraph.id.value }}"
+                  type="button"
+                  class="pb-ui-btn pb-nav__pause"
+                  aria-controls="{{ carousel_id }}"
+                  aria-label="{{ 'Pause slideshow'|t }}"
+                  aria-pressed="true">
+            <span class="visually-hidden">{{ 'Pause slideshow'|t }}</span>
+            <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_3d_carousel/svg/svg-pause.svg') }}</span>
+            <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_3d_carousel/svg/svg-play.svg') }}</span>
+          </button>
         {% endif %}
-        <button id="next-{{ paragraph.id.value }}" role="button" class="pb__button pb__next" aria-controls="{{ carousel_id }}" aria-label="Next Slide">
-          <span class="visually-hidden">Next Slide</span>
+
+        <button id="next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+          <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-next.svg') }}</span>
         </button>
       </div>
     </div>
 
   </div>
-</div> {# End of main wrapper #}
+</div>

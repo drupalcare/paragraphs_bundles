@@ -1,0 +1,9 @@
+services:
+  Drupal\paragraph_bundle_3d_carousel\Hook\Pb3dcThemeHook: {}
+
+  Drupal\paragraph_bundle_3d_carousel\Hook\Pb3dcHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

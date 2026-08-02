@@ -1,7 +1,10 @@
-name: Paragraph Bundle 3D Carousel
+name: 'Paragraph Bundle 3D Carousel'
 type: module
-description: A reusable Paragraph Bundle 3D Carousel.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: '3D rotating carousel with nested slides, autoplay, and breakpoint CSS.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
