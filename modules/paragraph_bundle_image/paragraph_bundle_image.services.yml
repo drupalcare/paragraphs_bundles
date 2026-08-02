@@ -1,0 +1,11 @@
+services:
+  Drupal\paragraph_bundle_image\Hook\PbiThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_image\Hook\PbiHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
