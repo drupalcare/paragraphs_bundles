@@ -61,6 +61,22 @@ final class PbOptionalConfigSchemaTest extends KernelTestBase {
   ];
 
   /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    // Optional config creates field storages on these entity types. Creating a
+    // field storage before its entity schema exists is deprecated in 11.2 and
+    // becomes a LogicException in 12.0, so install the schemas up front.
+    $this->installEntitySchema('user');
+    $this->installEntitySchema('node');
+    $this->installEntitySchema('file');
+    $this->installEntitySchema('paragraph');
+    $this->installEntitySchema('block_content');
+    $this->installEntitySchema('media');
+  }
+
+  /**
    * Optional config imports with schema-valid data.
    */
   public function testOptionalConfigSchema(): void {

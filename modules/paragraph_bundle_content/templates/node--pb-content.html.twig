@@ -29,11 +29,11 @@
 
 <article{{ attributes.addClass(classes) }}>
 
-  {% if (label and not page) or display_submitted %}
+  {% if (label and view_mode != 'full') or display_submitted %}
 
   <header class="pb-ui-row node__header">
     {{ title_prefix }}
-    {% if label and not page %}
+    {% if label and view_mode != 'full' %}
       <h3 {{ title_attributes.addClass('node__title') }}>
         <a href="{{ url }}" rel="bookmark">{{ label }}</a>
       </h3>
@@ -49,7 +49,7 @@
       {% endif %}
         <div class="node__author-info" {{ author_attributes }}>
           <span {{ author_attributes }}>
-            {{ 'By'|t }} {% apply spaceless %}{{ author_name }}{% endapply %} | {{ date }}
+            {{ 'By'|t }} {{ author_name }} | {{ date }}
           </span>
         </div>
         {{ metadata }}

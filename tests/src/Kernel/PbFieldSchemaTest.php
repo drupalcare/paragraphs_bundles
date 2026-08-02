@@ -49,6 +49,11 @@ final class PbFieldSchemaTest extends KernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    // The test creates paragraph field storages below. Creating a field storage
+    // before its entity schema exists is deprecated in 11.2 and becomes a
+    // LogicException in 12.0, so install the schema up front.
+    $this->installEntitySchema('user');
+    $this->installEntitySchema('paragraph');
     ParagraphsType::create(['id' => 'test_bundle', 'label' => 'Test'])->save();
   }
 
