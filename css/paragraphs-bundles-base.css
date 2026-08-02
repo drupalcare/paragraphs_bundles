@@ -1,11 +1,22 @@
 /**
  * @file
- * Paragraphs.
+ * Paragraphs Bundles - base tokens + utility classes.
  *
- * Filename:     paragraphs-bundles-basic.css
+ * Filename:     paragraphs-bundles-base.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
+ *
+ * NOTE on cascade layers: this file - and all PB CSS - is deliberately
+ * UN-LAYERED. A distributable module can't know whether the host theme
+ * uses @layer, and per CSS Cascade L5 un-layered author CSS beats every
+ * layered rule regardless of specificity. Staying un-layered is the only
+ * way PB's editor-set values reliably win under any theme (layered or
+ * not). PB declares NO `pb.*` layer ladder. The per-paragraph dynamic
+ * file (also un-layered) wins via element-id specificity (1,0,0),
+ * beating any `:root` declaration (0,0,1) or `.pb-ui-inner .pb-ui-inner`
+ * (0,2,0) selector here.
  */
+
 :root {
   --pb-px2560: 160rem;
   --pb-px1920: 120rem;
@@ -47,14 +58,6 @@
   --pb-px2: 0.125rem;
   --pb-px1: 0.063rem;
   --pb-px0: 0;
-  --pb-bg: initial;
-  --pb-bg-h: initial;
-  --pb-br: initial;
-  --pb-br-h: initial;
-  --pb-tx: initial;
-  --pb-tx-h: initial;
-  --pb-width: initial;
-  --pb-bt-a: initial;
   --pb-text-align-start: left;
   --pb-text-align-end: right;
 }
@@ -64,30 +67,12 @@
   --pb-text-align-end: left;
 }
 
-.paragraphs-bundles,
-.paragraphs-bundles * {
+.paragraph * {
   box-sizing: border-box;
 }
 
-/*
- * Reset theme button/link styles only on Paragraphs Bundles controls.
- * Scope to .paragraphs-bundles — not bare .paragraphs-bundles (used by all paragraph types).
- */
-.paragraphs-bundles :is(
-  a.pb__link,
-  .pb__button,
-  .pb__tab-button,
-  .pb__accor-button,
-  .pb__toggle-all,
-  .pb-col-toggle,
-  .pb__close-alert,
-  .pb__expand-grid,
-  .pb__close-grid,
-  .pb__modal-prev,
-  .pb__modal-next
-),
-.paragraphs-bundles.paragraph--type--icon-bundle .pb__icon-header > a,
-.paragraphs-bundles.paragraph--type--simple-bundle .field--name-pb-content-link a {
+.paragraph a,
+.paragraph button {
   all: unset;
   outline: revert;
   box-sizing: border-box;
@@ -95,8 +80,8 @@
 }
 
 /* Button */
-.paragraphs-bundles .button,
-.paragraphs-bundles .pb__button {
+.paragraph .button,
+.paragraph .pb-ui-btn {
   display: inline-flex;
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
@@ -111,293 +96,266 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
-.paragraphs-bundles a.pb__link {
+.paragraph a.pb-ui-link {
   z-index: 1;
   display: block;
 }
 
-.paragraphs-bundles .pb__row:after,
-.paragraphs-bundles .pb__row:before {
+.paragraph .pb-ui-row::after,
+.paragraph .pb-ui-row::before {
   content: "";
   display: table;
   clear: both;
 }
 
-.paragraphs-bundles .pb__bar {
+.paragraph .pb-ui-bar {
   width: 100%;
   overflow: hidden;
 }
 
-.paragraphs-bundles .pb__bar .button,
-.paragraphs-bundles .pb__bar .pb__button {
+.paragraph .pb-ui-bar .button,
+.paragraph .pb-ui-bar .pb-ui-btn {
   white-space: normal;
 }
 
-.paragraphs-bundles .pb__bar:before,
-.paragraphs-bundles .pb__bar:after {
+.paragraph .pb-ui-bar::before,
+.paragraph .pb-ui-bar::after {
   content: "";
   display: table;
   clear: both;
 }
 
 /* Borders */
-.pb__circle {
+.pb-u-round--circle {
   border-radius: 50%;
 }
 
-.pb__round_small {
+.pb-u-round--small {
   border-radius: var(--pb-px2);
 }
 
-.pb__round,
-.pb__round_medium {
+.pb-u-round--medium {
   border-radius: var(--pb-px4);
 }
 
-.pb__round_large {
+.pb-u-round--large {
   border-radius: var(--pb-px8);
 }
 
-.pb__round_xlarge {
+.pb-u-round--xlarge {
   border-radius: var(--pb-px16);
 }
 
-.pb__round_xxlarge {
+.pb-u-round--xxlarge {
   border-radius: var(--pb-px32);
 }
 
-.pb__border {
+.pb-u-border {
   border-width: var(--pb-px1);
   border-style: solid;
 }
 
-.pb__border_3px {
+.pb-u-border--3px {
   border-width: var(--pb-px3);
   border-style: solid;
 }
 
-.pb__border_6px {
+.pb-u-border--6px {
   border-width: var(--pb-px6);
   border-style: solid;
 }
 
-.pb__border_top {
+.pb-u-border--top {
   border-block-start-width: var(--pb-px1);
   border-block-start-style: solid;
 }
 
-.pb__border_bottom {
+.pb-u-border--bottom {
   border-block-end-width: var(--pb-px1);
   border-block-end-style: solid;
 }
 
-.pb__border_left {
+.pb-u-border--left {
   border-inline-start-width: var(--pb-px1);
   border-inline-start-style: solid;
 }
 
-.pb__border_right {
+.pb-u-border--right {
   border-inline-end-width: var(--pb-px1);
   border-inline-end-style: solid;
 }
 
-.pb__top_bar {
+.pb-u-border--top-bar {
   border-block-start-width: var(--pb-px6);
   border-block-start-style: solid;
 }
 
-.pb__bottom_bar {
+.pb-u-border--bottom-bar {
   border-block-end-width: var(--pb-px6);
   border-block-end-style: solid;
 }
 
-.pb__left_bar {
+.pb-u-border--left-bar {
   border-inline-start-width: var(--pb-px6);
   border-inline-start-style: solid;
 }
 
-.pb__right_bar {
+.pb-u-border--right-bar {
   border-inline-end-width: var(--pb-px6);
   border-inline-end-style: solid;
 }
 
-/* Shadows */
-.pb__card,
-.pb__card_2 {
+/* Shadows - pb__card_2 / pb__card_4 are display tokens (pb_display_shadow), not
+   the card bundle L0 class pb-card. */
+.pb-u-shadow--2 {
   box-shadow: 0 var(--pb-px2) var(--pb-px5) 0 rgba(0, 0, 0, 0.16), 0 var(--pb-px2) var(--pb-px10) 0 rgba(0, 0, 0, 0.12);
   margin: var(--pb-px10);
 }
 
-.pb__card_4 {
+.pb-u-shadow--4 {
   box-shadow: 0 var(--pb-px4) var(--pb-px10) 0 rgba(0, 0, 0, 0.2), 0 var(--pb-px4) var(--pb-px20) 0 rgba(0, 0, 0, 0.19);
   margin: var(--pb-px20);
 }
 
 /* Margin */
-.pb__margin:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin: var(--pb-px16);
 }
 
-.pb__margin_top:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin--top:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin-block-start: var(--pb-px16);
 }
 
-.pb__margin_bottom:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin--bottom:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin-block-end: var(--pb-px16);
 }
 
-.pb__margin_left:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin--left:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin-inline-start: var(--pb-px16);
 }
 
-.pb__margin_right:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin--right:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin-inline-end: var(--pb-px16);
 }
 
-.pb__section:not(.pb__card_2, .pb__card_4) {
+.pb-u-margin--section:not(.pb-u-shadow--2, .pb-u-shadow--4) {
   margin-block-start: var(--pb-px16);
   margin-block-end: var(--pb-px16);
 }
 
 /* Padding */
-.pb__padding_small {
+.pb-u-padding--small {
   padding-block: var(--pb-px4);
   padding-inline: var(--pb-px8);
 }
 
-.pb__padding {
+.pb-u-padding {
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
 }
 
-.pb__padding_large {
+.pb-u-padding--large {
   padding-block: var(--pb-px12);
   padding-inline: var(--pb-px24);
 }
 
-.pb__padding_16 {
+.pb-u-padding--16 {
   padding-block-start: var(--pb-px16);
   padding-block-end: var(--pb-px16);
 }
 
-.pb__padding_24 {
+.pb-u-padding--24 {
   padding-block-start: var(--pb-px24);
   padding-block-end: var(--pb-px24);
 }
 
-.pb__padding_32 {
+.pb-u-padding--32 {
   padding-block-start: var(--pb-px32);
   padding-block-end: var(--pb-px32);
 }
 
-.pb__padding_48 {
+.pb-u-padding--48 {
   padding-block-start: var(--pb-px48);
   padding-block-end: var(--pb-px48);
 }
 
-.pb__padding_64 {
+.pb-u-padding--64 {
   padding-block-start: var(--pb-px64);
   padding-block-end: var(--pb-px64);
 }
 
 /* Display Container */
-.pb__display-container {
+.pb-u-display-container {
   position: relative;
 }
 
-.pb__ds_top_left {
+.pb-u-ds--top-left {
   position: absolute;
   inset-inline-start: 0;
   inset-block-start: 0;
 }
 
-.pb__ds_top_right {
+.pb-u-ds--top-right {
   position: absolute;
   inset-inline-end: 0;
   inset-block-start: 0;
 }
 
-.pb__ds_bottom_left {
+.pb-u-ds--bottom-left {
   position: absolute;
   inset-inline-start: 0;
   inset-block-end: 0;
 }
 
-.pb__ds_bottom_right {
+.pb-u-ds--bottom-right {
   position: absolute;
   inset-inline-end: 0;
   inset-block-end: 0;
 }
 
-.pb__ds_middle {
+.pb-u-ds--middle {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-start: 50%;
   transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
   min-width: 70%;
 }
 
-.pb__ds_left {
+.pb-u-ds--left {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-start: 0%;
   transform: translate(0%, -50%);
-  -ms-transform: translate(-0%, -50%);
 }
 
-.pb__ds_right {
+.pb-u-ds--right {
   position: absolute;
   inset-block-start: 50%;
   inset-inline-end: 0%;
   transform: translate(0%, -50%);
-  -ms-transform: translate(0%, -50%);
 }
 
-.pb__ds_top_middle {
+.pb-u-ds--top-middle {
   position: absolute;
   inset-inline-start: 50%;
   inset-block-start: 0;
   transform: translate(-50%, 0%);
-  -ms-transform: translate(-50%, 0%);
 }
 
-.pb__ds_bottom_middle {
+.pb-u-ds--bottom-middle {
   position: absolute;
   inset-inline-start: 50%;
   inset-block-end: 0;
   transform: translate(-50%, 0%);
-  -ms-transform: translate(-50%, 0%);
 }
 
 /* Border Colors */
-.pb__animate-fading {
-  animation: fading 5s ease-in-out infinite;
-}
 
-@keyframes fading {
-  0% {
-    opacity: 0;
-  }
 
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-
-}
-
-.pb__animate_opacity {
+.pb-u-animate--opacity {
   animation: opac 0.8s ease-out;
 }
 
@@ -412,7 +370,7 @@
 
 }
 
-.pb__animate_top {
+.pb-u-animate--top {
   position: relative;
   animation: animatetop 0.6s ease-out;
 }
@@ -430,7 +388,7 @@
 
 }
 
-.pb__animate_left {
+.pb-u-animate--left {
   position: relative;
   animation: animateleft 0.6s ease-out;
 }
@@ -448,7 +406,7 @@
 
 }
 
-.pb__animate_right {
+.pb-u-animate--right {
   position: relative;
   animation: animateright 0.6s ease-out;
 }
@@ -466,7 +424,7 @@
 
 }
 
-.pb__animate_bottom {
+.pb-u-animate--bottom {
   position: relative;
   animation: animatebottom 0.6s ease-out;
 }
@@ -484,7 +442,26 @@
 
 }
 
-.pb__animate_zoom {
+.pb-u-animate--fading {
+  animation: animatefading 5s ease-in-out infinite;
+}
+
+@keyframes animatefading {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+
+}
+
+.pb-u-animate--zoom {
   animation: animatezoom 0.6s ease-out;
 }
 

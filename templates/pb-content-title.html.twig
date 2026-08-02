@@ -3,19 +3,21 @@
  * @file
  * Renders pb_content_title with configurable heading tag and alignment.
  *
- * When Title tag or Title alignment are empty (None in the form), output uses
- * heading H3 and left alignment.
+ * When Title tag or Title alignment are empty (None in the form), the
+ * output uses heading H3 and left alignment.
  *
  * Available variables:
  * - paragraph: The paragraph entity.
  * - content: The paragraph render array (must include pb_content_title).
- * - title_extra_classes: Optional extra classes (space-separated) appended to the title.
- * - title_style: Optional inline style attribute value (no HTML escaping of quotes needed).
+ * - title_extra_classes: Optional extra classes (space-separated)
+ *   appended to the title.
+ * - title_style: Optional inline style attribute value (no HTML
+ *   escaping of quotes needed).
  */
 #}
 {% set _tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div'] %}
 {% if paragraph.hasField('pb_content_title_tag') and not paragraph.pb_content_title_tag.isEmpty() %}
-  {% set _tag = paragraph.pb_content_title_tag.value %}
+  {% set _tag = paragraph|pb_field_value('pb_content_title_tag') %}
 {% else %}
   {% set _tag = 'h3' %}
 {% endif %}
@@ -25,7 +27,7 @@
 
 {% set _aligns = ['left', 'center', 'right'] %}
 {% if paragraph.hasField('pb_content_title_alignment') and not paragraph.pb_content_title_alignment.isEmpty() %}
-  {% set _align = paragraph.pb_content_title_alignment.value %}
+  {% set _align = paragraph|pb_field_value('pb_content_title_alignment') %}
 {% else %}
   {% set _align = 'left' %}
 {% endif %}
@@ -33,7 +35,7 @@
   {% set _align = 'left' %}
 {% endif %}
 
-{% set _base = 'pb__content-title pb__content-title--align-' ~ _align %}
+{% set _base = 'pb-content__title pb-content__title--align-' ~ _align %}
 {% set _extra = title_extra_classes|default('')|trim %}
 {% set _style = title_style|default('')|trim %}
 

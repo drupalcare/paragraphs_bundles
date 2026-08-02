@@ -1,0 +1,37 @@
+/**
+ * @file
+ * PB theme bridge - APEX (`--r-text`, `--r-link`, `--r-border`).
+ *
+ * Maps host region variables to paragraph `--pb-*` token DEFAULTS on
+ * `.paragraphs-bundles`. Token-mapping ONLY - all element painting lives
+ * once in paragraphs-bundles-custom.css (`.pb-ui-inner`); bridges never
+ * repeat it. Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` /
+ * `--pb-bg-h`) are editor-only and never bridged. `:where()` keeps these
+ * at zero specificity so per-region and editor id-scoped values win.
+ */
+
+:where(.paragraphs-bundles) {
+  --pb-tx: var(--r-text);
+  --pb-br: var(--r-border);
+  --pb-lk: var(--r-link, var(--r-text));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Bridge tokens only; no motion. */
+}
+
+@media (prefers-contrast: high) {
+  /* Bridge tokens only. */
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles {
+    --pb-tx: CanvasText;
+    --pb-br: CanvasText;
+    --pb-lk: LinkText;
+  }
+}
+
+@media print {
+  /* Bridge tokens only. */
+}

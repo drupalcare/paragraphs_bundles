@@ -1,0 +1,51 @@
+/**
+ * @file
+ * PB theme bridge - Solo legacy region vars (`--r-tx`, `--r-br`, ...).
+ *
+ * `--pb-bg` / `--pb-bg-h` are editor-only (never bridged).
+ */
+
+.paragraphs-bundles {
+  color: var(--pb-tx, var(--r-tx));
+  border-color: var(--pb-br,  var(--r-br));
+}
+
+.paragraphs-bundles a {
+  color: var(--pb-lk, var(--r-lk, var(--pb-tx, var(--r-tx))));
+}
+
+:where(.paragraphs-bundles) :where(
+  img, code, pre, kbd, samp, p, hr,
+  ul, ol, li, table, th, td, tr, blockquote
+) {
+  color: var(--pb-tx, var(--r-tx));
+  border-color: var(--pb-br,  var(--r-br));
+}
+
+:where(.paragraphs-bundles) :where(
+  img, code, pre, kbd, samp, p, hr,
+  ul, ol, li, table, th, td, tr, blockquote
+):hover {
+  color: var(--pb-tx-h, var(--r-tx-h, var(--pb-tx, var(--r-tx))));
+  border-color: var(--pb-br,  var(--r-br));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Bridge tokens only; no motion. */
+}
+
+@media (prefers-contrast: high) {
+  /* Bridge tokens only. */
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles {
+    --pb-tx: CanvasText;
+    --pb-br: CanvasText;
+    --pb-lk: LinkText;
+  }
+}
+
+@media print {
+  /* Bridge tokens only. */
+}

@@ -37,7 +37,7 @@
 }
 
 .paragraphs-add-dialog .paragraphs-add-dialog-list li {
-  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 0.5rem;
 }
 
@@ -62,32 +62,32 @@
 
 .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #007bff; /* Level 1 */
-  color: #ffffff;
+  color: #fff;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #28a745; /* Level 2 */
-  color: #ffffff;
+  color: #fff;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #ffc107; /* Level 3 */
-  color: #333333;
+  color: #333;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #fd7e14; /* Level 4 */
-  color: #333333;
+  color: #333;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #dc3545; /* Level 5 */
-  color: #ffffff;
+  color: #fff;
 }
 
 .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
   background-color: #6f42c1; /* Level 6 */
-  color: #ffffff;
+  color: #fff;
 }
 
 .field--name-pb-content-title input {
@@ -102,82 +102,148 @@
   width: auto;
 }
 
-.pb__tab-display > .details-wrapper > .field--name-pb-display-image-min-height input {
+.pb__tab-display .pb__display-size > .details-wrapper > .field--name-pb-display-image-min-height input {
   width: calc(100% - 40px);
 }
 
-/* Responsive layout */
-.pb__tab-display .details-wrapper > * {
-  min-width: 0;
+/* ==========================================================================
+   Display tab - nested field groups; flex layout inside each section.
+   Color + hover pairs stay adjacent via form display field order.
+   ========================================================================== */
+
+.pb__tab-display > .details-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0 !important;
 }
 
-.pb__tab-display.large > .details-wrapper {
-  padding: 0 !important;
-  gap: 16px;
+.pb__tab-display > .details-wrapper > [class*="pb__display-"] {
+  flex: 0 0 100%;
+  inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.pb__tab-display > .details-wrapper > [class*="pb__display-"] > .details-wrapper {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  justify-content: start;
-}
-
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-image-min-height > div {
-  width: 100%;
-}
-
-/* General rule for any child */
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-width+.field--name-pb-display-bg,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-image-min-height,
-.pb__tab-display.large > .details-wrapper > * {
-  flex: 1 1 calc(50% - 16px);
-  max-width: calc(50% - 16px);
-}
-
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-bg,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-bg-hover,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-text,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-text-hover,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-border-color,
-.pb__tab-display.large > .details-wrapper > .field--name-pb-display-border-hover {
-  flex: 0 0 calc(25% - 16px);
-  max-width: calc(25% - 16px);
-}
-
-.pb__tab-display.medium > .details-wrapper {
-  padding: 0 !important;
+  align-items: flex-start;
   gap: 16px;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(50%, 1fr));
+  padding-block: 0;
+  padding-inline: 0;
 }
 
-.pb__tab-display.medium > .details-wrapper > .field--name-pb-display-bg-opacity:first-child {
-  grid-column: 1 / -1;
+.pb__tab-display .pb__display-regions > .details-wrapper {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
-.pb__tab-display.small > .details-wrapper {
-  display: grid;
-  gap: 16px;
-  grid-auto-flow: row;
-  grid-template-columns: 1fr;
+/* Opacity range and other full-width utility fields. */
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--name-pb-display-bg-opacity,
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--name-pb-display-content-bg-opacity,
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-range-number-widget,
+.pb__tab-display .pb__display-size > .details-wrapper > .field--name-pb-display-image-min-height,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-range-number-widget,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-image-image,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-media-library-widget {
+  flex: 0 0 100%;
+  inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
 }
 
-.pb__tab-display.small > .details-wrapper > *,
-.pb__tab-display.medium > .details-wrapper > * {
-  min-width: 0;
+.pb__tab-display .pb__display-size > .details-wrapper > .field--name-pb-display-image-min-height > div {
+  inline-size: 100%;
 }
+
 .pb__tab-display .field--name-pb-display-bg-opacity .form-item {
   margin: 0;
 }
-.pb__tab-display .field--name-pb-display-bg-opacity .form-item__description{
-  margin: 0!important;
+
+.pb__tab-display .field--name-pb-display-bg-opacity .form-item__description {
+  margin: 0 !important;
 }
 
-.pb__tab-display.medium .form-select {
-  min-width: 230px;
-  width: initial;
+/* Color fields - fixed 220px; flex-start keeps pairs side by side. */
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-color-text-widget {
+  flex: 0 0 220px;
+  inline-size: 220px;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
 }
 
-form .pb__tab-display.medium [data-drupal-selector="para-color-picker"] {
-  max-width: 230px !important;
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"] {
+  inline-size: 100%;
+  max-inline-size: none;
+}
+
+/* Bundle color accents in Additional (active tab/slide, etc.). */
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-color-text-widget {
+  flex: 0 0 220px;
+  inline-size: 220px;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"] {
+  inline-size: 100%;
+  max-inline-size: none;
+}
+
+/* Half-width widgets - two per row (select, number, checkbox, datetime, text). */
+.pb__tab-display .pb__display-border > .details-wrapper > .field--widget-options-select,
+.pb__tab-display .pb__display-spacing > .details-wrapper > .field--widget-options-select,
+.pb__tab-display .pb__display-size > .details-wrapper > .field--widget-options-select,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-options-select,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-options-buttons,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-number,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-boolean-checkbox,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-datetime-default,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-string-textfield {
+  flex: 0 0 calc(50% - 8px);
+  inline-size: calc(50% - 8px);
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+.pb__tab-display [class*="pb__display-"] > .details-wrapper > .field--widget-options-select .form-select,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-number input,
+.pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-string-textfield input {
+  inline-size: 100%;
+  box-sizing: border-box;
+}
+
+/* Narrow: color fields 2 per row; half-width widgets stack. */
+@media (max-width: 767px) {
+  .pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-color-text-widget,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-color-text-widget {
+    flex: 0 0 calc(50% - 8px);
+    inline-size: calc(50% - 8px);
+  }
+
+  .pb__tab-display [class*="pb__display-"] > .details-wrapper > .field--widget-options-select,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-options-buttons,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-number,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-boolean-checkbox,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-datetime-default,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-string-textfield {
+    flex: 0 0 100%;
+    inline-size: 100%;
+  }
+}
+
+/* Extra narrow: everything stacks. */
+@media (max-width: 479px) {
+  .pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-color-text-widget,
+  .pb__tab-display .pb__display-extra > .details-wrapper > .field--widget-color-text-widget {
+    flex: 0 0 100%;
+    inline-size: 100%;
+  }
 }
 
 
@@ -190,6 +256,7 @@ form .pb__tab-display.medium [data-drupal-selector="para-color-picker"] {
 
 .field--name-pb-display-alert-end-date .paragraph-bundle-alert-clear-date,
 .field--name-pb-display-alert-start-date .paragraph-bundle-alert-clear-date {
+  /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: inline-end;
 }
 
@@ -221,7 +288,7 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
   box-sizing: border-box;
 }
 
-/* Title tag select: amber highlight for H1 — reserve for true page title; misuse hurts SEO and a11y. */
+/* Title tag select: amber highlight for H1 - reserve for true page title; misuse hurts SEO and a11y. */
 .field--name-pb-content-title-tag select.form-select option[value="h1"] {
   color: #b45309;
   font-weight: 600;

@@ -1,100 +1,303 @@
 /**
  * @file
- * Paragraphs Bundles.
+ * Paragraphs Bundles - Color Picker widget admin styles.
  *
- * Filename:     paragraphs-bundles-color-picker.css
- * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Renders [color swatch] [hex text] [x clear] in a compact row.
+ * Follows the same pattern as apex/admin-color-picker.
+ * Targets the Drupal admin interface; uses Gin CSS variables with
+ * graceful fallbacks for non-Gin environments.
+ *
+ * Filename:  paragraphs-bundles-color-picker.css
+ * Developer: Alaa Haddad https://www.alaahaddad.com
  */
 
-:root {
-  --pb-text-align-start: left;
-  --pb-text-align-end: right;
+/* ==========================================================================
+   COLOR PICKER CARD
+   ========================================================================== */
+
+[data-drupal-selector="pb-color-picker"] {
+  display: block;
+  inline-size: 100%;
+  max-inline-size: 220px;
+  box-sizing: border-box;
 }
 
-:root:dir(rtl) {
-  --pb-text-align-start: right;
-  --pb-text-align-end: left;
+.field--widget-color-text-widget .form-item__label {
+  text-overflow: ellipsis;
+  max-inline-size: 100%;
+  color: var(--gin-color-text, inherit);
 }
 
-/* Base Layout - Structure Only */
-form [data-drupal-selector="para-color-picker"] {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: wrap !important;
-  max-width: 300px !important;
-  min-width: 150px !important;
-  width: 100% !important;
-  gap: 0 !important;
-  align-items: center !important;
+.field--widget-color-text-widget .form-item__description {
+  margin-block-start: 4px;
 }
 
-/* Table Cell Context */
-form td [data-drupal-selector="para-color-picker"] {
-  display: inline-flex !important;
+/* Display tab: parent flex item sets width; picker fills it. */
+.pb__tab-display .pb__display-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"],
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"] {
+  max-inline-size: none;
 }
 
-/* Label Structure - Full width when present */
-form [data-drupal-selector="para-color-picker"] label {
-  flex: 0 0 100% !important;
-  width: 100% !important;
-  display: block !important;
-  padding-block-start: 12px;
-  padding-inline-end: 16px;
-  padding-block-end: 4px;
-  padding-inline-start: 4px;
-  text-align: var(--pb-text-align-start);
-  margin-bottom: 0 !important;
+/* ==========================================================================
+   INNER ROW - swatch - text - clear
+   ========================================================================== */
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  inline-size: 100%;
+  max-inline-size: none;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid
+    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
 }
 
-/* Input Structure - Side by side */
-form [data-drupal-selector="para-color-picker"] .form-text,
-form [data-drupal-selector="para-color-picker"] .form-color {
-  flex: 0 0 auto !important;
-  display: inline-block !important;
+/* Shared sizing for all three elements */
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"],
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"],
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
+  height: 30px !important;
+  min-height: 30px !important;
+  max-height: 30px !important;
+  line-height: 1 !important;
+}
+
+/* Native color swatch */
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"] {
+  width: 32px !important;
+  max-width: 32px !important;
+  flex-shrink: 0;
+  padding: 2px;
+  border: 2px solid
+    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: var(--gin-border-s, 6px);
+  box-sizing: border-box;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]:hover {
+  border-color: var(
+    --gin-color-primary,
+    var(--gin-border-color-focus, currentcolor)
+  );
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]:focus {
+  outline: none;
+  border-color: var(
+    --gin-color-primary,
+    var(--gin-border-color-focus, currentcolor)
+  );
+  box-shadow: 0 0 0 2px
+    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border: none;
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 3px;
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 3px;
+}
+
+/* Hex text input */
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"] {
+  flex: 1;
+  min-width: 80px !important;
+  width: auto !important;
   margin: 0 !important;
-  box-sizing: border-box !important;
+  padding: 4px 8px;
+  border: 1px solid
+    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: var(--gin-border-s, 6px);
+  box-sizing: border-box;
+  font-family: var(
+    --gin-font-mono,
+    ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace
+  );
+  font-size: var(--gin-font-size-s, 13px);
+  font-weight: 400;
+  background-color: var(--gin-bg-layer, var(--gin-bg-item, transparent));
+  color: var(--gin-color-text, inherit);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Text Input Structure */
-form [data-drupal-selector="para-color-picker"] .form-text {
-  width: calc(100% - 50px) !important;
-  min-width: 100px !important;
-  border-start-start-radius: 8px !important;
-  border-start-end-radius: 0 !important;
-  border-end-end-radius: 0 !important;
-  border-end-start-radius: 8px !important;
-  border-inline-end: none !important;
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]:hover {
+  border-color: var(--gin-border-color-dark, currentcolor);
 }
 
-/* Color Picker Structure */
-form [data-drupal-selector="para-color-picker"] .form-color {
-  width: 50px !important;
-  height: 36px !important;
-  border-start-start-radius: 0 !important;
-  border-start-end-radius: 8px !important;
-  border-end-end-radius: 8px !important;
-  border-end-start-radius: 0 !important;
-  border-inline-start: none !important;
-  padding: 0 !important;
-  vertical-align: bottom !important;
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]:focus {
+  outline: none;
+  border-color: var(
+    --gin-color-primary,
+    var(--gin-border-color-focus, currentcolor)
+  );
+  box-shadow: 0 0 0 2px
+    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
 }
 
-/* RTL Support - Structure Only */
-:root:dir(rtl) form [data-drupal-selector="para-color-picker"] .form-text {
-  border-start-start-radius: 0 !important;
-  border-start-end-radius: 8px !important;
-  border-end-end-radius: 8px !important;
-  border-end-start-radius: 0 !important;
-  border-inline-start: none !important;
-  border-inline-end: none !important;
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]::placeholder {
+  color: var(
+    --gin-color-text-light,
+    var(--gin-color-disabled, inherit)
+  );
+  font-style: italic;
 }
 
-:root:dir(rtl) form [data-drupal-selector="para-color-picker"] .form-color {
-  border-start-start-radius: 8px !important;
-  border-start-end-radius: 0 !important;
-  border-end-end-radius: 0 !important;
-  border-end-start-radius: 8px !important;
-  border-inline-end: none !important;
-  border-inline-start: none !important;
+/* Clear button - x */
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
+  width: 30px !important;
+  max-width: 30px !important;
+  flex-shrink: 0;
+  padding: 0 0 2px !important;
+  border: 1px solid
+    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: var(--gin-border-s, 6px);
+  background: var(--gin-bg-layer, var(--gin-bg-item, transparent));
+  color: var(--gin-color-text-light, var(--gin-color-disabled, inherit));
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn:hover {
+  background: var(--gin-color-danger, #dc3545);
+  border-color: var(--gin-color-danger, #dc3545);
+  color: #fff;
+}
+
+[data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px
+    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
+}
+
+/* ==========================================================================
+   EMPTY STATE - no color set yet
+   ========================================================================== */
+
+[data-drupal-selector="pb-color-picker"].pb-color-empty .pb-color-picker__wrapper input[type="color"] {
+  opacity: 0.4;
+  border-style: dashed;
+}
+
+[data-drupal-selector="pb-color-picker"].pb-color-empty .pb-color-picker__wrapper input[type="text"] {
+  color: var(--gin-color-text-light, var(--gin-color-disabled, inherit));
+  font-style: italic;
+}
+
+[data-drupal-selector="pb-color-picker"].pb-color-empty .pb-color-picker__wrapper .pb-color__clear-btn {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   ERROR MESSAGE
+   ========================================================================== */
+
+.field--widget-color-text-widget .form-item__error-message {
+  margin-block-start: 4px;
+  font-size: var(--gin-font-size-xs, 12px);
+  color: var(--gin-color-danger, #dc3545);
+}
+
+/* ==========================================================================
+   CATEGORY BORDER INDICATORS
+   A 5px inline-start accent on the inner wrapper groups colour pickers
+   visually by function. Colours mirror the APEX admin-color-picker
+   convention so the admin UI feels consistent across both systems.
+
+     Background colours -> blue   #2271b1
+     Text colours       -> amber  #dba617
+     Border colours     -> red    #d63638
+     Link colours       -> green  #00a32a
+
+   Classes are added by ColorTextWidget::formElement() via COLOR_CATEGORIES.
+   ========================================================================== */
+
+.pb-color-field__wrapper--background .pb-color-picker__wrapper {
+  border-inline-start: 5px solid #2271b1 !important;
+}
+
+.pb-color-field__wrapper--text .pb-color-picker__wrapper {
+  border-inline-start: 5px solid #dba617 !important;
+}
+
+.pb-color-field__wrapper--border .pb-color-picker__wrapper {
+  border-inline-start: 5px solid #d63638 !important;
+}
+
+.pb-color-field__wrapper--link .pb-color-picker__wrapper {
+  border-inline-start: 5px solid #00a32a !important;
+}
+
+/* ==========================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"],
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"],
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper {
+    border-width: 2px;
+  }
+
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"] {
+    border-width: 3px;
+    border-style: solid;
+  }
+}
+
+@media (forced-colors: active) {
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper {
+    border-color: CanvasText;
+  }
+
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
+    border-color: CanvasText;
+    color: CanvasText;
+  }
+
+  /* Category borders: collapse to system colour in forced-colours mode. */
+  .pb-color-field__wrapper--background .pb-color-picker__wrapper,
+  .pb-color-field__wrapper--text .pb-color-picker__wrapper,
+  .pb-color-field__wrapper--border .pb-color-picker__wrapper,
+  .pb-color-field__wrapper--link .pb-color-picker__wrapper {
+    border-inline-start-color: Highlight !important;
+  }
+}
+
+@media print {
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"],
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"],
+  [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
+    transition: none;
+  }
 }

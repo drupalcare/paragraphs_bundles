@@ -1,11 +1,151 @@
 /**
  * @file
- * Paragraphs Bundles.
+ * Paragraphs Bundles foundation overrides.
  *
- * Filename:     paragraphs-bundles-base.css
+ * Reads the per-paragraph CSS custom properties set by the dynamic
+ * file (`pb-{slug}-{id}.css`) and applies them as inheritable
+ * text / background / border colours. Layout helpers from v1 are
+ * preserved verbatim further down this file.
+ *
+ * --- v2 design notes (research-verified, 2026-05-05) -------------
+ *
+ * Background + border are set on bundle-specific targets (not always
+ * `.pb-ui-inner`). See per-bundle CSS and dynamic CSS scopes.
+ *
+ * Text colour is set ONCE on `.pb-ui-inner` and propagated by
+ * inheritance. Elements that browsers (UA stylesheet) or host themes
+ * commonly recolour (`h1-h6`, `mark`, `code`, `blockquote`, ...) are
+ * force-inherited via `:where(...)`. `:where()` contributes zero
+ * specificity (CSS Selectors L4 section3.4) so a sub-theme can still
+ * override per element with a plain `.my-class` selector.
+ *   - https://developer.mozilla.org/en-US/docs/Web/CSS/:where
+ *
+ * Links keep their OWN scoped variable `--pb-lk` (with `-h` hover
+ * variant). Forcing links to inherit body text colour erodes link
+ * affordance - an a11y / usability regression even when not a strict
+ * WCAG 1.4.1 failure (WAI Technique F73 + G183).
+ *   - https://www.w3.org/TR/WCAG20-TECHS/F73.html
+ *
+ * Form controls (`button, input, select, textarea`) are deliberately
+ * untouched. UA-supplied styling preserves OS focus, disabled state,
+ * and forced-colors mode integration.
+ *
+ * Nested paragraphs work without a `:not()` guard: each nested
+ * `.pb-ui-inner` re-declares its own `--pb-*` properties for its
+ * subtree. CSS Custom Properties L1 section2.
+ *   - https://www.w3.org/TR/css-variables-1/#defining-variables
+ *
+ * `--pb-*` defaults come from the theme bridge (`css/bridge/pb-theme-bridge-*.css`)
+ * loaded before this file. Editor dynamic CSS overrides via id scope.
+ * Hover tokens (`--pb-*-h`) are never bridged - only set when the editor
+ * fills hover display fields (inline or dynamic CSS on the inner shell).
+ * This file consumes `var(--pb-*)` only - no inline `--r-*` fallbacks.
+ *
+ * Cascade-layer placement: this file is intentionally UN-LAYERED, like
+ * all PB CSS. Editor-set colours must override host-theme defaults
+ * (paragraphs_bundles is a builder UI; the editor's choice wins), and a
+ * module can't assume anything about the host theme's layers. Per CSS
+ * Cascade L5, un-layered rules beat all layered rules, so staying
+ * un-layered (PB declares no `pb.*` ladder) is what makes "settings
+ * override theme" actually true.
+ *
+ * Filename:     paragraphs-bundles-custom.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+
+/* ===================================================================
+ * Hover tokens - editor-only (v1 contract). Unset until the editor or
+ * dynamic CSS sets them on `.pb-ui-inner` (same element as v1 inline).
+ * ================================================================= */
+.paragraphs-bundles {
+  --pb-bg-h: initial;
+  --pb-tx-h: initial;
+  --pb-br-h: initial;
+  --pb-lk-h: initial;
+}
+
+/* ===================================================================
+ * Inner wrapper - border + text colour from theme bridge or editor.
+ * Background is NOT set here: each bundle targets its own DOM node
+ * (hero inner, card title, overlay, etc.) via dynamic CSS + bundle
+ * static CSS. `--pb-bg` / `--pb-bg-h` exist only when the editor
+ * sets background fields - never from the theme bridge.
+ * ================================================================= */
+.paragraphs-bundles .field,
+.paragraphs-bundles > .pb-ui-inner {
+  border-color:     var(--pb-br);
+  color:            var(--pb-tx);
+}
+
+.paragraphs-bundles .field:hover,
+.paragraphs-bundles > .pb-ui-inner:hover {
+  border-color:     var(--pb-br-h, var(--pb-br));
+  color:            var(--pb-tx-h, var(--pb-tx));
+}
+
+/* Nested PB paragraphs reset background to transparent so the outer
+ * paragraph's background shows through. v1 contract; preserved. */
+.pb-ui-inner .pb-ui-inner {
+  --pb-bg: transparent;
+}
+
+/* ===================================================================
+ * Force inheritance for elements UA / host themes commonly recolour.
+ * `:where(...)` keeps specificity at 0,1,0 - sub-themes override per
+ * element with any selector of equal-or-greater specificity.
+ *
+ * Deliberately NOT included:
+ *   - <a>          : has its own scoped variable below.
+ *   - <button>, <input>, <select>, <textarea>
+ *                  : let UA / theme own them so OS focus rings,
+ *                    disabled state, and forced-colors keep working.
+ *   - <p>, <span>, <div>, <em>, <strong>, <i>, <b>, <u>, <small>,
+ *     <sub>, <sup>
+ *                  : these have NO UA colour override and inherit
+ *                    naturally; including them would shadow theme
+ *                    intent (e.g. `.warning span { color: red }`).
+ * ================================================================= */
+.paragraphs-bundles .pb-ui-inner :where(
+  h1, h2, h3, h4, h5, h6,
+  blockquote, cite, q,
+  mark, code, kbd, samp, pre,
+  dt, dd, li,
+  figcaption, summary
+) {
+  color: inherit;
+}
+
+/* ===================================================================
+ * Links - keep their own variable so link affordance survives even
+ * when the editor sets an unusual paragraph text colour.
+ *   --pb-lk    : editor-set link colour (bridge default when empty)
+ *   --pb-lk-h  : editor-set link hover only (never theme-bridged)
+ * ================================================================= */
+.paragraphs-bundles .pb-ui-inner :where(a) {
+  color: var(--pb-lk);
+}
+
+.paragraphs-bundles .pb-ui-inner :where(a):hover {
+  color: var(--pb-lk-h, var(--pb-tx-h, var(--pb-lk, var(--pb-tx))));
+}
+
+/* ===================================================================
+ * Buttons - hover colours on the button element (v1 contract). Custom
+ * properties inherit from `.pb-ui-inner` where inline/dynamic CSS sets
+ * editor hover values.
+ * ================================================================= */
+.paragraphs-bundles .pb-ui-inner :where(button.pb-ui-btn, a.button, a.pb-ui-btn):hover {
+  color:            var(--pb-tx-h, var(--pb-tx));
+  background-color: var(--pb-bg-h, var(--pb-bg, transparent));
+  border-color:     var(--pb-br-h, var(--pb-br));
+}
+
+/* ===================================================================
+ * Borders on table primitives inside the page wrapper. v1 had this
+ * outside `.paragraphs-bundles` scope; preserved verbatim because some sub-
+ * themes rely on this exact selector chain.
+ * ================================================================= */
 body .page-wrapper tr,
 body .page-wrapper td,
 body .page-wrapper th,
@@ -13,92 +153,15 @@ body .page-wrapper hr,
 body .page-wrapper table,
 body .page-wrapper ul,
 body .page-wrapper li {
-  border-color: var(--pb-br, var(--r-br, inherit));
+  border-color: var(--pb-br);
   background-color: inherit;
 }
 
-.paragraphs-bundles .paragraph__inner p,
-.paragraphs-bundles .paragraph__inner a,
-.paragraphs-bundles .paragraph__inner h1,
-.paragraphs-bundles .paragraph__inner h2,
-.paragraphs-bundles .paragraph__inner h3,
-.paragraphs-bundles .paragraph__inner div {
-  border-color: var(--pb-br, var(--r-br, inherit));
-}
-
-.paragraphs-bundles .paragraph__inner a:hover,
-.paragraphs-bundles .paragraph__inner p:hover,
-.paragraphs-bundles .paragraph__inner h1:hover,
-.paragraphs-bundles .paragraph__inner h2:hover,
-.paragraphs-bundles .paragraph__inner h3:hover,
-.paragraphs-bundles .paragraph__inner div:hover {
-  border-color: var(--pb-br-h, var(--pb-br, var(--r-br)));
-}
-
-.paragraphs-bundles .paragraph__inner .paragraph__inner,
-.paragraphs-bundles .paragraph__inner .paragraph__inner .paragraph__inner {
-  --pb-bg: transparent;
-}
-
-.paragraphs-bundles>.paragraph__inner {
-  background-color: var(--pb-bg, inherit);
-  border-color: var(--pb-br, var(--r-br, inherit));
-  color: var(--pb-tx, var(--r-tx, inherit));
-}
-
-.paragraphs-bundles>.paragraph__inner:hover {
-  background-color: var(--pb-bg-h, var(--pb-bg));
-  border-color: var(--pb-br-h, var(--pb-br));
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
-.paragraphs-bundles .paragraph__inner p,
-.paragraphs-bundles .paragraph__inner div:not(h1 div,
-h2 div,
-h3 div,
-div h3,
-div h2,
-div h1) {
-  color: var(--pb-tx, var(--r-tx, inherit));
-}
-
-.paragraphs-bundles .paragraph__inner p:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
-.paragraphs-bundles .paragraph__inner a:not(h1 a,
-h2 a,
-h3 a) {
-  color: var(--pb-tx, var(--r-lk, var(--r-tx)));
-}
-
-.paragraphs-bundles .paragraph__inner a:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
-.paragraphs-bundles .paragraph__inner h1,
-.paragraphs-bundles .paragraph__inner h2,
-.paragraphs-bundles .paragraph__inner h3 {
-  color: var(--pb-tx, var(--r-h1, var(--r-tx)));
-}
-
-.paragraphs-bundles .paragraph__inner h1:hover,
-.paragraphs-bundles .paragraph__inner h2:hover,
-.paragraphs-bundles .paragraph__inner h3:hover {
-  color: var(--pb-tx-h, var(--r-h1, var(--r-tx)));
-}
-
-.paragraphs-bundles .paragraph__inner h1:hover div,
-.paragraphs-bundles .paragraph__inner h2:hover div,
-.paragraphs-bundles .paragraph__inner h3:hover div,
-.paragraphs-bundles .paragraph__inner h1:hover span,
-.paragraphs-bundles .paragraph__inner h2:hover span,
-.paragraphs-bundles .paragraph__inner h3:hover span {
-  color: var(--pb-tx-h, var(--pb-tx, var(--r-h1)));
-}
-
+/* ===================================================================
+ * Layout primitives - verbatim from v1.
+ * ================================================================= */
 .paragraphs-bundles,
-.paragraphs-bundles .pb__one-column {
+.paragraphs-bundles .pb-one-column {
   margin: 0;
   display: grid;
   grid-auto-flow: row;
@@ -106,11 +169,11 @@ h3 a) {
 }
 
 .paragraphs-bundles > *,
-.paragraphs-bundles .pb__one-column > * {
+.paragraphs-bundles .pb-one-column > * {
   min-width: 0;
 }
 
-.paragraphs-bundles > .paragraph__inner {
+.paragraphs-bundles > .pb-ui-inner {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
@@ -122,59 +185,67 @@ h3 a) {
   background-color: transparent !important;
 }
 
-.paragraphs-bundles .pb__content-title {
+.paragraphs-bundles .pb-content__title {
   display: block;
   width: 100%;
 }
 
-/* Alignment: use start/end so “left/right” follow inline direction (LTR vs RTL). */
-.paragraphs-bundles .pb__content-title--align-left > .field--name-pb-content-title {
+/* Alignment: use start/end so "left/right" follow inline direction
+ * (LTR vs RTL). */
+.paragraphs-bundles .pb-content__title--align-left > .field--name-pb-content-title {
   text-align: start;
 }
 
-.paragraphs-bundles .pb__content-title--align-center > .field--name-pb-content-title {
+.paragraphs-bundles .pb-content__title--align-center > .field--name-pb-content-title {
   text-align: center;
 }
 
-.paragraphs-bundles .pb__content-title--align-right > .field--name-pb-content-title {
+.paragraphs-bundles .pb-content__title--align-right > .field--name-pb-content-title {
   text-align: end;
 }
 
-.pb__img-auto .field--name-pb-media-image img {
+.pb-u-img-auto .field--name-pb-media-image img {
   width: auto !important;
 }
 
 .field--name-pb-media-image picture,
-.paragraphs-bundles .pb__img-wrapper {
+.paragraphs-bundles.pb-image .pb-image__wrapper,
+.paragraphs-bundles.pb-image-wide .pb-image__wrapper,
+.paragraphs-bundles.pb-image-narrow .pb-image__wrapper {
+  /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: none !important;
   display: block;
 }
 
-.paragraphs-bundles .field--name-pb-image-field {
+.paragraphs-bundles.pb-image .field--name-pb-image-field,
+.paragraphs-bundles.pb-image-wide .field--name-pb-image-field,
+.paragraphs-bundles.pb-image-narrow .field--name-pb-image-field {
   margin-block-end: 0 !important;
 }
 
-.paragraphs-bundles .field--name-pb-image-caption {
+.paragraphs-bundles.pb-image .field--name-pb-image-caption,
+.paragraphs-bundles.pb-image-wide .field--name-pb-image-caption,
+.paragraphs-bundles.pb-image-narrow .field--name-pb-image-caption {
   font-size: var(--pb-px12);
 }
 
-.pparagraph .pb__img-wrapper div {
-  float: inline-start;
+.paragraphs-bundles.pb-image .pb-image__wrapper.pb-u-dis-top-left-right,
+.paragraphs-bundles.pb-image-wide .pb-image__wrapper.pb-u-dis-top-left-right,
+.paragraphs-bundles.pb-image-narrow .pb-image__wrapper.pb-u-dis-top-left-right {
+  border-start-start-radius: 0 !important;
+  border-start-end-radius: 0 !important;
 }
 
-.pb__img-wrapper.pb__dis-top-left-right {
-  border-block-start-left-radius: 0 !important;
-  border-block-start-right-radius: 0 !important;
-}
-
-.pb__image-w__inner > a,
-.pb__image-n__inner > a,
-.pb__image__inner > a {
+.paragraphs-bundles.pb-image .pb-image__inner > a,
+.paragraphs-bundles.pb-image-wide .pb-image-wide__inner > a,
+.paragraphs-bundles.pb-image-narrow .pb-image-narrow__inner > a {
   display: block;
   height: 100%;
 }
 
-.pb__img-wrapper.pb__dis-radius {
+.paragraphs-bundles.pb-image .pb-image__wrapper.pb-u-dis-radius,
+.paragraphs-bundles.pb-image-wide .pb-image__wrapper.pb-u-dis-radius,
+.paragraphs-bundles.pb-image-narrow .pb-image__wrapper.pb-u-dis-radius {
   border-radius: 0 !important;
 }
 
@@ -185,77 +256,106 @@ h3 a) {
   max-width: 100%;
 }
 
-.paragraphs-bundles .pb__hero-txt-wrapper-inner:not(.page-node-type-pb-content .pb__hero-txt-wrapper-inner) {
+/* Width tokens + layout (v1 contract):
+ * - Default: pmw class on direct child of outer wrapper (simple/image inner).
+ * - Hero: pmw on nested `.pb-hero__text-inner`.
+ * - Parallax: pmw on `.pb-parallax__text`.
+ * - Modal: pmw on `.pb-modal__inner`. */
+.paragraphs-bundles.pb-hero .pb-hero__text-inner:not(.page-node-type-pb-content .pb-hero__text-inner),
+.paragraphs-bundles .pb-modal__inner:not(.page-node-type-pb-content .pb-modal__inner) {
   width: 100%;
   max-width: var(--pb-width);
 }
 
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_100,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_900,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_800,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_700,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_600,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_500,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_400,
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__pmw_300 {
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--100,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--900,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--800,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--700,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--600,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--500,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--400,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-u-mw--300,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--100,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--900,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--800,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--700,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--600,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--500,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--400,
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--300 {
   margin-inline-start: auto !important;
   margin-inline-end: auto !important;
   width: 100%;
   max-width: var(--pb-width);
 }
 
-.paragraphs-bundles > .pb__pmw_100,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_100,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_100 {
+.paragraphs-bundles > .pb-u-mw--100,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--100,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--100,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--100,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--100 {
   --pb-width: 100%;
 }
 
-.paragraphs-bundles > .pb__pmw_300,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_300,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_300 {
+.paragraphs-bundles > .pb-u-mw--300,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--300,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--300,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--300,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--300 {
   --pb-width: 18.75rem;
 }
 
-.paragraphs-bundles > .pb__pmw_400,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_400,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_400 {
+.paragraphs-bundles > .pb-u-mw--400,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--400,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--400,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--400,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--400 {
   --pb-width: 25rem;
 }
 
-.paragraphs-bundles > .pb__pmw_500,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_500,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_500 {
+.paragraphs-bundles > .pb-u-mw--500,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--500,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--500,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--500,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--500 {
   --pb-width: 31.25rem;
 }
 
-.paragraphs-bundles > .pb__pmw_600,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_600,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_600 {
+.paragraphs-bundles > .pb-u-mw--600,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--600,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--600,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--600,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--600 {
   --pb-width: 37.5rem;
 }
 
-.paragraphs-bundles > .pb__pmw_700,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_700,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_700 {
+.paragraphs-bundles > .pb-u-mw--700,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--700,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--700,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--700,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--700 {
   --pb-width: 43.75rem;
 }
 
-.paragraphs-bundles > .pb__pmw_800,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_800,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_800 {
+.paragraphs-bundles > .pb-u-mw--800,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--800,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--800,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--800,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--800 {
   --pb-width: 50rem;
 }
 
-.paragraphs-bundles > .pb__pmw_900,
-.paragraphs-bundles .pb__parallax-text.pb__pmw_900,
-.paragraphs-bundles .pb__hero-txt-wrapper-inner.pb__pmw_900 {
+.paragraphs-bundles > .pb-u-mw--900,
+.paragraphs-bundles .pb-parallax__text.pb-u-mw--900,
+.paragraphs-bundles.pb-hero .pb-hero__text-inner.pb-u-mw--900,
+.paragraphs-bundles .pb-modal__inner.pb-u-mw--900,
+.paragraphs-bundles .pb-3d-carousel__inner.pb-u-mw--900 {
   --pb-width: 56.25rem;
 }
 
 @media (max-width:35.99875rem) {
   .paragraphs-bundles .button,
-  .paragraphs-bundles .pb__button {
+  .paragraphs-bundles .pb-ui-btn {
     white-space: normal;
   }
-
 }

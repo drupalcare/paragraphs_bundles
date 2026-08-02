@@ -1,129 +1,229 @@
 /**
  * @file
- * Paragraphs Bundles
+ * Paragraphs Bundles — Color Picker widget.
  *
- * Filename:     paragraphs-bundles-color-picker.js
- * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Enhances each [data-drupal-selector="pb-color-picker"] text input with:
+ *  - A native <input type="color"> swatch (leading).
+ *  - The existing hex text input (middle).
+ *  - A clear button that resets the field (trailing).
+ *
+ * Both inputs stay in sync via requestAnimationFrame. An "empty state"
+ * CSS class is toggled on the outer card so CSS can indicate an unset
+ * field (dashed swatch border, muted text, disabled clear button).
+ *
+ * Follows the same pattern as apex/admin-color-picker.js.
+ *
+ * @license SPDX-License-Identifier: GPL-2.0-or-later
  */
-((Drupal, settings, once) => {
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
+(function (Drupal, once) {
+  'use strict';
+
+  // -------------------------------------------------------------------------
+  // Pure helpers (no DOM side-effects).
+  // -------------------------------------------------------------------------
+
   /**
-   * input event callback to keep text & color inputs in sync.
+   * Returns true when value is empty or a valid 3/6-digit hex string.
    *
-   * @param {HTMLElement} changedInput input element changed by user
-   * @param {HTMLElement} inputToSync input element to synchronize
+   * @param {string} value - Color value to test.
+   * @return {boolean} Whether the value is valid or empty.
    */
-  const synchronizeInputs = (changedInput, inputToSync) => {
-    const value = changedInput.value;
-    inputToSync.value = value;
-    changedInput.setAttribute('data-para-custom-color', value);
-    inputToSync.setAttribute('data-para-custom-color', value);
+  const isValidColor = (value) => {
+    if (!value || value === '') {
+      return true;
+    }
+    return /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(value);
   };
 
+  /**
+   * Normalizes #RGB → #RRGGBB and uppercases the result.
+   *
+   * @param {string} value - Hex color value.
+   * @return {string} Six-digit hex color.
+   */
+  const toSixDigitHex = (value) => {
+    if (!value) { return value; }
+    const m = /^#([A-Fa-f0-9]{3})$/.exec(value);
+    if (m) {
+      const [r, g, b] = m[1].split('');
+      return `#${r}${r}${g}${g}${b}${b}`.toUpperCase();
+    }
+    return value.toUpperCase();
+  };
+
+  // -------------------------------------------------------------------------
+  // DOM mutators.
+  // -------------------------------------------------------------------------
+
+  /**
+   * Toggles the pb-color-empty class on the outer card element.
+   *
+   * @param {HTMLElement} wrapper - The .pb-color-picker__wrapper element.
+   * @param {string} value - Current text-input value.
+   */
+  const updateEmptyState = (wrapper, value) => {
+    const card = wrapper.closest('[data-drupal-selector="pb-color-picker"]');
+    if (!card) { return; }
+    if (!value || value === '') {
+      card.classList.add('pb-color-empty');
+    }
+    else {
+      card.classList.remove('pb-color-empty');
+    }
+  };
+
+  /**
+   * Copies source value → target input (with format conversion).
+   * Runs inside requestAnimationFrame to batch DOM writes.
+   *
+   * @param {HTMLInputElement} source - The changed input.
+   * @param {HTMLInputElement} target - The input to update.
+   * @param {HTMLElement} wrapper - The .pb-color-picker__wrapper element.
+   */
+  const syncInputs = (source, target, wrapper) => {
+    const { value } = source;
+    if (!isValidColor(value)) { return; }
+    requestAnimationFrame(() => {
+      if (value === '') {
+        target.value = target.type === 'color' ? '#000000' : '';
+      }
+      else {
+        target.value =
+          target.type === 'color'
+            ? toSixDigitHex(value)
+            : value.toUpperCase();
+      }
+      updateEmptyState(wrapper, value);
+    });
+  };
+
+  /**
+   * Resets both inputs and notifies Drupal of the change.
+   *
+   * @param {HTMLInputElement} textInput - The hex text input.
+   * @param {HTMLInputElement} colorInput - The native color swatch input.
+   * @param {HTMLElement} wrapper - The .pb-color-picker__wrapper element.
+   */
+  const clearColor = (textInput, colorInput, wrapper) => {
+    textInput.value = '';
+    colorInput.value = '#000000';
+    updateEmptyState(wrapper, '');
+    textInput.dispatchEvent(new Event('change', { bubbles: true }));
+  };
+
+  // -------------------------------------------------------------------------
+  // Element factories.
+  // -------------------------------------------------------------------------
+
+  /**
+   * Builds the native color swatch input seeded with the current hex value.
+   *
+   * @param {HTMLInputElement} textInput - The existing hex text input.
+   * @return {HTMLInputElement} The created color input.
+   */
   const createColorInput = (textInput) => {
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
-    colorInput.classList.add(
-      'form-color',
-      'form-element',
-      'form-element--type-color',
-      'form-element--api-color'
-    );
-    colorInput.value = textInput.value;
-    colorInput.setAttribute('name', `visual_${textInput.name}`);
-    colorInput.setAttribute(
-      'data-para-custom-color',
-      textInput.getAttribute('data-para-custom-color')
-    );
+    colorInput.className =
+      'form-color form-element form-element--type-color';
+    const val = textInput.value;
+    colorInput.value =
+      val && isValidColor(val) ? toSixDigitHex(val) : '#000000';
     return colorInput;
   };
 
-  const updateLabelAttributes = (textInput, colorInput) => {
-    const fieldID = textInput.id;
-    const label = document.querySelector(`label[for="${fieldID}"]`);
-    if (label) {
-      label.removeAttribute('for');
-      label.setAttribute('id', `${fieldID}-label`);
-      textInput.setAttribute('aria-labelledby', `${fieldID}-label`);
-      colorInput.setAttribute('aria-labelledby', `${fieldID}-label`);
-    }
+  /**
+   * Builds the × clear button.
+   *
+   * @return {HTMLButtonElement} The created button.
+   */
+  const createClearButton = () => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'pb-color__clear-btn';
+    btn.setAttribute('aria-label', Drupal.t('Clear color'));
+    btn.setAttribute('title', Drupal.t('Clear color'));
+    btn.innerHTML = '&times;';
+    return btn;
   };
 
-  const addInputEventListener = (textInput, colorInput) => {
-    textInput.addEventListener('input', () => {
-      synchronizeInputs(textInput, colorInput);
-    });
-    colorInput.addEventListener('input', () => {
-      synchronizeInputs(colorInput, textInput);
-    });
-  };
-
-  const initColorPicker = (textInput) => {
-    const colorInput = createColorInput(textInput);
-    textInput.after(colorInput);
-    updateLabelAttributes(textInput, colorInput);
-    addInputEventListener(textInput, colorInput);
-  };
-
-  const getDisplayWidth = () => {
-    const displayTabs = document.querySelectorAll('.pb__tab-display');
-
-    displayTabs.forEach(displayTab => {
-      let displayTabWidth;
-
-      if (displayTab.style.display === 'none') {
-        // Get the sibling element with class 'pb__tab-content'
-        const sibling = displayTab.previousElementSibling;
-
-        if (sibling && sibling.classList.contains('pb__tab-content')) {
-          // Use the width of the sibling element
-          displayTabWidth = sibling.getBoundingClientRect().width;
-        } else {
-          // Fallback width if sibling is not found
-          displayTabWidth = 500;
-        }
-      } else {
-        // If the element is visible, use its actual width
-        displayTabWidth = displayTab.getBoundingClientRect().width;
-      }
-
-      // Remove all previous size classes to prevent class duplication
-      displayTab.classList.remove('small', 'medium', 'large', 'x-large');
-
-      if (displayTabWidth <= 520) {
-        displayTab.classList.add('small'); // Small Devices
-      } else if (displayTabWidth >= 520 && displayTabWidth <= 768) {
-        displayTab.classList.add('medium'); // Medium Devices
-      } else if (displayTabWidth >= 768) {
-        displayTab.classList.add('large'); // Large Devices
-      }
-    });
-  };
+  // -------------------------------------------------------------------------
+  // Picker initializer.
+  // -------------------------------------------------------------------------
 
   /**
-   * Para Color Picker behavior.
+   * Wraps a hex text input in [swatch | text | clear] row.
    *
-   * @type {Drupal~behavior}
-   * @prop {Drupal~behaviorAttach} attach
-   *   Initializes color picker fields.
+   * @param {HTMLInputElement} textInput - The text input to enhance.
    */
-  Drupal.behaviors.paraColorPicker = {
-    attach: function (context, settings) {
-      const colorTextInputs = once(
-        'para-color-picker',
-        '[data-drupal-selector="para-color-picker"] input[type="text"]',
-        context
-      );
-      colorTextInputs.forEach(initColorPicker);
+  const initColorPicker = (textInput) => {
+    if (!textInput || textInput.nodeType !== 1) { return; }
 
-      // Call getDisplayWidth after 1/2 second
-      setTimeout(() => {
-        getDisplayWidth();
-      }, 500);
-      window.addEventListener('resize', getDisplayWidth);
-    }
+    const colorInput = createColorInput(textInput);
+    const clearBtn = createClearButton();
+
+    const wrapper = document.createElement('div');
+    wrapper.className = 'pb-color-picker__wrapper';
+
+    // Insert wrapper before the text input, then move elements inside.
+    textInput.parentNode.insertBefore(wrapper, textInput);
+    wrapper.appendChild(colorInput);
+    wrapper.appendChild(textInput);
+    wrapper.appendChild(clearBtn);
+
+    updateEmptyState(wrapper, textInput.value);
+
+    // Sync: text → swatch (debounced for typed input).
+    let textTimeout;
+    textInput.addEventListener('input', () => {
+      clearTimeout(textTimeout);
+      textTimeout = setTimeout(
+        () => syncInputs(textInput, colorInput, wrapper),
+        300
+      );
+    });
+    textInput.addEventListener('change', () => {
+      syncInputs(textInput, colorInput, wrapper);
+    });
+
+    // Sync: swatch → text (immediate; native picker fires 'input' live).
+    colorInput.addEventListener('input', () => {
+      syncInputs(colorInput, textInput, wrapper);
+    });
+    colorInput.addEventListener('change', () => {
+      syncInputs(colorInput, textInput, wrapper);
+    });
+
+    clearBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      clearColor(textInput, colorInput, wrapper);
+    });
   };
 
+  // -------------------------------------------------------------------------
+  // Drupal behavior.
+  // -------------------------------------------------------------------------
 
-})(Drupal, drupalSettings, once);
+  Drupal.behaviors.pbColorPicker = {
+    attach(context) {
+      once(
+        'pb-color-picker',
+        '[data-drupal-selector="pb-color-picker"] input[type="text"]',
+        context
+      ).forEach(initColorPicker);
+    },
 
+    detach(context, _settings, trigger) {
+      if (trigger !== 'unload') { return; }
+      once.remove(
+        'pb-color-picker',
+        '[data-drupal-selector="pb-color-picker"] input[type="text"]',
+        context
+      );
+    },
+  };
+
+})(Drupal, once);
