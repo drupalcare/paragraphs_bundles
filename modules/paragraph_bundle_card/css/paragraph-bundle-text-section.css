@@ -1,19 +1,44 @@
 /**
  * @file
- * Paragraph Bundle Card.
+ * Paragraph Bundle Card text section.
+ *
+ * Scoping contract: `.paragraphs-bundles.pb-card.pb-card-text-section`.
  *
  * Filename:     paragraph-bundle-text-section.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-.paragraphs-bundles .pb-card-text-section__inner > div,
-.paragraphs-bundles .pb-card-text-section__inner > a > div {
+
+.paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div,
+.paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div {
   color: var(--pb-tx);
-  back-ground-color: var(--pb-bg);
+  background-color: var(--pb-bg);
 }
 
-.paragraphs-bundles .pb-card-text-section__inner > div:hover,
-.paragraphs-bundles .pb-card-text-section__inner > a > div:hover {
+.paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div:hover,
+.paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div:hover {
   color: var(--pb-tx-h, var(--pb-tx));
-  back-ground-color: var(--pb-bg-h, var(--pb-bg));
+  background-color: var(--pb-bg-h, var(--pb-bg));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div,
+  .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  /* Text section hover uses dynamic CSS vars on inner shell. */
+}
+
+@media (forced-colors: active) {
+  /* Forced-colors inherits from theme bridge variables. */
+}
+
+@media print {
+  .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div:hover {
+    color: var(--pb-tx);
+    background-color: var(--pb-bg);
+  }
 }

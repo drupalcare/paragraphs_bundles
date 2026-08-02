@@ -1,0 +1,11 @@
+services:
+  Drupal\paragraph_bundle_card\Hook\PbcardThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_card\Hook\PbcardHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

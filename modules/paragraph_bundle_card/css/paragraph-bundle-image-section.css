@@ -1,13 +1,16 @@
 /**
  * @file
- * Paragraph Bundle Card.
+ * Paragraph Bundle Card image section.
+ *
+ * Scoping contract: `.paragraphs-bundles.pb-card.pb-card-image-section`.
  *
  * Filename:     paragraph-bundle-image-section.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-.pb__card-image-section__inner > .pb__card-image a,
-.pb__card-image-section__inner > .pb__card-image div:not(.field--name-pb-content-title) {
+
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image a,
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image div:not(.field--name-pb-content-title) {
   margin: 0 !important;
   padding: 0 !important;
   width: 100%;
@@ -16,11 +19,11 @@
   justify-content: center;
 }
 
-.pb__card-image-section__inner > .pb__card-image {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image {
   position: relative;
 }
 
-.pb__card-image-section__inner > .pb__card-image .pb__card-image-title {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title {
   position: absolute;
   inset-block-end: 0;
   inset-inline-start: 0;
@@ -35,38 +38,58 @@
   z-index: 1000;
 }
 
-.pb__card-image-section__inner > .pb__card-image .pb__card-image-title>* {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title > * {
   min-width: 0;
   width: 100%;
 }
 
-.pb__card-image-section__inner > .pb__card-image .field--name-pb-content-image {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .field--name-pb-content-image {
   z-index: -1;
 }
 
-.pb__card-image-section__inner > .pb__card-image .field--name-pb-content-title {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .field--name-pb-content-title {
   width: 100%;
   padding: var(--pb-px12);
 }
 
-.pb__card-image-section__inner > .pb__card-image > .pb__card-image-title,
-.pb__card-image-section__inner > .pb__card-image > a > .pb__card-image-title {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image > .pb-card__image-title,
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image > a > .pb-card__image-title {
   color: var(--pb-tx);
   background-color: var(--pb-bg);
 }
 
-.pb__card-image-section__inner > .pb__card-image:hover > .pb__card-image-title,
-.pb__card-image-section__inner > .pb__card-image:hover > a > .pb__card-image-title {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image:hover > .pb-card__image-title,
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image:hover > a > .pb-card__image-title {
   color: var(--pb-tx-h, var(--pb-tx));
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-.pb__card-image-section__inner > .pb__card-image:hover .field--name-pb-content-title {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image:hover .field--name-pb-content-title {
   color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
 }
 
-.paragraphs-bundles .pb__card-image-section__inner .pb__img-wrapper {
+.paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner .pb-image__wrapper {
   width: 100%;
   display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  /* Hover/title contrast inherits dynamic CSS vars on section inner. */
+}
+
+@media (forced-colors: active) {
+  /* Image overlay title uses system color keywords via dynamic CSS. */
+}
+
+@media print {
+  .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title {
+    position: static;
+  }
 }

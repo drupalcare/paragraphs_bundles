@@ -1,8 +1,21 @@
-name: Paragraph Bundle Card
+name: 'Paragraph Bundle Card'
 type: module
-description: A reusable Paragraph Bundle Card.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Two- and three-column card layouts with image and text section child paragraphs.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:image
+  - drupal:link
+  - drupal:media
+  - drupal:media_library
+  - drupal:options
+  # core.entity_view_display.media.pb_media_image.pb_media_card.yml uses the
+  # responsive_image formatter. Reached transitively via paragraph_bundle_image
+  # today, but declared directly: a module states the modules its own config
+  # needs rather than relying on a sibling's dependency list.
+  - drupal:responsive_image
+  - drupal:text
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
   - paragraph_bundle_image:paragraph_bundle_image

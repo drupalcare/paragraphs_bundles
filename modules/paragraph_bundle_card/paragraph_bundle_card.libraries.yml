@@ -4,6 +4,9 @@ paragraph-bundle-card:
       css/paragraph-bundle-card.css: { }
   js:
     js/paragraph-bundle-card.js: { }
+  dependencies:
+    - core/drupal
+    - core/once
 
 paragraph-bundle-image-section:
   css:

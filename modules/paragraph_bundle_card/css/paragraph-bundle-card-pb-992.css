@@ -1,90 +1,92 @@
 /**
  * @file
- * Paragraph Bundle Layout.
+ * Paragraph Bundle Card breakpoint CSS.
  *
- * Filename:     paragraph-bundle-layout.css
+ * Scoping contract: `.paragraphs-bundles.pb-card`.
+ *
+ * Filename:     paragraph-bundle-card-pb-992.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 @media (min-width:62rem) {
-  .pb__card-two-columns.two-l6_l6,
-  .pb__card-two-columns.two-l4_l8,
-  .pb__card-two-columns.two-l8_l4,
-  .pb__card-two-columns.two-l3_l9,
-  .pb__card-two-columns.two-l9_l3,
-  .pb__card-three-columns.three-l4_l4_l4,
-  .pb__card-three-columns.three-l2_l8_l2,
-  .pb__card-three-columns.three-l2_l2_l8,
-  .pb__card-three-columns.three-l8_l2_l2,
-  .pb__card-three-columns.three-l3_l6_l3,
-  .pb__card-three-columns.three-l6_l3_l3,
-  .pb__card-three-columns.three-l3_l3_l6 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l6-l6,
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l4-l8,
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l8-l4,
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l3-l9,
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l9-l3,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l4-l4-l4,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l2-l8-l2,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l2-l2-l8,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l8-l2-l2,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l3-l6-l3,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l6-l3-l3,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l3-l3-l6 {
     grid-auto-flow: column;
   }
 
-  .pb__card-two-columns.two-l6_l6 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l6-l6 {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .pb__card-two-columns.two-l4_l8 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l4-l8 {
     grid-template-columns: 1fr 2fr;
   }
 
-  .pb__card-two-columns.two-l8_l4 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l8-l4 {
     grid-template-columns: 2fr 1fr;
   }
 
-  .pb__card-two-columns.two-l3_l9 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l3-l9 {
     grid-template-columns: 1fr 3fr;
   }
 
-  .pb__card-two-columns.two-l9_l3 {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l9-l3 {
     grid-template-columns: 3fr 1fr;
   }
 
-  .pb__card-three-columns.three-l4_l4_l4 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l4-l4-l4 {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  .pb__card-three-columns.three-l2_l8_l2 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l2-l8-l2 {
     grid-template-columns: 1fr 4fr 1fr;
   }
 
-  .pb__card-three-columns.three-l2_l2_l8 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l2-l2-l8 {
     grid-template-columns: 1fr 1fr 4fr;
   }
 
-  .pb__card-three-columns.three-l8_l2_l2 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l8-l2-l2 {
     grid-template-columns: 4fr 1fr 1fr;
   }
 
-  .pb__card-three-columns.three-l3_l6_l3 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l3-l6-l3 {
     grid-template-columns: 1fr 3fr 1fr;
   }
 
-  .pb__card-three-columns.three-l6_l3_l3 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l6-l3-l3 {
     grid-template-columns: 3fr 1fr 1fr;
   }
 
-  .pb__card-three-columns.three-l3_l3_l6 {
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns.pb-card-three-columns--l3-l3-l6 {
     grid-template-columns: 1fr 1fr 3fr;
   }
 
-  .pb__card-two-columns .paragraphs-bundles,
-  .pb__card-three-columns .paragraphs-bundles,
-  .pb__card-two-columns .paragraph__inner,
-  .pb__card-three-columns .paragraph__inner {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns .paragraphs-bundles,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns .paragraphs-bundles,
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns .pb-ui-inner,
+  .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns .pb-ui-inner {
     display: flex;
   }
 
 }
 
 @media (max-width:61.99875rem) {
-  .pb-image-top .pb-card-two-right {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-u-image-top .pb-card-two-columns__right {
     order: -1;
   }
 
-  .pb-image-top .pb-card-two-left {
+  .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-u-image-top .pb-card-two-columns__left {
     order: 1;
   }
 
