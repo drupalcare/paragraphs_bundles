@@ -6,6 +6,7 @@ paragraph-bundle-modal:
     js/paragraph-bundle-modal.js: { }
   dependencies:
     - core/drupal
+    - core/drupal.announce
     - core/drupal.ajax
     - core/drupalSettings
     - core/once

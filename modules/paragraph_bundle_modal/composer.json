@@ -1,9 +1,10 @@
 {
     "name": "drupal/paragraph_bundle_modal",
-    "description": "A reusable Paragraph Bundle Modal.",
+    "description": "Modal paragraph bundle for Paragraphs Bundles.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Alaa Haddad (alaahaddad.com)",
@@ -12,13 +13,13 @@
         }
     ],
     "homepage": "https://drupal.org/project/paragraph_bundle_modal",
-  "require": {
-    "drupal/core": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*"
+    },
     "support": {
         "issues": "https://drupal.org/project/issues/paragraph_bundle_modal",
         "source": "https://git.drupalcode.org/project/paragraph_bundle_modal"
     }
 }
-

@@ -1,7 +1,11 @@
-name: Paragraph Bundle Modal
+name: 'Paragraph Bundle Modal'
 type: module
-description: A reusable Paragraph Bundle Modal.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Modal dialog paragraph with trigger button, body/footer nested paragraphs, and animation options.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - drupal:text
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

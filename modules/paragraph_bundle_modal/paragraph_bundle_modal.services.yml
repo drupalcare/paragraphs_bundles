@@ -1,0 +1,11 @@
+services:
+  Drupal\paragraph_bundle_modal\Hook\PbmThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_modal\Hook\PbmHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

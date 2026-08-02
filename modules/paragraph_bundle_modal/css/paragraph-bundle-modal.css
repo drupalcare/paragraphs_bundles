@@ -2,60 +2,67 @@
  * @file
  * Paragraph Bundle Modal.
  *
+ * Scoping contract (all bundles): L0 + L3 private on paragraph root.
+ * `.paragraphs-bundles.pb-modal` - never `.paragraph--type--*` in CSS.
+ * See docs/PB-V2-CLASS-NAMING-SPEC.md section 4.
+ *
  * Filename:     paragraph-bundle-modal.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-.pb__modal-wrapper * {
+
+.paragraphs-bundles.pb-modal * {
   color: var(--pb-tx);
 }
 
-.pb__modal-wrapper *:hover {
+.paragraphs-bundles.pb-modal *:hover {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.pb-modal {
+.paragraphs-bundles.pb-modal > .pb-modal__dialog {
   z-index: 10000 !important;
   display: none;
-  padding-block-start: calc(2 * var(--pb-px48));
   position: fixed;
-  inset-inline-start: 0;
-  inset-block-start: 0;
+  inset: 0;
+  box-sizing: border-box;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
-  background-color: rgba(0, 0, 0, 0.7);
+  padding: var(--pb-px48) var(--pb-px10);
+  background-color: color-mix(in srgb, CanvasText 70%, transparent);
 }
 
-.pb-modal-content {
-  margin: auto;
+.paragraphs-bundles.pb-modal > .pb-modal__dialog.pb-is-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraphs-bundles.pb-modal .pb-modal__content {
   position: relative;
+  flex-shrink: 0;
+  margin: auto;
+  max-width: 100%;
   padding: 0;
   outline: 0;
 }
 
-.pb-modal-content .pb__modal__inner {
+.paragraphs-bundles.pb-modal .pb-modal__content .pb-modal__inner {
   display: grid;
+  margin-inline: auto;
+  max-width: var(--pb-width);
 }
 
-.pb-modal-content .pb__modal__inner > 0 {
+.paragraphs-bundles.pb-modal .pb-modal__content .pb-modal__inner > * {
+  width: 100%;
   min-width: 0;
 }
 
-.pb__modal__inner.pb__pmw_100 {
-  max-width: 61.99875.5rem!important;
-}
-
-.pb-modal-content .pb__modal__inner>* {
-  width: 100%;
-}
-
-.pb-modal-content .pb-modal-header {
+.paragraphs-bundles.pb-modal .pb-modal__header {
   display: flex;
 }
 
-.pb-modal-content .pb-modal-header button {
+.paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn {
   width: var(--pb-px48);
   height: var(--pb-px48);
   font-size: var(--pb-px48);
@@ -65,62 +72,74 @@
   align-items: center;
 }
 
-.pb-modal-content .pb-modal-header .pb-modal-title {
+.paragraphs-bundles.pb-modal .pb-modal__header .pb-modal__title {
   width: calc(100% - var(--pb-px48));
   justify-content: start;
   align-items: center;
   flex-grow: 1;
 }
 
-.pb-modal-content .pb-modal-header .pb-modal-title div {
+.paragraphs-bundles.pb-modal .pb-modal__header .pb-modal__title div {
   display: flex;
   height: 100%;
   justify-content: start;
   align-items: center;
 }
 
-.pb-modal-button button div {
+.paragraphs-bundles.pb-modal .pb-modal__button button div {
   margin-block: 0 !important;
   margin-inline: auto !important;
 }
 
-.paragraph--type--pbcss-modal {
+html.pb-u-modal-open {
   overflow: hidden;
 }
 
-.pb-modal-header .pb__button.pb__ds_top_right {
+.paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn.pb-u-ds--top-right {
   position: absolute;
 }
 
-.paragraph--type--modal-bundle.pb__card_2 {
+.paragraphs-bundles.pb-modal.pb-u-shadow--2 {
   margin-block: var(--pb-px10) !important;
   margin-inline: auto !important;
   width: auto;
   max-width: var(--pb-px992);
 }
 
-.paragraph--type--modal-bundle.pb__card_4 {
+.paragraphs-bundles.pb-modal.pb-u-shadow--4 {
   margin-block: var(--pb-px20) !important;
   margin-inline: auto !important;
   width: auto;
   max-width: var(--pb-px992);
 }
 
-@media (max-width:35.99875rem) {
-  .pb-modal-content {
-    margin-block: 0;
-    margin-inline: var(--pb-px10);
+@media (max-width: 35.99875rem) {
+  .paragraphs-bundles.pb-modal > .pb-modal__dialog {
+    padding: var(--pb-px32) var(--pb-px10);
   }
-
-  .pb-modal {
-    padding-block-start: var(--pb-px32);
-  }
-
 }
 
-@media (max-width:47.99875rem) {
-  .pb-modal {
-    padding-block-start: var(--pb-px48);
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-modal > .pb-modal__dialog,
+  .paragraphs-bundles.pb-modal .pb-modal__content {
+    transition: none;
   }
+}
 
+@media (prefers-contrast: high) {
+  .paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn:focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-modal > .pb-modal__dialog {
+    display: none !important;
+  }
 }
