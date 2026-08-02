@@ -3,7 +3,4 @@ services:
 
   Drupal\paragraph_bundle_3d_flip_box\Hook\Pb3dfbHelpHook:
     arguments:
-      - '@extension.list.module'
-      - '@module_handler'
-      - '@plugin.manager.filter'
-      - '@config.factory'
+      - '@paragraphs_bundles.readme_help_renderer'

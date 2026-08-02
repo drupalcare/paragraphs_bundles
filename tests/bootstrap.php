@@ -109,4 +109,17 @@ foreach (glob($module_root . '/modules/*', GLOB_ONLYDIR) ?: [] as $submodule) {
   $loader->addPsr4('Drupal\\Tests\\' . $name . '\\', $submodule . '/tests/src');
 }
 
+// Register Drupal core's own module namespaces (Drupal\filter\, Drupal\user\,
+// ...). Composer only maps Drupal\Core\ and Drupal\Component\; everything under
+// core/modules is registered by the kernel, which these tests do not boot. The
+// core directory is derived from the Drupal\Core\ prefix rather than guessed,
+// so it works whatever the docroot layout. When core is not reachable the
+// stubs below still cover what the suite type-hints.
+foreach ($loader->getPrefixesPsr4()['Drupal\\Core\\'] ?? [] as $core_lib) {
+  $core = dirname($core_lib, 3);
+  foreach (glob($core . '/modules/*/src', GLOB_ONLYDIR) ?: [] as $core_module_src) {
+    $loader->addPsr4('Drupal\\' . basename(dirname($core_module_src)) . '\\', $core_module_src);
+  }
+}
+
 require __DIR__ . '/stubs/drupal-entity-stubs.php';

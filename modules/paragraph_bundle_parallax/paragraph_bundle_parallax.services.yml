@@ -3,7 +3,4 @@ services:
 
   Drupal\paragraph_bundle_parallax\Hook\PbpHelpHook:
     arguments:
-      - '@extension.list.module'
-      - '@module_handler'
-      - '@plugin.manager.filter'
-      - '@config.factory'
+      - '@paragraphs_bundles.readme_help_renderer'

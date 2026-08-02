@@ -5,7 +5,4 @@ services:
 
   Drupal\paragraph_bundle_hero\Hook\PbhHelpHook:
     arguments:
-      - '@extension.list.module'
-      - '@module_handler'
-      - '@plugin.manager.filter'
-      - '@config.factory'
+      - '@paragraphs_bundles.readme_help_renderer'

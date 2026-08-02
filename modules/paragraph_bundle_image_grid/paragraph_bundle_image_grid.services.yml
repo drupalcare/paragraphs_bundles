@@ -3,10 +3,7 @@ services:
 
   Drupal\paragraph_bundle_image_grid\Hook\PbigHelpHook:
     arguments:
-      - '@extension.list.module'
-      - '@module_handler'
-      - '@plugin.manager.filter'
-      - '@config.factory'
+      - '@paragraphs_bundles.readme_help_renderer'
 
   Drupal\paragraph_bundle_image_grid\Hook\PbigPreprocessSectionHook:
     arguments:

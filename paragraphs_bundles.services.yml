@@ -114,15 +114,28 @@ services:
     alias: paragraphs_bundles.view_display_verifier
 
   # ---------------------------------------------------------------------------
-  # OOP Hook classes — Drupal 11.1+ pattern. FQCN as service ID is required so
-  # the OOP-hooks dispatcher (ClassResolver) can resolve them.
+  # README help renderer — the single hook_help() implementation shared by this
+  # module and all 26 bundle sub-modules. Their hook classes inject this and
+  # pass their own module name; nothing else may duplicate the logic.
   # ---------------------------------------------------------------------------
-  Drupal\paragraphs_bundles\Hook\PbHelpHook:
+  paragraphs_bundles.readme_help_renderer:
+    class: Drupal\paragraphs_bundles\Service\Help\PbReadmeHelpRenderer
     arguments:
       - '@extension.list.module'
       - '@module_handler'
       - '@plugin.manager.filter'
       - '@config.factory'
+
+  Drupal\paragraphs_bundles\Service\Help\PbReadmeHelpRendererInterface:
+    alias: paragraphs_bundles.readme_help_renderer
+
+  # ---------------------------------------------------------------------------
+  # OOP Hook classes — Drupal 11.1+ pattern. FQCN as service ID is required so
+  # the OOP-hooks dispatcher (ClassResolver) can resolve them.
+  # ---------------------------------------------------------------------------
+  Drupal\paragraphs_bundles\Hook\PbHelpHook:
+    arguments:
+      - '@paragraphs_bundles.readme_help_renderer'
 
   Drupal\paragraphs_bundles\Hook\PbThemeHook:
     autowire: true
