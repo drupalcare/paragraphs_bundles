@@ -8,3 +8,64 @@ modules/paragraph_bundle_slideshow/.idea/*
 CLAUDE.md
 youtube-playlist copy.html
 youtube-playlist.html
+
+# drupal.org packaging injects LICENSE.txt into every release tarball.
+# Keeping one in git shadows the packager's copy and ships 26 stale duplicates
+# inside modules/. Never commit these.
+LICENSE
+LICENSE.txt
+modules/*/LICENSE.txt
+
+# Third-party assets must not live in a GPL-2.0-or-later drupal.org repo.
+# Material Symbols web fonts are Apache-2.0 (not GPLv2-compatible) and 11 MB;
+# the site must supply the font. Kept on disk for local work, never committed.
+modules/paragraph_bundle_icon/fonts/
+
+# axe-core is MPL-2.0 and 572 KB. CI downloads a pinned release and exports
+# PB_AXE_CORE_PATH; see .gitlab-ci.yml and tests/src/Traits/AxeTestTrait.php.
+tests/fixtures/axe.min.js
+
+# PHPUnit result cache — local run state, regenerated on every run.
+.phpunit.cache/
+
+# ---------------------------------------------------------------------------
+# Maintainer working material — never commit to the public drupal.org repo.
+#
+# These are process artefacts from the v1 -> v2 port, not project
+# documentation. The release log additionally records local machine paths and
+# test-site details, and the blueprint enumerates findings that are not yet
+# fixed. All of it stays on disk for local work only.
+#
+# User-facing guides in docs/ are NOT listed here and are committed:
+# CONFIGURATION, DEVELOPING, UPGRADE-V1-TO-V2, CSS-CLASS-MIGRATION,
+# PB-V2-ACCESSIBILITY-PLAYBOOK, PB-V2-THEME-BRIDGE, PB-V2-CLASS-NAMING-SPEC,
+# PB-V2-BEM-VOCABULARY, PB-V2-BUNDLE-VOCABULARY, reference/.
+# ---------------------------------------------------------------------------
+docs/PB-V2-RELEASE-LOG.md
+docs/RELEASE-BLUEPRINT-2.0.0.md
+docs/PB-V2-MASTER-PLAN.md
+docs/PB-V2-PROGRESS.md
+docs/PB-V2-A11Y-AUDIT-REPORT.md
+docs/PB-V2-CLASS-TRACKING.md
+docs/PB-V2-CLASS-RENAME-CONSTRAINTS.md
+docs/PB-V2-CSS-MODERNIZATION-PLAN.md
+docs/PB-V2-DEMO-BASELINE.md
+docs/PB-V2-DOM-NAMING-PRINCIPLES.md
+docs/PB-V2-FIELD-VALUE-BEM-INVENTORY.md
+docs/PB-V2-INLINE-TO-DYNAMIC-PLAN.md
+docs/PB-V2-INSTALL-PARITY.md
+docs/PB-V2-JS-HYGIENE-PLAYBOOK.md
+docs/PB-V2-NAMING-CHEATSHEET.md
+docs/PB-V2-PHASE-B-SCOPING-PLAYBOOK.md
+docs/PB-V2-PHASE-C-REGRESSION.md
+docs/PB-V2-TESTING-WORKFLOW.md
+docs/BUNDLE-PORT-NOTES.md
+docs/BUNDLE-PORT-WORKFLOW.md
+docs/class-renames.md
+docs/legacy.md
+docs/generated/
+recipes/paragraphs_bundles_demo/WORKSTREAM.md
+
+# One-off v1 -> v2 porting and migration tooling. Single-use, never invoked by
+# the module at runtime, and its paths assume a layout no real install has.
+scripts/
