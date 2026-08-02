@@ -1,0 +1,264 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\paragraphs_bundles\Hook;
+
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\Template\Attribute;
+use Drupal\paragraphs\ParagraphInterface;
+use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
+use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
+use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
+use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilderInterface;
+use Psr\Log\LoggerInterface;
+
+/**
+ * Preprocess hook — exposes per-paragraph data to Twig.
+ *
+ * Sets extra variables on every paragraph render:
+ *   - `pb_paragraph_id`: DOM id (`pb__{slug}-{id}` or v1 prefix override).
+ *   - `pb_dynamic_library`: library id when a dynamic CSS file exists,
+ *     otherwise NULL (Twig must not attach a missing library).
+ *   - `pb_overlay_container_style` / `pb_overlay_title_style`: image overlay
+ *     bg/text custom properties on the overlay DOM node (inline), not dynamic.
+ */
+final class PbPreprocessHook {
+
+  /**
+   * Display colour keys for image overlay inline `--pb-*` on one element.
+   *
+   * @var list<string>
+   */
+  private const array OVERLAY_INLINE_COLOR_KEYS = [
+    'pb-bg',
+    'pb-bg-h',
+    'pb-tx',
+    'pb-tx-h',
+  ];
+
+  /**
+   * Paragraph bundles owned by Paragraphs Bundles (cached per request).
+   *
+   * @var list<string>|null
+   */
+  private ?array $managedBundles = NULL;
+
+  public function __construct(
+    private readonly BundleSluggerInterface $slugger,
+    private readonly PbCssFileManagerInterface $cssFiles,
+    private readonly PbDynamicCssBuilderInterface $dynamicCss,
+    private readonly ModuleHandlerInterface $moduleHandler,
+    private readonly LoggerInterface $logger,
+  ) {}
+
+  /**
+   * Implements hook_preprocess_paragraph().
+   *
+   * @param array<string, mixed> $variables
+   *   Render variables (passed by reference by the dispatcher).
+   */
+  #[Hook('preprocess_paragraph')]
+  public function preprocessParagraph(array &$variables): void {
+    $paragraph = $variables['paragraph'] ?? NULL;
+    if (!$paragraph instanceof ParagraphInterface) {
+      return;
+    }
+    if (!in_array($paragraph->bundle(), $this->managedBundles(), TRUE)) {
+      return;
+    }
+    // Seed the base classes in preprocess (not only the template) so they
+    // survive a theme's paragraph-template override. The module's CSS and
+    // per-paragraph dynamic CSS both hook onto `.paragraphs-bundles`, so
+    // losing it silently breaks styling. Matches v1's belt + suspenders.
+    $this->pinBaseClasses($variables);
+
+    $slug = $this->slugger->slugify($paragraph->bundle());
+    $id = (int) $paragraph->id();
+    $bundle = $paragraph->bundle();
+    $prefix = PbDynamicCssBuilder::OUTER_ID_PREFIX_OVERRIDES[$bundle]
+      ?? ('pb__' . $slug);
+
+    $variables['pb_paragraph_id'] = $prefix . '-' . $id;
+    $this->attachDynamicCss($variables, $paragraph, $slug, $id);
+
+    if ($bundle === 'image_overlay_bundle') {
+      $this->preprocessImageOverlayInlineColors($variables, $paragraph);
+    }
+  }
+
+  /**
+   * Attaches the paragraph's dynamic CSS; self-heals a missing file.
+   *
+   * Fast path: when the per-paragraph CSS file exists, expose its cacheable
+   * library id for the template to attach. Fallback: when the file is missing
+   * (fresh deploy, wiped `public://` files, or content migrated without a
+   * re-save) the named library isn't registered — regenerating the file here
+   * can't be resolved by `attach_library` this request. So inline the generated
+   * CSS in the page head instead, guaranteeing the paragraph never renders
+   * unstyled. The cacheable file/library path resumes once the paragraph is
+   * saved or `drush pb:regenerate-css` runs. Empty CSS needs nothing.
+   *
+   * @param array<string, mixed> $variables
+   *   Paragraph preprocess variables (by reference).
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *   The paragraph being rendered.
+   * @param string $slug
+   *   Bundle slug.
+   * @param int $id
+   *   Paragraph id.
+   */
+  private function attachDynamicCss(
+    array &$variables,
+    ParagraphInterface $paragraph,
+    string $slug,
+    int $id,
+  ): void {
+    if ($this->cssFiles->exists($slug, $id)) {
+      $variables['pb_dynamic_library'] = 'paragraphs_bundles/dynamic--' . $slug . '-' . $id;
+      return;
+    }
+
+    $variables['pb_dynamic_library'] = NULL;
+    $css = $this->dynamicCss->build($paragraph);
+    if ($css === '') {
+      return;
+    }
+    // Last-line guard before the only unescaped sink in the module.
+    // Markup::create() asserts the string is already safe, so html_tag emits
+    // it verbatim without Xss::filterAdmin(). Values are validated upstream
+    // (colour shape at the field layer, structural characters stripped from
+    // user vars), which means generated CSS can never legitimately contain
+    // '<'. If one appears, an upstream guarantee has regressed — drop the
+    // inline block rather than emit it, and leave a trace.
+    if (str_contains($css, '<')) {
+      $this->logger->error(
+        'Refused to inline dynamic CSS for paragraph @id (@slug): generated source contained an unexpected "<". This indicates a sanitization regression upstream.',
+        ['@id' => $id, '@slug' => $slug],
+      );
+      return;
+    }
+    $variables['#attached']['html_head'][] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'style',
+        '#value' => Markup::create($css),
+        '#attributes' => ['data-pb-dynamic' => $slug . '-' . $id],
+      ],
+      'pb-dynamic-css-' . $slug . '-' . $id,
+    ];
+  }
+
+  /**
+   * Paragraph bundle machine names owned by Paragraphs Bundles + sub-modules.
+   *
+   * Built once per request from each PB module's optional
+   * `paragraphs.paragraphs_type.*.yml` config (v1 parity).
+   *
+   * @return list<string>
+   *   Sorted, unique bundle ids.
+   */
+  private function managedBundles(): array {
+    if ($this->managedBundles !== NULL) {
+      return $this->managedBundles;
+    }
+    $moduleNames = ['paragraphs_bundles'];
+    foreach (array_keys($this->moduleHandler->getModuleList()) as $name) {
+      if (str_starts_with($name, 'paragraph_bundle_')) {
+        $moduleNames[] = $name;
+      }
+    }
+    $bundles = [];
+    foreach (array_unique($moduleNames) as $moduleName) {
+      $path = $this->moduleHandler->getModule($moduleName)->getPath();
+      $optional = $path . '/config/optional';
+      if (!is_dir($optional)) {
+        continue;
+      }
+      $pattern = $optional . '/paragraphs.paragraphs_type.*.yml';
+      foreach (glob($pattern) ?: [] as $file) {
+        $base = basename($file);
+        if (preg_match('#^paragraphs\.paragraphs_type\.(.+)\.yml$#', $base, $m)) {
+          $bundles[] = $m[1];
+        }
+      }
+    }
+    $bundles = array_values(array_unique($bundles));
+    sort($bundles);
+    $this->managedBundles = $bundles;
+    return $bundles;
+  }
+
+  /**
+   * Seeds `paragraph` + `paragraphs-bundles` classes on the wrapper.
+   *
+   * Done in preprocess so the classes are present even when a theme overrides
+   * the bundle template. Handles the attributes value as an Attribute object
+   * or a plain array.
+   *
+   * @param array<string, mixed> $variables
+   *   Paragraph preprocess variables (by reference).
+   */
+  private function pinBaseClasses(array &$variables): void {
+    $attributes = $variables['attributes'] ?? NULL;
+    if ($attributes instanceof Attribute) {
+      $attributes->addClass('paragraph', 'paragraphs-bundles');
+      return;
+    }
+    if (!is_array($attributes)) {
+      $attributes = [];
+    }
+    $classes = $attributes['class'] ?? [];
+    if (!is_array($classes)) {
+      $classes = (array) $classes;
+    }
+    $classes = array_values(
+      array_diff($classes, ['paragraph', 'paragraphs-bundles']),
+    );
+    array_unshift($classes, 'paragraph', 'paragraphs-bundles');
+    $attributes['class'] = $classes;
+    $variables['attributes'] = $attributes;
+  }
+
+  /**
+   * Exposes overlay bg/text as inline custom properties on one DOM node.
+   *
+   * Border/link colours stay on `.pb-ui-inner` via dynamic CSS. Overlay
+   * surface colours belong on `.pb-overlay__container` or the title element
+   * — a single `style=""` line, no extra dynamic rule block required.
+   *
+   * @param array<string, mixed> $variables
+   *   Paragraph preprocess variables.
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *   Image overlay paragraph.
+   */
+  private function preprocessImageOverlayInlineColors(
+    array &$variables,
+    ParagraphInterface $paragraph,
+  ): void {
+    $style = $this->dynamicCss->buildInlineCustomPropertiesStyle(
+      $paragraph,
+      self::OVERLAY_INLINE_COLOR_KEYS,
+    );
+    if ($style === '') {
+      return;
+    }
+
+    $overlayMode = '';
+    if ($paragraph->hasField('pb_display_image_overlay')
+      && !$paragraph->get('pb_display_image_overlay')->isEmpty()) {
+      $raw = $paragraph->get('pb_display_image_overlay')->first()?->getValue()['value'] ?? '';
+      $overlayMode = is_string($raw) ? trim($raw) : '';
+    }
+
+    if ($overlayMode === 'title') {
+      $variables['pb_overlay_title_style'] = $style;
+      return;
+    }
+
+    $variables['pb_overlay_container_style'] = $style;
+  }
+
+}
