@@ -1,140 +1,153 @@
 /**
  * @file
- * Paragraph Bundle Parallax - Production Ready.
+ * Paragraph Bundle Parallax.
  *
- * Provides parallax scrolling effects with multiple animation types,
- * breakpoint support, reduced motion preferences, and visibility detection.
+ * Parallax scrolling with breakpoint gating, reduced-motion respect, and
+ * scroll-reveal visibility on section text.
  *
  * Filename:     paragraph-bundle-parallax.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
-((Drupal, drupalSettings, once) => {
+((Drupal, once) => {
   'use strict';
 
-  /**
-   * Track if global listeners have been attached.
-   *
-   * @type {boolean}
-   */
-  let listenersAttached = false;
+  const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
+  const PB_PARALLAX_SECTION = 'pb-parallax-section';
+  const PB_PARALLAX__BG = 'pb-parallax__bg';
+  const PB_IS_VISIBLE = 'pb-is-visible';
+  const PARALLAX_CSS = 'parallax-css';
 
-  /**
-   * Throttle flag for scroll performance.
-   *
-   * @type {boolean}
-   */
+  const PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION =
+    `.${PARAGRAPHS_BUNDLES}.${PB_PARALLAX_SECTION}`;
+  const PB_PARALLAX_SECTION_OWNED_INNER =
+    ':scope > .pb-ui-inner';
+
+  const ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX =
+    'pb-paragraph-bundle-parallax';
+
+  /** @type {Set<HTMLElement>} */
+  const activeSections = new Set();
+
+  /** @type {AbortController|null} */
+  let globalController = null;
+
+  /** @type {boolean} */
   let ticking = false;
 
   /**
-   * Check if user prefers reduced motion.
-   *
-   * @returns {boolean} True if user prefers reduced motion.
+   * @return {boolean}
    */
-  function prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  }
+  const prefersReducedMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /**
-   * Check if parallax should be active based on breakpoint.
+   * @param {HTMLElement} element
    *
-   * @param {HTMLElement} element - The parallax section element.
-   * @returns {boolean} True if parallax should run.
+   * @return {boolean}
    */
-  function shouldRunParallax(element) {
-    // Respect reduced motion preference
+  const shouldRunParallax = (element) => {
     if (prefersReducedMotion()) {
       return false;
     }
 
     const breakpoint = element.getAttribute('data-breakpoint');
-
-    // If "all" or no breakpoint, always run parallax
     if (!breakpoint || breakpoint === 'all') {
       return true;
     }
 
-    // If numeric breakpoint, check if current width is larger
     const bp = parseInt(breakpoint, 10);
     if (Number.isFinite(bp)) {
       return window.innerWidth > bp;
     }
 
     return true;
-  }
+  };
 
   /**
-   * Check if element is in viewport.
+   * @param {HTMLElement} element
    *
-   * @param {HTMLElement} element - The element to check.
-   * @returns {boolean} True if element is in viewport.
+   * @return {boolean}
    */
-  function isInViewport(element) {
+  const isInViewport = (element) => {
     const rect = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    const windowHeight = window.innerHeight
+      || document.documentElement.clientHeight;
 
     return rect.bottom > 0 && rect.top < windowHeight;
-  }
+  };
 
   /**
-   * Update visibility class on element.
-   *
-   * @param {HTMLElement} element - The parallax section element.
+   * @param {HTMLElement} element
    */
-  function updateVisibility(element) {
-    const inner = element.querySelector('.paragraph__inner');
-    if (!inner) {
+  const updateVisibility = (element) => {
+    const inner = element.querySelector(PB_PARALLAX_SECTION_OWNED_INNER);
+    if (!(inner instanceof HTMLElement)) {
       return;
     }
 
     if (isInViewport(element)) {
-      inner.classList.add('visible');
-    } else {
-      inner.classList.remove('visible');
+      inner.classList.add(PB_IS_VISIBLE);
     }
-  }
+    else {
+      inner.classList.remove(PB_IS_VISIBLE);
+    }
+  };
 
   /**
-   * Apply parallax effect and update visibility.
-   *
-   * @param {HTMLElement} element - The parallax section element.
+   * @param {HTMLElement} element
    */
-  function updateParallax(element) {
-    // Always update visibility for text animations
+  const resetBackgroundStyles = (element) => {
+    const bgEl = element.querySelector(`.${PB_PARALLAX__BG}`);
+    if (!(bgEl instanceof HTMLElement)) {
+      return;
+    }
+
+    bgEl.style.transform = '';
+    bgEl.style.filter = '';
+    bgEl.style.opacity = '';
+  };
+
+  /**
+   * @param {HTMLElement} element
+   */
+  const updateParallax = (element) => {
     updateVisibility(element);
 
-    // Handle legacy CSS mode - no JS transforms needed
-    if (element.classList.contains('parallax-css')) {
+    if (element.classList.contains(PARALLAX_CSS)) {
       return;
     }
 
-    // For JS mode, check if breakpoint and motion preferences allow parallax
     if (!shouldRunParallax(element)) {
+      resetBackgroundStyles(element);
       return;
     }
 
-    const bgEl = element.querySelector('.pb__parallax-bg');
-    if (!bgEl) {
+    const bgEl = element.querySelector(`.${PB_PARALLAX__BG}`);
+    if (!(bgEl instanceof HTMLElement)) {
       return;
     }
 
-    // Only apply background transforms if element is in viewport
     if (!isInViewport(element)) {
+      resetBackgroundStyles(element);
       return;
     }
 
-    const speed = parseFloat(element.getAttribute('data-parallax-speed')) || 0.6;
+    const speed = parseFloat(element.getAttribute('data-parallax-speed') || '')
+      || 0.6;
     const effect = element.getAttribute('data-parallax-effect') || 'translate';
 
     const scrollPosition = window.pageYOffset;
     const windowHeight = window.innerHeight;
     const elementRect = element.getBoundingClientRect();
     const elementTop = elementRect.top + scrollPosition;
+    const offset = ((scrollPosition + windowHeight - elementTop) * speed)
+      - (windowHeight * speed);
 
-    const offset = ((scrollPosition + windowHeight - elementTop) * speed) - (windowHeight * speed);
-
-    // Reset previous transforms
     bgEl.style.transform = '';
     bgEl.style.filter = '';
     bgEl.style.opacity = '';
@@ -148,103 +161,144 @@
         const blurAmount = Math.min(Math.abs(offset) / 100, 10);
         bgEl.style.filter = `blur(${blurAmount}px)`;
         break;
+
       }
 
       case 'fade':
       case 'opacity': {
         const opacity = Math.max(1 - Math.abs(offset) / 1000, 0);
-        bgEl.style.opacity = opacity;
+        bgEl.style.opacity = String(opacity);
         break;
+
       }
 
       case 'scale': {
         const scaleAmount = Math.max(1 + Math.abs(offset) / 1000, 1);
         bgEl.style.transform = `scale(${scaleAmount})`;
         break;
+
       }
 
       case 'rotate': {
         const rotateAmount = Math.max(-8, Math.min(8, offset / 10));
         bgEl.style.transform = `rotate(${rotateAmount}deg)`;
         break;
+
       }
 
       case 'legacy':
-        // Legacy mode uses CSS only, no JS transform
         break;
 
       default:
         bgEl.style.transform = `translateY(${offset}px)`;
         break;
     }
-  }
-
-  /**
-   * Process all parallax elements.
-   */
-  function processAllElements() {
-    const elements = document.querySelectorAll('.paragraph--type--parallax-section-bundle');
-    elements.forEach(element => {
-      updateParallax(element);
-    });
-  }
-
-  /**
-   * Handle scroll events with throttling via requestAnimationFrame.
-   */
-  function handleScroll() {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        processAllElements();
-        ticking = false;
-      });
-      ticking = true;
-    }
-  }
-
-  /**
-   * Handle resize events with throttling.
-   */
-  function handleResize() {
-    handleScroll();
-  }
-
-  /**
-   * Drupal behavior for Paragraph Bundle Parallax.
-   *
-   * @type {Drupal~behavior}
-   */
-  Drupal.behaviors.ParagraphBundleParallax = {
-    attach: function(context, settings) {
-      const elements = once('paragraphBundleParallax', '.paragraph--type--parallax-section-bundle', context);
-
-      if (elements.length > 0) {
-        // Bind scroll and resize listeners only once globally
-        if (!listenersAttached) {
-          window.addEventListener('scroll', handleScroll, { passive: true });
-          window.addEventListener('resize', handleResize, { passive: true });
-          listenersAttached = true;
-        }
-
-        // Initial call to set up visibility states
-        processAllElements();
-      }
-    },
-
-    detach: function(context, settings, trigger) {
-      // Only clean up on 'unload' trigger to prevent issues with AJAX
-      if (trigger === 'unload') {
-        once.remove('paragraphBundleParallax', '.paragraph--type--parallax-section-bundle', context);
-
-        // Check if any parallax elements remain on the page
-        const remainingElements = document.querySelectorAll('.paragraph--type--parallax-section-bundle');
-        if (remainingElements.length === 0 && listenersAttached) {
-          window.removeEventListener('scroll', handleScroll);
-          window.removeEventListener('resize', handleResize);
-          listenersAttached = false;
-        }
-      }
-    }
   };
 
-})(Drupal, drupalSettings, once);
+  /**
+   * @return {void}
+   */
+  const processAllElements = () => {
+    activeSections.forEach((element) => {
+      updateParallax(element);
+    });
+  };
+
+  /**
+   * @return {void}
+   */
+  const handleScroll = () => {
+    if (ticking) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      processAllElements();
+      ticking = false;
+    });
+    ticking = true;
+  };
+
+  /**
+   * @return {void}
+   */
+  const ensureGlobalListeners = () => {
+    if (globalController) {
+      return;
+    }
+
+    globalController = new AbortController();
+    const { signal } = globalController;
+    window.addEventListener('scroll', handleScroll, { passive: true, signal });
+    window.addEventListener('resize', handleScroll, { passive: true, signal });
+  };
+
+  /**
+   * @return {void}
+   */
+  const teardownGlobalListeners = () => {
+    if (activeSections.size > 0) {
+      return;
+    }
+
+    globalController?.abort();
+    globalController = null;
+    ticking = false;
+  };
+
+  /**
+   * @param {HTMLElement} element
+   */
+  const registerSection = (element) => {
+    activeSections.add(element);
+    ensureGlobalListeners();
+    updateParallax(element);
+  };
+
+  /**
+   * @param {HTMLElement} element
+   */
+  const unregisterSection = (element) => {
+    activeSections.delete(element);
+    resetBackgroundStyles(element);
+    const inner = element.querySelector(PB_PARALLAX_SECTION_OWNED_INNER);
+    if (inner instanceof HTMLElement) {
+      inner.classList.remove(PB_IS_VISIBLE);
+    }
+    teardownGlobalListeners();
+  };
+
+  /**
+   * @type {Drupal~behavior}
+   */
+  Drupal.behaviors.paragraphBundleParallax = {
+    attach(context) {
+      once(
+        ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX,
+        PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION,
+        context,
+      ).forEach((element) => {
+        registerSection(element);
+      });
+    },
+
+    /**
+     * @param {Document|HTMLElement} context
+     * @param {object} settings
+     * @param {string} trigger
+     */
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
+      }
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX,
+        PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION,
+        context,
+      ).forEach((element) => {
+        unregisterSection(element);
+      });
+    },
+  };
+})(Drupal, once);

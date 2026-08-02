@@ -6,7 +6,6 @@ paragraph-bundle-parallax:
     js/paragraph-bundle-parallax.js: {}
   dependencies:
     - core/drupal
-    - core/drupalSettings
     - core/once
 
 paragraph-bundle-parallax__all:

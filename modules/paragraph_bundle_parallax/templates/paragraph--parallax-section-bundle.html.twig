@@ -1,83 +1,64 @@
 {#
 /**
-* @file
-* Default theme implementation to display a 'parallax' paragraph.
-*
-* Filename:     paragraph--parallax-section-bundle.html.twig
-* Website:      https://www.flashwebcenter.com
-* Developer:    Alaa Haddad https://www.alaahaddad.com.
-*/
+ * @file
+ * `parallax_section_bundle` paragraph template (v2).
+ *
+ * Outer wrapper (`#pb-parallax-{id}`): scroll mode, breakpoint, data attrs.
+ * Inner (`.pb-ui-inner`): section height + parallax effect class.
+ * Background (`.pb-parallax__bg`): image URL + JS animation custom properties.
+ * Text layer (`.pb-parallax__text`): display list classes; colour vars via
+ * dynamic CSS on `#pb-parallax-{id} .pb-parallax__text`.
+ *
+ * Nested inside `parallax_bundle` via `pb_content_parallax_section`.
+ *
+ * @see paragraph--parallax-bundle.html.twig
+ * @see template_preprocess_paragraph()
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# New Fields Added with proper value conversion. #}
-{% set pb_anim_easeing   = content.pb_display_para_anim_easing|render|striptags|trim ?: 'ease' %}
-{% set pb_anim_speed     = content.pb_display_para_bg_anim_speed|render|striptags|trim ?: '0.3' %}
-{% set pb_bg_height_unit = content.pb_display_para_height_unit|render|striptags|trim ?: 'px' %}
-{% set pb_bg_position    = content.pb_display_parallax_bg_position|render|striptags|trim ?: 'center' %}
-{% set pb_breakpoints    = content.pb_display_parallax_breakpoints|render|striptags|trim ?: 'all' %}
-{% set pb_scroll_affect  = content.pb_display_parallax_scroll|render|striptags|trim ?: 'legacy' %}
-{% set pb_parallax_speed = content.pb_display_parallax_speed|render|striptags|trim ?: '0.7' %}
-
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
+
+{% set pb_anim_easing = paragraph|pb_field_value('pb_display_para_anim_easing', 'ease') %}
+{% set pb_anim_speed = paragraph|pb_field_value('pb_display_para_bg_anim_speed', '0.3') %}
+{% set pb_bg_height_unit = paragraph|pb_field_value('pb_display_para_height_unit', 'px') %}
+{% set pb_bg_position = paragraph|pb_field_value('pb_display_parallax_bg_position', 'center') %}
+{% set pb_breakpoints = paragraph|pb_field_value('pb_display_parallax_breakpoints', 'all') %}
+{% set pb_scroll_affect = paragraph|pb_field_value('pb_display_parallax_scroll', 'legacy') %}
+{% set pb_parallax_speed = paragraph|pb_field_value('pb_display_parallax_speed', '0.7') %}
+
 {% if pb_breakpoints %}
-{{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax__' ~ pb_breakpoints) }}
+  {{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax__' ~ pb_breakpoints) }}
 {% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__parallax-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
+{% set paragraph_id = pb_paragraph_id ?: 'pb-parallax-' ~ paragraph.id.value %}
 {% set classes_inner = '' %}
+{% set pb_height_unit_css = pb_bg_height_unit == 'pr' ? '%' : pb_bg_height_unit %}
+{% set pb_easing_css = pb_anim_easing|replace({_: '-'}) %}
+{% set pb_effect_css = pb_scroll_affect|replace({_: '-'}) %}
+{% set effect_class = 'pb-parallax--' ~ pb_effect_css %}
+{% set breakpoint_class = 'pb-parallax--br-' ~ pb_breakpoints %}
 
-{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
+  'pb-parallax-section',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
-  paragraph_id
-] %}
-
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
-} %}
-
-
-{# Convert field values to proper CSS values #}
-{% set pb_height_unit_css = pb_bg_height_unit == 'pr' ? '%' : pb_bg_height_unit %}
-{% set pb_easing_css = pb_anim_easeing|replace({'_': '-'}) %}
-{% set pb_effect_css = pb_scroll_affect|replace({'_': '-'}) %}
-
-{# Set effect and breakpoint classes #}
-{% set effect_class = pb_effect_css ~ '-effect' %}
-{% set breakpoint_class = 'br-' ~ pb_breakpoints %}
-
-
-{# Add the appropriate mode class based on scroll effect selection #}
-{% if pb_scroll_affect == 'legacy' %}
-  {% set classes = classes|merge(['parallax-css']) %}
-{% else %}
-  {% set classes = classes|merge(['parallax-js']) %}
-{% endif %}
-
-{# Add other styling classes #}
-{% set classes = classes|merge([
+  paragraph_id,
+  pb_scroll_affect == 'legacy' ? 'parallax-css' : 'parallax-js',
   breakpoint_class,
   'easing-' ~ pb_easing_css,
-  'bg-pos-' ~ pb_bg_position|replace({' ': '-', '%': 'pct', '_': '-'}),
-  'height-unit-' ~ pb_height_unit_css|replace({'_': '-'})
-]) %}
+  'bg-pos-' ~ pb_bg_position|replace({' ': '-', '%': 'pct', _: '-'}),
+  'height-unit-' ~ pb_height_unit_css|replace({_: '-'}),
+] %}
 
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -86,81 +67,53 @@
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
+{# Resolve the background image through the file/media resolver rather than
+   rendering the field and stripping tags. The rendered-output route depended
+   on the `pb_media_parallax` view mode keeping the `image_url` formatter (it
+   is editable optional config), and it yielded a raw editor-supplied filename
+   that was then interpolated into a `style` attribute — where Twig's HTML
+   autoescape offers no protection, because `(`, `)` and `;` are not escaped.
+   `pb_image_field_url` returns a generated, path-encoded URL. #}
+{% set pb_image_url = paragraph|pb_image_field_url('pb_content_image') %}
+{% set pb_image_height = paragraph|pb_field_value('pb_display_parallax_height') %}
 
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-  {% endif %}
-{% endfor %}
-
-{# Set the image. #}
-{% set pb_image_url = content.pb_content_image|render|striptags|trim %}
-{% set pb_image_height = content.pb_display_parallax_height|render|striptags|trim %}
-
-{# Set CSS custom properties for new fields - ONLY for JS mode #}
+{# Every value below lands inside a `style` attribute, so each one goes
+   through `pb_css_value` — the same sanitizer the PHP CSS builders use. #}
 {% set pb_css_vars = [] %}
 {% if pb_scroll_affect != 'legacy' %}
   {% if pb_anim_speed %}
-    {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed ~ 's;']) %}
+    {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed|pb_css_value ~ 's;']) %}
   {% endif %}
-  {% if pb_anim_easeing %}
-    {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css ~ ';']) %}
+  {% if pb_anim_easing %}
+    {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css|pb_css_value ~ ';']) %}
   {% endif %}
   {% if pb_bg_position %}
-    {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position ~ ';']) %}
+    {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position|pb_css_value ~ ';']) %}
   {% endif %}
 {% endif %}
 
+{% set section_height = '' %}
 {% if pb_image_height and pb_bg_height_unit %}
-  {% set section_height = '--section-height: ' ~ pb_image_height ~ pb_height_unit_css %}
+  {% set section_height = '--section-height: ' ~ pb_image_height|pb_css_value ~ pb_height_unit_css|pb_css_value %}
 {% endif %}
 
-{# Normalize data attributes #}
-{% set data_breakpoint = pb_breakpoints %}
-{% set data_speed = pb_parallax_speed %}
-{% set data_effect = pb_effect_css %}
-
-{# Render the paragraph. #}
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id).setAttribute('data-breakpoint', data_breakpoint).setAttribute('data-parallax-speed', data_speed).setAttribute('data-parallax-effect', data_effect) }}>
-  <div class="paragraph__inner pb__parallax-section__inner {{ effect_class }}" style="{{ section_height }};">
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id).setAttribute('data-breakpoint', pb_breakpoints).setAttribute('data-parallax-speed', pb_parallax_speed).setAttribute('data-parallax-effect', pb_effect_css) }}>
+  <div class="pb-ui-inner pb-parallax-section__inner {{ effect_class }}"{% if section_height %} style="{{ section_height }};"{% endif %}>
 
     {% if pb_image_url %}
-    <div class="pb__parallax-bg" style="background-image: url({{ pb_image_url }}); {{ pb_css_vars|join(' ') }}"></div>
+      <div class="pb-parallax__bg" style="background-image: url(&quot;{{ pb_image_url }}&quot;); {{ pb_css_vars|join(' ') }}"></div>
     {% else %}
-    <div class="pb__parallax-bg image-url-empty" style="{{ pb_css_vars|join(' ') }}">
-    </div>
+      <div class="pb-parallax__bg image-url-empty" style="{{ pb_css_vars|join(' ') }}"></div>
     {% endif %}
 
-    {% if pb_style_attributes|length > 0 %}
-    <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}" style="{{ pb_style_attributes|join(' ') }}">
-      <div class="pb__content-full">{{ content.pb_content_body }}</div>
+    <div class="pb-parallax__text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
+      <div class="pb-content__full">{{ content.pb_content_body }}</div>
     </div>
-    {% else %}
-    <div class="pb__parallax-text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">
-      <div class="pb__content-full">{{ content.pb_content_body }}</div>
-    </div>
-    {% endif %}
 
   </div>
 </div>

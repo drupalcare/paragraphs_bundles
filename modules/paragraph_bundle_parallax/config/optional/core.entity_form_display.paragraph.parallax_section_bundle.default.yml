@@ -25,6 +25,8 @@ dependencies:
     - field.field.paragraph.parallax_section_bundle.pb_display_text
     - field.field.paragraph.parallax_section_bundle.pb_display_text_hover
     - field.field.paragraph.parallax_section_bundle.pb_display_width
+    - field.field.paragraph.parallax_section_bundle.pb_display_link
+    - field.field.paragraph.parallax_section_bundle.pb_display_link_hover
     - paragraphs.paragraphs_type.parallax_section_bundle
   module:
     - field_group
@@ -66,27 +68,11 @@ third_party_settings:
         required_fields: true
     group_pb_tab_display:
       children:
-        - pb_display_bg_opacity
-        - pb_display_bg
-        - pb_display_bg_hover
-        - pb_display_text
-        - pb_display_text_hover
-        - pb_display_border_color
-        - pb_display_border_hover
-        - pb_display_border
-        - pb_display_border_radius
-        - pb_display_margin
-        - pb_display_padding
-        - pb_display_width
-        - pb_display_shadow
-        - pb_display_parallax_bg_position
-        - pb_display_para_anim_easing
-        - pb_display_parallax_scroll
-        - pb_display_parallax_breakpoints
-        - pb_display_parallax_height
-        - pb_display_para_height_unit
-        - pb_display_parallax_speed
-        - pb_display_para_bg_anim_speed
+        - group_pb_display_colors
+        - group_pb_display_border
+        - group_pb_display_spacing
+        - group_pb_display_size
+        - group_pb_display_extra
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -97,6 +83,104 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_display_colors:
+      children:
+        - pb_display_bg_opacity
+        - pb_display_bg
+        - pb_display_bg_hover
+        - pb_display_text
+        - pb_display_text_hover
+        - pb_display_border_color
+        - pb_display_border_hover
+        - pb_display_link
+        - pb_display_link_hover
+      label: Colors
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 10
+      format_type: details
+      format_settings:
+        classes: pb__display-colors
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
+        description: ''
+        required_fields: true
+    group_pb_display_border:
+      children:
+        - pb_display_border
+        - pb_display_border_radius
+      label: 'Border & radius'
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 20
+      format_type: details
+      format_settings:
+        classes: pb__display-border
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_pb_display_spacing:
+      children:
+        - pb_display_margin
+        - pb_display_padding
+      label: Spacing
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 30
+      format_type: details
+      format_settings:
+        classes: pb__display-spacing
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_pb_display_size:
+      children:
+        - pb_display_width
+        - pb_display_shadow
+      label: 'Size & effects'
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 40
+      format_type: details
+      format_settings:
+        classes: pb__display-size
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_pb_display_extra:
+      children:
+        - pb_display_parallax_bg_position
+        - pb_display_para_anim_easing
+        - pb_display_parallax_scroll
+        - pb_display_parallax_breakpoints
+        - pb_display_para_height_unit
+        - pb_display_parallax_height
+        - pb_display_parallax_speed
+        - pb_display_para_bg_anim_speed
+      label: Additional
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 50
+      format_type: details
+      format_settings:
+        classes: pb__display-extra
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
         description: ''
         required_fields: true
 id: paragraph.parallax_section_bundle.default
@@ -139,7 +223,7 @@ content:
     third_party_settings: {  }
   pb_display_border:
     type: options_select
-    weight: 23
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -157,19 +241,19 @@ content:
     third_party_settings: {  }
   pb_display_border_radius:
     type: options_select
-    weight: 24
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_margin:
     type: options_select
-    weight: 25
+    weight: 27
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 26
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -226,7 +310,7 @@ content:
     third_party_settings: {  }
   pb_display_shadow:
     type: options_select
-    weight: 28
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -244,7 +328,19 @@ content:
     third_party_settings: {  }
   pb_display_width:
     type: options_select
-    weight: 27
+    weight: 29
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_link:
+    type: color_text_widget
+    weight: 23
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_link_hover:
+    type: color_text_widget
+    weight: 24
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -13,171 +13,171 @@
      ========================================================================== */
 
   /* Fade Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .fade-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     filter: blur(5px);
     transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), filter 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .fade-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
     filter: blur(0);
   }
 
   /* Scale Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .scale-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--scale .pb-parallax__text {
     opacity: 0;
     transform: scale(0.8);
     transition: opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .scale-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--scale.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: scale(1);
   }
 
   /* Rotate Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .rotate-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--rotate .pb-parallax__text {
     opacity: 0;
     transform: rotate(10deg) scale(0.9);
     transition: opacity 0.7s ease-out, transform 0.7s ease-out;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .rotate-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--rotate.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: rotate(0) scale(1);
   }
 
   /* Translate Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .translate-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--translate .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .translate-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--translate.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
   }
 
   /* Smooth Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .smooth-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--smooth .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1), transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .smooth-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--smooth.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
   }
 
   /* 3D Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .three-d-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--three-d .pb-parallax__text {
     opacity: 0;
     transform: perspective(600px) rotateX(15deg) translateY(50px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .three-d-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--three-d.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: perspective(600px) rotateX(0deg) translateY(0);
   }
 
   /* Shadow Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .shadow-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--shadow .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .shadow-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--shadow.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   /* Glow Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .glow-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--glow .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
     transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .glow-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--glow.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
     box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
   }
 
   /* Hover Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .hover-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--hover .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px);
     transition: opacity 0.5s ease, transform 0.5s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .hover-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--hover.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0);
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .hover-effect.visible .pb__parallax-text:hover {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--hover.pb-is-visible .pb-parallax__text:hover {
     transform: translateY(-10px) scale(1.05);
     transition: transform 0.3s ease;
   }
 
   /* Combined Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .combined-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--combined .pb-parallax__text {
     opacity: 0;
     transform: translateY(50px) rotate(-10deg);
     box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
     transition: opacity 0.5s ease, transform 0.5s ease, box-shadow 0.5s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .combined-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--combined.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0) rotate(0deg);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   /* Blur Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .blur-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--blur .pb-parallax__text {
     opacity: 0;
     filter: blur(10px);
     transform: translateY(30px);
     transition: opacity 0.7s ease, filter 0.7s ease, transform 0.7s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .blur-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--blur.pb-is-visible .pb-parallax__text {
     opacity: 1;
     filter: blur(0);
     transform: translateY(0);
   }
 
   /* Opacity Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .opacity-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--opacity .pb-parallax__text {
     opacity: 0;
     transition: opacity 0.7s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .opacity-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--opacity.pb-is-visible .pb-parallax__text {
     opacity: 1;
   }
 
   /* Fade + Scale Effect */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .fade-scale-effect .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade-scale .pb-parallax__text {
     opacity: 0;
     transform: translateY(40px) scale(0.9);
     filter: blur(4px);
     transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .fade-scale-effect.visible .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade-scale.pb-is-visible .pb-parallax__text {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
@@ -189,8 +189,8 @@
  Mobile Fallback - Below Breakpoint
  ========================================================================== */
 @media (max-width:47.99875rem) {
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .paragraph__inner,
-  .paragraph--type--parallax-section-bundle.parallax-css.br-768 .paragraph__inner {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-ui-inner,
+  .paragraphs-bundles.pb-parallax-section.parallax-css.pb-parallax--br-768 .pb-ui-inner {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto 1fr;
@@ -199,19 +199,19 @@
     min-height: initial !important;
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .paragraph__inner > *,
-  .paragraph--type--parallax-section-bundle.parallax-css.br-768 .paragraph__inner > * {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-ui-inner > *,
+  .paragraphs-bundles.pb-parallax-section.parallax-css.pb-parallax--br-768 .pb-ui-inner > * {
     min-width: 0
   }
 
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .pb__parallax-bg,
-  .paragraph--type--parallax-section-bundle.parallax-css.br-768 .pb__parallax-bg {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax__bg,
+  .paragraphs-bundles.pb-parallax-section.parallax-css.pb-parallax--br-768 .pb-parallax__bg {
     display: none;
   }
 
   /* Ensure text is always visible on mobile */
-  .paragraph--type--parallax-section-bundle.parallax-js.br-768 .pb__parallax-text,
-  .paragraph--type--parallax-section-bundle.parallax-css.br-768 .pb__parallax-text {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-css.pb-parallax--br-768 .pb-parallax__text {
     opacity: 1 !important;
     transform: none !important;
     filter: none !important;

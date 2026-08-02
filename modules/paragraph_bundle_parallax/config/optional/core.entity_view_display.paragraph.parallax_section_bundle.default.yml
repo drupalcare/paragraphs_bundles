@@ -25,6 +25,8 @@ dependencies:
     - field.field.paragraph.parallax_section_bundle.pb_display_text
     - field.field.paragraph.parallax_section_bundle.pb_display_text_hover
     - field.field.paragraph.parallax_section_bundle.pb_display_width
+    - field.field.paragraph.parallax_section_bundle.pb_display_link
+    - field.field.paragraph.parallax_section_bundle.pb_display_link_hover
     - paragraphs.paragraphs_type.parallax_section_bundle
   module:
     - options
@@ -51,151 +53,27 @@ content:
     third_party_settings: {  }
     weight: 21
     region: content
-  pb_display_bg:
-    type: color_text_formatter_rgb
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  pb_display_bg_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  pb_display_bg_opacity:
-    type: range_number_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  pb_display_border:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  pb_display_border_color:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  pb_display_border_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  pb_display_border_radius:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  pb_display_margin:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pb_display_padding:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 11
-    region: content
-  pb_display_para_anim_easing:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 20
-    region: content
-  pb_display_para_bg_anim_speed:
-    type: number_unformatted
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 15
-    region: content
-  pb_display_para_height_unit:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 17
-    region: content
-  pb_display_parallax_bg_position:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 18
-    region: content
-  pb_display_parallax_breakpoints:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
-  pb_display_parallax_height:
-    type: number_unformatted
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
-  pb_display_parallax_scroll:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 19
-    region: content
-  pb_display_parallax_speed:
-    type: number_unformatted
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 14
-    region: content
-  pb_display_shadow:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  pb_display_text:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  pb_display_text_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  pb_display_width:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 12
-    region: content
-hidden: {  }
+hidden:
+  pb_display_bg: true
+  pb_display_bg_hover: true
+  pb_display_bg_opacity: true
+  pb_display_border: true
+  pb_display_border_color: true
+  pb_display_border_hover: true
+  pb_display_border_radius: true
+  pb_display_link: true
+  pb_display_link_hover: true
+  pb_display_margin: true
+  pb_display_padding: true
+  pb_display_para_anim_easing: true
+  pb_display_para_bg_anim_speed: true
+  pb_display_para_height_unit: true
+  pb_display_parallax_bg_position: true
+  pb_display_parallax_breakpoints: true
+  pb_display_parallax_height: true
+  pb_display_parallax_scroll: true
+  pb_display_parallax_speed: true
+  pb_display_shadow: true
+  pb_display_text: true
+  pb_display_text_hover: true
+  pb_display_width: true
