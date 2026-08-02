@@ -2,183 +2,124 @@
  * @file
  * Paragraph Bundle Slideshow.
  *
+ * Slideshow with autoplay, navigation dots, arrows, keyboard, and touch support.
+ * Follows Drupal 11 contrib best practices.
+ *
  * Filename:     paragraph-bundle-slideshow.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
+
 ((Drupal, drupalSettings, once) => {
   'use strict';
+
+  const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
+  const PB_SLIDESHOW = 'pb-slideshow';
+  const PB_SLIDESHOW__STAGE = 'pb-slideshow__stage';
+  const PB_SLIDESHOW__SLIDES = 'pb-slideshow__slides';
+  const PB_SLIDESHOW__SLIDE = 'pb-slideshow__slide';
+  const PB_SLIDESHOW__NAV = 'pb-slideshow__nav';
+  const PB_SLIDESHOW__NAV_BTN = 'pb-slideshow__nav-btn';
+  const PB_SLIDESHOW__ARROWS = 'pb-slideshow__arrows';
+  const PB_NAV__ANNOUNCER = 'pb-nav__announcer';
+  const PB_NAV__PLAY = 'pb-nav__play';
+  const PB_NAV__PLAY_ICON = 'pb-nav__play-icon';
+  const PB_NAV__PAUSE_ICON = 'pb-nav__pause-icon';
+  const PB_NAV__PREV = 'pb-nav__prev';
+  const PB_NAV__NEXT = 'pb-nav__next';
+  const PB_IS_ACTIVE = 'pb-is-active';
+  const PB_IS_PLAYING = 'pb-is-playing';
+  const PB_IS_PAUSED = 'pb-is-paused';
+  const PB_U_REDUCED_MOTION = 'pb-u-reduced-motion';
+
+  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW =
+    `.${PARAGRAPHS_BUNDLES}.${PB_SLIDESHOW}`;
+  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE =
+    `${PARAGRAPHS_BUNDLES_PB_SLIDESHOW} .${PB_SLIDESHOW__STAGE}`;
+
+  const PB_SLIDESHOW__STAGE_OWNED_SLIDES =
+    `:scope > .${PB_SLIDESHOW__SLIDES}`;
+  const PB_SLIDESHOW__STAGE_OWNED_SLIDE =
+    `:scope > .${PB_SLIDESHOW__SLIDES} > .${PB_SLIDESHOW__SLIDE}`;
+  const PB_SLIDESHOW__STAGE_OWNED_NAV =
+    `:scope > .${PB_SLIDESHOW__NAV}`;
+  const PB_SLIDESHOW__STAGE_OWNED_NAV_BTN =
+    `:scope > .${PB_SLIDESHOW__NAV} > .${PB_SLIDESHOW__NAV_BTN}`;
+  const PB_SLIDESHOW__STAGE_OWNED_PLAY =
+    `:scope > .${PB_SLIDESHOW__NAV} > .${PB_NAV__PLAY}`;
+  const PB_SLIDESHOW__STAGE_OWNED_ARROWS =
+    `:scope > .${PB_SLIDESHOW__ARROWS}`;
+
+  const ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE =
+    'pb-paragraph-bundle-slideshow-stage';
 
   /**
    * Debounce utility to limit function execution frequency.
    *
    * @param {Function} func - The function to debounce.
    * @param {number} delay - Delay in milliseconds.
-   * @returns {Function} Debounced function.
+   * @return {Function} Debounced function.
    */
-  function debounce(func, delay) {
+  const debounce = (func, delay) => {
     let timer;
-    return function(...args) {
+    return (...args) => {
       clearTimeout(timer);
-      timer = setTimeout(() => func.apply(this, args), delay);
+      timer = setTimeout(() => func(...args), delay);
     };
-  }
+  };
 
-  /**
-   * SVG icon for play button state.
-   *
-   * @type {string}
-   */
-  const playIcon = `
-    <span class="visually-hidden">Play and Stop Slideshow</span>
-    <span><svg class="svg-play" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor" aria-hidden="true">
-      <path d="m380-300 280-180-280-180v360ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path>
-    </svg></span>`;
-
-  /**
-   * SVG icon for pause button state.
-   *
-   * @type {string}
-   */
-  const pauseIcon = `
-    <span class="visually-hidden">Play and Stop Slideshow</span>
-    <span><svg class="svg-pause" xmlns="http://www.w3.org/2000/svg" viewBox="80 -880 800 800" fill="currentColor" aria-hidden="true"><path d="M360-320h80v-320h-80v320Zm160 0h80v-320h-80v320ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"></path></svg></span>`;
+  /** @type {WeakMap<HTMLElement, () => void>} */
+  const stageCleanupHandlers = new WeakMap();
 
   Drupal.behaviors.paragraphSlideshowBundle = {
-    attach(context) {
-      const slideshows = once('paragraphSlideshowBundle', '.pb__slideshow-inner', context);
-      if (!slideshows.length) {
-        return;
-      }
+    attach(context, settings) {
+      const stages = once(
+        ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE,
+        PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE,
+        context,
+      );
 
-      slideshows.forEach((slideshowInner) => {
-        // Cache DOM queries for performance
-        const slideshow = slideshowInner.querySelector('.pb__slides');
-        const slides = slideshow.querySelectorAll('.pb__slide-item');
-        const announcer = slideshowInner.querySelector('.pb__announcer');
-        const playPauseButton = slideshowInner.querySelector(`#btn-${slideshowInner.id.split('-').pop()}`);
-        const nextButton = slideshowInner.querySelector('.pb__next');
-        const prevButton = slideshowInner.querySelector('.pb__prev');
-        const dotsContainer = slideshowInner.querySelector('.pb__slide-nav');
-        const dots = slideshowInner.querySelectorAll('.pb__slide-bottom-btn');
-        const slideTime = parseInt(slideshowInner.dataset.slideTime, 10) || 0;
+      stages.forEach((stage) => {
+        const abortController = new AbortController();
+        const { signal } = abortController;
+
+        const slidesContainer = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_SLIDES);
+        if (!slidesContainer) {
+          return;
+        }
+
+        const slides = stage.querySelectorAll(PB_SLIDESHOW__STAGE_OWNED_SLIDE);
+        const announcer = stage.querySelector(`:scope > .${PB_NAV__ANNOUNCER}`);
+        const playPauseButton = stage.querySelector(
+          PB_SLIDESHOW__STAGE_OWNED_PLAY,
+        );
+        const playIcon = playPauseButton?.querySelector(
+          `:scope > .${PB_NAV__PLAY_ICON}`,
+        ) ?? null;
+        const pauseIcon = playPauseButton?.querySelector(
+          `:scope > .${PB_NAV__PAUSE_ICON}`,
+        ) ?? null;
+        const arrows = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_ARROWS);
+        const nextButton = arrows?.querySelector(`.${PB_NAV__NEXT}`) ?? null;
+        const prevButton = arrows?.querySelector(`.${PB_NAV__PREV}`) ?? null;
+        const dotsContainer = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_NAV);
+        const dots = stage.querySelectorAll(PB_SLIDESHOW__STAGE_OWNED_NAV_BTN);
+        const slideTime = Number.parseInt(stage.dataset.slideTime, 10) || 0;
         const totalSlides = slides.length;
 
-        // Early exit if no slides
         if (totalSlides === 0) {
           return;
         }
 
-        // State variables
         let slideIndex = 1;
         let isPaused = slideTime === 0;
         let autoSlideIntervalId = null;
         let previousVisibility = false;
         let isVisible = true;
-
-        /**
-         * Updates the visibility and accessibility attributes for all slides.
-         */
-        const updateSlideVisibility = () => {
-          slides.forEach((slide, index) => {
-            const isActive = (index + 1 === slideIndex);
-            slide.style.display = isActive ? 'block' : 'none';
-            slide.setAttribute('aria-hidden', String(!isActive));
-            slide.toggleAttribute('inert', !isActive);
-            slide.classList.toggle('active', isActive);
-            slide.querySelectorAll('a, button, input, textarea, select, [tabindex]').forEach(el => {
-              el.setAttribute('tabindex', isActive ? '0' : '-1');
-            });
-          });
-          updateDots();
-          announceSlide();
-          adjustHeight();
-        };
-
-        /**
-         * Adjusts the slideshow container height to match the current slide.
-         */
-        const adjustHeight = () => {
-          const currentSlide = slides[slideIndex - 1];
-          if (!currentSlide) {
-            return;
-          }
-          const computedStyle = window.getComputedStyle(slideshow);
-          const contentHeight = currentSlide.offsetHeight;
-          const paddingTop = parseFloat(computedStyle.paddingTop) || 0;
-          const paddingBottom = parseFloat(computedStyle.paddingBottom) || 0;
-          const borderTop = parseFloat(computedStyle.borderTopWidth) || 0;
-          const borderBottom = parseFloat(computedStyle.borderBottomWidth) || 0;
-          const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
-          slideshow.style.height = `${totalHeight}px`;
-        };
-
-        /**
-         * Announces the current slide to screen readers via live region.
-         */
-        const announceSlide = () => {
-          if (announcer) {
-            announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
-          }
-        };
-
-        /**
-         * Updates the active state for navigation dots and scrolls active into view.
-         */
-        const updateDots = () => {
-          dots.forEach((dot, index) => {
-            const isActive = index + 1 === slideIndex;
-            dot.classList.toggle('pb__active', isActive);
-            dot.setAttribute('aria-selected', String(isActive));
-
-            // Scroll active dot into view
-            if (isActive && dotsContainer) {
-              scrollDotIntoView(dotsContainer, dot);
-            }
-          });
-        };
-
-        /**
-         * Scrolls the active dot into view within the dots container.
-         *
-         * @param {HTMLElement} container - The dots container element.
-         * @param {HTMLElement} dot - The active dot element.
-         */
-        const scrollDotIntoView = (container, dot) => {
-          const containerRect = container.getBoundingClientRect();
-          const dotRect = dot.getBoundingClientRect();
-
-          // Calculate dot position relative to container
-          const dotLeft = dotRect.left - containerRect.left + container.scrollLeft;
-          const dotRight = dotLeft + dotRect.width;
-          const containerWidth = container.clientWidth;
-          const scrollLeft = container.scrollLeft;
-
-          // Check if dot is outside visible area
-          if (dotLeft < scrollLeft) {
-            // Dot is to the left of visible area
-            container.scrollTo({
-              left: dotLeft - 16,
-              behavior: 'smooth'
-            });
-          } else if (dotRight > scrollLeft + containerWidth) {
-            // Dot is to the right of visible area
-            container.scrollTo({
-              left: dotRight - containerWidth + 16,
-              behavior: 'smooth'
-            });
-          }
-        };
-
-        /**
-         * Starts the automatic slideshow interval.
-         */
-        const startAutoSlide = () => {
-          stopAutoSlide();
-          if (slideTime > 0 && !isPaused && isVisible) {
-            autoSlideIntervalId = setInterval(nextSlide, slideTime);
-          }
-        };
+        let touchStartX = 0;
 
         /**
          * Stops the automatic slideshow interval.
@@ -191,7 +132,105 @@
         };
 
         /**
-         * Advances to the next slide with wrap-around.
+         * Updates slide visibility and accessibility state.
+         */
+        const updateSlideVisibility = () => {
+          slides.forEach((slide, index) => {
+            const isActive = (index + 1 === slideIndex);
+            slide.style.display = isActive ? 'block' : 'none';
+            slide.setAttribute('aria-hidden', String(!isActive));
+            slide.toggleAttribute('inert', !isActive);
+            slide.classList.toggle(PB_IS_ACTIVE, isActive);
+            slide.querySelectorAll('a, button, input, textarea, select, [tabindex]').forEach((el) => {
+              el.setAttribute('tabindex', isActive ? '0' : '-1');
+            });
+          });
+          updateDots();
+          announceSlide();
+          adjustHeight();
+        };
+
+        /**
+         * Adjusts slides container height to match the active slide.
+         */
+        const adjustHeight = () => {
+          const currentSlide = slides[slideIndex - 1];
+          if (!currentSlide) {
+            return;
+          }
+          const computedStyle = window.getComputedStyle(slidesContainer);
+          const contentHeight = currentSlide.offsetHeight;
+          const paddingTop = Number.parseFloat(computedStyle.paddingTop) || 0;
+          const paddingBottom = Number.parseFloat(computedStyle.paddingBottom) || 0;
+          const borderTop = Number.parseFloat(computedStyle.borderTopWidth) || 0;
+          const borderBottom = Number.parseFloat(computedStyle.borderBottomWidth) || 0;
+          const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+          slidesContainer.style.height = `${totalHeight}px`;
+        };
+
+        /**
+         * Announces the current slide to screen readers.
+         */
+        const announceSlide = () => {
+          if (announcer) {
+            announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
+          }
+        };
+
+        /**
+         * Scrolls the active dot into view within the nav row.
+         *
+         * @param {HTMLElement} container - Nav container element.
+         * @param {HTMLElement} dot - Active nav button.
+         */
+        const scrollDotIntoView = (container, dot) => {
+          const containerRect = container.getBoundingClientRect();
+          const dotRect = dot.getBoundingClientRect();
+          const dotLeft = dotRect.left - containerRect.left + container.scrollLeft;
+          const dotRight = dotLeft + dotRect.width;
+          const containerWidth = container.clientWidth;
+          const scrollLeft = container.scrollLeft;
+
+          if (dotLeft < scrollLeft) {
+            container.scrollTo({
+              left: dotLeft - 16,
+              behavior: 'smooth',
+            });
+          }
+          else if (dotRight > scrollLeft + containerWidth) {
+            container.scrollTo({
+              left: dotRight - containerWidth + 16,
+              behavior: 'smooth',
+            });
+          }
+        };
+
+        /**
+         * Updates nav dot active state.
+         */
+        const updateDots = () => {
+          dots.forEach((dot, index) => {
+            const isActive = index + 1 === slideIndex;
+            dot.classList.toggle(PB_IS_ACTIVE, isActive);
+            dot.setAttribute('aria-selected', String(isActive));
+            if (isActive && dotsContainer) {
+              scrollDotIntoView(dotsContainer, dot);
+            }
+          });
+        };
+
+        /**
+         * Starts automatic slide rotation.
+         */
+        const startAutoSlide = () => {
+          stopAutoSlide();
+          if (slideTime > 0 && !isPaused && isVisible) {
+            autoSlideIntervalId = setInterval(nextSlide, slideTime);
+          }
+        };
+
+        /**
+         * Advances to the next slide.
          */
         const nextSlide = () => {
           slideIndex = (slideIndex % totalSlides) + 1;
@@ -199,7 +238,7 @@
         };
 
         /**
-         * Goes to the previous slide with wrap-around.
+         * Goes to the previous slide.
          */
         const prevSlide = () => {
           slideIndex = (slideIndex === 1) ? totalSlides : slideIndex - 1;
@@ -207,26 +246,35 @@
         };
 
         /**
-         * Toggles between play and pause states.
+         * Toggles play/pause for autoplay.
          */
         const togglePlayPause = () => {
           if (!playPauseButton) {
             return;
           }
           isPaused = !isPaused;
-          playPauseButton.innerHTML = isPaused ? playIcon : pauseIcon;
-          playPauseButton.setAttribute('aria-label', isPaused ? 'Play slideshow' : 'Pause slideshow');
-          playPauseButton.classList.toggle('is-paused', isPaused);
-          playPauseButton.classList.toggle('is-playing', !isPaused);
+          playIcon?.toggleAttribute('hidden', !isPaused);
+          pauseIcon?.toggleAttribute('hidden', isPaused);
+          playPauseButton.setAttribute(
+            'aria-label',
+            isPaused ? 'Play slideshow' : 'Pause slideshow',
+          );
+          playPauseButton.classList.toggle(PB_IS_PAUSED, isPaused);
+          playPauseButton.classList.toggle(PB_IS_PLAYING, !isPaused);
           if (slideTime > 0) {
-            isPaused ? stopAutoSlide() : startAutoSlide();
+            if (isPaused) {
+              stopAutoSlide();
+            }
+            else {
+              startAutoSlide();
+            }
           }
         };
 
         /**
-         * Handles click on navigation dots.
+         * Activates a slide from a nav dot index.
          *
-         * @param {number} index - The zero-based index of the clicked dot.
+         * @param {number} index - Zero-based dot index.
          */
         const handleDotClick = (index) => {
           slideIndex = index + 1;
@@ -235,170 +283,190 @@
         };
 
         /**
-         * Applies reduced motion preferences from user settings.
+         * Applies reduced-motion user preference.
          */
         const applyReducedMotion = () => {
-          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            isPaused = true;
-            stopAutoSlide();
-            slideshow.classList.add('reduced-motion');
-            if (playPauseButton) {
-              playPauseButton.innerHTML = playIcon;
-              playPauseButton.setAttribute('aria-label', 'Play slideshow');
-              playPauseButton.classList.add('is-paused');
-              playPauseButton.classList.remove('is-playing');
-            }
+          if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            return;
           }
+          isPaused = true;
+          stopAutoSlide();
+          slidesContainer.classList.add(PB_U_REDUCED_MOTION);
+          if (!playPauseButton) {
+            return;
+          }
+          playIcon?.removeAttribute('hidden');
+          pauseIcon?.setAttribute('hidden', '');
+          playPauseButton.setAttribute('aria-label', 'Play slideshow');
+          playPauseButton.classList.add(PB_IS_PAUSED);
+          playPauseButton.classList.remove(PB_IS_PLAYING);
         };
 
         /**
-         * Checks if the element is mostly visible in the viewport.
+         * Returns true when more than 20% of the stage is visible.
          *
-         * @param {HTMLElement} element - The element to check.
-         * @returns {boolean} True if more than 20% visible.
+         * @return {boolean}
          */
-        const isMostlyVisible = (element) => {
-          const rect = element.getBoundingClientRect();
-          const visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+        const isMostlyVisible = () => {
+          const rect = stage.getBoundingClientRect();
+          const visibleHeight = Math.min(rect.bottom, window.innerHeight)
+            - Math.max(rect.top, 0);
           return visibleHeight / rect.height > 0.2;
         };
 
         /**
-         * Handles visibility changes when scrolling.
+         * Pauses or resumes autoplay based on scroll visibility.
          */
         const handleVisibility = () => {
-          const currentlyVisible = isMostlyVisible(slideshowInner);
+          const currentlyVisible = isMostlyVisible();
           if (currentlyVisible !== previousVisibility) {
             previousVisibility = currentlyVisible;
             if (currentlyVisible && !isPaused) {
               startAutoSlide();
-            } else {
+            }
+            else {
               stopAutoSlide();
             }
           }
         };
 
         /**
-         * Handles document visibility changes (tab switching).
+         * Handles document visibility changes.
          */
         const handleSlideshowVisibilityChange = () => {
           if (document.hidden) {
             stopAutoSlide();
-          } else {
-            isVisible = isMostlyVisible(slideshowInner);
-            if (isVisible && !isPaused) {
-              startAutoSlide();
-            }
+            return;
+          }
+          isVisible = isMostlyVisible();
+          if (isVisible && !isPaused) {
+            startAutoSlide();
           }
         };
 
         /**
-         * Handles keyboard navigation for the slideshow.
+         * Handles keyboard navigation within the stage.
          *
-         * @param {KeyboardEvent} e - The keyboard event.
+         * @param {KeyboardEvent} event - Keyboard event.
          */
-        const handleKeydown = (e) => {
-          // Only handle if slideshow or its children have focus
-          if (!slideshowInner.contains(document.activeElement)) {
+        const handleKeydown = (event) => {
+          if (!stage.contains(document.activeElement)) {
             return;
           }
-
-          if (e.key === 'ArrowRight') {
+          if (event.key === 'ArrowRight') {
             nextSlide();
-          } else if (e.key === 'ArrowLeft') {
+          }
+          else if (event.key === 'ArrowLeft') {
             prevSlide();
-          } else if (e.key === ' ') {
-            e.preventDefault();
+          }
+          else if (event.key === ' ') {
+            event.preventDefault();
             togglePlayPause();
           }
         };
 
         /**
-         * Handles touch start for swipe detection.
+         * Records touch start position for swipe detection.
          *
-         * @param {TouchEvent} e - The touch event.
+         * @param {TouchEvent} event - Touch event.
          */
-        const handleTouchStart = (e) => {
-          slideshow._touchStartX = e.touches[0].clientX;
+        const handleTouchStart = (event) => {
+          touchStartX = event.touches[0].clientX;
         };
 
         /**
-         * Handles touch end for swipe detection.
+         * Handles swipe gestures on the slide track.
          *
-         * @param {TouchEvent} e - The touch event.
+         * @param {TouchEvent} event - Touch event.
          */
-        const handleTouchEnd = (e) => {
-          const delta = e.changedTouches[0].clientX - slideshow._touchStartX;
+        const handleTouchEnd = (event) => {
+          const delta = event.changedTouches[0].clientX - touchStartX;
           if (delta > 50) {
             prevSlide();
-          } else if (delta < -50) {
+          }
+          else if (delta < -50) {
             nextSlide();
           }
           startAutoSlide();
         };
 
-        // Intersection Observer for viewport visibility
-        const observer = new IntersectionObserver((entries) => {
+        const intersectionObserver = new IntersectionObserver((entries) => {
           const entry = entries[0];
           isVisible = entry.isIntersecting;
           if (isVisible && !isPaused) {
             startAutoSlide();
-          } else {
+          }
+          else {
             stopAutoSlide();
           }
         }, {
-          threshold: 0.5
+          threshold: 0.5,
         });
-        observer.observe(slideshowInner);
+        intersectionObserver.observe(stage);
 
-        // Debounced event handlers
         const debouncedHandleVisibility = debounce(handleVisibility, 200);
         const debouncedResize = debounce(() => {
           adjustHeight();
           handleVisibility();
         }, 200);
 
-        /**
-         * Sets up all event listeners for the slideshow.
-         */
-        const setupListeners = () => {
-          // Button controls
-          playPauseButton?.addEventListener('click', togglePlayPause);
-          nextButton?.addEventListener('click', nextSlide);
-          prevButton?.addEventListener('click', prevSlide);
+        playPauseButton?.addEventListener('click', togglePlayPause, { signal });
+        nextButton?.addEventListener('click', nextSlide, { signal });
+        prevButton?.addEventListener('click', prevSlide, { signal });
 
-          // Dot navigation
-          dots.forEach((dot, index) => {
-            dot.addEventListener('click', () => handleDotClick(index));
-          });
+        dots.forEach((dot, index) => {
+          dot.addEventListener('click', () => handleDotClick(index), { signal });
+        });
 
-          // Mouse interaction pauses autoplay
-          slideshow.addEventListener('mouseenter', stopAutoSlide);
-          slideshow.addEventListener('mouseleave', () => {
-            if (!isPaused) {
-              startAutoSlide();
-            }
-          });
+        slidesContainer.addEventListener('mouseenter', stopAutoSlide, { signal });
+        slidesContainer.addEventListener('mouseleave', () => {
+          if (!isPaused) {
+            startAutoSlide();
+          }
+        }, { signal });
 
-          // Touch/swipe support
-          slideshow.addEventListener('touchstart', handleTouchStart, { passive: true });
-          slideshow.addEventListener('touchend', handleTouchEnd);
+        slidesContainer.addEventListener('touchstart', handleTouchStart, {
+          passive: true,
+          signal,
+        });
+        slidesContainer.addEventListener('touchend', handleTouchEnd, { signal });
+        stage.addEventListener('keydown', handleKeydown, { signal });
+        document.addEventListener('scroll', debouncedHandleVisibility, {
+          passive: true,
+          signal,
+        });
+        window.addEventListener('resize', debouncedResize, { signal });
+        document.addEventListener(
+          'visibilitychange',
+          handleSlideshowVisibilityChange,
+          { signal },
+        );
 
-          // Keyboard navigation
-          slideshowInner.addEventListener('keydown', handleKeydown);
+        stageCleanupHandlers.set(stage, () => {
+          abortController.abort();
+          intersectionObserver.disconnect();
+          stopAutoSlide();
+        });
 
-          // Global listeners
-          document.addEventListener('scroll', debouncedHandleVisibility, { passive: true });
-          window.addEventListener('resize', debouncedResize);
-          document.addEventListener('visibilitychange', handleSlideshowVisibilityChange);
-        };
-
-        // Initialize slideshow
         applyReducedMotion();
         updateSlideVisibility();
         startAutoSlide();
-        setupListeners();
       });
-    }
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
+      }
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE,
+        PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE,
+        context,
+      ).forEach((stage) => {
+        stageCleanupHandlers.get(stage)?.();
+        stageCleanupHandlers.delete(stage);
+      });
+    },
   };
 })(Drupal, drupalSettings, once);

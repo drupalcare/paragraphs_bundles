@@ -1,8 +1,11 @@
-name: Paragraph Bundle Slideshow
+name: 'Paragraph Bundle Slideshow'
 type: module
-description: A reusable Paragraph Bundle Slideshow.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Slideshow paragraph with nested slides, navigation dots, arrows, and autoplay.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
-  - paragraphs_bundles:paragraphs_bundles
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraph_bundle_image:paragraph_bundle_image
+  - paragraphs_bundles:paragraphs_bundles

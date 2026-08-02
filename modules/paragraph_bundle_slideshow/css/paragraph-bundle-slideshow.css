@@ -2,38 +2,42 @@
  * @file
  * Paragraph Bundle Slideshow.
  *
+ * Scoping contract (all bundles): L0 + L3 private on paragraph root.
+ * `.paragraphs-bundles.pb-slideshow` - never `.paragraph--type--*` in CSS.
+ * See docs/PB-V2-CLASS-NAMING-SPEC.md section 4.
+ *
  * Filename:     paragraph-bundle-slideshow.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
 /* ==========================================================================
    Base Slideshow Structure
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slides {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slides {
   transition: all 0.5s ease-in-out;
   overflow: hidden;
 }
 
-.paragraph--type--slideshow-bundle .pb__slides > .pb__slide-item {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
   display: none;
 }
 
-.paragraph--type--slideshow-bundle .pb__slides > div:first-of-type {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slides > div:first-of-type {
   display: block;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage {
   position: relative;
 }
 
-.paragraph--type--slideshow-bundle .pb__slide-item-inner {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slide-inner {
   min-height: 1px;
   overflow: hidden;
 }
 
-.paragraph--type--slideshow-bundle .field--name-pb__image-field img {
+.paragraphs-bundles.pb-slideshow .field--name-pb__image-field img {
   width: 100%;
 }
 
@@ -41,12 +45,12 @@
    Arrow Navigation
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows {
   background-color: transparent !important;
   width: 100%;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button {
   all: unset;
   position: absolute;
   cursor: pointer;
@@ -62,60 +66,60 @@
     opacity 0.25s ease-out;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button span {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button span {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button svg {
-  fill: var(--pb-tx, var(--r-tx, inherit));
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button svg {
+  fill: var(--pb-tx, inherit);
   min-height: calc(2 * var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
   opacity: 0.5;
   transition: opacity 0.25s ease-out;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button:hover svg {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:hover svg {
   opacity: 0.9;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
   border-radius: var(--pb-px4);
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next {
   inset-inline-end: var(--pb-px36);
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__prev {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__prev {
   inset-inline-start: var(--pb-px36);
 }
 
 /* Arrow hover animation - subtle movement */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next:hover {
   transform: translateX(3px);
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__prev:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__prev:hover {
   transform: translateX(-3px);
 }
 
 /* Arrow visibility states */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
   opacity: 0.1;
   transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on:hover {
   opacity: 100;
   outline: none;
   background-color: transparent !important;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-Off {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-off {
   display: none;
 }
 
@@ -123,7 +127,7 @@
    Bottom Navigation Container - Scrollable Single Row (Best Practice)
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slide-nav {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav {
   min-height: calc(2 * var(--pb-px20));
   display: flex;
   flex-wrap: nowrap;
@@ -132,8 +136,8 @@
   gap: var(--pb-px4);
   width: 100%;
   max-width: 100%;
-  padding-block: 0.5rem;
-  padding-inline: 1rem;
+  padding-block: var(--pb-px8);
+  padding-inline: var(--pb-px16);
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
@@ -148,29 +152,29 @@
 }
 
 /* Hide scrollbar for WebKit browsers */
-.paragraph--type--slideshow-bundle .pb__slide-nav::-webkit-scrollbar {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav::-webkit-scrollbar {
   display: none;
 }
 
 /* Center navigation items when they fit */
-.paragraph--type--slideshow-bundle .pb__slide-nav::before,
-.paragraph--type--slideshow-bundle .pb__slide-nav::after {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav::before,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav::after {
   content: '';
   flex: 1 0 0;
   min-width: 0;
 }
 
-.paragraph--type--slideshow-bundle .pb__no-bottom-nav {
+.paragraphs-bundles.pb-slideshow .pb-no-bottom-nav {
   display: inline;
   width: auto;
 }
 
-.paragraph--type--slideshow-bundle .hide-0 {
+.paragraphs-bundles.pb-slideshow .pb-u-hide-0 {
   display: none;
 }
 
 /* Generic active state for all navigation types */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav > .pb__active {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav > .pb-is-active {
   font-weight: bold;
   text-decoration: underline;
   pointer-events: none;
@@ -181,7 +185,7 @@
    Play/Pause Button
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play {
   position: relative;
   flex: 0 0 auto;
   cursor: pointer;
@@ -190,32 +194,32 @@
     background-color 0.2s ease-out;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play svg {
-  fill: var(--pb-tx, var(--r-tx, inherit));
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play svg {
+  fill: var(--pb-tx, inherit);
   opacity: 0.7;
   transition: opacity 0.25s ease-out;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play:hover svg {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:hover svg {
   opacity: 0.95;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:hover {
   transform: scale(1.05);
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play:active {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:active {
   transform: scale(0.95);
 }
 
-.paragraph--type--slideshow-bundle .pb__slide-nav .pb__play {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play {
   font-weight: bold;
-  background-color: rgba(0, 0, 0, 0.06);
+  background-color: color-mix(in srgb, CanvasText 6%, transparent);
   border-radius: var(--pb-px4);
   padding-block: var(--pb-px5);
 }
 
-.paragraph--type--slideshow-bundle .pb__slide-nav .pb__play > span:not(.visually-hidden) {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play > span:not(.visually-hidden) {
   min-width: var(--pb-px20);
   min-height: var(--pb-px20);
   border-radius: 50%;
@@ -223,16 +227,20 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background-color: rgba(0, 0, 0, 0.09);
+  background-color: color-mix(in srgb, CanvasText 9%, transparent);
 }
 
-.paragraph--type--slideshow-bundle .pb__slide-nav .pb__play svg {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play > span[hidden] {
+  display: none;
+}
+
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play svg {
   min-width: var(--pb-px20);
   min-height: var(--pb-px20);
 }
 
-.paragraph--type--slideshow-bundle .pb__slide-nav .pb__play:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
 }
 
@@ -240,7 +248,7 @@
    Navigation Type: Hidden (no nav/dot class)
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number:not(.dot, .nav, .nav_play, .dot_play) > .pb__slide-bottom-btn {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number:not(.pb-slideshow__nav--dot, .pb-slideshow__nav--nav, .pb-slideshow__nav--nav-play, .pb-slideshow__nav--dot-play) > .pb-slideshow__nav-btn {
   opacity: 0;
   height: 0;
   padding: 0;
@@ -255,14 +263,14 @@
    Shared NAV and DOT Base Styles
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
   flex: 0 0 auto;
   opacity: 100;
   border-radius: var(--pb-px4);
-  margin-left: var(--pb-px4);
+  margin-inline-start: var(--pb-px4);
   scroll-snap-align: center;
 }
 
@@ -270,15 +278,15 @@
    Navigation Type: NAV (Numbered Buttons)
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slide-nav .pb__button {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-ui-btn {
   padding-block: var(--pb-px3);
   padding-inline: var(--pb-px12);
   font-size: var(--pb-px14);
   line-height: 1.6;
 }
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn {
   position: relative;
   border-radius: var(--pb-px4);
   margin-inline: var(--pb-px4);
@@ -292,29 +300,29 @@
 }
 
 /* Nav button hover state */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn:hover,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 var(--pb-px4) var(--pb-px12) color-mix(in srgb, CanvasText 15%, transparent);
 }
 
 /* Nav button active/pressed state */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn:active,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn:active {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:active,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 var(--pb-px2) var(--pb-px4) color-mix(in srgb, CanvasText 10%, transparent);
 }
 
 /* Nav button focus state */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn:focus-visible,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:focus-visible,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
 }
 
 /* Nav button active slide */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn.pb__active,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn.pb__active {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn.pb-is-active {
   background-color: var(--pb-bt-a);
   text-underline-offset: 3px;
   transform: none;
@@ -325,8 +333,8 @@
    Navigation Type: DOT (Circular Indicators)
    ========================================================================== */
 
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn {
   position: relative;
   padding: 0 !important;
   margin-block: 0;
@@ -337,7 +345,7 @@
   border-radius: 50% !important;
   font-size: 0 !important;
   line-height: initial !important;
-  background-color: var(--pb-dot-inactive, rgba(128, 128, 128, 0.5));
+  background-color: var(--pb-dot-inactive, color-mix(in srgb, CanvasText 50%, transparent));
   cursor: pointer;
   transition:
     width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -350,29 +358,29 @@
 }
 
 /* Dot hover state - subtle pulse */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn:hover,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn:hover {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn:hover,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn:hover {
   transform: scale(1.3);
-  background-color: var(--pb-dot-hover, rgba(128, 128, 128, 0.8));
+  background-color: var(--pb-dot-hover, color-mix(in srgb, CanvasText 80%, transparent));
 }
 
 /* Dot focus state */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn:focus-visible,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn:focus-visible,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 3px;
 }
 
 /* Dot active state - pill shape expansion */
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn.pb__active,
-.paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn.pb__active {
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn.pb-is-active,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn.pb-is-active {
   width: calc(2.5 * var(--pb-px10)) !important;
   min-width: calc(2.5 * var(--pb-px10));
   height: var(--pb-px10) !important;
   border-radius: calc(var(--pb-px10) / 2) !important;
-  background-color: var(--pb-bt-a, var(--pb-dot-active, #333));
+  background-color: var(--pb-bt-a, var(--pb-dot-active, CanvasText));
   transform: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 var(--pb-px2) var(--pb-px8) color-mix(in srgb, CanvasText 20%, transparent);
 }
 
 /* ==========================================================================
@@ -380,29 +388,53 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .paragraph--type--slideshow-bundle .pb__slides,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows button svg,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play svg,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows.pb__prev-next-arrow-On,
-  .paragraph--type--slideshow-bundle .pb__slide-nav {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button svg,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play svg,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__nav {
     transition: none;
     scroll-behavior: auto;
   }
 
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__next:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-arrows .pb__prev:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav > .pb__slide-bottom-btn:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.nav_play > .pb__slide-bottom-btn:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot > .pb__slide-bottom-btn:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner > .pb__slide-nav.pb__slide-number.dot_play > .pb__slide-bottom-btn:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play:hover,
-  .paragraph--type--slideshow-bundle .pb__slideshow-inner .pb__play:active {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__prev:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:hover,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:active {
     transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible,
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play:focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
+    display: block;
+  }
+
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__nav {
+    display: none;
   }
 }

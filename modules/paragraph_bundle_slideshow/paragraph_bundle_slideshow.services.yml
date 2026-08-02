@@ -1,0 +1,9 @@
+services:
+  Drupal\paragraph_bundle_slideshow\Hook\PbsThemeHook: {}
+
+  Drupal\paragraph_bundle_slideshow\Hook\PbsHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
