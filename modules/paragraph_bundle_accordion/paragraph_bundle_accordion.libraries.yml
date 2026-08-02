@@ -7,6 +7,4 @@ paragraph-bundle-accordion:
     js/paragraph-bundle-accordion.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once

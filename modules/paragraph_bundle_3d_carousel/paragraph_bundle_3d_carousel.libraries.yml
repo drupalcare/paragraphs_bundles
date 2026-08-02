@@ -6,7 +6,6 @@ paragraph-bundle-3d-carousel:
     js/paragraph-bundle-3d-carousel.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
     - core/once
 
 paragraph-bundle-3d-carousel-pb__576:

@@ -6,8 +6,6 @@ paragraph-bundle-icon:
     js/paragraph-bundle-icon.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once
 
 paragraph-bundle-icon-outlined:

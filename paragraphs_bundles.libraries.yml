@@ -64,6 +64,4 @@ opacity-range:
     js/paragraphs-bundles-opacity-range.js: {}
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once

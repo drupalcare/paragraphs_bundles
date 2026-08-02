@@ -6,6 +6,4 @@ paragraph-bundle-tabs:
     js/paragraph-bundle-tabs.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once

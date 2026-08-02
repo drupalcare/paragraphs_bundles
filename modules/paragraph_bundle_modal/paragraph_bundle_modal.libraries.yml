@@ -7,6 +7,4 @@ paragraph-bundle-modal:
   dependencies:
     - core/drupal
     - core/drupal.announce
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once

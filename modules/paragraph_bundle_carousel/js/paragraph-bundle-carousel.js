@@ -13,7 +13,7 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
-((Drupal, drupalSettings, once) => {
+((Drupal, once) => {
   'use strict';
 
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
@@ -839,4 +839,4 @@
     }, { signal });
   }
 
-})(Drupal, drupalSettings, once);
+})(Drupal, once);
