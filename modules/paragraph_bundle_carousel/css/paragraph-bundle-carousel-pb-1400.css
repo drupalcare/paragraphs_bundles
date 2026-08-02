@@ -9,31 +9,31 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 @media (min-width:87.5rem) {
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-wrapper {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__wrapper {
     width: 100%;
   }
 
 }
 
 @media (max-width: 87.49875rem) {
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel.pb-has-arrows .pb__carousel-outer {
-    padding: 50px 0;
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel.pb-has-arrows .pb-carousel__viewport {
+    padding-block: var(--pb-px48);
   }
 
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-items {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__slides {
     flex-direction: column;
     transform: translateY(0);
   }
 
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-item {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__slide {
     width: 100%;
   }
 
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-options {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__options-bar {
     top: 0;
     bottom: 0;
-    left: 50%;
-    right: auto;
+    inset-inline-start: 50%;
+    inset-inline-end: auto;
     transform: translateX(-50%);
     flex-direction: column;
     justify-content: space-between;
@@ -41,23 +41,23 @@
     padding: 0;
   }
 
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel button svg {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel button svg {
     transform: rotate(-90deg);
   }
 
   /* Arrow hover - vertical direction when hybrid switches to vertical */
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-options .pb__next:hover {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover {
     transform: translateY(4px);
   }
 
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-options .pb__prev:hover {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
     transform: translateY(-4px);
   }
 }
 
 @media (max-width: 87.49875rem) and (prefers-reduced-motion: reduce) {
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-options .pb__next:hover,
-  .paragraph--type--carousel-bundle.pb__1400.hybrid-carousel .pb__carousel-options .pb__prev:hover {
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover,
+  .paragraphs-bundles.pb-carousel.pb__1400.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
     transform: none;
   }
 }

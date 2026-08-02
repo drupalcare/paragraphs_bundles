@@ -1,7 +1,10 @@
-name: Paragraph Bundle Carousel
+name: 'Paragraph Bundle Carousel'
 type: module
-description: A reusable Paragraph Bundle Carousel.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Carousel paragraph with slides, navigation, breakpoints, and autoplay controls.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

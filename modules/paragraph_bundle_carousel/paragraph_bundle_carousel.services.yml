@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_carousel\Hook\PbcaThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_carousel\Hook\PbcaThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_carousel\Hook\PbcaHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
