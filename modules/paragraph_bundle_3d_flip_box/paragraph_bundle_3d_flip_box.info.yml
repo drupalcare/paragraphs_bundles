@@ -1,7 +1,10 @@
-name: Paragraph Bundle 3D Flip Box
+name: 'Paragraph Bundle 3D Flip Box'
 type: module
-description: A reusable Paragraph Bundle 3D Flip Box.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'CSS 3D flip box with nested front/back paragraph content.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
