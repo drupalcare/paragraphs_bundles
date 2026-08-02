@@ -1,0 +1,11 @@
+services:
+  Drupal\paragraph_bundle_node_reference\Hook\PbnrThemeHook: {}
+
+  Drupal\paragraph_bundle_node_reference\Hook\PbnrFieldWidgetHook: {}
+
+  Drupal\paragraph_bundle_node_reference\Hook\PbnrHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

@@ -1,10 +1,29 @@
-name: Paragraph Bundle Node Reference
+name: 'Paragraph Bundle Node Reference'
 type: module
-description: A reusable Paragraph Bundle Node Reference.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Paragraph bundle that references PB Node Reference content with view-mode-specific rendering.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:image
+  # node.type.pb_node_reference.yml declares menu_ui; unmet optional-config
+  # dependencies are skipped silently, so without this the node type never
+  # installs and `drush en` still reports success.
+  - drupal:menu_ui
+  - drupal:node
+  - drupal:options
+  # core.entity_form_display.node.pb_node_reference.default.yml uses the 'path'
+  # widget.
+  - drupal:path
+  # Both pb_node_reference view displays format images with the responsive_image
+  # formatter. Unlike paragraph_bundle_card, this module has no dependency that
+  # pulls responsive_image in transitively.
+  - drupal:responsive_image
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
+  # Owns responsive_image.styles.pb_responsive_image_wide, which the .default
+  # and .pb_slideshow view displays below reference. Verified on a fresh
+  # install: without this, BOTH are skipped silently and pb_node_reference has
+  # no default view display at all. paragraph_bundle_card already declares this
+  # dependency for the same reason.
   - paragraph_bundle_image:paragraph_bundle_image
-  - paragraph_bundle_3d_carousel:paragraph_bundle_3d_carousel
-  - paragraph_bundle_slideshow:paragraph_bundle_slideshow

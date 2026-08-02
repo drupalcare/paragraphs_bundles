@@ -10,7 +10,7 @@ third_party_settings:
 name: 'PB Node Reference'
 type: pb_node_reference
 description: 'Use to reference content in the slideshow or the 3d carousel.'
-help: ''
+help: null
 new_revision: true
 preview_mode: 1
 display_submitted: false

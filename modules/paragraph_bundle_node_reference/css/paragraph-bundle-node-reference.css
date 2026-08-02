@@ -2,6 +2,9 @@
  * @file
  * Paragraph Bundle Node Reference.
  *
+ * Scoping contract: `.paragraphs-bundles.pb-node-reference` - never
+ * `.paragraph--type--*`.
+ *
  * Filename:     paragraph-bundle-node-reference.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
@@ -146,8 +149,27 @@ h3 a) {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
-.paragraph--type--node-reference-bundle .pb__content-full {
+.paragraphs-bundles.pb-node-reference .pb-content__full {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Node reference layout and hover colors only. */
+}
+
+@media (prefers-contrast: high) {
+  /* Node reference layout and hover colors only. */
+}
+
+@media (forced-colors: active) {
+  /* Node reference layout and hover colors only. */
+}
+
+@media print {
+  .node--view-mode-pb-slideshow > header,
+  .node--view-mode-pb-3d-carousel > header {
+    position: static;
+  }
 }

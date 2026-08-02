@@ -8,6 +8,4 @@ pb-conditional-fields:
     js/pb-conditional-field.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once
