@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles\Twig;
 
+use Drupal\Core\Cache\CacheableMetadata;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
+use Drupal\Core\TypedData\TranslatableInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbColorNormalizerInterface;
 use Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface;
 use Twig\Extension\AbstractExtension;
@@ -45,7 +48,68 @@ final class PbTwigExtension extends AbstractExtension {
       new TwigFilter('pb_image_field_url', $this->imageFieldUrl(...)),
       new TwigFilter('pb_class', $this->className(...)),
       new TwigFilter('pb_css_value', $this->cssValue(...)),
+      new TwigFilter('pb_section_bodies', $this->sectionBodies(...)),
     ];
+  }
+
+  /**
+   * Renders the nested body paragraphs of a section, in the section's language.
+   *
+   * The tabs, accordion and slideshow bundles each nest a body field inside a
+   * section paragraph, and each rendered its bodies by cloning the section's
+   * own render array and swapping `#paragraph` for the body entity. That clone
+   * carries the section's `#cache` keys, so every body of a section would
+   * otherwise share one render-cache entry. The templates dealt with that by
+   * emptying `#cache` outright — which also discarded the tags and contexts,
+   * leaving a cached page with no way to learn that a body paragraph changed.
+   *
+   * This keeps the render-cache entry out of the way by dropping only the
+   * cache *keys*, and carries the body entity's own cacheability up instead of
+   * throwing it away.
+   *
+   * @param mixed $section
+   *   Render array for one section paragraph, as produced by the field
+   *   formatter (`content.pb_content_*_section` children).
+   * @param string $field
+   *   Machine name of the body field on the section paragraph.
+   *
+   * @return array<int|string, mixed>
+   *   Render array of the rendered bodies, or empty when there are none.
+   */
+  public function sectionBodies(mixed $section, string $field): array {
+    if (!is_array($section)) {
+      return [];
+    }
+    $entity = $section['#paragraph'] ?? NULL;
+    if (!$entity instanceof FieldableEntityInterface || !$entity->hasField($field)) {
+      return [];
+    }
+
+    $langcode = $entity->language()->getId();
+    $build = [];
+    foreach ($entity->get($field) as $delta => $item) {
+      $body = $item->entity ?? NULL;
+      if (!$body instanceof EntityInterface) {
+        continue;
+      }
+      if ($body instanceof TranslatableInterface && $body->hasTranslation($langcode)) {
+        $body = $body->getTranslation($langcode);
+      }
+
+      $child = $section;
+      $child['#paragraph'] = $body;
+      // Without this the body renders from — and pollutes — the section's
+      // render-cache entry, which is shared by every body of that section.
+      unset($child['#cache']['keys'], $child['#cache']['bin']);
+
+      $cacheability = CacheableMetadata::createFromRenderArray($child);
+      $cacheability->addCacheableDependency($body);
+      $cacheability->applyTo($child);
+
+      $build[$delta] = $child;
+    }
+
+    return $build;
   }
 
   /**

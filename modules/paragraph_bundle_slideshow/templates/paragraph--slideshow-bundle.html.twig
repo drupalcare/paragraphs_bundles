@@ -82,18 +82,7 @@
 
               <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" {% if pb_bottom_nav %}aria-labelledby="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}"{% endif %} class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
                 <div class="pb-ui-row pb-slideshow__slide-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
-                  {% for body_key, body_item in item['#paragraph'].pb_content_slideshow_body %}
-                    {% set section_body = item %}
-                    {% set lang = section_body['#paragraph'].langcode[0].value %}
-                    {% if section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.hasTranslation(lang) %}
-                      {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity.getTranslation(lang) %}
-                    {% else %}
-                      {% set section_translation = section_body['#paragraph'].pb_content_slideshow_body[body_key].entity %}
-                    {% endif %}
-                    {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
-                    {% set section_body = section_body|merge({'#cache': {}}) %}
-                    {{ section_body }}
-                  {% endfor %}
+                  {{ item|pb_section_bodies('pb_content_slideshow_body') }}
                   {% if item['#paragraph'].pb_content_slideshow_title.value %}
                     <div class="pb-ui-row pb-slideshow__title">{{ item['#paragraph'].pb_content_slideshow_title.value|decode_entities }}</div>
                   {% endif %}
