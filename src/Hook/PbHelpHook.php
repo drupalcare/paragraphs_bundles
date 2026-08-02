@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paragraphs_bundles\Hook;
 
 use Drupal\Component\Render\MarkupInterface;
+use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Extension\ModuleHandlerInterface;
@@ -54,7 +55,7 @@ final class PbHelpHook {
     $text = (string) file_get_contents($path);
 
     if (!$this->moduleHandler->moduleExists('markdown')) {
-      return Markup::create('<pre>' . htmlspecialchars($text, ENT_QUOTES | ENT_HTML5) . '</pre>');
+      return Markup::create('<pre>' . Html::escape($text) . '</pre>');
     }
 
     $settings = $this->configFactory->get('markdown.settings')->getRawData();

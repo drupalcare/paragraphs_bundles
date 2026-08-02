@@ -326,11 +326,6 @@ parameters:
 			path: src/Hook/PbFieldWidgetHook.php
 
 		-
-			message: "#^Call to static method escape\\(\\) on an unknown class Drupal\\\\paragraphs_bundles\\\\Hook\\\\Html\\.$#"
-			count: 1
-			path: src/Hook/PbHelpHook.php
-
-		-
 			message: "#^Cannot access an offset on mixed\\.$#"
 			count: 1
 			path: src/Hook/PbLibraryInfoAlterHook.php
