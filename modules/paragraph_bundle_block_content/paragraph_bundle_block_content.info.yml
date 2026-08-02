@@ -1,8 +1,8 @@
-name: Paragraph Bundle Block Content
+name: 'Paragraph Bundle Block Content'
 type: module
-description: A reusable Paragraph Bundle Drupal Block Content.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Embed custom block content inside a paragraph.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - drupal:block
   - drupal:block_content

@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_block_content\Hook\PbbcThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_block_content\Hook\PbbcThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_block_content\Hook\PbbcHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
