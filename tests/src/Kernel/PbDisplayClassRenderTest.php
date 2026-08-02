@@ -7,6 +7,7 @@ namespace Drupal\Tests\paragraphs_bundles\Kernel;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\paragraphs_bundles\Traits\PbOptionalBundleModulesTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -26,6 +27,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 final class PbDisplayClassRenderTest extends KernelTestBase {
+
+  use PbOptionalBundleModulesTrait;
 
   /**
    * {@inheritdoc}
@@ -53,8 +56,9 @@ final class PbDisplayClassRenderTest extends KernelTestBase {
     'paragraphs',
     'field_group',
     'paragraphs_bundles',
-    // Bundle family whose deps ship in the harness (excludes link/views/
-    // webform/contact_form, which need external contrib modules).
+    // Bundle family whose dependencies ship in the harness. The four needing
+    // external contrib (link/views/webform/contact_form) are enabled at
+    // runtime by PbOptionalBundleModulesTrait when that contrib is present.
     'paragraph_bundle_content',
     'paragraph_bundle_image',
     'paragraph_bundle_hero',
@@ -91,6 +95,10 @@ final class PbDisplayClassRenderTest extends KernelTestBase {
     $this->installEntitySchema('media');
     $this->installConfig(['system']);
     $this->container->get('config.installer')->installOptionalConfig();
+    // The four bundle modules that need contrib, when it is installed.
+    $this->enableOptionalBundleModules();
+    // Proves the guard below can fail: comment the line above out and the
+    // coverage assertion reports link/views/webform/contact_form as skipped.
   }
 
   /**
@@ -108,7 +116,32 @@ final class PbDisplayClassRenderTest extends KernelTestBase {
         ->loadMultiple(),
     );
     sort($type_ids);
-    $this->assertGreaterThan(10, count($type_ids));
+
+    // Assert coverage against what the enabled modules actually ship, not a
+    // magic number.
+    $this->assertSame(
+      [],
+      array_values(array_diff($this->shippedBundlesOfEnabledModules(), $type_ids)),
+      'Every paragraph type shipped by an enabled PB module is under test.',
+    );
+
+    // And the bar that actually matters: if a sub-module's contrib dependency
+    // is installed, that sub-module must be under test. Until session 7 these
+    // tests covered 34 of 39 bundles because four sub-modules were excluded
+    // outright for "needing external contrib" — contrib that was installed.
+    // Computing the expectation from the enabled set alone would not catch
+    // that, because an excluded module is also an unexpected one.
+    $list = $this->container->get('extension.list.module');
+    $handler = $this->container->get('module_handler');
+    foreach ($this->optionalBundleModules as $module => $dependency) {
+      if (!$list->exists($dependency)) {
+        continue;
+      }
+      $this->assertTrue(
+        $handler->moduleExists($module),
+        sprintf('%s is installed, so %s must be covered, not skipped.', $dependency, $module),
+      );
+    }
 
     $asserted = 0;
     foreach ($type_ids as $type_id) {
@@ -135,6 +168,28 @@ final class PbDisplayClassRenderTest extends KernelTestBase {
 
     // Guard against the loop silently skipping everything.
     $this->assertGreaterThan(10, $asserted);
+  }
+
+  /**
+   * Paragraph types shipped by the PB modules that are enabled in this test.
+   *
+   * @return list<string>
+   *   Bundle machine names, from each enabled module's `config/optional`.
+   */
+  private function shippedBundlesOfEnabledModules(): array {
+    $list = $this->container->get('extension.list.module');
+    $bundles = [];
+    foreach (array_keys($this->container->get('module_handler')->getModuleList()) as $module) {
+      if ($module !== 'paragraphs_bundles' && !str_starts_with($module, 'paragraph_bundle_')) {
+        continue;
+      }
+      $pattern = $list->getPath($module) . '/config/optional/paragraphs.paragraphs_type.*.yml';
+      foreach (glob($pattern) ?: [] as $file) {
+        $bundles[] = substr(basename($file, '.yml'), strlen('paragraphs.paragraphs_type.'));
+      }
+    }
+    sort($bundles);
+    return array_values(array_unique($bundles));
   }
 
   /**

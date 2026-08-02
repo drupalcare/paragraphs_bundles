@@ -6,6 +6,7 @@ namespace Drupal\Tests\paragraphs_bundles\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\paragraphs_bundles\Traits\PbOptionalBundleModulesTrait;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -17,13 +18,15 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * exercises real template output deterministically without BrowserTestBase
  * session/auth setup. Every PB paragraph template emits the shared
  * `paragraphs-bundles` class, so each rendered bundle must contain it. Enables
- * the full bundle family whose dependencies ship in the test harness (the four
- * bundles needing external contrib — link/views/webform/contact_form — are
- * excluded). Also confirms the content module creates a paragraphs host node.
+ * the full bundle family, including the four needing external contrib when that
+ * contrib is installed. Also confirms the content module creates a paragraphs
+ * host node.
  */
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 final class PbBundleRenderKernelTest extends KernelTestBase {
+
+  use PbOptionalBundleModulesTrait;
 
   /**
    * {@inheritdoc}
@@ -51,8 +54,9 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
     'paragraphs',
     'field_group',
     'paragraphs_bundles',
-    // Bundle family whose deps ship in the harness (excludes link/views/
-    // webform/contact_form, which need external contrib modules).
+    // Bundle family whose dependencies ship in the harness. The four needing
+    // external contrib (link/views/webform/contact_form) are enabled at
+    // runtime by PbOptionalBundleModulesTrait when that contrib is present.
     'paragraph_bundle_content',
     'paragraph_bundle_image',
     'paragraph_bundle_hero',
@@ -90,6 +94,8 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
     // Date formats (for timestamp rendering) live in system config.
     $this->installConfig(['system']);
     $this->container->get('config.installer')->installOptionalConfig();
+    // The four bundle modules that need contrib, when it is installed.
+    $this->enableOptionalBundleModules();
   }
 
   /**
