@@ -4,6 +4,8 @@ dependencies:
   config:
     - field.field.paragraph.alert_bundle.pb_content_alert_body
     - field.field.paragraph.alert_bundle.pb_content_title
+    - field.field.paragraph.alert_bundle.pb_content_title_alignment
+    - field.field.paragraph.alert_bundle.pb_content_title_tag
     - field.field.paragraph.alert_bundle.pb_display_alert_close_persist
     - field.field.paragraph.alert_bundle.pb_display_alert_countdown_sec
     - field.field.paragraph.alert_bundle.pb_display_alert_dismissal_type
@@ -24,6 +26,8 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_text
     - field.field.paragraph.alert_bundle.pb_display_text_hover
     - field.field.paragraph.alert_bundle.pb_display_width
+    - field.field.paragraph.alert_bundle.pb_display_link
+    - field.field.paragraph.alert_bundle.pb_display_link_hover
     - paragraphs.paragraphs_type.alert_bundle
   module:
     - datetime
@@ -53,154 +57,28 @@ content:
     third_party_settings: {  }
     weight: 14
     region: content
-  pb_display_alert_close_persist:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 16
-    region: content
-  pb_display_alert_countdown_sec:
-    type: file_size
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 18
-    region: content
-  pb_display_alert_dismissal_type:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 17
-    region: content
-  pb_display_alert_end_date:
-    type: datetime_default
-    label: hidden
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 20
-    region: content
-  pb_display_alert_show_cdown_lbl:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 19
-    region: content
-  pb_display_alert_start_date:
-    type: datetime_default
-    label: hidden
-    settings:
-      timezone_override: ''
-      format_type: medium
-    third_party_settings: {  }
-    weight: 21
-    region: content
-  pb_display_bg:
-    type: color_text_formatter_rgb
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  pb_display_bg_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  pb_display_bg_opacity:
-    type: range_number_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
-  pb_display_border:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  pb_display_border_color:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  pb_display_border_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  pb_display_border_radius:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  pb_display_margin:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  pb_display_padding:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  pb_display_shadow:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pb_display_show_close_button:
-    type: boolean
-    label: hidden
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    weight: 12
-    region: content
-  pb_display_text:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  pb_display_text_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  pb_display_width:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 11
-    region: content
-hidden: {  }
+hidden:
+  pb_content_title_alignment: true
+  pb_content_title_tag: true
+  pb_display_alert_close_persist: true
+  pb_display_alert_countdown_sec: true
+  pb_display_alert_dismissal_type: true
+  pb_display_alert_end_date: true
+  pb_display_alert_show_cdown_lbl: true
+  pb_display_alert_start_date: true
+  pb_display_bg: true
+  pb_display_bg_hover: true
+  pb_display_bg_opacity: true
+  pb_display_border: true
+  pb_display_border_color: true
+  pb_display_border_hover: true
+  pb_display_border_radius: true
+  pb_display_link: true
+  pb_display_link_hover: true
+  pb_display_margin: true
+  pb_display_padding: true
+  pb_display_shadow: true
+  pb_display_show_close_button: true
+  pb_display_text: true
+  pb_display_text_hover: true
+  pb_display_width: true

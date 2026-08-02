@@ -1,9 +1,12 @@
-name: Paragraph Bundle Alert
+name: 'Paragraph Bundle Alert'
 type: module
-description: A reusable Paragraph Bundle Alert.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Dismissible alert paragraph with countdown, date range, and nested body content.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - drupal:datetime
   - drupal:options
+  - drupal:text
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

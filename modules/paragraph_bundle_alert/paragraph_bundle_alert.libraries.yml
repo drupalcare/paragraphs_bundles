@@ -6,6 +6,7 @@ paragraph-bundle-alert:
     js/paragraph-bundle-alert.js: { }
   dependencies:
     - core/drupal
+    - core/drupal.announce
     - core/once
 
 paragraph-bundle-alert-admin:

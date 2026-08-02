@@ -1,56 +1,45 @@
 {#
 /**
-* @file
-* Default theme implementation to display an 'alert' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
+ * @file
+ * `alert_bundle` paragraph template (v2).
+ *
+ * v1 Twig audit (display field -> DOM target -> CSS source):
+ *
+ * | Field / vars              | DOM target              | CSS |
+ * |---------------------------|-------------------------|-----|
+ * | pb_display_margin         | `.pb-ui-inner`     | base `.pb__margin*` |
+ * | pb_display_width          | `.pb-ui-inner`     | custom `--pb-width` |
+ * | pb_display_border         | `.pb-ui-inner`     | base `.pb__border*` |
+ * | pb_display_border_radius  | `.pb-ui-inner`     | base `.pb__round*` |
+ * | pb_display_padding        | `.pb-ui-inner`     | base `.pb__padding*` |
+ * | pb_display_shadow         | `.pb-ui-inner`     | base `.pb-card*` |
+ * | pb_display_bg*            | `.pb-ui-inner`     | dynamic CSS `--pb-bg*` |
+ * | pb_display_text*          | `.pb-ui-inner`     | dynamic CSS `--pb-tx*` |
+ * | pb_display_border_color*  | `.pb-ui-inner`     | dynamic CSS `--pb-br*` |
+ * | pb_display_link*          | `.pb-ui-inner`     | dynamic CSS `--pb-lk*` |
+ *
+ * Dynamic CSS selector: `#pb__alert-{id} > .pb-ui-inner` (default builder).
+ *
+ * @see template_preprocess_paragraph()
+ * @see \Drupal\paragraph_bundle_alert\Hook\PbaPreprocessAlertHook
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ * @see \Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_alert/paragraph-bundle-alert') }}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__alert__inner' %}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__alert-' ~ paragraph.id.value %}
+{% set classes_inner = 'pb-ui-inner' %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb__alert-' ~ paragraph.id.value %}
 
-{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
+  'pb-alert',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
@@ -58,17 +47,6 @@
   paragraph_id,
 ] %}
 
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
-} %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -77,63 +55,29 @@
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
-
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-    {# In case widget was changed. #}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-
-  {% endif %}
-{% endfor %}
-
-{% set pb_close_button = not paragraph.pb_display_show_close_button.isEmpty and paragraph.pb_display_show_close_button.value %}
+{% set pb_close_button = not paragraph.pb_display_show_close_button.isEmpty and paragraph|pb_field_value('pb_display_show_close_button') %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
-{% set pb_default_state = pb_default_state|default('open') %}
-{% set pb_alert_hidden = pb_alert_hidden|default(false) %}
-{% set pb_dismissal_type = pb_dismissal_type|default('none') %}
-{% set pb_countdown_seconds = pb_countdown_seconds|default(0) %}
-{% set pb_show_countdown_label = pb_show_countdown_label|default(false) %}
-{% set pb_close_persist = pb_close_persist|default('none') %}
-{% set pb_date_range_end = pb_date_range_end|default(0) %}
 
-{# Render the paragraph (skip output when hidden by date range). #}
 {% if not pb_alert_hidden %}
-<div {{ attributes.addClass(classes, pb_default_state == 'closed' ? 'alert-is-closed').setAttribute('id', paragraph_id).setAttribute('role', 'alert').setAttribute('aria-live', 'assertive').setAttribute('aria-hidden', pb_default_state == 'closed' ? 'true' : 'false')
+<div {{ attributes.addClass(classes, pb_default_state == 'closed' ? 'pb-is-closed').setAttribute('id', paragraph_id).setAttribute('role', 'alert').setAttribute('aria-live', 'assertive').setAttribute('aria-hidden', pb_default_state == 'closed' ? 'true' : 'false')
   .setAttribute('data-dismissal-type', pb_dismissal_type)
   .setAttribute('data-countdown-seconds', pb_countdown_seconds)
   .setAttribute('data-show-countdown-label', pb_show_countdown_label ? '1' : '0')
   .setAttribute('data-close-persist', pb_close_persist)
   .setAttribute('data-date-range-end', pb_date_range_end) }}>
-  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}">
 
     {% if pb_close_button or (pb_dismissal_type == 'countdown' and pb_show_countdown_label and pb_countdown_seconds > 0) %}
-      <div class="pb__alert-top {{ pb_close_button ? 'pb--has-close' : 'pb--no-close' }}">
+      <div class="pb-alert--top {{ pb_close_button ? 'pb--has-close' : 'pb--no-close' }}">
         {% if pb_dismissal_type == 'countdown' and pb_show_countdown_label and pb_countdown_seconds > 0 %}
-          <div class="pb__alert-countdown" aria-live="polite">
+          <div class="pb-alert__countdown" aria-live="polite">
             <span data-pb-countdown-label>{{ pb_countdown_seconds }}</span>
-            <span class="pb__alert-countdown-unit">{{ 'sec'|t }}</span>
+            <span class="pb-alert__countdown-unit">{{ 'sec'|t }}</span>
           </div>
         {% endif %}
         {% if pb_close_button %}
@@ -141,20 +85,20 @@
                   aria-expanded="{{ pb_default_state == 'closed' ? 'false' : 'true' }}"
                   aria-controls="{{ paragraph_id }}"
                   type="button"
-                  class="pb__close-alert js-pb-close-alert">
+                  class="pb-alert__close">
             <span class="visually-hidden">{{ 'Close message'|t }}</span>
-            <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="gray"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false"><path d="m336-280 144-144 144 144 56-56-144-144 144-144-56-56-144 144-144-144-56 56 144 144-144 144 56 56ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-134-93-227t-227-93q-134 0-227 93t-93 227q0 134 93 227t227 93Zm0-320Z"/></svg>
           </button>
         {% endif %}
       </div>
     {% endif %}
 
-    <div class="pb__content-full pb__content-alert">
+    <div class="pb-content__full pb-alert__content">
       {% if pb_title %}
-        {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
+        {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
       {{ content.pb_content_alert_body }}
-    </div>{# End of pb__content-full pb__content-alert #}
+    </div>
 
   </div>
 </div>

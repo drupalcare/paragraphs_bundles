@@ -1,0 +1,19 @@
+services:
+  Drupal\paragraph_bundle_alert\Hook\PbaThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_alert\Hook\PbaHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
+
+  Drupal\paragraph_bundle_alert\Hook\PbaPageHook:
+    arguments:
+      - '@router.admin_context'
+
+  Drupal\paragraph_bundle_alert\Hook\PbaFieldWidgetHook:
+    arguments:
+      - '@config.factory'

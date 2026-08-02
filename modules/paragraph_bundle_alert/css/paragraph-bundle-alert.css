@@ -2,88 +2,94 @@
  * @file
  * Paragraph Bundle Alert.
  *
+ * Scoping contract: `.paragraphs-bundles.pb-alert` - never `.paragraph--type--*`.
+ *
  * Filename:     paragraph-bundle-alert.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
 /* Base state - visible */
-.paragraph--type--alert-bundle {
+.paragraphs-bundles.pb-alert {
   display: grid;
   grid-template-rows: 1fr;
   opacity: 1;
-  transition: opacity 0.3s ease-out, grid-template-rows 0.3s ease-out;
+  transition:
+    opacity var(--pb-transition-duration, 300ms) ease-out,
+    grid-template-rows var(--pb-transition-duration, 300ms) ease-out;
 }
 
 /* Closed state - collapsed with animation */
-.paragraph--type--alert-bundle.alert-is-closed {
+.paragraphs-bundles.pb-alert.pb-is-closed {
   grid-template-rows: 0fr;
   opacity: 0;
   pointer-events: none;
 }
 
-.paragraph--type--alert-bundle > .paragraph__inner {
+.paragraphs-bundles.pb-alert > .pb-ui-inner {
   overflow: hidden;
   position: relative;
 }
 
 /* Row 1: close button + countdown grouped */
-.paragraph--type--alert-bundle .pb__alert-top {
+.paragraphs-bundles.pb-alert .pb-alert--top {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: end;
-  gap: 0.5rem;
+  gap: var(--pb-px8);
   min-width: 0;
 }
 
-.paragraph--type--alert-bundle .pb__alert-countdown {
-  isplay: inline-flex;
+.paragraphs-bundles.pb-alert .pb-alert__countdown {
+  display: inline-flex;
   align-items: center;
-  gap: 0.2em;
-  min-width: 2rem;
-  padding: 0.25rem 0.5rem;
+  gap: var(--pb-px4);
+  min-width: var(--pb-px32);
+  padding: var(--pb-px4) var(--pb-px8);
   font-variant-numeric: tabular-nums;
   color: var(--pb-tx, inherit);
   opacity: 0.85;
-  border: 1px solid #ccc;
+  border: var(--pb-border-width, 1px) solid color-mix(in srgb, currentcolor 35%, transparent);
   line-height: 1;
-  border-radius: 0.25rem;
-  font-size: 0.75rem;
+  border-radius: var(--pb-px4);
+  font-size: var(--pb-font-size-sm, 0.75rem);
   justify-content: center;
 }
 
-.paragraph--type--alert-bundle .pb__alert-countdown-unit {
+.paragraphs-bundles.pb-alert .pb-alert__countdown-unit {
   font-weight: 500;
   opacity: 0.9;
 }
 
-.paragraph--type--alert-bundle .pb__content-alert {
+.paragraphs-bundles.pb-alert .pb-alert__content {
   display: grid;
   grid-auto-flow: row;
 }
 
-.paragraph--type--alert-bundle .pb__content-alert > * {
+.paragraphs-bundles.pb-alert .pb-alert__content > * {
   min-width: 0;
 }
 
-.paragraph--type--alert-bundle .pb__content-title {
+.paragraphs-bundles.pb-alert .pb-content__title {
   margin-block: 0 0.5rem;
 }
 
-.paragraph--type--alert-bundle[aria-hidden="true"] * {
+.paragraphs-bundles.pb-alert[aria-hidden="true"] * {
   margin: 0;
   padding: 0;
   border: none;
 }
 
-.pb__close-alert svg {
-  transition: opacity 0.3s ease;
+.paragraphs-bundles.pb-alert .pb-alert__close svg {
+  inline-size: var(--pb-px32);
+  block-size: var(--pb-px32);
+  transition: opacity var(--pb-transition-duration, 300ms) ease;
   opacity: 0.6;
-  fill: var(--pb-tx, var(--r-tx, inherit));
+  fill: var(--pb-tx, inherit);
 }
 
-.paragraph--type--alert-bundle button.pb__close-alert {
+.paragraphs-bundles.pb-alert button.pb-alert__close {
   padding: 0;
   margin: 0;
   display: flex;
@@ -92,36 +98,50 @@
   cursor: pointer;
   border: 0;
   background: none;
-  -webkit-appearance: none;
   appearance: none;
-  border: none;
   border-radius: 50%;
   flex-shrink: 0;
-  transition: transform 0.2s ease-out;
+  transition: transform var(--pb-transition-duration-fast, 200ms) ease-out;
 }
 
-.paragraph--type--alert-bundle button.pb__close-alert:hover {
+.paragraphs-bundles.pb-alert button.pb-alert__close:hover {
   opacity: 1;
   transform: scale(1.1);
 }
 
-.paragraph--type--alert-bundle button.pb__close-alert:focus {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-alert button.pb-alert__close:focus {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
 }
 
-.paragraph--type--alert-bundle .pb__close-alert:hover svg {
-  fill: red;
+.paragraphs-bundles.pb-alert .pb-alert__close:hover svg {
+  fill: var(--pb-tx-h, var(--pb-tx, currentColor));
 }
 
-/* Respect reduced motion preference */
-@media (prefers-reduced-motion:reduce) {
-  .paragraph--type--alert-bundle {
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-alert {
     transition: none;
   }
 
-  .paragraph--type--alert-bundle button.pb__close-alert {
+  .paragraphs-bundles.pb-alert button.pb-alert__close {
     transition: none;
   }
+}
 
+@media (prefers-contrast: high) {
+  .paragraphs-bundles.pb-alert button.pb-alert__close:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-alert button.pb-alert__close:focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-alert.pb-is-closed {
+    display: none;
+  }
 }

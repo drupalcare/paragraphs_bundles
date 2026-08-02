@@ -1,6 +1,6 @@
 /**
  * @file
- * Paragraph Bundle Alert – admin form: show/hide fields by Dismissal type,
+ * Paragraph Bundle Alert - admin form: show/hide fields by Dismissal type,
  * and allow clearing date range fields.
  *
  * - None: hide date range and countdown fields.
@@ -9,6 +9,9 @@
  *
  * "When user closes" is shown for all dismissal types.
  */
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 ((Drupal, once) => {
   'use strict';
 
@@ -41,7 +44,8 @@
 
   function initDismissalToggle(select) {
     const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
-    if (!container) return;
+    if (!container) { return;
+    }
 
     const value = (select.value || 'none').trim();
     toggleFields(container, value);
@@ -57,7 +61,8 @@
   function getTimestampFromDateField(wrapper) {
     const dateInput = wrapper.querySelector('input[type="date"]');
     const timeInput = wrapper.querySelector('input[type="time"]');
-    if (!dateInput || !dateInput.value) return null;
+    if (!dateInput || !dateInput.value) { return null;
+    }
     const dateStr = dateInput.value;
     const timeStr = (timeInput && timeInput.value) ? timeInput.value : '00:00:00';
     const ms = Date.parse(dateStr + 'T' + timeStr);
@@ -70,10 +75,12 @@
   function isDateRangeInvalid(container) {
     const startWrapper = container.querySelector(DATE_RANGE_FIELDS[0]);
     const endWrapper = container.querySelector(DATE_RANGE_FIELDS[1]);
-    if (!startWrapper || !endWrapper) return false;
+    if (!startWrapper || !endWrapper) { return false;
+    }
     const startTs = getTimestampFromDateField(startWrapper);
     const endTs = getTimestampFromDateField(endWrapper);
-    if (startTs == null || endTs == null) return false;
+    if (startTs == null || endTs == null) { return false;
+    }
     return startTs >= endTs;
   }
 
@@ -83,7 +90,8 @@
   function clearDateRangeInContainer(container) {
     DATE_RANGE_FIELDS.forEach((sel) => {
       const wrapper = container.querySelector(sel);
-      if (!wrapper) return;
+      if (!wrapper) { return;
+      }
       wrapper.querySelectorAll('input[type="date"], input[type="time"]').forEach((input) => {
         input.value = '';
         input.dispatchEvent(new Event('change', { bubbles: true }));
@@ -121,7 +129,8 @@
       const invalidContainers = [];
       form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
         const value = (select.value || 'none').trim();
-        if (value !== 'date_range') return;
+        if (value !== 'date_range') { return;
+        }
         const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
         if (container && isDateRangeInvalid(container)) {
           invalidContainers.push(container);
@@ -136,7 +145,8 @@
 
       form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
         const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
-        if (!container) return;
+        if (!container) { return;
+        }
         const value = (select.value || 'none').trim();
         if (value === 'countdown') {
           clearDateRangeInContainer(container);
@@ -153,7 +163,8 @@
   function addClearButton(wrapper) {
     const dateInput = wrapper.querySelector('input[type="date"]');
     const timeInput = wrapper.querySelector('input[type="time"]');
-    if (!dateInput && !timeInput) return;
+    if (!dateInput && !timeInput) { return;
+    }
 
     const label = wrapper.querySelector('.fieldset__label, .form-item__label');
     const labelText = (label && label.textContent) ? label.textContent.trim() : '';
