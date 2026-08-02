@@ -1,8 +1,10 @@
-name: Paragraph Bundle Image Overlay
+name: 'Paragraph Bundle Image Overlay'
 type: module
-description: A reusable Paragraph Bundle Image Overlay.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Image with hover overlay effects (fade, zoom, slide, title bar).'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
-  - paragraphs_bundles:paragraphs_bundles
+  - drupal:options
+  - paragraphs:paragraphs
   - paragraph_bundle_image:paragraph_bundle_image
+  - paragraphs_bundles:paragraphs_bundles

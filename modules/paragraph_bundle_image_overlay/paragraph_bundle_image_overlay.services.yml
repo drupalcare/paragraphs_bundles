@@ -1,0 +1,9 @@
+services:
+  Drupal\paragraph_bundle_image_overlay\Hook\PbioThemeHook: {}
+
+  Drupal\paragraph_bundle_image_overlay\Hook\PbioHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
