@@ -132,7 +132,7 @@
              data-col="left"
              data-col-toggle-enabled="{{ pb_2c_l_tgl ? '1' : '0' }}"
              {% if pb_2c_l_tgl %}data-col-default="{{ pb_2c_l_def }}"{% endif %}>
-          <div id="{{ paragraph_id }}-col-left" class="pb-layout-col__content"{{ pb_2c_l_tgl and pb_2c_l_def == 'closed' ? ' aria-hidden="true"' : '' }}>
+          <div id="{{ paragraph_id }}-col-left" class="pb-layout-col__content"{% if pb_2c_l_tgl and pb_2c_l_def == 'closed' %} aria-hidden="true" inert{% endif %}>
           {{ content.pb_content_left_column }}
           </div>
         </div>
@@ -140,7 +140,7 @@
              data-col="right"
              data-col-toggle-enabled="{{ pb_2c_r_tgl ? '1' : '0' }}"
              {% if pb_2c_r_tgl %}data-col-default="{{ pb_2c_r_def }}"{% endif %}>
-          <div id="{{ paragraph_id }}-col-right" class="pb-layout-col__content"{{ pb_2c_r_tgl and pb_2c_r_def == 'closed' ? ' aria-hidden="true"' : '' }}>
+          <div id="{{ paragraph_id }}-col-right" class="pb-layout-col__content"{% if pb_2c_r_tgl and pb_2c_r_def == 'closed' %} aria-hidden="true" inert{% endif %}>
           {{ content.pb_content_right_column }}
           </div>
         </div>

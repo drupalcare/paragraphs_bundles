@@ -211,7 +211,12 @@
         }
       });
 
-      once(ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH, document, context).forEach(() => {
+      // The selector must be an Element: once() resolves a Document to an empty
+      // list, which would silently never bind this listener.
+      once(
+        ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH,
+        document.documentElement,
+      ).forEach(() => {
         globalHashAbortController?.abort();
         globalHashAbortController = new AbortController();
         const { signal } = globalHashAbortController;
@@ -281,8 +286,7 @@
 
       once.remove(
         ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH,
-        document,
-        context,
+        document.documentElement,
       );
       globalHashAbortController?.abort();
       globalHashAbortController = null;

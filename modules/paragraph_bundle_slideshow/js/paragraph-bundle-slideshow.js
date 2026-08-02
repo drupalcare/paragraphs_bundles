@@ -56,6 +56,15 @@
   const ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE =
     'pb-paragraph-bundle-slideshow-stage';
 
+  /** Elements that consume typed keys themselves. */
+  const PB_KEY_OWNING_TEXT_ENTRY =
+    'input, textarea, select, [contenteditable=""], [contenteditable="true"]';
+
+  /** Elements that Space activates natively. */
+  const PB_KEY_OWNING_CONTROL =
+    `${PB_KEY_OWNING_TEXT_ENTRY}, a[href], button, summary, audio, video,`
+    + ' [role="button"], [role="tab"], [role="checkbox"], [role="radio"]';
+
   /**
    * Debounce utility to limit function execution frequency.
    *
@@ -249,18 +258,17 @@
          * Toggles play/pause for autoplay.
          */
         const togglePlayPause = () => {
-          if (!playPauseButton) {
-            return;
-          }
+          // The state toggles even without a button: a template that renders no
+          // play control must still not leave autoplay unstoppable (WCAG 2.2.2).
           isPaused = !isPaused;
           playIcon?.toggleAttribute('hidden', !isPaused);
           pauseIcon?.toggleAttribute('hidden', isPaused);
-          playPauseButton.setAttribute(
+          playPauseButton?.setAttribute(
             'aria-label',
             isPaused ? 'Play slideshow' : 'Pause slideshow',
           );
-          playPauseButton.classList.toggle(PB_IS_PAUSED, isPaused);
-          playPauseButton.classList.toggle(PB_IS_PLAYING, !isPaused);
+          playPauseButton?.classList.toggle(PB_IS_PAUSED, isPaused);
+          playPauseButton?.classList.toggle(PB_IS_PLAYING, !isPaused);
           if (slideTime > 0) {
             if (isPaused) {
               stopAutoSlide();
@@ -350,7 +358,13 @@
          * @param {KeyboardEvent} event - Keyboard event.
          */
         const handleKeydown = (event) => {
-          if (!stage.contains(document.activeElement)) {
+          const active = document.activeElement;
+          if (!(active instanceof HTMLElement) || !stage.contains(active)) {
+            return;
+          }
+          // Text entry owns every printable key and the arrows; never steal
+          // them, or a space cannot be typed into a field inside a slide.
+          if (active.closest(PB_KEY_OWNING_TEXT_ENTRY)) {
             return;
           }
           if (event.key === 'ArrowRight') {
@@ -359,7 +373,9 @@
           else if (event.key === 'ArrowLeft') {
             prevSlide();
           }
-          else if (event.key === ' ') {
+          // Space activates a focused control natively (WCAG 2.1.1), so the
+          // play/pause shortcut only applies outside one.
+          else if (event.key === ' ' && !active.closest(PB_KEY_OWNING_CONTROL)) {
             event.preventDefault();
             togglePlayPause();
           }

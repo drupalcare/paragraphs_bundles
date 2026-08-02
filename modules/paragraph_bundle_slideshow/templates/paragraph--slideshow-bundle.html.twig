@@ -105,16 +105,18 @@
         </div>
         <div class="pb-nav__announcer visually-hidden" aria-live="polite"></div>
 
-        {% set show_play_button = pb_bottom_nav in ['dot', 'nav', 'play'] and pb_slide_time > 0 %}
+        {# WCAG 2.2.2: whenever autoplay can run there must be a pause control,
+           regardless of which bottom-navigation style is selected. #}
+        {% set show_play_button = pb_slide_time > 0 %}
         {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
 
         {% if show_play_button or show_navigation_buttons %}
-          <div id="pb-slideshow__nav-{{ paragraph.id.value }}" role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}" class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
+          <div id="pb-slideshow__nav-{{ paragraph.id.value }}" {% if show_navigation_buttons %}role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}"{% else %}role="group" aria-label="{{ 'Slideshow Controls'|t }}"{% endif %} class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
 
             {% if show_play_button %}
-              <button id="btn-{{ paragraph.id.value }}" type="button" role="tab"
+              <button id="btn-{{ paragraph.id.value }}" type="button"
                       aria-label="{{ 'Pause slideshow'|t }}"
-                      class="pb-ui-btn pb-nav__play pb-is-playing{% if pb_slide_time == 0 %} pb-u-hide-0{% endif %}"
+                      class="pb-ui-btn pb-nav__play pb-is-playing"
                       aria-live="polite">
                 <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
                 <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_slideshow/svg/svg-play.svg') }}</span>
