@@ -2,8 +2,7 @@
  * @file
  * Paragraph Bundle Hero.
  *
- * Provides hero banner functionality with image background and
- * overlay text content with customizable positioning.
+ * Scoping contract: `.paragraphs-bundles.pb-hero` - never `.paragraph--type--*`.
  *
  * Filename:     paragraph-bundle-hero.css
  * Website:      https://www.flashwebcenter.com
@@ -14,18 +13,18 @@
    Base Structure
    ========================================================================== */
 
-.paragraph--type--hero-bundle .hero-bundle-inner {
+.paragraphs-bundles.pb-hero .hero-bundle-inner {
   overflow: hidden;
   position: relative;
 }
 
-.paragraph--type--hero-bundle .hero-bundle-inner:not(
-  .pb__margin,
-  .pb__margin_top,
-  .pb__margin_right,
-  .pb__margin_bottom,
-  .pb__margin_left,
-  .pb__section
+.paragraphs-bundles.pb-hero .hero-bundle-inner:not(
+  .pb-u-margin,
+  .pb-u-margin--top,
+  .pb-u-margin--right,
+  .pb-u-margin--bottom,
+  .pb-u-margin--left,
+  .pb-u-margin--section
 ) {
   width: 100% !important;
   margin-block: 0 !important;
@@ -33,57 +32,50 @@
 }
 
 /* ==========================================================================
-   Text Wrapper Styling
+   Text inner styling (dynamic CSS sets --pb-* on this node)
    ========================================================================== */
 
-.pb__hero-txt-wrapper-inner * {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner * {
   border-color: var(--pb-br);
   transition: border-color 0.2s ease-out;
 }
 
-.pb__hero-txt-wrapper-inner:hover * {
-  border-color: var(--pb-br-h, var(--pb-br), var(--r-br));
+.paragraphs-bundles.pb-hero .pb-hero__text-inner:hover * {
+  border-color: var(--pb-br-h, var(--pb-br));
 }
 
-/* Headings */
-.pb__hero-txt-wrapper-inner h2,
-.page-wrapper .pb__hero-txt-wrapper-inner h2 {
-  color: var(--pb-tx, var(--r-h1, var(--r-tx)));
+.paragraphs-bundles.pb-hero .pb-hero__text-inner h2 {
+  color: var(--pb-tx);
   transition: color 0.2s ease-out;
 }
 
-.pb__hero-txt-wrapper-inner h2:hover,
-.page-wrapper .pb__hero-txt-wrapper-inner h2:hover {
-  color: var(--pb-tx-h, var(--pb-tx, var(--r-h1), var(--r-tx)));
+.paragraphs-bundles.pb-hero .pb-hero__text-inner h2:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
 }
 
-/* Paragraphs */
-.pb__hero-txt-wrapper-inner p,
-.page-wrapper .pb__hero-txt-wrapper-inner p {
-  color: var(--pb-tx, var(--r-tx, inherit));
+.paragraphs-bundles.pb-hero .pb-hero__text-inner p {
+  color: var(--pb-tx, inherit);
   transition: color 0.2s ease-out;
 }
 
-.pb__hero-txt-wrapper-inner p:hover,
-.page-wrapper .pb__hero-txt-wrapper-inner p:hover {
-  color: var(--pb-tx-h, var(--pb-tx), var(--r-tx));
+.paragraphs-bundles.pb-hero .pb-hero__text-inner p:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
 }
 
-/* Background */
-.pb__hero-txt-wrapper-inner {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner {
   background-color: var(--pb-bg);
   transition: background-color 0.2s ease-out;
 }
 
-.pb__hero-txt-wrapper-inner:hover {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner:hover {
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
 /* ==========================================================================
-   Text Wrapper Layout
+   Text wrapper layout
    ========================================================================== */
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper {
+.paragraphs-bundles.pb-hero .pb-hero__text-wrapper {
   position: absolute;
   inset-block-start: 0;
   inset-block-end: 0;
@@ -91,84 +83,101 @@
   inset-inline-end: 0;
   height: 100%;
   width: 100%;
-  overflow-x: auto;
+  overflow: hidden;
 }
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner {
   display: grid;
+  /* v2: long body text scrolls inside the colored overlay box. */
+  grid-template-columns: minmax(0, 1fr);
+  max-block-size: 100%;
+  min-block-size: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner > * {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner > .pb-ui-link {
+  min-block-size: 0;
+}
+
+.paragraphs-bundles.pb-hero .pb-hero__text-inner > * {
   min-width: 0;
 }
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper-inner:not(
-  .pb__card_4,
-  .pb__card_2
+.paragraphs-bundles.pb-hero .pb-hero__text-inner:not(
+  .pb-u-shadow--4,
+  .pb-u-shadow--2
 ) {
   margin-block: 0;
   margin-inline: auto;
 }
 
 /* ==========================================================================
-   Image Styling
+   Image styling
    ========================================================================== */
 
-.paragraph--type--hero-bundle .field--name-pb-content-image,
-.paragraph--type--hero-bundle .field--name-pb-content-image div,
-.paragraph--type--hero-bundle .field--name-pb-content-image div img {
+.paragraphs-bundles.pb-hero .field--name-pb-content-image,
+.paragraphs-bundles.pb-hero .field--name-pb-content-image div,
+.paragraphs-bundles.pb-hero .field--name-pb-content-image div img {
   width: 100%;
 }
 
 /* ==========================================================================
-   Link Styling
+   Link styling
    ========================================================================== */
 
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper > a {
+.paragraphs-bundles.pb-hero .pb-hero__text-inner > .pb-ui-link {
+  /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: inline-start;
   height: 100%;
   width: 100%;
 }
 
-/* Focus state for the link */
-.paragraph--type--hero-bundle .pb__hero-txt-wrapper > a:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-hero .pb-hero__text-inner > .pb-ui-link:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: -4px;
 }
 
 /* ==========================================================================
-   Responsive Typography
+   Responsive typography
    ========================================================================== */
 
 @media (max-width: 61.99875rem) {
-  .paragraph--type--hero-bundle .pb__hero-txt-wrapper h1 {
+  .paragraphs-bundles.pb-hero .pb-hero__text-wrapper h1 {
     font-size: var(--pb-px28);
   }
 
-  .paragraph--type--hero-bundle .pb__hero-txt-wrapper h2 {
+  .paragraphs-bundles.pb-hero .pb-hero__text-wrapper h2 {
     font-size: var(--pb-px24);
   }
 
-  .paragraph--type--hero-bundle .pb__hero-txt-wrapper h3 {
+  .paragraphs-bundles.pb-hero .pb-hero__text-wrapper h3 {
     font-size: var(--pb-px22);
   }
 
-  .paragraph--type--hero-bundle .pb__hero-txt-wrapper p {
+  .paragraphs-bundles.pb-hero .pb-hero__text-wrapper p {
     font-size: var(--pb-px16);
   }
 }
 
-/* ==========================================================================
-   Reduced Motion
-   ========================================================================== */
-
 @media (prefers-reduced-motion: reduce) {
-  .pb__hero-txt-wrapper-inner,
-  .pb__hero-txt-wrapper-inner *,
-  .pb__hero-txt-wrapper-inner h2,
-  .page-wrapper .pb__hero-txt-wrapper-inner h2,
-  .pb__hero-txt-wrapper-inner p,
-  .page-wrapper .pb__hero-txt-wrapper-inner p {
+  .paragraphs-bundles.pb-hero .pb-hero__text-inner,
+  .paragraphs-bundles.pb-hero .pb-hero__text-inner *,
+  .paragraphs-bundles.pb-hero .pb-hero__text-inner h2,
+  .paragraphs-bundles.pb-hero .pb-hero__text-inner p {
     transition: none;
   }
+}
+
+@media (prefers-contrast: high) {
+  /* Hero layout only. */
+}
+
+@media (forced-colors: active) {
+  /* Hero layout only. */
+}
+
+@media print {
+  /* Hero layout only. */
 }

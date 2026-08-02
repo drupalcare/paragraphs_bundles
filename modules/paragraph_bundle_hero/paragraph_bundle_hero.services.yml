@@ -1,0 +1,11 @@
+services:
+  Drupal\paragraph_bundle_hero\Hook\PbhThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_hero\Hook\PbhHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

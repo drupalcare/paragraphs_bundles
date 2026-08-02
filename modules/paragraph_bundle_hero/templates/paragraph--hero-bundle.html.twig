@@ -1,56 +1,45 @@
 {#
 /**
-* @file
-* Default theme implementation to display a 'hero' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
+ * @file
+ * `hero_bundle` paragraph template (v2).
+ *
+ * v1 Twig audit (display field -> DOM target -> CSS source):
+ *
+ * | Field                  | DOM target                    | CSS |
+ * |------------------------|-------------------------------|-----|
+ * | pb_display_margin      | `.hero-bundle-inner`          | paragraphs-bundles-base.css `.pb__margin*` |
+ * | pb_display_width       | `.pb-hero__text-inner` | paragraphs-bundles-custom.css `--pb-width` |
+ * | pb_display_border      | `.pb-hero__text-inner` | base `.pb__border*` |
+ * | pb_display_border_radius | `.pb-hero__text-inner` | base `.pb__round*` |
+ * | pb_display_padding     | `.pb-hero__text-inner` | base `.pb__padding*` |
+ * | pb_display_shadow      | `.pb-hero__text-inner` | base `.pb-card*` |
+ * | pb_display_hero        | `.pb-hero__text-inner` | base `.pb__ds_*` |
+ * | pb_display_bg*         | `.pb-hero__text-inner` | dynamic CSS `--pb-bg*` |
+ * | pb_display_text*       | `.pb-hero__text-inner` | dynamic CSS `--pb-tx*` |
+ * | pb_display_border_color* | `.pb-hero__text-inner` | dynamic CSS `--pb-br*` |
+ * | pb_display_link*       | `.pb-hero__text-inner` | dynamic CSS `--pb-lk*` |
+ *
+ * Dynamic CSS selector: `#pb__hero-{id} .pb-hero__text-inner`
+ *
+ * @see template_preprocess_paragraph()
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ * @see \Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_hero/paragraph-bundle-hero') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__hero-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'pb__row pb__hero-txt-wrapper-inner' %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb__hero-' ~ paragraph.id.value %}
+{% set classes_inner = 'pb-ui-row pb-hero__text-inner' %}
 
-{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
+  'pb-hero',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
@@ -58,17 +47,6 @@
   paragraph_id,
 ] %}
 
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
-} %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -77,59 +55,32 @@
   'pb_display_shadow',
   'pb_display_hero',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
-
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-    {# In case widget was changed. #}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-
-  {% endif %}
-{% endfor %}
-
-{# Title, link and layout #}
 {% set pb_link = content.pb_content_image_link.0['#url'] %}
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
-{% set pb_margin = content.pb_display_margin|render|striptags|trim %}
-{% set pb_title = content.pb_content_title|render|striptags|trim  %}
-{# Render the paragraph. #}
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="pb__row hero-bundle-inner{{ pb_margin ? ' ' ~ pb_margin : '' }}">
+{% set pb_margin = paragraph|pb_field_value('pb_display_margin')|pb_class %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
 
-    <div class="pb__row pb__image-full">
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
+  <div class="pb-ui-row hero-bundle-inner{{ pb_margin ? ' ' ~ pb_margin : '' }}">
+
+    <div class="pb-ui-row pb-u-image-full">
       {{ content.pb_content_image }}
     </div>
 
-    <div class="pb__row pb__hero-txt-wrapper pb__content-full">
-      <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+    <div class="pb-ui-row pb-hero__text-wrapper pb-content__full">
+      <div class="{{ classes_inner }}">
 
         {% if pb_link %}
-        <a href="{{ pb_link }}" class="pb__row pb__link" {% if pb_link_title %} title="{{ pb_link_title }}" {% endif %}>
+        <a href="{{ pb_link }}" class="pb-ui-row pb-ui-link"{% if pb_link_title %} title="{{ pb_link_title }}"{% endif %}>
         {% endif %}
 
         {% if pb_title %}
-        {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
+        {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
         {% endif %}
 
         {{ content.pb_content_body }}
@@ -141,7 +92,31 @@
       </div>
     </div>
 
-    {{ content|without('pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment', 'pb_display_hero', 'pb_content_body', 'pb_content_image', 'pb_content_image_link', 'pb_content_image_link_title', 'pb_display_bg', 'pb_display_bg_opacity', 'pb_display_bg_hover', 'pb_display_border_color', 'pb_display_border_hover', 'pb_display_text', 'pb_display_text_hover', 'pb_display_border', 'pb_display_border_radius', 'pb_display_margin', 'pb_display_padding', 'pb_display_width', 'pb_display_shadow') }}
+    {{ content|without(
+      'pb_content_title',
+      'pb_content_title_tag',
+      'pb_content_title_alignment',
+      'pb_display_hero',
+      'pb_content_body',
+      'pb_content_image',
+      'pb_content_image_link',
+      'pb_content_image_link_title',
+      'pb_display_bg',
+      'pb_display_bg_opacity',
+      'pb_display_bg_hover',
+      'pb_display_border_color',
+      'pb_display_border_hover',
+      'pb_display_text',
+      'pb_display_text_hover',
+      'pb_display_link',
+      'pb_display_link_hover',
+      'pb_display_border',
+      'pb_display_border_radius',
+      'pb_display_margin',
+      'pb_display_padding',
+      'pb_display_width',
+      'pb_display_shadow',
+    ) }}
 
   </div>
-</div> {# End of main wrapper #}
+</div>

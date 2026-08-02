@@ -1,9 +1,10 @@
 {
     "name": "drupal/paragraph_bundle_hero",
-    "description": "A reusable Paragraph Bundle Hero.",
+    "description": "Hero banner paragraph bundle for Paragraphs Bundles.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Alaa Haddad (alaahaddad.com)",
@@ -12,13 +13,14 @@
         }
     ],
     "homepage": "https://drupal.org/project/paragraph_bundle_hero",
-  "require": {
-    "drupal/core": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*",
+        "drupal/paragraph_bundle_image": "*"
+    },
     "support": {
         "issues": "https://drupal.org/project/issues/paragraph_bundle_hero",
         "source": "https://git.drupalcode.org/project/paragraph_bundle_hero"
     }
 }
-

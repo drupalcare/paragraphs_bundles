@@ -1,8 +1,8 @@
-name: Paragraph Bundle Hero
+name: 'Paragraph Bundle Hero'
 type: module
-description: A reusable Paragraph Bundle Hero.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Hero banner paragraph with background image and positioned overlay text.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - paragraphs_bundles:paragraphs_bundles
   - paragraph_bundle_image:paragraph_bundle_image
