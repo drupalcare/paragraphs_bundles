@@ -1,0 +1,9 @@
+services:
+  Drupal\paragraph_bundle_link\Hook\PblThemeHook: {}
+
+  Drupal\paragraph_bundle_link\Hook\PblHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

@@ -1,8 +1,13 @@
-name: Paragraph Bundle Link
+name: 'Paragraph Bundle Link'
 type: module
-description: A reusable Paragraph Bundle Link.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Link list paragraph with nested link section child paragraphs.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:link
+  - drupal:options
+  - drupal:text
+  - entity_reference_revisions:entity_reference_revisions
   - link_attributes:link_attributes
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
