@@ -1,11 +1,18 @@
-/* fallback */
-@font-face {
-  font-family: 'Material Symbols Outlined';
-  font-style: normal;
-  font-weight: 100 700;
-  src: url("../fonts/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsLjBuVY.woff2") format('woff2');
-  font-display: swap;
-}
+/**
+ * @file
+ * Material Symbols Outlined - styling only. The font itself is not bundled.
+ *
+ * The Material Symbols web fonts are Apache-2.0 licensed and about 4 MB per
+ * style, so they are not redistributed inside this GPL-2.0-or-later project.
+ * See the "Removed" section of CHANGELOG.md for 2.0.0.
+ *
+ * This file therefore declares no @font-face. The site must supply the
+ * "Material Symbols Outlined" family itself - from its theme, or by
+ * self-hosting the woff2. This module's README documents both options.
+ *
+ * When the font is absent the icon renders as its ligature name in plain
+ * text ("home", "star"). That is the symptom to look for.
+ */
 
 body .material-symbols-outlined {
   font-family: 'Material Symbols Outlined' !important;
