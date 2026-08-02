@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_accordion\Hook\PbacThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_accordion\Hook\PbacThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_accordion\Hook\PbacHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

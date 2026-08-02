@@ -2,6 +2,10 @@
  * @file
  * Paragraph Bundle Accordion.
  *
+ * Scoping contract (all bundles): L0 + L3 block on paragraph root.
+ * `.paragraphs-bundles.pb-accordion` - never `.paragraph--type--*` in CSS.
+ * See docs/PB-V2-CLASS-NAMING-SPEC.md section 4.
+ *
  * Filename:     paragraph-bundle-accordion.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
@@ -11,44 +15,41 @@
    Structure and Layout
    ========================================================================== */
 
-.paragraph--type--accordion-bundle {
+.paragraphs-bundles.pb-accordion {
   overflow: hidden;
 }
 
-.paragraph--type--accordion-bundle .pb__accor {
+.paragraphs-bundles.pb-accordion .pb-accordion__sections {
   display: grid;
   grid-template-columns: 1fr;
 }
 
-.paragraph--type--accordion-bundle .pb__accor > div {
+.paragraphs-bundles.pb-accordion .pb-accordion__sections > div {
   min-width: 0;
   width: 100%;
 }
 
-.paragraph--type--accordion-bundle .pb__accor > div:last-child {
+.paragraphs-bundles.pb-accordion .pb-accordion__sections > div:last-child {
   border-block-end: none;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
+.paragraphs-bundles.pb-accordion .pb-accordion__item {
   display: grid;
   width: 100%;
   border-block-end: var(--pb-px2) solid var(--pb-br);
   overflow: hidden;
   transition: background-color 0.3s ease;
-}
-
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item {
   min-width: 0;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > div {
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active,
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active > div {
   background-color: var(--pb-bt-a);
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > *:first-child,
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active > .pb__accor-pane > .paragraphs-bundles > .paragraph__inner {
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active > .pb-accordion__pane,
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active > .pb-accordion__pane > *:first-child,
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active > .pb-accordion__pane > .paragraphs-bundles > .pb-ui-inner {
   padding-block-start: 0;
 }
 
@@ -56,7 +57,7 @@
    Accordion Button
    ========================================================================== */
 
-.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button {
+.paragraphs-bundles.pb-accordion .pb-accordion__button {
   display: flex;
   width: 100%;
   flex-grow: 1;
@@ -70,18 +71,17 @@
   transition: background-color 0.2s ease-out;
 }
 
-.paragraph--type--accordion-bundle .pb__accor-button > * {
+.paragraphs-bundles.pb-accordion .pb-accordion__button > * {
   display: flex;
 }
 
-.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button > .pb__plus-minus {
+.paragraphs-bundles.pb-accordion .pb-accordion__button > .pb-icon-toggle {
   margin-inline-start: auto;
 }
 
-
 /* Button focus state for accessibility */
-.paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-accordion .pb-accordion__button:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: -2px;
 }
 
@@ -89,11 +89,11 @@
    Accordion Pane
    ========================================================================== */
 
-.paragraphs-bundles.paragraph--type--accordion-bundle .pb__active-no > .pb__accor-pane {
+.paragraphs-bundles.pb-accordion .pb-is-inactive > .pb-accordion__pane {
   display: none;
 }
 
-.paragraph--type--accordion-bundle .pb__active .pb__accor-pane {
+.paragraphs-bundles.pb-accordion .pb-is-active .pb-accordion__pane {
   padding: 0 var(--pb-px16);
   margin: 0;
   margin-block-end: var(--pb-px10);
@@ -106,13 +106,13 @@
    Expand/Collapse All Buttons
    ========================================================================== */
 
-.paragraph--type--accordion-bundle .pb__ex-button {
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button {
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button {
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -128,28 +128,28 @@
 }
 
 /* Expand/collapse button hover effect */
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button:hover {
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:hover {
   transform: scale(1.1);
 }
 
 /* Expand/collapse button active effect */
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button:active {
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:active {
   transform: scale(0.95);
 }
 
 /* Expand/collapse button focus state */
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: 2px;
   border-radius: var(--pb-px4);
 }
 
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
-.paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__minus-svg {
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn .pb-icon-toggle__plus-svg,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn .pb-icon-toggle__minus-svg {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   bottom: 0;
   display: flex;
   align-items: center;
@@ -162,15 +162,15 @@
    Plus/Minus Icon Animations
    ========================================================================== */
 
-.paragraph--type--accordion-bundle .pb__plus-minus {
+.paragraphs-bundles.pb-accordion .pb-icon-toggle {
   position: relative;
   display: inline-flex;
   width: 1.5em;
   height: 1.5em;
 }
 
-.paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
-.paragraph--type--accordion-bundle .pb__plus-minus .pb__minus {
+.paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__plus,
+.paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__minus {
   position: absolute;
   inset: 0;
   display: flex;
@@ -181,27 +181,27 @@
 }
 
 /* Default: show plus, hide minus */
-.paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
-.paragraph--type--accordion-bundle .pb__ex-button.expand-all .pb__button .pb__plus-svg {
+.paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__plus,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button.pb-is-expand-all .pb-ui-btn .pb-icon-toggle__plus-svg {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
 
-.paragraph--type--accordion-bundle .pb__plus-minus .pb__minus,
-.paragraph--type--accordion-bundle .pb__ex-button.expand-all .pb__button .pb__minus-svg {
+.paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__minus,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button.pb-is-expand-all .pb-ui-btn .pb-icon-toggle__minus-svg {
   opacity: 0;
   transform: rotate(-180deg) scale(0.8);
 }
 
 /* When expanded: show minus, hide plus */
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__plus,
-.paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__plus-svg {
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active .pb-icon-toggle .pb-icon-toggle__plus,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button.pb-is-collapse-all .pb-ui-btn .pb-icon-toggle__plus-svg {
   opacity: 0;
   transform: rotate(180deg) scale(0.8);
 }
 
-.paragraph--type--accordion-bundle .pb__accor-wrap-btn-item.pb__active .pb__plus-minus .pb__minus,
-.paragraph--type--accordion-bundle .pb__ex-button.collapse-all .pb__button .pb__minus-svg {
+.paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active .pb-icon-toggle .pb-icon-toggle__minus,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button.pb-is-collapse-all .pb-ui-btn .pb-icon-toggle__minus-svg {
   opacity: 1;
   transform: rotate(0deg) scale(1);
 }
@@ -211,18 +211,42 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .paragraph--type--accordion-bundle .pb__accor-wrap-btn-item,
-  .paragraphs-bundles.paragraph--type--accordion-bundle .pb__accor-button,
-  .paragraph--type--accordion-bundle .pb__ex-button .pb__button,
-  .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__plus-svg,
-  .paragraph--type--accordion-bundle .pb__ex-button .pb__button .pb__minus-svg,
-  .paragraph--type--accordion-bundle .pb__plus-minus .pb__plus,
-  .paragraph--type--accordion-bundle .pb__plus-minus .pb__minus {
+  .paragraphs-bundles.pb-accordion .pb-accordion__item,
+  .paragraphs-bundles.pb-accordion .pb-accordion__button,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn .pb-icon-toggle__plus-svg,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn .pb-icon-toggle__minus-svg,
+  .paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__plus,
+  .paragraphs-bundles.pb-accordion .pb-icon-toggle .pb-icon-toggle__minus {
     transition: none;
   }
 
-  .paragraph--type--accordion-bundle .pb__ex-button .pb__button:hover,
-  .paragraph--type--accordion-bundle .pb__ex-button .pb__button:active {
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:hover,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:active {
     transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .paragraphs-bundles.pb-accordion .pb-accordion__button:focus-visible,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-accordion .pb-accordion__button:focus-visible,
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button .pb-ui-btn:focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-accordion .pb-is-inactive > .pb-accordion__pane {
+    display: block;
+  }
+
+  .paragraphs-bundles.pb-accordion .pb-grid__expand-button {
+    display: none;
   }
 }
