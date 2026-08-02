@@ -1,0 +1,23 @@
+{#
+/**
+ * @file
+ * Theme override for a `pb_block` block content entity.
+ *
+ * Used when the entity renders directly (e.g. referenced from a pb_content
+ * node field) without the block plugin wrapper.
+ *
+ * Shared UI chrome class `pb-ui-block` on `<section>`.
+ *
+ * @see template_preprocess_block_content()
+ *
+ * @ingroup themeable
+ */
+#}
+<section{{ attributes.addClass('pb-ui-block') }}>
+  {{ title_prefix }}
+  {% if label and view_mode != 'full' %}
+    <h2{{ title_attributes }}>{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+  {{ content }}
+</section>

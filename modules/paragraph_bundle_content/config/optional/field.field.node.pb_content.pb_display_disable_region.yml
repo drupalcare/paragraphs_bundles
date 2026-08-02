@@ -11,7 +11,7 @@ field_name: pb_display_disable_region
 entity_type: node
 bundle: pb_content
 label: 'Disabled Regions'
-description: 'The left/right sidebar are disabled by default.  You can choose any other regions to be disabled.'
+description: 'Sidebars are always hidden on PB Content pages. Select any other regions to hide on this page.'
 required: false
 translatable: false
 default_value: {  }

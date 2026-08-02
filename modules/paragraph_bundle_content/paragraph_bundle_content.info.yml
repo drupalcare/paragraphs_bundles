@@ -1,11 +1,17 @@
-name: Paragraph Bundle Content
+name: 'Paragraph Bundle Content'
 type: module
-description: A reusable Content Type for all Paragraphs Bundles to create full width content.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'A reusable Content Type for all Paragraphs Bundles to create full width content.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
-  - drupal:node
   - drupal:block
   - drupal:block_content
+  # node.type.pb_content.yml carries third_party_settings.menu_ui and declares
+  # menu_ui in its own dependencies; core skips optional config whose
+  # dependencies are unmet *silently*, so without this the node type never
+  # installs and `drush en` still reports success.
+  - drupal:menu_ui
+  - drupal:node
+  # core.entity_form_display.node.pb_content.default.yml uses the 'path' widget.
+  - drupal:path
   - paragraphs_bundles:paragraphs_bundles
-  - paragraph_bundle_image:paragraph_bundle_image

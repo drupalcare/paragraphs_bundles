@@ -1,0 +1,366 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall hooks for Paragraph Bundle Content.
+ *
+ * V2 update hook (pre-release — one hook only):
+ *  - 9001: disable-region allowed values, field help, pb_content form display
+ *    (surgical merge — preserves site-added fields on the node type).
+ *
+ * See docs/PB-V2-TESTING-WORKFLOW.md for maintainer test paths.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\Entity\EntityFormDisplay;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Allowed values for pb_display_disable_region (layout order).
+ *
+ * Machine keys are unchanged from v1 for saved node data.
+ *
+ * @return array<string, string>
+ *   Disable-region checkbox options in page layout order (value => label).
+ */
+function paragraph_bundle_content_disable_region_allowed_values(): array {
+  return [
+    'fixed_search_block' => 'Hide overlay search',
+    'popup_login_block' => 'Hide overlay login',
+    'highlighted' => 'Hide highlight',
+    'header' => 'Hide header',
+    'primary_menu' => 'Hide primary navigation',
+    'primary_sidebar_menu' => 'Hide off-canvas navigation',
+    'welcome_text' => 'Hide hero',
+    'top_regions' => 'Hide top regions',
+    'messages' => 'Hide messages',
+    'page_title' => 'Hide page title',
+    'breadcrumb' => 'Hide breadcrumb',
+    'content_above' => 'Hide content above',
+    'content_below' => 'Hide content below',
+    'bottom_regions' => 'Hide bottom regions',
+    'footer_regions' => 'Hide footer regions',
+    'footer_menu' => 'Hide footer navigation',
+    'copyright' => 'Hide copyright',
+  ];
+}
+
+/**
+ * Expand disable-region options and nest the pb_content Display tab.
+ */
+function paragraph_bundle_content_update_9001(): string {
+  $storage = FieldStorageConfig::load('node.pb_display_disable_region');
+  if ($storage instanceof FieldStorageConfig) {
+    $storage->setSetting(
+      'allowed_values',
+      paragraph_bundle_content_disable_region_allowed_values()
+    );
+    $storage->save();
+  }
+
+  $field = FieldConfig::load('node.pb_content.pb_display_disable_region');
+  if ($field instanceof FieldConfig) {
+    $field->setDescription(
+      'Sidebars are always hidden on PB Content pages. Select any other regions to hide on this page.'
+    );
+    $field->save();
+  }
+
+  paragraph_bundle_content_apply_pb_content_form_display();
+
+  return (string) t('Applied PB Content v2 form display (preserves custom fields on the type).');
+}
+
+/**
+ * Reads the shipped optional form display template for pb_content nodes.
+ *
+ * @return array<string, mixed>|false
+ *   Form display export, or FALSE when YAML is missing.
+ */
+function paragraph_bundle_content_optional_form_display_template(): array|false {
+  $module_path = \Drupal::service('extension.list.module')
+    ->getPath('paragraph_bundle_content');
+  $file_storage = new FileStorage($module_path . '/config/optional');
+  $data = $file_storage->read('core.entity_form_display.node.pb_content.default');
+  return is_array($data) ? $data : FALSE;
+}
+
+/**
+ * Node base fields that stay outside the Content/Display tabs on pb_content.
+ *
+ * @return list<string>
+ *   Base field machine names.
+ */
+function paragraph_bundle_content_core_ungrouped_form_fields(): array {
+  return [
+    'created',
+    'path',
+    'uid',
+    'promote',
+    'sticky',
+    'status',
+  ];
+}
+
+/**
+ * Flattens field_group children into field machine names.
+ *
+ * @param array<string, mixed> $field_groups
+ *   Field group definitions.
+ * @param list<mixed> $children
+ *   Child names from one group.
+ *
+ * @return list<string>
+ *   Field names in encounter order.
+ */
+function paragraph_bundle_content_flatten_field_group_children(
+  array $field_groups,
+  array $children,
+): array {
+  $fields = [];
+  foreach ($children as $child) {
+    if (!is_string($child) || $child === '') {
+      continue;
+    }
+    if (isset($field_groups[$child]['children'])
+      && is_array($field_groups[$child]['children'])) {
+      $nested = $field_groups[$child]['children'];
+      $fields = array_merge(
+        $fields,
+        paragraph_bundle_content_flatten_field_group_children($field_groups, $nested),
+      );
+      continue;
+    }
+    $fields[] = $child;
+  }
+  return $fields;
+}
+
+/**
+ * Collects every field name referenced in a field_group tree.
+ *
+ * @param array<string, mixed> $field_groups
+ *   Field group definitions.
+ *
+ * @return array<string, true>
+ *   Field machine names keyed by name.
+ */
+function paragraph_bundle_content_grouped_field_names(array $field_groups): array {
+  $grouped = [];
+  foreach ($field_groups as $group) {
+    if (!is_array($group) || !isset($group['children']) || !is_array($group['children'])) {
+      continue;
+    }
+    foreach (paragraph_bundle_content_flatten_field_group_children(
+      $field_groups,
+      $group['children'],
+    ) as $field_name) {
+      $grouped[$field_name] = TRUE;
+    }
+  }
+  return $grouped;
+}
+
+/**
+ * Merges form display content: keep site fields, overlay v2 contract widgets.
+ *
+ * @param array<string, mixed> $existing
+ *   Active form display content components.
+ * @param array<string, mixed> $template
+ *   Shipped optional YAML content components.
+ *
+ * @return array<string, mixed>
+ *   Merged content components.
+ */
+function paragraph_bundle_content_merge_form_display_content(
+  array $existing,
+  array $template,
+): array {
+  $merged = $existing;
+  foreach ($template as $field_name => $component) {
+    if (!is_string($field_name) || $field_name === '' || !is_array($component)) {
+      continue;
+    }
+    $merged[$field_name] = $component;
+  }
+  return $merged;
+}
+
+/**
+ * Merges hidden components without dropping site-specific entries.
+ *
+ * @param array<string, mixed> $existing
+ *   Active hidden components.
+ * @param array<string, mixed> $template
+ *   Shipped optional YAML hidden components.
+ *
+ * @return array<string, mixed>
+ *   Merged hidden components.
+ */
+function paragraph_bundle_content_merge_form_display_hidden(
+  array $existing,
+  array $template,
+): array {
+  return array_merge($existing, $template);
+}
+
+/**
+ * Merges form display dependencies from template into active config.
+ *
+ * @param array<string, mixed> $existing
+ *   Active dependencies.
+ * @param array<string, mixed> $template
+ *   Shipped optional YAML dependencies.
+ *
+ * @return array<string, mixed>
+ *   Merged dependencies.
+ */
+function paragraph_bundle_content_merge_form_display_dependencies(
+  array $existing,
+  array $template,
+): array {
+  $merged = $existing;
+  foreach (['config', 'module', 'theme', 'content'] as $key) {
+    if (!isset($template[$key]) || !is_array($template[$key])) {
+      continue;
+    }
+    $current = isset($merged[$key]) && is_array($merged[$key]) ? $merged[$key] : [];
+    $merged[$key] = array_values(array_unique([
+      ...$current,
+      ...$template[$key],
+    ]));
+    sort($merged[$key]);
+  }
+  return $merged;
+}
+
+/**
+ * Appends site-added bundle fields to the Content tab field group.
+ *
+ * Fields already placed in the group tree or left ungrouped as node base
+ * fields are not moved.
+ *
+ * @param array<string, mixed> $field_groups
+ *   Field group definitions (by reference).
+ * @param array<string, mixed> $content
+ *   Form display content components.
+ */
+function paragraph_bundle_content_append_custom_fields_to_content_tab(
+  array &$field_groups,
+  array $content,
+): void {
+  if (!isset($field_groups['group_pb_tab_content']['children'])
+    || !is_array($field_groups['group_pb_tab_content']['children'])) {
+    return;
+  }
+
+  $grouped = paragraph_bundle_content_grouped_field_names($field_groups);
+  $ungrouped_core = array_fill_keys(
+    paragraph_bundle_content_core_ungrouped_form_fields(),
+    TRUE,
+  );
+  $content_children = $field_groups['group_pb_tab_content']['children'];
+  $content_child_map = array_fill_keys(
+    array_filter($content_children, 'is_string'),
+    TRUE,
+  );
+
+  $orphans = [];
+  foreach (array_keys($content) as $field_name) {
+    if (!is_string($field_name) || $field_name === '') {
+      continue;
+    }
+    if (isset($ungrouped_core[$field_name])) {
+      continue;
+    }
+    if (isset($grouped[$field_name])) {
+      continue;
+    }
+    if (isset($content_child_map[$field_name])) {
+      continue;
+    }
+    $orphans[] = $field_name;
+  }
+
+  if ($orphans === []) {
+    return;
+  }
+
+  $field_groups['group_pb_tab_content']['children'] = array_values(array_unique([
+    ...$content_children,
+    ...$orphans,
+  ]));
+}
+
+/**
+ * Applies v2 pb_content form display layout without removing custom fields.
+ *
+ * Greenfield: imports optional YAML when no form display exists. Upgrades:
+ * merges v2 tabs/groups and contract widgets while preserving any extra
+ * field components the site added to the pb_content type.
+ */
+function paragraph_bundle_content_apply_pb_content_form_display(): void {
+  $template = paragraph_bundle_content_optional_form_display_template();
+  if ($template === FALSE || !isset($template['id']) || !is_string($template['id'])) {
+    return;
+  }
+
+  $form_display = EntityFormDisplay::load($template['id']);
+  if (!$form_display instanceof EntityFormDisplay) {
+    EntityFormDisplay::create($template)->save();
+    return;
+  }
+
+  $existing_content = $form_display->get('content');
+  $template_content = $template['content'] ?? [];
+  if (!is_array($existing_content) || !is_array($template_content)) {
+    return;
+  }
+
+  $content = paragraph_bundle_content_merge_form_display_content(
+    $existing_content,
+    $template_content,
+  );
+
+  $existing_hidden = $form_display->get('hidden');
+  $template_hidden = $template['hidden'] ?? [];
+  $hidden = paragraph_bundle_content_merge_form_display_hidden(
+    is_array($existing_hidden) ? $existing_hidden : [],
+    is_array($template_hidden) ? $template_hidden : [],
+  );
+
+  $third = $form_display->get('third_party_settings');
+  if (!is_array($third)) {
+    $third = [];
+  }
+  $template_third = $template['third_party_settings'] ?? [];
+  if (is_array($template_third)) {
+    $third = array_replace_recursive($third, $template_third);
+  }
+  $field_groups = $third['field_group'] ?? [];
+  if (is_array($field_groups) && isset($template_third['field_group'])
+    && is_array($template_third['field_group'])) {
+    $field_groups = $template_third['field_group'];
+    paragraph_bundle_content_append_custom_fields_to_content_tab(
+      $field_groups,
+      $content,
+    );
+    $third['field_group'] = $field_groups;
+  }
+
+  $existing_deps = $form_display->get('dependencies');
+  $template_deps = $template['dependencies'] ?? [];
+  $dependencies = paragraph_bundle_content_merge_form_display_dependencies(
+    is_array($existing_deps) ? $existing_deps : [],
+    is_array($template_deps) ? $template_deps : [],
+  );
+
+  $form_display->set('content', $content);
+  $form_display->set('hidden', $hidden);
+  $form_display->set('third_party_settings', $third);
+  $form_display->set('dependencies', $dependencies);
+  $form_display->save();
+}

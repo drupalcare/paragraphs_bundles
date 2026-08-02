@@ -1,0 +1,53 @@
+services:
+  paragraphs_bundle_content.theme_family:
+    class: Drupal\paragraph_bundle_content\Service\Theme\PbcThemeFamilyResolver
+    arguments:
+      - '@theme.manager'
+      # Optional: apex's authoritative theme detection. NULL when the apex
+      # module is not installed (e.g. a Solo-only site) — the resolver then
+      # falls back to its own theme-chain scan.
+      - '@?apex.theme_detection'
+
+  Drupal\paragraph_bundle_content\Service\Theme\PbcThemeFamilyResolverInterface:
+    alias: paragraphs_bundle_content.theme_family
+
+  paragraphs_bundle_content.region_map:
+    class: Drupal\paragraph_bundle_content\Service\Region\PbcRegionMap
+
+  Drupal\paragraph_bundle_content\Service\Region\PbcRegionMapInterface:
+    alias: paragraphs_bundle_content.region_map
+
+  Drupal\paragraph_bundle_content\Hook\PbcHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
+
+  Drupal\paragraph_bundle_content\Hook\PbcThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_content\Hook\PbcThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_content\Hook\PbcPageHook:
+    arguments:
+      - '@router.admin_context'
+      - '@current_route_match'
+      - '@paragraphs_bundle_content.theme_family'
+      - '@paragraphs_bundle_content.region_map'
+
+  Drupal\paragraph_bundle_content\Hook\PbcHtmlHook:
+    autowire: true
+
+  Drupal\paragraph_bundle_content\Hook\PbcFieldSuggestionsHook:
+    autowire: true
+
+  Drupal\paragraph_bundle_content\Hook\PbcEntityHook:
+    arguments:
+      - '@paragraphs_bundles.css.file_manager'
+      - '@paragraphs_bundles.css.dynamic_builder'
+
+  Drupal\paragraph_bundle_content\Hook\PbcPreprocessHook:
+    arguments:
+      - '@paragraphs_bundles.css.file_manager'

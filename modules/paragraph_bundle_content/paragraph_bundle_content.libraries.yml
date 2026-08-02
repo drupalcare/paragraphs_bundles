@@ -6,7 +6,28 @@ paragraph-bundle-content-admin:
 paragraph-bundle-content-base:
   css:
     theme:
-      css/paragraph-bundle-content-base.css: { }
+      css/paragraph-bundle-content-width.css: { }
+
+paragraph-bundle-content-solo:
+  css:
+    theme:
+      css/paragraph-bundle-content-solo.css: { }
+  dependencies:
+    - paragraph_bundle_content/paragraph-bundle-content-base
+
+paragraph-bundle-content-apex:
+  css:
+    theme:
+      css/paragraph-bundle-content-apex.css: { }
+  dependencies:
+    - paragraph_bundle_content/paragraph-bundle-content-base
+
+paragraph-bundle-content-neutral:
+  css:
+    theme:
+      css/paragraph-bundle-content-neutral.css: { }
+  dependencies:
+    - paragraph_bundle_content/paragraph-bundle-content-base
 
 hide-footer-menu:
   css:

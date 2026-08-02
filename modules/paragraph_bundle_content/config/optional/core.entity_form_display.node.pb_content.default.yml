@@ -26,7 +26,7 @@ third_party_settings:
       weight: 0
       format_type: tabs
       format_settings:
-        classes: content-type-tabs-wrapper
+        classes: pb__tabs-wrapper
         show_empty_fields: false
         id: ''
         direction: horizontal
@@ -42,7 +42,7 @@ third_party_settings:
       weight: 20
       format_type: tab
       format_settings:
-        classes: pb-content-type-content
+        classes: pb__tab-content
         show_empty_fields: false
         id: ''
         formatter: closed
@@ -50,20 +50,52 @@ third_party_settings:
         required_fields: true
     group_pb_tab_display:
       children:
-        - pb_display_disable_region
-        - pb_display_content_bg
-        - pb_display_content_bg_opacity
-        - pb_display_content_width
+        - group_pb_display_regions
+        - group_pb_display_width_colors
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
       weight: 21
       format_type: tab
       format_settings:
-        classes: pb-content-type-display
+        classes: pb__tab-display
         show_empty_fields: false
         id: ''
         formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_display_regions:
+      children:
+        - pb_display_disable_region
+      label: Regions
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 10
+      format_type: details
+      format_settings:
+        classes: pb__display-regions
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
+        description: ''
+        required_fields: true
+    group_pb_display_width_colors:
+      children:
+        - pb_display_content_width
+        - pb_display_content_bg
+        - pb_display_content_bg_opacity
+      label: 'Width & Colors'
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 20
+      format_type: details
+      format_settings:
+        classes: pb__display-width-colors
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
         description: ''
         required_fields: true
 id: node.pb_content.default
@@ -114,19 +146,19 @@ content:
     third_party_settings: {  }
   pb_display_content_bg:
     type: color_text_widget
-    weight: 4
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_content_bg_opacity:
     type: range_number_widget
-    weight: 5
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_content_width:
     type: options_select
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }

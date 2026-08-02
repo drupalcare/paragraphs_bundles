@@ -1,0 +1,103 @@
+/**
+ * @file
+ * Paragraph Bundle Content - APEX Theme layout overrides.
+ *
+ * Mirrors Solo pb_content behaviour using APEX region markup
+ * (#main-container, .apex-main__inner, .apex-main__slot-inner--content).
+ */
+.page-node-type-pb-content #main-container.apex-main {
+  width: 100%;
+  margin-inline: auto;
+}
+
+.page-node-type-pb-content #main-container-inner.apex-main__inner {
+  gap: 0;
+  padding: 0;
+  margin-block: 0;
+  margin-inline: auto;
+  max-inline-size: none;
+}
+
+.page-node-type-pb-content .apex-main__slot-inner--content .region > nav > *,
+.page-node-type-pb-content .apex-main__slot-inner--content .pb-slideshow__title,
+.page-node-type-pb-content .apex-main__slot-inner--content .pb-content__title,
+.page-node-type-pb-content .apex-main__slot-inner--content .region > .apex-block:not(.block-system-main-block),
+.page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
+.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
+  max-width: var(--pb-content-width);
+  width: 100%;
+  margin-inline: auto;
+}
+
+.page-node-type-pb-content .pb-content,
+.page-node-type-pb-content .pb-content > div {
+  margin-block: 0;
+  margin-inline: auto;
+  padding: 0;
+}
+
+.page-node-type-pb-content div.pb-content section.pb-ui-block > article.node > div,
+.page-node-type-pb-content div.pb-content section.pb-ui-block > article.node > header {
+  margin: 0;
+}
+
+.page-node-type-pb-content .node__header,
+.page-node-type-pb-content .node__content {
+  margin-block-end: 0;
+}
+
+.page-node-type-pb-content .paragraphs-bundles .field--type-entity-reference > div {
+  width: 100%;
+}
+
+.page-node-type-pb-content #main-container-inner.apex-main__inner,
+.page-node-type-pb-content #main-container-inner #main-middle .apex-main__slot-inner {
+  gap: 0 !important;
+  padding: 0 !important;
+  margin-block: 0 !important;
+  margin-inline: auto !important;
+  width: 100%!important;
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .pb-u-image-full {
+  margin-inline: calc(50% - 50vw);
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .paragraphs-bundles .pb-u-image-full {
+  margin-block: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full div,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full div img {
+  width: 100%;
+}
+
+.page-node-type-pb-content #apex-page .apex-container__inner {
+  border-radius: 0;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* APEX pb_content layout; no motion hooks. */
+}
+
+@media (prefers-contrast: high) {
+  /* APEX pb_content layout. */
+}
+
+@media (forced-colors: active) {
+  /* APEX pb_content layout. */
+}
+
+@media print {
+  .page-node-type-pb-content .node__content .paragraphs-bundles .pb-u-image-full {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,75 @@
+/**
+ * @file
+ * Shared max-width tokens for pb_content nodes (theme-agnostic).
+ *
+ * Applied on `<body class="page-node-type-pb-content pb-nmw-*">` via
+ * PbcHtmlHook. Consumed by Solo and APEX layout stylesheets.
+ */
+.page-node-type-pb-content.pb-nmw-2560 {
+  --pb-content-width: 160rem;
+}
+
+.page-node-type-pb-content.pb-nmw-1920 {
+  --pb-content-width: 120rem;
+}
+
+.page-node-type-pb-content.pb-nmw-1600 {
+  --pb-content-width: 100rem;
+}
+
+.page-node-type-pb-content.pb-nmw-1440 {
+  --pb-content-width: 90rem;
+}
+
+.page-node-type-pb-content.pb-nmw-1280 {
+  --pb-content-width: 80rem;
+}
+
+.page-node-type-pb-content.pb-nmw-1024 {
+  --pb-content-width: 64rem;
+}
+
+.page-node-type-pb-content.pb-nmw-800 {
+  --pb-content-width: 50rem;
+}
+
+.page-node-type-pb-content.pb-nmw-100 {
+  --pb-content-width: 100%;
+}
+
+.page-node-type-pb-content .pb-content__full .pb-content__full:not(
+  .pb-carousel__viewport.pb-content__full,
+  .pb-3d-carousel__inner.pb-content__full,
+  .pb-slideshow__wrap-inner > .pb-content__full,
+  .pb-modal__content .pb-content__full) {
+  --pb-content-width: initial;
+}
+
+.page-node-type-pb-content .paragraphs-bundles.pb-carousel .pb-carousel__slide > div {
+  max-width: calc(var(--pb-content-width) - 100px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Width tokens only; no motion. */
+}
+
+@media (prefers-contrast: high) {
+  /* Width tokens only. */
+}
+
+@media (forced-colors: active) {
+  /* Width tokens only. */
+}
+
+@media print {
+  .page-node-type-pb-content.pb-nmw-100,
+  .page-node-type-pb-content.pb-nmw-800,
+  .page-node-type-pb-content.pb-nmw-1024,
+  .page-node-type-pb-content.pb-nmw-1280,
+  .page-node-type-pb-content.pb-nmw-1440,
+  .page-node-type-pb-content.pb-nmw-1600,
+  .page-node-type-pb-content.pb-nmw-1920,
+  .page-node-type-pb-content.pb-nmw-2560 {
+    --pb-content-width: 100%;
+  }
+}

@@ -1,13 +1,31 @@
 /**
  * @file
- * Paragraph Bundle Content.
+ * Hide footer menu chrome when pb_content disables the footer menu region.
  *
- * Filename:     hide-footer-menu.css
- * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com
+ * Solo uses #footer-menu; APEX uses #nav-footer.
  */
-#footer-menu {
-  display: none!important;
-  height: 0!important;
-  width: 0!important;
+#footer-menu,
+#nav-footer {
+  display: none !important;
+  height: 0 !important;
+  width: 0 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Hide rule only. */
+}
+
+@media (prefers-contrast: high) {
+  /* Hide rule only. */
+}
+
+@media (forced-colors: active) {
+  /* Hide rule only. */
+}
+
+@media print {
+  #footer-menu,
+  #nav-footer {
+    display: none !important;
+  }
 }

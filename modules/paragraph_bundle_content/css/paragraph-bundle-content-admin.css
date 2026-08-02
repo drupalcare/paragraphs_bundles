@@ -1,84 +1,158 @@
 /**
  * @file
- * Paragraph Bundle Content Admin.
+ * PB Content node form: Display tab layout (Regions + Width & Colors).
  *
  * Filename:     paragraph-bundle-content-admin.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.field-group-tab.pb-content-type-display .details-wrapper .form-radios,
-.field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
-  display: grid;
-  grid-auto-flow: row;
-  justify-content: start;
-  align-items: end;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
 
-.field-group-tab.pb-content-type-display .details-wrapper .form-radios,
-.field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes {
-  min-width: 0;
-}
-
-.field-group-tab.pb-content-type-display .details-wrapper .form-radios .form-item input,
-.field-group-tab.pb-content-type-display .details-wrapper .form-checkboxes .form-item input {
-  margin-inline-end: 5px;
-}
-
-.field-group-tab.pb-content-type-display .details-wrapper .form-type--checkbox,
-.field-group-tab.pb-content-type-display .details-wrapper .form-type--radio {
-  margin-inline-end: 20px;
-}
-
-.field-group-tab.pb-content-type-display .field--name-pb-display-content-width {
+/* Regions: responsive grid - three equal columns, cells fill the row. */
+.pb__tab-display .pb__display-regions > .details-wrapper {
   display: block;
-  width: 100%;
-  clear: both;
+  inline-size: 100%;
+  min-inline-size: 0;
+  container-type: inline-size;
+  container-name: pb-display-regions;
 }
 
-@media (min-width:48rem) {
-  .field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-rgb,
-  .field-group-tab.pb-content-type-display .field--type-paragraphs-bundles-range {
-    width: 49%;
-    display: inline-block;
-    float: inline-start;
-  }
-
+.pb__tab-display .pb__display-regions > .details-wrapper > .field--name-pb-display-disable-region,
+.pb__tab-display .pb__display-regions > .details-wrapper > .field--widget-options-buttons {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  min-inline-size: 0;
+  margin: 0;
 }
 
-.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] {
-  display: inline-block;
-  min-width: 210px;
-  width: 100%;
+.pb__tab-display .pb__display-regions .form-checkboxes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px 16px;
+  inline-size: 100%;
+  min-inline-size: 0;
+  align-items: stretch;
 }
 
-.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-text {
-  display: inline-block;
-  width: calc(100% - 70px);
-  border-start-start-radius: 12px;
-  border-end-start-radius: 0;
-  border-start-end-radius: 0;
-  border-end-end-radius: 12px;
-  border-inline-end: none;
-}
-
-.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] .form-color {
-  display: inline-block;
-  width: 40px;
-  margin-inline-end: 20px;
-  vertical-align: bottom;
-  border-start-start-radius: 0;
-  border-start-end-radius: 12px;
-  border-end-start-radius: 12px;
-  border-end-end-radius: 0;
-  border-inline-start: none;
-  padding: 5px;
-  background-color: black;
+.pb__tab-display .pb__display-regions .form-checkboxes > .js-form-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  inline-size: 100%;
+  min-inline-size: 0;
+  max-inline-size: 100%;
   box-sizing: border-box;
 }
 
-.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"]label,
-.field-group-tab.pb-content-type-display [data-drupal-selector="para-color-picker"] div {
-  display: block;
-  width: 100%;
+.pb__tab-display .pb__display-regions .form-checkboxes > .js-form-item input[type="checkbox"] {
+  flex: 0 0 auto;
+  margin: 0;
+  margin-block: 2px;
+}
+
+.pb__tab-display .pb__display-regions .form-checkboxes > .js-form-item label {
+  flex: 1 1 auto;
+  min-inline-size: 0;
+  margin: 0;
+  word-break: break-word;
+}
+
+/* Width & Colors: width, background, opacity on one row. */
+.pb__tab-display .pb__display-width-colors > .details-wrapper {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-end;
+  gap: 16px;
+}
+
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget .form-item__label,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-range-number-widget .form-item__label,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-options-select .form-item__label {
+  margin-block-end: 4px;
+}
+
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-width,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-bg,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-bg-opacity,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-range-number-widget,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-options-select {
+  flex: 1 1 0;
+  min-inline-size: 0;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-width .form-select,
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"],
+.pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-range-number-widget [data-drupal-selector="para-opacity-range"] {
+  inline-size: 100%;
+  max-inline-size: none;
+  box-sizing: border-box;
+}
+
+/* Tablet: two region columns; width/colors stay on one row. */
+@media (max-width: 767px) {
+  .pb__tab-display .pb__display-regions .form-checkboxes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container pb-display-regions (max-width: 520px) {
+  .pb__tab-display .pb__display-regions .form-checkboxes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@container pb-display-regions (max-width: 360px) {
+  .pb__tab-display .pb__display-regions .form-checkboxes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Narrow: single region column; width/colors stack. */
+@media (max-width: 479px) {
+  .pb__tab-display .pb__display-regions .form-checkboxes {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pb__tab-display .pb__display-width-colors > .details-wrapper {
+    flex-wrap: wrap;
+  }
+
+  .pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-width,
+  .pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-bg,
+  .pb__tab-display .pb__display-width-colors > .details-wrapper > .field--name-pb-display-content-bg-opacity {
+    flex: 0 0 100%;
+    inline-size: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"],
+  .pb__tab-display .pb__display-width-colors > .details-wrapper > .field--widget-color-text-widget [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"] {
+    transition: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  .pb__tab-display .pb__display-regions .form-checkboxes > .js-form-item input[type="checkbox"] {
+    outline: 1px solid CanvasText;
+  }
+}
+
+@media (forced-colors: active) {
+  .pb__tab-display .pb__display-regions .form-checkboxes > .js-form-item input[type="checkbox"] {
+    forced-color-adjust: auto;
+  }
+}
+
+@media print {
+  .pb__tab-display .pb__display-regions .form-checkboxes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pb__tab-display .pb__display-width-colors > .details-wrapper {
+    flex-wrap: wrap;
+  }
 }

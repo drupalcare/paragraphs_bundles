@@ -1,0 +1,78 @@
+/**
+ * @file
+ * Paragraph Bundle Content - theme-agnostic (neutral) layout.
+ *
+ * Loaded on any active theme that is neither APEX nor Solo. Contains only the
+ * theme-independent pb_content rules - those built on core + PB selectors
+ * (.node__content, .pb-content__full, .pb-u-image-full): the content-width
+ * clamp and the full-bleed image breakout. Theme-specific region wrappers
+ * (.apex-main__*, .sidebar-box-*, .solo-block) live in the apex/solo variants.
+ *
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
+ */
+.page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
+.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
+  max-width: var(--pb-content-width);
+  width: 100%;
+  margin-inline: auto;
+}
+
+.page-node-type-pb-content .pb-content,
+.page-node-type-pb-content .pb-content > div {
+  margin-block: 0;
+  margin-inline: auto;
+  padding: 0;
+}
+
+.page-node-type-pb-content div.pb-content section.pb-ui-block > article.node > div,
+.page-node-type-pb-content div.pb-content section.pb-ui-block > article.node > header {
+  margin: 0;
+}
+
+.page-node-type-pb-content .node__header,
+.page-node-type-pb-content .node__content {
+  margin-block-end: 0;
+}
+
+.page-node-type-pb-content .paragraphs-bundles .field--type-entity-reference > div {
+  width: 100%;
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .pb-u-image-full {
+  margin-inline: calc(50% - 50vw);
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .paragraphs-bundles .pb-u-image-full {
+  margin-block: 0;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 100%;
+}
+
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full div,
+.page-node-type-pb-content .node__content .paragraphs-bundles .paragraphs-bundles .pb-u-image-full div img {
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Neutral pb_content layout; no motion hooks. */
+}
+
+@media (prefers-contrast: high) {
+  /* Neutral pb_content layout. */
+}
+
+@media (forced-colors: active) {
+  /* Neutral pb_content layout. */
+}
+
+@media print {
+  .page-node-type-pb-content .node__content .paragraphs-bundles .pb-u-image-full {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+}

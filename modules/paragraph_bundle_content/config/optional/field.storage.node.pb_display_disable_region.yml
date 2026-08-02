@@ -11,47 +11,56 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: highlighted
-      label: 'Disable Highlighted Region'
+      value: fixed_search_block
+      label: 'Hide overlay search'
     -
       value: popup_login_block
-      label: 'Disable Popup Login Block Region'
+      label: 'Hide overlay login'
     -
-      value: fixed_search_block
-      label: 'Disable Fixed Search Block Region'
+      value: highlighted
+      label: 'Hide highlight'
     -
       value: header
-      label: 'Disable Header Region'
-    -
-      value: primary_sidebar_menu
-      label: 'Disable Primary Sidebar Menu Region'
+      label: 'Hide header'
     -
       value: primary_menu
-      label: 'Disable Primary Menu Region'
+      label: 'Hide primary navigation'
+    -
+      value: primary_sidebar_menu
+      label: 'Hide off-canvas navigation'
     -
       value: welcome_text
-      label: 'Disable Welcome Region'
+      label: 'Hide hero'
     -
       value: top_regions
-      label: 'Disable Top Regions'
+      label: 'Hide top regions'
+    -
+      value: messages
+      label: 'Hide messages'
     -
       value: page_title
-      label: 'Disable Page Title Region'
+      label: 'Hide page title'
     -
       value: breadcrumb
-      label: 'Disable Breadcrumb Region'
+      label: 'Hide breadcrumb'
+    -
+      value: content_above
+      label: 'Hide content above'
+    -
+      value: content_below
+      label: 'Hide content below'
     -
       value: bottom_regions
-      label: 'Disable Bottom Regions'
+      label: 'Hide bottom regions'
     -
       value: footer_regions
-      label: 'Disable Footer Regions'
+      label: 'Hide footer regions'
     -
       value: footer_menu
-      label: 'Disable Footer Menu'
+      label: 'Hide footer navigation'
     -
       value: copyright
-      label: 'Hide Copyright'
+      label: 'Hide copyright'
   allowed_values_function: ''
 module: options
 locked: false

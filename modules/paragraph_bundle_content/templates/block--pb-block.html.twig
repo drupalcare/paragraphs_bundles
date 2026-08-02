@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Theme override for a placed `pb_block` custom block (block plugin).
+ *
+ * Shared UI chrome class `pb-ui-block` on `<section>` — consumed by pb_content
+ * layout CSS (`paragraph-bundle-content-{solo,apex}.css`).
+ *
+ * @see template_preprocess_block()
+ * @see \Drupal\paragraph_bundle_content\Hook\PbcThemeSuggestionsHook
+ *
+ * @ingroup themeable
+ */
+#}
+<section{{ attributes.addClass('pb-ui-block') }}>
+  {{ title_prefix }}
+  {% if label %}
+    <h2{{ title_attributes }}>{{ label }}</h2>
+  {% endif %}
+  {{ title_suffix }}
+  {% block content %}
+    {{ content }}
+  {% endblock %}
+</section>

@@ -3,7 +3,8 @@
     "description": "A reusable Content Type for all Paragraphs Bundles to create full width content.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Alaa Haddad (alaahaddad.com)",
@@ -12,14 +13,16 @@
         }
     ],
     "homepage": "https://drupal.org/project/paragraph_bundle_content",
-  "require": {
-    "drupal/core": "*",
-    "drupal/node": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*"
+    },
+    "suggest": {
+        "drupal/apex": "Enables APEX theme detection. PbcThemeFamilyResolver uses apex's ThemeDetectionServiceInterface when the module is installed, because it walks the base-theme chain and so recognises apex sub-themes that are not named apex_*. Without it the resolver falls back to a theme-name scan; nothing breaks."
+    },
     "support": {
         "issues": "https://drupal.org/project/issues/paragraph_bundle_content",
         "source": "https://git.drupalcode.org/project/paragraph_bundle_content"
     }
 }
-
