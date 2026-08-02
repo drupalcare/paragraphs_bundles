@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_contact_form\Hook\PbcfThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_contact_form\Hook\PbcfThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_contact_form\Hook\PbcfHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

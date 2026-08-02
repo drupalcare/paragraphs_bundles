@@ -2,62 +2,9 @@
 
 /**
  * @file
- * Paragraph Bundle Contact Form.
+ * Paragraph Bundle Contact Form module bootstrap.
  *
- * Filename:     paragraph_bundle_contact_form.module
- * Website:      https://www.flashwebcenter.com
- * Description:  template.
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * V2 — hooks live as OOP #[Hook] classes under src/Hook/.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
-/**
- * Implements hook_help().
- */
-function paragraph_bundle_contact_form_help($route_name, RouteMatchInterface $route_match) {
-  if ($route_name === 'help.page.paragraph_bundle_contact_form') {
-    return paragraphs_bundles__helper_render_readme();
-  }
-  return NULL;
-}
-
-/**
- * Implements hook_theme() for the paragraph_bundle_contact_form submodule.
- */
-function paragraph_bundle_contact_form_theme($existing, $type, $theme, $path) {
-  $template_directory = \Drupal::service('extension.path.resolver')->getPath('module', 'paragraphs_bundles') . '/templates';
-
-  return [
-    'paragraph__contact_form_bundle' => [
-      'base hook' => 'paragraph',
-      'template' => 'paragraph--default',
-      'path' => $template_directory,
-    ],
-  ];
-}
-
-/**
- * Implements hook_theme_suggestions_paragraph_alter() for contact form.
- */
-function paragraph_bundle_contact_form_theme_suggestions_paragraph_alter(array &$suggestions, array $variables) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['elements']['#paragraph'];
-  $bundle = $paragraph->bundle();
-
-  // Add a template suggestion for paragraphs of type 'contact_form_bundle'.
-  if ($bundle === 'contact_form_bundle') {
-    $suggestions[] = 'paragraph__contact_form_bundle';
-  }
-}
-
-/**
- * Installs title tag + alignment for contact_form_bundle (storages live in paragraphs_bundles).
- */
-function paragraph_bundle_contact_form_update_8001(): string {
-  paragraphs_bundles_ensure_pb_title_storages();
-  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraph_bundle_contact_form', 'contact_form_bundle');
-  paragraphs_bundles_pb_title_wire_bundle('contact_form_bundle');
-  paragraphs_bundles_clear_field_caches();
-  return (string) t('Installed title tag and alignment for contact_form_bundle.');
-}
+declare(strict_types=1);
