@@ -15,7 +15,6 @@ mode: default
 content:
   pb_content_tab_name:
     type: string_textfield
-    label: hidden
     weight: 0
     region: content
     settings:

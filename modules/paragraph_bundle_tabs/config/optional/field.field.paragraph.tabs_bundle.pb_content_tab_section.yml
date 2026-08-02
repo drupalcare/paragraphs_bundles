@@ -23,5 +23,5 @@ settings:
     target_bundles:
       tab_section_bundle: tab_section_bundle
     negate: 0
-    target_bundles_drag_drop:
+    target_bundles_drag_drop: {  }
 field_type: entity_reference_revisions

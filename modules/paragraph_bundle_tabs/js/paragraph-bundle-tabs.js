@@ -2,16 +2,59 @@
  * @file
  * Paragraph Bundle Tabs.
  *
- * Provides tab functionality with keyboard navigation, ARIA support,
- * URL hash navigation, and support for both horizontal and vertical layouts.
+ * Tab functionality with keyboard navigation, ARIA support, URL hash navigation,
+ * and horizontal or vertical layouts.
+ *
+ * Follows Drupal 11 contrib best practices.
  *
  * Filename:     paragraph-bundle-tabs.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, drupalSettings, once) => {
   'use strict';
+
+  const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
+  const PB_TABS = 'pb-tabs';
+  const PB_TABS__TABSET = 'pb-tabs__tabset';
+  const PB_TABS__TABLIST = 'pb-tabs__tablist';
+  const PB_TABS__TAB = 'pb-tabs__tab';
+  const PB_TABS__PANELS = 'pb-tabs__panels';
+  const PB_TABS__PANEL = 'pb-tabs__panel';
+  const PB_IS_ACTIVE = 'pb-is-active';
+
+  /** `.paragraphs-bundles.pb-tabs` */
+  const PARAGRAPHS_BUNDLES_PB_TABS =
+    `.${PARAGRAPHS_BUNDLES}.${PB_TABS}`;
+
+  /** `.paragraphs-bundles.pb-tabs .pb-tabs__tabset` */
+  const PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET =
+    `${PARAGRAPHS_BUNDLES_PB_TABS} .${PB_TABS__TABSET}`;
+
+  /** Tab buttons owned by one tabset host. */
+  const PB_TABS__TABSET_OWNED_TAB =
+    `:scope > .${PB_TABS__TABLIST} > .${PB_TABS__TAB}`;
+
+  /** Tab panels owned by one tabset host. */
+  const PB_TABS__TABSET_OWNED_PANEL =
+    `:scope > .${PB_TABS__PANELS} > .${PB_TABS__PANEL}`;
+
+  const ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET =
+    'pb-paragraph-bundle-tabs-tabset';
+  const ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB =
+    'pb-paragraph-bundle-tabs-tab';
+  const ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH =
+    'pb-paragraph-bundle-tabs-global-hash';
+
+  /** @type {WeakMap<HTMLElement, AbortController>} */
+  const tabsetAbortControllers = new WeakMap();
+
+  /** @type {AbortController|null} */
+  let globalHashAbortController = null;
 
   /**
    * Drupal behavior for tabs functionality.
@@ -19,186 +62,230 @@
    * @type {Drupal~behavior}
    */
   Drupal.behaviors.paragraphBundleTabs = {
-    attach(context) {
-      const tabContainers = once('paragraphBundleTabs', '.pb__tabs-bundle', context);
+    attach(context, settings) {
+      const tabsets = once(
+        ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET,
+        PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
+        context,
+      );
 
-      tabContainers.forEach((tabContainer) => {
-        const tabButtons = tabContainer.querySelectorAll('.pb__tab-button');
-        const tabPanes = tabContainer.querySelectorAll('.pb__tab-pane');
+      tabsets.forEach((tabset) => {
+        const abortController = new AbortController();
+        tabsetAbortControllers.set(tabset, abortController);
+        const { signal } = abortController;
 
-        if (tabButtons.length === 0 || tabPanes.length === 0) {
-          return; // Nothing to do if no buttons/panes
+        const tabButtons = tabset.querySelectorAll(PB_TABS__TABSET_OWNED_TAB);
+        const tabPanels = tabset.querySelectorAll(PB_TABS__TABSET_OWNED_PANEL);
+
+        if (tabButtons.length === 0 || tabPanels.length === 0) {
+          return;
         }
 
         /**
-         * Hides all panes within this container.
+         * Hides all panels owned by this tabset.
          */
-        function hideAllPanes() {
-          tabPanes.forEach((pane) => {
-            pane.style.display = 'none';
-            pane.setAttribute('aria-hidden', 'true');
+        const hideAllPanels = () => {
+          tabPanels.forEach((panel) => {
+            panel.style.display = 'none';
+            panel.setAttribute('aria-hidden', 'true');
           });
-        }
+        };
 
         /**
-         * Removes active class and resets attributes on all buttons.
+         * Clears active state from all owned tab buttons.
          */
-        function removeActiveClassFromButtons() {
+        const removeActiveFromTabs = () => {
           tabButtons.forEach((button) => {
-            button.classList.remove('pb__active');
+            button.classList.remove(PB_IS_ACTIVE);
             button.setAttribute('tabindex', '-1');
             button.setAttribute('aria-selected', 'false');
             button.setAttribute('aria-expanded', 'false');
           });
-        }
+        };
 
         /**
-         * Activates the given tab and its corresponding pane.
+         * Activates a tab and its corresponding panel.
          *
-         * @param {HTMLElement} button - The tab button to activate.
+         * @param {HTMLButtonElement} button - Tab control to activate.
          */
-        function activateTab(button) {
+        const activateTab = (button) => {
+          if (button.parentElement?.parentElement !== tabset) {
+            return;
+          }
+
           const paneId = `${button.id}-pane`;
-          const currentPane = tabContainer.querySelector(`#${CSS.escape(paneId)}`);
+          const currentPanel = tabset.querySelector(`#${CSS.escape(paneId)}`);
 
-          if (currentPane) {
-            hideAllPanes();
-            removeActiveClassFromButtons();
-
-            currentPane.style.display = 'flex';
-            currentPane.setAttribute('aria-hidden', 'false');
-
-            button.classList.add('pb__active');
-            button.removeAttribute('tabindex');
-            button.setAttribute('aria-selected', 'true');
-            button.setAttribute('aria-expanded', 'true');
-            button.focus();
-
-            const slug = button.getAttribute('data-fragment') || button.id;
-            history.replaceState(null, '', `#${slug}`);
-          } else {
-            Drupal.debug && Drupal.debug(`Pane with ID ${paneId} not found within this tabContainer.`);
+          if (!currentPanel || currentPanel.parentElement?.parentElement !== tabset) {
+            return;
           }
-        }
+
+          hideAllPanels();
+          removeActiveFromTabs();
+
+          currentPanel.style.display = 'flex';
+          currentPanel.setAttribute('aria-hidden', 'false');
+
+          button.classList.add(PB_IS_ACTIVE);
+          button.removeAttribute('tabindex');
+          button.setAttribute('aria-selected', 'true');
+          button.setAttribute('aria-expanded', 'true');
+          button.focus();
+
+          const slug = button.getAttribute('data-fragment') || button.id;
+          history.replaceState(null, '', `#${slug}`);
+        };
 
         /**
-         * Handles tab button clicks via event delegation.
+         * Handles keyboard navigation between owned tabs.
          *
-         * @param {Event} event - The click event.
+         * @param {KeyboardEvent} event - Keyboard event.
+         * @param {number} currentIndex - Index of the focused tab.
          */
-        tabContainer.addEventListener('click', (event) => {
-          const button = event.target.closest('.pb__tab-button');
-          if (button && tabContainer.contains(button)) {
-            activateTab(button);
-          }
-        });
-
-        /**
-         * Handles keyboard navigation between tabs.
-         *
-         * @param {KeyboardEvent} event - The keyboard event.
-         * @param {number} currentIndex - The index of the currently focused tab.
-         */
-        function handleKeyboardNavigation(event, currentIndex) {
+        const handleKeyboardNavigation = (event, currentIndex) => {
+          // Vertical tablists navigate with Up/Down, horizontal with Left/Right
+          // (WAI-ARIA APG tabs pattern).
+          const isVertical = tabset.classList.contains('pb-u-vertical-tabs');
+          const nextKey = isVertical ? 'ArrowDown' : 'ArrowRight';
+          const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
           let newIndex;
 
           switch (event.key) {
-            case 'ArrowRight':
+            case nextKey:
               newIndex = (currentIndex + 1) % tabButtons.length;
               break;
-            case 'ArrowLeft':
+
+            case prevKey:
               newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
               break;
+
             case 'Home':
               newIndex = 0;
               break;
+
             case 'End':
               newIndex = tabButtons.length - 1;
               break;
+
             default:
               return;
           }
 
           event.preventDefault();
-          tabButtons.forEach((b) => b.setAttribute('tabindex', '-1'));
+          tabButtons.forEach((tabButton) => {
+            tabButton.setAttribute('tabindex', '-1');
+          });
           tabButtons[newIndex].setAttribute('tabindex', '0');
           tabButtons[newIndex].focus();
-        }
+        };
 
-        // Initialize tab buttons with ARIA and keyboard support
-        tabButtons.forEach((button, index) => {
-          if (index === 0) {
-            button.classList.add('pb__active');
-            button.setAttribute('aria-selected', 'true');
-            button.setAttribute('aria-expanded', 'true');
-            button.setAttribute('tabindex', '0');
-          } else {
-            button.setAttribute('tabindex', '-1');
-          }
-          button.addEventListener('keydown', (e) => handleKeyboardNavigation(e, index));
+        once(
+          ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB,
+          PB_TABS__TABSET_OWNED_TAB,
+          tabset,
+        ).forEach((button, index) => {
+          button.addEventListener('click', () => {
+            activateTab(button);
+          }, { signal });
+
+          button.addEventListener('keydown', (event) => {
+            handleKeyboardNavigation(event, index);
+          }, { signal });
         });
 
-        /**
-         * Activates tab based on hash in URL if present.
-         */
         const hash = window.location.hash.replace('#', '');
         if (hash) {
-          let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
-          if (!button) {
-            button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
-          }
+          const button = Array.from(tabButtons).find(
+            (candidate) => candidate.id === hash
+              || candidate.getAttribute('data-fragment') === hash,
+          );
           if (button) {
             activateTab(button);
-            return; // Skip default activation if hash tab activated
+            return;
           }
         }
 
-        // Show the first pane by default if no hash match
-        if (tabPanes[0]) {
-          tabPanes[0].style.display = 'flex';
-          tabPanes[0].setAttribute('aria-hidden', 'false');
+        if (tabPanels[0]) {
+          tabPanels[0].style.display = 'flex';
+          tabPanels[0].setAttribute('aria-hidden', 'false');
         }
       });
 
-      /**
-       * Global in-page hash link handler for immediate tab activation on in-page clicks.
-       * Wrapped with `once()` for Drupal best practices.
-       */
-      once('paragraphBundleTabsGlobal', document).forEach(() => {
+      once(ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH, document, context).forEach(() => {
+        globalHashAbortController?.abort();
+        globalHashAbortController = new AbortController();
+        const { signal } = globalHashAbortController;
+
         document.addEventListener('click', (event) => {
           const anchor = event.target.closest('a[href^="#"]');
           if (!anchor) {
             return;
           }
 
-          const hash = anchor.getAttribute('href').slice(1);
-          if (!hash) {
+          const linkHash = anchor.getAttribute('href').slice(1);
+          if (!linkHash) {
             return;
           }
 
+          const scopedTabsets = document.querySelectorAll(
+            PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
+          );
+
           let tabActivated = false;
 
-          tabContainers.forEach((tabContainer) => {
-            const tabButtons = tabContainer.querySelectorAll('.pb__tab-button');
-            let button = tabContainer.querySelector(`#${CSS.escape(hash)}`);
-
-            if (!button) {
-              button = Array.from(tabButtons).find(btn => btn.getAttribute('data-fragment') === hash);
-            }
+          scopedTabsets.forEach((tabset) => {
+            const ownedTabs = tabset.querySelectorAll(PB_TABS__TABSET_OWNED_TAB);
+            const button = Array.from(ownedTabs).find(
+              (candidate) => candidate.id === linkHash
+                || candidate.getAttribute('data-fragment') === linkHash,
+            );
 
             if (button) {
-              event.preventDefault(); // Prevent native jump to hidden content
-              button.click(); // Trigger existing delegation to activateTab
-              button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              event.preventDefault();
+              button.click();
+              const reduceMotion = window
+                .matchMedia('(prefers-reduced-motion: reduce)').matches;
+              button.scrollIntoView({
+                behavior: reduceMotion ? 'auto' : 'smooth',
+                block: 'start',
+              });
               tabActivated = true;
             }
           });
 
           if (tabActivated) {
-            history.replaceState(null, '', `#${hash}`);
+            history.replaceState(null, '', `#${linkHash}`);
           }
-        });
+        }, { signal });
       });
-    }
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
+      }
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET,
+        PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
+        context,
+      ).forEach((tabset) => {
+        tabsetAbortControllers.get(tabset)?.abort();
+        tabsetAbortControllers.delete(tabset);
+        once.remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB,
+          PB_TABS__TABSET_OWNED_TAB,
+          tabset,
+        );
+      });
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH,
+        document,
+        context,
+      );
+      globalHashAbortController?.abort();
+      globalHashAbortController = null;
+    },
   };
 })(Drupal, drupalSettings, once);

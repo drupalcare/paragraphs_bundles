@@ -1,7 +1,10 @@
-name: Paragraph Bundle Tabs
+name: 'Paragraph Bundle Tabs'
 type: module
-description: A reusable Paragraph Bundle Tabs.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Tabbed paragraph with nested tab sections, vertical/horizontal layout, and icon tab labels.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_tabs\Hook\PbtThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_tabs\Hook\PbtThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_tabs\Hook\PbtHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

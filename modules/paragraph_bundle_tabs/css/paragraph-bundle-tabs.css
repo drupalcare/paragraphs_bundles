@@ -2,33 +2,37 @@
  * @file
  * Paragraph Bundle Tabs.
  *
+ * Scoping contract (all bundles): L0 + L3 private on paragraph root.
+ * `.paragraphs-bundles.pb-tabs` - never `.paragraph--type--*` in CSS.
+ * See docs/PB-V2-CLASS-NAMING-SPEC.md section 4.
+ *
  * Filename:     paragraph-bundle-tabs.css
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
 /* ==========================================================================
    Base Structure
    ========================================================================== */
 
-.paragraph--type--tabs-bundle {
+.paragraphs-bundles.pb-tabs {
   overflow: hidden;
 }
 
-.paragraph--type--tabs-bundle .pb__tabs-bundle {
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset {
   position: relative;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
 }
 
-.paragraph--type--tabs-bundle .pb__tabs-bundle > .pb__tabs-button {
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset > .pb-tabs__tablist {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-[dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle > .pb__tabs-button {
+[dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset > .pb-tabs__tablist {
   flex-direction: row-reverse;
 }
 
@@ -36,20 +40,20 @@
    Tab Panes
    ========================================================================== */
 
-.paragraph--type--tabs-bundle .pb__tabs-pane .pb__tab-pane {
+.paragraphs-bundles.pb-tabs .pb-tabs__panels .pb-tabs__panel {
   display: none;
   overflow: hidden;
 }
 
-.paragraph--type--tabs-bundle .pb__tabs-pane {
+.paragraphs-bundles.pb-tabs .pb-tabs__panels {
   overflow: hidden;
 }
 
-.paragraph--type--tabs-bundle .pb__tabs-pane > div {
+.paragraphs-bundles.pb-tabs .pb-tabs__panels > div {
   flex-direction: column;
 }
 
-.paragraph--type--tabs-bundle .pb__tabs-pane > div:first-child {
+.paragraphs-bundles.pb-tabs .pb-tabs__panels > div:first-child {
   display: flex;
 }
 
@@ -57,23 +61,22 @@
    Tab Buttons
    ========================================================================== */
 
-.paragraph--type--tabs-bundle .pb__tabs-button > button {
+.paragraphs-bundles.pb-tabs .pb-tabs__tablist > button {
+  /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: inline-start;
   transition:
     background-color 0.2s ease-out,
     color 0.2s ease-out;
 }
 
-}
-
 /* Tab button focus state for accessibility */
-.paragraph--type--tabs-bundle .pb__tabs-button > button:focus-visible {
-  outline: 2px solid currentColor;
+.paragraphs-bundles.pb-tabs .pb-tabs__tablist > button:focus-visible {
+  outline: 2px solid currentcolor;
   outline-offset: -2px;
 }
 
 /* Active tab button */
-.paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active {
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
   font-weight: bold;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -81,7 +84,7 @@
 }
 
 /* Active tab doesn't need hover effect */
-.paragraph--type--tabs-bundle .pb__tabs-bundle .pb__tabs-button > .pb__active:hover {
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active:hover {
   background-color: var(--pb-bt-a);
 }
 
@@ -90,7 +93,7 @@
    ========================================================================== */
 
 @media (min-width: 87.5rem) {
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -98,33 +101,33 @@
     flex-grow: 1;
   }
 
-  [dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 {
+  [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 {
     flex-direction: row-reverse;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 > .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 > .pb-tabs__tablist {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__tablist {
     flex: 0 1 auto;
     max-width: 30%;
     min-width: 10%;
     width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tabs-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__panels {
     flex: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tab-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__tab {
     width: 100%;
     clear: both;
     text-align: var(--pb-text-align-start);
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1400 .pb__tab-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__panel {
     height: 100%;
   }
 }
@@ -134,7 +137,7 @@
    ========================================================================== */
 
 @media (min-width: 75rem) {
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -142,33 +145,33 @@
     flex-grow: 1;
   }
 
-  [dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 {
+  [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 {
     flex-direction: row-reverse;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 > .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 > .pb-tabs__tablist {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__tablist {
     flex: 0 1 auto;
     max-width: 30%;
     min-width: 10%;
     width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tabs-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__panels {
     flex: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tab-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__tab {
     width: 100%;
     clear: both;
     text-align: var(--pb-text-align-start);
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__1200 .pb__tab-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__panel {
     height: 100%;
   }
 }
@@ -178,7 +181,7 @@
    ========================================================================== */
 
 @media (min-width: 62rem) {
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -186,34 +189,34 @@
     flex-grow: 1;
   }
 
-  [dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 {
+  [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 {
     flex-direction: row-reverse;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 > .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 > .pb-tabs__tablist {
     display: flex;
     flex-direction: column;
     height: 100%;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__tablist {
     flex: 0 1 auto;
     max-width: 30%;
     min-width: 10%;
     width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tabs-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__panels {
     flex: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tab-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__tab {
     width: 100%;
     clear: both;
     text-align: var(--pb-text-align-start);
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__992 .pb__tab-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__panel {
     height: 100%;
   }
 }
@@ -223,7 +226,7 @@
    ========================================================================== */
 
 @media (min-width: 48rem) {
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -231,33 +234,33 @@
     flex-grow: 1;
   }
 
-  [dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 {
+  [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 {
     flex-direction: row-reverse;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 > .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 > .pb-tabs__tablist {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__tablist {
     flex: 0 1 auto;
     max-width: 30%;
     min-width: 10%;
     width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tabs-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__panels {
     flex: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tab-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__tab {
     width: 100%;
     clear: both;
     text-align: var(--pb-text-align-start);
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__768 .pb__tab-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__panel {
     height: 100%;
   }
 }
@@ -267,7 +270,7 @@
    ========================================================================== */
 
 @media (min-width: 36rem) {
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 {
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -275,33 +278,33 @@
     flex-grow: 1;
   }
 
-  [dir="rtl"] .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 {
+  [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 {
     flex-direction: row-reverse;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 > .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 > .pb-tabs__tablist {
     display: flex;
     flex-direction: column;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__tablist {
     flex: 0 1 auto;
     max-width: 30%;
     min-width: 10%;
     width: auto;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tabs-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__panels {
     flex: 1;
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tab-button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__tab {
     width: 100%;
     clear: both;
     text-align: var(--pb-text-align-start);
   }
 
-  .paragraph--type--tabs-bundle .pb__tabs-bundle.v__tabs.pb__576 .pb__tab-pane {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__panel {
     height: 100%;
   }
 }
@@ -311,7 +314,29 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-  .paragraph--type--tabs-bundle .pb__tabs-button > button {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tablist > button {
     transition: none;
+  }
+}
+
+/* ==========================================================================
+   High Contrast
+   ========================================================================== */
+
+@media (prefers-contrast: high) {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tablist > button:focus-visible {
+    outline-width: 3px;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-tabs .pb-tabs__tablist > button:focus-visible {
+    outline: 3px solid CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-tabs .pb-tabs__panels > .pb-tabs__panel {
+    display: flex;
   }
 }

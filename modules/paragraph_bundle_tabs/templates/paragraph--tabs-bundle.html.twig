@@ -1,56 +1,38 @@
 {#
 /**
-* @file
-* Default theme implementation to display a 'tabs' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
+ * @file
+ * `tabs_bundle` paragraph template (v2).
+ *
+ * v1 Twig audit (display field -> DOM target -> CSS source):
+ *
+ * | Field / vars              | DOM target                    | v2 mechanism |
+ * |---------------------------|-------------------------------|--------------|
+ * | pb_display_* (list)       | `.pb-ui-inner`                | entity field values |
+ * | pb_display_bg/text/border*| `.pb-ui-inner`                | dynamic CSS |
+ * | pb_display_tab_active_item | `--pb-bt-a` on inner         | dynamic CSS |
+ * | pb_display_tab_animated_tabs | `.pb-tabs__panel`          | class on panel |
+ * | pb_display_tabs_breakpoints | `.pb-tabs__tabset`          | v/h + breakpoint classes |
+ *
+ * Dynamic CSS selector: `#pb__tabs-{id} > .pb-ui-inner`
+ *
+ * @see template_preprocess_paragraph()
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_tabs/paragraph-bundle-tabs') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id = 'pb__tabs-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb-tabs__inner' %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb__tabs-' ~ paragraph.id.value %}
+{% set classes_inner = 'pb-ui-inner pb-tabs__inner' %}
 
-{# Set the classes for the paragraph. #}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
+  'pb-tabs',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
@@ -58,18 +40,6 @@
   paragraph_id,
 ] %}
 
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover',
-  'pb-bt-a': 'pb_display_tab_active_item'
-} %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -78,61 +48,30 @@
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
+{% set pb_animated_tab = paragraph|pb_field_value('pb_display_tab_animated_tabs')|pb_class %}
+{% set pb_breakpoints = paragraph|pb_field_value('pb_display_tabs_breakpoints', 'pb__992') %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
+{% set is_vertical = not paragraph.pb_display_tab_vertical_tabs.isEmpty and paragraph|pb_field_value('pb_display_tab_vertical_tabs') %}
+{% set tabset_layout = (is_vertical ? 'pb-u-vertical-tabs' : 'pb-u-horizontal-tabs') ~ ' ' ~ pb_breakpoints %}
 
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-    {# In case widget was changed. #}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-
-  {% endif %}
-{% endfor %}
-
-{# Animated Tab Display #}
-{% set pb_animated_tab   = content.pb_display_tab_animated_tabs|render|striptags|trim %}
-{% set pb_breakpoints    = content.pb_display_tabs_breakpoints|render|striptags|trim|default('pb__992') %}
-{% set pb_title           = content.pb_content_title|render|striptags|trim %}
-{% set is_vertical       = not paragraph.pb_display_tab_vertical_tabs.isEmpty and paragraph.pb_display_tab_vertical_tabs.value %}
-{% set activate_vertical = (is_vertical ? 'v__tabs ' : 'h__tabs ') ~ pb_breakpoints %}
-
-
-{# Render the paragraph. #}
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
+  <div class="{{ classes_inner }}">
 
-    <div class="pb__content-full">
-      {# Render the content title if it exists. #}
+    <div class="pb-content__full">
       {% if pb_title %}
-      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
+        {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
 
-      {# Set the tab id. #}
       {% set tab_id = 'pb__tab-' ~ paragraph.id.value %}
-      <div id="{{ tab_id }}" class="pb__row pb__tabs-bundle {{ activate_vertical }}">
+      {# L3 behavior host — JS once() target #}
+      <div id="{{ tab_id }}" class="pb-tabs__tabset pb-ui-row {{ tabset_layout }}">
 
-        {# Render the tab buttons. #}
-        <div class="pb__bar pb__tabs-button" role="tablist" aria-label="{{ 'Tab List'|t }}">
+        <div class="pb-ui-bar pb-tabs__tablist" role="tablist" aria-label="{{ 'Tab List'|t }}">
           <span class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
@@ -153,7 +92,7 @@
               {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
 
               <button id="{{ tab_id }}-{{ tab_index }}"
-                class="pb__button pb__tab-button"
+                class="pb-ui-btn pb-tabs__tab{% if key == 0 %} pb-is-active{% endif %}"
                 data-fragment="{{ tab_slug }}"
                 {% if use_tab_icon %}
                   aria-label="{{ 'Tab @n'|t({'@n': tab_index}) }}"
@@ -163,7 +102,7 @@
                 aria-controls="{{ tab_id }}-{{ tab_index }}-pane"
                 type="button"
                 role="tab"
-                {% if key != 0 %}tabindex="-1"{% endif %}>
+                {% if key != 0 %}tabindex="-1"{% else %}tabindex="0"{% endif %}>
                 {% if use_tab_icon %}
                   {% set _tn = tab_label_raw|trim %}
                   {% if ':' in _tn %}
@@ -185,26 +124,20 @@
           {% endfor %}
         </div>
 
-        {# Render the tab content. #}
-        <div class="pb__row pb__tabs-pane">
+        <div class="pb-ui-row pb-tabs__panels">
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
-              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb__tab-pane{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if key == 0 %} aria-live="polite"{% endif %}>
+              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb-tabs__panel{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if key == 0 %} aria-live="polite"{% endif %}>
                 {% for body_key, body_item in item['#paragraph'].pb_content_tab_body %}
                   {% set section_body = item %}
                   {% set lang = section_body['#paragraph'].langcode[0].value %}
-
-                  {# Check if a translation exists and load the appropriate entity. #}
                   {% if section_body['#paragraph'].pb_content_tab_body[body_key].entity.hasTranslation(lang) %}
                     {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity.getTranslation(lang) %}
                   {% else %}
                     {% set section_translation = section_body['#paragraph'].pb_content_tab_body[body_key].entity %}
                   {% endif %}
-
                   {% set section_body = section_body|merge({'#paragraph': section_translation}) %}
                   {% set section_body = section_body|merge({'#cache': {}}) %}
-
-                  {# Print the compiled section body. #}
                   {{ section_body }}
                 {% endfor %}
               </div>
@@ -212,8 +145,7 @@
           {% endfor %}
         </div>
 
-      </div> {# End of pb__tabs-bundle  #}
-
+      </div>
     </div>
   </div>
-</div> {# End of main wrapper #}
+</div>
