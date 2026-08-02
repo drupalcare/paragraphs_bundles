@@ -67,12 +67,18 @@
   --pb-text-align-end: left;
 }
 
-.paragraph * {
+/* Scope every foundation rule to this module's own wrapper class. `.paragraph`
+   is Drupal core's class, shared with every other Paragraphs-based module, so
+   styling through it — `all: unset` on links above all — would strip colour,
+   underline and weight from links in paragraphs this module does not own.
+   `PbPreprocessHook` puts `paragraphs-bundles` alongside `paragraph` on every
+   wrapper it renders, so this is equivalent here and inert elsewhere. */
+.paragraphs-bundles * {
   box-sizing: border-box;
 }
 
-.paragraph a,
-.paragraph button {
+.paragraphs-bundles a,
+.paragraphs-bundles button {
   all: unset;
   outline: revert;
   box-sizing: border-box;
@@ -80,8 +86,8 @@
 }
 
 /* Button */
-.paragraph .button,
-.paragraph .pb-ui-btn {
+.paragraphs-bundles .button,
+.paragraphs-bundles .pb-ui-btn {
   display: inline-flex;
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
@@ -99,30 +105,30 @@
   user-select: none;
 }
 
-.paragraph a.pb-ui-link {
+.paragraphs-bundles a.pb-ui-link {
   z-index: 1;
   display: block;
 }
 
-.paragraph .pb-ui-row::after,
-.paragraph .pb-ui-row::before {
+.paragraphs-bundles .pb-ui-row::after,
+.paragraphs-bundles .pb-ui-row::before {
   content: "";
   display: table;
   clear: both;
 }
 
-.paragraph .pb-ui-bar {
+.paragraphs-bundles .pb-ui-bar {
   width: 100%;
   overflow: hidden;
 }
 
-.paragraph .pb-ui-bar .button,
-.paragraph .pb-ui-bar .pb-ui-btn {
+.paragraphs-bundles .pb-ui-bar .button,
+.paragraphs-bundles .pb-ui-bar .pb-ui-btn {
   white-space: normal;
 }
 
-.paragraph .pb-ui-bar::before,
-.paragraph .pb-ui-bar::after {
+.paragraphs-bundles .pb-ui-bar::before,
+.paragraphs-bundles .pb-ui-bar::after {
   content: "";
   display: table;
   clear: both;
@@ -442,25 +448,6 @@
 
 }
 
-.pb-u-animate--fading {
-  animation: animatefading 5s ease-in-out infinite;
-}
-
-@keyframes animatefading {
-  0% {
-    opacity: 0;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-
-}
-
 .pb-u-animate--zoom {
   animation: animatezoom 0.6s ease-out;
 }
@@ -472,6 +459,22 @@
 
   to {
     transform: scale(1.05);
+  }
+
+}
+
+/* The entry animations above are editor-selectable, so honour the user's
+   reduced-motion preference (WCAG 2.3.3). Each animation only fades or slides
+   an element into its resting position, so suppressing it entirely leaves the
+   final rendered state unchanged. */
+@media (prefers-reduced-motion: reduce) {
+  .pb-u-animate--opacity,
+  .pb-u-animate--top,
+  .pb-u-animate--left,
+  .pb-u-animate--right,
+  .pb-u-animate--bottom,
+  .pb-u-animate--zoom {
+    animation: none;
   }
 
 }

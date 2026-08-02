@@ -1,33 +1,19 @@
 /**
  * @file
- * PB theme bridge - Solo legacy region vars (`--r-tx`, `--r-br`, ...).
+ * PB theme bridge - Solo legacy region vars (`--r-tx`, `--r-br`, `--r-lk`).
  *
- * `--pb-bg` / `--pb-bg-h` are editor-only (never bridged).
+ * Maps host region variables to paragraph `--pb-*` token DEFAULTS on
+ * `.paragraphs-bundles`. Token-mapping ONLY - all element painting lives
+ * once in paragraphs-bundles-custom.css (`.pb-ui-inner`); bridges never
+ * repeat it. Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` /
+ * `--pb-bg-h`) are editor-only and never bridged. `:where()` keeps these
+ * at zero specificity so per-region and editor id-scoped values win.
  */
 
-.paragraphs-bundles {
-  color: var(--pb-tx, var(--r-tx));
-  border-color: var(--pb-br,  var(--r-br));
-}
-
-.paragraphs-bundles a {
-  color: var(--pb-lk, var(--r-lk, var(--pb-tx, var(--r-tx))));
-}
-
-:where(.paragraphs-bundles) :where(
-  img, code, pre, kbd, samp, p, hr,
-  ul, ol, li, table, th, td, tr, blockquote
-) {
-  color: var(--pb-tx, var(--r-tx));
-  border-color: var(--pb-br,  var(--r-br));
-}
-
-:where(.paragraphs-bundles) :where(
-  img, code, pre, kbd, samp, p, hr,
-  ul, ol, li, table, th, td, tr, blockquote
-):hover {
-  color: var(--pb-tx-h, var(--r-tx-h, var(--pb-tx, var(--r-tx))));
-  border-color: var(--pb-br,  var(--r-br));
+:where(.paragraphs-bundles) {
+  --pb-tx: var(--r-tx);
+  --pb-br: var(--r-br);
+  --pb-lk: var(--r-lk, var(--r-tx));
 }
 
 @media (prefers-reduced-motion: reduce) {
