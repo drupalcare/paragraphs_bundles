@@ -3,8 +3,7 @@
 **Status:** Approved for implementation — apply during Phase B ports and
 accordion
 rename.  
-**Quick reference:** [`PB-V2-NAMING-CHEATSHEET.md`](PB-V2-NAMING-CHEATSHEET.md)
-**Rules:** [`PB-V2-DOM-NAMING-PRINCIPLES.md`](PB-V2-DOM-NAMING-PRINCIPLES.md) §2
+**Rules:** [`PB-V2-CLASS-NAMING-SPEC.md`](PB-V2-CLASS-NAMING-SPEC.md)
 
 L3 names are **descriptive roles** (what the node does in the UI). L4 names
 match
@@ -299,17 +298,15 @@ slideshow, 3d |
 4. ~~**Carousel**~~ — `pb-carousel__viewport` + slide states done.
 5. ~~**Modal**~~ — `pb-modal__dialog` + L0 `pb-modal` done.
 6. **Parallax** — fix bare `visible` → `pb-is-visible`.
-6. Remaining bundles per [`PB-V2-MASTER-PLAN.md`](PB-V2-MASTER-PLAN.md) §7.
 
 ---
 
 ## Rename maps (synced)
 
-Machine-readable source:
-[`scripts/pb-class-naming-rules.json`](../scripts/pb-class-naming-rules.json)
-(category `phase_b` + `manual_only`). Regenerate with
-`generate-pb-class-renames.py`. Full delta log:
-[`PB-V2-CLASS-TRACKING.md`](PB-V2-CLASS-TRACKING.md).
+The maps below are the shipped record. The generator and its rule file are
+maintainer tooling and are not part of the release package; the complete
+old → new mapping for site builders is in
+[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md).
 
 ### Tabs L4 (Phase A intermediate → approved)
 

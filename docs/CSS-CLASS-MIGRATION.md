@@ -3,33 +3,34 @@
 **Ship with v2.** This is the authoritative reference for every
 **structural** CSS class rename between v1 contrib and v2. Sub-themes
 and custom modules that target PB class names must update overrides
-using this table or the migration scripts below.
+using the tables below.
 
-**Machine-readable map:** `scripts/class-renames.json` (generated from
-`scripts/pb-class-naming-rules.json`). Regenerate this document after
-rule changes:
-
-```bash
-python3 modules/v2/paragraphs_bundles/scripts/generate-pb-class-renames.py
-```
+The rename generator and its rule file are maintainer tooling and are not part
+of the release package; these tables are the shipped record.
 
 ---
 
-## Quick migration (sub-themes)
+## Before you start
 
-From your Drupal web root (or pass the path to your theme/module):
+1. **Search your theme first.** Most sites reference only a handful of PB
+   classes. From your theme or custom module directory:
 
-```bash
-# Preview:
-./modules/v2/paragraphs_bundles/scripts/migrate-class-names.sh -n \
-  themes/custom/my_theme
+   ```bash
+   grep -rnE 'pb__|paragraph__inner' --include='*.css' --include='*.twig' \
+     --include='*.js' .
+   ```
 
-# Apply:
-./modules/v2/paragraphs_bundles/scripts/migrate-class-names.sh \
-  themes/custom/my_theme
-```
+   Every hit is either in the rename table below, or in the **frozen** list —
+   frozen tokens need no change.
 
-Python alternative: `scripts/migrate-class-names.py` (same map).
+2. **Renames are one-way but non-destructive.** They affect only your own
+   overrides. No stored content or field value changes, so a missed rename
+   costs you a style that stops applying, never data.
+
+3. **Work from the tables, not from a global find-and-replace.** Several v1
+   names are prefixes of others (`pb__card` vs `pb__card-image`), so an
+   unanchored replace will corrupt the longer name. If you do script it, sort
+   the pairs longest-first and match on a word boundary.
 
 ---
 
@@ -628,6 +629,6 @@ In v2 the template renders a modern BEM class from the value via the
 | Doc | Audience |
 |-----|----------|
 | `docs/PB-V2-CLASS-NAMING-SPEC.md` | Naming standard |
-| `docs/PB-V2-CLASS-RENAME-CONSTRAINTS.md` | Why breakpoints/display tokens are
-frozen |
-| `docs/PB-V2-CSS-MODERNIZATION-PLAN.md` | Staged CSS modernization workflow |
+| `docs/PB-V2-BEM-VOCABULARY.md` | Generated rename tables + frozen L2 list |
+| `docs/PB-V2-BUNDLE-VOCABULARY.md` | Per-bundle L3/L4 names |
+| `docs/PB-V2-THEME-BRIDGE.md` | Host-theme variable mapping |

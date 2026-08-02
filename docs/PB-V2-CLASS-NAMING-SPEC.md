@@ -1,22 +1,19 @@
 # PB v2 — CSS class naming spec
 
-> **Master plan (status + phases):**
-[`PB-V2-MASTER-PLAN.md`](PB-V2-MASTER-PLAN.md)
-
-> **Quick start:** [`PB-V2-NAMING-CHEATSHEET.md`](PB-V2-NAMING-CHEATSHEET.md)  
-> **DOM layer model (gate):**
-[`PB-V2-DOM-NAMING-PRINCIPLES.md`](PB-V2-DOM-NAMING-PRINCIPLES.md)
 > **Per-bundle L3/L4:**
-[`PB-V2-BUNDLE-VOCABULARY.md`](PB-V2-BUNDLE-VOCABULARY.md)
+[`PB-V2-BUNDLE-VOCABULARY.md`](PB-V2-BUNDLE-VOCABULARY.md)  
+> **Generated rename tables:**
+[`PB-V2-BEM-VOCABULARY.md`](PB-V2-BEM-VOCABULARY.md)  
+> **v1 → v2 map for site builders:**
+[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md)
 
 **Status:** Authoritative standard for front-end class tokens in
-`paragraphs_bundles` v2.  
-**Machine rules:** `scripts/pb-class-naming-rules.json`  
-**Generator:** `scripts/generate-pb-class-renames.py`  
-**Coupling audit:** `docs/PB-V2-CLASS-RENAME-CONSTRAINTS.md`
+`paragraphs_bundles` v2.
 
 Every new bundle, template, CSS file, and JS selector MUST follow this spec.
-The rename map is **generated from rules**, not maintained by hand.
+The rename map is **generated from rules**, not maintained by hand; the
+generator and its rule file are maintainer tooling and are not part of the
+release package.
 
 ---
 
@@ -29,7 +26,6 @@ The rename map is **generated from rules**, not maintained by hand.
 4. **One bulk migration** — v1 → v2 rename map is output of the rule engine.
 5. **Collision-safe by construction** — every class uses the `pb-` / `pb__`
    namespace; generic UI words (`active`, `open`, `visible`, …) are never bare.
-   See [`PB-V2-DOM-NAMING-PRINCIPLES.md`](PB-V2-DOM-NAMING-PRINCIPLES.md) §2.
 
 ---
 
@@ -367,7 +363,7 @@ Put the private class **once** on the paragraph root. Inner structure uses
 ### 4.7 JavaScript hygiene (Phase B+)
 
 Selector scoping (§4.6) is **not** full JS modernization. Every front-end bundle
-behavior must also meet **`docs/requirements/javascript.md`**:
+behavior must also meet the module's JavaScript rules:
 
 - `attach(context, settings)` and `detach` on `unload`
 - `once()` / `once.remove()` for all init paths
@@ -431,7 +427,6 @@ coupling |
 
 | Doc | Role |
 |-----|------|
-| `PB-V2-CLASS-RENAME-CONSTRAINTS.md` | Why L2 tokens are frozen |
-| `PB-V2-CSS-MODERNIZATION-PLAN.md` | Stage 0–6 workflow |
-| `PB-V2-BEM-VOCABULARY.md` | Generated rename tables |
-| `scripts/pb-class-naming-rules.json` | Machine-readable rules |
+| `PB-V2-BEM-VOCABULARY.md` | Generated rename tables, plus the frozen L2 list |
+| `PB-V2-BUNDLE-VOCABULARY.md` | Per-bundle L3/L4 names |
+| `CSS-CLASS-MIGRATION.md` | Complete v1 → v2 map for site builders |

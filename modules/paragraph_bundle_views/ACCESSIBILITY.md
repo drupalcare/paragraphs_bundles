@@ -4,8 +4,6 @@
 > **Status:** implemented (maintainer browser QA pending)  
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)
-> **Project authority:**
-[`docs/requirements/accessibility.md`](../../../../docs/requirements/accessibility.md)
 
 ## Widget pattern
 
@@ -17,7 +15,7 @@ links/controls. No custom widget roles unless interaction is added.
 
 ## Implementation files
 
-- **Twig:** parent `paragraphs_bundles/templates/paragraph--default.html.twig`
+- **Twig:** parent `../../templates/paragraph--default.html.twig`
 - **JavaScript:** none
 
 ## Keyboard

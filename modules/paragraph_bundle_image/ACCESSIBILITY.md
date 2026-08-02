@@ -4,8 +4,6 @@
 > **Status:** Phase B scoped (static markup)  
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)
-> **Project authority:**
-[`docs/requirements/accessibility.md`](../../../../docs/requirements/accessibility.md)
 
 ## Widget pattern
 
@@ -22,7 +20,7 @@ None required. Use native `img` alt text and semantic headings for titles.
 ## Implementation files
 
 - **Twig:** `templates/paragraph--image-*.html.twig`
-- **CSS:** `paragraphs_bundles/css/paragraphs-bundles-custom.css` (scoped L0)
+- **CSS:** `../../css/paragraphs-bundles-custom.css` (scoped L0)
 - **JavaScript:** none
 
 ## Keyboard

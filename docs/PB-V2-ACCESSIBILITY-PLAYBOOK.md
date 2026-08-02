@@ -1,25 +1,14 @@
 # PB v2 — Accessibility playbook (WCAG / ARIA)
 
-> **Authority:**
-[`docs/requirements/accessibility.md`](../../../docs/requirements/accessibility.md)
-> **JS companion:**
-[`PB-V2-JS-HYGIENE-PLAYBOOK.md`](PB-V2-JS-HYGIENE-PLAYBOOK.md)
+> **Authority:** [WCAG 2.2](https://www.w3.org/TR/WCAG22/) and the
+> [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)  
 > **Per-bundle checklists:** `modules/paragraph_bundle_*/ACCESSIBILITY.md`
-(generated from
->
-[`scripts/pb-bundle-accessibility-registry.json`](../scripts/pb-bundle-accessibility-registry.json))
 
 Every paragraph bundle sub-module ships an **`ACCESSIBILITY.md`** at its root.
 That file is the
 bundle-specific WCAG / ARIA contract. This document is the shared reference for
 patterns,
 Drupal APIs, and verification.
-
-Regenerate bundle files after registry edits:
-
-```bash
-python3 modules/v2/paragraphs_bundles/scripts/generate-pb-accessibility-docs.py
-```
 
 ---
 
@@ -138,17 +127,11 @@ Use for every interactive bundle before marking **implemented** in the registry:
 
 ---
 
-## Registry and status
+## Status
 
-Edit
-[`scripts/pb-bundle-accessibility-registry.json`](../scripts/pb-bundle-accessibility-registry.json)
-`status` field: `pending` | `implemented` | `n/a`.
-
-Then regenerate:
-
-```bash
-python3 modules/v2/paragraphs_bundles/scripts/generate-pb-accessibility-docs.py
-```
+Each bundle's own `ACCESSIBILITY.md` carries its status in the header block —
+`pending`, `implemented` or `n/a` — alongside the private class it owns. Those
+files are the record; read the bundle's file for its current state.
 
 | Status | Meaning |
 |--------|---------|

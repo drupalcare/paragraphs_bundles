@@ -4,8 +4,6 @@
 > **Status:** Phase B scoped (static markup + CSS transitions)  
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)
-> **Project authority:**
-[`docs/requirements/accessibility.md`](../../../../docs/requirements/accessibility.md)
 
 ## Widget pattern
 

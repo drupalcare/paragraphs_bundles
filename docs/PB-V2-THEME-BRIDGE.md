@@ -21,8 +21,8 @@ background-color: var(--pb-bg, var(--r-bg, transparent));
 Issues:
 
 1. **Two naming eras** — Solo uses `--r-bg`, `--r-tx`, …; APEX uses
-   `--r-background`, `--r-text`, … (see
-`docs/guides/REGION-VARIABLES-RENAME.md`).
+   `--r-background`, `--r-text`, … Each theme documents its own region
+   variables.
 2. **Implicit fallbacks** — every rule repeats the chain; easy to drift.
 3. **Conflict fear** — themes and PB must never fight over the same variable
    names.
@@ -213,5 +213,5 @@ keywords.
 
 - `css/paragraphs-bundles-custom.css` — current inline `--r-*` fallbacks
 - `src/Service/Css/PbDynamicCssBuilder.php` — editor-only `--pb-*` emission
-- `docs/guides/REGION-VARIABLES-RENAME.md` — Solo vs APEX variable names
-- `docs/PB-V2-CSS-MODERNIZATION-PLAN.md` — BEM / scoping track (parallel)
+- `docs/reference/pb-css-variables.md` — field → CSS reference
+- `docs/PB-V2-CLASS-NAMING-SPEC.md` — BEM / scoping standard

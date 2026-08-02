@@ -1,7 +1,8 @@
 # PB v2 BEM vocabulary (generated)
 
-Generated from `scripts/pb-class-naming-rules.json` via
-`scripts/generate-pb-class-renames.py`.
+Generated from the maintainer's class-naming ruleset, which is development
+tooling and is not part of the release package. The tables below are the
+shipped record.
 
 **Authoritative standard:** `docs/PB-V2-CLASS-NAMING-SPEC.md`
 
@@ -22,7 +23,8 @@ Generated from `scripts/pb-class-naming-rules.json` via
 
 ## Frozen L2 config (not renamed)
 
-See `docs/PB-V2-CLASS-RENAME-CONSTRAINTS.md` for coupling details.
+These classes double as stored field values, so renaming one would require a
+content migration. They are frozen for that reason and keep their v1 spelling.
 
 <details><summary>Frozen class list (87)</summary>
 

@@ -4,8 +4,6 @@
 > **Status:** implemented (maintainer browser QA pending)
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)
-> **Project authority:**
-[`docs/requirements/accessibility.md`](../../../../docs/requirements/accessibility.md)
 
 ## Widget pattern
 

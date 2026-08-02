@@ -4,8 +4,6 @@
 > **Status:** Phase B scoped (font-load reveal JS)
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)
-> **Project authority:**
-[`docs/requirements/accessibility.md`](../../../../docs/requirements/accessibility.md)
 
 ## Widget pattern
 
