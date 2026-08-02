@@ -1,5 +1,167 @@
 services:
+  # Logger channel.
+  logger.channel.paragraphs_bundles:
+    parent: logger.channel_base
+    arguments: ['paragraphs_bundles']
+
+  # ---------------------------------------------------------------------------
+  # Bundle slugger — converts paragraph type machine names into CSS-file-friendly
+  # slugs (e.g., simple_bundle → simple, 3d_carousel_bundle → 3d-carousel,
+  # card_two_columns_bundle → card-two-columns). Single-concern.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.bundle_slugger:
+    class: Drupal\paragraphs_bundles\Service\Bundle\BundleSlugger
+
+  Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface:
+    alias: paragraphs_bundles.bundle_slugger
+
+  # ---------------------------------------------------------------------------
+  # CSS file manager — writes/reads/deletes per-paragraph CSS files in
+  # public://paragraphs_bundles/. Mirror of apex.css.file_manager. Single-concern.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.css.file_manager:
+    class: Drupal\paragraphs_bundles\Service\Css\PbCssFileManager
+    arguments:
+      - '@file_system'
+      - '@file_url_generator'
+      - '@logger.channel.paragraphs_bundles'
+
+  Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface:
+    alias: paragraphs_bundles.css.file_manager
+
+  # ---------------------------------------------------------------------------
+  # Colour normalizer — hex/rgb triplet and rgba overlay for dynamic CSS.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.css.color_normalizer:
+    class: Drupal\paragraphs_bundles\Service\Css\PbColorNormalizer
+
+  Drupal\paragraphs_bundles\Service\Css\PbColorNormalizerInterface:
+    alias: paragraphs_bundles.css.color_normalizer
+
+  # ---------------------------------------------------------------------------
+  # User-var builder — non-colour editor field values as --pb-* declarations.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.css.user_var_builder:
+    class: Drupal\paragraphs_bundles\Service\Css\PbDynamicUserVarBuilder
+    arguments:
+      - '@paragraphs_bundles.css.color_normalizer'
+      - '@paragraphs_bundles.image_field_url_resolver'
+
+  Drupal\paragraphs_bundles\Service\Css\PbDynamicUserVarBuilderInterface:
+    alias: paragraphs_bundles.css.user_var_builder
+
+  # ---------------------------------------------------------------------------
+  # Image field URL resolver — entity file/media → absolute URL.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.image_field_url_resolver:
+    class: Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolver
+    arguments:
+      - '@file_url_generator'
+
+  Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface:
+    alias: paragraphs_bundles.image_field_url_resolver
+
+  # ---------------------------------------------------------------------------
+  # Dynamic CSS builder — collects display-field values from a paragraph entity,
+  # builds the CSS string scoped to the paragraph's element ID. Pure logic, no I/O.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.css.dynamic_builder:
+    class: Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder
+    arguments:
+      - '@paragraphs_bundles.bundle_slugger'
+      - '@paragraphs_bundles.css.color_normalizer'
+      - '@paragraphs_bundles.css.user_var_builder'
+
+  Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilderInterface:
+    alias: paragraphs_bundles.css.dynamic_builder
+
+  # ---------------------------------------------------------------------------
+  # Dynamic library registrar — generates a library entry per paragraph in
+  # hook_library_info_build, keyed by `dynamic--{slug}-{id}`.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.css.library_registrar:
+    class: Drupal\paragraphs_bundles\Service\Css\PbDynamicLibraryRegistrar
+    arguments:
+      - '@paragraphs_bundles.css.file_manager'
+
+  Drupal\paragraphs_bundles\Service\Css\PbDynamicLibraryRegistrarInterface:
+    alias: paragraphs_bundles.css.library_registrar
+
+  # ---------------------------------------------------------------------------
+  # Theme bridge — resolves solo / apex / neutral library from active theme.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.theme_bridge:
+    class: Drupal\paragraphs_bundles\Service\Theme\PbThemeBridgeService
+    arguments:
+      - '@theme.manager'
+
+  Drupal\paragraphs_bundles\Service\Theme\PbThemeBridgeServiceInterface:
+    alias: paragraphs_bundles.theme_bridge
+
+  # ---------------------------------------------------------------------------
+  # Form display verifier — Display tab / link color placement checks.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.form_display_verifier:
+    class: Drupal\paragraphs_bundles\Service\Form\PbFormDisplayVerifier
+
+  Drupal\paragraphs_bundles\Service\Form\PbFormDisplayVerifierInterface:
+    alias: paragraphs_bundles.form_display_verifier
+
+  paragraphs_bundles.view_display_verifier:
+    class: Drupal\paragraphs_bundles\Service\Form\PbViewDisplayVerifier
+
+  Drupal\paragraphs_bundles\Service\Form\PbViewDisplayVerifierInterface:
+    alias: paragraphs_bundles.view_display_verifier
+
+  # ---------------------------------------------------------------------------
+  # OOP Hook classes — Drupal 11.1+ pattern. FQCN as service ID is required so
+  # the OOP-hooks dispatcher (ClassResolver) can resolve them.
+  # ---------------------------------------------------------------------------
+  Drupal\paragraphs_bundles\Hook\PbHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'
+
+  Drupal\paragraphs_bundles\Hook\PbThemeHook:
+    autowire: true
+
+  Drupal\paragraphs_bundles\Hook\PbPreprocessHook:
+    arguments:
+      - '@paragraphs_bundles.bundle_slugger'
+      - '@paragraphs_bundles.css.file_manager'
+      - '@paragraphs_bundles.css.dynamic_builder'
+      - '@module_handler'
+      - '@logger.channel.paragraphs_bundles'
+
+  Drupal\paragraphs_bundles\Hook\PbFieldWidgetHook:
+    autowire: true
+
+  Drupal\paragraphs_bundles\Hook\PbLibraryHook:
+    arguments:
+      - '@paragraphs_bundles.css.library_registrar'
+
+  Drupal\paragraphs_bundles\Hook\PbLibraryInfoAlterHook:
+    arguments:
+      - '@paragraphs_bundles.theme_bridge'
+
+  Drupal\paragraphs_bundles\Hook\PbCssAlterHook:
+    autowire: true
+
+  Drupal\paragraphs_bundles\Hook\PbEntityHook:
+    arguments:
+      - '@paragraphs_bundles.css.file_manager'
+      - '@paragraphs_bundles.css.dynamic_builder'
+      - '@paragraphs_bundles.bundle_slugger'
+
+  # ---------------------------------------------------------------------------
+  # Twig extension — `decode_entities` filter (legacy v1 contract).
+  # ---------------------------------------------------------------------------
   paragraphs_bundles.twig_extension:
-    class: Drupal\paragraphs_bundles\Twig\ParagraphsBundlesTwigExtension
+    class: Drupal\paragraphs_bundles\Twig\PbTwigExtension
+    arguments:
+      - '@paragraphs_bundles.image_field_url_resolver'
+      - '@paragraphs_bundles.css.color_normalizer'
     tags:
       - { name: twig.extension }

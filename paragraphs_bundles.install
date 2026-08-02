@@ -1,0 +1,886 @@
+<?php
+
+/**
+ * @file
+ * Install / uninstall / update hooks for paragraphs_bundles (v2).
+ *
+ * V2 update hooks (pre-release; run `drush updb` once):
+ *  - 9005: shared field storages + title/link field metadata.
+ *  - 9006: wire shared fields, nest Display tab, hide pb_display_* on view
+ *    displays (all paragraph bundles).
+ *  - 9007: repair v1 config values that fail D11 config-schema validation.
+ *
+ * **Why v2 numbering starts at 9005.** V1 defined its update hooks in
+ * `paragraphs_bundles.module` rather than a `.install` file — unusual, but
+ * Drupal discovers `{module}_update_N()` wherever it is defined, because
+ * `.module` is always loaded. V1 shipped 9001 through 9004, so every v1 site
+ * stores `system.schema` = 9004. Drupal runs only updates numbered ABOVE the
+ * stored value, so any v2 hook numbered 9001-9004 is silently skipped on
+ * exactly the sites that need it. Grepping for `*.install` to check whether v1
+ * had update hooks returns nothing and is misleading — grep for
+ * `_update_[0-9]` across all files instead.
+ *
+ * The per-paragraph dynamic-CSS backfill is a **post_update**, not an update
+ * hook. It must run after 9001 and 9006 have created and wired the
+ * `pb_display_*` fields, because it reads those fields to generate the CSS.
+ * hook_update_N runs in numeric order, so a backfill numbered below 9006 would
+ * read fields that do not exist yet and write empty stylesheets; numbering it
+ * above 9006 would only hold until the next update hook is added. Drupal runs
+ * every post_update after every hook_update_N, which makes the ordering
+ * structural instead of a numbering convention someone has to remember.
+ *
+ * See docs/PB-V2-TESTING-WORKFLOW.md for maintainer test paths (fresh install
+ * vs v1 drop-over). Dev DBs from fragmented v2 hook numbers (9007–9015) must
+ * be reset — trash DB and retest from v1 baseline before release.
+ *
+ * Helpers `paragraphs_bundles_pb_wire_shared_fields_for_bundle()` and
+ * `paragraphs_bundles_get_pb_bundles()` centralise bundle discovery;
+ * sub-modules do not need their own .install for shared fields.
+ *
+ * Display tab nest helpers live in paragraphs_bundles.display.inc. Parent
+ * .install requires it directly. Bundle sub-module update hooks must call
+ * \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'inc',
+ * 'paragraphs_bundles.display') before nest helpers.
+ */
+
+declare(strict_types=1);
+
+require_once __DIR__ . '/paragraphs_bundles.display.inc';
+
+use Drupal\Core\Config\FileStorage;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
+
+/**
+ * Implements hook_uninstall().
+ *
+ * Wipe the public://paragraphs_bundles/ directory so reinstalls start
+ * clean.
+ */
+function paragraphs_bundles_uninstall(): void {
+  /** @var \Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface $files */
+  $files = \Drupal::service(PbCssFileManagerInterface::class);
+  $files->deleteAll();
+}
+
+/**
+ * Imports one optional config entity if it is not already active.
+ *
+ * Used by update hooks in this module and in paragraph_bundle_*
+ * sub-modules (the v1 helper signature is preserved verbatim).
+ */
+function paragraphs_bundles_import_optional_config_if_missing(string $module_name, string $config_name): void {
+  $existing = \Drupal::configFactory()->get($config_name);
+  if (!$existing->isNew()) {
+    return;
+  }
+  $module_handler = \Drupal::moduleHandler();
+  if (!$module_handler->moduleExists($module_name)) {
+    return;
+  }
+  $config_storage = new FileStorage($module_handler->getModule($module_name)->getPath() . '/config/optional');
+  $config_record = $config_storage->read($config_name);
+  if (!$config_record) {
+    return;
+  }
+  $entity_type = \Drupal::service('config.manager')->getEntityTypeIdByName($config_name);
+  if ($entity_type === NULL) {
+    return;
+  }
+  $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+  $entity = $storage->createFromStorageRecord($config_record);
+  $entity->save();
+}
+
+/**
+ * Ensure shared title-tag / title-alignment field storages.
+ */
+function paragraphs_bundles_ensure_pb_title_storages(): void {
+  foreach ([
+    'field.storage.paragraph.pb_content_title_tag',
+    'field.storage.paragraph.pb_content_title_alignment',
+  ] as $config_name) {
+    paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', $config_name);
+  }
+}
+
+/**
+ * Import optional title tag/alignment field instances for a bundle.
+ *
+ * @param string $bundle
+ *   Paragraph type machine name.
+ * @param string|null $module_name
+ *   Module providing the YAML files; auto-discovered when NULL.
+ */
+function paragraphs_bundles_pb_title_import_instances_for_bundle(string $bundle, ?string $module_name = NULL): void {
+  foreach ([
+    'pb_content_title_tag',
+    'pb_content_title_alignment',
+  ] as $field_name) {
+    $config_name = 'field.field.paragraph.' . $bundle . '.' . $field_name;
+    $provider = $module_name ?? paragraphs_bundles_get_optional_config_provider($config_name);
+    if ($provider === NULL) {
+      continue;
+    }
+    paragraphs_bundles_import_optional_config_if_missing($provider, $config_name);
+  }
+}
+
+/**
+ * Bumps Content tab field/group weights colliding with the title (1-3).
+ *
+ * The field_group module sorts siblings by entity form display weight, not
+ * children order.
+ *
+ * @param array<string, mixed> $content
+ *   Form display content section (by reference).
+ * @param array<string, mixed> $groups
+ *   Field group definitions (by reference).
+ */
+function paragraphs_bundles_pb_bump_content_tab_tail_weights(
+  array &$content,
+  array &$groups,
+): void {
+  $children = $groups['group_pb_tab_content']['children'] ?? [];
+  if (!is_array($children)) {
+    return;
+  }
+
+  $weight = 4;
+  foreach (array_slice($children, 3) as $child) {
+    if (!is_string($child)) {
+      continue;
+    }
+    if (str_starts_with($child, 'group_')) {
+      if (isset($groups[$child]) && ($groups[$child]['weight'] ?? 99) <= 3) {
+        $groups[$child]['weight'] = $weight++;
+      }
+      continue;
+    }
+    if (isset($content[$child]) && ($content[$child]['weight'] ?? 99) <= 3) {
+      $content[$child]['weight'] = $weight++;
+    }
+  }
+}
+
+/**
+ * Add title tag/alignment widgets after pb_content_title; hide on default view.
+ */
+function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
+  $em = \Drupal::entityTypeManager();
+  $form_id = 'paragraph.' . $bundle . '.default';
+  $fd = $em->getStorage('entity_form_display')->load($form_id);
+  if (!$fd) {
+    return;
+  }
+  $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
+  if (!isset($content['pb_content_title'])) {
+    return;
+  }
+
+  if (!isset($content['pb_content_title_tag'])) {
+    $content['pb_content_title_tag'] = [
+      'type' => 'options_select',
+      'weight' => 2,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  else {
+    $content['pb_content_title_tag']['weight'] = 2;
+  }
+  if (!isset($content['pb_content_title_alignment'])) {
+    $content['pb_content_title_alignment'] = [
+      'type' => 'options_select',
+      'weight' => 3,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  else {
+    $content['pb_content_title_alignment']['weight'] = 3;
+  }
+  $content['pb_content_title']['weight'] = 1;
+
+  $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
+  if (!empty($third['field_group']) && is_array($third['field_group'])) {
+    paragraphs_bundles_pb_normalize_field_group_names($third['field_group']);
+    if (isset($third['field_group']['group_pb_tab_content']['children'])
+      && is_array($third['field_group']['group_pb_tab_content']['children'])) {
+      $children = $third['field_group']['group_pb_tab_content']['children'];
+      $tail = array_values(array_filter(
+        $children,
+        static fn(mixed $child): bool => is_string($child)
+          && !in_array($child, [
+            'pb_content_title',
+            'pb_content_title_tag',
+            'pb_content_title_alignment',
+          ], TRUE),
+      ));
+      $third['field_group']['group_pb_tab_content']['children'] = array_merge(
+        ['pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment'],
+        $tail,
+      );
+    }
+    paragraphs_bundles_pb_bump_content_tab_tail_weights($content, $third['field_group']);
+    $fd->set('third_party_settings', $third);
+  }
+
+  $fd->set('content', $content);
+
+  $dependencies = paragraphs_bundles_pb_array_prop($fd->get('dependencies'));
+  if (!isset($dependencies['config']) || !is_array($dependencies['config'])) {
+    $dependencies['config'] = [];
+  }
+  foreach ([
+    'field.field.paragraph.' . $bundle . '.pb_content_title_tag',
+    'field.field.paragraph.' . $bundle . '.pb_content_title_alignment',
+  ] as $dep) {
+    if (!in_array($dep, $dependencies['config'], TRUE)) {
+      $dependencies['config'][] = $dep;
+    }
+  }
+  sort($dependencies['config']);
+  $fd->set('dependencies', $dependencies);
+  $fd->save();
+
+  $vd = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($vd) {
+    $hidden = paragraphs_bundles_pb_array_prop($vd->get('hidden'));
+    $hidden['pb_content_title_tag'] = TRUE;
+    $hidden['pb_content_title_alignment'] = TRUE;
+    $vd->set('hidden', $hidden);
+    $deps = paragraphs_bundles_pb_array_prop($vd->get('dependencies'));
+    if (!isset($deps['config']) || !is_array($deps['config'])) {
+      $deps['config'] = [];
+    }
+    foreach ([
+      'field.field.paragraph.' . $bundle . '.pb_content_title_tag',
+      'field.field.paragraph.' . $bundle . '.pb_content_title_alignment',
+    ] as $dep) {
+      if (!in_array($dep, $deps['config'], TRUE)) {
+        $deps['config'][] = $dep;
+      }
+    }
+    sort($deps['config']);
+    $vd->set('dependencies', $deps);
+    $vd->save();
+  }
+}
+
+/**
+ * A config entity property as an array, whatever get() actually returned.
+ *
+ * EntityDisplay::get() is typed mixed, and every caller here immediately
+ * indexes the result. Normalising once means a property that is missing or
+ * somehow not an array yields an empty array instead of a fatal on offset
+ * access part-way through an upgrade, with the site left half-migrated.
+ *
+ * @param mixed $value
+ *   Raw return value of a config entity get().
+ *
+ * @return array<string, mixed>
+ *   The value when it is an array, otherwise an empty array.
+ */
+function paragraphs_bundles_pb_array_prop(mixed $value): array {
+  return is_array($value) ? $value : [];
+}
+
+/**
+ * Clears field widget/formatter and entity field definition caches.
+ */
+function paragraphs_bundles_clear_field_caches(): void {
+  \Drupal::service('plugin.manager.field.widget')->clearCachedDefinitions();
+  \Drupal::service('plugin.manager.field.formatter')->clearCachedDefinitions();
+  \Drupal::service('entity_field.manager')->clearCachedFieldDefinitions();
+}
+
+/**
+ * Paragraph bundle machine names that use paragraphs_bundles display fields.
+ *
+ * Uses pb_display_bg as the marker — every standard PB bundle ships it.
+ *
+ * @return list<string>
+ *   Bundle machine names.
+ */
+function paragraphs_bundles_get_pb_bundles(): array {
+  $storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', 'pb_display_bg')
+    ->execute();
+  $bundles = [];
+  foreach ($storage->loadMultiple($ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    // getTargetBundle() is nullable. A field_config with no target bundle is
+    // not something the upgrade can act on, and a NULL reaching the bundle
+    // loop would be coerced to '' and silently upgrade nothing.
+    $bundle = $field->getTargetBundle();
+    if ($bundle !== NULL) {
+      $bundles[] = $bundle;
+    }
+  }
+  return array_values(array_unique($bundles));
+}
+
+/**
+ * Enabled paragraph_bundle_* sub-module machine names.
+ *
+ * @return list<string>
+ *   Sorted module names.
+ */
+function paragraphs_bundles_get_sub_module_names(): array {
+  static $names = NULL;
+  if ($names !== NULL) {
+    return $names;
+  }
+  $names = [];
+  $module_handler = \Drupal::moduleHandler();
+  foreach ($module_handler->getModuleList() as $module => $extension) {
+    if (str_starts_with($module, 'paragraph_bundle_')) {
+      $names[] = $module;
+    }
+  }
+  sort($names);
+  return $names;
+}
+
+/**
+ * Finds which enabled module ships an optional config file.
+ *
+ * @param string $config_name
+ *   Config entity name without .yml (e.g. field.field.paragraph.x.y).
+ *
+ * @return string|null
+ *   Module machine name, or NULL when no file is found.
+ */
+function paragraphs_bundles_get_optional_config_provider(string $config_name): ?string {
+  static $cache = [];
+  if (array_key_exists($config_name, $cache)) {
+    return $cache[$config_name];
+  }
+  $module_handler = \Drupal::moduleHandler();
+  $candidates = array_merge(
+    ['paragraphs_bundles'],
+    paragraphs_bundles_get_sub_module_names()
+  );
+  foreach ($candidates as $module) {
+    if (!$module_handler->moduleExists($module)) {
+      continue;
+    }
+    $path = $module_handler->getModule($module)->getPath()
+      . '/config/optional/' . $config_name . '.yml';
+    if (is_readable($path)) {
+      $cache[$config_name] = $module;
+      return $module;
+    }
+  }
+  $cache[$config_name] = NULL;
+  return NULL;
+}
+
+/**
+ * Help text for the shared pb_content_title field (config + update 9004).
+ *
+ * Stored as English on the field; use configuration translation if
+ * needed.
+ */
+function paragraphs_bundles_pb_content_title_help_description(): string {
+  return 'Use Title tag and Title alignment to set the heading level and text alignment. None is the default for those fields; if they are unset, the bundle Twig template renders this title as H3 with left alignment.';
+}
+
+/**
+ * Implements hook_update_dependencies().
+ *
+ * @phpstan-return array<string, array<int, array<string, int>>>
+ */
+function paragraphs_bundles_update_dependencies(): array {
+  // Bundle sub-modules whose update 9001 must run after this module's 9006.
+  //
+  // Each of these restructures its bundle's Display tab through
+  // paragraphs_bundles_pb_nest_display_field_groups(), which operates on the
+  // shared pb_display_* fields that 9006 wires onto the bundle. Running one of
+  // them first would nest field groups around fields that are not there yet.
+  //
+  // Keep this list in step with the sub-module .install files: add an entry
+  // whenever a sub-module gains an update hook that touches shared fields.
+  // A sub-module absent from hook_update_dependencies() is ordered only by
+  // module name, and every paragraph_bundle_* sorts BEFORE paragraphs_bundles
+  // ('_' < 's'), so the wrong order is the silent default, not the exception.
+  $submodules = [
+    'paragraph_bundle_3d_carousel' => 9001,
+    'paragraph_bundle_content' => 9001,
+    'paragraph_bundle_image_background' => 9001,
+  ];
+
+  $dependencies = [];
+  foreach ($submodules as $module => $update) {
+    $dependencies[$module][$update]['paragraphs_bundles'] = 9006;
+  }
+  return $dependencies;
+}
+
+/**
+ * Implements hook_update_last_removed().
+ *
+ * V1 shipped `paragraphs_bundles_update_9001()` … `_9004()` (defined in
+ * `paragraphs_bundles.module`, not a `.install` file — see the file header).
+ * V2 dropped all four, so a site still below 9004 cannot reach a consistent
+ * state from here: the intermediate steps no longer exist to run. Declaring
+ * 9004 makes Drupal refuse the update with a "requires an intermediate
+ * version" message instead of silently skipping the missing work.
+ */
+function paragraphs_bundles_update_last_removed(): int {
+  return 9004;
+}
+
+/**
+ * Installs shared v2 field storages and refreshes title field metadata.
+ */
+function paragraphs_bundles_update_9005(): string {
+  // NUMBERING — do not renumber below 9005. V1's own update hooks ran to 9004
+  // (defined in paragraphs_bundles.module; see the file header), so every real
+  // v1 site sits at system.schema 9004. Drupal runs only updates numbered ABOVE
+  // the stored schema, so while this step carried the number 9001 it never ran
+  // on any v1 site: `drush updb` reported success and the shared v2 field
+  // storages were silently never installed. Verified against a real v1 install
+  // — see docs/PB-V2-RELEASE-LOG.md.
+  //
+  // Keep this docblock to ONE line: `drush updatedb:status` prints the whole
+  // docblock in a narrow column, so prose here becomes an unreadable wall of
+  // text on the screen a site owner reads before upgrading production.
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_ensure_pb_link_storages();
+
+  $storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $desc = paragraphs_bundles_pb_content_title_help_description();
+  $title_ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', 'pb_content_title')
+    ->execute();
+  foreach ($storage->loadMultiple($title_ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    $field->setDescription($desc);
+    $field->save();
+  }
+
+  $tag_ids = $storage->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('entity_type', 'paragraph')
+    ->condition('field_name', ['pb_content_title_tag', 'pb_content_title_alignment'], 'IN')
+    ->execute();
+  foreach ($storage->loadMultiple($tag_ids) as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    if ($field->isRequired()) {
+      $field->setRequired(FALSE);
+    }
+    $field->setDefaultValue([]);
+    $field->save();
+  }
+
+  paragraphs_bundles_clear_field_caches();
+  return (string) t('Installed shared v2 field storages and refreshed title metadata.');
+}
+
+/**
+ * Wires ALL shared v2 fields for one bundle in a single call.
+ *
+ * Safe to call multiple times — all operations are idempotent.
+ *
+ * Covers:
+ *  - pb_content_title_tag / pb_content_title_alignment (Content tab)
+ *  - pb_display_link / pb_display_link_hover (Display tab)
+ *  - Display tab color field order (base then hover per group)
+ *
+ * When optional YAML exists (v1 sub-module or v2 port), it is imported.
+ * Link field instances are created programmatically when YAML is absent
+ * (typical v1→v2 upgrade before sub-module v2 YAML ships).
+ *
+ * @param string $bundle
+ *   Paragraph type machine name (e.g. 'hero_bundle').
+ * @param string|null $module_name
+ *   Module providing field instance YAML; auto-discovered when NULL.
+ */
+function paragraphs_bundles_pb_wire_shared_fields_for_bundle(string $bundle, ?string $module_name = NULL): void {
+  \Drupal::service('entity_type.bundle.info')->clearCachedBundles();
+  $paragraph_type = \Drupal::entityTypeManager()
+    ->getStorage('paragraphs_type')
+    ->load($bundle);
+  if ($paragraph_type === NULL) {
+    return;
+  }
+
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_pb_title_import_instances_for_bundle($bundle, $module_name);
+  paragraphs_bundles_pb_title_wire_bundle($bundle);
+
+  paragraphs_bundles_ensure_pb_link_storages();
+  paragraphs_bundles_pb_ensure_link_field_instances_for_bundle($bundle, $module_name);
+  paragraphs_bundles_pb_link_wire_bundle($bundle);
+  paragraphs_bundles_pb_sort_display_extra_fields($bundle);
+}
+
+/**
+ * Applies the full v2 display upgrade on every PB bundle.
+ *
+ * Form display: shared fields, legacy group rename, Display tab nesting.
+ * View display: hide all pb_display_* (values come from dynamic CSS).
+ *
+ * Idempotent — safe to re-run.
+ *
+ * @return string
+ *   Status message for update hooks.
+ */
+function paragraphs_bundles_pb_upgrade_all_bundles(): string {
+  paragraphs_bundles_ensure_pb_title_storages();
+  paragraphs_bundles_ensure_pb_link_storages();
+  $bundles = paragraphs_bundles_get_pb_bundles();
+  foreach ($bundles as $bundle) {
+    paragraphs_bundles_pb_wire_shared_fields_for_bundle($bundle);
+  }
+  paragraphs_bundles_clear_field_caches();
+  $view_message = paragraphs_bundles_pb_hide_display_fields_on_view_displays();
+  return (string) t('Applied v2 display layout for @count paragraph bundle(s). @view', [
+    '@count' => count($bundles),
+    '@view' => $view_message,
+  ]);
+}
+
+/**
+ * Hides all pb_display_* fields on paragraph default view displays.
+ *
+ * V2 reads styling values from entity fields and dynamic CSS, not view
+ * formatters. Safe and idempotent on every bundle.
+ *
+ * @return string
+ *   Status message with the number of updated view displays.
+ */
+function paragraphs_bundles_pb_hide_display_fields_on_view_displays(): string {
+  $storage = \Drupal::entityTypeManager()->getStorage('entity_view_display');
+  $updated = 0;
+
+  foreach (paragraphs_bundles_get_pb_bundles() as $bundle) {
+    $display = $storage->load('paragraph.' . $bundle . '.default');
+    if ($display === NULL) {
+      continue;
+    }
+
+    $content = paragraphs_bundles_pb_array_prop($display->get('content'));
+    $hidden = paragraphs_bundles_pb_array_prop($display->get('hidden'));
+    $changed = FALSE;
+
+    foreach (array_keys($content) as $field) {
+      if (!is_string($field) || !str_starts_with($field, 'pb_display_')) {
+        continue;
+      }
+      unset($content[$field]);
+      $hidden[$field] = TRUE;
+      $changed = TRUE;
+    }
+
+    if (!$changed) {
+      continue;
+    }
+
+    ksort($hidden);
+    $display->set('content', $content);
+    $display->set('hidden', $hidden);
+    $display->save();
+    $updated++;
+  }
+
+  return (string) t('Hidden pb_display_* fields on @count paragraph view display(s).', [
+    '@count' => $updated,
+  ]);
+}
+
+/**
+ * Ensures shared link-color field storages exist.
+ */
+function paragraphs_bundles_ensure_pb_link_storages(): void {
+  foreach ([
+    'field.storage.paragraph.pb_display_link',
+    'field.storage.paragraph.pb_display_link_hover',
+  ] as $config_name) {
+    paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', $config_name);
+  }
+}
+
+/**
+ * Ensures link-color field instances exist on a bundle.
+ *
+ * Imports optional YAML when present; otherwise creates field instances
+ * programmatically (v1 bundles do not ship link-color YAML).
+ *
+ * @param string $bundle
+ *   Paragraph type machine name.
+ * @param string|null $module_name
+ *   Module providing YAML; auto-discovered when NULL.
+ */
+function paragraphs_bundles_pb_ensure_link_field_instances_for_bundle(string $bundle, ?string $module_name = NULL): void {
+  paragraphs_bundles_ensure_pb_link_storages();
+
+  $labels = [
+    'pb_display_link' => 'Link Color',
+    'pb_display_link_hover' => 'Link Color Hover',
+  ];
+
+  foreach ($labels as $field_name => $label) {
+    $field_id = 'paragraph.' . $bundle . '.' . $field_name;
+    if (FieldConfig::load($field_id)) {
+      continue;
+    }
+
+    $config_name = 'field.field.paragraph.' . $bundle . '.' . $field_name;
+    $provider = $module_name ?? paragraphs_bundles_get_optional_config_provider($config_name);
+    if ($provider !== NULL) {
+      paragraphs_bundles_import_optional_config_if_missing($provider, $config_name);
+      continue;
+    }
+
+    $field_storage = FieldStorageConfig::load('paragraph.' . $field_name);
+    if ($field_storage === NULL) {
+      continue;
+    }
+
+    FieldConfig::create([
+      'field_storage' => $field_storage,
+      'bundle' => $bundle,
+      'label' => $label,
+      'required' => FALSE,
+      'translatable' => FALSE,
+    ])->save();
+  }
+}
+
+/**
+ * Wire link-color widgets onto an existing bundle form/view display.
+ *
+ * Inserts pb_display_link and pb_display_link_hover into the Display
+ * tab immediately after pb_display_border_hover.  Safe to call on a
+ * bundle whose form display already contains those fields.
+ *
+ * @param string $bundle
+ *   Paragraph type machine name.
+ */
+function paragraphs_bundles_pb_link_wire_bundle(string $bundle): void {
+  $em = \Drupal::entityTypeManager();
+  $form_id = 'paragraph.' . $bundle . '.default';
+  $fd = $em->getStorage('entity_form_display')->load($form_id);
+  if (!$fd) {
+    return;
+  }
+
+  $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
+
+  // Determine weight: place after pb_display_border_hover (default 22).
+  $border_hover = paragraphs_bundles_pb_array_prop($content['pb_display_border_hover'] ?? NULL);
+  $base_weight = is_int($border_hover['weight'] ?? NULL) ? $border_hover['weight'] : 22;
+
+  if (!isset($content['pb_display_link'])) {
+    $content['pb_display_link'] = [
+      'type' => 'color_text_widget',
+      'weight' => $base_weight + 1,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  else {
+    $content['pb_display_link']['weight'] = $base_weight + 1;
+  }
+  if (!isset($content['pb_display_link_hover'])) {
+    $content['pb_display_link_hover'] = [
+      'type' => 'color_text_widget',
+      'weight' => $base_weight + 2,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ];
+  }
+  else {
+    $content['pb_display_link_hover']['weight'] = $base_weight + 2;
+  }
+  $fd->set('content', $content);
+
+  $dependencies = paragraphs_bundles_pb_array_prop($fd->get('dependencies'));
+  if (!isset($dependencies['config']) || !is_array($dependencies['config'])) {
+    $dependencies['config'] = [];
+  }
+  foreach ([
+    'field.field.paragraph.' . $bundle . '.pb_display_link',
+    'field.field.paragraph.' . $bundle . '.pb_display_link_hover',
+  ] as $dep) {
+    if (!in_array($dep, $dependencies['config'], TRUE)) {
+      $dependencies['config'][] = $dep;
+    }
+  }
+  sort($dependencies['config']);
+  $fd->set('dependencies', $dependencies);
+  $fd->save();
+
+  paragraphs_bundles_pb_nest_display_field_groups($bundle);
+  paragraphs_bundles_pb_ensure_link_fields_in_colors_group($bundle);
+
+  // Mark as hidden on the view display (values come from dynamic CSS).
+  $vd = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($vd) {
+    $hidden = paragraphs_bundles_pb_array_prop($vd->get('hidden'));
+    $hidden['pb_display_link'] = TRUE;
+    $hidden['pb_display_link_hover'] = TRUE;
+    $vd->set('hidden', $hidden);
+    $deps = paragraphs_bundles_pb_array_prop($vd->get('dependencies'));
+    if (!isset($deps['config']) || !is_array($deps['config'])) {
+      $deps['config'] = [];
+    }
+    foreach ([
+      'field.field.paragraph.' . $bundle . '.pb_display_link',
+      'field.field.paragraph.' . $bundle . '.pb_display_link_hover',
+    ] as $dep) {
+      if (!in_array($dep, $deps['config'], TRUE)) {
+        $deps['config'][] = $dep;
+      }
+    }
+    sort($deps['config']);
+    $vd->set('dependencies', $deps);
+    $vd->save();
+  }
+}
+
+/**
+ * Wire shared v2 fields, nest Display tab, hide view display styling fields.
+ */
+function paragraphs_bundles_update_9006(): string {
+  return paragraphs_bundles_pb_upgrade_all_bundles();
+}
+
+/**
+ * Repair v1 config values that fail Drupal 11 config-schema validation.
+ */
+function paragraphs_bundles_update_9007(): string {
+  // Two v1 leftovers are invalid under D11 strict config schema. Neither
+  // breaks rendering, but both fail `config:inspect` and any Kernel test that
+  // validates config, and they are only reachable on upgraded sites — a fresh
+  // v2 install writes neither. Found by validating all 1127 active PB config
+  // objects against their schema on a real v1 -> v2 upgrade.
+  $em = \Drupal::entityTypeManager();
+  $fixed_types = 0;
+  $fixed_components = 0;
+
+  // 1. node.type help: D11 requires NULL for "no help", not ''. Core stopped
+  // repairing this itself when node_post_update_set_node_type_description_and
+  // _help_to_null was removed in 11.0, so v1 sites keep the empty string.
+  $node_type_storage = $em->getStorage('node_type');
+  foreach (['pb_content', 'pb_node_reference'] as $type_id) {
+    $node_type = $node_type_storage->load($type_id);
+    if ($node_type === NULL) {
+      continue;
+    }
+    if ($node_type->get('help') === '') {
+      $node_type->set('help', NULL);
+      $node_type->save();
+      $fixed_types++;
+    }
+  }
+
+  // 2. `label` is a view-display key; it is not supported on an entity_form
+  // _display component. v1 shipped it on at least the tabs bundle. It is
+  // ignored at runtime, so dropping it changes nothing a user can see.
+  //
+  // Scope: EVERY paragraph form display, not just the bundles returned by
+  // paragraphs_bundles_get_pb_bundles() — that helper keys off pb_display_bg,
+  // which section bundles like tab_section_bundle do not have, and
+  // tab_section_bundle is exactly where the stray key lives. Restricting the
+  // unset to pb_*-prefixed components keeps this off any field the site owns.
+  $form_storage = $em->getStorage('entity_form_display');
+  foreach ($form_storage->loadMultiple() as $fd) {
+    if (!str_starts_with((string) $fd->id(), 'paragraph.')) {
+      continue;
+    }
+    $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
+    $changed = FALSE;
+    foreach ($content as $field => $component) {
+      if (!is_string($field) || !str_starts_with($field, 'pb_')) {
+        continue;
+      }
+      if (is_array($component) && array_key_exists('label', $component)) {
+        unset($component['label']);
+        $content[$field] = $component;
+        $changed = TRUE;
+        $fixed_components++;
+      }
+    }
+    if ($changed) {
+      $fd->set('content', $content);
+      $fd->save();
+    }
+  }
+
+  // 3. Two field_config value-type leftovers, both from v1. Neither is
+  // visible at runtime; both fail strict config-schema checks.
+  //
+  // (a) paragraphs_bundles_range stores an int column, and v2 declares the
+  // default as `integer` in config schema. v1 wrote it quoted, so an upgraded
+  // site holds the string '100' where an integer is required.
+  //
+  // (b) target_bundles_drag_drop is a sequence; v1 left it NULL on two tabs
+  // fields, where the schema requires at least an empty sequence.
+  $fixed_fields = 0;
+  foreach ($em->getStorage('field_config')->loadMultiple() as $field) {
+    if (!$field instanceof FieldConfig) {
+      continue;
+    }
+    $changed = FALSE;
+
+    if ($field->getType() === 'paragraphs_bundles_range') {
+      $default = $field->get('default_value');
+      if (is_array($default)) {
+        foreach ($default as $delta => $item) {
+          if (is_array($item) && isset($item['value']) && !is_int($item['value'])
+            && is_numeric($item['value'])) {
+            $default[$delta]['value'] = (int) $item['value'];
+            $changed = TRUE;
+          }
+        }
+        if ($changed) {
+          $field->set('default_value', $default);
+        }
+      }
+    }
+
+    $settings = $field->getSettings();
+    if (array_key_exists('handler_settings', $settings)
+      && is_array($settings['handler_settings'])
+      && array_key_exists('target_bundles_drag_drop', $settings['handler_settings'])
+      && $settings['handler_settings']['target_bundles_drag_drop'] === NULL) {
+      $settings['handler_settings']['target_bundles_drag_drop'] = [];
+      $field->set('settings', $settings);
+      $changed = TRUE;
+    }
+
+    if ($changed) {
+      $field->save();
+      $fixed_fields++;
+    }
+  }
+
+  return (string) t(
+    'Config-schema repair: @types node type(s), @components form display component(s), @fields field(s).',
+    [
+      '@types' => $fixed_types,
+      '@components' => $fixed_components,
+      '@fields' => $fixed_fields,
+    ],
+  );
+}

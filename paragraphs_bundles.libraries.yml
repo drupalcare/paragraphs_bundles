@@ -1,14 +1,50 @@
+# Frontend base CSS — foundation tokens and always-loaded base styles.
+# Deliberately UN-LAYERED: a module can't know whether the host theme
+# uses @layer, and un-layered author CSS beats every layered rule, so
+# staying un-layered is the only way PB's editor-set values reliably win
+# under any theme. Sub-modules ship their per-bundle CSS the same way.
+# Per-paragraph dynamic CSS files are generated at runtime and exposed as
+# one-library-per-paragraph entries via hook_library_info_build
+# (PbLibraryHook).
+#
+# css_alter keeps foundation CSS at weight 100; per-paragraph dynamic
+# files use weight 1000 + CSS_AGGREGATE_THEME via PbCssAlterHook so
+# editor colours load after theme CSS.
 paragraphs-bundles:
   css:
     theme:
-      css/paragraphs-bundles-basic.css: { }
-      css/paragraphs-bundles-custom.css: { }
+      css/paragraphs-bundles-base.css: { weight: 100 }
+      css/paragraphs-bundles-custom.css: { weight: 100 }
 
+# Theme bridge — maps host `--r-*` region vars to paragraph `--pb-*`
+# defaults on `.paragraphs-bundles`. One library per theme family;
+# `PbLibraryInfoAlterHook` adds the matching entry as a dependency of
+# `paragraphs-bundles` at runtime.
+theme-bridge-apex:
+  css:
+    theme:
+      css/bridge/pb-theme-bridge-apex.css: { weight: 100 }
+
+theme-bridge-solo:
+  css:
+    theme:
+      css/bridge/pb-theme-bridge-solo.css: { weight: 100 }
+
+theme-bridge-neutral:
+  css:
+    theme:
+      css/bridge/pb-theme-bridge-neutral.css: { weight: 100 }
+
+# Admin overlay — attached once per request by PbFieldWidgetHook when the
+# first PB color/opacity widget on a paragraph field is built.
 paragraphs-bundles-admin:
   css:
     theme:
       css/paragraphs-bundles-admin.css: { }
 
+# Color-picker widget assets — attached by PbFieldWidgetHook.
+# Renders [swatch | hex text | x clear] per the APEX admin-color-picker
+# pattern. drupal.ajax / drupalSettings not needed by the new JS.
 color-picker:
   css:
     theme:
@@ -17,10 +53,9 @@ color-picker:
     js/paragraphs-bundles-color-picker.js: {}
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once
 
+# Opacity-range widget assets — attached by PbFieldWidgetHook.
 opacity-range:
   css:
     theme:
