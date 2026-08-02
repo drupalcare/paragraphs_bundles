@@ -25,7 +25,7 @@
 {% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = 'pb-ui-inner pb-three-columns__inner' %}
+{% set classes_inner = ['pb-ui-inner', 'pb-three-columns__inner']|merge(pb_display_classes)|join(' ') %}
 
 {% set pb_3c_l_stk = paragraph.hasField('pb_display_3c_l_stk') and not paragraph.pb_display_3c_l_stk.isEmpty and paragraph|pb_field_value('pb_display_3c_l_stk') %}
 {% set pb_3c_m_stk = paragraph.hasField('pb_display_3c_m_stk') and not paragraph.pb_display_3c_m_stk.isEmpty and paragraph|pb_field_value('pb_display_3c_m_stk') %}
@@ -50,19 +50,6 @@
   (pb_3c_l_stk or pb_3c_m_stk or pb_3c_r_stk) ? 'pb-has-sticky-col',
   (pb_3c_l_tgl or pb_3c_m_tgl or pb_3c_r_tgl) ? 'pb-layout-col__icon-pos--' ~ pb_3c_icn_pos|replace({_: '-'}),
 ] %}
-
-{% set pb_displays = [
-  'pb_display_width',
-  'pb_display_border',
-  'pb_display_border_radius',
-  'pb_display_margin',
-  'pb_display_padding',
-  'pb_display_shadow',
-] %}
-{% for pb_display in pb_displays %}
-  {% set display_value = paragraph|pb_field_value(pb_display) %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
-{% endfor %}
 
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
 {% set pb_3c_l_def = paragraph.hasField('pb_display_3c_l_def') and not paragraph.pb_display_3c_l_def.isEmpty ? paragraph|pb_field_value('pb_display_3c_l_def') : 'open' %}

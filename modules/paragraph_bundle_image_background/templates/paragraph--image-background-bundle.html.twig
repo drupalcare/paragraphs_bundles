@@ -26,7 +26,7 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = 'pb-ui-inner pb-image-background__inner pb-content__full' %}
+{% set classes_inner = ['pb-ui-inner', 'pb-image-background__inner', 'pb-content__full']|merge(pb_display_classes)|join(' ') %}
 
 {% set classes = [
   'paragraph',
@@ -44,15 +44,6 @@
 {% set pb_image_title = paragraph.pb_display_background_image.title|default('') %}
 {% set pb_image_url_sm = paragraph|pb_image_field_url('pb_display_background_image_sm') %}
 {% set pb_display_bg = paragraph|pb_field_value('pb_display_bg') %}
-
-{% set pb_displays = [
-  'pb_display_width',
-  'pb_display_padding',
-] %}
-{% for pb_display in pb_displays %}
-  {% set display_value = paragraph|pb_field_value(pb_display) %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
-{% endfor %}
 
 {% if pb_image_url_sm %}
   {% set pb_breakpoint = paragraph|pb_field_value('pb_display_image_breakpoint', 'pb__992') %}

@@ -13,6 +13,7 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilderInterface;
+use Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolverInterface;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -20,6 +21,8 @@ use Psr\Log\LoggerInterface;
  *
  * Sets extra variables on every paragraph render:
  *   - `pb_paragraph_id`: DOM id (`pb__{slug}-{id}` or v1 prefix override).
+ *   - `pb_display_classes`: inner-wrapper classes from this bundle's display
+ *     fields, in the bundle's declared field order.
  *   - `pb_dynamic_library`: library id when a dynamic CSS file exists,
  *     otherwise NULL (Twig must not attach a missing library).
  *   - `pb_overlay_container_style` / `pb_overlay_title_style`: image overlay
@@ -52,6 +55,7 @@ final class PbPreprocessHook {
     private readonly PbDynamicCssBuilderInterface $dynamicCss,
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly LoggerInterface $logger,
+    private readonly PbDisplayClassResolverInterface $displayClasses,
   ) {}
 
   /**
@@ -82,6 +86,10 @@ final class PbPreprocessHook {
       ?? ('pb__' . $slug);
 
     $variables['pb_paragraph_id'] = $prefix . '-' . $id;
+    // Inner-wrapper classes for this bundle's display fields. Every template
+    // used to rebuild this with an identical five-line Twig loop over its own
+    // copy of the field list; the list is a DOM contract and now has one home.
+    $variables['pb_display_classes'] = $this->displayClasses->innerClasses($paragraph);
     $this->attachDynamicCss($variables, $paragraph, $slug, $id);
 
     if ($bundle === 'image_overlay_bundle') {

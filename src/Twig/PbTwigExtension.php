@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\TypedData\TranslatableInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbColorNormalizerInterface;
+use Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolverInterface;
 use Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -23,16 +24,10 @@ use Twig\TwigFilter;
  */
 final class PbTwigExtension extends AbstractExtension {
 
-  /**
-   * Cached stored-value → BEM class map (generated file, loaded once).
-   *
-   * @var array<string, string>|null
-   */
-  private static ?array $valueClassMap = NULL;
-
   public function __construct(
     private readonly PbImageFieldUrlResolverInterface $imageFieldUrls,
     private readonly PbColorNormalizerInterface $colorNormalizer,
+    private readonly PbDisplayClassResolverInterface $displayClasses,
   ) {}
 
   /**
@@ -151,11 +146,6 @@ final class PbTwigExtension extends AbstractExtension {
   /**
    * Maps a stored display value to its BEM class; unmapped values pass through.
    *
-   * V1 stored some display values *as* the CSS class (e.g. `pb__round_large`).
-   * V2 renders a modern BEM class without changing the stored value: the map is
-   * generated from `scripts/pb-class-naming-rules.json`. Any value absent from
-   * the map is returned verbatim, so an unmapped value can never break styling.
-   *
    * @param mixed $value
    *   Stored field value (v1 class token).
    *
@@ -163,35 +153,7 @@ final class PbTwigExtension extends AbstractExtension {
    *   BEM class, or the original value when unmapped.
    */
   public function className(mixed $value): string {
-    $value = $this->scalarToString($value);
-    if ($value === '') {
-      return '';
-    }
-    return self::valueClassMap()[$value] ?? $value;
-  }
-
-  /**
-   * Loads the generated stored-value → BEM class map once per request.
-   *
-   * @return array<string, string>
-   *   Map keyed by v1 value/class, valued by v2 BEM class.
-   */
-  private static function valueClassMap(): array {
-    if (self::$valueClassMap !== NULL) {
-      return self::$valueClassMap;
-    }
-    $file = __DIR__ . '/PbValueClassMap.php';
-    $raw = is_file($file) ? require $file : [];
-    $map = [];
-    if (is_array($raw)) {
-      foreach ($raw as $key => $value) {
-        if (is_string($key) && is_string($value)) {
-          $map[$key] = $value;
-        }
-      }
-    }
-    self::$valueClassMap = $map;
-    return $map;
+    return $this->displayClasses->className($this->scalarToString($value));
   }
 
   /**

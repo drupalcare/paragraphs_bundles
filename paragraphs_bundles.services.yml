@@ -114,6 +114,17 @@ services:
     alias: paragraphs_bundles.view_display_verifier
 
   # ---------------------------------------------------------------------------
+  # Display class resolver — the single authority on "stored display value →
+  # CSS class", and on which display fields land on a bundle's inner wrapper.
+  # Used by the `pb_class` Twig filter and by PbPreprocessHook.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.display_class_resolver:
+    class: Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolver
+
+  Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolverInterface:
+    alias: paragraphs_bundles.display_class_resolver
+
+  # ---------------------------------------------------------------------------
   # README help renderer — the single hook_help() implementation shared by this
   # module and all 26 bundle sub-modules. Their hook classes inject this and
   # pass their own module name; nothing else may duplicate the logic.
@@ -147,6 +158,7 @@ services:
       - '@paragraphs_bundles.css.dynamic_builder'
       - '@module_handler'
       - '@logger.channel.paragraphs_bundles'
+      - '@paragraphs_bundles.display_class_resolver'
 
   Drupal\paragraphs_bundles\Hook\PbFieldWidgetHook:
     autowire: true
@@ -176,5 +188,6 @@ services:
     arguments:
       - '@paragraphs_bundles.image_field_url_resolver'
       - '@paragraphs_bundles.css.color_normalizer'
+      - '@paragraphs_bundles.display_class_resolver'
     tags:
       - { name: twig.extension }

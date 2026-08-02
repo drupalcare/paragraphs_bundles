@@ -30,7 +30,7 @@
 
 {% set paragraph_id = pb_paragraph_id %}
 {% set slide_id = 'pb__slideshow-' ~ paragraph.id.value %}
-{% set classes_inner = 'pb-ui-inner pb-slideshow__wrap-inner' %}
+{% set classes_inner = ['pb-ui-inner', 'pb-slideshow__wrap-inner']|merge(pb_display_classes)|join(' ') %}
 
 {% set pb_prev_next = not paragraph.pb_display_slide_prev_next.isEmpty and paragraph|pb_field_value('pb_display_slide_prev_next') %}
 {% set pb_bottom_nav = paragraph|pb_field_value('pb_display_bottom_navigation') %}
@@ -50,19 +50,6 @@
   has_bottom_nav ? 'pb-has-bottom-nav',
   paragraph_id,
 ] %}
-
-{% set pb_displays = [
-  'pb_display_width',
-  'pb_display_border',
-  'pb_display_border_radius',
-  'pb_display_margin',
-  'pb_display_padding',
-  'pb_display_shadow',
-] %}
-{% for pb_display in pb_displays %}
-  {% set display_value = paragraph|pb_field_value(pb_display) %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
-{% endfor %}
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}">

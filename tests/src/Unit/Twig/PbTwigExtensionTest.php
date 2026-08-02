@@ -7,6 +7,7 @@ namespace Drupal\Tests\paragraphs_bundles\Unit\Twig;
 use Drupal\Core\Entity\FieldableEntityInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbColorNormalizer;
+use Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolver;
 use Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface;
 use Drupal\paragraphs_bundles\Twig\PbTwigExtension;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -37,12 +38,14 @@ final class PbTwigExtensionTest extends TestCase {
   protected function setUp(): void {
     parent::setUp();
     $this->imageFieldUrls = $this->createMock(PbImageFieldUrlResolverInterface::class);
-    // The real normalizer, not a mock: `pb_css_value` exists to apply the
-    // shared sanitizer, so stubbing it would assert only that a delegation
-    // happened and prove nothing about what reaches the style attribute.
+    // The normalizer and class resolver are the real thing, not mocks:
+    // `pb_css_value` and `pb_class` exist to apply shared logic, so stubbing
+    // them would assert only that a delegation happened and prove nothing
+    // about what reaches the style or class attribute.
     $this->extension = new PbTwigExtension(
       $this->imageFieldUrls,
       new PbColorNormalizer(),
+      new PbDisplayClassResolver(),
     );
   }
 
