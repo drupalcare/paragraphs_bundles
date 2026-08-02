@@ -96,6 +96,23 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **An accordion section with no title no longer takes down the page.** The
+  accordion template built its fragment slug by lowercasing the section title
+  read straight off the field. On an empty field that expression yields an
+  array, not a string, so rendering an untitled section raised
+  `mb_strtolower(): Argument #1 ($string) must be of type string, array given`
+  and the page failed. Titles are now read through the module's
+  `pb_field_value` filter, which always returns a string.
+- **Editing a nested body paragraph invalidates the page that shows it.**
+  Tabs, accordion and slideshow render bodies nested inside sections, and did so
+  in a way that discarded the body paragraph's cache metadata. A cached page had
+  no record that it depended on those bodies, so edits could stay invisible
+  until something else cleared the page. The bodies' cache tags now bubble up.
+- **Help pages for Paragraph Bundle Hero and Paragraph Bundle Image** were blank
+  because neither module shipped a `README.md`. Both now document their
+  paragraph types, dependencies and the config they install — Image in
+  particular owns the shared media type, breakpoints and image styles that six
+  other bundle modules depend on.
 - **Strict config-schema compliance** — corrected five classes of schema
   violation in the shipped optional config (custom field-type default values,
   null `target_bundles_drag_drop`, boolean defaults stored as integers, a stray
@@ -187,6 +204,16 @@ user-visible; read this section before upgrading.
 - Unit tests for `PbColorNormalizer` (opacity, hex overlay rgba).
 
 ### Changed
+- **No jQuery on the front end.** Six bundle libraries (tabs, carousel, 3D
+  carousel, modal, accordion, icon) and one admin widget library declared
+  `core/drupal.ajax`, which depends on `core/jquery` — so any page showing one
+  of those paragraphs downloaded jQuery and core's ajax script. None of this
+  module's JavaScript uses an ajax API. Both that dependency and the unused
+  `core/drupalSettings` declarations are gone.
+- **One implementation of `hook_help()`.** The parent module and all 26 bundle
+  sub-modules each carried their own near-identical copy of the same
+  README-to-help-page renderer. They now share one service, and each module's
+  hook class only names its module.
 - **CSS class names → BEM.** Every structural class is now
   `pb-{block}__{element}--{modifier}` and every value-driven utility is
   `pb-u-{family}--{modifier}` — e.g. `pb__accor` → `pb-accordion`,
