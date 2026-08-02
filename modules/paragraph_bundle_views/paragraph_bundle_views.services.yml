@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_views\Hook\PbvThemeHook:
+    arguments:
+      - '@extension.list.module'
+
+  Drupal\paragraph_bundle_views\Hook\PbvThemeSuggestionsHook: {}
+
+  Drupal\paragraph_bundle_views\Hook\PbvHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

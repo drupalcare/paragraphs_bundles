@@ -1,8 +1,8 @@
-name: Paragraph Bundle Views
+name: 'Paragraph Bundle Views'
 type: module
-description: A reusable Paragraph Bundle Views.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Embed a Views reference inside a paragraph.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - viewsreference:viewsreference
   - paragraphs_bundles:paragraphs_bundles
