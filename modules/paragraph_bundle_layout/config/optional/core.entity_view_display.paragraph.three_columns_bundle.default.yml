@@ -2,11 +2,27 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.paragraph.three_columns_bundle.pb_display_layout_breakpoints
     - field.field.paragraph.three_columns_bundle.pb_content_left_column
     - field.field.paragraph.three_columns_bundle.pb_content_middle_column
     - field.field.paragraph.three_columns_bundle.pb_content_right_column
     - field.field.paragraph.three_columns_bundle.pb_content_title
+    - field.field.paragraph.three_columns_bundle.pb_content_title_alignment
+    - field.field.paragraph.three_columns_bundle.pb_content_title_tag
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim_ms
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_expand
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn_pos
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_def
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_stk
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_tgl
+    - field.field.paragraph.three_columns_bundle.pb_display_3c_stk_top
     - field.field.paragraph.three_columns_bundle.pb_display_bg
     - field.field.paragraph.three_columns_bundle.pb_display_bg_hover
     - field.field.paragraph.three_columns_bundle.pb_display_bg_opacity
@@ -14,6 +30,9 @@ dependencies:
     - field.field.paragraph.three_columns_bundle.pb_display_border_color
     - field.field.paragraph.three_columns_bundle.pb_display_border_hover
     - field.field.paragraph.three_columns_bundle.pb_display_border_radius
+    - field.field.paragraph.three_columns_bundle.pb_display_layout_breakpoints
+    - field.field.paragraph.three_columns_bundle.pb_display_link
+    - field.field.paragraph.three_columns_bundle.pb_display_link_hover
     - field.field.paragraph.three_columns_bundle.pb_display_margin
     - field.field.paragraph.three_columns_bundle.pb_display_padding
     - field.field.paragraph.three_columns_bundle.pb_display_shadow
@@ -21,21 +40,6 @@ dependencies:
     - field.field.paragraph.three_columns_bundle.pb_display_text_hover
     - field.field.paragraph.three_columns_bundle.pb_display_three_columns
     - field.field.paragraph.three_columns_bundle.pb_display_width
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_tgl
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_tgl
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_tgl
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_def
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_def
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_def
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_l_stk
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_m_stk
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_r_stk
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_stk_top
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_icn_pos
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_anim_ms
-    - field.field.paragraph.three_columns_bundle.pb_display_3c_expand
     - paragraphs.paragraphs_type.three_columns_bundle
   module:
     - entity_reference_revisions
@@ -46,13 +50,6 @@ targetEntityType: paragraph
 bundle: three_columns_bundle
 mode: default
 content:
-  pb_display_layout_breakpoints:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
   pb_content_left_column:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -88,117 +85,38 @@ content:
     third_party_settings: {  }
     weight: 14
     region: content
-  pb_display_bg:
-    type: color_text_formatter_rgb
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  pb_display_bg_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  pb_display_bg_opacity:
-    type: range_number_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 13
-    region: content
-  pb_display_border:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  pb_display_border_color:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  pb_display_border_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  pb_display_border_radius:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  pb_display_margin:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  pb_display_padding:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pb_display_shadow:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  pb_display_text:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  pb_display_text_hover:
-    type: color_text_formatter_hex
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  pb_display_three_columns:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 12
-    region: content
-  pb_display_width:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 11
-    region: content
 hidden:
-  pb_display_3c_l_tgl: true
-  pb_display_3c_m_tgl: true
-  pb_display_3c_r_tgl: true
-  pb_display_3c_l_def: true
-  pb_display_3c_m_def: true
-  pb_display_3c_r_def: true
-  pb_display_3c_l_stk: true
-  pb_display_3c_m_stk: true
-  pb_display_3c_r_stk: true
-  pb_display_3c_stk_top: true
-  pb_display_3c_icn: true
-  pb_display_3c_icn_pos: true
+  pb_content_title_alignment: true
+  pb_content_title_tag: true
   pb_display_3c_anim: true
   pb_display_3c_anim_ms: true
   pb_display_3c_expand: true
+  pb_display_3c_icn: true
+  pb_display_3c_icn_pos: true
+  pb_display_3c_l_def: true
+  pb_display_3c_l_stk: true
+  pb_display_3c_l_tgl: true
+  pb_display_3c_m_def: true
+  pb_display_3c_m_stk: true
+  pb_display_3c_m_tgl: true
+  pb_display_3c_r_def: true
+  pb_display_3c_r_stk: true
+  pb_display_3c_r_tgl: true
+  pb_display_3c_stk_top: true
+  pb_display_bg: true
+  pb_display_bg_hover: true
+  pb_display_bg_opacity: true
+  pb_display_border: true
+  pb_display_border_color: true
+  pb_display_border_hover: true
+  pb_display_border_radius: true
+  pb_display_layout_breakpoints: true
+  pb_display_link: true
+  pb_display_link_hover: true
+  pb_display_margin: true
+  pb_display_padding: true
+  pb_display_shadow: true
+  pb_display_text: true
+  pb_display_text_hover: true
+  pb_display_three_columns: true
+  pb_display_width: true

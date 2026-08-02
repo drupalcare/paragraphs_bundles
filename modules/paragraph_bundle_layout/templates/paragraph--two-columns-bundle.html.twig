@@ -1,72 +1,44 @@
 {#
 /**
-* @file
-* Default theme implementation to display a 'two-columns' paragraph.
-*
-* Available variables:
-* - paragraph: Full paragraph entity.
-*   Only method names starting with "get", "has", or "is" and a few common
-*   methods such as "id", "label", and "bundle" are available. For example:
-*   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
-*   - paragraph.id(): The paragraph ID.
-*   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
-*   - paragraph.getOwnerId(): The user ID of the paragraph author.
-*   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
-*   and methods for the paragraph object.
-* - content: All paragraph items. Use {{ content }} to print them all,
-*   or print a subset such as {{ content.field_example }}. Use
-*   {{ content|without('field_example') }} to temporarily suppress the printing
-*   of a given child element.
-* - attributes: HTML attributes for the containing element.
-*   The attributes.class element may contain one or more of the following
-*   classes:
-*   - paragraphs: The current template type (also known as a "theming hook").
-*   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
-*     "Image" it would result in "paragraphs--type--image". Note that the machine
-*     name will often be in a short form of the human readable label.
-*   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
-*     preview would result in: "paragraphs--view-mode--preview", and
-*     default: "paragraphs--view-mode--default".
-* - view_mode: View mode; for example, "preview" or "full".
-* - logged_in: Flag for authenticated user status. Will be true when the
-*   current user is a logged-in member.
-* - is_admin: Flag for admin user status. Will be true when the current user
-*   is an administrator.
-*
-* @see template_preprocess_paragraph()
-*
-* @ingroup themeable
+ * @file
+ * `two_columns_bundle` paragraph template (v2).
+ *
+ * Dynamic CSS selector: `#pb-two-columns-{id} > .pb-ui-inner`
+ * Column anim/sticky vars remain inline on `.pb-two-columns` grid.
+ *
+ * @see template_preprocess_paragraph()
+ * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
+ *
+ * @ingroup themeable
+ */
 #}
 
-{# Attach the necessary library. #}
 {{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
 {{ attach_library('paragraph_bundle_layout/paragraph-bundle-layout') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{# Layout options. #}
-{% set pb_display_layout = content.pb_display_two_columns|render|striptags|trim %}
-{% set pb_layout_bp_key = content.pb_display_layout_breakpoints|render|striptags|trim %}
-{% if pb_display_layout %}
-    {% set pb_breakpoints = 'paragraph_bundle_layout/paragraph-bundle-layout-' ~ pb_layout_bp_key %}
-    {{ attach_library(pb_breakpoints) }}
+{% set pb_display_layout = paragraph|pb_field_value('pb_display_two_columns') %}
+{% set pb_layout_class = pb_display_layout ? 'pb-two-columns--' ~ pb_display_layout|replace({_: '-'}) : '' %}
+{% set pb_layout_bp_key = paragraph|pb_field_value('pb_display_layout_breakpoints') %}
+{% if pb_display_layout and pb_layout_bp_key %}
+  {{ attach_library('paragraph_bundle_layout/paragraph-bundle-layout-' ~ pb_layout_bp_key) }}
 {% endif %}
 
-{# Set the paragraph id. #}
-{% set paragraph_id  = 'pb__two-columns-' ~ paragraph.id.value %}
-{# Set the inner classes for the paragraph. #}
-{% set classes_inner = 'paragraph__inner pb__two-columns__inner' %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb-two-columns-' ~ paragraph.id.value %}
+{% set classes_inner = 'pb-ui-inner pb-two-columns__inner' %}
 
-{# Detect sticky columns early so we can add the class to the wrapper. #}
-{% set pb_2c_l_stk = paragraph.hasField('pb_display_2c_l_stk') and not paragraph.pb_display_2c_l_stk.isEmpty and paragraph.pb_display_2c_l_stk.value %}
-{% set pb_2c_r_stk = paragraph.hasField('pb_display_2c_r_stk') and not paragraph.pb_display_2c_r_stk.isEmpty and paragraph.pb_display_2c_r_stk.value %}
-{% set pb_2c_l_tgl = paragraph.hasField('pb_display_2c_l_tgl') and not paragraph.pb_display_2c_l_tgl.isEmpty and paragraph.pb_display_2c_l_tgl.value %}
-{% set pb_2c_r_tgl = paragraph.hasField('pb_display_2c_r_tgl') and not paragraph.pb_display_2c_r_tgl.isEmpty and paragraph.pb_display_2c_r_tgl.value %}
+{% set pb_2c_l_stk = paragraph.hasField('pb_display_2c_l_stk') and not paragraph.pb_display_2c_l_stk.isEmpty and paragraph|pb_field_value('pb_display_2c_l_stk') %}
+{% set pb_2c_r_stk = paragraph.hasField('pb_display_2c_r_stk') and not paragraph.pb_display_2c_r_stk.isEmpty and paragraph|pb_field_value('pb_display_2c_r_stk') %}
+{% set pb_2c_l_tgl = paragraph.hasField('pb_display_2c_l_tgl') and not paragraph.pb_display_2c_l_tgl.isEmpty and paragraph|pb_field_value('pb_display_2c_l_tgl') %}
+{% set pb_2c_r_tgl = paragraph.hasField('pb_display_2c_r_tgl') and not paragraph.pb_display_2c_r_tgl.isEmpty and paragraph|pb_field_value('pb_display_2c_r_tgl') %}
 
-{# Set the classes for the paragraph. #}
-{% set pb_2c_icn_pos = paragraph.hasField('pb_display_2c_icn_pos') and not paragraph.pb_display_2c_icn_pos.isEmpty ? paragraph.pb_display_2c_icn_pos.value : 'edge' %}
+{% set pb_2c_icn_pos = paragraph.hasField('pb_display_2c_icn_pos') and not paragraph.pb_display_2c_icn_pos.isEmpty ? paragraph|pb_field_value('pb_display_2c_icn_pos') : 'edge' %}
 
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
+  'pb-layout',
+  'pb-two-columns',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
@@ -74,20 +46,9 @@
   paragraph_id,
   pb_layout_bp_key ? pb_layout_bp_key,
   (pb_2c_l_stk or pb_2c_r_stk) ? 'pb-has-sticky-col',
-  (pb_2c_l_tgl or pb_2c_r_tgl) ? 'pb-col-icon-pos-' ~ pb_2c_icn_pos,
+  (pb_2c_l_tgl or pb_2c_r_tgl) ? 'pb-layout-col__icon-pos--' ~ pb_2c_icn_pos|replace({_: '-'}),
 ] %}
 
-{# Set the color styles for the paragraph. #}
-{% set pb_styles = {
-  'pb-bg': 'pb_display_bg',
-  'pb-bg-h': 'pb_display_bg_hover',
-  'pb-br': 'pb_display_border_color',
-  'pb-br-h': 'pb_display_border_hover',
-  'pb-tx': 'pb_display_text',
-  'pb-tx-h': 'pb_display_text_hover'
-} %}
-
-{# Set the display properties for the paragraph. #}
 {% set pb_displays = [
   'pb_display_width',
   'pb_display_border',
@@ -96,67 +57,41 @@
   'pb_display_padding',
   'pb_display_shadow',
 ] %}
-
-{# Add display properties to the inner classes if they exist. #}
 {% for pb_display in pb_displays %}
-  {% set display_value = content[pb_display]|render|striptags|trim %}
-  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ display_value : classes_inner %}
+  {% set display_value = paragraph|pb_field_value(pb_display) %}
+  {% set classes_inner = display_value ? classes_inner ~ ' ' ~ (display_value|pb_class) : classes_inner %}
 {% endfor %}
 
-{# Set the background opacity for the paragraph. #}
-{% set pb_bg_opacity = content.pb_display_bg_opacity|render|striptags|trim %}
-{% if pb_bg_opacity != 100 %}
-  {% set pb_bg_opacity = '0.' ~ "%02d"|format(pb_bg_opacity) %}
-{% endif %}
-
-{# Set the style attributes for the paragraph. #}
-{% set pb_style_attributes = [] %}
-{% for key, value in pb_styles %}
-  {% set style = content[value]|render|striptags|trim %}
-  {% if style %}
-
-    {% if value == 'pb_display_bg' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgba(' ~ style ~ ', ' ~ pb_bg_opacity ~ ');']) %}
-    {% elseif style starts with '#' %}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':' ~ style ~ ';']) %}
-    {% else %}
-    {# In case widget was changed. #}
-      {% set pb_style_attributes = pb_style_attributes|merge(['--' ~ key ~ ':rgb(' ~ style ~ ');']) %}
-    {% endif %}
-
-  {% endif %}
-{% endfor %}
-
-{% set pb_title  = content.pb_content_title|render|striptags|trim %}
-{% set pb_2c_l_def = paragraph.hasField('pb_display_2c_l_def') and not paragraph.pb_display_2c_l_def.isEmpty ? paragraph.pb_display_2c_l_def.value : 'open' %}
-{% set pb_2c_r_def = paragraph.hasField('pb_display_2c_r_def') and not paragraph.pb_display_2c_r_def.isEmpty ? paragraph.pb_display_2c_r_def.value : 'open' %}
-{% set pb_2c_stk_top = paragraph.hasField('pb_display_2c_stk_top') and not paragraph.pb_display_2c_stk_top.isEmpty ? paragraph.pb_display_2c_stk_top.value : '0' %}
-{% set pb_2c_icn = paragraph.hasField('pb_display_2c_icn') and not paragraph.pb_display_2c_icn.isEmpty ? paragraph.pb_display_2c_icn.value : 'chevron' %}
-{% set pb_2c_anim = paragraph.hasField('pb_display_2c_anim') and not paragraph.pb_display_2c_anim.isEmpty ? paragraph.pb_display_2c_anim.value : 'slide' %}
-{% set pb_2c_anim_ms = paragraph.hasField('pb_display_2c_anim_ms') and not paragraph.pb_display_2c_anim_ms.isEmpty ? paragraph.pb_display_2c_anim_ms.value : '300' %}
-{% set pb_2c_expand = paragraph.hasField('pb_display_2c_expand') and not paragraph.pb_display_2c_expand.isEmpty and paragraph.pb_display_2c_expand.value %}
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
+{% set pb_2c_l_def = paragraph.hasField('pb_display_2c_l_def') and not paragraph.pb_display_2c_l_def.isEmpty ? paragraph|pb_field_value('pb_display_2c_l_def') : 'open' %}
+{% set pb_2c_r_def = paragraph.hasField('pb_display_2c_r_def') and not paragraph.pb_display_2c_r_def.isEmpty ? paragraph|pb_field_value('pb_display_2c_r_def') : 'open' %}
+{% set pb_2c_stk_top = paragraph.hasField('pb_display_2c_stk_top') and not paragraph.pb_display_2c_stk_top.isEmpty ? paragraph|pb_field_value('pb_display_2c_stk_top') : '0' %}
+{% set pb_2c_icn = paragraph.hasField('pb_display_2c_icn') and not paragraph.pb_display_2c_icn.isEmpty ? paragraph|pb_field_value('pb_display_2c_icn') : 'chevron' %}
+{% set pb_2c_anim = paragraph.hasField('pb_display_2c_anim') and not paragraph.pb_display_2c_anim.isEmpty ? paragraph|pb_field_value('pb_display_2c_anim') : 'slide' %}
+{% set pb_2c_anim_ms = paragraph.hasField('pb_display_2c_anim_ms') and not paragraph.pb_display_2c_anim_ms.isEmpty ? paragraph|pb_field_value('pb_display_2c_anim_ms') : '300' %}
+{% set pb_2c_expand = paragraph.hasField('pb_display_2c_expand') and not paragraph.pb_display_2c_expand.isEmpty and paragraph|pb_field_value('pb_display_2c_expand') %}
 {% set pb_layout_min_map = {
-  'pb__576': '36rem',
-  'pb__768': '48rem',
-  'pb__992': '62rem',
-  'pb__1200': '75rem',
-  'pb__1400': '87.5rem'
+  pb__576: '36rem',
+  pb__768: '48rem',
+  pb__992: '62rem',
+  pb__1200: '75rem',
+  pb__1400: '87.5rem',
 } %}
 {% set pb_layout_min = pb_layout_min_map[pb_layout_bp_key]|default('62rem') %}
-{# Render the paragraph. #}
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
-  <div class="{{ classes_inner }}" {% if pb_style_attributes|length > 0 %}style="{{ pb_style_attributes|join(' ') }}"{% endif %}>
 
-    <div class="pb__content-full">
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
+  <div class="{{ classes_inner }}">
+
+    <div class="pb-content__full">
       {% if pb_title %}
-      {% include '@paragraphs_bundles/pb-content-title.html.twig' with { paragraph: paragraph, content: content } only %}
+        {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
 
       {% if pb_2c_l_tgl or pb_2c_r_tgl %}
-      <div class="pb-col-toolbar pb__two-columns two-{{ pb_display_layout }}">
+      <div class="pb-layout-col__toolbar pb-two-columns {{ pb_layout_class }}">
         {% if pb_2c_l_tgl %}
           <button type="button"
-                  class="pb-col-toggle"
+                  class="pb-layout-col__toggle"
                   data-col-toggle="left"
                   data-label-expand="{{ 'Expand left column'|t }}"
                   data-label-collapse="{{ 'Collapse left column'|t }}"
@@ -164,13 +99,13 @@
                   aria-expanded="{{ pb_2c_l_def == 'closed' ? 'false' : 'true' }}"
                   aria-label="{{ pb_2c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}"
                   title="{{ pb_2c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}">
-            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_2c_icn, col_side: 'left' }, false) }}
+            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', {icon_style: pb_2c_icn, col_side: 'left'}, false) }}
             <span class="visually-hidden">{{ 'Toggle left column'|t }}</span>
           </button>
         {% endif %}
         {% if pb_2c_r_tgl %}
           <button type="button"
-                  class="pb-col-toggle"
+                  class="pb-layout-col__toggle"
                   data-col-toggle="right"
                   data-label-expand="{{ 'Expand right column'|t }}"
                   data-label-collapse="{{ 'Collapse right column'|t }}"
@@ -178,15 +113,14 @@
                   aria-expanded="{{ pb_2c_r_def == 'closed' ? 'false' : 'true' }}"
                   aria-label="{{ pb_2c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}"
                   title="{{ pb_2c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}">
-            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', { icon_style: pb_2c_icn, col_side: 'right' }, false) }}
+            {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', {icon_style: pb_2c_icn, col_side: 'right'}, false) }}
             <span class="visually-hidden">{{ 'Toggle right column'|t }}</span>
           </button>
         {% endif %}
       </div>
       {% endif %}
 
-      <div class="pb__two-columns two-{{ pb_display_layout }}"
-           style="--pb-col-anim-ms: {{ pb_2c_anim_ms }}ms; --pb-col-sticky-top: {{ pb_2c_stk_top }}px"
+      <div class="pb-two-columns {{ pb_layout_class }}"
            data-col-icon-style="{{ pb_2c_icn }}"
            data-col-icon-position="{{ pb_2c_icn_pos }}"
            data-col-anim="{{ pb_2c_anim }}"
@@ -194,19 +128,19 @@
            data-col-expand="{{ pb_2c_expand ? '1' : '0' }}"
            data-col-layout-min="{{ pb_layout_min }}"
            data-col-sticky-top="{{ pb_2c_stk_top|default('0') }}">
-        <div class="pb-col-left{{ pb_2c_l_stk ? ' is-sticky' : '' }}{{ pb_2c_l_tgl and pb_2c_l_def == 'closed' ? ' is-collapsed' : '' }}"
+        <div class="pb-col-left{{ pb_2c_l_stk ? ' pb-is-sticky' : '' }}{{ pb_2c_l_tgl and pb_2c_l_def == 'closed' ? ' pb-is-collapsed' : '' }}"
              data-col="left"
              data-col-toggle-enabled="{{ pb_2c_l_tgl ? '1' : '0' }}"
              {% if pb_2c_l_tgl %}data-col-default="{{ pb_2c_l_def }}"{% endif %}>
-          <div id="{{ paragraph_id }}-col-left" class="pb-col-content"{{ pb_2c_l_tgl and pb_2c_l_def == 'closed' ? ' aria-hidden="true"' : '' }}>
+          <div id="{{ paragraph_id }}-col-left" class="pb-layout-col__content"{{ pb_2c_l_tgl and pb_2c_l_def == 'closed' ? ' aria-hidden="true"' : '' }}>
           {{ content.pb_content_left_column }}
           </div>
         </div>
-        <div class="pb-col-right{{ pb_2c_r_stk ? ' is-sticky' : '' }}{{ pb_2c_r_tgl and pb_2c_r_def == 'closed' ? ' is-collapsed' : '' }}"
+        <div class="pb-col-right{{ pb_2c_r_stk ? ' pb-is-sticky' : '' }}{{ pb_2c_r_tgl and pb_2c_r_def == 'closed' ? ' pb-is-collapsed' : '' }}"
              data-col="right"
              data-col-toggle-enabled="{{ pb_2c_r_tgl ? '1' : '0' }}"
              {% if pb_2c_r_tgl %}data-col-default="{{ pb_2c_r_def }}"{% endif %}>
-          <div id="{{ paragraph_id }}-col-right" class="pb-col-content"{{ pb_2c_r_tgl and pb_2c_r_def == 'closed' ? ' aria-hidden="true"' : '' }}>
+          <div id="{{ paragraph_id }}-col-right" class="pb-layout-col__content"{{ pb_2c_r_tgl and pb_2c_r_def == 'closed' ? ' aria-hidden="true"' : '' }}>
           {{ content.pb_content_right_column }}
           </div>
         </div>
@@ -214,4 +148,4 @@
 
     </div>
   </div>
-</div> {# End of main wrapper #}
+</div>

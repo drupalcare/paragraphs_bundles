@@ -1,6 +1,6 @@
 /**
  * @file
- * Paragraph Bundle Layout — 992px breakpoint.
+ * Paragraph Bundle Layout - 992px breakpoint.
  *
  * Filename:     paragraph-bundle-layout-pb-992.css
  * Website:      https://www.flashwebcenter.com
@@ -10,76 +10,76 @@
 @media (min-width:62rem) {
 
 /* ==========================================================================
-   Grid layout — column ratios.
+   Grid layout - column ratios.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l6_l6,
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l4_l8,
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l8_l4,
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l3_l9,
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l9_l3,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l4_l4_l4,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l2_l8_l2,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l2_l2_l8,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l8_l2_l2,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l3_l6_l3,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l6_l3_l3,
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l3_l3_l6 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l6-l6,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l4-l8,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l8-l4,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l3-l9,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l9-l3,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l4-l4-l4,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l2-l8-l2,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l2-l2-l8,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l8-l2-l2,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l3-l6-l3,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l6-l3-l3,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l3-l3-l6 {
     grid-auto-flow: column;
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l6_l6 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l6-l6 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l4_l8 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l4-l8 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l8_l4 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l8-l4 {
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l3_l9 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l3-l9 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.two-l9_l3 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-two-columns--l9-l3 {
     grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l4_l4_l4 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l4-l4-l4 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l2_l8_l2 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l2-l8-l2 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 4fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l2_l2_l8 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l2-l2-l8 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 4fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l8_l2_l2 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l8-l2-l2 {
     grid-template-columns: minmax(0, 4fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l3_l6_l3 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l3-l6-l3 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l6_l3_l3 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l6-l3-l3 {
     grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__three-columns.three-l3_l3_l6 {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-three-columns--l3-l3-l6 {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 3fr);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns .paragraphs-bundles,
-  .paragraphs-bundles.pb__992 .pb__three-columns .paragraphs-bundles,
-  .paragraphs-bundles.pb__992 .pb__two-columns .paragraph__inner,
-  .paragraphs-bundles.pb__992 .pb__three-columns .paragraph__inner {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns .paragraphs-bundles,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns .paragraphs-bundles,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns .pb-ui-inner,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns .pb-ui-inner {
     display: flex;
   }
 
@@ -87,114 +87,112 @@
    Sticky columns.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb__two-columns > [data-col].is-sticky,
-  .paragraphs-bundles.pb__992 .pb__three-columns > [data-col].is-sticky {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns > [data-col].pb-is-sticky,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns > [data-col].pb-is-sticky {
     position: sticky;
-    inset-block-start: var(--pb-col-sticky-top, 0px);
+    inset-block-start: var(--pb-col-sticky-top, 0);
     align-self: start;
     block-size: auto;
     z-index: 2;
   }
 
-  .paragraphs-bundles.pb__992.pb-has-sticky-col,
-  .paragraphs-bundles.pb__992.pb-has-sticky-col > .paragraph__inner,
-  .paragraphs-bundles.pb__992.pb-has-sticky-col .pb__content-full,
-  .paragraphs-bundles.pb__992.pb-has-sticky-col .pb__two-columns,
-  .paragraphs-bundles.pb__992.pb-has-sticky-col .pb__three-columns {
+  .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col,
+  .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col > .pb-ui-inner,
+  .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col .pb-content__full,
+  .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col .pb-two-columns,
+  .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col .pb-three-columns {
     overflow: visible;
   }
 
 /* ==========================================================================
-   Column toggle — custom properties.
+   Column toggle - custom properties.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb__two-columns,
-  .paragraphs-bundles.pb__992 .pb__three-columns {
-    --pb-col-anim-ms: 300ms;
-    --pb-col-sticky-top: 0px;
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns {
     transition: grid-template-columns var(--pb-col-anim-ms, 300ms) cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns > [data-col],
-  .paragraphs-bundles.pb__992 .pb__three-columns > [data-col] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns > [data-col],
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns > [data-col] {
     overflow-anchor: none;
     min-inline-size: 0;
   }
 
 /* ==========================================================================
-   Column toggle — toolbar.
+   Column toggle - toolbar.
    The toolbar is a sibling grid that uses the same layout class as the
    content grid, so buttons automatically align with their columns.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb-col-toolbar {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar {
     position: relative;
     z-index: 5;
   }
 
   /* Two-column toolbar: left button in column 1, right button in column 2. */
-  .paragraphs-bundles.pb__992 .pb-col-toolbar.pb__two-columns [data-col-toggle="left"] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar.pb-two-columns [data-col-toggle="left"] {
     grid-column: 1;
     justify-self: start;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toolbar.pb__two-columns [data-col-toggle="right"] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar.pb-two-columns [data-col-toggle="right"] {
     grid-column: 2;
     justify-self: end;
   }
 
   /* Three-column toolbar: buttons in columns 1, 2, 3. */
-  .paragraphs-bundles.pb__992 .pb-col-toolbar.pb__three-columns [data-col-toggle="left"] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="left"] {
     grid-column: 1;
     justify-self: start;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="middle"] {
     grid-column: 2;
     justify-self: center;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toolbar.pb__three-columns [data-col-toggle="right"] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="right"] {
     grid-column: 3;
     justify-self: end;
   }
 
 /* ==========================================================================
-   Column toggle — toolbar position: edge_top.
+   Column toggle - toolbar position: edge_top.
    Toolbar overlaid at the top, with inline margin so buttons sit outside the grid.
    Middle button aligned to end of its column.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge_top .pb__content-full {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge-top .pb-content__full {
     position: relative;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge-top .pb-layout-col__toolbar {
     position: absolute;
     inset-block-start: 0;
     inset-inline: -2rem;
     pointer-events: none;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar .pb-col-toggle {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge-top .pb-layout-col__toolbar .pb-layout-col__toggle {
     pointer-events: auto;
   }
 
   /* Edge top: middle button right-aligned in its column. */
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge_top .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge-top .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="middle"] {
     justify-self: end;
   }
 
 /* ==========================================================================
-   Column toggle — toolbar position: inside_center.
+   Column toggle - toolbar position: inside_center.
    Toolbar overlaid at vertical center of the content grid.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-inside_center .pb__content-full {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--inside-center .pb-content__full {
     position: relative;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-inside_center .pb-col-toolbar {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--inside-center .pb-layout-col__toolbar {
     position: absolute;
     inset-block-start: 50%;
     inset-inline: 0;
@@ -202,21 +200,21 @@
     pointer-events: none;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-inside_center .pb-col-toolbar .pb-col-toggle {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--inside-center .pb-layout-col__toolbar .pb-layout-col__toggle {
     pointer-events: auto;
   }
 
 /* ==========================================================================
-   Column toggle — toolbar position: edge.
+   Column toggle - toolbar position: edge.
    Toolbar overlaid, with inline margin so buttons sit outside the grid.
    Middle button aligned to end of its column.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge .pb__content-full {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge .pb-content__full {
     position: relative;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge .pb-col-toolbar {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge .pb-layout-col__toolbar {
     position: absolute;
     inset-block-start: 50%;
     inset-inline: -2rem;
@@ -224,20 +222,20 @@
     pointer-events: none;
   }
 
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge .pb-col-toolbar .pb-col-toggle {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge .pb-layout-col__toolbar .pb-layout-col__toggle {
     pointer-events: auto;
   }
 
   /* Edge: middle button right-aligned in its column. */
-  .paragraphs-bundles.pb__992.pb-col-icon-pos-edge .pb-col-toolbar.pb__three-columns [data-col-toggle="middle"] {
+  .paragraphs-bundles.pb-layout.pb__992.pb-layout-col__icon-pos--edge .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="middle"] {
     justify-self: end;
   }
 
 /* ==========================================================================
-   Column toggle — button base.
+   Column toggle - button base.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -247,21 +245,21 @@
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: var(--pb-tx, var(--r-tx, inherit));
+    color: var(--pb-tx, inherit);
     cursor: pointer;
     z-index: 3;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle:focus-visible {
-    outline: 2px solid currentColor;
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:focus-visible {
+    outline: 2px solid currentcolor;
     outline-offset: 2px;
   }
 
 /* ==========================================================================
-   Column toggle — SVG icon.
+   Column toggle - SVG icon.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle__svg {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle-svg {
     display: grid;
     place-items: center;
     inline-size: 36px;
@@ -270,42 +268,42 @@
     transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-icon-plus_minus .pb-col-toggle__svg {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--plus-minus .pb-layout-col__toggle-svg {
     inline-size: 28px;
     block-size: 28px;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle__svg svg {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle-svg svg {
     inline-size: 100%;
     block-size: 100%;
     display: block;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle svg {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle svg {
     opacity: 0.85;
     transition: opacity 0.2s ease-out;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-toggle:hover svg {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:hover svg {
     opacity: 1;
   }
 
-  .paragraphs-bundles.pb__992 .pb-col-icon-caret .pb-col-toggle__icon--caret,
-  .paragraphs-bundles.pb__992 .pb-col-icon-angle .pb-col-toggle__icon--angle {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--caret .pb-layout-col__toggle-icon--caret,
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--angle .pb-layout-col__toggle-icon--angle {
     display: flex;
     transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
 /* ==========================================================================
-   Column toggle — collapsed state.
+   Column toggle - collapsed state.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb__two-columns > [data-col][data-collapsed],
-  .paragraphs-bundles.pb__992 .pb__three-columns > [data-col][data-collapsed] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns > [data-col][data-collapsed],
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns > [data-col][data-collapsed] {
     z-index: 4;
   }
 
-  .paragraphs-bundles.pb__992 [data-col][data-collapsed] > .pb-col-content {
+  .paragraphs-bundles.pb-layout.pb__992 [data-col][data-collapsed] > .pb-layout-col__content {
     max-block-size: 0;
     overflow: hidden;
     opacity: 0;
@@ -313,43 +311,46 @@
   }
 
   /* Icon state swap: uses data-collapsed on the button itself (toolbar). */
-  .paragraphs-bundles.pb__992 .pb-col-toggle:not([data-collapsed]) .pb-col-toggle__state--collapsed {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:not([data-collapsed]) .pb-layout-col__toggle-state--collapsed {
     display: none;
   }
-  .paragraphs-bundles.pb__992 .pb-col-toggle[data-collapsed] .pb-col-toggle__state--expanded {
+
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle[data-collapsed] .pb-layout-col__toggle-state--expanded {
     display: none;
   }
-  .paragraphs-bundles.pb__992 .pb-col-toggle:not([data-collapsed]) .pb-col-toggle__state--expanded {
+
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:not([data-collapsed]) .pb-layout-col__toggle-state--expanded {
     display: block;
   }
-  .paragraphs-bundles.pb__992 .pb-col-toggle[data-collapsed] .pb-col-toggle__state--collapsed {
+
+  .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle[data-collapsed] .pb-layout-col__toggle-state--collapsed {
     display: block;
   }
 
   /* Caret/angle rotation on collapse. */
 /* ==========================================================================
-   Column toggle — expand mode.
+   Column toggle - expand mode.
    ========================================================================== */
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.has-single-visible-col > [data-col][data-collapsed],
-  .paragraphs-bundles.pb__992 .pb__two-columns.has-single-visible-col > [data-col]:not([data-collapsed]),
-  .paragraphs-bundles.pb__992 .pb__three-columns.has-single-visible-col > [data-col][data-collapsed],
-  .paragraphs-bundles.pb__992 .pb__three-columns.has-single-visible-col > [data-col]:not([data-collapsed]) {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-has-single-visible-col > [data-col][data-collapsed],
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-has-single-visible-col > [data-col]:not([data-collapsed]),
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-has-single-visible-col > [data-col][data-collapsed],
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-has-single-visible-col > [data-col]:not([data-collapsed]) {
     min-inline-size: 0;
   }
 
-  .paragraphs-bundles.pb__992 .pb__two-columns.has-single-visible-col > [data-col][data-collapsed],
-  .paragraphs-bundles.pb__992 .pb__three-columns.has-single-visible-col > [data-col][data-collapsed] {
+  .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns.pb-has-single-visible-col > [data-col][data-collapsed],
+  .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns.pb-has-single-visible-col > [data-col][data-collapsed] {
     overflow: visible;
   }
 
 /* ==========================================================================
-   Column toggle — all-collapsed states.
+   Column toggle - all-collapsed states.
    ========================================================================== */
 
 
-  .paragraph--type--two-columns-bundle.pb__992.left-right-collapsed .pb-col-toolbar,
-  .paragraph--type--three-columns-bundle.pb__992.left-right-middle-collapsed .pb-col-toolbar {
+  .paragraphs-bundles.pb-layout.pb-two-columns.pb__992.left-right-collapsed .pb-layout-col__toolbar,
+  .paragraphs-bundles.pb-layout.pb-three-columns.pb__992.left-right-middle-collapsed .pb-layout-col__toolbar {
     position: relative;
     inset-block-start: auto;
     inset-inline: auto;
@@ -362,25 +363,25 @@
   }
 
 /* ==========================================================================
-   Column toggle — reduced motion.
+   Column toggle - reduced motion.
    ========================================================================== */
 
   @media (prefers-reduced-motion: reduce) {
-    .paragraphs-bundles.pb__992 .pb__two-columns,
-    .paragraphs-bundles.pb__992 .pb__three-columns {
+    .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns,
+    .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns {
       transition: none;
     }
 
-    .paragraphs-bundles.pb__992 .pb-col-toggle__svg {
+    .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle-svg {
       transition: none;
     }
 
-    .paragraphs-bundles.pb__992 .pb-col-icon-caret .pb-col-toggle__icon--caret,
-    .paragraphs-bundles.pb__992 .pb-col-icon-angle .pb-col-toggle__icon--angle {
+    .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--caret .pb-layout-col__toggle-icon--caret,
+    .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--angle .pb-layout-col__toggle-icon--angle {
       transition: none;
     }
 
-    .paragraphs-bundles.pb__992 .pb-col-toggle svg {
+    .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle svg {
       transition: none;
     }
   }

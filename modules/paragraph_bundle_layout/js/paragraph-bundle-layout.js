@@ -1,20 +1,60 @@
 /**
  * @file
- * Paragraph Bundle Layout — column toggles, expand, sticky.
+ * Paragraph Bundle Layout - column toggles, expand, sticky.
  *
  * Filename:     paragraph-bundle-layout.js
  * Website:      https://www.flashwebcenter.com
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-(function (Drupal, once) {
+// phpcs:disable Drupal.NamingConventions.UpperCaseConstant
+// phpcs:disable Generic.PHP.UpperCaseConstant
+// phpcs:disable Squiz.WhiteSpace.OperatorSpacing
+
+((Drupal, once) => {
   'use strict';
 
-  /**
-   * All possible collapse state classes (mutually exclusive).
-   *
-   * @type {string[]}
-   */
-  var COLLAPSE_CLASSES = [
+  const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
+  const PB_LAYOUT = 'pb-layout';
+  const PB_TWO_COLUMNS = 'pb-two-columns';
+  const PB_THREE_COLUMNS = 'pb-three-columns';
+  const PB_LAYOUT_COL__TOOLBAR = 'pb-layout-col__toolbar';
+  const PB_LAYOUT_COL__CONTENT = 'pb-layout-col__content';
+  const PB_LAYOUT_COL__TOGGLE = 'pb-layout-col__toggle';
+  const PB_IS_COLLAPSED = 'pb-is-collapsed';
+  const PB_IS_STICKY = 'pb-is-sticky';
+
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT =
+    `.${PARAGRAPHS_BUNDLES}.${PB_LAYOUT}`;
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS =
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_TWO_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS =
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_THREE_COLUMNS}`;
+  const LAYOUT_GRID_SELECTOR = [
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS} .${PB_TWO_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR})`,
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS} .${PB_THREE_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR})`,
+  ].join(', ');
+  const LAYOUT_COLUMN_SELECTOR = [
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS} .${PB_TWO_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR}) > [data-col]`,
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS} .${PB_THREE_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR}) > [data-col]`,
+  ].join(', ');
+  const LAYOUT_STICKY_SELECTOR = [
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS} [data-col].${PB_IS_STICKY}`,
+    `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS} [data-col].${PB_IS_STICKY}`,
+  ].join(', ');
+
+  const PB_LAYOUT_GRID_OWNED_COLUMN = ':scope > [data-col]';
+  const PB_LAYOUT_COLUMN_OWNED_CONTENT =
+    `:scope > .${PB_LAYOUT_COL__CONTENT}`;
+
+  const ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_COLUMN =
+    'pb-paragraph-bundle-layout-column';
+  const ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_GRID =
+    'pb-paragraph-bundle-layout-grid';
+  const ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_STICKY =
+    'pb-paragraph-bundle-layout-sticky';
+
+  /** @type {readonly string[]} */
+  const COLLAPSE_CLASSES = [
     'left-is-collapsed',
     'right-is-collapsed',
     'middle-is-collapsed',
@@ -24,124 +64,108 @@
     'left-right-middle-collapsed',
   ];
 
-  /**
-   * Column sort order for building class names.
-   *
-   * @type {string[]}
-   */
-  var COL_ORDER = ['left', 'right', 'middle'];
+  /** @type {readonly string[]} */
+  const COL_ORDER = ['left', 'right', 'middle'];
+
+  /** @type {WeakMap<HTMLElement, AbortController>} */
+  const gridAbortControllers = new WeakMap();
 
   /**
-   * Check whether a column is in collapsed state.
+   * @param {string} token
    *
+   * @return {string}
+   */
+  const toBemToken = (token) => token.replace(/_/g, '-');
+
+  /**
    * @param {HTMLElement} col
-   *   The column element.
    *
    * @return {boolean}
-   *   True if the column is collapsed.
    */
-  function isCollapsed(col) {
-    return col.hasAttribute('data-collapsed');
-  }
+  const isCollapsed = (col) => col.hasAttribute('data-collapsed');
 
   /**
-   * Set or remove the collapsed state on a column.
-   *
    * @param {HTMLElement} col
-   *   The column element.
    * @param {boolean} collapsed
-   *   True to collapse, false to expand.
    */
-  function setCollapsed(col, collapsed) {
+  const setCollapsed = (col, collapsed) => {
     if (collapsed) {
       col.setAttribute('data-collapsed', '');
     }
     else {
       col.removeAttribute('data-collapsed');
     }
-  }
+  };
 
   /**
-   * Compute and apply the single collapse state class on the .paragraphs-bundles wrapper.
-   *
-   * Reads which columns have [data-collapsed], builds the class name
-   * (e.g. "left-is-collapsed", "left-right-collapsed"), and sets it
-   * on the closest .paragraphs-bundles ancestor. Removes all other state classes first.
-   *
    * @param {HTMLElement} grid
-   *   The grid container (.pb__two-columns or .pb__three-columns).
    */
-  function updateCollapseClass(grid) {
-    var paragraph = grid.closest('.paragraphs-bundles');
-    if (!paragraph) {
+  const updateCollapseClass = (grid) => {
+    const paragraph = grid.closest(
+      `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS}, ${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS}`,
+    );
+
+    if (!(paragraph instanceof HTMLElement)) {
       return;
     }
 
-    var columns = grid.querySelectorAll(':scope > [data-col]');
-    var collapsed = [];
-    var i;
+    const columns = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN);
+    const collapsed = [];
 
-    for (i = 0; i < columns.length; i++) {
-      if (columns[i].hasAttribute('data-collapsed')) {
-        collapsed.push(columns[i].getAttribute('data-col'));
+    columns.forEach((column) => {
+      if (column.hasAttribute('data-collapsed')) {
+        const colName = column.getAttribute('data-col');
+        if (colName) {
+          collapsed.push(colName);
+        }
       }
-    }
+    });
 
-    paragraph.classList.remove.apply(paragraph.classList, COLLAPSE_CLASSES);
+    paragraph.classList.remove(...COLLAPSE_CLASSES);
 
     if (collapsed.length === 0) {
       return;
     }
 
-    collapsed.sort(function (a, b) {
-      return COL_ORDER.indexOf(a) - COL_ORDER.indexOf(b);
-    });
+    collapsed.sort(
+      (a, b) => COL_ORDER.indexOf(a) - COL_ORDER.indexOf(b),
+    );
 
-    var cls = collapsed.length === 1
-      ? collapsed[0] + '-is-collapsed'
-      : collapsed.join('-') + '-collapsed';
+    const cls = collapsed.length === 1
+      ? `${collapsed[0]}-is-collapsed`
+      : `${collapsed.join('-')}-collapsed`;
 
-    if (COLLAPSE_CLASSES.indexOf(cls) !== -1) {
+    if (COLLAPSE_CLASSES.includes(cls)) {
       paragraph.classList.add(cls);
     }
-  }
+  };
 
   /**
-   * Restore viewport scroll after layout changes (focus / height / grid).
-   *
    * @param {number} sx
-   *   scrollX captured at interaction start.
    * @param {number} sy
-   *   scrollY captured at interaction start.
    */
-  function restoreScrollAfterLayout(sx, sy) {
-    window.requestAnimationFrame(function () {
+  const restoreScrollAfterLayout = (sx, sy) => {
+    window.requestAnimationFrame(() => {
       window.scrollTo(sx, sy);
-      window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(() => {
         window.scrollTo(sx, sy);
       });
     });
-  }
+  };
 
   /**
-   * Parse column ratios from the grid's layout class name.
-   *
-   * Reads classes like "two-l6_l6" or "three-l2_l8_l2" and extracts
-   * the numeric ratios for use as fr values in grid-template-columns.
-   *
    * @param {HTMLElement} grid
-   *   The grid container.
    *
    * @return {number[]}
-   *   Array of ratio numbers (e.g. [6, 6] or [2, 8, 2]).
    */
-  function parseRatios(grid) {
-    var classes = grid.className.split(/\s+/);
-    var i, match;
-    for (i = 0; i < classes.length; i++) {
-      match = classes[i].match(/^(?:two|three)-l(\d+)(?:_l(\d+))?(?:_l(\d+))?$/);
+  const parseRatios = (grid) => {
+    const classes = grid.className.split(/\s+/);
+    for (const className of classes) {
+      const match = className.match(
+        /^pb-(?:two|three)-columns--l(\d+)(?:-l(\d+))?(?:-l(\d+))?$/,
+      );
       if (match) {
-        var ratios = [parseInt(match[1], 10)];
+        const ratios = [parseInt(match[1], 10)];
         if (match[2]) {
           ratios.push(parseInt(match[2], 10));
         }
@@ -151,82 +175,76 @@
         return ratios;
       }
     }
-    // Fallback: equal ratios based on column count.
-    var count = grid.querySelectorAll(':scope > [data-col]').length;
-    var result = [];
-    for (i = 0; i < count; i++) {
-      result.push(1);
-    }
-    return result;
-  }
+
+    const count = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN).length;
+    return Array.from({ length: count }, () => 1);
+  };
 
   /**
-   * Compute and apply grid-template-columns based on collapse state.
-   *
-   * Sets inline grid-template-columns using fr values so that CSS
-   * transitions animate column widths smoothly. Collapsed columns
-   * get 0fr, visible columns get their original ratio as Xfr.
-   *
-   * Toggles modifier classes on the grid for CSS hooks:
-   * - has-collapsed-col: any collapsed column
-   * - has-single-visible-col: expand mode and exactly one visible column
-   * - has-two-visible-cols: three columns and exactly two visible
-   *
    * @param {HTMLElement} grid
-   *   The grid container.
-   * @param {number[]} ratios
-   *   Column ratios parsed from the layout class.
+   *
+   * @return {HTMLElement|null}
    */
-  function setGridColumns(grid, ratios) {
-    if (!grid || !ratios || ratios.length === 0) {
+  const getToolbar = (grid) => {
+    const prev = grid.previousElementSibling;
+    return prev instanceof HTMLElement
+      && prev.classList.contains(PB_LAYOUT_COL__TOOLBAR)
+      ? prev
+      : null;
+  };
+
+  /**
+   * @param {HTMLElement} grid
+   * @param {number[]} ratios
+   */
+  const setGridColumns = (grid, ratios) => {
+    if (!ratios.length) {
       return;
     }
 
-    var columns = grid.querySelectorAll(':scope > [data-col]');
-    var expand = grid.getAttribute('data-col-expand') === '1';
-    var visibleCount = 0;
-    var hasCollapsed = false;
-    var parts = [];
-    var i;
+    const columns = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN);
+    const expand = grid.getAttribute('data-col-expand') === '1';
+    let visibleCount = 0;
+    let hasCollapsed = false;
+    const parts = [];
 
-    for (i = 0; i < columns.length; i++) {
-      if (isCollapsed(columns[i])) {
+    columns.forEach((column, index) => {
+      if (isCollapsed(column)) {
         parts.push('0fr');
         hasCollapsed = true;
       }
       else {
-        parts.push((ratios[i] || 1) + 'fr');
-        visibleCount++;
+        parts.push(`${ratios[index] || 1}fr`);
+        visibleCount += 1;
       }
-    }
+    });
 
-    var singleVisible = expand && visibleCount === 1 && hasCollapsed;
-    var twoVisibleInThree =
+    const singleVisible = expand && visibleCount === 1 && hasCollapsed;
+    const twoVisibleInThree =
       columns.length === 3 && visibleCount === 2 && hasCollapsed;
-    grid.classList.toggle('has-collapsed-col', hasCollapsed);
-    grid.classList.toggle('has-single-visible-col', singleVisible);
-    grid.classList.toggle('has-two-visible-cols', twoVisibleInThree);
+
+    grid.classList.toggle('pb-has-collapsed-col', hasCollapsed);
+    grid.classList.toggle('pb-has-single-visible-col', singleVisible);
+    grid.classList.toggle('pb-has-two-visible-cols', twoVisibleInThree);
 
     if (!hasCollapsed) {
-      // All columns expanded — set fr values for transition continuity.
       grid.style.gridTemplateColumns = parts.join(' ');
       return;
     }
 
-    // Expand mode: remaining column fills full width.
     if (singleVisible) {
-      var min = grid.getAttribute('data-col-layout-min') || '62rem';
-      var mqMatches = false;
+      const min = grid.getAttribute('data-col-layout-min') || '62rem';
+      let mqMatches = true;
 
       try {
-        mqMatches = window.matchMedia('(min-width: ' + min + ')').matches;
+        mqMatches = window.matchMedia(`(min-width: ${min})`).matches;
       }
-      catch (e) {
+      catch {
         mqMatches = true;
       }
 
       if (mqMatches) {
-        for (i = 0; i < parts.length; i++) {
+        for (let i = 0; i < parts.length; i += 1) {
           if (parts[i] !== '0fr') {
             parts[i] = '1fr';
           }
@@ -235,114 +253,90 @@
     }
 
     grid.style.gridTemplateColumns = parts.join(' ');
-  }
+  };
 
   /**
-   * Synchronize ARIA attributes on a toggle button and its content.
+   * @param {HTMLElement} toolbar
+   * @param {string} colName
    *
-   * @param {HTMLElement} col
-   *   The column element.
-   * @param {HTMLElement} toggleButton
-   *   The toggle button.
-   * @param {HTMLElement} content
-   *   The .pb-col-content element.
+   * @return {HTMLElement|null}
    */
-  function syncAriaState(col, toggleButton, content) {
-    var collapsed = isCollapsed(col);
+  const getToggleButton = (toolbar, colName) => {
+    const button = toolbar.querySelector(`[data-col-toggle="${colName}"]`);
+    return button instanceof HTMLElement ? button : null;
+  };
+
+  /**
+   * @param {HTMLElement} col
+   * @param {HTMLElement} toggleButton
+   * @param {HTMLElement} content
+   * @param {boolean} announce
+   */
+  const syncAriaState = (col, toggleButton, content, announce = false) => {
+    const collapsed = isCollapsed(col);
     toggleButton.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     content.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
-    var expandLabel = toggleButton.getAttribute('data-label-expand');
-    var collapseLabel = toggleButton.getAttribute('data-label-collapse');
-    var actionLabel = collapsed ? expandLabel : collapseLabel;
+    content.inert = collapsed;
+
+    const expandLabel = toggleButton.getAttribute('data-label-expand');
+    const collapseLabel = toggleButton.getAttribute('data-label-collapse');
+    const actionLabel = collapsed ? expandLabel : collapseLabel;
+
     if (actionLabel) {
       toggleButton.setAttribute('aria-label', actionLabel);
       toggleButton.setAttribute('title', actionLabel);
+      if (announce) {
+        Drupal.announce(actionLabel, 'polite');
+      }
     }
-  }
+  };
 
   /**
-   * Find the toolbar sibling for a grid container.
-   *
    * @param {HTMLElement} grid
-   *   The grid container.
-   *
-   * @return {HTMLElement|null}
-   *   The toolbar element, or null.
    */
-  function getToolbar(grid) {
-    var prev = grid.previousElementSibling;
-    return prev && prev.classList.contains('pb-col-toolbar') ? prev : null;
-  }
+  const expandAllColumns = (grid) => {
+    const toolbar = getToolbar(grid);
+    const columns = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN);
 
-  /**
-   * Find the toggle button for a given column name in the toolbar.
-   *
-   * @param {HTMLElement} toolbar
-   *   The toolbar element.
-   * @param {string} colName
-   *   The column name (left, right, middle).
-   *
-   * @return {HTMLElement|null}
-   *   The button element, or null.
-   */
-  function getToggleButton(toolbar, colName) {
-    return toolbar
-      ? toolbar.querySelector('[data-col-toggle="' + colName + '"]')
-      : null;
-  }
+    columns.forEach((col) => {
+      setCollapsed(col, false);
+      const colName = col.getAttribute('data-col');
+      const btn = colName && toolbar ? getToggleButton(toolbar, colName) : null;
+      const content = col.querySelector(PB_LAYOUT_COLUMN_OWNED_CONTENT);
 
-  /**
-   * Expand all columns and remove collapse state classes.
-   *
-   * Used when the viewport is below the layout breakpoint so all
-   * content is visible in the stacked mobile layout.
-   *
-   * @param {HTMLElement} grid
-   *   The grid container.
-   */
-  function expandAllColumns(grid) {
-    var toolbar = getToolbar(grid);
-    var columns = grid.querySelectorAll(':scope > [data-col]');
-    var i;
-    for (i = 0; i < columns.length; i++) {
-      setCollapsed(columns[i], false);
-      var colName = columns[i].getAttribute('data-col');
-      var btn = getToggleButton(toolbar, colName);
-      var cnt = columns[i].querySelector(':scope > .pb-col-content');
       if (btn) {
         btn.removeAttribute('data-collapsed');
       }
-      if (btn && cnt) {
-        syncAriaState(columns[i], btn, cnt);
+      if (btn && content instanceof HTMLElement) {
+        syncAriaState(col, btn, content);
       }
-    }
+    });
+
     updateCollapseClass(grid);
     grid.style.removeProperty('grid-template-columns');
-    grid.classList.remove('has-collapsed-col', 'has-single-visible-col', 'has-two-visible-cols');
-  }
+    grid.classList.remove(
+      'pb-has-collapsed-col',
+      'pb-has-single-visible-col',
+      'pb-has-two-visible-cols',
+    );
+  };
 
   /**
-   * Restore each column to its configured default state.
-   *
-   * Reads data-col-default ("open" or "closed") from each column
-   * and applies the corresponding collapsed state.
-   *
    * @param {HTMLElement} grid
-   *   The grid container.
    * @param {number[]} ratios
-   *   Column ratios parsed from the layout class.
    */
-  function restoreDefaultStates(grid, ratios) {
-    var toolbar = getToolbar(grid);
-    var columns = grid.querySelectorAll(':scope > [data-col]');
-    var i;
-    for (i = 0; i < columns.length; i++) {
-      var def = columns[i].getAttribute('data-col-default') || 'open';
-      var collapsed = def === 'closed';
-      setCollapsed(columns[i], collapsed);
-      var colName = columns[i].getAttribute('data-col');
-      var btn = getToggleButton(toolbar, colName);
-      var cnt = columns[i].querySelector(':scope > .pb-col-content');
+  const restoreDefaultStates = (grid, ratios) => {
+    const toolbar = getToolbar(grid);
+    const columns = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN);
+
+    columns.forEach((col) => {
+      const def = col.getAttribute('data-col-default') || 'open';
+      const collapsed = def === 'closed';
+      setCollapsed(col, collapsed);
+      const colName = col.getAttribute('data-col');
+      const btn = colName && toolbar ? getToggleButton(toolbar, colName) : null;
+      const content = col.querySelector(PB_LAYOUT_COLUMN_OWNED_CONTENT);
+
       if (btn) {
         if (collapsed) {
           btn.setAttribute('data-collapsed', '');
@@ -351,100 +345,84 @@
           btn.removeAttribute('data-collapsed');
         }
       }
-      if (btn && cnt) {
-        syncAriaState(columns[i], btn, cnt);
+      if (btn && content instanceof HTMLElement) {
+        syncAriaState(col, btn, content);
       }
-    }
+    });
+
     updateCollapseClass(grid);
     setGridColumns(grid, ratios);
-  }
+  };
 
   /**
-   * Initialize toggle buttons for a two- or three-column grid.
-   *
-   * Reads configuration from data attributes on the grid, sets up
-   * click handlers, and manages collapse state classes. The column
-   * width animation is handled entirely by CSS transitions on
-   * grid-template-columns; content fades via CSS opacity transition.
-   * Toggle functionality is disabled below the layout breakpoint.
-   *
    * @param {HTMLElement} grid
-   *   The grid container (.pb__two-columns or .pb__three-columns).
    */
-  function initToggles(grid) {
-    var iconStyle = grid.getAttribute('data-col-icon-style') || 'chevron';
-    var iconPos = grid.getAttribute('data-col-icon-position') || 'edge';
-    var anim = grid.getAttribute('data-col-anim') || 'slide';
-    var animMs = parseInt(grid.getAttribute('data-col-anim-ms') || '300', 10);
-    var stickyTop = parseInt(grid.getAttribute('data-col-sticky-top') || '0', 10);
-    var layoutMin = grid.getAttribute('data-col-layout-min') || '62rem';
-    var toolbar = getToolbar(grid);
+  const initToggles = (grid) => {
+    const iconStyle = grid.getAttribute('data-col-icon-style') || 'chevron';
+    const iconPos = grid.getAttribute('data-col-icon-position') || 'edge';
+    const anim = grid.getAttribute('data-col-anim') || 'slide';
+    const animMs = parseInt(grid.getAttribute('data-col-anim-ms') || '300', 10);
+    const stickyTop = parseInt(grid.getAttribute('data-col-sticky-top') || '0', 10);
+    const layoutMin = grid.getAttribute('data-col-layout-min') || '62rem';
+    const toolbar = getToolbar(grid);
 
-    // No toolbar means no toggles are enabled — nothing to do.
     if (!toolbar) {
       return;
     }
 
-    var ratios = parseRatios(grid);
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    gridAbortControllers.set(grid, abortController);
 
-    /** @type {MediaQueryList|null} */
-    var mq = null;
+    const ratios = parseRatios(grid);
+    let mq = null;
+
     try {
-      mq = window.matchMedia('(min-width: ' + layoutMin + ')');
+      mq = window.matchMedia(`(min-width: ${layoutMin})`);
     }
-    catch (e) {
-      // Invalid media query — treat as always above breakpoint.
+    catch {
+      mq = null;
     }
 
-    /**
-     * Whether the viewport is currently above the layout breakpoint.
-     *
-     * @type {boolean}
-     */
-    var aboveBreakpoint = mq ? mq.matches : true;
+    let aboveBreakpoint = mq ? mq.matches : true;
 
-    // Add icon/anim classes to both toolbar and grid.
-    var iconClasses = [
-      'pb-col-icon-' + iconStyle,
-      'pb-col-icon-pos-' + iconPos,
-      'pb-col-anim-' + anim
+    const iconClasses = [
+      `pb-layout-col__icon--${toBemToken(iconStyle)}`,
+      `pb-layout-col__icon-pos--${toBemToken(iconPos)}`,
+      `pb-col-anim-${toBemToken(anim)}`,
     ];
-    grid.classList.add.apply(grid.classList, iconClasses);
-    toolbar.classList.add.apply(toolbar.classList, iconClasses);
+    grid.classList.add(...iconClasses);
+    toolbar.classList.add(...iconClasses);
 
-    // Set custom properties for CSS transitions.
     if (anim === 'none' || animMs <= 0) {
       grid.style.setProperty('--pb-col-anim-ms', '0ms');
       toolbar.style.setProperty('--pb-col-anim-ms', '0ms');
     }
     else if (!Number.isNaN(animMs)) {
-      grid.style.setProperty('--pb-col-anim-ms', animMs + 'ms');
-      toolbar.style.setProperty('--pb-col-anim-ms', animMs + 'ms');
-    }
-    if (!Number.isNaN(stickyTop)) {
-      grid.style.setProperty('--pb-col-sticky-top', stickyTop + 'px');
+      const animValue = `${animMs}ms`;
+      grid.style.setProperty('--pb-col-anim-ms', animValue);
+      toolbar.style.setProperty('--pb-col-anim-ms', animValue);
     }
 
-    // Convert Twig-rendered is-collapsed classes to data-collapsed attributes.
-    var columns = grid.querySelectorAll(':scope > [data-col]');
-    var j;
-    for (j = 0; j < columns.length; j++) {
-      if (columns[j].classList.contains('is-collapsed')) {
-        columns[j].classList.remove('is-collapsed');
-        // Only apply collapse if above breakpoint.
+    if (!Number.isNaN(stickyTop)) {
+      grid.style.setProperty('--pb-col-sticky-top', `${stickyTop}px`);
+    }
+
+    const columns = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN);
+    columns.forEach((col) => {
+      if (col.classList.contains(PB_IS_COLLAPSED)) {
+        col.classList.remove(PB_IS_COLLAPSED);
         if (aboveBreakpoint) {
-          setCollapsed(columns[j], true);
-          // Mirror data-collapsed on the toolbar button.
-          var colName = columns[j].getAttribute('data-col');
-          var btn = getToggleButton(toolbar, colName);
+          setCollapsed(col, true);
+          const colName = col.getAttribute('data-col');
+          const btn = colName ? getToggleButton(toolbar, colName) : null;
           if (btn) {
             btn.setAttribute('data-collapsed', '');
           }
         }
       }
-    }
+    });
 
-    // Enable or disable collapse feature based on breakpoint.
     if (aboveBreakpoint) {
       updateCollapseClass(grid);
       setGridColumns(grid, ratios);
@@ -453,111 +431,122 @@
       expandAllColumns(grid);
     }
 
-    // Bind toggle buttons (found in toolbar, mapped to columns by name).
-    for (j = 0; j < columns.length; j++) {
-      (function (col) {
-        var toggleEnabled =
-          col.getAttribute('data-col-toggle-enabled') === '1';
-        var colName = col.getAttribute('data-col');
-        var toggleButton = getToggleButton(toolbar, colName);
-        var content = col.querySelector(':scope > .pb-col-content');
+    columns.forEach((col) => {
+      const toggleEnabled = col.getAttribute('data-col-toggle-enabled') === '1';
+      const colName = col.getAttribute('data-col');
+      const toggleButton = colName ? getToggleButton(toolbar, colName) : null;
+      const content = col.querySelector(PB_LAYOUT_COLUMN_OWNED_CONTENT);
 
-        if (!content || !toggleEnabled || !toggleButton) {
+      if (!(content instanceof HTMLElement) || !toggleEnabled || !toggleButton) {
+        return;
+      }
+
+      syncAriaState(col, toggleButton, content);
+
+      toggleButton.addEventListener('click', () => {
+        if (!aboveBreakpoint) {
           return;
         }
 
-        syncAriaState(col, toggleButton, content);
+        const sx = window.scrollX;
+        const sy = window.scrollY;
+        const collapsing = !isCollapsed(col);
 
-        toggleButton.addEventListener('click', function () {
-          // Do nothing below the layout breakpoint.
-          if (!aboveBreakpoint) {
-            return;
-          }
+        setCollapsed(col, collapsing);
+        toggleButton.toggleAttribute('data-collapsed', collapsing);
+        updateCollapseClass(grid);
+        syncAriaState(col, toggleButton, content, true);
+        setGridColumns(grid, ratios);
+        restoreScrollAfterLayout(sx, sy);
+      }, { signal });
+    });
 
-          var sx = window.scrollX;
-          var sy = window.scrollY;
-          var collapsing = !isCollapsed(col);
-
-          // Toggle state — CSS transitions handle the visual animation.
-          setCollapsed(col, collapsing);
-          toggleButton.toggleAttribute('data-collapsed', collapsing);
-          updateCollapseClass(grid);
-          syncAriaState(col, toggleButton, content);
-          setGridColumns(grid, ratios);
-          restoreScrollAfterLayout(sx, sy);
-        });
-      })(columns[j]);
-    }
-
-    // Listen for breakpoint changes: toggle feature on/off.
-    if (mq && typeof mq.addEventListener === 'function') {
-      mq.addEventListener('change', function (e) {
-        aboveBreakpoint = e.matches;
+    if (mq) {
+      const onBreakpointChange = (event) => {
+        aboveBreakpoint = event.matches;
         if (aboveBreakpoint) {
-          // Crossed above breakpoint: restore user-configured defaults.
           restoreDefaultStates(grid, ratios);
         }
         else {
-          // Crossed below breakpoint: expand all, disable toggles.
           expandAllColumns(grid);
         }
-      });
+      };
+
+      mq.addEventListener('change', onBreakpointChange, { signal });
     }
-  }
+  };
 
   /**
-   * Force overflow:visible on ancestors that break position:sticky.
-   *
-   * Walks up the DOM tree from the sticky element and overrides any
-   * ancestor with overflow other than 'visible'.
-   *
    * @param {HTMLElement} stickyEl
-   *   The sticky column element.
    */
-  function fixStickyAncestors(stickyEl) {
-    var paragraph = stickyEl.closest('.paragraphs-bundles');
-    var el = stickyEl.parentElement;
-    while (el && paragraph && paragraph.contains(el)) {
+  const fixStickyAncestors = (stickyEl) => {
+    const paragraph = stickyEl.closest(
+      `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS}, ${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS}`,
+    );
+
+    if (!(paragraph instanceof HTMLElement)) {
+      return;
+    }
+
+    let el = stickyEl.parentElement;
+    while (el && paragraph.contains(el)) {
       if (getComputedStyle(el).overflow !== 'visible') {
         el.style.overflow = 'visible';
       }
       el = el.parentElement;
     }
-  }
+  };
 
-  /**
-   * Drupal behavior for paragraph bundle layout.
-   *
-   * @type {Drupal~behavior}
-   */
   Drupal.behaviors.paragraphBundleLayout = {
-    attach: function (context) {
-      // Detect multi-paragraph columns (plus-one class).
+    attach(context) {
       once(
-        'paragraphBundleLayout',
-        '.pb__two-columns:not(.pb-col-toolbar) > div, .pb__three-columns:not(.pb-col-toolbar) > div',
-        context
-      ).forEach(function (element) {
-        var contentEl = element.querySelector(':scope > .pb-col-content');
-        var target = contentEl || element;
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_COLUMN,
+        LAYOUT_COLUMN_SELECTOR,
+        context,
+      ).forEach((element) => {
+        const contentEl = element.querySelector(PB_LAYOUT_COLUMN_OWNED_CONTENT);
+        const target = contentEl ?? element;
         if (target.children.length > 1) {
-          element.classList.add('plus-one');
+          element.classList.add('pb-has-multiple');
         }
       });
 
-      // Initialize column toggles.
       once(
-        'paragraphBundleLayoutToggle',
-        '.pb__two-columns:not(.pb-col-toolbar), .pb__three-columns:not(.pb-col-toolbar)',
-        context
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_GRID,
+        LAYOUT_GRID_SELECTOR,
+        context,
       ).forEach(initToggles);
 
-      // Fix sticky ancestors.
       once(
-        'paragraphBundleLayoutSticky',
-        '[data-col].is-sticky',
-        context
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_STICKY,
+        LAYOUT_STICKY_SELECTOR,
+        context,
       ).forEach(fixStickyAncestors);
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
+      }
+
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_COLUMN,
+        LAYOUT_COLUMN_SELECTOR,
+        context,
+      );
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_GRID,
+        LAYOUT_GRID_SELECTOR,
+        context,
+      ).forEach((grid) => {
+        gridAbortControllers.get(grid)?.abort();
+        gridAbortControllers.delete(grid);
+      });
+      once.remove(
+        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_STICKY,
+        LAYOUT_STICKY_SELECTOR,
+        context,
+      );
     },
   };
 })(Drupal, once);

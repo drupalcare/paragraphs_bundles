@@ -6,6 +6,7 @@ paragraph-bundle-layout:
     js/paragraph-bundle-layout.js: { }
   dependencies:
     - core/drupal
+    - core/drupal.announce
     - core/once
 
 paragraph-bundle-layout-pb__576:
