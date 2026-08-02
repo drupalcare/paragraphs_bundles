@@ -9,7 +9,8 @@ Two paragraph types:
 ## Dependencies
 
 - `paragraphs_bundles` (parent)
-- `paragraph_bundle_image` (`pb_media_parallax` view mode)
+- `paragraph_bundle_image` (media type `pb_media_image`; the `pb_media_parallax`
+  view mode it is rendered in ships here, not there)
 - Core `media_library`, `options`, `text`
 - `paragraphs`, `entity_reference_revisions`
 
