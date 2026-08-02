@@ -2,16 +2,20 @@
  * @file
  * Paragraph Bundle Image Background.
  *
- * Filename:     paragraph-bundle-Image-background.css
+ * Scoping contract: `.paragraphs-bundles.pb-image-background` - never
+ * `.paragraph--type--*`.
+ *
+ * Filename:     paragraph-bundle-image-background.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-.paragraph--type--image-background-bundle {
+
+.paragraphs-bundles.pb-image-background {
   width: 100%;
   position: relative;
 }
 
-.paragraph--type--image-background-bundle .img-color-overlay {
+.paragraphs-bundles.pb-image-background .img-color-overlay {
   position: absolute;
   inset-block-start: 0;
   inset-inline-start: 0;
@@ -19,11 +23,23 @@
   height: 100%;
 }
 
-.paragraph--type--image-background-bundle .pb__image-bg__inner {
+.paragraphs-bundles.pb-image-background .pb-image-background__inner {
   height: 100%;
   z-index: 2;
 }
 
-.small-screen-bg {
-  display: none;
+@media (prefers-reduced-motion: reduce) {
+  /* Layout only; no motion. */
+}
+
+@media (prefers-contrast: high) {
+  /* Layout only. */
+}
+
+@media (forced-colors: active) {
+  /* Layout only. */
+}
+
+@media print {
+  /* Layout only. */
 }

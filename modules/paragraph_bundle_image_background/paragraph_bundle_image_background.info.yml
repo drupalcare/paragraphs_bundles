@@ -1,7 +1,11 @@
-name: Paragraph Bundle Image Background
+name: 'Paragraph Bundle Image Background'
 type: module
-description: A reusable Paragraph Bundle Image Background.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Paragraph with CSS background image, optional overlay, and nested content.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:image
+  - drupal:options
+  - entity_reference_revisions:entity_reference_revisions
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

@@ -1,0 +1,9 @@
+services:
+  Drupal\paragraph_bundle_image_background\Hook\PbibThemeHook: {}
+
+  Drupal\paragraph_bundle_image_background\Hook\PbibHelpHook:
+    arguments:
+      - '@extension.list.module'
+      - '@module_handler'
+      - '@plugin.manager.filter'
+      - '@config.factory'

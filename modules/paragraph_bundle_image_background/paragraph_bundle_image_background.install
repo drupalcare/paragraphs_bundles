@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks for paragraph_bundle_image_background.
+ *
+ * V2 update hook (pre-release — one hook only):
+ *  - 9001: move min height into Display → Additional.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Display tab group overrides for image_background_bundle.
+ *
+ * @return array<string, array{remove?: list<string>, add?: list<string>}>
+ *   Group id => remove/add field lists.
+ */
+function paragraph_bundle_image_background_display_group_overrides(): array {
+  return [
+    'group_pb_display_size' => [
+      'remove' => ['pb_display_image_min_height'],
+    ],
+    'group_pb_display_extra' => [
+      'add' => ['pb_display_image_min_height'],
+    ],
+  ];
+}
+
+/**
+ * Applies the image background Display tab field group layout.
+ */
+function paragraph_bundle_image_background_apply_form_display_layout(): void {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'inc', 'paragraphs_bundles.display');
+  paragraphs_bundles_pb_nest_display_field_groups(
+    'image_background_bundle',
+    paragraph_bundle_image_background_display_group_overrides(),
+  );
+}
+
+/**
+ * Moves min height into Display → Additional.
+ */
+function paragraph_bundle_image_background_update_9001(): string {
+  paragraph_bundle_image_background_apply_form_display_layout();
+  return (string) t('Image background Display tab: min height grouped under Additional.');
+}

@@ -35,90 +35,16 @@ content:
     third_party_settings: {  }
     weight: 12
     region: content
-  pb_display_background_attachment:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  pb_display_background_image:
-    type: image_url
-    label: hidden
-    settings:
-      image_style: ''
-    third_party_settings: {  }
-    weight: 0
-    region: content
-  pb_display_background_image_sm:
-    type: image_url
-    label: hidden
-    settings:
-      image_style: ''
-    third_party_settings: {  }
-    weight: 1
-    region: content
-  pb_display_bg:
-    type: color_text_formatter_rgb
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  pb_display_bg_opacity:
-    type: range_number_formatter
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
-  pb_display_image_alignment:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 4
-    region: content
-  pb_display_image_breakpoint:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  pb_display_image_min_height:
-    type: number_unformatted
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 11
-    region: content
-  pb_display_image_repetition:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  pb_display_image_sizing:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  pb_display_padding:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  pb_display_width:
-    type: list_key
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-hidden: {  }
+hidden:
+  pb_display_background_attachment: true
+  pb_display_background_image: true
+  pb_display_background_image_sm: true
+  pb_display_bg: true
+  pb_display_bg_opacity: true
+  pb_display_image_alignment: true
+  pb_display_image_breakpoint: true
+  pb_display_image_min_height: true
+  pb_display_image_repetition: true
+  pb_display_image_sizing: true
+  pb_display_padding: true
+  pb_display_width: true

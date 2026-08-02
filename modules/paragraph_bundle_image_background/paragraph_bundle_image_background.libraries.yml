@@ -6,6 +6,4 @@ paragraph-bundle-image-background:
     js/paragraph-bundle-image-background.js: { }
   dependencies:
     - core/drupal
-    - core/drupal.ajax
-    - core/drupalSettings
     - core/once

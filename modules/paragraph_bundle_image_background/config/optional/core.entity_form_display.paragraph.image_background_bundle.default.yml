@@ -8,6 +8,8 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_background_image_sm
     - field.field.paragraph.image_background_bundle.pb_display_bg
     - field.field.paragraph.image_background_bundle.pb_display_bg_opacity
+    - field.field.paragraph.image_background_bundle.pb_display_link
+    - field.field.paragraph.image_background_bundle.pb_display_link_hover
     - field.field.paragraph.image_background_bundle.pb_display_image_alignment
     - field.field.paragraph.image_background_bundle.pb_display_image_breakpoint
     - field.field.paragraph.image_background_bundle.pb_display_image_min_height
@@ -24,10 +26,10 @@ dependencies:
     - paragraphs_bundles
 third_party_settings:
   field_group:
-    group_tabs_wrapper:
+    group_pb_tabs_wrapper:
       children:
-        - group_content
-        - group_display
+        - group_pb_tab_content
+        - group_pb_tab_display
       label: 'Tabs Wrapper'
       region: content
       parent_name: ''
@@ -39,12 +41,12 @@ third_party_settings:
         id: ''
         direction: horizontal
         width_breakpoint: 992
-    group_content:
+    group_pb_tab_content:
       children:
         - pb_content_main
       label: Content
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 5
       format_type: tab
       format_settings:
@@ -54,23 +56,15 @@ third_party_settings:
         formatter: closed
         description: ''
         required_fields: true
-    group_display:
+    group_pb_tab_display:
       children:
-        - pb_display_background_image
-        - pb_display_background_image_sm
-        - pb_display_image_alignment
-        - pb_display_image_sizing
-        - pb_display_background_attachment
-        - pb_display_image_repetition
-        - pb_display_padding
-        - pb_display_width
-        - pb_display_bg
-        - pb_display_bg_opacity
-        - pb_display_image_min_height
-        - pb_display_image_breakpoint
+        - group_pb_display_colors
+        - group_pb_display_spacing
+        - group_pb_display_size
+        - group_pb_display_extra
       label: Display
       region: content
-      parent_name: group_tabs_wrapper
+      parent_name: group_pb_tabs_wrapper
       weight: 6
       format_type: tab
       format_settings:
@@ -78,6 +72,80 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         formatter: closed
+        description: ''
+        required_fields: true
+    group_pb_display_colors:
+      children:
+        - pb_display_bg_opacity
+        - pb_display_bg
+        - pb_display_link
+        - pb_display_link_hover
+      label: Colors
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 10
+      format_type: details
+      format_settings:
+        classes: pb__display-colors
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
+        description: ''
+        required_fields: true
+    group_pb_display_spacing:
+      children:
+        - pb_display_padding
+      label: Spacing
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 30
+      format_type: details
+      format_settings:
+        classes: pb__display-spacing
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_pb_display_size:
+      children:
+        - pb_display_width
+      label: 'Size & effects'
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 40
+      format_type: details
+      format_settings:
+        classes: pb__display-size
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
+        description: ''
+        required_fields: true
+    group_pb_display_extra:
+      children:
+        - pb_display_image_alignment
+        - pb_display_image_sizing
+        - pb_display_image_min_height
+        - pb_display_background_attachment
+        - pb_display_image_repetition
+        - pb_display_image_breakpoint
+        - pb_display_background_image
+        - pb_display_background_image_sm
+      label: Additional
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 50
+      format_type: details
+      format_settings:
+        classes: pb__display-extra
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: false
         description: ''
         required_fields: true
 id: paragraph.image_background_bundle.default
@@ -129,13 +197,25 @@ content:
     third_party_settings: {  }
   pb_display_bg:
     type: color_text_widget
-    weight: 9
+    weight: 17
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_bg_opacity:
     type: range_number_widget
-    weight: 10
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_link:
+    type: color_text_widget
+    weight: 18
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_link_hover:
+    type: color_text_widget
+    weight: 19
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -172,13 +252,13 @@ content:
     third_party_settings: {  }
   pb_display_padding:
     type: options_select
-    weight: 7
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
   pb_display_width:
     type: options_select
-    weight: 8
+    weight: 29
     region: content
     settings: {  }
     third_party_settings: {  }

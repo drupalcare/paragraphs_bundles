@@ -1,9 +1,10 @@
 {
     "name": "drupal/paragraph_bundle_image_background",
-    "description": "A reusable Paragraph Bundle Image Background.",
+    "description": "Image background paragraph bundle for Paragraphs Bundles.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Alaa Haddad (alaahaddad.com)",
@@ -12,13 +13,13 @@
         }
     ],
     "homepage": "https://drupal.org/project/paragraph_bundle_image_background",
-  "require": {
-    "drupal/core": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*"
+    },
     "support": {
         "issues": "https://drupal.org/project/issues/paragraph_bundle_image_background",
         "source": "https://git.drupalcode.org/project/paragraph_bundle_image_background"
     }
 }
-

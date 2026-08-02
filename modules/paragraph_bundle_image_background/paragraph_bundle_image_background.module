@@ -2,33 +2,9 @@
 
 /**
  * @file
- * Paragraph Bundle Image Background.
+ * Paragraph Bundle Image Background module bootstrap.
  *
- * Filename:     paragraph_bundle_image_background.module
- * Website:      https://www.flashwebcenter.com
- * Description:  template.
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * V2 — hooks live as OOP #[Hook] classes under src/Hook/.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
-/**
- * Implements hook_help().
- */
-function paragraph_bundle_image_background_help($route_name, RouteMatchInterface $route_match) {
-  if ($route_name === 'help.page.paragraph_bundle_image_background') {
-    return paragraphs_bundles__helper_render_readme();
-  }
-  return NULL;
-}
-
-/**
- * Implements hook_theme().
- */
-function paragraph_bundle_image_background_theme($existing, $type, $theme, $path) {
-  return [
-    'paragraph__image_background_bundle' => [
-      'base hook' => 'paragraph',
-    ],
-  ];
-}
+declare(strict_types=1);
