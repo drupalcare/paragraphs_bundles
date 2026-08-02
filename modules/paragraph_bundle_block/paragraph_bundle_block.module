@@ -2,69 +2,9 @@
 
 /**
  * @file
- * Paragraph Bundle Block.
+ * Paragraph Bundle Block module bootstrap.
  *
- * Filename:     paragraph_bundle_block.module
- * Website:      https://www.flashwebcenter.com
- * Description:  template.
- * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ * V2 — hooks live as OOP #[Hook] classes under src/Hook/.
  */
 
-use Drupal\Core\Routing\RouteMatchInterface;
-
-/**
- * Implements hook_help().
- */
-function paragraph_bundle_block_help($route_name, RouteMatchInterface $route_match) {
-  if ($route_name === 'help.page.paragraph_bundle_block') {
-    return paragraphs_bundles__helper_render_readme();
-  }
-  return NULL;
-}
-
-/**
- * Implements hook_theme() for the paragraph_bundle_block submodule.
- */
-function paragraph_bundle_block_theme($existing, $type, $theme, $path) {
-  $template_directory = \Drupal::service('extension.path.resolver')->getPath('module', 'paragraphs_bundles') . '/templates';
-
-  return [
-    // Theme definition for a custom paragraph type.
-    'paragraph__block_bundle' => [
-      'base hook' => 'paragraph',
-      'template' => 'paragraph--default',
-      'path' => $template_directory,
-    ],
-    // Theme definition for a custom field type.
-    'field__entity_reference_revisions' => [
-      'base hook' => 'field',
-      'template' => 'field--entity-reference-revisions',
-      'path' => $template_directory,
-    ],
-  ];
-}
-
-/**
- * Implements hook_theme_suggestions_paragraph_alter() for block.
- */
-function paragraph_bundle_block_theme_suggestions_paragraph_alter(array &$suggestions, array $variables) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-  $paragraph = $variables['elements']['#paragraph'];
-  $bundle = $paragraph->bundle();
-
-  // Add a template suggestion for paragraphs of type 'block_bundle'.
-  if ($bundle === 'block_bundle') {
-    $suggestions[] = 'paragraph__block_bundle';
-  }
-}
-
-/**
- * Installs title tag + alignment for block_bundle (storages live in paragraphs_bundles).
- */
-function paragraph_bundle_block_update_8001(): string {
-  paragraphs_bundles_ensure_pb_title_storages();
-  paragraphs_bundles_pb_title_import_instances_for_bundle('paragraph_bundle_block', 'block_bundle');
-  paragraphs_bundles_pb_title_wire_bundle('block_bundle');
-  paragraphs_bundles_clear_field_caches();
-  return (string) t('Installed title tag and alignment for block_bundle.');
-}
+declare(strict_types=1);

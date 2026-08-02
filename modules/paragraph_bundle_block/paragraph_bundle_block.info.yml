@@ -1,8 +1,8 @@
-name: Paragraph Bundle Block
+name: 'Paragraph Bundle Block'
 type: module
-description: A reusable Paragraph Drupal Block.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Embed a Drupal block inside a paragraph with Display tab styling.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
   - drupal:block
   - paragraphs_bundles:paragraphs_bundles

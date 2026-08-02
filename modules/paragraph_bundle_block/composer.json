@@ -1,24 +1,11 @@
 {
     "name": "drupal/paragraph_bundle_block",
-    "description": "A reusable Paragraph Bundle Block.",
+    "description": "Embed a Drupal block inside a paragraph with Display tab styling.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
-    "authors": [
-        {
-            "name": "Alaa Haddad (alaahaddad.com)",
-            "homepage": "https://www.drupal.org/u/flashwebcenter",
-            "role": "Maintainer"
-        }
-    ],
-    "homepage": "https://drupal.org/project/paragraph_bundle_block",
-  "require": {
-    "drupal/core": "*",
-    "drupal/paragraphs_bundles": "*"
-  },
-    "support": {
-        "issues": "https://drupal.org/project/issues/paragraph_bundle_block",
-        "source": "https://git.drupalcode.org/project/paragraph_bundle_block"
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*"
     }
 }
-
