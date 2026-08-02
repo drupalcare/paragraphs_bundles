@@ -1,38 +1,41 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paragraphs_bundles\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Plugin implementation of the 'range_number_formatter' formatter.
+ * Renders the opacity number as a `<div>`.
  *
- * @FieldFormatter(
- *   id = "range_number_formatter",
- *   module = "paragraphs_bundles",
- *   label = @Translation("Opacity Number"),
- *   field_types = {
- *     "paragraphs_bundles_range"
- *   }
- * )
+ * Plugin id `range_number_formatter`.
  */
-class RangeNumberFormatter extends FormatterBase {
+#[FieldFormatter(
+  id: 'range_number_formatter',
+  label: new TranslatableMarkup('Opacity Number'),
+  field_types: ['paragraphs_bundles_range'],
+)]
+final class RangeNumberFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array<int, array<string, mixed>>
+   *   Render array, one per item.
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
-
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $item->value,
+        '#value' => (string) $item->value,
       ];
     }
-
     return $elements;
   }
 

@@ -1,42 +1,48 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paragraphs_bundles\Plugin\Field\FieldFormatter;
 
+use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Plugin implementation of the 'color_text_formatter_rgb' formatter.
+ * Renders the hex value as `R,G,B`.
  *
- * @FieldFormatter(
- *   id = "color_text_formatter_rgb",
- *   module = "paragraphs_bundles",
- *   label = @Translation("RGB Color"),
- *   field_types = {
- *     "paragraphs_bundles_rgb"
- *   }
- * )
+ * Plugin id `color_text_formatter_rgb`.
  */
-class ColorTextFormatterRGB extends FormatterBase {
+#[FieldFormatter(
+  id: 'color_text_formatter_rgb',
+  label: new TranslatableMarkup('RGB Color'),
+  field_types: ['paragraphs_bundles_rgb'],
+)]
+final class ColorTextFormatterRGB extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @return array<int, array<string, mixed>>
+   *   Render array, one per item.
    */
-  public function viewElements(FieldItemListInterface $items, $langcode) {
+  public function viewElements(FieldItemListInterface $items, $langcode): array {
     $elements = [];
-
     foreach ($items as $delta => $item) {
-      $hex_val = trim($item->value, '#');
-      $r0 = hexdec($hex_val[0] . $hex_val[1]);
-      $g0 = hexdec($hex_val[2] . $hex_val[3]);
-      $b0 = hexdec($hex_val[4] . $hex_val[5]);
+      $hex = ltrim((string) $item->value, '#');
+      if (strlen($hex) !== 6) {
+        continue;
+      }
+      $r = (int) hexdec(substr($hex, 0, 2));
+      $g = (int) hexdec(substr($hex, 2, 2));
+      $b = (int) hexdec(substr($hex, 4, 2));
       $elements[$delta] = [
         '#type' => 'html_tag',
         '#tag' => 'div',
-        '#value' => $r0 . ',' . $g0 . ',' . $b0,
+        '#value' => $r . ',' . $g . ',' . $b,
       ];
     }
-
     return $elements;
   }
 

@@ -1,30 +1,50 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Drupal\paragraphs_bundles\Plugin\Field\FieldWidget;
 
+use Drupal\Core\Field\Attribute\FieldWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
- * Plugin implementation of the 'range_number_widget' widget.
+ * Opacity input widget bound to 1–100.
  *
- * @FieldWidget(
- *   id = "range_number_widget",
- *   module = "paragraphs_bundles",
- *   label = @Translation("Value 1 to 100"),
- *   field_types = {
- *     "paragraphs_bundles_range"
- *   }
- * )
+ * Renders a standard Drupal number form item (label + input + description).
+ * The paired range slider and inner wrapper are added by JS so Gin/Claro
+ * form-item classes stay on the outer element unchanged.
+ *
+ * Plugin id `range_number_widget`.
  */
-class RangeNumberWidget extends WidgetBase {
+#[FieldWidget(
+  id: 'range_number_widget',
+  label: new TranslatableMarkup('Value 1 to 100'),
+  field_types: ['paragraphs_bundles_range'],
+)]
+final class RangeNumberWidget extends WidgetBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   *   Field items.
+   * @param int $delta
+   *   Item delta.
+   * @param array<string, mixed> $element
+   *   Render element.
+   * @param array<string, mixed> $form
+   *   Form array (unused).
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
+   *
+   * @return array<string, mixed>
+   *   Widget element.
    */
   public function formElement(FieldItemListInterface $items, $delta, array $element, array &$form, FormStateInterface $form_state): array {
-    $element += [
+    $element['value'] = $element + [
       '#type' => 'number',
       '#default_value' => $items[$delta]->value ?? '100',
       '#size' => 7,
@@ -32,35 +52,31 @@ class RangeNumberWidget extends WidgetBase {
       '#attributes' => [
         'pattern' => '^(100|[1-9]?\d)$',
       ],
-      '#wrapper_attributes' => [
-        'data-drupal-selector' => 'para-opacity-range',
-      ],
-      '#attached' => [
-        'library' => [
-          'paragraphs_bundles/opacity-range',
-        ],
-      ],
       '#element_validate' => [
-        [$this, 'validate'],
+        [static::class, 'validateOpacity'],
       ],
     ];
-    return ['value' => $element];
+    return $element;
   }
 
   /**
-   * Validate opacity field.
+   * Element validate callback for the 1–100 opacity range.
+   *
+   * @param array<string, mixed> $element
+   *   The form element being validated.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   Form state.
    */
-  public function validate($element, FormStateInterface $form_state): void {
+  public static function validateOpacity(array &$element, FormStateInterface $form_state): void {
     $value = $element['#value'];
-    if ($value == '') {
+    if ($value === '') {
       $form_state->setValueForElement($element, '');
       return;
     }
-
-    if (!($value >= 1 && $value <= 100)) {
-      $form_state->setError($element, $this->t('Opacity number must be between 1 and 100.'));
+    $int = (int) $value;
+    if ($int < 1 || $int > 100) {
+      $form_state->setError($element, new TranslatableMarkup('Opacity number must be between 1 and 100.'));
     }
-
   }
 
 }
