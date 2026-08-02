@@ -3,7 +3,7 @@
  * @file
  * `one_column_bundle` paragraph template (v2).
  *
- * Dynamic CSS selector: `#pb-one-column-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb__one-column-{id} > .pb-ui-inner`
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -16,7 +16,7 @@
 {{ attach_library('paragraph_bundle_layout/paragraph-bundle-layout') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-one-column-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-one-column__inner' %}
 
 {% set classes = [

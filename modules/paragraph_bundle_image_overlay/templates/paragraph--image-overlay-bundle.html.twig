@@ -28,7 +28,7 @@
 {{ attach_library('paragraph_bundle_image_overlay/paragraph-bundle-image-overlay') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__image-overlay-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-image-overlay__inner pb-content__full' %}
 
 {% set pb_image_overlay_raw = paragraph|pb_field_value('pb_display_image_overlay') %}

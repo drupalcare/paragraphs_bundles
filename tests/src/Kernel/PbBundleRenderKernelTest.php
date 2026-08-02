@@ -6,6 +6,7 @@ namespace Drupal\Tests\paragraphs_bundles\Kernel;
 
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -127,6 +128,8 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
       ->getViewBuilder('paragraph');
     $renderer = $this->container->get('renderer');
 
+    $slugger = $this->container->get('paragraphs_bundles.bundle_slugger');
+
     foreach ($type_ids as $type_id) {
       $paragraph = Paragraph::create(['type' => $type_id]);
       $paragraph->save();
@@ -139,7 +142,49 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
         $html,
         sprintf('Bundle %s renders the shared wrapper class.', $type_id),
       );
+
+      // The DOM id is the scope every per-paragraph dynamic CSS file is
+      // written against, so a template that stops emitting the id computed by
+      // PbPreprocessHook renders unstyled — silently, with no error anywhere.
+      // Only bundles whose template actually scopes itself can be held to
+      // that: the tab, slideshow and accordion section templates are
+      // pass-through wrappers rendered inside their parent and deliberately
+      // emit no id. The modal bundle builds its own ids (button vs dialog).
+      if ($type_id === 'modal_bundle' || !in_array($type_id, $this->bundlesWithScopedTemplates(), TRUE)) {
+        continue;
+      }
+      $prefix = PbDynamicCssBuilder::OUTER_ID_PREFIX_OVERRIDES[$type_id]
+        ?? 'pb__' . $slugger->slugify($type_id);
+      $this->assertStringContainsString(
+        sprintf('id="%s-%d"', $prefix, $paragraph->id()),
+        $html,
+        sprintf('Bundle %s emits the DOM id its dynamic CSS targets.', $type_id),
+      );
     }
+  }
+
+  /**
+   * Bundles whose shipped template scopes itself with `pb_paragraph_id`.
+   *
+   * @return list<string>
+   *   Bundle machine names, derived from the shipped templates.
+   */
+  private function bundlesWithScopedTemplates(): array {
+    $module = $this->container->get('extension.list.module')
+      ->getPath('paragraphs_bundles');
+    $files = array_merge(
+      glob($module . '/templates/paragraph--*.html.twig') ?: [],
+      glob($module . '/modules/*/templates/paragraph--*.html.twig') ?: [],
+    );
+    $bundles = [];
+    foreach ($files as $file) {
+      if (!str_contains((string) file_get_contents($file), 'pb_paragraph_id')) {
+        continue;
+      }
+      $name = substr(basename($file, '.html.twig'), strlen('paragraph--'));
+      $bundles[] = str_replace('-', '_', $name);
+    }
+    return $bundles;
   }
 
 }

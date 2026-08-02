@@ -33,7 +33,7 @@
 {{ attach_library('paragraph_bundle_hero/paragraph-bundle-hero') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__hero-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-row pb-hero__text-inner' %}
 
 {% set classes = [

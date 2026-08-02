@@ -21,7 +21,7 @@
 {{ attach_library('paragraph_bundle_image_grid/paragraph-bundle-image-grid') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-image-grid-section-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set item_id = 'pb-image-grid-item-' ~ paragraph.id.value %}
 {% set classes_inner = 'pb-ui-inner pb-image-grid-section__inner' %}
 {% set pb_full_size_url = pb_full_size_url|default('') %}

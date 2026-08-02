@@ -3,7 +3,7 @@
  * @file
  * `two_columns_bundle` paragraph template (v2).
  *
- * Dynamic CSS selector: `#pb-two-columns-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb__two-columns-{id} > .pb-ui-inner`
  * Column anim/sticky vars remain inline on `.pb-two-columns` grid.
  *
  * @see template_preprocess_paragraph()
@@ -24,7 +24,7 @@
   {{ attach_library('paragraph_bundle_layout/paragraph-bundle-layout-' ~ pb_layout_bp_key) }}
 {% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-two-columns-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-two-columns__inner' %}
 
 {% set pb_2c_l_stk = paragraph.hasField('pb_display_2c_l_stk') and not paragraph.pb_display_2c_l_stk.isEmpty and paragraph|pb_field_value('pb_display_2c_l_stk') %}

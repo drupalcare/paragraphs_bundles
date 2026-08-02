@@ -25,7 +25,7 @@
 {{ attach_library('paragraph_bundle_image_background/paragraph-bundle-image-background') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__image-bg-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-image-background__inner pb-content__full' %}
 
 {% set classes = [

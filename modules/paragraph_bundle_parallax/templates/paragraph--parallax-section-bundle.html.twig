@@ -35,7 +35,7 @@
   {{ attach_library('paragraph_bundle_parallax/paragraph-bundle-parallax__' ~ pb_breakpoints) }}
 {% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-parallax-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = '' %}
 {% set pb_height_unit_css = pb_bg_height_unit == 'pr' ? '%' : pb_bg_height_unit %}
 {% set pb_easing_css = pb_anim_easing|replace({_: '-'}) %}

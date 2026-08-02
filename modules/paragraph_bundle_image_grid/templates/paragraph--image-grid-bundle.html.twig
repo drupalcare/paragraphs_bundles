@@ -12,7 +12,7 @@
  * | pb_display_grid_width           | `.pb-image-grid__wrapper` | inline grid-template-columns |
  * | pb_display_image_grid_gap       | `.pb-image-grid__wrapper` | inline gap (px) |
  *
- * Dynamic CSS selector: `#pb-image-grid-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb__image-grid-{id} > .pb-ui-inner`
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -25,7 +25,7 @@
 {{ attach_library('paragraph_bundle_image_grid/paragraph-bundle-image-grid') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-image-grid-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set lightbox_id = paragraph_id ~ '-lightbox' %}
 {% set lightbox_heading_id = paragraph_id ~ '-lightbox-heading' %}
 {% set classes_inner = 'pb-ui-inner pb-image-grid__inner' %}

@@ -31,7 +31,7 @@
   {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ breakpoints_raw) }}
 {% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb-3d-carousel-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-3d-carousel__inner pb-content__full' %}
 {% set pb_play_stop = paragraph|pb_field_value('pb_display_3d_play_stop', 0) %}
 

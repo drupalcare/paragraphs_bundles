@@ -18,7 +18,7 @@
 {{ attach_library('paragraph_bundle_card/paragraph-bundle-image-section') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__image-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-card-image-section__inner' %}
 
 {% set classes = [

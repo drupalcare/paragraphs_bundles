@@ -28,7 +28,7 @@
 {{ attach_library('paragraph_bundle_slideshow/paragraph-bundle-slideshow') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__slide-wrap-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set slide_id = 'pb__slideshow-' ~ paragraph.id.value %}
 {% set classes_inner = 'pb-ui-inner pb-slideshow__wrap-inner' %}
 

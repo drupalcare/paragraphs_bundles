@@ -24,7 +24,7 @@
 {{ attach_library('paragraph_bundle_3d_flip_box/paragraph-bundle-3d-flip-box') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = pb_paragraph_id ?: 'pb__3d-flip-box-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner' %}
 {% set pb_flip_xy = paragraph|pb_field_value('pb_display_flip_xy') %}
 {% set pb_box_height = paragraph|pb_field_value('pb_display_3d_height') %}

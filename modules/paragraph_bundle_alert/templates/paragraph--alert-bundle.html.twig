@@ -34,7 +34,7 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set classes_inner = 'pb-ui-inner' %}
-{% set paragraph_id = pb_paragraph_id ?: 'pb__alert-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 
 {% set classes = [
   'paragraph',

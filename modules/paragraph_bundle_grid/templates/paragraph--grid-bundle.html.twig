@@ -32,7 +32,7 @@
 {% endif %}
 
 {% set pb_columns = paragraph|pb_field_value('pb_display_grid_columns') %}
-{% set paragraph_id = pb_paragraph_id ?: 'pb__grid-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = 'pb-ui-inner pb-grid__inner' %}
 
 {% set classes = [
