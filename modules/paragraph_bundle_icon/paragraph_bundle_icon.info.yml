@@ -1,7 +1,11 @@
-name: Paragraph Bundle Icon
+name: 'Paragraph Bundle Icon'
 type: module
-description: A reusable Paragraph Bundle Icon. It uses Google Material Symbols https://fonts.google.com/icons?icon.style=Outlined&icon.set=Material+Symbols.
-core_version_requirement: ^9.4 || ^10 || ^11
-package: Paragraphs
+description: 'Icon paragraph with Google Material Symbols or uploaded image icon.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:image
+  - drupal:link
+  - drupal:options
+  - drupal:text
   - paragraphs_bundles:paragraphs_bundles

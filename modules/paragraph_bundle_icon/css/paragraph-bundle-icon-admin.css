@@ -27,6 +27,7 @@
 }
 
 .pb__gms_icon .field--name-pb-content-gms-icon-color input {
+  /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: inline-start;
 }
 

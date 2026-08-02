@@ -1,31 +1,72 @@
-.pb__icon-header .pb__content-title {
+/**
+ * @file
+ * Paragraph Bundle Icon.
+ *
+ * Scoping contract: `.paragraphs-bundles.pb-icon` - never
+ * `.paragraph--type--*`.
+ *
+ * Filename:     paragraph-bundle-icon.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+.paragraphs-bundles.pb-icon .pb-icon__header .pb-content__title {
   margin: 0;
 }
 
-.paragraph--type--icon-bundle .material-icons-hidden.icon-wrapper {
+.paragraphs-bundles.pb-icon .material-icons-hidden.icon-wrapper {
   opacity: 0;
   visibility: visible;
 }
 
-.icon-wrapper {
+.paragraphs-bundles.pb-icon .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   opacity: 1;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity var(--pb-transition-duration, 500ms) ease-in-out;
 }
 
-/* animation */
-.paragraph--type--icon-bundle > .pb__icon__inner {
+.paragraphs-bundles.pb-icon > .pb-icon__inner {
   position: relative;
   overflow: hidden;
-  transition: all 0.5s ease;
+  transition: all var(--pb-transition-duration, 500ms) ease;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.paragraph--type--icon-bundle > .pb__icon__inner:hover {
-  box-shadow: 0 20px 40px 0 rgba(0, 0, 0, 0.35);
+.paragraphs-bundles.pb-icon > .pb-icon__inner:hover,
+.paragraphs-bundles.pb-icon > .pb-icon__inner:focus-within {
+  box-shadow: 0 20px 40px 0 color-mix(in srgb, CanvasText 35%, transparent);
   transform: scale(1.01);
+}
+
+.paragraphs-bundles.pb-icon a:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-icon .icon-wrapper,
+  .paragraphs-bundles.pb-icon > .pb-icon__inner,
+  .paragraphs-bundles.pb-icon > .pb-icon__inner:hover,
+  .paragraphs-bundles.pb-icon > .pb-icon__inner:focus-within {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (prefers-contrast: high) {
+  /* GMS icon color is editor-controlled. */
+}
+
+@media (forced-colors: active) {
+  /* Material symbols inherit forced-colors from UA. */
+}
+
+@media print {
+  .paragraphs-bundles.pb-icon .material-icons-hidden.icon-wrapper {
+    opacity: 1;
+  }
 }
