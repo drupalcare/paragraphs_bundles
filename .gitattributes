@@ -1,0 +1,23 @@
+# Exclude development-only material from the packaged release.
+# drupal.org builds release tarballs with `git archive`, which honors
+# export-ignore. These paths stay in the git repo but are not shipped.
+#
+# The v1 -> v2 porting notes and the one-off migration scripts are absent from
+# this file because they are not committed at all — see .gitignore. Only
+# material that belongs in the public repository needs an entry here.
+
+# Test suite: wanted in the repo and by CI, not by a site installing from a
+# release tarball.
+/tests export-ignore
+/modules/*/tests export-ignore
+
+# Tooling config: consumed by CI and local development, not by a running site.
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.gitlab-ci.yml export-ignore
+/.eslintignore export-ignore
+/phpcs.xml.dist export-ignore
+/modules/*/phpcs.xml.dist export-ignore
+/phpstan.neon export-ignore
+/phpstan-baseline.neon export-ignore
+/phpunit.xml.dist export-ignore

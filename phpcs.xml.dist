@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="paragraphs_bundles">
+  <description>Drupal + DrupalPractice coding standards for Paragraphs Bundles.</description>
+
+  <file>.</file>
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/node_modules/*</exclude-pattern>
+  <exclude-pattern>*.css</exclude-pattern>
+  <exclude-pattern>*.svg</exclude-pattern>
+  <exclude-pattern>*.json</exclude-pattern>
+  <exclude-pattern>*.yml</exclude-pattern>
+  <exclude-pattern>*.md</exclude-pattern>
+
+  <!-- One-off porting/migration tooling (export-ignore in .gitattributes). -->
+  <exclude-pattern>*/scripts/*</exclude-pattern>
+
+  <!-- Generated documentation artefacts (export-ignore in .gitattributes).
+       Individual *.md files need no entry — *.md above already excludes them. -->
+  <exclude-pattern>*/docs/generated/*</exclude-pattern>
+
+  <!-- Test fixtures: multi-interface stub file (not one-class-per-file), plus
+       third-party assets downloaded at CI time (e.g. axe-core). -->
+  <exclude-pattern>*/tests/stubs/*</exclude-pattern>
+  <exclude-pattern>*/tests/fixtures/*</exclude-pattern>
+
+  <arg name="extensions" value="php,module,theme,inc,install,js"/>
+  <arg name="colors"/>
+  <arg value="np"/>
+
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+</ruleset>

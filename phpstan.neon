@@ -1,0 +1,35 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: max
+  paths:
+    - src
+    - paragraphs_bundles.module
+    - paragraphs_bundles.install
+    - paragraphs_bundles.post_update.php
+    # Bundle sub-modules ship ~100 PHP files (hook classes, services, their own
+    # .module/.install). They were outside `paths` and so had never been
+    # analysed at all; the parent module alone is not the shipped surface.
+    - modules
+  excludePaths:
+    # Drush is a host-site dependency, not a package dependency, so the
+    # DrushCommands base class is unresolvable at analysis time (matches
+    # vvj_core). The command is a thin wrapper; its logic lives in the
+    # analyzed, unit-tested services.
+    - src/Drush
+    # Tests run bootstrap-free with class stubs in tests/stubs that redefine
+    # Drupal framework classes and conflict with phpstan-drupal's real ones.
+    # Tests are validated by PHPUnit; PHPStan scopes to shipped code.
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    # The batched post_update cannot carry a `@param array<string, mixed>`
+    # docblock: `drush updatedb:status` renders the WHOLE docblock, tags
+    # included, in a ~40-char column, turning the screen a site owner reads
+    # before upgrading production into a wall of text. Core's batched
+    # post_updates use a bare one-line docblock for the same reason. The
+    # function reads the sandbox into typed locals on entry, so the missing
+    # docblock type costs no actual type safety.
+    - message: '#^Function paragraphs_bundles_post_update_regenerate_dynamic_css\(\) has parameter \$sandbox with no value type specified in iterable type array\.$#'
+      path: paragraphs_bundles.post_update.php
+      count: 1

@@ -1,0 +1,49 @@
+# GitLab CI for drupal.org (git.drupalcode.org).
+#
+# Authoritative test gate: the drupal.org pipeline stands up a real Drupal,
+# installs this module's composer dependencies (drupal/paragraphs, etc.), and
+# runs the full quality suite — Composer validate, PHPCS, PHPStan, and PHPUnit
+# (Unit + Kernel + Functional + FunctionalJavascript). The drupalci job image
+# provides the web server + chromedriver the FunctionalJavascript suite needs.
+#
+# axe-core is NOT committed to this repository. It is MPL-2.0, which is not
+# GPL-2.0-compatible, and drupal.org projects do not vendor third-party
+# libraries into git. The FunctionalJavascript job downloads a pinned release
+# and exports PB_AXE_CORE_PATH, which tests/src/Traits/AxeTestTrait.php reads.
+# That trait FAILS (rather than skips) when the source is missing and CI is
+# set, so a failed download can never masquerade as a green a11y run.
+#
+# Template docs: https://project.pages.drupalcode.org/gitlab_templates/
+include:
+  - project: $_gitlab_templates_repo
+    ref: $_gitlab_templates_ref
+    file: '/includes/include.drupalci.main.yml'
+
+variables:
+  # Pin the axe-core release used for accessibility assertions. Bump
+  # deliberately — a new minor can introduce new rules and turn a green
+  # pipeline red.
+  PB_AXE_CORE_VERSION: '4.12.1'
+  PB_AXE_CORE_PATH: '/tmp/axe.min.js'
+  # Multi-core coverage is opt-in — uncomment as it lands:
+  # OPT_IN_TEST_PREVIOUS_MINOR: '1'
+  # OPT_IN_TEST_NEXT_MINOR: '1'
+  # OPT_IN_TEST_NEXT_MAJOR: '1'
+
+# Fetch axe-core before the browser-driven suite runs. Only this job needs it;
+# Unit/Kernel/Functional do not touch axe.
+#
+# UNVERIFIED: the job name and the `.default-before-script` anchor below are
+# taken from the drupalci template's current shape and have not been run
+# against a live pipeline. Confirm both against
+# https://git.drupalcode.org/project/gitlab_templates before tagging; if the
+# override does not compose, move the curl into a `.pb-axe-setup` job the
+# functional-javascript job `extends`.
+'phpunit (functional-javascript)':
+  before_script:
+    - !reference [.default-before-script, script]
+    - |
+      curl -fsSL --retry 3 --retry-delay 2 \
+        "https://cdn.jsdelivr.net/npm/axe-core@${PB_AXE_CORE_VERSION}/axe.min.js" \
+        -o "${PB_AXE_CORE_PATH}"
+    - test -s "${PB_AXE_CORE_PATH}"

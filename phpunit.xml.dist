@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         failOnWarning="true"
+         failOnDeprecation="true"
+         cacheDirectory=".phpunit.cache">
+  <!--
+    Pure-Unit test suite for paragraphs_bundles. The bootstrap loads Composer
+    autoload + the local Drupal interface stubs (tests/stubs), so these
+    mock-based tests need no Drupal kernel. Run from this directory:
+      cd <drupal-root>/modules/custom/paragraphs_bundles
+      <project-root>/vendor/bin/phpunit -c phpunit.xml.dist
+  -->
+  <testsuites>
+    <testsuite name="paragraphs_bundles-unit">
+      <directory>tests/src/Unit</directory>
+      <directory>modules/*/tests/src/Unit</directory>
+    </testsuite>
+  </testsuites>
+  <source>
+    <include>
+      <directory>src</directory>
+      <directory>modules/*/src</directory>
+    </include>
+  </source>
+</phpunit>

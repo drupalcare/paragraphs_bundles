@@ -1,9 +1,10 @@
 {
     "name": "drupal/paragraphs_bundles",
-    "description": "A reusable Paragraphs Bundles.",
+    "description": "A suite of Paragraph bundles for Drupal. v2 — modernized for Drupal 11.3+ / 12; per-paragraph dynamic CSS files; cascade-layer ladder; BEM class names.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
     "authors": [
         {
             "name": "Alaa Haddad (alaahaddad.com)",
@@ -13,10 +14,18 @@
     ],
     "homepage": "https://drupal.org/project/paragraphs_bundles",
     "require": {
-    "drupal/core": "*",
-    "drupal/entity_reference_revisions": "*",
-    "drupal/paragraphs": "*",
-    "drupal/field_group": "*"
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs": "^1.18",
+        "drupal/entity_reference_revisions": "^1.10",
+        "drupal/field_group": "^3.4 || ^4"
+    },
+    "suggest": {
+        "drupal/viewsreference": "^2.0@beta — required by the paragraph_bundle_views sub-module.",
+        "drupal/webform": "^6.2 — required by the paragraph_bundle_webform sub-module.",
+        "drupal/contact_formatter": "^2.0 — required by the paragraph_bundle_contact_form sub-module.",
+        "drupal/link_attributes": "^2.1 — required by the paragraph_bundle_link sub-module.",
+        "drupal/apex": "Optional. paragraph_bundle_content uses APEX's theme-detection service when present, and falls back to a theme-name scan when it is not."
     },
     "support": {
         "issues": "https://drupal.org/project/issues/paragraphs_bundles",
