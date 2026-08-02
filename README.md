@@ -1,215 +1,149 @@
-# Custom Paragraph Bundles Module
+# Paragraphs Bundles
 
-This module provides a powerful and flexible way to create custom paragraph
-bundles in Drupal. It leverages the Paragraph and Field Group modules to
-create unique bundles. Each bundle can be customized with its own colors,
-border, layout, box shadow, margin, and padding.
+Ready-made Paragraph types for Drupal 11.3+ / 12 — layout, media,
+carousels, accordions, and more. Theme-agnostic, jQuery-free, with
+per-paragraph dynamic CSS (no inline styles on the page).
 
-## FEATURES
+## Requirements
 
-- **Independent:** The module does not depend on jQuery, making it
-  lightweight, efficient and compatible with any Drupal theme.
-- **Customizable:** Fully customizable paragraph bundles with options for
-  colors, border, layout, box shadow, margin, and padding.
-- **5 Breakpoints:** Supports five breakpoints for two or three column bundles,
-  ensuring compatibility across devices.
-- **Easy to Use:** User-friendly customization of all bundles.
-- **Integration:** Utilizes Paragraph and Field Group modules; integrates with
-  the [Solo theme](https://www.drupal.org/project/solo).
+- Drupal `^11.3 || ^12`
+- PHP `8.3+`
+- [Paragraphs](https://www.drupal.org/project/paragraphs),
+  Entity Reference Revisions, Field Group
 
-The module allows creation of paragraph bundles with two group field horizontal
-tabs: Content and Display.
+## Install
 
-### Display Tab
+```bash
+composer require drupal/paragraphs_bundles
+drush en paragraphs_bundles -y
+```
 
-The Display tab offers customization options for paragraph bundle appearance,
-including six color input fields:
+Enable only the bundle sub-modules you need (each lives under
+`modules/paragraph_bundle_*` inside the package). Example:
 
-- Background color
-- Background color hover
-- Text color
-- Text color hover
-- Border color
-- Border color hover
+```bash
+drush en paragraph_bundle_layout paragraph_bundle_card \
+  paragraph_bundle_carousel -y
+drush cr
+```
 
-Additional seven fields for customization:
+Optional: install the demo recipe when available — see
+`recipes/paragraphs_bundles_demo` (Workstream 2).
 
-- Border
-- Border radius
-- Margin
-- Padding
-- Width in Percentage
-- Box shadow
-- Background color opacity
+## Configuration
 
-These 13 fields are default in most bundles. The number may vary by bundle type.
+Editors configure each paragraph on the **Content** tab (body fields)
+and **Display** tab (colours, spacing, borders, bundle-specific
+options). Site builders can use the optional **pb_content** content
+type (`paragraph_bundle_content`) for a dedicated landing-page width.
 
-### Content Tab
+See **`docs/CONFIGURATION.md`** for Display tabs, the theme bridge,
+`pb_content` max-width, and how dynamic CSS files work.
 
-The Content tab contains the actual content fields of the bundle. The number
-of fields varies depending on the bundle type.
+## Usage
 
-## BUNDLES
+### 1. Add a Paragraphs field
 
-The module supports types of paragraph bundles, one content type and one
-block type:
+1. Structure → Content types → your type → Manage fields.
+2. Add a **Paragraph** field (unlimited or limited cardinality).
+3. Manage form display → widget **Paragraphs**; choose **Closed**
+   or **Modal** edit mode as you prefer.
+4. On the field settings, allow the paragraph types you enabled
+   (e.g. `two_columns_bundle`, `card_two_columns_bundle`).
 
-# Module Categories Description
+### 2. Pick bundle families
 
-## 1. Display Formats
-These modules focus on presenting content in visually appealing and dynamic
-formats:
+Enable sub-modules for the bundles you need. Bundles group by role:
 
-- **3D Carousel**: Presents content in a rotating 3D carousel format.
-- **3D Flip Box**: Displays content in boxes that flip in a 3D space.
-- **Lightbox Image Grid**: Arranges images in a responsive grid layout and opens
- each
-  image in a lightbox.
-- **Slideshow**: Showcases content in a slideshow format.
-- **Responsive Image Narrow**: Adapts images to fit different screen sizes,
-in square
-  formats.
-- **Responsive Image Wide**: Adapts images to fit different screen sizes, in
-rectangle
-  formats.
-- **Parallax**: Creates a parallax scrolling effect for images or other content.
+| Family | Sub-module | Example paragraph types |
+|--------|------------|-------------------------|
+| Layout | `paragraph_bundle_layout` | one/two/three columns |
+| Cards & hero | `paragraph_bundle_card`, `paragraph_bundle_hero` | card
+columns, hero |
+| Grid & media | `paragraph_bundle_grid`, `paragraph_bundle_image`,
+`paragraph_bundle_image_background`, `paragraph_bundle_image_overlay`,
+`paragraph_bundle_image_grid` | grid, image variants, lightbox grid |
+| Interactive | `paragraph_bundle_accordion`, `paragraph_bundle_tabs`,
+`paragraph_bundle_carousel`, `paragraph_bundle_slideshow`,
+`paragraph_bundle_3d_carousel`, `paragraph_bundle_3d_flip_box`,
+`paragraph_bundle_modal`, `paragraph_bundle_parallax` | accordion, tabs,
+carousels, modal, parallax |
+| Content & links | `paragraph_bundle_icon`, `paragraph_bundle_link`,
+`paragraph_bundle_alert` | icon, link blocks, dismissible alert |
+| Drupal embeds | `paragraph_bundle_block`, `paragraph_bundle_block_content`,
+`paragraph_bundle_views`, `paragraph_bundle_webform`,
+`paragraph_bundle_contact_form`, `paragraph_bundle_node_reference` | block,
+custom block, view, webform, contact form, node teaser |
+| Demo / simple | parent `paragraphs_bundles` | `simple_bundle` (minimal
+example) |
 
-## 2. Interactive Elements
-Modules that enhance user interaction and engagement through dynamic and
-interactive
-features:
+Each sub-module ships optional config (paragraph type, fields, form and
+view displays). Import happens on enable; no manual YAML copy for a
+standard site.
 
-- **Accordion**: Displays content in a collapsible format, allowing users to
-expand or
-  hide sections.
-- **Tabs**: Organizes content in a tabbed interface.
-- **Modal**: Displays content in a modal window, often used for login forms,
-  notifications, or additional information.
-- **Alert**: Shows alert messages or important information in an interactive
- format.
+### 3. Edit and save
 
-## 3. Layout Structures
-These modules provide different structural layouts to organize content on a
- page:
+When an editor saves a paragraph, Paragraphs Bundles writes a small CSS
+file under `public://paragraphs_bundles/` and attaches it as a library.
+No cache clear is required for colour or spacing changes.
 
-- **Grid**: Displays content in a grid layout, adjustable between one and
- twelve columns.
-- **One Column**: A simple, single-column layout.
-- **Two Columns**: Divides content into two columns.
-- **Three Columns**: Arranges content in three separate columns.
-- **Card Two Columns**: Displays content in a card-style layout within two
- columns.
-- **Card Three Columns**: Displays content in a card-style layout within three
- columns.
-- **Hero**: Typically a large, full-width banner or image, often used at the
- top of a
-  page.
+Maintenance commands:
 
-## 4. Content Integration
-Modules that are used to integrate or display specific types of content or
- external
-services:
+```bash
+drush pb:verify-form-displays   # Display tab contract check
+drush pb:regenerate-css         # Rebuild all dynamic CSS files
+drush pb:regenerate-css --purge # Wipe folder, then rebuild
+```
 
-- **Node Reference**: For referencing any content.
-- **Block Content**: For placing and arranging blocks of content.
-- **Drupal Block**: Integrates Drupal blocks into the layout.
-- **Image**: A module dedicated to displaying individual images.
-- **Image Overlay**: Adds overlay effects to images.
-- **Link**: Specifically for adding and managing hyperlinks.
-- **PB Content & PB Block**: Special modules for integrating Paragraph
- Bundles' own
-  content and block system.
-- **Image Background**: Likely a straightforward to build content with an image
- background.
-- **Simple**: Likely a straightforward, minimalistic content display.
-- **Icon**: Display Google Material Symbols or upload an Image Icon.
-- **Views**: Integrates the Views module, a powerful Drupal tool for
- organizing and
-  displaying content.
-- **Contact Form**: Embeds contact forms.
-- **Webform**: Embeds web forms for user input and interaction.
+## Upgrading from 1.x
 
+v2 is a **drop-in upgrade**: same field machine names, same stored
+values, same `--pb-*` CSS variables. Replace the code, run updates,
+verify form displays, regenerate CSS.
 
-Each bundle can be customized using the Content and Display tab options.
+Full steps: **`docs/UPGRADE-V1-TO-V2.md`**. Sub-theme class renames:
+**`docs/CSS-CLASS-MIGRATION.md`**.
 
-### The PB Block
+## Screenshots
 
-A custom block with a paragraph field, compatible with all themes. It can be
-used to create a paragraph block and positioned in any region.
+Bundle screenshots and a browsable demo will ship with the
+`paragraphs_bundles_demo` recipe and the drupal.org project page
+(Workstream 2). Until then, enable bundles on a test node and use the
+front-end preview.
 
-### The PB Content
+## Documentation
 
-A custom content type with disabled left and right regions. It comes with width
-settings and comprises two group field horizontal tabs: Content and Display.
-Works with Solo Theme Only.
+| Guide | Purpose |
+|-------|---------|
+| `docs/CONFIGURATION.md` | Display tab, theme bridge, dynamic CSS |
+| `docs/DEVELOPING.md` | Services, hooks, adding a new bundle |
+| `docs/UPGRADE-V1-TO-V2.md` | v1 → v2 upgrade |
+| `docs/CSS-CLASS-MIGRATION.md` | v1 → v2 CSS class map |
+| `docs/PB-V2-THEME-BRIDGE.md` | `--pb-*` ↔ `--r-*` contract |
+| `docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md` | WCAG notes per bundle |
+| `docs/reference/pb-css-variables.md` | `--pb-*` variable reference |
 
-### Understanding Blocks Types in Drupal (PB Block & PB Block Content)
-Drupal provides two different block systems, and this often causes confusion 
-when using PB Block or PB Block Content inside Paragraph Bundles.
+## What's new in v2
 
-Drupal Blocks (Plugin-Based)
+- Drupal 11.3+ / 12, PHP 8.3+, OOP hooks (`src/Hook/`).
+- Per-paragraph dynamic CSS files (no inline `style="--pb-*"`).
+- Element-id scoping (`#pb__{slug}-{id}__inner`) so editor settings
+  beat theme defaults without `!important`.
+- BEM class naming with Twig `pb_class` filter; stored field values
+  unchanged from v1.
+- Theme bridge for Solo, APEX, and neutral (any other theme).
 
-These blocks are provided by modules (menus, Views blocks, forms, etc.).
-They are controlled by theme regions. If a Drupal block is enabled in a region, 
-it will always appear there — even when the same block is also rendered 
-inside a paragraph.
+## Maintainers
 
-Block Content (Custom Block Entities)
+- **Alaa Haddad** —
+  [drupal.org/u/flashwebcenter](https://www.drupal.org/u/flashwebcenter),
+  [alaahaddad.com](https://alaahaddad.com)
 
-These are content entities created in Structure → Block Layout → Custom 
-Block Library.
-If the same block content entity is assigned to a theme region, it will also 
-appear both in the region and inside the paragraph.
+## Support
 
-Why Duplication Happens
+- **Issues:** https://www.drupal.org/project/issues/paragraphs_bundles
+- **Source:** https://git.drupalcode.org/project/paragraphs_bundles
 
-If a block is placed inside a PB paragraph and also assigned to any theme 
-region, Drupal will render it twice:
+## License
 
-In the theme region
-
-Inside the paragraph
-
-This is normal Drupal behavior and not specific to Paragraph Bundles.
-
-Recommended Setup
-
-To avoid duplication, keep any block intended for use inside PB paragraphs 
-enabled but assigned to a hidden region.
-This ensures the block is available to Drupal but only appears within the 
-paragraph bundle.
-
-#### Display Tab
-
-- List of all solo regions that can be disabled.
-- Field to select the maximum content width.
-- Input field for content background color.
-- Slide range for background opacity (1 to 100).
-
-#### Content Tab
-
-- Paragraph field to add any paragraph bundle. (Width setting for the paragraph
-  bundle is disabled; content settings override it.)
-- Block content reference field.
-
-This feature allows crafting unique page layouts with different color schemes
-or without elements like headers or footers.
-
-## REQUIREMENTS
-
-- Paragraph module
-- Field Group module
-
-## INSTALLATION
-
-1. Download and enable the Paragraph and Field Group modules.
-2. Download and enable this module.
-
-## USAGE
-
-After enabling the module, start creating custom paragraph bundles. Customize
-each bundle with colors, border, layout, box shadow, margin, and padding.
-
-## SUPPORT
-
-Encounter issues or have questions? Please open an issue in the issue queue.
+GPL-2.0-or-later. See `LICENSE.txt`.
