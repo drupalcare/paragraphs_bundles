@@ -1,6 +1,6 @@
 name: 'Paragraphs Bundles'
 type: module
-description: 'A suite of Paragraph bundles. v2 — modernized for Drupal 11.3+ / 12; OOP hooks; per-paragraph dynamic CSS files (no inline styles); cascade-layer ladder for clean theme override path; BEM-strict class naming.'
+description: 'A suite of Paragraph bundles. v2 — modernized for Drupal 11.3+ / 12; OOP hooks; per-paragraph dynamic CSS files (no inline styles); deliberately un-layered CSS so editor choices win under any theme; BEM-strict class naming.'
 core_version_requirement: ^11.3 || ^12
 lifecycle: stable
 package: 'Paragraphs Bundles'

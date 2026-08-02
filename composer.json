@@ -1,6 +1,6 @@
 {
     "name": "drupal/paragraphs_bundles",
-    "description": "A suite of Paragraph bundles for Drupal. v2 — modernized for Drupal 11.3+ / 12; per-paragraph dynamic CSS files; cascade-layer ladder; BEM class names.",
+    "description": "A suite of Paragraph bundles for Drupal. v2 — modernized for Drupal 11.3+ / 12; per-paragraph dynamic CSS files; deliberately un-layered CSS; BEM class names.",
     "type": "drupal-module",
     "license": "GPL-2.0-or-later",
     "minimum-stability": "stable",

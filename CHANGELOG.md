@@ -6,19 +6,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [2.0.0] — 2026-07-06
 
 A ground-up rewrite of the suite for Drupal 11.3+ / 12, shipped as a **drop-in
-upgrade from 1.x**: no content or field changes are required (`drush updb`
-migrates the dynamic CSS), and nothing v1 exposed was removed. This entry is the
-readable summary; the complete, verifiable detail lives in three companion docs:
+upgrade from 1.x**: no content or field changes are required and every v1
+bundle keeps its rendered DOM. Read **`docs/UPGRADE-V1-TO-V2.md`** before
+upgrading — the upgrade is one-way, and it has a prerequisite (your site must
+already be on the last 1.x release).
 
-- **`docs/CSS-CLASS-MIGRATION.md`** — every v1 → v2 CSS class rename
-  (structural,
-  value-driven, constructed), with a bulk-apply script and a manual-only section
-  for classes that double as stored field values.
-- **`docs/planning/PB-V2-FIELD-VALUE-BEM-INVENTORY.md`** — per-field record of
-  how
-  every display value reaches the DOM (class / attribute / markup / behaviour).
-- **`docs/planning/PB-V2-PARITY-AUDIT.md`** — the 27-module v1→v2 feature-parity
-  certification (nothing user-visible dropped).
+Two things do change for site builders, both detailed below: **structural CSS
+class names were renamed** (see `docs/CSS-CLASS-MIGRATION.md` for all 166
+renames and the 87 frozen tokens that did not change), and three things v1
+bundled are no longer in the package (see **Removed**).
 
 ### Security
 Editor-supplied display values reach the page through two unescaped sinks: the
@@ -64,6 +60,41 @@ Covered by injection unit tests in `PbDynamicCssBuilderTest` and
 path) or to be stripped of every structural character (user-variable path), and
 legitimate colour input is asserted to still emit.
 
+### Removed
+Three things that 1.x shipped are no longer in the package. All three are
+user-visible; read this section before upgrading.
+
+- **The bundled Material Symbols web fonts (3 files, ~11 MB).**
+  `paragraph_bundle_icon` no longer ships
+  `material-symbols-{outlined,rounded,sharp}.woff2`, and the module's CSS no
+  longer declares an `@font-face` for them. They are Apache-2.0 licensed, which
+  is not compatible with this project's GPL-2.0-or-later, and drupal.org does
+  not package bundled third-party font binaries. **Sites using the Material
+  Symbols icon styles must now supply the font themselves** — from the theme,
+  or self-hosted; `modules/paragraph_bundle_icon/README.md` documents both,
+  including the privacy trade-off of loading it from Google. The class rules
+  that turn a ligature into a glyph still ship, so supplying the font under its
+  standard family name is all that is needed. If the font is missing the icon
+  renders as its ligature name in plain text (a `home` icon shows the word
+  "home") — that is the symptom to look for. Sites that use the image-icon
+  field rather than Material Symbols are unaffected, and no stored value
+  changes either way.
+- **28 bundled `LICENSE` / `LICENSE.txt` files**, one per sub-module. The
+  project's licence is unchanged and is still declared in `composer.json` and
+  every `.info.yml`; drupal.org adds the canonical GPL `LICENSE.txt` to the
+  release tarball itself, so carrying 28 copies in the repository was
+  duplication, not compliance.
+- **The `.pb-u-animate--fading` CSS class and its `@keyframes animatefading`.**
+  This was the module's only infinite animation and it had no pause control, so
+  it was a WCAG 2.2.2 / 2.3.3 liability. It was also unreachable: it appears in
+  no template, no JavaScript, no other stylesheet, and in no field's
+  `allowed_values`, and `PbValueClassMap` maps six animation values, none of
+  them this one. It was deleted rather than given a `prefers-reduced-motion`
+  guard because its keyframes end at `opacity: 0` with no fill-mode, so a
+  single finite run would fade the element out and then snap it back. The six
+  reachable animation values (`bottom`, `left`, `opacity`, `right`, `top`,
+  `zoom`) are unaffected and are now reduced-motion aware.
+
 ### Fixed
 - **Strict config-schema compliance** — corrected five classes of schema
   violation in the shipped optional config (custom field-type default values,
@@ -71,9 +102,10 @@ legitimate colour input is asserted to still emit.
   form-display `label`, and a `block_content` `revision` flag), so the suite
   installs cleanly under Drupal's strict config-schema checker (the drupal.org
   gate). Guarded by Kernel tests importing optional config under strict schema.
-- **V1→V2 parity audit (all 27 modules)** — verified every v1 user-visible
-  feature is preserved; nothing dropped. Full record in
-  `docs/planning/PB-V2-PARITY-AUDIT.md`. Three fixes came out of it:
+- **V1→V2 feature parity (all 27 modules)** — every bundle was ported with its
+  v1 Twig DOM preserved, and a Kernel test renders every bundle to catch a
+  template that stops producing the shared wrapper. Three fixes came out of the
+  port review:
   - **A paragraph never renders unstyled.** The per-paragraph dynamic CSS lives
     in a `public://` file; if that file is missing (fresh deploy, wiped files
     directory, or content migrated without a re-save) the CSS is now inlined in
@@ -88,9 +120,10 @@ legitimate colour input is asserted to still emit.
 - **Cross-module CSS selector drift** — image-overlay effect classes styled from
   inside 3D-carousel slides were still v1-named after the BEM pass; realigned to
   `pb-image-overlay--*` so nested overlays keep their hover effects.
-- **Dead CSS removed** — `.pb__round` (never emitted) and `.pb__animate-fading`
-  (plus its orphaned `@keyframes`); every non-ASCII character removed from CSS
-  comments (ASCII-only for clean DevTools output).
+- **Dead CSS removed** — `.pb__round`, which was never emitted; every
+  non-ASCII character removed from CSS comments (ASCII-only for clean DevTools
+  output). The fading animation is covered in **Removed** above: it survived
+  this pass under its BEM name and was deleted later.
 - **Manage display cleanup (v2 view contract)** — all `pb_display_*` fields
   hidden on paragraph view displays; styling comes from entity + dynamic CSS.
   Folded into update **`9006`**; `image_background_bundle` Twig uses
@@ -98,10 +131,12 @@ legitimate colour input is asserted to still emit.
 - **`pb_content` form display upgrade** — surgical merge preserves site-added
   fields on the node type; single sub-module hook **`9001`** (removed
 `9002`/`9003`).
-- **Pre-release hook consolidation** — parent: **`9001`**, **`9005`**,
-  **`9006`**
-  only (removed fragmented `9002`–`9004`, `9007`–`9015`; view display cleanup
-  inside `9006`). See `docs/PB-V2-TESTING-WORKFLOW.md`.
+- **Pre-release hook consolidation** — the parent now ships **`9005`**,
+  **`9006`** and **`9007`** only, plus a post-update for the CSS backfill.
+  v2's development hooks were fragmented across `9001`–`9015`; the survivors
+  were renumbered above v1's floor (see the **`9005`** note below) and the view
+  display cleanup folded into `9006`. Full chain in
+  `docs/UPGRADE-V1-TO-V2.md`.
 - **Colors group field order on v1 upgrades** — nest now sets
   `pb_display_bg_opacity` weight 16 (before bg 17). field_group sorts by widget
   weight; v1 sites left opacity at 18+ so bg/hover appeared before opacity.
@@ -127,11 +162,8 @@ legitimate colour input is asserted to still emit.
   file URLs from image/media fields without view display formatters.
 - **`PbViewDisplayVerifier`** — checks no `pb_display_*` in view display
   `content`; used by `drush pb:verify-form-displays` and optional YAML script.
-- **`docs/PB-V2-TESTING-WORKFLOW.md`** — maintainer QA: trash DB, Path A fresh
-  install vs Path B v1 drop-over, V1/V2 hook comparison table.
-- **`docs/PB-V2-INSTALL-PARITY.md`** — mandatory v2 QA policy: fresh install
-  and v1 drop-over must expose the same fields in the same order; verification
-  commands and release gate checklist.
+- **`docs/UPGRADE-V1-TO-V2.md`** — the upgrade guide: prerequisites, backup and
+  recovery, the full update-hook chain, and what changes for site builders.
 - **`PbThemeBridgeService`** — resolves `theme-bridge-solo`,
   `theme-bridge-apex`,
   or `theme-bridge-neutral` from the active theme base chain. Bridge CSS maps
@@ -142,14 +174,17 @@ legitimate colour input is asserted to still emit.
 - Unit tests for `PbDynamicCssBuilder` and `PbDynamicUserVarBuilder`
   (selectors, empty vs filled fields). Composer autoload + entity stubs for
   standalone PHPUnit.
-- **`PbDynamicUserVarBuilder`** — emits non-colour editor field values
-  (`--pb-gap`, `--pb-bg-image`, `--pb-overlay-bg`, layout column vars, etc.)
-  into the same per-paragraph dynamic CSS file as colour vars. New
-  `PbColorNormalizer` service shared by colour and overlay rgba paths.
-- `docs/reference/pb-css-variables.md` — field → `--pb-*` reference for
-  static vs dynamic layers.
+- **`PbDynamicUserVarBuilder`** — emits non-colour editor field values into the
+  same per-paragraph dynamic CSS file as the colour vars. These are written as
+  **real CSS properties** on the element v1 gave a `style=""` attribute
+  (`gap`, `max-width`, `min-height`, `background-*`, `perspective`,
+  `grid-template-columns`, `font-size`), not as custom properties; the two
+  column bundles are the exception and do emit `--pb-col-anim-ms` /
+  `--pb-col-sticky-top`. New `PbColorNormalizer` service shared by the colour
+  and overlay rgba paths.
+- `docs/reference/pb-css-variables.md` — field → CSS reference for the static
+  and dynamic layers.
 - Unit tests for `PbColorNormalizer` (opacity, hex overlay rgba).
-- CSS class inventory (Stage 1): `docs/generated/pb-class-inventory.json`.
 
 ### Changed
 - **CSS class names → BEM.** Every structural class is now
@@ -340,15 +375,8 @@ title;
   config from v1 plus `pb_display_link` / `pb_display_link_hover`; nested
   Display tab field groups; title tag/alignment on form + hidden on view
   (block pattern); all use parent `paragraph--default.html.twig`.
-- `scripts/nest-display-field-groups.php` — CLI helper mirroring `update_9010()`
-  for optional form display YAML during bundle ports.
-- `scripts/verify-bundle-form-display.php` — gate before shipping a bundle;
-  checks four shared fields, title block order, link fields in Colors group.
-- `update_9011()` and `--sort-extra` on `nest-display-field-groups.php` —
-  group Additional display fields by widget type (selects, colors, numbers,
-  checkboxes, datetime, range, media) for two-per-row admin layout.
-- `docs/BUNDLE-PORT-WORKFLOW.md` — ordered port checklist (audit → scaffold →
-  link fields → view formatters → **nest Display tab** → Twig → QA).
+- Grouping of Additional display fields by widget type (selects, colors,
+  numbers, checkboxes, datetime, range, media) for a two-per-row admin layout.
 
 ### Changed
 - Display tab **Additional** section admin layout: number, checkbox,
