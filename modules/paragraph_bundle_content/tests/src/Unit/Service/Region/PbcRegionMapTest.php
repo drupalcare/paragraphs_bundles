@@ -42,7 +42,7 @@ final class PbcRegionMapTest extends TestCase {
   /**
    * Data provider for layout-library resolution.
    *
-   * @return list<array{string, string}>
+   * @return array<string, array{string, string}>
    *   Sets of theme family and the expected content layout library name.
    */
   public static function layoutLibraryProvider(): array {

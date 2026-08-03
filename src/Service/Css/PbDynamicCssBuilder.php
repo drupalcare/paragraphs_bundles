@@ -15,22 +15,22 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  * Emits two un-layered rule blocks scoped to the paragraph's wrapper
  * via the standardised v2 outer-element id (`pb__{slug}-{id}`):
  *
- *   #pb__{slug}-{id} > .paragraph__inner {
+ *   #pb__{slug}-{id} > .pb-ui-inner {
  *     --pb-bg: ...;  --pb-bg-h: ...;  ...
  *     --pb-lk: ...;  --pb-lk-h: ...;
  *     background-color: var(--pb-bg);
  *     border-color:     var(--pb-br);
  *     color:            var(--pb-tx);
  *   }
- *   #pb__{slug}-{id} > .paragraph__inner:hover {
+ *   #pb__{slug}-{id} > .pb-ui-inner:hover {
  *     background-color: var(--pb-bg-h);
  *     border-color:     var(--pb-br-h);
  *     color:            var(--pb-tx-h);
  *   }
- *   #pb__{slug}-{id} > .paragraph__inner :where(a) {
+ *   #pb__{slug}-{id} > .pb-ui-inner :where(a) {
  *     color: var(--pb-lk);
  *   }
- *   #pb__{slug}-{id} > .paragraph__inner:hover :where(a) {
+ *   #pb__{slug}-{id} > .pb-ui-inner:hover :where(a) {
  *     color: var(--pb-lk-h);
  *   }
  *
@@ -47,15 +47,16 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  * {@see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook}, so the
  * builder and the templates stay in lock-step.
  *
- * Selector specificity: `#pb__{slug}-{id} > .paragraph__inner` = (1,1,1).
- * Beats `paragraphs-bundles-custom.css` rule `.paragraph > .paragraph__inner`
- * (0,2,1) and any reasonable host-theme rule decisively. Editor
- * settings always win without `!important`.
+ * Selector specificity: `#pb__{slug}-{id} > .pb-ui-inner` = (1,1,1).
+ * Beats `paragraphs-bundles-custom.css` rule
+ * `.paragraphs-bundles > .pb-ui-inner` (0,2,1) and any reasonable
+ * host-theme rule decisively. Editor settings always win without
+ * `!important`.
  *
  * The variables are kept on the inner element so sub-themes that read
  * `--pb-bg` / `--pb-tx` directly (v1 contract) keep working. The
  * dedicated `:hover` selector pins hover via the same compound class
- * so a theme can't override it via plain `.paragraph__inner:hover`.
+ * so a theme can't override it via plain `.pb-ui-inner:hover`.
  *
  * Un-layered emission is required: per CSS Cascade L5 un-layered
  * author CSS beats layered author CSS. PB stays un-layered for exactly
@@ -64,34 +65,26 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  *
  * --- Where to change the DOM contract ------------------------------
  *
- * Two class constants below define the selector contract:
+ * {@see self::scopeSelector()} composes the whole selector from four
+ * class constants below, and nothing else builds one:
  *
- *   - {@see self::OUTER_SCOPE_PATTERN}  — `#pb__%s-%d` (slug, id)
- *   - {@see self::INNER_DESCENDANT}     — `> .paragraph__inner`
+ *   - {@see self::OUTER_ID_PREFIX_OVERRIDES} — v1 id prefixes, per bundle
+ *   - {@see self::OUTER_ID_SUFFIX_OVERRIDES} — v1 id suffixes, per bundle
+ *   - {@see self::INNER_DESCENDANT}          — `> .pb-ui-inner`
+ *   - {@see self::INNER_DESCENDANT_OVERRIDES} — per-bundle inner element
  *
- * If a future v2 template change moves the outer id format or
- * restructures the inner element, update these two constants — no
- * other call site needs to know. Templates must keep the outer
- * `id="pb__{slug}-{id}"` in sync (set by `pb_paragraph_id` in the
- * preprocess hook).
+ * Bundles absent from the two override maps take the standard
+ * `#pb__{slug}-{id} > .pb-ui-inner`. If a future v2 template change moves
+ * the outer id format or restructures the inner element, update these
+ * constants — no other call site needs to know. Templates must keep the
+ * outer id in sync; `pb_paragraph_id` in the preprocess hook reads
+ * {@see self::OUTER_ID_PREFIX_OVERRIDES} for exactly that reason.
  *
  * Property declarations are only emitted for variables that are
  * actually set; partial input (e.g. only `--pb-bg`) does NOT zero out
  * unrelated properties (border, color).
  */
 final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
-
-  /**
-   * Outer-scope selector pattern.
-   *
-   * `%s` is the kebab-case bundle slug (e.g. `simple` for `simple_bundle`,
-   * `3d-carousel` for `3d_carousel_bundle`); `%d` is the paragraph
-   * entity id.
-   *
-   * Specificity (1,0,0); composed with {@see self::INNER_DESCENDANT}
-   * the final scope is (1,1,1) — beats any class-chain rule.
-   */
-  private const string OUTER_SCOPE_PATTERN = '#pb__%s-%d';
 
   /**
    * Inner-element descendant selector relative to the outer scope.
@@ -106,7 +99,8 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
    * Bundle-specific color scope when v1 Twig targets a nested element.
    *
    * Key = paragraph bundle machine name; value = descendant selector
-   * relative to {@see self::OUTER_SCOPE_PATTERN} (no leading space).
+   * relative to the outer scope {@see self::outerScopeId()} builds (no
+   * leading space).
    * Falls back to {@see self::INNER_DESCENDANT} when not listed.
    *
    * @var array<string, string>
@@ -488,7 +482,7 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
   /**
    * Compose the full scope selector for a paragraph entity.
    *
-   * Outer scope (`OUTER_SCOPE_PATTERN`) + space-separated inner
+   * Outer scope ({@see self::outerScopeId()}) + space-separated inner
    * descendant (`INNER_DESCENDANT`). When `INNER_DESCENDANT` is
    * empty the trailing space is stripped so `:hover` attaches to
    * the outer scope instead.
