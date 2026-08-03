@@ -8,16 +8,19 @@
 #
 # axe-core is NOT committed to this repository. It is MPL-2.0, which is not
 # GPL-2.0-compatible, and drupal.org projects do not vendor third-party
-# libraries into git. The FunctionalJavascript job downloads a pinned release
-# and exports PB_AXE_CORE_PATH, which tests/src/Traits/AxeTestTrait.php reads.
-# That trait FAILS (rather than skips) when the source is missing and CI is
-# set, so a failed download can never masquerade as a green a11y run.
+# libraries into git. The phpunit job downloads a pinned release and exports
+# PB_AXE_CORE_PATH, which tests/src/Traits/AxeTestTrait.php reads. That trait
+# FAILS (rather than skips) when the source is missing and CI is set, so a
+# failed download can never masquerade as a green a11y run.
 #
 # Template docs: https://project.pages.drupalcode.org/gitlab_templates/
 include:
-  - project: $_gitlab_templates_repo
-    ref: $_gitlab_templates_ref
-    file: '/includes/include.drupalci.main.yml'
+  - project: $_GITLAB_TEMPLATES_REPO
+    ref: $_GITLAB_TEMPLATES_REF
+    file:
+      - '/includes/include.drupalci.main.yml'
+      - '/includes/include.drupalci.variables.yml'
+      - '/includes/include.drupalci.workflows.yml'
 
 variables:
   # Pin the axe-core release used for accessibility assertions. Bump
@@ -30,18 +33,17 @@ variables:
   # OPT_IN_TEST_NEXT_MINOR: '1'
   # OPT_IN_TEST_NEXT_MAJOR: '1'
 
-# Fetch axe-core before the browser-driven suite runs. Only this job needs it;
-# Unit/Kernel/Functional do not touch axe.
+# Fetch axe-core before the tests run. Verified against gitlab_templates `main`
+# on 2026-08-03: the job is called `phpunit` (there is no
+# `phpunit (functional-javascript)`), and neither it nor `.phpunit-base`
+# defines a `before_script`, so this adds one rather than replacing the
+# template's own setup.
 #
-# UNVERIFIED: the job name and the `.default-before-script` anchor below are
-# taken from the drupalci template's current shape and have not been run
-# against a live pipeline. Confirm both against
-# https://git.drupalcode.org/project/gitlab_templates before tagging; if the
-# override does not compose, move the curl into a `.pb-axe-setup` job the
-# functional-javascript job `extends`.
-'phpunit (functional-javascript)':
+# The core-version variants (`phpunit (next minor)` and friends) are opt-in and
+# currently off; give them the same before_script when any is enabled, or their
+# a11y tests will fail on the missing file.
+phpunit:
   before_script:
-    - !reference [.default-before-script, script]
     - |
       curl -fsSL --retry 3 --retry-delay 2 \
         "https://cdn.jsdelivr.net/npm/axe-core@${PB_AXE_CORE_VERSION}/axe.min.js" \
