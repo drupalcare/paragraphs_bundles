@@ -159,6 +159,7 @@ services:
       - '@module_handler'
       - '@logger.channel.paragraphs_bundles'
       - '@paragraphs_bundles.display_class_resolver'
+      - '@cache.default'
 
   Drupal\paragraphs_bundles\Hook\PbFieldWidgetHook:
     autowire: true

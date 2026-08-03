@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles\Hook;
 
+use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Render\Markup;
@@ -56,6 +57,7 @@ final class PbPreprocessHook {
     private readonly ModuleHandlerInterface $moduleHandler,
     private readonly LoggerInterface $logger,
     private readonly PbDisplayClassResolverInterface $displayClasses,
+    private readonly CacheBackendInterface $cache,
   ) {}
 
   /**
@@ -172,12 +174,25 @@ final class PbPreprocessHook {
     if ($this->managedBundles !== NULL) {
       return $this->managedBundles;
     }
+    // The answer only changes when a PB module is installed or uninstalled,
+    // but it used to be recomputed on every request — 27 directory scans to
+    // learn something that had not changed. Key the cache on the module list
+    // so an install or uninstall produces a different key and recomputes,
+    // with no invalidation hook to forget to fire.
     $moduleNames = ['paragraphs_bundles'];
     foreach (array_keys($this->moduleHandler->getModuleList()) as $name) {
       if (str_starts_with($name, 'paragraph_bundle_')) {
         $moduleNames[] = $name;
       }
     }
+    sort($moduleNames);
+    $cid = 'paragraphs_bundles:managed_bundles:' . hash('xxh128', implode(',', $moduleNames));
+    $cached = $this->cache->get($cid);
+    if ($cached !== FALSE && is_array($cached->data)) {
+      $this->managedBundles = $cached->data;
+      return $this->managedBundles;
+    }
+
     $bundles = [];
     foreach (array_unique($moduleNames) as $moduleName) {
       $path = $this->moduleHandler->getModule($moduleName)->getPath();
@@ -195,6 +210,7 @@ final class PbPreprocessHook {
     }
     $bundles = array_values(array_unique($bundles));
     sort($bundles);
+    $this->cache->set($cid, $bundles);
     $this->managedBundles = $bundles;
     return $bundles;
   }

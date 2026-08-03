@@ -52,8 +52,14 @@ final class PbEntityHook {
     if (!$entity instanceof ParagraphInterface) {
       return;
     }
-    $this->files->delete($this->slugger->slugify($entity->bundle()), (int) $entity->id());
-    Cache::invalidateTags(['library_info']);
+    $slug = $this->slugger->slugify($entity->bundle());
+    $id = (int) $entity->id();
+    if ($this->files->fileName($slug, $id) === '') {
+      // Nothing on disk, so no library existed to invalidate.
+      return;
+    }
+    $this->files->delete($slug, $id);
+    $this->invalidateLibraryInfo();
   }
 
   /**
@@ -70,13 +76,38 @@ final class PbEntityHook {
     $slug = $this->slugger->slugify($entity->bundle());
     $id = (int) $entity->id();
 
+    // File names are content-addressed, so the name only moves when the CSS
+    // actually changes — and the library definition is just that URL. Compare
+    // before and after and invalidate only on a real change; re-saving a
+    // paragraph whose display settings did not change now costs nothing.
+    $before = $this->files->fileName($slug, $id);
+
     $css = $this->builder->build($entity);
     if ($css === '') {
-      $this->files->delete($slug, $id);
-      Cache::invalidateTags(['library_info']);
+      if ($before !== '') {
+        $this->files->delete($slug, $id);
+        $this->invalidateLibraryInfo();
+      }
       return;
     }
     $this->files->write($slug, $id, $css);
+    if ($this->files->fileName($slug, $id) !== $before) {
+      $this->invalidateLibraryInfo();
+    }
+  }
+
+  /**
+   * Invalidates the `library_info` tag for a real change to a CSS file.
+   *
+   * Deliberately not de-duplicated per request. Collapsing repeated
+   * invalidations to the first one looks like an easy win and is wrong: a tag
+   * invalidation only invalidates entries older than it, so anything cached
+   * *between* two writes in the same request would survive a change it should
+   * not have. The saving that matters is not invalidating at all when nothing
+   * changed, which the caller checks; repeating a tag write for genuine
+   * changes is cheap next to serving stale CSS.
+   */
+  private function invalidateLibraryInfo(): void {
     Cache::invalidateTags(['library_info']);
   }
 

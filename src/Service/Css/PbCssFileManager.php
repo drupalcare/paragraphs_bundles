@@ -32,6 +32,20 @@ final class PbCssFileManager implements PbCssFileManagerInterface {
    */
   private const int HASH_LENGTH = 10;
 
+  /**
+   * Per-request index of the CSS directory: "{slug}-{id}" => list of basenames.
+   *
+   * Every paragraph rendered on a page asks whether its CSS file exists, and
+   * each of those questions used to cost a `glob()` — so a page with 60
+   * paragraphs made 60 directory scans to answer 60 questions about the same
+   * directory. One scan answers all of them. NULL means "not yet scanned";
+   * writes and deletes keep it in step rather than dropping it, so a save that
+   * touches many paragraphs does not rescan per paragraph either.
+   *
+   * @var array<string, list<string>>|null
+   */
+  private ?array $index = NULL;
+
   public function __construct(
     private readonly FileSystemInterface $fileSystem,
     private readonly FileUrlGeneratorInterface $fileUrlGenerator,
@@ -92,6 +106,12 @@ final class PbCssFileManager implements PbCssFileManagerInterface {
     $uri = $directory . '/' . $name;
     try {
       $this->fileSystem->saveData($css, $uri, FileExists::Replace);
+      // Keep the index in step instead of dropping it: a node save touching
+      // many paragraphs would otherwise rescan the directory once per
+      // paragraph, which is the cost this index exists to remove.
+      if ($this->index !== NULL) {
+        $this->index[$this->indexKey($slug, $paragraphId)] = [$name];
+      }
       return TRUE;
     }
     catch (\Throwable $e) {
@@ -108,7 +128,11 @@ final class PbCssFileManager implements PbCssFileManagerInterface {
    */
   public function delete(string $slug, int|string $paragraphId): bool {
     $ok = TRUE;
-    foreach ($this->matchingUris($slug, $paragraphId) as $uri) {
+    $uris = $this->matchingUris($slug, $paragraphId);
+    if ($this->index !== NULL) {
+      unset($this->index[$this->indexKey($slug, $paragraphId)]);
+    }
+    foreach ($uris as $uri) {
       try {
         $this->fileSystem->delete($uri);
       }
@@ -155,6 +179,7 @@ final class PbCssFileManager implements PbCssFileManagerInterface {
         );
       }
     }
+    $this->index = NULL;
     return $count;
   }
 
@@ -218,25 +243,61 @@ final class PbCssFileManager implements PbCssFileManagerInterface {
    *   prune).
    */
   private function matchingUris(string $slug, int|string $paragraphId): array {
+    $names = $this->index()[$this->indexKey($slug, $paragraphId)] ?? [];
+    return array_map(
+      static fn (string $name): string => self::DIRECTORY . '/' . $name,
+      $names,
+    );
+  }
+
+  /**
+   * Index key for one paragraph's CSS files.
+   *
+   * @param string $slug
+   *   Bundle slug.
+   * @param int|string $paragraphId
+   *   Paragraph entity ID.
+   *
+   * @return string
+   *   Key into the directory index.
+   */
+  private function indexKey(string $slug, int|string $paragraphId): string {
+    return $slug . '-' . (string) $paragraphId;
+  }
+
+  /**
+   * Scans the CSS directory once per request and indexes it by paragraph.
+   *
+   * @return array<string, list<string>>
+   *   Basenames keyed by "{slug}-{id}", newest-first is not meaningful — a
+   *   paragraph normally has exactly one, more only after a failed prune.
+   */
+  private function index(): array {
+    if ($this->index !== NULL) {
+      return $this->index;
+    }
+    $this->index = [];
     $directory = $this->fileSystem->realpath(self::DIRECTORY);
     if ($directory === FALSE || !is_dir($directory)) {
-      return [];
+      return $this->index;
     }
-    // The literal dot after the id anchors the match so `pb-x-24.*.css`
-    // cannot match `pb-x-240.*.css` (glob `*` never spans that dot here).
-    $pattern = sprintf(
-      '%s/pb-%s-%s.*.css',
-      $directory,
-      $slug,
-      (string) $paragraphId,
-    );
-    $out = [];
-    foreach ((array) glob($pattern) as $path) {
-      if (is_string($path) && is_file($path)) {
-        $out[] = self::DIRECTORY . '/' . basename($path);
+    foreach ((array) glob($directory . '/pb-*.css') ?: [] as $path) {
+      if (!is_string($path) || !is_file($path)) {
+        continue;
       }
+      $name = basename($path);
+      // Same shape the listing enforces: the literal dot after the id keeps
+      // `pb-x-24.*.css` from matching `pb-x-240.*.css`.
+      if (preg_match(
+        '/^pb-(?<slug>[a-z0-9][a-z0-9-]*)-(?<id>\d+)\.[a-z0-9]+\.css$/',
+        $name,
+        $m,
+      ) !== 1) {
+        continue;
+      }
+      $this->index[$m['slug'] . '-' . $m['id']][] = $name;
     }
-    return $out;
+    return $this->index;
   }
 
   /**
