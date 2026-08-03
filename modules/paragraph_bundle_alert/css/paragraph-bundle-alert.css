@@ -62,6 +62,41 @@
   opacity: 0.9;
 }
 
+/* WCAG 2.2.1: the control that turns the dismissal timer off. It renders
+   whenever the countdown runs, including when the numeric label is switched
+   off, so it must stand on its own without the label beside it. */
+.paragraphs-bundles.pb-alert button.pb-alert__countdown-pause {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  line-height: 1;
+}
+
+.paragraphs-bundles.pb-alert .pb-alert__countdown-pause svg {
+  display: block;
+  width: var(--pb-px16, 1rem);
+  height: var(--pb-px16, 1rem);
+}
+
+.paragraphs-bundles.pb-alert button.pb-alert__countdown-pause:hover {
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-alert button.pb-alert__countdown-pause:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+/* [hidden] must win over the inline-flex above, or both icons show at once. */
+.paragraphs-bundles.pb-alert .pb-alert__countdown-pause [hidden] {
+  display: none;
+}
+
 .paragraphs-bundles.pb-alert .pb-alert__content {
   display: grid;
   grid-auto-flow: row;

@@ -59,17 +59,43 @@
   .setAttribute('data-date-range-end', pb_date_range_end) }}>
   <div class="{{ classes_inner }}">
 
-    {% if pb_close_button or (pb_dismissal_type == 'countdown' and pb_show_countdown_label and pb_countdown_seconds > 0) %}
+    {# WCAG 2.2.1 Timing Adjustable: whenever the countdown can run there must be
+       a control that turns it off, and it is gated on the countdown ITSELF, not
+       on pb_show_countdown_label. The label is cosmetic — the timer runs
+       whenever the dismissal type is `countdown` and the seconds are above zero
+       — so gating the control on the label would leave every label-off alert
+       removing its own content on a limit the user cannot stop. #}
+    {% set pb_countdown_runs = pb_dismissal_type == 'countdown' and pb_countdown_seconds > 0 %}
+
+    {% if pb_close_button or pb_countdown_runs %}
       <div class="pb-alert--top {{ pb_close_button ? 'pb--has-close' : 'pb--no-close' }}">
-        {% if pb_dismissal_type == 'countdown' and pb_show_countdown_label and pb_countdown_seconds > 0 %}
+        {% if pb_countdown_runs %}
           <div class="pb-alert__countdown" aria-live="polite">
-            <span data-pb-countdown-label>{{ pb_countdown_seconds }}</span>
-            <span class="pb-alert__countdown-unit">{{ 'sec'|t }}</span>
+            {% if pb_show_countdown_label %}
+              <span data-pb-countdown-label>{{ pb_countdown_seconds }}</span>
+              <span class="pb-alert__countdown-unit">{{ 'sec'|t }}</span>
+            {% endif %}
+            <button type="button"
+                    data-pb-countdown-pause
+                    aria-label="{{ 'Pause the countdown that dismisses this alert'|t }}"
+                    aria-pressed="false"
+                    class="pb-ui-btn pb-alert__countdown-pause">
+              <span class="visually-hidden">{{ 'Pause countdown'|t }}</span>
+              <span class="pb-alert__pause-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M560-200v-560h160v560H560Zm-320 0v-560h160v560H240Z"/></svg>
+              </span>
+              <span class="pb-alert__play-icon" aria-hidden="true" hidden>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="currentColor" focusable="false"><path d="M320-200v-560l440 280-440 280Z"/></svg>
+              </span>
+            </button>
           </div>
         {% endif %}
         {% if pb_close_button %}
+          {# No aria-expanded: dismissal is one-way. The button lives inside the
+             container that closeAlert() marks `inert`, so it can neither be
+             focused nor clicked once closed — a disclosure state here described
+             an affordance that cannot exist (WCAG 4.1.2). #}
           <button aria-label="{{ 'Close alert'|t }}"
-                  aria-expanded="{{ pb_default_state == 'closed' ? 'false' : 'true' }}"
                   aria-controls="{{ paragraph_id }}"
                   type="button"
                   class="pb-alert__close">
