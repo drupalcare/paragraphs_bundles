@@ -31,9 +31,9 @@ final class ColorSwatchFormatter extends FormatterBase {
    *   Default formatter settings.
    */
   public static function defaultSettings(): array {
-    return [
-      'show_label' => TRUE,
-    ] + parent::defaultSettings();
+    /** @var array<string, mixed> $settings */
+    $settings = parent::defaultSettings();
+    return ['show_label' => TRUE] + $settings;
   }
 
   /**
@@ -48,6 +48,7 @@ final class ColorSwatchFormatter extends FormatterBase {
    *   Settings form elements.
    */
   public function settingsForm(array $form, FormStateInterface $form_state): array {
+    /** @var array<string, mixed> $elements */
     $elements = parent::settingsForm($form, $form_state);
     $elements['show_label'] = [
       '#type' => 'checkbox',
@@ -85,6 +86,7 @@ final class ColorSwatchFormatter extends FormatterBase {
    *   Render array, one per item.
    */
   public function viewElements(FieldItemListInterface $items, $langcode): array {
+    /** @var array<int, array<string, mixed>> $elements */
     $elements = [];
     $show_label = (bool) $this->getSetting('show_label');
 

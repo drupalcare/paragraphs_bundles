@@ -11,6 +11,11 @@ parameters:
     - paragraphs_bundles.module
     - paragraphs_bundles.install
     - paragraphs_bundles.post_update.php
+    # Shipped, and missing from this list until 2026-08-03, so ~600 lines of
+    # form-display rewriting had never been analysed. The drupal.org job passes
+    # "." on the command line, which overrides these paths, so it found the
+    # file and this list did not.
+    - paragraphs_bundles.display.inc
     # Bundle sub-modules ship ~100 PHP files (hook classes, services, their own
     # .module/.install). They were outside `paths` and so had never been
     # analysed at all; the parent module alone is not the shipped surface.
@@ -23,7 +28,11 @@ parameters:
     - src/Drush
     # Tests run bootstrap-free with class stubs in tests/stubs that redefine
     # Drupal framework classes and conflict with phpstan-drupal's real ones.
-    # Tests are validated by PHPUnit; PHPStan scopes to shipped code.
+    # Tests are validated by PHPUnit; PHPStan scopes to shipped code. These
+    # two entries carry that intent onto the drupal.org job, which analyses
+    # "." and so reached the tests regardless of `paths` above.
+    - tests
+    - modules/*/tests
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     # The batched post_update cannot carry a `@param array<string, mixed>`

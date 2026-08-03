@@ -36,6 +36,7 @@ final class RangeNumberFormatter extends FormatterBase {
    *   Render array, one per item.
    */
   public function viewElements(FieldItemListInterface $items, $langcode): array {
+    /** @var array<int, array<string, mixed>> $elements */
     $elements = [];
     foreach ($items as $delta => $item) {
       $elements[$delta] = [

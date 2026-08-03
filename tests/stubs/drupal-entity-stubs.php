@@ -41,7 +41,12 @@ namespace Drupal\Core\Entity {
        * @return \Drupal\Core\Field\FieldItemListInterface
        *   Field item list.
        */
-      public function get(string $field_name): FieldItemListInterface;
+      // Must stay fully qualified: this declaration lives in the
+      // Drupal\Core\Entity namespace, so a bare FieldItemListInterface names
+      // Drupal\Core\Entity\FieldItemListInterface, which does not exist in
+      // Drupal or here. Any call to get() would then fail its return type
+      // check on exactly the bootstrap-free run these stubs exist to serve.
+      public function get(string $field_name): \Drupal\Core\Field\FieldItemListInterface;
 
     }
   }

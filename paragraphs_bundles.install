@@ -225,12 +225,12 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
 
   $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
   if (!empty($third['field_group']) && is_array($third['field_group'])) {
-    paragraphs_bundles_pb_normalize_field_group_names($third['field_group']);
-    if (isset($third['field_group']['group_pb_tab_content']['children'])
-      && is_array($third['field_group']['group_pb_tab_content']['children'])) {
-      $children = $third['field_group']['group_pb_tab_content']['children'];
+    $field_groups = paragraphs_bundles_pb_array_prop($third['field_group']);
+    paragraphs_bundles_pb_normalize_field_group_names($field_groups);
+    $content_tab = paragraphs_bundles_pb_array_prop($field_groups['group_pb_tab_content'] ?? NULL);
+    if (isset($content_tab['children']) && is_array($content_tab['children'])) {
       $tail = array_values(array_filter(
-        $children,
+        $content_tab['children'],
         static fn(mixed $child): bool => is_string($child)
           && !in_array($child, [
             'pb_content_title',
@@ -238,12 +238,14 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
             'pb_content_title_alignment',
           ], TRUE),
       ));
-      $third['field_group']['group_pb_tab_content']['children'] = array_merge(
+      $content_tab['children'] = array_merge(
         ['pb_content_title', 'pb_content_title_tag', 'pb_content_title_alignment'],
         $tail,
       );
+      $field_groups['group_pb_tab_content'] = $content_tab;
     }
-    paragraphs_bundles_pb_bump_content_tab_tail_weights($content, $third['field_group']);
+    paragraphs_bundles_pb_bump_content_tab_tail_weights($content, $field_groups);
+    $third['field_group'] = $field_groups;
     $fd->set('third_party_settings', $third);
   }
 
@@ -287,24 +289,6 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
     $vd->set('dependencies', $deps);
     $vd->save();
   }
-}
-
-/**
- * A config entity property as an array, whatever get() actually returned.
- *
- * EntityDisplay::get() is typed mixed, and every caller here immediately
- * indexes the result. Normalising once means a property that is missing or
- * somehow not an array yields an empty array instead of a fatal on offset
- * access part-way through an upgrade, with the site left half-migrated.
- *
- * @param mixed $value
- *   Raw return value of a config entity get().
- *
- * @return array<string, mixed>
- *   The value when it is an array, otherwise an empty array.
- */
-function paragraphs_bundles_pb_array_prop(mixed $value): array {
-  return is_array($value) ? $value : [];
 }
 
 /**
@@ -354,18 +338,20 @@ function paragraphs_bundles_get_pb_bundles(): array {
  *   Sorted module names.
  */
 function paragraphs_bundles_get_sub_module_names(): array {
+  /** @var list<string>|null $names */
   static $names = NULL;
   if ($names !== NULL) {
     return $names;
   }
-  $names = [];
+  $collected = [];
   $module_handler = \Drupal::moduleHandler();
-  foreach ($module_handler->getModuleList() as $module => $extension) {
+  foreach (array_keys($module_handler->getModuleList()) as $module) {
     if (str_starts_with($module, 'paragraph_bundle_')) {
-      $names[] = $module;
+      $collected[] = $module;
     }
   }
-  sort($names);
+  sort($collected);
+  $names = $collected;
   return $names;
 }
 
@@ -379,6 +365,7 @@ function paragraphs_bundles_get_sub_module_names(): array {
  *   Module machine name, or NULL when no file is found.
  */
 function paragraphs_bundles_get_optional_config_provider(string $config_name): ?string {
+  /** @var array<string, string|null> $cache */
   static $cache = [];
   if (array_key_exists($config_name, $cache)) {
     return $cache[$config_name];
@@ -421,7 +408,7 @@ function paragraphs_bundles_pb_read_optional_config(string $config_name): ?array
     \Drupal::moduleHandler()->getModule($module)->getPath() . '/config/optional'
   );
   $record = $storage->read($config_name);
-  return is_array($record) ? $record : NULL;
+  return is_array($record) ? paragraphs_bundles_pb_array_prop($record) : NULL;
 }
 
 /**
@@ -995,9 +982,12 @@ function paragraphs_bundles_update_9007(): string {
       $default = $field->get('default_value');
       if (is_array($default)) {
         foreach ($default as $delta => $item) {
-          if (is_array($item) && isset($item['value']) && !is_int($item['value'])
-            && is_numeric($item['value'])) {
-            $default[$delta]['value'] = (int) $item['value'];
+          if (!is_array($item) || !isset($item['value'])) {
+            continue;
+          }
+          if (!is_int($item['value']) && is_numeric($item['value'])) {
+            $item['value'] = (int) $item['value'];
+            $default[$delta] = $item;
             $changed = TRUE;
           }
         }

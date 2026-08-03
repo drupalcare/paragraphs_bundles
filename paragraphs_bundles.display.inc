@@ -12,6 +12,58 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+
+/**
+ * A config entity property as an array, whatever get() actually returned.
+ *
+ * EntityDisplay::get() is typed mixed, and every caller here immediately
+ * indexes the result. Normalising once means a property that is missing or
+ * somehow not an array yields an empty array instead of a fatal on offset
+ * access part-way through an upgrade, with the site left half-migrated.
+ *
+ * Lives here rather than in the .install because .module require_once's this
+ * file, so it is available to runtime code and update hooks alike; the
+ * .install is only ever loaded with the module already bootstrapped.
+ *
+ * @param mixed $value
+ *   Raw return value of a config entity get().
+ *
+ * @return array<string, mixed>
+ *   The value when it is an array, otherwise an empty array.
+ */
+function paragraphs_bundles_pb_array_prop(mixed $value): array {
+  if (!is_array($value)) {
+    return [];
+  }
+  $normalized = [];
+  foreach ($value as $key => $item) {
+    $normalized[(string) $key] = $item;
+  }
+  return $normalized;
+}
+
+/**
+ * Loads a paragraph bundle's default form display.
+ *
+ * The storage returns EntityInterface, which has no get()/set(); narrowing to
+ * the display interface here means a wrong or missing entity is a no-op
+ * rather than a fatal in the middle of an update hook.
+ *
+ * @param string $bundle
+ *   Paragraph type machine name.
+ *
+ * @return \Drupal\Core\Entity\Display\EntityFormDisplayInterface|null
+ *   The default form display, or NULL when there is not one.
+ */
+function paragraphs_bundles_pb_load_form_display(string $bundle): ?EntityFormDisplayInterface {
+  $display = \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load('paragraph.' . $bundle . '.default');
+
+  return $display instanceof EntityFormDisplayInterface ? $display : NULL;
+}
+
 /**
  * Display tab nested field group definitions keyed by group machine name.
  *
@@ -99,8 +151,8 @@ function paragraphs_bundles_pb_display_subgroup_definitions(): array {
  *
  * @param array<string, list<string>> $children_by_group
  *   Group id => field machine names (modified in place).
- * @param array<string, array<string, mixed>> $content
- *   Form display content components.
+ * @param array<string, mixed> $content
+ *   Form display content components, as config stores them.
  * @param array<string, array{remove?: list<string>, add?: list<string>}> $group_overrides
  *   Group id => remove/add field lists.
  */
@@ -132,8 +184,8 @@ function paragraphs_bundles_pb_apply_bundle_display_group_overrides(
 /**
  * Flattens Display tab field group children into a field name list.
  *
- * @param array<string, array<string, mixed>> $field_groups
- *   Field group definitions from the form display.
+ * @param array<string, mixed> $field_groups
+ *   Field group definitions from the form display, as config stores them.
  * @param list<string> $children
  *   Child names from a field group.
  *
@@ -146,10 +198,14 @@ function paragraphs_bundles_pb_flatten_display_group_children(array $field_group
     if (!is_string($child) || $child === '') {
       continue;
     }
-    if (isset($field_groups[$child]['children']) && is_array($field_groups[$child]['children'])) {
+    $group = paragraphs_bundles_pb_array_prop($field_groups[$child] ?? NULL);
+    if (isset($group['children']) && is_array($group['children'])) {
       $fields = array_merge(
         $fields,
-        paragraphs_bundles_pb_flatten_display_group_children($field_groups, $field_groups[$child]['children'])
+        paragraphs_bundles_pb_flatten_display_group_children(
+          $field_groups,
+          array_values(array_filter($group['children'], 'is_string')),
+        ),
       );
       continue;
     }
@@ -288,13 +344,12 @@ function paragraphs_bundles_pb_remove_field_from_field_groups(
  *   Paragraph type machine name.
  */
 function paragraphs_bundles_pb_ensure_link_fields_in_colors_group(string $bundle): void {
-  $form_id = 'paragraph.' . $bundle . '.default';
-  $fd = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load($form_id);
+  $fd = paragraphs_bundles_pb_load_form_display($bundle);
   if (!$fd) {
     return;
   }
 
-  $content = $fd->get('content');
+  $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
   $link_fields = ['pb_display_link', 'pb_display_link_hover'];
   $has_link = FALSE;
   foreach ($link_fields as $field_name) {
@@ -307,13 +362,13 @@ function paragraphs_bundles_pb_ensure_link_fields_in_colors_group(string $bundle
     return;
   }
 
-  $third = $fd->get('third_party_settings');
+  $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
   if (empty($third['field_group']) || !is_array($third['field_group'])) {
     paragraphs_bundles_pb_nest_display_field_groups($bundle);
     return;
   }
 
-  $field_groups = $third['field_group'];
+  $field_groups = paragraphs_bundles_pb_array_prop($third['field_group']);
   paragraphs_bundles_pb_normalize_field_group_names($field_groups);
 
   foreach ($link_fields as $field_name) {
@@ -328,7 +383,8 @@ function paragraphs_bundles_pb_ensure_link_fields_in_colors_group(string $bundle
     return;
   }
 
-  $colors = $field_groups['group_pb_display_colors']['children'] ?? [];
+  $colors_group = paragraphs_bundles_pb_array_prop($field_groups['group_pb_display_colors'] ?? NULL);
+  $colors = $colors_group['children'] ?? [];
   if (!is_array($colors)) {
     $colors = [];
   }
@@ -355,27 +411,31 @@ function paragraphs_bundles_pb_ensure_link_fields_in_colors_group(string $bundle
       }
     }
   }
-  $field_groups['group_pb_display_colors']['children'] = $colors;
+  $colors_group['children'] = $colors;
+  $field_groups['group_pb_display_colors'] = $colors_group;
 
-  if (isset($field_groups['group_pb_tab_display']['children'])
-    && is_array($field_groups['group_pb_tab_display']['children'])) {
-    $field_groups['group_pb_tab_display']['children'] = array_values(array_filter(
-      $field_groups['group_pb_tab_display']['children'],
+  $tab_display = paragraphs_bundles_pb_array_prop($field_groups['group_pb_tab_display'] ?? NULL);
+  if (isset($tab_display['children']) && is_array($tab_display['children'])) {
+    $children = array_values(array_filter(
+      $tab_display['children'],
       static fn(mixed $child): bool => is_string($child)
         && !in_array($child, $link_fields, TRUE),
     ));
-    if (!in_array('group_pb_display_colors', $field_groups['group_pb_tab_display']['children'], TRUE)) {
-      array_unshift($field_groups['group_pb_tab_display']['children'], 'group_pb_display_colors');
+    if (!in_array('group_pb_display_colors', $children, TRUE)) {
+      array_unshift($children, 'group_pb_display_colors');
     }
+    $tab_display['children'] = $children;
+    $field_groups['group_pb_tab_display'] = $tab_display;
   }
 
-  if (isset($field_groups['group_pb_tabs_wrapper']['children'])
-    && is_array($field_groups['group_pb_tabs_wrapper']['children'])) {
-    $field_groups['group_pb_tabs_wrapper']['children'] = array_values(array_filter(
-      $field_groups['group_pb_tabs_wrapper']['children'],
+  $tabs_wrapper = paragraphs_bundles_pb_array_prop($field_groups['group_pb_tabs_wrapper'] ?? NULL);
+  if (isset($tabs_wrapper['children']) && is_array($tabs_wrapper['children'])) {
+    $tabs_wrapper['children'] = array_values(array_filter(
+      $tabs_wrapper['children'],
       static fn(mixed $child): bool => is_string($child)
         && !in_array($child, $link_fields, TRUE),
     ));
+    $field_groups['group_pb_tabs_wrapper'] = $tabs_wrapper;
   }
 
   $third['field_group'] = $field_groups;
@@ -412,8 +472,8 @@ function paragraphs_bundles_pb_display_extra_widget_bucket(string $widget_type):
  *
  * @param list<string> $field_names
  *   Field machine names in the Additional group.
- * @param array<string, array<string, mixed>> $content
- *   Form display content components.
+ * @param array<string, mixed> $content
+ *   Form display content components, as config stores them.
  *
  * @return list<string>
  *   Field names sorted selects → colors → numbers → checkboxes → …
@@ -424,8 +484,9 @@ function paragraphs_bundles_pb_sort_extra_field_names(array $field_names, array 
     if (!is_string($field_name) || $field_name === '') {
       continue;
     }
-    $widget_type = isset($content[$field_name]['type'])
-      ? (string) $content[$field_name]['type']
+    $component = paragraphs_bundles_pb_array_prop($content[$field_name] ?? NULL);
+    $widget_type = isset($component['type']) && is_scalar($component['type'])
+      ? (string) $component['type']
       : '';
     $indexed[] = [
       'name' => $field_name,
@@ -447,26 +508,30 @@ function paragraphs_bundles_pb_sort_extra_field_names(array $field_names, array 
  *   Paragraph type machine name.
  */
 function paragraphs_bundles_pb_sort_display_extra_fields(string $bundle): void {
-  $fd = \Drupal::entityTypeManager()->getStorage('entity_form_display')
-    ->load('paragraph.' . $bundle . '.default');
+  $fd = paragraphs_bundles_pb_load_form_display($bundle);
   if (!$fd) {
     return;
   }
 
-  $third = $fd->get('third_party_settings');
-  $field_groups = $third['field_group'] ?? [];
-  $children = $field_groups['group_pb_display_extra']['children'] ?? [];
-  if ($children === []) {
+  $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
+  $field_groups = paragraphs_bundles_pb_array_prop($third['field_group'] ?? NULL);
+  $extra_group = paragraphs_bundles_pb_array_prop($field_groups['group_pb_display_extra'] ?? NULL);
+  $children = $extra_group['children'] ?? [];
+  if (!is_array($children) || $children === []) {
     return;
   }
 
-  $content = $fd->get('content');
-  $sorted = paragraphs_bundles_pb_sort_extra_field_names($children, $content);
+  $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
+  $sorted = paragraphs_bundles_pb_sort_extra_field_names(
+    array_values(array_filter($children, 'is_string')),
+    $content,
+  );
   if ($sorted === $children) {
     return;
   }
 
-  $field_groups['group_pb_display_extra']['children'] = $sorted;
+  $extra_group['children'] = $sorted;
+  $field_groups['group_pb_display_extra'] = $extra_group;
   $third['field_group'] = $field_groups;
   $fd->set('third_party_settings', $third);
   $fd->save();
@@ -488,40 +553,42 @@ function paragraphs_bundles_pb_nest_display_field_groups(
 ): void {
   $color_weights = paragraphs_bundles_pb_display_color_weights();
 
-  $em = \Drupal::entityTypeManager();
-  $fd = $em->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+  $fd = paragraphs_bundles_pb_load_form_display($bundle);
   if (!$fd) {
     return;
   }
 
-  $content = $fd->get('content');
+  $content = paragraphs_bundles_pb_array_prop($fd->get('content'));
   foreach ($color_weights as $field_name => $weight) {
     if (isset($content[$field_name])) {
-      $content[$field_name]['weight'] = $weight;
+      $component = paragraphs_bundles_pb_array_prop($content[$field_name]);
+      $component['weight'] = $weight;
+      $content[$field_name] = $component;
     }
   }
   $fd->set('content', $content);
 
-  $third = $fd->get('third_party_settings');
+  $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
   if (empty($third['field_group']) || !is_array($third['field_group'])) {
     $fd->save();
     return;
   }
 
-  $field_groups = $third['field_group'];
+  $field_groups = paragraphs_bundles_pb_array_prop($third['field_group']);
   paragraphs_bundles_pb_normalize_field_group_names($field_groups);
   $third['field_group'] = $field_groups;
   $fd->set('third_party_settings', $third);
 
-  if (empty($field_groups['group_pb_tab_display']['children'])) {
+  $tab_display = paragraphs_bundles_pb_array_prop($field_groups['group_pb_tab_display'] ?? NULL);
+  $tab_children = $tab_display['children'] ?? [];
+  if (!is_array($tab_children) || $tab_children === []) {
     $fd->save();
     return;
   }
 
-  $field_groups = $third['field_group'];
   $display_fields = paragraphs_bundles_pb_flatten_display_group_children(
     $field_groups,
-    $field_groups['group_pb_tab_display']['children']
+    array_values(array_filter($tab_children, 'is_string')),
   );
   // Widgets added by link wiring may exist in content but not yet appear in
   // the Display tab tree (typical v1→v2 upgrade). Include them so nest assigns
@@ -623,7 +690,8 @@ function paragraphs_bundles_pb_nest_display_field_groups(
   usort($display_group_ids, static function (string $a, string $b) use ($definitions): int {
     return $definitions[$a]['weight'] <=> $definitions[$b]['weight'];
   });
-  $field_groups['group_pb_tab_display']['children'] = $display_group_ids;
+  $tab_display['children'] = $display_group_ids;
+  $field_groups['group_pb_tab_display'] = $tab_display;
 
   $third['field_group'] = $field_groups;
   $fd->set('third_party_settings', $third);
