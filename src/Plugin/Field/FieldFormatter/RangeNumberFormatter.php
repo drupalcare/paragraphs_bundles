@@ -24,6 +24,12 @@ final class RangeNumberFormatter extends FormatterBase {
   /**
    * {@inheritdoc}
    *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\paragraphs_bundles\Plugin\Field\FieldType\RangeItem> $items
+   *   Field items. The formatter is declared for `paragraphs_bundles_range`
+   *   only, so every item is a RangeItem.
+   * @param string $langcode
+   *   Language code.
+   *
    * @return array<int, array<string, mixed>>
    *   Render array, one per item.
    */

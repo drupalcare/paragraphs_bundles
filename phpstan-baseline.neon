@@ -360,25 +360,9 @@ parameters:
 			count: 1
 			path: src/Plugin/Field/FieldFormatter/RangeNumberFormatter.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\RangeNumberFormatter\\:\\:viewElements\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/RangeNumberFormatter.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\RangeNumberFormatter\\:\\:viewElements\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/RangeNumberFormatter.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldWidget\\\\ColorTextWidget\\:\\:formElement\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldWidget/ColorTextWidget.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldWidget\\\\ColorTextWidget\\:\\:formElement\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldWidget/ColorTextWidget.php
 
 		-
 			message: "#^Parameter \\#1 \\$hex of static method Drupal\\\\Component\\\\Utility\\\\Color\\:\\:validateHex\\(\\) expects string, mixed given\\.$#"
@@ -390,15 +374,7 @@ parameters:
 			count: 1
 			path: src/Plugin/Field/FieldWidget/RangeNumberWidget.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldWidget\\\\RangeNumberWidget\\:\\:formElement\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldWidget/RangeNumberWidget.php
 
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldWidget\\\\RangeNumberWidget\\:\\:formElement\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldWidget/RangeNumberWidget.php
 
 		-
 			message: "#^Cannot access offset 'value' on mixed\\.$#"

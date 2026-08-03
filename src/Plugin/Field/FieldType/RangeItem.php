@@ -14,6 +14,13 @@ use Drupal\Core\TypedData\DataDefinition;
  * Field type for an opacity slider 0..100.
  *
  * Plugin id `paragraphs_bundles_range`.
+ *
+ * The `value` property is declared in `schema()` and `propertyDefinitions()`
+ * below, but neither is visible to a static analyser, so `$item->value` reads
+ * as an access to an undefined property. This says once what those two already
+ * agree on.
+ *
+ * @property int|null $value
  */
 #[FieldType(
   id: 'paragraphs_bundles_range',

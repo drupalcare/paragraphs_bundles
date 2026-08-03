@@ -45,7 +45,7 @@ final class ColorTextWidget extends WidgetBase {
   /**
    * {@inheritdoc}
    *
-   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    *   Field items.
    * @param int $delta
    *   Item delta.
