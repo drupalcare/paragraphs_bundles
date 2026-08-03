@@ -96,6 +96,20 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **Every high-contrast style the module ships now actually applies.** 28 CSS
+  files carried an `@media (prefers-contrast: high)` block — thicker focus
+  outlines, heavier borders, stronger checkbox outlines. `high` was renamed to
+  `more` in Media Queries Level 5 before any browser shipped the feature, so
+  none of those blocks has ever matched, on any engine, for any visitor who
+  asked their operating system for increased contrast. All 28 now say `more`.
+- **An unprefixed `@keyframes fadeIn` no longer collides with the theme's.**
+  The 3D carousel's entry animation used a name generic enough that any theme
+  defining its own `fadeIn` would win or lose at random depending on load
+  order. It is now `pb-fade-in`.
+- **The Material Symbols CSS names a fallback font.** The three icon
+  stylesheets set a font family the module deliberately does not bundle, with
+  no generic fallback after it — so the branch that actually runs on a site
+  that has not supplied the font was the unspecified one.
 - **The 3D flip box can be operated with a keyboard, and its hidden face is
   hidden from screen readers too.** The box carried `tabindex="0"` on a plain
   `<div>` with no role, no name and no key handler — a keyboard user could land
