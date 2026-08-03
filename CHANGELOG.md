@@ -96,6 +96,18 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **The 3D flip box can be operated with a keyboard, and its hidden face is
+  hidden from screen readers too.** The box carried `tabindex="0"` on a plain
+  `<div>` with no role, no name and no key handler — a keyboard user could land
+  on it and nothing happened (WCAG 2.1.1, 4.1.2). `backface-visibility` is a
+  visual property only, so both faces were exposed to assistive technology at
+  once (1.3.2) and any link on the face turned away stayed in the tab order
+  while invisible, sending focus off-screen (2.4.3, 2.4.7). The bundle now
+  ships a flip control in the box's top-right corner — a real `<button>`, so
+  Enter and Space work — and marks whichever face is turned away `inert` and
+  `aria-hidden`. Hovering still flips the box, and the face you are looking at
+  is always the operable one. Without JavaScript the control stays hidden and
+  the box behaves exactly as it did before.
 - **An unrecognised site timezone no longer white-screens the alert form.** The
   alert widget hook passed `system.date`'s `timezone.default` straight into
   `new \DateTimeZone()`, which throws on any value PHP does not recognise — and
