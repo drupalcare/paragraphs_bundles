@@ -100,12 +100,14 @@ final class ColorTextWidget extends WidgetBase {
    *   Form state.
    */
   public static function validateColor(array &$element, FormStateInterface $form_state): void {
-    $value = $element['#value'];
+    $value = $element['#value'] ?? '';
     if ($value === '') {
       $form_state->setValueForElement($element, '');
       return;
     }
-    if (!Color::validateHex($value)) {
+    // A non-string submitted value cannot be a colour, and handing it to
+    // Color::validateHex() would raise a TypeError rather than a form error.
+    if (!is_string($value) || !Color::validateHex($value)) {
       $form_state->setError($element, new TranslatableMarkup('Color must be a 3- or 6-digit hexadecimal value, suitable for CSS.'));
     }
   }

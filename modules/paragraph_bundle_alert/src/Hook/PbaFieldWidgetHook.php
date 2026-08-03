@@ -6,6 +6,7 @@ namespace Drupal\paragraph_bundle_alert\Hook;
 
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
@@ -38,7 +39,7 @@ final class PbaFieldWidgetHook {
     array $context,
   ): void {
     $items = $context['items'] ?? NULL;
-    if ($items === NULL) {
+    if (!$items instanceof FieldItemListInterface) {
       return;
     }
 
@@ -50,22 +51,42 @@ final class PbaFieldWidgetHook {
       return;
     }
 
-    $site_timezone = $this->configFactory->get('system.date')
-      ->get('timezone.default') ?: 'UTC';
-    if (!isset($element['value'])) {
+    $value = $element['value'] ?? NULL;
+    if (!is_array($value)) {
       return;
     }
 
-    $element['value']['#date_timezone'] = $site_timezone;
-    $element['value']['#description'] = $this->t('Timezone: @tz', [
+    // A site whose `timezone.default` is unset, blank or not a string leaves
+    // the widget on the server timezone rather than fataling: DateTimeZone
+    // throws on anything PHP does not recognise, and this runs on every
+    // alert paragraph form.
+    $site_timezone = $this->siteTimezone();
+
+    $value['#date_timezone'] = $site_timezone;
+    $value['#description'] = $this->t('Timezone: @tz', [
       '@tz' => $site_timezone,
     ]);
-    if (!empty($element['value']['#default_value'])
-      && $element['value']['#default_value'] instanceof DrupalDateTime) {
-      $element['value']['#default_value']->setTimezone(
-        new \DateTimeZone($site_timezone)
-      );
+    $default = $value['#default_value'] ?? NULL;
+    if ($default instanceof DrupalDateTime) {
+      $default->setTimezone(new \DateTimeZone($site_timezone));
     }
+    $element['value'] = $value;
+  }
+
+  /**
+   * The configured site timezone, falling back to UTC.
+   *
+   * @return string
+   *   A timezone identifier PHP can construct a DateTimeZone from.
+   */
+  private function siteTimezone(): string {
+    $configured = $this->configFactory->get('system.date')->get('timezone.default');
+    if (!is_string($configured) || $configured === '') {
+      return 'UTC';
+    }
+    return in_array($configured, \DateTimeZone::listIdentifiers(), TRUE)
+      ? $configured
+      : 'UTC';
   }
 
 }

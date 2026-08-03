@@ -68,9 +68,15 @@ final class RangeNumberWidget extends WidgetBase {
    *   Form state.
    */
   public static function validateOpacity(array &$element, FormStateInterface $form_state): void {
-    $value = $element['#value'];
+    $value = $element['#value'] ?? '';
     if ($value === '') {
       $form_state->setValueForElement($element, '');
+      return;
+    }
+    // Anything non-numeric fails the range: casting first would score an
+    // array as 1 and a word as 0, and only the second of those is rejected.
+    if (!is_numeric($value)) {
+      $form_state->setError($element, new TranslatableMarkup('Opacity number must be between 1 and 100.'));
       return;
     }
     $int = (int) $value;
