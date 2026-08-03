@@ -1,9 +1,15 @@
 # There is deliberately no baseline file. The suppression list started at 145
 # entries and burning it down found five shipped defects — three live fatals, a
 # silent data-loss bug, and a dead conditional-fields branch — so a suppressed
-# finding here has a poor track record of being noise. `level: max` passes with
-# nothing ignored except the one documented entry below; fix new findings
-# rather than running `--generate-baseline`.
+# finding here has a poor track record of being noise. Fix new findings rather
+# than running `--generate-baseline`.
+#
+# `level: max` is not one level. On PHPStan 1.x it means 9; on 2.x it means 10,
+# which adds the `mixed` strictness rules. drupal.org CI runs 2.2.7, and it
+# passes `.` on the command line, which overrides the `paths` below — so the
+# job analyses strictly more code, more strictly, than any local 1.x run does.
+# A clean local run is evidence about this machine, not about the gate: read
+# the CI job's own log before claiming the tree is clean.
 parameters:
   level: max
   paths:
