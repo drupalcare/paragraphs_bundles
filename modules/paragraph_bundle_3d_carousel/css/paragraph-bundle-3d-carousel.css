@@ -13,15 +13,16 @@
 
 .paragraphs-bundles.pb-3d-carousel {
   display: flex;
-  justify-content: center;
   overflow: hidden;
+  justify-content: center;
+  animation: pb-fade-in 1s ease-in 0.4s forwards;
   opacity: 0;
   margin-block: 0;
   margin-inline: auto;
-  animation: fadeIn 1s ease-in 0.4s forwards;
 }
 
-@keyframes fadeIn {
+/* Namespaced: an unprefixed `fadeIn` collides with the same name in a theme. */
+@keyframes pb-fade-in {
   from {
     opacity: 0;
   }
@@ -32,12 +33,12 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner {
-  max-height: 38.125rem;
-  perspective: 40rem;
   position: relative;
-  width: 100%;
   z-index: 0;
   box-sizing: border-box !important;
+  width: 100%;
+  max-height: 38.125rem;
+  perspective: 40rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring {
@@ -50,15 +51,17 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring > .pb-3d-carousel__slide {
+  position: absolute;
+  width: calc(100% - var(--pb-px24));
   max-width: 71.875rem;
   max-height: 34.375rem;
-  position: absolute;
+  transition:
+    transform 1s,
+    opacity 1s;
   transform-style: preserve-3d;
-  width: calc(100% - var(--pb-px24));
   inset-block-start: 0;
   inset-inline-start: var(--pb-px12);
   inset-inline-end: var(--pb-px12);
-  transition: transform 1s, opacity 1s;
 }
 
 /* ==========================================================================
@@ -202,8 +205,8 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options {
-  width: 100%;
   z-index: 1;
+  width: 100%;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-u-hide-0 {
@@ -211,23 +214,23 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options div {
-  text-align: center;
   width: 100%;
+  text-align: center;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-3d-carousel__options-inner > * {
   display: flex;
-  justify-content: center;
   align-items: center;
-  line-height: 1;
+  justify-content: center;
   min-width: var(--pb-px24);
+  line-height: 1;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn > span:not(.visually-hidden, [hidden]) {
@@ -256,40 +259,40 @@
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-u-prev-next-arrow-off,
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options > .pb-slideshow__progress-value {
-  opacity: 0;
-  height: 0;
-  padding: 0;
-  margin: 0;
   width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  opacity: 0;
   font-size: var(--pb-px8);
   line-height: 0;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button.pp {
-  text-align: center;
   display: none;
+  text-align: center;
   font-weight: normal;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
-  font-weight: normal;
-  transition: all 0.3s ease-in-out;
-  border: none;
-  cursor: pointer;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
   visibility: visible;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+  border: none;
+  font-weight: normal;
   padding-block: var(--pb-px3);
   padding-inline: var(--pb-px12);
 }
 
 /* Button focus state for accessibility */
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn:focus-visible {
-  outline: 2px solid currentcolor;
-  outline-offset: 2px;
   border-radius: var(--pb-px4);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 /* Play/Pause button hover effects */
@@ -315,13 +318,13 @@
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next,
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev {
-  opacity: 1;
   visibility: visible;
-  transform: translateX(0);
   transition:
     opacity 0.3s ease,
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     visibility 0s linear 0.3s;
+  transform: translateX(0);
+  opacity: 1;
 }
 
 /* Arrow hover - move in arrow direction */
@@ -335,10 +338,10 @@
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-hidden,
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-hidden {
-  opacity: 0;
-  transform: translateX(-20px);
   visibility: hidden;
+  transform: translateX(-20px);
   pointer-events: none;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-slideshow__number {
@@ -357,13 +360,13 @@
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-hero__text-inner div,
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper,
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-image__wrapper div {
-  height: 100%;
   overflow: hidden;
+  height: 100%;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .paragraphs-bundles .pb-content__full {
-  height: 100%;
   overflow: hidden;
+  height: 100%;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-content__full {
@@ -371,8 +374,8 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide .pb-hero__text-wrapper div {
-  height: auto !important;
   width: auto !important;
+  height: auto !important;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles {
@@ -413,10 +416,10 @@
 
   .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles.pb-u-shadow--4,
   .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide > .paragraphs-bundles > .pb-u-shadow--4 {
+    width: calc(100% - var(--pb-px48));
+    height: calc(100% - var(--pb-px48));
     margin-block: var(--pb-px20);
     margin-inline: auto;
-    height: calc(100% - var(--pb-px48));
-    width: calc(100% - var(--pb-px48));
   }
 }
 
@@ -525,8 +528,8 @@
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options button:hover svg {
-  opacity: 1;
   transform: scale(1.1);
+  opacity: 1;
 }
 
 /* ==========================================================================

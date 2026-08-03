@@ -20,16 +20,19 @@
 }
 
 .paragraphs-bundles.pb-parallax .pb-parallax__text {
-  background-color: var(--pb-bg);
-  border-color: var(--pb-br);
+  transition:
+    background-color 0.2s ease-out,
+    border-color 0.2s ease-out,
+    color 0.2s ease-out;
   color: var(--pb-tx);
-  transition: background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out;
+  border-color: var(--pb-br);
+  background-color: var(--pb-bg);
 }
 
 .paragraphs-bundles.pb-parallax .pb-parallax__text:hover {
-  background-color: var(--pb-bg-h, var(--pb-bg));
-  border-color: var(--pb-br-h, var(--pb-br));
   color: var(--pb-tx-h, var(--pb-tx));
+  border-color: var(--pb-br-h, var(--pb-br));
+  background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
 /* ==========================================================================
@@ -42,14 +45,14 @@
 }
 
 .paragraphs-bundles.pb-parallax-section .pb-parallax__text {
-  max-width: var(--pb-width);
-  margin: 0 auto;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: var(--pb-width);
   height: 100%;
   min-height: calc(3 * var(--pb-px32, 32px));
+  margin: 0 auto;
   transition: all 0.3s ease;
 }
 
@@ -59,14 +62,14 @@
 }
 
 .paragraphs-bundles.pb-parallax-section .pb-parallax__bg.image-url-empty {
-  opacity: 1;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5em;
-  text-align: center;
-  z-index: 5;
   height: 100vh;
+  text-align: center;
+  opacity: 1;
+  font-size: 1.5em;
 }
 
 .paragraphs-bundles.pb-parallax-section > div {
@@ -81,20 +84,20 @@
 
 .paragraphs-bundles.pb-parallax-section.parallax-js .pb-parallax__text {
   position: relative;
-  opacity: 1;
   transform: none;
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js .pb-parallax__bg {
   position: absolute;
   top: 0;
-  inset-inline-start: 0;
   width: 100%;
   height: 100%;
+  transition: var(--animation-speed, 0.6s) var(--animation-easing, ease);
+  background-repeat: no-repeat;
   background-position: var(--background-position, center);
   background-size: cover;
-  background-repeat: no-repeat;
-  transition: var(--animation-speed, 0.6s) var(--animation-easing, ease);
+  inset-inline-start: 0;
   will-change: transform;
 }
 
@@ -103,9 +106,9 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-parallax-section.parallax-css .pb-parallax__bg {
+  background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
-  background-repeat: no-repeat;
   background-size: cover;
 }
 
@@ -124,29 +127,29 @@
   }
 
   .paragraphs-bundles.pb-parallax-section .pb-parallax__bg {
-    background-attachment: scroll !important;
-    transform: none !important;
     transition: none !important;
-    filter: none !important;
+    transform: none !important;
     opacity: 1 !important;
+    filter: none !important;
+    background-attachment: scroll !important;
   }
 
   .paragraphs-bundles.pb-parallax-section .pb-parallax__text {
-    opacity: 1 !important;
-    transform: none !important;
     transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
     filter: none !important;
   }
 
   .paragraphs-bundles.pb-parallax-section .pb-ui-inner {
-    opacity: 1 !important;
-    transform: none !important;
     transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
   }
 
   .paragraphs-bundles.pb-parallax-section .pb-ui-inner .pb-parallax__text {
-    opacity: 1 !important;
     transform: none !important;
+    opacity: 1 !important;
     filter: blur(0) !important;
   }
 }

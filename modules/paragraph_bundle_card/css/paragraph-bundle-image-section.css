@@ -11,12 +11,12 @@
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image a,
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image div:not(.field--name-pb-content-title) {
-  margin: 0 !important;
-  padding: 0 !important;
-  width: 100%;
-  height: 100%;
   align-items: end;
   justify-content: center;
+  width: 100%;
+  height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image {
@@ -25,22 +25,22 @@
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title {
   position: absolute;
-  inset-block-end: 0;
-  inset-inline-start: 0;
-  width: 100%;
-  height: 100%;
+  z-index: 1000;
   display: grid;
   grid-auto-flow: column;
-  justify-content: start;
   align-items: end;
+  justify-content: start;
+  width: 100%;
+  height: 100%;
   margin: 0 !important;
   padding: 0 !important;
-  z-index: 1000;
+  inset-block-end: 0;
+  inset-inline-start: 0;
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .pb-card__image-title > * {
-  min-width: 0;
   width: 100%;
+  min-width: 0;
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image .field--name-pb-content-image {
@@ -65,13 +65,13 @@
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image:hover .field--name-pb-content-title {
-  color: var(--pb-tx-h, var(--pb-tx));
   z-index: 1001;
+  color: var(--pb-tx-h, var(--pb-tx));
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner .pb-image__wrapper {
-  width: 100%;
   display: block;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -80,7 +80,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Hover/title contrast inherits dynamic CSS vars on section inner. */
 }
 

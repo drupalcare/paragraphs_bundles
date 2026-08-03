@@ -13,8 +13,8 @@
  */
 .page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
 .page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
-  max-width: var(--pb-content-width);
   width: 100%;
+  max-width: var(--pb-content-width);
   margin-inline: auto;
 }
 
@@ -61,7 +61,7 @@
   /* Neutral pb_content layout; no motion hooks. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Neutral pb_content layout. */
 }
 

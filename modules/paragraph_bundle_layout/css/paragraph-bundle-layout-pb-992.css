@@ -7,9 +7,8 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media (min-width:62rem) {
-
-/* ==========================================================================
+@media (min-width: 62rem) {
+  /* ==========================================================================
    Grid layout - column ratios.
    ========================================================================== */
 
@@ -83,17 +82,17 @@
     display: flex;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Sticky columns.
    ========================================================================== */
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-two-columns > [data-col].pb-is-sticky,
   .paragraphs-bundles.pb-layout.pb__992 .pb-three-columns > [data-col].pb-is-sticky {
     position: sticky;
-    inset-block-start: var(--pb-col-sticky-top, 0);
-    align-self: start;
-    block-size: auto;
     z-index: 2;
+    align-self: start;
+    inset-block-start: var(--pb-col-sticky-top, 0);
+    block-size: auto;
   }
 
   .paragraphs-bundles.pb-layout.pb__992.pb-has-sticky-col,
@@ -104,7 +103,7 @@
     overflow: visible;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - custom properties.
    ========================================================================== */
 
@@ -119,7 +118,7 @@
     min-inline-size: 0;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar.
    The toolbar is a sibling grid that uses the same layout class as the
    content grid, so buttons automatically align with their columns.
@@ -157,7 +156,7 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: edge_top.
    Toolbar overlaid at the top, with inline margin so buttons sit outside the grid.
    Middle button aligned to end of its column.
@@ -183,7 +182,7 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: inside_center.
    Toolbar overlaid at vertical center of the content grid.
    ========================================================================== */
@@ -204,7 +203,7 @@
     pointer-events: auto;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: edge.
    Toolbar overlaid, with inline margin so buttons sit outside the grid.
    Middle button aligned to end of its column.
@@ -231,41 +230,41 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - button base.
    ========================================================================== */
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle {
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: 2rem;
-    block-size: 2rem;
     padding: 0;
+    cursor: pointer;
+    color: var(--pb-tx, inherit);
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: var(--pb-tx, inherit);
-    cursor: pointer;
-    z-index: 3;
+    inline-size: 2rem;
+    block-size: 2rem;
   }
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:focus-visible {
-    outline: 2px solid currentcolor;
+    outline: 2px solid currentColor;
     outline-offset: 2px;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - SVG icon.
    ========================================================================== */
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle-svg {
     display: grid;
     place-items: center;
+    transition: transform var(--pb-col-anim-ms, 300ms) ease;
+    pointer-events: none;
     inline-size: 36px;
     block-size: 36px;
-    pointer-events: none;
-    transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__icon--plus-minus .pb-layout-col__toggle-svg {
@@ -280,8 +279,8 @@
   }
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle svg {
-    opacity: 0.85;
     transition: opacity 0.2s ease-out;
+    opacity: 0.85;
   }
 
   .paragraphs-bundles.pb-layout.pb__992 .pb-layout-col__toggle:hover svg {
@@ -294,7 +293,7 @@
     transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - collapsed state.
    ========================================================================== */
 
@@ -304,10 +303,10 @@
   }
 
   .paragraphs-bundles.pb-layout.pb__992 [data-col][data-collapsed] > .pb-layout-col__content {
-    max-block-size: 0;
     overflow: hidden;
-    opacity: 0;
     pointer-events: none;
+    opacity: 0;
+    max-block-size: 0;
   }
 
   /* Icon state swap: uses data-collapsed on the button itself (toolbar). */
@@ -328,7 +327,7 @@
   }
 
   /* Caret/angle rotation on collapse. */
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - expand mode.
    ========================================================================== */
 
@@ -344,25 +343,24 @@
     overflow: visible;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - all-collapsed states.
    ========================================================================== */
-
 
   .paragraphs-bundles.pb-layout.pb-two-columns.pb__992.left-right-collapsed .pb-layout-col__toolbar,
   .paragraphs-bundles.pb-layout.pb-three-columns.pb__992.left-right-middle-collapsed .pb-layout-col__toolbar {
     position: relative;
-    inset-block-start: auto;
-    inset-inline: auto;
+    margin: 0;
+    padding: 0;
     transform: none;
     pointer-events: auto;
+    inset-block-start: auto;
+    inset-inline: auto;
     inline-size: 100%;
     min-block-size: 32px;
-    padding: 0;
-    margin: 0;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - reduced motion.
    ========================================================================== */
 
@@ -385,5 +383,4 @@
       transition: none;
     }
   }
-
 }

@@ -18,18 +18,18 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--fade .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
-  filter: blur(5px);
   transition:
     opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
     transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
     filter 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transform: translateY(50px);
+  opacity: 0;
+  filter: blur(5px);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--fade.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
+  opacity: 1;
   filter: blur(0);
 }
 
@@ -38,16 +38,16 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--scale .pb-parallax__text {
-  opacity: 0;
-  transform: scale(0.8);
   transition:
     opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
     transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  transform: scale(0.8);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--scale.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: scale(1);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -55,16 +55,16 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--rotate .pb-parallax__text {
-  opacity: 0;
-  transform: rotate(10deg) scale(0.9);
   transition:
     opacity 0.7s ease-out,
     transform 0.7s ease-out;
+  transform: rotate(10deg) scale(0.9);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--rotate.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: rotate(0) scale(1);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -72,16 +72,16 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--translate .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
   transition:
     opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
     transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transform: translateY(50px);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--translate.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -89,16 +89,16 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--smooth .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
   transition:
     opacity 0.7s cubic-bezier(0.25, 0.8, 0.5, 1),
     transform 0.7s cubic-bezier(0.25, 0.8, 0.5, 1);
+  transform: translateY(50px);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--smooth.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -106,16 +106,16 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--three-d .pb-parallax__text {
-  opacity: 0;
-  transform: perspective(600px) rotateX(15deg) translateY(50px);
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
+  transform: perspective(600px) rotateX(15deg) translateY(50px);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--three-d.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: perspective(600px) rotateX(0deg) translateY(0);
+  opacity: 1;
 }
 
 /* --------------------------------------------------------------------------
@@ -123,19 +123,19 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--shadow .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
   transition:
     opacity 0.5s ease,
     transform 0.5s ease,
     box-shadow 0.5s ease;
+  transform: translateY(50px);
+  opacity: 0;
+  box-shadow: 0 10px 20px rgb(0, 0, 0, 0.3);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--shadow.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
 }
 
 /* --------------------------------------------------------------------------
@@ -143,19 +143,19 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--glow .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   transition:
     opacity 0.5s ease,
     transform 0.5s ease,
     box-shadow 0.5s ease;
+  transform: translateY(50px);
+  opacity: 0;
+  box-shadow: 0 0 10px rgb(255, 255, 255, 0.5);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--glow.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+  opacity: 1;
+  box-shadow: 0 0 20px rgb(255, 255, 255, 0.8);
 }
 
 /* --------------------------------------------------------------------------
@@ -163,21 +163,21 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--hover .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px);
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
+  transform: translateY(50px);
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--hover.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0);
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--hover.pb-is-visible .pb-parallax__text:hover {
-  transform: translateY(-10px) scale(1.05);
   transition: transform 0.3s ease;
+  transform: translateY(-10px) scale(1.05);
 }
 
 /* --------------------------------------------------------------------------
@@ -185,19 +185,19 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--combined .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(50px) rotate(-10deg);
-  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
   transition:
     opacity 0.5s ease,
     transform 0.5s ease,
     box-shadow 0.5s ease;
+  transform: translateY(50px) rotate(-10deg);
+  opacity: 0;
+  box-shadow: 0 8px 15px rgb(0, 0, 0, 0.2);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--combined.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0) rotate(0deg);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  opacity: 1;
+  box-shadow: 0 4px 10px rgb(0, 0, 0, 0.1);
 }
 
 /* --------------------------------------------------------------------------
@@ -205,19 +205,19 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--blur .pb-parallax__text {
-  opacity: 0;
-  filter: blur(10px);
-  transform: translateY(30px);
   transition:
     opacity 0.7s ease,
     filter 0.7s ease,
     transform 0.7s ease;
+  transform: translateY(30px);
+  opacity: 0;
+  filter: blur(10px);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--blur.pb-is-visible .pb-parallax__text {
+  transform: translateY(0);
   opacity: 1;
   filter: blur(0);
-  transform: translateY(0);
 }
 
 /* --------------------------------------------------------------------------
@@ -225,8 +225,8 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--opacity .pb-parallax__text {
-  opacity: 0;
   transition: opacity 0.7s ease;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--opacity.pb-is-visible .pb-parallax__text {
@@ -238,18 +238,18 @@
    -------------------------------------------------------------------------- */
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--fade-scale .pb-parallax__text {
-  opacity: 0;
-  transform: translateY(40px) scale(0.9);
-  filter: blur(4px);
   transition:
     opacity 0.6s ease,
     transform 0.6s ease,
     filter 0.6s ease;
+  transform: translateY(40px) scale(0.9);
+  opacity: 0;
+  filter: blur(4px);
 }
 
 .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--fade-scale.pb-is-visible .pb-parallax__text {
-  opacity: 1;
   transform: translateY(0) scale(1);
+  opacity: 1;
   filter: blur(0);
 }
 
@@ -271,10 +271,10 @@
   .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--blur .pb-parallax__text,
   .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--opacity .pb-parallax__text,
   .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--fade-scale .pb-parallax__text {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
     transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
   }
 
   .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-all .pb-parallax--hover.pb-is-visible .pb-parallax__text:hover {

@@ -27,11 +27,11 @@
 .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns .paragraphs-bundles {
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
   align-items: start;
   justify-content: start;
   width: 100%;
   height: 100%;
-  flex-grow: 1;
 }
 
 .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns h3,
@@ -49,7 +49,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Card layout is structural; contrast handled by nested section bundles. */
 }
 

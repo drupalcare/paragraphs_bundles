@@ -8,7 +8,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-@media (min-width:48rem) {
+@media (min-width: 48rem) {
   .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l6-l6,
   .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l4-l8,
   .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-card-two-columns--l8-l4,
@@ -78,10 +78,9 @@
   .paragraphs-bundles.pb-card.pb-card-three-columns .pb-card-three-columns .pb-ui-inner {
     display: flex;
   }
-
 }
 
-@media (max-width:47.99875rem) {
+@media (max-width: 47.99875rem) {
   .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-u-image-top .pb-card-two-columns__right {
     order: -1;
   }
@@ -89,5 +88,4 @@
   .paragraphs-bundles.pb-card.pb-card-two-columns .pb-card-two-columns.pb-u-image-top .pb-card-two-columns__left {
     order: 1;
   }
-
 }

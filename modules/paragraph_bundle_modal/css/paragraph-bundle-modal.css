@@ -20,16 +20,16 @@
 }
 
 .paragraphs-bundles.pb-modal > .pb-modal__dialog {
+  position: fixed;
   z-index: 10000 !important;
   display: none;
-  position: fixed;
-  inset: 0;
+  overflow: auto;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
-  overflow: auto;
   padding: var(--pb-px48) var(--pb-px10);
-  background-color: color-mix(in srgb, CanvasText 70%, transparent);
+  background-color: color-mix(in sRGB, CanvasText 70%, transparent);
+  inset: 0;
 }
 
 .paragraphs-bundles.pb-modal > .pb-modal__dialog.pb-is-open {
@@ -41,8 +41,8 @@
 .paragraphs-bundles.pb-modal .pb-modal__content {
   position: relative;
   flex-shrink: 0;
-  margin: auto;
   max-width: 100%;
+  margin: auto;
   padding: 0;
   outline: 0;
 }
@@ -63,27 +63,27 @@
 }
 
 .paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: var(--pb-px48);
   height: var(--pb-px48);
-  font-size: var(--pb-px48);
   margin-inline-start: auto;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
+  font-size: var(--pb-px48);
 }
 
 .paragraphs-bundles.pb-modal .pb-modal__header .pb-modal__title {
-  width: calc(100% - var(--pb-px48));
-  justify-content: start;
-  align-items: center;
   flex-grow: 1;
+  align-items: center;
+  justify-content: start;
+  width: calc(100% - var(--pb-px48));
 }
 
 .paragraphs-bundles.pb-modal .pb-modal__header .pb-modal__title div {
   display: flex;
-  height: 100%;
-  justify-content: start;
   align-items: center;
+  justify-content: start;
+  height: 100%;
 }
 
 .paragraphs-bundles.pb-modal .pb-modal__button button div {
@@ -126,7 +126,7 @@ html.pb-u-modal-open {
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-modal .pb-modal__header .pb-ui-btn:focus-visible {
     outline-width: 3px;
   }

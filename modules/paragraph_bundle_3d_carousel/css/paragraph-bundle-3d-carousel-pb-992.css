@@ -6,7 +6,7 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (max-width:61.99875rem) {
+@media (max-width: 61.99875rem) {
   .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh500 > .pb-3d-carousel__inner,
   .paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--sh500 > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
     height: 35rem; /* 560px / 16px */
@@ -96,5 +96,4 @@
     padding-block: 0;
     padding-inline: var(--pb-px16);
   }
-
 }

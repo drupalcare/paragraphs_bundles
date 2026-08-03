@@ -8,10 +8,10 @@
  */
 .paragraphs-bundles.pb-layout .pb-two-columns,
 .paragraphs-bundles.pb-layout .pb-three-columns {
-  grid-auto-flow: row;
-  gap: var(--pb-px16);
   display: grid;
+  grid-auto-flow: row;
   align-items: start;
+  gap: var(--pb-px16);
 }
 
 /* Collapsed tracks are 0fr but grid gap still applies between every track.

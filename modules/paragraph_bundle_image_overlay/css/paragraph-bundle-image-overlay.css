@@ -10,8 +10,8 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 .paragraphs-bundles.pb-image-overlay * {
-  border-color: var(--pb-br) !important;
   color: var(--pb-tx) !important;
+  border-color: var(--pb-br) !important;
 }
 
 .paragraphs-bundles.pb-image-overlay .pb-overlay__container div {
@@ -26,8 +26,8 @@
 .paragraphs-bundles.pb-image-overlay .pb-image-overlay__inner img,
 .paragraphs-bundles.pb-image-overlay .pb-image-overlay__inner div,
 .paragraphs-bundles.pb-image-overlay .pb-image-overlay__inner picture {
-  width: 100%;
   display: flex;
+  width: 100%;
 }
 
 .paragraphs-bundles.pb-image-overlay .field--name-pb-media-image .field__item {
@@ -40,15 +40,15 @@
 }
 
 .paragraphs-bundles.pb-image-overlay a.pb-ui-link {
-  inset-block-start: 0;
-  inset-inline-start: 0;
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
 }
 
 .paragraphs-bundles.pb-image-overlay a.pb-ui-link:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: -4px;
 }
 
@@ -59,8 +59,8 @@
 
 .paragraphs-bundles.pb-image-overlay .pb-overlay__container {
   position: absolute;
-  height: 100%;
   width: 100%;
+  height: 100%;
 }
 
 .paragraphs-bundles.pb-image-overlay:not(.pb-image-overlay--title) .pb-overlay__container {
@@ -68,12 +68,12 @@
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--fade .pb-image-overlay__inner .pb-overlay__container {
+  transition: 0.5s ease;
   opacity: 0;
   inset-block-start: 0;
   inset-block-end: 0;
   inset-inline-start: 0;
   inset-inline-end: 0;
-  transition: .5s ease;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--fade .pb-image-overlay__inner .pb-overlay__title {
@@ -94,12 +94,12 @@
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--zoom .pb-image-overlay__inner .pb-overlay__container {
+  transition: 0.3s ease;
+  transform: scale(0);
   inset-block-start: 0;
   inset-block-end: 0;
   inset-inline-start: 0;
   inset-inline-end: 0;
-  transform: scale(0);
-  transition: .3s ease;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--zoom .pb-image-overlay__inner .pb-overlay__title {
@@ -122,22 +122,22 @@
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--title .pb-image-overlay__inner .pb-overlay__title {
   justify-content: center;
+  width: 100%;
+  margin: 0 !important;
+  transition: 0.5s ease;
+  text-align: center;
+  opacity: 0;
+  background: rgb(0, 0, 0, 0.5);
   inset-block-end: 0;
   inset-inline-start: 0;
-  opacity: 0;
-  background: rgba(0, 0, 0, 0.5);
-  text-align: center;
   padding-block: var(--pb-px8) !important;
   padding-inline: var(--pb-px16) !important;
-  margin: 0 !important;
-  transition: .5s ease;
-  width: 100%;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--title .pb-image-overlay__inner:hover .pb-overlay__title,
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--title .pb-image-overlay__inner:focus-within .pb-overlay__title {
-  background: var(--pb-bg) !important;
   opacity: 1;
+  background: var(--pb-bg) !important;
 }
 
 /* slide global  */
@@ -148,7 +148,7 @@
   inset-inline-start: 0;
   inset-inline-end: 0;
   overflow: hidden;
-  transition: .5s ease;
+  transition: 0.5s ease;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-top .pb-image-overlay__inner .pb-overlay__title,
@@ -165,8 +165,8 @@
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-top .pb-image-overlay__inner .pb-overlay__container {
   width: 100%;
   height: 100%;
+  transition: 0.5s ease;
   transform: translateY(-100%);
-  transition: .5s ease;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-top .pb-image-overlay__inner:hover .pb-overlay__container,
@@ -178,8 +178,8 @@
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-bottom .pb-image-overlay__inner .pb-overlay__container {
   width: 100%;
   height: 100%;
+  transition: 0.5s ease;
   transform: translateY(100%);
-  transition: .5s ease;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-bottom .pb-image-overlay__inner:hover .pb-overlay__container,
@@ -189,11 +189,11 @@
 
 /* slide left */
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-left .pb-image-overlay__inner .pb-overlay__container {
-  inset-block-end: 0;
   width: 100%;
   height: 100%;
+  transition: 0.5s ease;
   transform: translateX(-100%);
-  transition: .5s ease;
+  inset-block-end: 0;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-left .pb-image-overlay__inner:hover .pb-overlay__container,
@@ -203,11 +203,11 @@
 
 /* slide right */
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-right .pb-image-overlay__inner .pb-overlay__container {
-  inset-block-end: 0;
   width: 100%;
   height: 100%;
+  transition: 0.5s ease;
   transform: translateX(100%);
-  transition: .5s ease;
+  inset-block-end: 0;
 }
 
 .paragraphs-bundles.pb-image-overlay.pb-image-overlay--slide-right .pb-image-overlay__inner:hover .pb-overlay__container,
@@ -222,7 +222,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Image overlay colors are editor controlled. */
 }
 
@@ -235,7 +235,7 @@
 @media print {
   .paragraphs-bundles.pb-image-overlay .pb-overlay__container,
   .paragraphs-bundles.pb-image-overlay .pb-overlay__title {
-    opacity: 1;
     transform: none;
+    opacity: 1;
   }
 }

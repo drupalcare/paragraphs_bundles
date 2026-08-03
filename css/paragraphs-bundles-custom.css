@@ -74,14 +74,14 @@
  * ================================================================= */
 .paragraphs-bundles .field,
 .paragraphs-bundles > .pb-ui-inner {
-  border-color:     var(--pb-br);
-  color:            var(--pb-tx);
+  color: var(--pb-tx);
+  border-color: var(--pb-br);
 }
 
 .paragraphs-bundles .field:hover,
 .paragraphs-bundles > .pb-ui-inner:hover {
-  border-color:     var(--pb-br-h, var(--pb-br));
-  color:            var(--pb-tx-h, var(--pb-tx));
+  color: var(--pb-tx-h, var(--pb-tx));
+  border-color: var(--pb-br-h, var(--pb-br));
 }
 
 /* Nested PB paragraphs reset background to transparent so the outer
@@ -106,13 +106,7 @@
  *                    naturally; including them would shadow theme
  *                    intent (e.g. `.warning span { color: red }`).
  * ================================================================= */
-.paragraphs-bundles .pb-ui-inner :where(
-  h1, h2, h3, h4, h5, h6,
-  blockquote, cite, q,
-  mark, code, kbd, samp, pre,
-  dt, dd, li,
-  figcaption, summary
-) {
+.paragraphs-bundles .pb-ui-inner :where(h1, h2, h3, h4, h5, h6, blockquote, cite, q, mark, code, kbd, samp, pre, dt, dd, li, figcaption, summary) {
   color: inherit;
 }
 
@@ -136,9 +130,9 @@
  * editor hover values.
  * ================================================================= */
 .paragraphs-bundles .pb-ui-inner :where(button.pb-ui-btn, a.button, a.pb-ui-btn):hover {
-  color:            var(--pb-tx-h, var(--pb-tx));
+  color: var(--pb-tx-h, var(--pb-tx));
+  border-color: var(--pb-br-h, var(--pb-br));
   background-color: var(--pb-bg-h, var(--pb-bg, transparent));
-  border-color:     var(--pb-br-h, var(--pb-br));
 }
 
 /* ===================================================================
@@ -162,10 +156,10 @@ body .page-wrapper li {
  * ================================================================= */
 .paragraphs-bundles,
 .paragraphs-bundles .pb-one-column {
-  margin: 0;
   display: grid;
-  grid-auto-flow: row;
   grid-template-columns: 1fr;
+  grid-auto-flow: row;
+  margin: 0;
 }
 
 .paragraphs-bundles > *,
@@ -175,8 +169,8 @@ body .page-wrapper li {
 
 .paragraphs-bundles > .pb-ui-inner {
   display: flex;
-  flex-grow: 1;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .paragraphs-bundles h1,
@@ -212,9 +206,9 @@ body .page-wrapper li {
 .paragraphs-bundles.pb-image .pb-image__wrapper,
 .paragraphs-bundles.pb-image-wide .pb-image__wrapper,
 .paragraphs-bundles.pb-image-narrow .pb-image__wrapper {
+  display: block;
   /* stylelint-disable-next-line property-disallowed-list -- float needed for legacy image/content text-wrap; value is logical/RTL-safe. */
   float: none !important;
-  display: block;
 }
 
 .paragraphs-bundles.pb-image .field--name-pb-image-field,
@@ -252,10 +246,10 @@ body .page-wrapper li {
 /* The simple bundle's inner carries `pb__simple__inner`, not `simple__inner` —
  * see paragraph--simple-bundle.html.twig. This selector matched nothing. */
 .paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__simple__inner {
-  margin-inline-start: auto;
-  margin-inline-end: auto;
   width: 100%;
   max-width: 100%;
+  margin-inline-start: auto;
+  margin-inline-end: auto;
 }
 
 /* Width tokens + layout (v1 contract):
@@ -285,10 +279,10 @@ body .page-wrapper li {
 .paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--500,
 .paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--400,
 .paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) .pb-3d-carousel__inner.pb-u-mw--300 {
-  margin-inline-start: auto !important;
-  margin-inline-end: auto !important;
   width: 100%;
   max-width: var(--pb-width);
+  margin-inline-start: auto !important;
+  margin-inline-end: auto !important;
 }
 
 .paragraphs-bundles > .pb-u-mw--100,
@@ -355,7 +349,7 @@ body .page-wrapper li {
   --pb-width: 56.25rem;
 }
 
-@media (max-width:35.99875rem) {
+@media (max-width: 35.99875rem) {
   .paragraphs-bundles .button,
   .paragraphs-bundles .pb-ui-btn {
     white-space: normal;

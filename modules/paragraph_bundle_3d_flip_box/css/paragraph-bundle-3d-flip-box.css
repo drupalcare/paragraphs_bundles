@@ -19,8 +19,8 @@
   --pb-3d-flip-easing: cubic-bezier(0.4, 0, 0.2, 1);
 
   overflow: hidden;
-  background-color: transparent;
   width: 100%;
+  background-color: transparent;
   perspective: var(--pb-px1600);
 }
 
@@ -79,7 +79,7 @@
 
 /* Focus outline on the presented face */
 .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 4px;
 }
 
@@ -96,25 +96,25 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle {
-  display: inline-flex;
   position: absolute;
   z-index: 2;
   top: 0.5rem;
   right: 0.5rem;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.25rem;
   height: 2.25rem;
   padding: 0;
+  cursor: pointer;
+  color: CanvasText;
   border: 1px solid CanvasText;
   border-radius: 50%;
   background-color: Canvas;
-  color: CanvasText;
-  cursor: pointer;
 }
 
 .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -134,10 +134,10 @@
 
 .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__front,
 .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__back {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: start;
-  position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden !important;
@@ -205,7 +205,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle:focus-visible {
     outline-width: 3px;

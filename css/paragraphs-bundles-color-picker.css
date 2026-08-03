@@ -45,14 +45,13 @@
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper {
   display: flex;
   align-items: center;
+  box-sizing: border-box;
+  padding: 4px 8px;
+  border: 1px solid var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: 8px;
   gap: 6px;
   inline-size: 100%;
   max-inline-size: none;
-  box-sizing: border-box;
-  padding: 4px 8px;
-  border-radius: 8px;
-  border: 1px solid
-    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
 }
 
 /* Shared sizing for all three elements */
@@ -67,34 +66,28 @@
 
 /* Native color swatch */
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"] {
+  flex-shrink: 0;
+  box-sizing: border-box;
   width: 32px !important;
   max-width: 32px !important;
-  flex-shrink: 0;
   padding: 2px;
-  border: 2px solid
-    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
-  border-radius: var(--gin-border-s, 6px);
-  box-sizing: border-box;
   cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  border: 2px solid var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: var(--gin-border-s, 6px);
   background: transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]:hover {
-  border-color: var(
-    --gin-color-primary,
-    var(--gin-border-color-focus, currentcolor)
-  );
+  border-color: var(--gin-color-primary, var(--gin-border-color-focus, currentcolor));
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]:focus {
+  border-color: var(--gin-color-primary, var(--gin-border-color-focus, currentcolor));
   outline: none;
-  border-color: var(
-    --gin-color-primary,
-    var(--gin-border-color-focus, currentcolor)
-  );
-  box-shadow: 0 0 0 2px
-    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]::-webkit-color-swatch-wrapper {
@@ -115,27 +108,21 @@
 /* Hex text input */
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"] {
   flex: 1;
-  min-width: 80px !important;
+  box-sizing: border-box;
   width: auto !important;
+  min-width: 80px !important;
   margin: 0 !important;
   padding: 4px 8px;
-  border: 1px solid
-    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+  color: var(--gin-color-text, inherit);
+  border: 1px solid var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
   border-radius: var(--gin-border-s, 6px);
-  box-sizing: border-box;
-  font-family: var(
-    --gin-font-mono,
-    ui-monospace,
-    SFMono-Regular,
-    Menlo,
-    Consolas,
-    monospace
-  );
+  background-color: var(--gin-bg-layer, var(--gin-bg-item, transparent));
+  font-family: var(--gin-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
   font-size: var(--gin-font-size-s, 13px);
   font-weight: 400;
-  background-color: var(--gin-bg-layer, var(--gin-bg-item, transparent));
-  color: var(--gin-color-text, inherit);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]:hover {
@@ -143,54 +130,47 @@
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]:focus {
+  border-color: var(--gin-color-primary, var(--gin-border-color-focus, currentcolor));
   outline: none;
-  border-color: var(
-    --gin-color-primary,
-    var(--gin-border-color-focus, currentcolor)
-  );
-  box-shadow: 0 0 0 2px
-    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]::placeholder {
-  color: var(
-    --gin-color-text-light,
-    var(--gin-color-disabled, inherit)
-  );
+  color: var(--gin-color-text-light, var(--gin-color-disabled, inherit));
   font-style: italic;
 }
 
 /* Clear button - x */
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
-  width: 30px !important;
-  max-width: 30px !important;
-  flex-shrink: 0;
-  padding: 0 0 2px !important;
-  border: 1px solid
-    var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
-  border-radius: var(--gin-border-s, 6px);
-  background: var(--gin-bg-layer, var(--gin-bg-item, transparent));
-  color: var(--gin-color-text-light, var(--gin-color-disabled, inherit));
-  font-size: 16px;
-  line-height: 1;
-  cursor: pointer;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  transition: background 0.2s ease, color 0.2s ease,
+  width: 30px !important;
+  max-width: 30px !important;
+  padding: 0 0 2px !important;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
     border-color 0.2s ease;
+  color: var(--gin-color-text-light, var(--gin-color-disabled, inherit));
+  border: 1px solid var(--gin-border-color, var(--gin-border-color-layer2, currentcolor));
+  border-radius: var(--gin-border-s, 6px);
+  background: var(--gin-bg-layer, var(--gin-bg-item, transparent));
+  font-size: 16px;
+  line-height: 1;
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn:hover {
-  background: var(--gin-color-danger, #dc3545);
-  border-color: var(--gin-color-danger, #dc3545);
   color: #fff;
+  border-color: var(--gin-color-danger, #dc3545);
+  background: var(--gin-color-danger, #dc3545);
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn:focus {
   outline: none;
-  box-shadow: 0 0 0 2px
-    var(--gin-color-primary-light, rgba(0, 0, 0, 0.1));
+  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
 }
 
 /* ==========================================================================
@@ -208,8 +188,8 @@
 }
 
 [data-drupal-selector="pb-color-picker"].pb-color-empty .pb-color-picker__wrapper .pb-color__clear-btn {
-  opacity: 0.3;
   pointer-events: none;
+  opacity: 0.3;
 }
 
 /* ==========================================================================
@@ -218,8 +198,8 @@
 
 .field--widget-color-text-widget .form-item__error-message {
   margin-block-start: 4px;
-  font-size: var(--gin-font-size-xs, 12px);
   color: var(--gin-color-danger, #dc3545);
+  font-size: var(--gin-font-size-xs, 12px);
 }
 
 /* ==========================================================================
@@ -264,7 +244,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper {
     border-width: 2px;
   }
@@ -281,8 +261,8 @@
   }
 
   [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn {
-    border-color: CanvasText;
     color: CanvasText;
+    border-color: CanvasText;
   }
 
   /* Category borders: collapse to system colour in forced-colours mode. */

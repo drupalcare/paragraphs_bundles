@@ -71,7 +71,7 @@
 
 /* Tab button focus state for accessibility */
 .paragraphs-bundles.pb-tabs .pb-tabs__tablist > button:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: -2px;
 }
 
@@ -84,10 +84,10 @@
  * fallback of CanvasText would paint the button black behind inherited dark
  * text. See docs/PB-V2-THEME-BRIDGE.md. */
 .paragraphs-bundles.pb-tabs .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
-  font-weight: bold;
   text-decoration: underline;
-  text-underline-offset: 3px;
   background-color: var(--pb-bt-a);
+  font-weight: bold;
+  text-underline-offset: 3px;
 }
 
 /* Active tab doesn't need hover effect */
@@ -101,11 +101,11 @@
 
 @media (min-width: 87.5rem) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 {
-    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    width: 100%;
   }
 
   [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 {
@@ -119,9 +119,9 @@
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__tablist {
     flex: 0 1 auto;
-    max-width: 30%;
-    min-width: 10%;
     width: auto;
+    min-width: 10%;
+    max-width: 30%;
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__panels {
@@ -129,8 +129,8 @@
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1400 .pb-tabs__tab {
-    width: 100%;
     clear: both;
+    width: 100%;
     text-align: var(--pb-text-align-start);
   }
 
@@ -145,11 +145,11 @@
 
 @media (min-width: 75rem) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 {
-    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    width: 100%;
   }
 
   [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 {
@@ -163,9 +163,9 @@
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__tablist {
     flex: 0 1 auto;
-    max-width: 30%;
-    min-width: 10%;
     width: auto;
+    min-width: 10%;
+    max-width: 30%;
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__panels {
@@ -173,8 +173,8 @@
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__1200 .pb-tabs__tab {
-    width: 100%;
     clear: both;
+    width: 100%;
     text-align: var(--pb-text-align-start);
   }
 
@@ -189,11 +189,11 @@
 
 @media (min-width: 62rem) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 {
-    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    width: 100%;
   }
 
   [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 {
@@ -208,9 +208,9 @@
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__tablist {
     flex: 0 1 auto;
-    max-width: 30%;
-    min-width: 10%;
     width: auto;
+    min-width: 10%;
+    max-width: 30%;
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__panels {
@@ -218,8 +218,8 @@
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__992 .pb-tabs__tab {
-    width: 100%;
     clear: both;
+    width: 100%;
     text-align: var(--pb-text-align-start);
   }
 
@@ -234,11 +234,11 @@
 
 @media (min-width: 48rem) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 {
-    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    width: 100%;
   }
 
   [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 {
@@ -252,9 +252,9 @@
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__tablist {
     flex: 0 1 auto;
-    max-width: 30%;
-    min-width: 10%;
     width: auto;
+    min-width: 10%;
+    max-width: 30%;
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__panels {
@@ -262,8 +262,8 @@
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__768 .pb-tabs__tab {
-    width: 100%;
     clear: both;
+    width: 100%;
     text-align: var(--pb-text-align-start);
   }
 
@@ -278,11 +278,11 @@
 
 @media (min-width: 36rem) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 {
-    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     flex-grow: 1;
+    width: 100%;
   }
 
   [dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 {
@@ -296,9 +296,9 @@
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__tablist {
     flex: 0 1 auto;
-    max-width: 30%;
-    min-width: 10%;
     width: auto;
+    min-width: 10%;
+    max-width: 30%;
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__panels {
@@ -306,8 +306,8 @@
   }
 
   .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb__576 .pb-tabs__tab {
-    width: 100%;
     clear: both;
+    width: 100%;
     text-align: var(--pb-text-align-start);
   }
 
@@ -330,7 +330,7 @@
    High Contrast
    ========================================================================== */
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-tabs .pb-tabs__tablist > button:focus-visible {
     outline-width: 3px;
   }

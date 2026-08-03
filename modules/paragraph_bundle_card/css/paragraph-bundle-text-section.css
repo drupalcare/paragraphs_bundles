@@ -28,7 +28,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Text section hover uses dynamic CSS vars on inner shell. */
 }
 

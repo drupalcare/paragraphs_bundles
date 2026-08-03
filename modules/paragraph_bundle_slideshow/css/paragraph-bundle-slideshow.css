@@ -16,8 +16,8 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides {
-  transition: all 0.5s ease-in-out;
   overflow: hidden;
+  transition: all 0.5s ease-in-out;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
@@ -33,8 +33,8 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slide-inner {
-  min-height: 1px;
   overflow: hidden;
+  min-height: 1px;
 }
 
 /* The media field is `pb_image_field`, so Drupal emits
@@ -48,24 +48,24 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows {
-  background-color: transparent !important;
   width: 100%;
+  background-color: transparent !important;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button {
-  all: unset;
   position: absolute;
-  cursor: pointer;
-  outline: none;
-  min-height: calc(2 * var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
-  line-height: 1;
-  text-decoration: none !important;
-  background-color: transparent !important;
-  inset-block-start: calc(50% - var(--pb-px18));
+  min-height: calc(2 * var(--pb-px18));
+  cursor: pointer;
   transition:
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.25s ease-out;
+  text-decoration: none !important;
+  outline: none;
+  background-color: transparent !important;
+  line-height: 1;
+  all: unset;
+  inset-block-start: calc(50% - var(--pb-px18));
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button span {
@@ -75,11 +75,11 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button svg {
-  fill: var(--pb-tx, inherit);
-  min-height: calc(2 * var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
-  opacity: 0.5;
+  min-height: calc(2 * var(--pb-px18));
   transition: opacity 0.25s ease-out;
+  opacity: 0.5;
+  fill: var(--pb-tx, inherit);
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:hover svg {
@@ -87,9 +87,9 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible {
-  outline: 2px solid currentcolor;
-  outline-offset: 2px;
   border-radius: var(--pb-px4);
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next {
@@ -111,8 +111,10 @@
 
 /* Arrow visibility states */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+  transition:
+    opacity 0.3s ease,
+    background-color 0.3s ease;
   opacity: 0.1;
-  transition: opacity 0.3s ease, background-color 0.3s ease;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on:hover {
@@ -130,18 +132,18 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav {
-  min-height: calc(2 * var(--pb-px20));
   display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
   flex-wrap: nowrap;
   align-items: center;
   justify-content: flex-start;
-  gap: var(--pb-px4);
   width: 100%;
   max-width: 100%;
+  min-height: calc(2 * var(--pb-px20));
+  gap: var(--pb-px4);
   padding-block: var(--pb-px8);
   padding-inline: var(--pb-px16);
-  overflow-x: auto;
-  overflow-y: hidden;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 
@@ -161,9 +163,9 @@
 /* Center navigation items when they fit */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav::before,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav::after {
-  content: '';
   flex: 1 0 0;
   min-width: 0;
+  content: "";
 }
 
 .paragraphs-bundles.pb-slideshow .pb-no-bottom-nav {
@@ -177,10 +179,10 @@
 
 /* Generic active state for all navigation types */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav > .pb-is-active {
-  font-weight: bold;
+  cursor: none;
   text-decoration: underline;
   pointer-events: none;
-  cursor: none;
+  font-weight: bold;
 }
 
 /* ==========================================================================
@@ -197,9 +199,9 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play svg {
-  fill: var(--pb-tx, inherit);
-  opacity: 0.7;
   transition: opacity 0.25s ease-out;
+  opacity: 0.7;
+  fill: var(--pb-tx, inherit);
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage .pb-nav__play:hover svg {
@@ -215,21 +217,21 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play {
-  font-weight: bold;
-  background-color: color-mix(in srgb, CanvasText 6%, transparent);
   border-radius: var(--pb-px4);
+  background-color: color-mix(in sRGB, CanvasText 6%, transparent);
+  font-weight: bold;
   padding-block: var(--pb-px5);
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play > span:not(.visually-hidden) {
-  min-width: var(--pb-px20);
-  min-height: var(--pb-px20);
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-width: var(--pb-px20);
+  min-height: var(--pb-px20);
   text-align: center;
-  background-color: color-mix(in srgb, CanvasText 9%, transparent);
+  border-radius: 50%;
+  background-color: color-mix(in sRGB, CanvasText 9%, transparent);
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play > span[hidden] {
@@ -242,7 +244,7 @@
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -251,14 +253,14 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number:not(.pb-slideshow__nav--dot, .pb-slideshow__nav--nav, .pb-slideshow__nav--nav-play, .pb-slideshow__nav--dot-play) > .pb-slideshow__nav-btn {
-  opacity: 0;
-  height: 0;
-  padding: 0;
-  margin: 0;
   width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  opacity: 0;
   font-size: var(--pb-px8);
   line-height: 0;
-  pointer-events: none;
 }
 
 /* ==========================================================================
@@ -270,9 +272,9 @@
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
   flex: 0 0 auto;
+  margin-inline-start: var(--pb-px4);
   opacity: 100;
   border-radius: var(--pb-px4);
-  margin-inline-start: var(--pb-px4);
   scroll-snap-align: center;
 }
 
@@ -290,8 +292,6 @@
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn {
   position: relative;
-  border-radius: var(--pb-px4);
-  margin-inline: var(--pb-px4);
   overflow: hidden;
   cursor: pointer;
   transition:
@@ -299,26 +299,28 @@
     color 0.3s ease-out,
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease-out;
+  border-radius: var(--pb-px4);
+  margin-inline: var(--pb-px4);
 }
 
 /* Nav button hover state */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 var(--pb-px4) var(--pb-px12) color-mix(in srgb, CanvasText 15%, transparent);
+  box-shadow: 0 var(--pb-px4) var(--pb-px12) color-mix(in sRGB, CanvasText 15%, transparent);
 }
 
 /* Nav button active/pressed state */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:active,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:active {
   transform: translateY(0);
-  box-shadow: 0 var(--pb-px2) var(--pb-px4) color-mix(in srgb, CanvasText 10%, transparent);
+  box-shadow: 0 var(--pb-px2) var(--pb-px4) color-mix(in sRGB, CanvasText 10%, transparent);
 }
 
 /* Nav button focus state */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:focus-visible,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -329,10 +331,10 @@
  * background, while a dot with no background is invisible. */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn.pb-is-active {
-  background-color: var(--pb-bt-a);
-  text-underline-offset: 3px;
   transform: none;
+  background-color: var(--pb-bt-a);
   box-shadow: none;
+  text-underline-offset: 3px;
 }
 
 /* ==========================================================================
@@ -342,16 +344,10 @@
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn {
   position: relative;
-  padding: 0 !important;
-  margin-block: 0;
-  margin-inline: var(--pb-px6);
   width: var(--pb-px10) !important;
   min-width: var(--pb-px10);
   height: var(--pb-px10) !important;
-  border-radius: 50% !important;
-  font-size: 0 !important;
-  line-height: initial !important;
-  background-color: var(--pb-dot-inactive, color-mix(in srgb, CanvasText 50%, transparent));
+  padding: 0 !important;
   cursor: pointer;
   transition:
     width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
@@ -361,6 +357,12 @@
     background-color 0.3s ease-out,
     transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s ease-out;
+  border-radius: 50% !important;
+  background-color: var(--pb-dot-inactive, color-mix(in srgb, CanvasText 50%, transparent));
+  font-size: 0 !important;
+  line-height: initial !important;
+  margin-block: 0;
+  margin-inline: var(--pb-px6);
 }
 
 /* Dot hover state - subtle pulse */
@@ -373,7 +375,7 @@
 /* Dot focus state */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot > .pb-slideshow__nav-btn:focus-visible,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--dot-play > .pb-slideshow__nav-btn:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 3px;
 }
 
@@ -383,12 +385,12 @@
   width: calc(2.5 * var(--pb-px10)) !important;
   min-width: calc(2.5 * var(--pb-px10));
   height: var(--pb-px10) !important;
+  transform: none;
   border-radius: calc(var(--pb-px10) / 2) !important;
   /* `--pb-dot-active` is emitted by nothing in this project, so the middle
    * fallback could never resolve. Same contract as the carousel dot. */
   background-color: var(--pb-bt-a, CanvasText);
-  transform: none;
-  box-shadow: 0 var(--pb-px2) var(--pb-px8) color-mix(in srgb, CanvasText 20%, transparent);
+  box-shadow: 0 var(--pb-px2) var(--pb-px8) color-mix(in sRGB, CanvasText 20%, transparent);
 }
 
 /* ==========================================================================
@@ -423,7 +425,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible,
   .paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play:focus-visible {
     outline-width: 3px;

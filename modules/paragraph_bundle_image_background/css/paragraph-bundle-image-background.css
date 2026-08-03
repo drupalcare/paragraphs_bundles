@@ -11,8 +11,8 @@
  */
 
 .paragraphs-bundles.pb-image-background {
-  width: 100%;
   position: relative;
+  width: 100%;
 }
 
 .paragraphs-bundles.pb-image-background .img-color-overlay {
@@ -24,15 +24,15 @@
 }
 
 .paragraphs-bundles.pb-image-background .pb-image-background__inner {
-  height: 100%;
   z-index: 2;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   /* Layout only; no motion. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Layout only. */
 }
 

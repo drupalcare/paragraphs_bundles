@@ -79,30 +79,30 @@
 
 .paragraphs-bundles a,
 .paragraphs-bundles button {
-  all: unset;
-  outline: revert;
   box-sizing: border-box;
   cursor: pointer;
+  outline: revert;
+  all: unset;
 }
 
 /* Button */
 .paragraphs-bundles .button,
 .paragraphs-bundles .pb-ui-btn {
   display: inline-flex;
-  padding-block: var(--pb-px8);
-  padding-inline: var(--pb-px16);
-  line-height: inherit;
-  vertical-align: middle;
   overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
   text-decoration: none;
+  text-overflow: ellipsis;
   color: inherit;
   background-color: inherit;
-  text-align: center;
-  cursor: pointer;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  line-height: inherit;
+  padding-block: var(--pb-px8);
+  padding-inline: var(--pb-px16);
   -webkit-touch-callout: none;
-  user-select: none;
 }
 
 .paragraphs-bundles a.pb-ui-link {
@@ -112,14 +112,14 @@
 
 .paragraphs-bundles .pb-ui-row::after,
 .paragraphs-bundles .pb-ui-row::before {
-  content: "";
   display: table;
   clear: both;
+  content: "";
 }
 
 .paragraphs-bundles .pb-ui-bar {
-  width: 100%;
   overflow: hidden;
+  width: 100%;
 }
 
 .paragraphs-bundles .pb-ui-bar .button,
@@ -129,9 +129,9 @@
 
 .paragraphs-bundles .pb-ui-bar::before,
 .paragraphs-bundles .pb-ui-bar::after {
-  content: "";
   display: table;
   clear: both;
+  content: "";
 }
 
 /* Borders */
@@ -217,13 +217,17 @@
 /* Shadows - pb__card_2 / pb__card_4 are display tokens (pb_display_shadow), not
    the card bundle L0 class pb-card. */
 .pb-u-shadow--2 {
-  box-shadow: 0 var(--pb-px2) var(--pb-px5) 0 rgba(0, 0, 0, 0.16), 0 var(--pb-px2) var(--pb-px10) 0 rgba(0, 0, 0, 0.12);
   margin: var(--pb-px10);
+  box-shadow:
+    0 var(--pb-px2) var(--pb-px5) 0 rgb(0, 0, 0, 0.16),
+    0 var(--pb-px2) var(--pb-px10) 0 rgb(0, 0, 0, 0.12);
 }
 
 .pb-u-shadow--4 {
-  box-shadow: 0 var(--pb-px4) var(--pb-px10) 0 rgba(0, 0, 0, 0.2), 0 var(--pb-px4) var(--pb-px20) 0 rgba(0, 0, 0, 0.19);
   margin: var(--pb-px20);
+  box-shadow:
+    0 var(--pb-px4) var(--pb-px10) 0 rgb(0, 0, 0, 0.2),
+    0 var(--pb-px4) var(--pb-px20) 0 rgb(0, 0, 0, 0.19);
 }
 
 /* Margin */
@@ -324,10 +328,10 @@
 
 .pb-u-ds--middle {
   position: absolute;
+  min-width: 70%;
+  transform: translate(-50%, -50%);
   inset-block-start: 50%;
   inset-inline-start: 50%;
-  transform: translate(-50%, -50%);
-  min-width: 70%;
 }
 
 .pb-u-ds--left {
@@ -360,7 +364,6 @@
 
 /* Border Colors */
 
-
 .pb-u-animate--opacity {
   animation: opac 0.8s ease-out;
 }
@@ -373,7 +376,6 @@
   to {
     opacity: 1;
   }
-
 }
 
 .pb-u-animate--top {
@@ -391,7 +393,6 @@
     inset-block-start: 0;
     opacity: 1;
   }
-
 }
 
 .pb-u-animate--left {
@@ -409,7 +410,6 @@
     inset-inline-start: 0;
     opacity: 1;
   }
-
 }
 
 .pb-u-animate--right {
@@ -427,7 +427,6 @@
     inset-inline-end: 0;
     opacity: 1;
   }
-
 }
 
 .pb-u-animate--bottom {
@@ -445,7 +444,6 @@
     inset-block-end: 0;
     opacity: 1;
   }
-
 }
 
 .pb-u-animate--zoom {
@@ -460,7 +458,6 @@
   to {
     transform: scale(1.05);
   }
-
 }
 
 /* The entry animations above are editor-selectable, so honour the user's
@@ -476,5 +473,4 @@
   .pb-u-animate--zoom {
     animation: none;
   }
-
 }

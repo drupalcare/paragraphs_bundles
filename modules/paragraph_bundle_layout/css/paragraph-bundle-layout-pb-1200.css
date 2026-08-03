@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media (min-width:75rem) {
+@media (min-width: 75rem) {
   .paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns.pb-two-columns--l6-l6,
   .paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns.pb-two-columns--l4-l8,
   .paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns.pb-two-columns--l8-l4,
@@ -77,28 +77,28 @@
   .paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns .pb-ui-inner {
     display: flex;
   }
-/* ==========================================================================
+  /* ==========================================================================
    Sticky columns - always active, independent of collapse feature.
    ========================================================================== */
 
-.paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns > [data-col].pb-is-sticky,
-.paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns > [data-col].pb-is-sticky {
-  position: sticky;
-  inset-block-start: var(--pb-col-sticky-top, 0);
-  align-self: start;
-  block-size: auto;
-  z-index: 2;
-}
+  .paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns > [data-col].pb-is-sticky,
+  .paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns > [data-col].pb-is-sticky {
+    position: sticky;
+    z-index: 2;
+    align-self: start;
+    inset-block-start: var(--pb-col-sticky-top, 0);
+    block-size: auto;
+  }
 
-.paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col,
-.paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col > .pb-ui-inner,
-.paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-content__full,
-.paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-two-columns,
-.paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-three-columns {
-  overflow: visible;
-}
+  .paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col,
+  .paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col > .pb-ui-inner,
+  .paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-content__full,
+  .paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-two-columns,
+  .paragraphs-bundles.pb-layout.pb__1200.pb-has-sticky-col .pb-three-columns {
+    overflow: visible;
+  }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - custom properties.
    ========================================================================== */
 
@@ -113,7 +113,7 @@
     min-inline-size: 0;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar.
    ========================================================================== */
 
@@ -147,7 +147,7 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: edge_top.
    ========================================================================== */
 
@@ -170,7 +170,7 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: inside_center.
    ========================================================================== */
 
@@ -190,7 +190,7 @@
     pointer-events: auto;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - toolbar position: edge.
    ========================================================================== */
 
@@ -214,41 +214,41 @@
     justify-self: end;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - button base.
    ========================================================================== */
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle {
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    inline-size: 2rem;
-    block-size: 2rem;
     padding: 0;
+    cursor: pointer;
+    color: var(--pb-tx, inherit);
     border: 0;
     border-radius: 0;
     background: transparent;
-    color: var(--pb-tx, inherit);
-    cursor: pointer;
-    z-index: 3;
+    inline-size: 2rem;
+    block-size: 2rem;
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle:focus-visible {
-    outline: 2px solid currentcolor;
+    outline: 2px solid currentColor;
     outline-offset: 2px;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - SVG icon.
    ========================================================================== */
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle-svg {
     display: grid;
     place-items: center;
+    transition: transform var(--pb-col-anim-ms, 300ms) ease;
+    pointer-events: none;
     inline-size: 36px;
     block-size: 36px;
-    pointer-events: none;
-    transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__icon--plus-minus .pb-layout-col__toggle-svg {
@@ -263,8 +263,8 @@
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle svg {
-    opacity: 0.85;
     transition: opacity 0.2s ease-out;
+    opacity: 0.85;
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle:hover svg {
@@ -277,7 +277,7 @@
     transition: transform var(--pb-col-anim-ms, 300ms) ease;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - collapsed state.
    ========================================================================== */
 
@@ -287,10 +287,10 @@
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 [data-col][data-collapsed] > .pb-layout-col__content {
-    max-block-size: 0;
     overflow: hidden;
-    opacity: 0;
     pointer-events: none;
+    opacity: 0;
+    max-block-size: 0;
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-layout-col__toggle:not([data-collapsed]) .pb-layout-col__toggle-state--collapsed {
@@ -309,7 +309,7 @@
     display: block;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - expand mode.
    ========================================================================== */
 
@@ -325,25 +325,24 @@
     overflow: visible;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - all-collapsed states.
    ========================================================================== */
-
 
   .paragraphs-bundles.pb-layout.pb-two-columns.pb__1200.left-right-collapsed .pb-layout-col__toolbar,
   .paragraphs-bundles.pb-layout.pb-three-columns.pb__1200.left-right-middle-collapsed .pb-layout-col__toolbar {
     position: relative;
-    inset-block-start: auto;
-    inset-inline: auto;
+    margin: 0;
+    padding: 0;
     transform: none;
     pointer-events: auto;
+    inset-block-start: auto;
+    inset-inline: auto;
     inline-size: 100%;
     min-block-size: 32px;
-    padding: 0;
-    margin: 0;
   }
 
-/* ==========================================================================
+  /* ==========================================================================
    Column toggle - reduced motion.
    ========================================================================== */
 
@@ -366,5 +365,4 @@
       transition: none;
     }
   }
-
 }

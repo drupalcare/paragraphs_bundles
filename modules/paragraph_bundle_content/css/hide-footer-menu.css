@@ -7,15 +7,15 @@
 #footer-menu,
 #nav-footer {
   display: none !important;
-  height: 0 !important;
   width: 0 !important;
+  height: 0 !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
   /* Hide rule only. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Hide rule only. */
 }
 

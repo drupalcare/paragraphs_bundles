@@ -8,11 +8,10 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
-@media (min-width:62rem) {
+@media (min-width: 62rem) {
   .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__wrapper {
     width: 100%;
   }
-
 }
 
 @media (max-width: 61.99875rem) {
@@ -32,13 +31,13 @@
   .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar {
     top: 0;
     bottom: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0;
+    transform: translateX(-50%);
     inset-inline-start: 50%;
     inset-inline-end: auto;
-    transform: translateX(-50%);
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
   }
 
   .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel button svg {

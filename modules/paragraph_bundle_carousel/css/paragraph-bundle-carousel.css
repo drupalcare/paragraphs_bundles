@@ -18,11 +18,11 @@
 .paragraphs-bundles.pb-carousel .pb-carousel__viewport {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
   height: 100%;
-  flex-direction: column;
 }
 
 .paragraphs-bundles.pb-carousel.pb-no-arrows .pb-carousel__viewport {
@@ -30,14 +30,14 @@
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__wrapper {
-  opacity: 0;
-  visibility: hidden;
   position: relative;
+  visibility: hidden;
   overflow: hidden;
   max-width: 100%;
   height: auto;
   margin: 0 auto;
   transition: all 0.3s ease;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__wrapper {
@@ -45,8 +45,8 @@
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__wrapper.pb-is-visible {
-  opacity: 1;
   visibility: visible;
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__slides {
@@ -58,19 +58,21 @@
 
 .paragraphs-bundles.pb-carousel .pb-carousel__slide {
   flex: 0 0 auto;
-  transition: transform 0.5s ease, opacity 0.5s ease;
-  scroll-snap-align: start;
   box-sizing: border-box;
+  transition:
+    transform 0.5s ease,
+    opacity 0.5s ease;
+  scroll-snap-align: start;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__slide.pb-is-active {
-  opacity: 1;
   pointer-events: auto;
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__slide.pb-is-inactive {
-  opacity: 0.15;
   pointer-events: none;
+  opacity: 0.15;
 }
 
 /* ==========================================================================
@@ -87,17 +89,17 @@
 
 .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar {
   position: absolute;
+  z-index: 1;
   top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
   inset-inline-start: 0;
   inset-inline-end: 0;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: none;
-  padding: 0;
-  margin: 0;
-  z-index: 1;
 }
 
 .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn {
@@ -123,18 +125,18 @@
 
 .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar {
   position: absolute;
-  inset-inline-start: 50%;
+  z-index: 1;
   top: 0;
   bottom: 0;
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
-  pointer-events: none;
-  padding: 0;
+  justify-content: space-between;
   margin: 0;
-  z-index: 1;
+  padding: 0;
+  transform: translateX(-50%);
+  pointer-events: none;
+  inset-inline-start: 50%;
 }
 
 .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-ui-btn {
@@ -159,17 +161,17 @@
 
 .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar {
   position: absolute;
+  z-index: 1;
   top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+  transform: translateY(-50%);
+  pointer-events: none;
   inset-inline-start: 0;
   inset-inline-end: 0;
-  transform: translateY(-50%);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  pointer-events: none;
-  padding: 0;
-  margin: 0;
-  z-index: 1;
 }
 
 .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-ui-btn {
@@ -181,30 +183,30 @@
    ========================================================================== */
 
 .paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn {
-  width: var(--pb-px48);
-  height: var(--pb-px48);
-  background: transparent;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 0;
+  width: var(--pb-px48);
+  height: var(--pb-px48);
   margin: 0;
+  padding: 0;
+  cursor: pointer;
   transition:
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.3s ease;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
-.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn[style*='visibility:hidden'] {
-  opacity: 0;
+.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn[style*="visibility:hidden"] {
   pointer-events: none;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__options-bar button svg {
@@ -257,37 +259,37 @@
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
-  line-height: 1;
   margin-block-start: var(--pb-px16);
+  line-height: 1;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__play-pause {
-  min-width: var(--pb-px32);
-  min-height: var(--pb-px32);
-  background: transparent!important;
-  border: none;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  padding: 0;
+  min-width: var(--pb-px32);
+  min-height: var(--pb-px32);
   margin: 0;
+  padding: 0;
+  cursor: pointer;
   transition:
     transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
     opacity 0.3s ease;
+  border: none;
+  border-radius: 50%;
+  background: transparent !important;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__play-pause:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__dots {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   min-width: 0;
   max-width: 100%;
   gap: var(--pb-px12);
@@ -298,50 +300,50 @@
 .paragraphs-bundles.pb-carousel .pb-carousel__dot {
   flex: 0 0 auto;
   width: var(--pb-px10);
-  height: var(--pb-px10);
   min-width: var(--pb-px10);
-  border-radius: 50%;
-  background-color: color-mix(in srgb, CanvasText 20%, transparent);
-  border: none;
-  cursor: pointer;
-  padding: 0;
+  height: var(--pb-px10);
   margin: 0;
+  padding: 0;
+  cursor: pointer;
   transition:
     background-color 0.3s ease,
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  border-radius: 50%;
+  background-color: color-mix(in sRGB, CanvasText 20%, transparent);
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__play-pause svg {
   width: var(--pb-px32);
   height: var(--pb-px32);
-  opacity: 0.7;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
+  opacity: 0.7;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__play-pause:hover svg,
 .paragraphs-bundles.pb-carousel .pb-carousel__play-pause:focus-visible svg {
-  opacity: 0.9;
   transform: scale(0.96);
+  opacity: 0.9;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__dot:hover {
   transform: scale(1.3);
-  background-color: color-mix(in srgb, CanvasText 50%, transparent);
+  background-color: color-mix(in sRGB, CanvasText 50%, transparent);
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__dot.pb-is-active {
-  background-color: var(--pb-bt-a, CanvasText);
-  transform: scale(1.2);
   width: var(--pb-px20);
   min-width: var(--pb-px20);
+  transform: scale(1.2);
   border-radius: var(--pb-px5);
+  background-color: var(--pb-bt-a, CanvasText);
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__dot:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 3px;
 }
 
@@ -363,8 +365,8 @@
 }
 
 .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__wrapper.pb-u-small-screen .pb-carousel__slide {
-  max-width: 100%;
   flex-shrink: 0;
+  max-width: 100%;
 }
 
 /* ==========================================================================
@@ -401,7 +403,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn:focus-visible,
   .paragraphs-bundles.pb-carousel .pb-carousel__play-pause:focus-visible,
   .paragraphs-bundles.pb-carousel .pb-carousel__dot:focus-visible {
@@ -424,7 +426,7 @@
   }
 
   .paragraphs-bundles.pb-carousel .pb-carousel__slide.pb-is-inactive {
-    opacity: 1;
     pointer-events: auto;
+    opacity: 1;
   }
 }

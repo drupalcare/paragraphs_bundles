@@ -15,35 +15,35 @@
 }
 
 .paragraphs-bundles.pb-icon .material-icons-hidden.icon-wrapper {
-  opacity: 0;
   visibility: visible;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-icon .icon-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 1;
   transition: opacity var(--pb-transition-duration, 500ms) ease-in-out;
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-icon > .pb-icon__inner {
   position: relative;
-  overflow: hidden;
-  transition: all var(--pb-transition-duration, 500ms) ease;
   display: flex;
-  justify-content: center;
+  overflow: hidden;
   align-items: center;
+  justify-content: center;
+  transition: all var(--pb-transition-duration, 500ms) ease;
 }
 
 .paragraphs-bundles.pb-icon > .pb-icon__inner:hover,
 .paragraphs-bundles.pb-icon > .pb-icon__inner:focus-within {
-  box-shadow: 0 20px 40px 0 color-mix(in srgb, CanvasText 35%, transparent);
   transform: scale(1.01);
+  box-shadow: 0 20px 40px 0 color-mix(in sRGB, CanvasText 35%, transparent);
 }
 
 .paragraphs-bundles.pb-icon a:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -57,7 +57,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* GMS icon color is editor-controlled. */
 }
 

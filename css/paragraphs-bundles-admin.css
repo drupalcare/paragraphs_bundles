@@ -11,9 +11,9 @@
   flex-wrap: wrap;
 }
 
-.pb__tab-display .form-radios>* {
-  margin-inline-end: 20px;
+.pb__tab-display .form-radios > * {
   width: auto;
+  margin-inline-end: 20px;
 }
 
 .pb__tab-display .form-select {
@@ -22,14 +22,14 @@
 }
 
 .paragraphs-add-dialog .paragraphs-add-dialog-list {
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   align-items: center;
+  justify-content: center;
   max-width: 900px;
   margin-block: 0;
   margin-inline: auto;
-  display: grid;
   gap: 0.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
 
 .paragraphs-add-dialog .paragraphs-add-dialog-list > {
@@ -37,16 +37,16 @@
 }
 
 .paragraphs-add-dialog .paragraphs-add-dialog-list li {
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
   border-radius: 0.5rem;
+  box-shadow: inset 0 0 10px rgb(0, 0, 0, 0.5);
 }
 
 .paragraphs-add-dialog .paragraphs-add-dialog-list li input {
   display: flex;
-  flex-grow: 1;
   flex-basis: 100%;
-  justify-content: center;
+  flex-grow: 1;
   align-items: center;
+  justify-content: center;
   padding-block: 0.5rem !important;
   padding-inline: 1rem !important;
 }
@@ -60,34 +60,34 @@
   margin-inline: auto;
 }
 
-.paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+.paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
+  color: #fff;
   background-color: #007bff; /* Level 1 */
-  color: #fff;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
+  color: #fff;
   background-color: #28a745; /* Level 2 */
-  color: #fff;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
+  color: #333;
   background-color: #ffc107; /* Level 3 */
-  color: #333;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
+  color: #333;
   background-color: #fd7e14; /* Level 4 */
-  color: #333;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
+  color: #fff;
   background-color: #dc3545; /* Level 5 */
-  color: #fff;
 }
 
-.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions>input {
-  background-color: #6f42c1; /* Level 6 */
+.paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraphs-tabs-wrapper .paragraph-top .paragraphs-actions > input {
   color: #fff;
+  background-color: #6f42c1; /* Level 6 */
 }
 
 .field--name-pb-content-title input {
@@ -246,12 +246,10 @@
   }
 }
 
-
-@media(max-width:47.99875rem) {
+@media (max-width: 47.99875rem) {
   .pb__tabs-wrapper .horizontal-tabs .pb__tab-display {
     width: 100%;
   }
-
 }
 
 .field--name-pb-display-alert-end-date .paragraph-bundle-alert-clear-date,
@@ -265,8 +263,8 @@ details.pb__tab-content .field--name-pb-content-title,
 details.pb__tab-content .field--name-pb-content-title-tag,
 details.pb__tab-content .field--name-pb-content-title-alignment {
   display: inline-block;
-  vertical-align: bottom;
   box-sizing: border-box;
+  vertical-align: bottom;
 }
 
 details.pb__tab-content .field--name-pb-content-title {
@@ -304,8 +302,8 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 .field--name-pb-content-tab-name,
 .field--name-pb-content-tab-name-icon {
   display: inline-block;
-  vertical-align: top;
   box-sizing: border-box;
+  vertical-align: top;
 }
 
 .field--name-pb-content-tab-name {
@@ -325,13 +323,13 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 }
 
 .field--name-pb-content-tab-name-icon .form-type--checkbox {
-    display: flex !important;
-    gap: 12px;
-    flex-direction: column-reverse;
-    align-self: end;
-    justify-content: end;
-    width: 100px;
-    margin-inline-start: 24px!important;
+  display: flex !important;
+  gap: 12px;
+  flex-direction: column-reverse;
+  align-self: end;
+  justify-content: end;
+  width: 100px;
+  margin-inline-start: 24px !important;
 }
 
 .field--name-pb-content-tab-name-icon .form-item {

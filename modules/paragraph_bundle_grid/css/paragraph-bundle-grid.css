@@ -11,14 +11,14 @@
 
 .paragraphs-bundles.pb-grid .pb-grid__wrapper {
   display: grid;
-  grid-auto-columns: 100%;
-  gap: 1rem;
-  grid-auto-flow: row;
   grid-template-rows: 1fr;
-  justify-content: start;
+  grid-auto-columns: 100%;
+  grid-auto-flow: row;
   align-content: start;
-  justify-items: start;
   align-items: start;
+  justify-content: start;
+  justify-items: start;
+  gap: 1rem;
 }
 
 .paragraphs-bundles.pb-grid .pb-grid__wrapper > * {
@@ -30,15 +30,15 @@
 .paragraphs-bundles.pb-grid .pb-grid__wrapper .pb-layout__multi-column .pb-ui-inner {
   display: flex;
   flex-direction: column;
-  width: 100%;
   justify-content: start;
+  width: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
   /* Grid layout only; no motion. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Grid layout only. */
 }
 

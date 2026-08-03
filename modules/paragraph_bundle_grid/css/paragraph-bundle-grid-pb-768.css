@@ -7,7 +7,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 
-@media (min-width:48rem) {
+@media (min-width: 48rem) {
   .paragraphs-bundles.pb-grid .pb-grid__wrapper[class*="col-"] {
     grid-template-columns: repeat(var(--pb-col-count), 1fr);
   }
@@ -56,5 +56,4 @@
   .paragraphs-bundles.pb-grid .pb-grid__wrapper.col-12 {
     --pb-col-count: 12;
   }
-
 }

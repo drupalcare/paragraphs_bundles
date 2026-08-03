@@ -20,7 +20,7 @@
   /* Bridge tokens only; no motion. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Bridge tokens only. */
 }
 

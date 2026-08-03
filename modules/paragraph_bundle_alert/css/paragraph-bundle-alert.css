@@ -13,22 +13,22 @@
 .paragraphs-bundles.pb-alert {
   display: grid;
   grid-template-rows: 1fr;
-  opacity: 1;
   transition:
     opacity var(--pb-transition-duration, 300ms) ease-out,
     grid-template-rows var(--pb-transition-duration, 300ms) ease-out;
+  opacity: 1;
 }
 
 /* Closed state - collapsed with animation */
 .paragraphs-bundles.pb-alert.pb-is-closed {
   grid-template-rows: 0fr;
-  opacity: 0;
   pointer-events: none;
+  opacity: 0;
 }
 
 .paragraphs-bundles.pb-alert > .pb-ui-inner {
-  overflow: hidden;
   position: relative;
+  overflow: hidden;
 }
 
 /* Row 1: close button + countdown grouped */
@@ -44,22 +44,22 @@
 .paragraphs-bundles.pb-alert .pb-alert__countdown {
   display: inline-flex;
   align-items: center;
-  gap: var(--pb-px4);
+  justify-content: center;
   min-width: var(--pb-px32);
   padding: var(--pb-px4) var(--pb-px8);
-  font-variant-numeric: tabular-nums;
-  color: var(--pb-tx, inherit);
   opacity: 0.85;
-  border: var(--pb-border-width, 1px) solid color-mix(in srgb, currentcolor 35%, transparent);
-  line-height: 1;
+  color: var(--pb-tx, inherit);
+  border: var(--pb-border-width, 1px) solid color-mix(in sRGB, currentColor 35%, transparent);
   border-radius: var(--pb-px4);
   font-size: var(--pb-font-size-sm, 0.75rem);
-  justify-content: center;
+  line-height: 1;
+  gap: var(--pb-px4);
+  font-variant-numeric: tabular-nums;
 }
 
 .paragraphs-bundles.pb-alert .pb-alert__countdown-unit {
-  font-weight: 500;
   opacity: 0.9;
+  font-weight: 500;
 }
 
 /* WCAG 2.2.1: the control that turns the dismissal timer off. It renders
@@ -70,10 +70,10 @@
   align-items: center;
   justify-content: center;
   padding: 0;
-  color: inherit;
   cursor: pointer;
-  background: none;
+  color: inherit;
   border: 0;
+  background: none;
   line-height: 1;
 }
 
@@ -88,7 +88,7 @@
 }
 
 .paragraphs-bundles.pb-alert button.pb-alert__countdown-pause:focus-visible {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -125,27 +125,27 @@
 }
 
 .paragraphs-bundles.pb-alert button.pb-alert__close {
-  padding: 0;
-  margin: 0;
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
+  margin: 0;
+  padding: 0;
   cursor: pointer;
+  transition: transform var(--pb-transition-duration-fast, 200ms) ease-out;
   border: 0;
+  border-radius: 50%;
   background: none;
   appearance: none;
-  border-radius: 50%;
-  flex-shrink: 0;
-  transition: transform var(--pb-transition-duration-fast, 200ms) ease-out;
 }
 
 .paragraphs-bundles.pb-alert button.pb-alert__close:hover {
-  opacity: 1;
   transform: scale(1.1);
+  opacity: 1;
 }
 
 .paragraphs-bundles.pb-alert button.pb-alert__close:focus {
-  outline: 2px solid currentcolor;
+  outline: 2px solid currentColor;
   outline-offset: 2px;
 }
 
@@ -163,7 +163,7 @@
   }
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   .paragraphs-bundles.pb-alert button.pb-alert__close:focus-visible {
     outline-width: 3px;
   }

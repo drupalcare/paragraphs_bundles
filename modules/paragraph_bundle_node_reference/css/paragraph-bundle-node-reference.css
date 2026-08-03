@@ -27,17 +27,17 @@
 
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow > header,
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel > header {
-  padding: var(--pb-px12) !important;
-  background: var(--pb-bg);
-  border-color: var(--pb-br);
-  width: 100%;
   position: absolute;
+  z-index: 1000;
+  width: 100%;
+  padding: var(--pb-px12) !important;
+  border-color: var(--pb-br);
+  background: var(--pb-bg);
   inset-inline-start: 0;
   inset-block-end: calc(3 * var(--pb-px12));
-  z-index: 1000;
 }
 
-@media (max-width:35.99875rem) {
+@media (max-width: 35.99875rem) {
   .paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow > header,
   .paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel > header {
     inset-block-end: initial;
@@ -48,63 +48,53 @@
   .paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel .node__content .field--type-image img {
     min-height: 240px;
   }
-
 }
 
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow > header a,
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel > header a {
-  width: 100%;
   display: block;
+  width: 100%;
 }
 
 .paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only,
 .paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only a {
   display: flex;
   flex-grow: 1;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   color: var(--pb-tx, inherit);
 }
 
-@media (min-width:60rem) {
+@media (min-width: 60rem) {
   .paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only,
   .paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only a {
     font-size: var(--pb-px20);
   }
-
 }
 
 .paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only:hover,
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow header:hover,
 .paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel header:hover {
-  background-color: var(--pb-bg-h, var(--pb-bg));
   border-color: var(--pb-br-h, var(--pb-br));
+  background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
 /* Body links keep their own colour: excluding only headings would repaint every
    inline link inside a teaser, which is WAI failure F73 when colour is the sole
    distinguishing cue. */
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only *:not(.contextual-links a,
-a) {
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only *:not(.contextual-links a, a) {
   color: var(--pb-tx, inherit);
 }
 
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text:hover *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow:hover *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel:hover *:not(.contextual-links a,
-a),
-.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only:hover *:not(.contextual-links a,
-a) {
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text:hover *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow:hover *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel:hover *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only:hover *:not(.contextual-links a, a) {
   color: var(--pb-tx-h, var(--pb-tx));
 }
 
@@ -118,7 +108,7 @@ a) {
   /* Node reference layout and hover colors only. */
 }
 
-@media (prefers-contrast: high) {
+@media (prefers-contrast: more) {
   /* Node reference layout and hover colors only. */
 }
 
