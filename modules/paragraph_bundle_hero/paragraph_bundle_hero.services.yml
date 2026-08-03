@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_hero\Hook\PbhThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_hero\Hook\PbhThemeHook: {}
 
   Drupal\paragraph_bundle_hero\Hook\PbhHelpHook:
     arguments:

@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_card\Hook;
 
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Theme hook — registers card bundle paragraph templates.
  */
 final class PbcardThemeHook {
-
-  public function __construct(
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
 
   /**
    * Implements hook_theme().

@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_carousel\Hook;
 
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Theme hook — registers carousel bundle paragraph template.
  */
 final class PbcaThemeHook {
-
-  public function __construct(
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
 
   /**
    * Implements hook_theme().

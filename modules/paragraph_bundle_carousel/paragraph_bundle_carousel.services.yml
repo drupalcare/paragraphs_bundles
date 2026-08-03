@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_carousel\Hook\PbcaThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_carousel\Hook\PbcaThemeHook: {}
 
   Drupal\paragraph_bundle_carousel\Hook\PbcaThemeSuggestionsHook: {}
 

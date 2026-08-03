@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_icon\Hook\PbiThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_icon\Hook\PbiThemeHook: {}
 
   Drupal\paragraph_bundle_icon\Hook\PbiHelpHook:
     arguments:

@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_tabs\Hook;
 
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Theme hook — registers tabs bundle paragraph templates.
  */
 final class PbtThemeHook {
-
-  public function __construct(
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
 
   /**
    * Implements hook_theme().

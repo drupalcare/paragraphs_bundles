@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_modal\Hook;
 
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Theme hook — registers modal bundle paragraph template.
  */
 final class PbmThemeHook {
-
-  public function __construct(
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
 
   /**
    * Implements hook_theme().

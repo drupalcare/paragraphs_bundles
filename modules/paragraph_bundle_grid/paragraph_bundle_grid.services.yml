@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_grid\Hook\PbgThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_grid\Hook\PbgThemeHook: {}
 
   Drupal\paragraph_bundle_grid\Hook\PbgThemeSuggestionsHook: {}
 

@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_accordion\Hook\PbacThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_accordion\Hook\PbacThemeHook: {}
 
   Drupal\paragraph_bundle_accordion\Hook\PbacThemeSuggestionsHook: {}
 

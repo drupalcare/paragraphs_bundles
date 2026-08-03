@@ -1,9 +1,5 @@
 parameters:
 	ignoreErrors:
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_accordion\\\\Hook\\\\PbacThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_accordion/src/Hook/PbacThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
@@ -65,10 +61,6 @@ parameters:
 			count: 2
 			path: modules/paragraph_bundle_alert/src/Hook/PbaPreprocessAlertHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_alert\\\\Hook\\\\PbaThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_alert/src/Hook/PbaThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
@@ -80,20 +72,12 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_block_content/src/Hook/PbbcThemeSuggestionsHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_card\\\\Hook\\\\PbcardThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_card/src/Hook/PbcardThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_card/src/Hook/PbcardThemeSuggestionsHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_carousel\\\\Hook\\\\PbcaThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_carousel/src/Hook/PbcaThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
@@ -180,20 +164,12 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_content/tests/src/Unit/Service/Region/PbcRegionMapTest.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_grid\\\\Hook\\\\PbgThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_grid/src/Hook/PbgThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_grid/src/Hook/PbgThemeSuggestionsHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_hero\\\\Hook\\\\PbhThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_hero/src/Hook/PbhThemeHook.php
 
 		-
 			message: "#^Cannot access an offset on mixed\\.$#"
@@ -205,15 +181,7 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_icon/src/Hook/PbiPageHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_icon\\\\Hook\\\\PbiThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_icon/src/Hook/PbiThemeHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_image\\\\Hook\\\\PbiThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_image/src/Hook/PbiThemeHook.php
 
 		-
 			message: "#^Cannot access an offset on mixed\\.$#"
@@ -235,10 +203,6 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_link/src/Hook/PblThemeSuggestionsHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_modal\\\\Hook\\\\PbmThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_modal/src/Hook/PbmThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
@@ -280,10 +244,6 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_node_reference/src/Hook/PbnrFieldWidgetHook.php
 
-		-
-			message: "#^Property Drupal\\\\paragraph_bundle_tabs\\\\Hook\\\\PbtThemeHook\\:\\:\\$moduleList is never read, only written\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_tabs/src/Hook/PbtThemeHook.php
 
 		-
 			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"

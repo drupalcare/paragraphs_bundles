@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_tabs\Hook\PbtThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_tabs\Hook\PbtThemeHook: {}
 
   Drupal\paragraph_bundle_tabs\Hook\PbtThemeSuggestionsHook: {}
 

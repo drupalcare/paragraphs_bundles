@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_modal\Hook\PbmThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_modal\Hook\PbmThemeHook: {}
 
   Drupal\paragraph_bundle_modal\Hook\PbmHelpHook:
     arguments:

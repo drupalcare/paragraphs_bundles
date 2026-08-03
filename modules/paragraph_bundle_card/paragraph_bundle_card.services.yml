@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_card\Hook\PbcardThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_card\Hook\PbcardThemeHook: {}
 
   Drupal\paragraph_bundle_card\Hook\PbcardHelpHook:
     arguments:

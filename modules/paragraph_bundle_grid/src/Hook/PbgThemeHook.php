@@ -4,17 +4,12 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_grid\Hook;
 
-use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Hook\Attribute\Hook;
 
 /**
  * Theme hook — registers grid bundle paragraph template.
  */
 final class PbgThemeHook {
-
-  public function __construct(
-    private readonly ModuleExtensionList $moduleList,
-  ) {}
 
   /**
    * Implements hook_theme().

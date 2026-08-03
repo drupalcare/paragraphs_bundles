@@ -1,7 +1,5 @@
 services:
-  Drupal\paragraph_bundle_alert\Hook\PbaThemeHook:
-    arguments:
-      - '@extension.list.module'
+  Drupal\paragraph_bundle_alert\Hook\PbaThemeHook: {}
 
   Drupal\paragraph_bundle_alert\Hook\PbaHelpHook:
     arguments:
