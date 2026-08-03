@@ -60,6 +60,28 @@
       {% endif %}
 
       {% set total_slides = 0 %}
+
+      {# WCAG 2.2.2: whenever autoplay can run there must be a pause control,
+         regardless of which bottom-navigation style is selected. #}
+      {% set show_play_button = pb_slide_time > 0 %}
+
+      {# A slide is a `tabpanel` only when there are tabs to own it. The nav is
+         a `tablist` of `role="tab"` buttons for four of the five bottom-nav
+         values; for `play` and for the unset default (which is what most
+         slideshows ship with) there are no tabs at all, and an unowned
+         tabpanel is an ARIA violation. Those slides are `role="group"` with
+         `aria-roledescription="slide"` instead — the ARIA APG carousel pattern
+         for a slide with no tabbed picker.
+
+         `aria-labelledby` follows the same flag rather than a plain
+         `pb_bottom_nav` truth test: with `play` the field IS set, but the
+         nav-button ids it referenced are never rendered, so it pointed at
+         nothing.
+
+         Defined here, above the loop, because both the slides and the nav
+         below need it. #}
+      {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
+
       {# L3 behavior host — JS once() target #}
       <div id="{{ slide_id }}" class="pb-slideshow__stage{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}{{ pb_slide_time == 0 ? ' pb-u-zero' : ' pb-u-not-zero' }}" data-slide-time="{{ pb_slide_time }}">
         <div id="pb-slideshow__slides-{{ paragraph.id.value }}" class="pb-slideshow__slides">
@@ -67,7 +89,7 @@
             {% if key|first != '#' %}
               {% set total_slides = total_slides + 1 %}
 
-              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" {% if pb_bottom_nav %}aria-labelledby="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}"{% endif %} class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
+              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" {% if show_navigation_buttons %}role="tabpanel" aria-labelledby="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}"{% else %}role="group" aria-roledescription="{{ 'slide'|t }}" aria-label="{{ 'Slide '|t ~ (key + 1) }}"{% endif %} data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
                 <div class="pb-ui-row pb-slideshow__slide-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
                   {{ item|pb_section_bodies('pb_content_slideshow_body') }}
                   {% if item['#paragraph'].pb_content_slideshow_title.value %}
@@ -81,11 +103,8 @@
         </div>
         <div class="pb-nav__announcer visually-hidden" aria-live="polite"></div>
 
-        {# WCAG 2.2.2: whenever autoplay can run there must be a pause control,
-           regardless of which bottom-navigation style is selected. #}
-        {% set show_play_button = pb_slide_time > 0 %}
-        {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
-
+        {# show_play_button and show_navigation_buttons are set above the slide
+           loop, because the slides' roles depend on the same flag. #}
         {% if show_play_button or show_navigation_buttons %}
           <div id="pb-slideshow__nav-{{ paragraph.id.value }}" {% if show_navigation_buttons %}role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}"{% else %}role="group" aria-label="{{ 'Slideshow Controls'|t }}"{% endif %} class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
 

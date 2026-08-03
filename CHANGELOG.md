@@ -192,6 +192,18 @@ user-visible; read this section before upgrading.
 - **`pb_content` form display upgrade** — surgical merge preserves site-added
   fields on the node type; single sub-module hook **`9001`** (removed
 `9002`/`9003`).
+- **Slideshow slides claimed a tab role with no tab to own them** — slides
+  carried `role="tabpanel"` unconditionally, but the `role="tablist"` container
+  and its `role="tab"` buttons render only for four of the five bottom-navigation
+  values. With `play`, or with the field **unset — the shipped default** — the
+  page got tabpanels with no tab and no tablist anywhere, which assistive
+  technology cannot make sense of. Those slides are now `role="group"` with
+  `aria-roledescription="slide"`, per the ARIA APG carousel pattern. The same
+  gate fixed a second defect: `aria-labelledby` was emitted whenever the field
+  was merely set, so `play` pointed every slide at a nav-button id that is never
+  rendered. Attributes only — no element, class or nesting changes. Verified by
+  rendering all six configurations: orphaned tabpanels 2 → 0, dangling
+  references 2 → 0, the four working configurations byte-identical.
 - **Paragraphs created programmatically got an incomplete stylesheet** — both
   CSS builders read field values behind an `is_string()` gate, but 47 of this
   module's 171 paragraph fields are integer, decimal, boolean or range
