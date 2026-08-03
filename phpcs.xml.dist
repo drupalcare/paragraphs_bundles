@@ -30,4 +30,27 @@
 
   <rule ref="Drupal"/>
   <rule ref="DrupalPractice"/>
+
+  <!-- PHPCS and Prettier make contradictory demands on JavaScript switch
+       statements, and both gate the drupal.org pipeline (phpcs is a hard
+       failure; eslint runs prettier through eslint-plugin-prettier).
+
+       This sniff requires a blank line after a case `break;`. When the case
+       body is a braced block - which ESLint's no-case-declarations forces on
+       any case that declares a const - that blank line lands immediately
+       before the closing `}`, and Prettier strips blank lines at the end of a
+       block. Verified 2026-08-03 on
+       modules/paragraph_bundle_parallax/js/paragraph-bundle-parallax.js:
+       phpcbf inserts exactly 4 such lines and prettier 3.6.2 with core's
+       .prettierrc.json removes exactly those same 4. There is no source text
+       that satisfies both tools.
+
+       Drupal core never hits this because it does not sniff JavaScript at all
+       (its phpcs.xml.dist `extensions` list has no `js`); JS there is owned by
+       ESLint + Prettier. This module deliberately keeps JS under PHPCS for the
+       rest of the standard, so only the one contradictory message is turned
+       off, and only for JS. PHP files keep the sniff. -->
+  <rule ref="Squiz.ControlStructures.SwitchDeclaration.SpacingAfterBreak">
+    <exclude-pattern>*\.js$</exclude-pattern>
+  </rule>
 </ruleset>
