@@ -96,6 +96,26 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **Themes can override 17 more bundles per view mode.** Twelve sub-modules
+  implemented `hook_theme_suggestions_paragraph_alter()` to append
+  `paragraph__<bundle>` — a suggestion the Paragraphs module already provides
+  for every paragraph. Because Drupal scans suggestions from last to first, that
+  duplicate outranked `paragraph__<bundle>__<view_mode>`, so a theme's
+  `paragraph--card-two-columns-bundle--teaser.html.twig` was silently ignored on
+  17 of the 39 bundles while working normally on the other 22. The twelve hook
+  classes are removed; template selection is now Paragraphs' own, consistently
+  for every bundle. A Kernel test fails the build if any sub-module reintroduces
+  the pattern.
+- **A damaged image file no longer white-screens a page with an image grid.**
+  The image-grid section preprocess passed `File::getFileUri()` straight into
+  `ImageStyle::buildUrl()`, which is typed `string`; a File row with a NULL uri
+  raised a `TypeError` and took down the whole page. The URL is also now
+  invalidated by the media entity and the image style it is built from, not
+  only by the file.
+- **An alert set to a date range no longer fatals when its date fields are
+  missing.** `pb_display_alert_start_date` and `pb_display_alert_end_date` were
+  the only fields the alert preprocess read without a `hasField()` guard, so
+  deleting either one crashed every alert configured for `date_range`.
 - **Every sub-module now declares the modules its own config needs.** All 26
   bundle modules under-declared their dependencies and relied on the parent to
   pull the rest in — every one of them was missing `field_group`, and between
