@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_node_reference\Hook;
 
+use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 
 /**
  * Field widget hook — conditional NF reference fields by view mode.
+ *
+ * Which NF field is shown for the selected view mode is decided in
+ * `pb-conditional-field.js`, which also has to clear the fields it hides and
+ * to infer the mode from populated fields on first attach. This hook only
+ * puts that library on the form.
  */
 final class PbnrFieldWidgetHook {
 
@@ -31,7 +39,7 @@ final class PbnrFieldWidgetHook {
   ): void {
     $items = $context['items'] ?? NULL;
     $widget = $context['widget'] ?? NULL;
-    if ($items === NULL || $widget === NULL) {
+    if (!$items instanceof FieldItemListInterface || !$widget instanceof WidgetInterface) {
       return;
     }
 
@@ -39,8 +47,7 @@ final class PbnrFieldWidgetHook {
       return;
     }
 
-    $field_definition = $items->getFieldDefinition();
-    $field_name = $field_definition->getName();
+    $field_name = $items->getFieldDefinition()->getName();
     $entity = $items->getEntity();
     if ($field_name !== 'pb_content_view_mode'
       || !$entity instanceof Paragraph
@@ -48,30 +55,7 @@ final class PbnrFieldWidgetHook {
       return;
     }
 
-    $element['#attached']['library'][] = 'paragraph_bundle_node_reference/pb-conditional-fields';
-
-    if (!isset($element['#field_name'], $element['subform'])) {
-      return;
-    }
-
-    $base_selector = ':input[name="' . $element['#field_name'] . '"]';
-    $states = [
-      'vm_title' => 'pb_content_nf_title_only',
-      'vm_teaser_text' => 'pb_content_nf_teaser_text',
-      'vm_slideshow' => 'pb_content_nf_slideshow',
-      'vm_3d_carousel' => 'pb_content_nf_3d_carousel',
-    ];
-
-    foreach ($states as $value => $target_field) {
-      if (!isset($element['subform'][$target_field])) {
-        continue;
-      }
-      $element['subform'][$target_field]['#states'] = [
-        'visible' => [
-          $base_selector => ['value' => $value],
-        ],
-      ];
-    }
+    PbRenderArray::attachLibraries($element, 'paragraph_bundle_node_reference/pb-conditional-fields');
   }
 
 }
