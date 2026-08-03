@@ -96,6 +96,22 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **An unrecognised site timezone no longer white-screens the alert form.** The
+  alert widget hook passed `system.date`'s `timezone.default` straight into
+  `new \DateTimeZone()`, which throws on any value PHP does not recognise — and
+  the hook runs on every alert paragraph form, so a site whose timezone had been
+  set by a migration, a config import or a hand-edited YAML lost the ability to
+  edit its alerts. Anything blank, non-string or unrecognised now falls back to
+  UTC, the same fallback the code already applied to an unset value.
+- **A colour field rejects a malformed submission instead of crashing on it.**
+  `ColorTextWidget`'s validate callback passed the submitted value to
+  `Color::validateHex()`, which is typed `string`; a value arriving as an array
+  — reachable from a crafted POST — raised a `TypeError` and took down the form
+  submission rather than showing the field's validation message.
+- **The opacity field no longer accepts a value it cannot store.** The 1–100
+  validator cast the submitted value to `int` before range-checking it, and PHP
+  scores an array as `1` — inside the valid range. Non-numeric input is now
+  rejected by the same message that rejects an out-of-range number.
 - **Themes can override 17 more bundles per view mode.** Twelve sub-modules
   implemented `hook_theme_suggestions_paragraph_alter()` to append
   `paragraph__<bundle>` — a suggestion the Paragraphs module already provides
@@ -304,6 +320,12 @@ user-visible; read this section before upgrading.
 - Unit tests for `PbColorNormalizer` (opacity, hex overlay rgba).
 
 ### Changed
+- **One owner for the node-reference conditional fields.** The view-mode field
+  widget hook also tried to set `#states` on the four NF reference fields, but
+  the element it inspected has no `subform` key, so that branch had never run on
+  any site — while `pb-conditional-field.js`, which also clears hidden fields and
+  infers the mode from populated ones, did the whole job. The dead branch is
+  gone; the hook now only attaches that library.
 - **No jQuery on the front end.** Six bundle libraries (tabs, carousel, 3D
   carousel, modal, accordion, icon) and one admin widget library declared
   `core/drupal.ajax`, which depends on `core/jquery` — so any page showing one
