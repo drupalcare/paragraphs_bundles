@@ -9,6 +9,9 @@
  *  - 9006: wire shared fields, nest Display tab, hide pb_display_* on view
  *    displays (all paragraph bundles).
  *  - 9007: repair v1 config values that fail D11 config-schema validation.
+ *  - 9008: realign display layout (weights, stale `hidden` entries, field
+ *    group child order) with the config a fresh install of this version
+ *    imports, so both install paths end on the same edit forms.
  *
  * **Why v2 numbering starts at 9005.** V1 defined its update hooks in
  * `paragraphs_bundles.module` rather than a `.install` file — unusual, but
@@ -49,6 +52,7 @@ require_once __DIR__ . '/paragraphs_bundles.display.inc';
 
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Config\FileStorage;
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
@@ -196,6 +200,7 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
 
   // Existing widget settings are kept; only the weight is forced, so the three
   // title fields always lead the Content tab in a fixed order.
+  $hidden = paragraphs_bundles_pb_array_prop($fd->get('hidden'));
   foreach (['pb_content_title_tag' => 2, 'pb_content_title_alignment' => 3] as $field => $field_weight) {
     $existing = $content[$field] ?? NULL;
     $content[$field] = is_array($existing)
@@ -207,7 +212,13 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
         'settings' => [],
         'third_party_settings' => [],
       ];
+    // A v1 display lists these under `hidden`. Writing into `content` without
+    // dropping that entry leaves the component in BOTH lists — a state
+    // EntityDisplayBase::setComponent() can never produce and preSave() does
+    // not repair, so it survives every later save and every config export.
+    unset($hidden[$field]);
   }
+  $fd->set('hidden', $hidden);
   if (is_array($content['pb_content_title'])) {
     $content['pb_content_title']['weight'] = 1;
   }
@@ -390,6 +401,140 @@ function paragraphs_bundles_get_optional_config_provider(string $config_name): ?
   }
   $cache[$config_name] = NULL;
   return NULL;
+}
+
+/**
+ * Reads a shipped optional config file as a raw array.
+ *
+ * @param string $config_name
+ *   Config entity name without .yml (e.g. core.entity_form_display.x.y.z).
+ *
+ * @return array<string, mixed>|null
+ *   Decoded file contents, or NULL when no enabled module ships the file.
+ */
+function paragraphs_bundles_pb_read_optional_config(string $config_name): ?array {
+  $module = paragraphs_bundles_get_optional_config_provider($config_name);
+  if ($module === NULL) {
+    return NULL;
+  }
+  $storage = new FileStorage(
+    \Drupal::moduleHandler()->getModule($module)->getPath() . '/config/optional'
+  );
+  $record = $storage->read($config_name);
+  return is_array($record) ? $record : NULL;
+}
+
+/**
+ * Realigns one display entity's layout with the config this module ships.
+ *
+ * Three kinds of drift are repaired, all of them differences between a site
+ * upgraded from v1 and a fresh v2 install of the same code:
+ *  - component weights that the programmatic wiring computed rather than took
+ *    from the shipped file;
+ *  - components left in `hidden` while also present in `content`;
+ *  - field_group children listed in a different order.
+ *
+ * Only components and groups the module itself ships are touched, and a child
+ * the site added to a shipped group is kept (appended), never dropped.
+ *
+ * @param \Drupal\Core\Entity\Display\EntityDisplayInterface $display
+ *   The active display to realign.
+ * @param array<string, mixed> $shipped
+ *   Raw contents of the matching config/optional file.
+ * @param array<string, int> $stats
+ *   Running totals, keyed weights / unhidden / groups; modified in place.
+ *
+ * @return bool
+ *   TRUE when the display was changed and needs saving.
+ */
+function paragraphs_bundles_pb_realign_display(
+  EntityDisplayInterface $display,
+  array $shipped,
+  array &$stats,
+): bool {
+  $changed = FALSE;
+  $content = paragraphs_bundles_pb_array_prop($display->get('content'));
+  $hidden = paragraphs_bundles_pb_array_prop($display->get('hidden'));
+
+  // 1. Weights, for components present in both the shipped file and the site.
+  // A component the site added, or one it has hidden, is left alone.
+  foreach (paragraphs_bundles_pb_array_prop($shipped['content'] ?? NULL) as $field => $options) {
+    if (!is_string($field) || !is_array($options) || !isset($options['weight'])) {
+      continue;
+    }
+    if (!isset($content[$field]) || !is_array($content[$field])) {
+      continue;
+    }
+    if (($content[$field]['weight'] ?? NULL) === $options['weight']) {
+      continue;
+    }
+    $content[$field]['weight'] = $options['weight'];
+    $stats['weights']++;
+    $changed = TRUE;
+  }
+
+  // 2. A component cannot be visible and hidden at once. `content` wins, which
+  // is what getComponent() already resolves to, so this changes no behaviour —
+  // it removes a contradictory entry the v1 wiring path left behind.
+  foreach (array_keys($content) as $field) {
+    if (isset($hidden[$field])) {
+      unset($hidden[$field]);
+      $stats['unhidden']++;
+      $changed = TRUE;
+    }
+  }
+
+  // 3. Field group weight and child order.
+  $third = paragraphs_bundles_pb_array_prop($display->get('third_party_settings'));
+  $groups = paragraphs_bundles_pb_array_prop($third['field_group'] ?? NULL);
+  $shipped_third = paragraphs_bundles_pb_array_prop($shipped['third_party_settings'] ?? NULL);
+  foreach (paragraphs_bundles_pb_array_prop($shipped_third['field_group'] ?? NULL) as $name => $shipped_group) {
+    if (!is_string($name) || !is_array($shipped_group)) {
+      continue;
+    }
+    $group = paragraphs_bundles_pb_array_prop($groups[$name] ?? NULL);
+    if ($group === []) {
+      continue;
+    }
+    $group_changed = FALSE;
+    if (isset($shipped_group['weight']) && ($group['weight'] ?? NULL) !== $shipped_group['weight']) {
+      $group['weight'] = $shipped_group['weight'];
+      $stats['groups']++;
+      $group_changed = TRUE;
+    }
+    $shipped_children = array_values(array_filter(
+      paragraphs_bundles_pb_array_prop($shipped_group['children'] ?? NULL),
+      'is_string',
+    ));
+    $current_children = array_values(array_filter(
+      paragraphs_bundles_pb_array_prop($group['children'] ?? NULL),
+      'is_string',
+    ));
+    // Shipped order first, then anything this site added, in the order it had.
+    $reordered = array_merge(
+      array_values(array_intersect($shipped_children, $current_children)),
+      array_values(array_diff($current_children, $shipped_children)),
+    );
+    if ($reordered !== $current_children) {
+      $group['children'] = $reordered;
+      $stats['groups']++;
+      $group_changed = TRUE;
+    }
+    if ($group_changed) {
+      $groups[$name] = $group;
+      $changed = TRUE;
+    }
+  }
+
+  if ($changed) {
+    $display->set('content', $content);
+    $display->set('hidden', $hidden);
+    if ($groups !== []) {
+      $third['field_group'] = $groups;
+      $display->set('third_party_settings', $third);
+    }
+  }
+  return $changed;
 }
 
 /**
@@ -697,6 +842,7 @@ function paragraphs_bundles_pb_link_wire_bundle(string $bundle): void {
 
   // Existing widget settings are kept; only the weight is forced, so the two
   // link colours always follow pb_display_border_hover.
+  $hidden = paragraphs_bundles_pb_array_prop($fd->get('hidden'));
   foreach (['pb_display_link' => 1, 'pb_display_link_hover' => 2] as $field => $offset) {
     $existing = $content[$field] ?? NULL;
     $content[$field] = is_array($existing)
@@ -708,7 +854,12 @@ function paragraphs_bundles_pb_link_wire_bundle(string $bundle): void {
         'settings' => [],
         'third_party_settings' => [],
       ];
+    // See the matching note in paragraphs_bundles_pb_title_wire_bundle(): a
+    // field left in `hidden` while also present in `content` is config core's
+    // own API cannot produce, and nothing downstream repairs it.
+    unset($hidden[$field]);
   }
+  $fd->set('hidden', $hidden);
   $fd->set('content', $content);
 
   $dependencies = paragraphs_bundles_pb_array_prop($fd->get('dependencies'));
@@ -878,6 +1029,65 @@ function paragraphs_bundles_update_9007(): string {
       '@types' => $fixed_types,
       '@components' => $fixed_components,
       '@fields' => $fixed_fields,
+    ],
+  );
+}
+
+/**
+ * Realigns form and view display layout with a fresh install of this version.
+ */
+function paragraphs_bundles_update_9008(): string {
+  // Keep the docblock above to ONE line — `drush updatedb:status` prints the
+  // whole thing in a narrow column on the screen a site owner reads before
+  // upgrading production.
+  //
+  // 9006 wires the shared v2 fields onto displays that already exist, so it
+  // has to compute weights from what it finds rather than take them from the
+  // file a fresh install imports. The two paths then disagree: measured across
+  // 39 bundles, six pb_display_* fields land on different weights on ~30 form
+  // displays, and on 4 of 5 sampled bundles that is enough to REORDER the edit
+  // form — on icon_bundle two content fields end up scattered among the
+  // display fields. One module version, two different edit forms depending on
+  // install history. See docs/PB-V2-RELEASE-LOG.md.
+  //
+  // The fix is to treat the shipped config/optional file as the single source
+  // of truth for layout and re-apply it. It only ever touches components and
+  // field groups this module ships; a field the site added, a component the
+  // site has hidden, and a child the site dragged into a shipped group are all
+  // left as they are.
+  //
+  // A site that deliberately reordered the module's own pb_* fields WILL have
+  // that reordering reset. That is the point of the update, and it is called
+  // out in docs/UPGRADE-V1-TO-V2.md.
+  $stats = ['weights' => 0, 'unhidden' => 0, 'groups' => 0];
+  $displays = 0;
+  $em = \Drupal::entityTypeManager();
+
+  foreach (['entity_form_display', 'entity_view_display'] as $entity_type_id) {
+    foreach ($em->getStorage($entity_type_id)->loadMultiple() as $display) {
+      if (!$display instanceof EntityDisplayInterface) {
+        continue;
+      }
+      $shipped = paragraphs_bundles_pb_read_optional_config(
+        'core.' . $entity_type_id . '.' . $display->id()
+      );
+      if ($shipped === NULL) {
+        continue;
+      }
+      if (paragraphs_bundles_pb_realign_display($display, $shipped, $stats)) {
+        $display->save();
+        $displays++;
+      }
+    }
+  }
+
+  return (string) t(
+    'Realigned @displays display(s) with the shipped layout: @weights weight(s), @unhidden stale hidden entr(y/ies), @groups field group change(s).',
+    [
+      '@displays' => $displays,
+      '@weights' => $stats['weights'],
+      '@unhidden' => $stats['unhidden'],
+      '@groups' => $stats['groups'],
     ],
   );
 }

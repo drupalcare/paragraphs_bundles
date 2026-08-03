@@ -122,6 +122,7 @@ Then report the failure with the output of `drush updb` before retrying.
 | Link colour fields | Did not exist | `9006` creates instances and wires the Display tab |
 | Display tab layout | Flat list / legacy group names | `9006` nests into Colors / Border / Spacing / Size |
 | Manage display (`pb_display_*`) | Often visible formatters | `9006` hides all of them on view displays |
+| Edit-form field order | Whatever v1 left, plus what `9006` computed | `9008` puts it back to the order a fresh v2 install ships — see below |
 | Sub-theme CSS reading `--pb-*` | From the inline style | From the per-paragraph CSS file, same variable names |
 
 Existing paragraph **values** are preserved. Editors see the new fields and the
@@ -139,6 +140,7 @@ order, then every sub-module hook, then post-updates last.
 | **`9005`** | Shared field storages (title tag/alignment, link colours) plus title help text and optional flags |
 | **`9006`** | Wire all shared v2 fields on **every** PB bundle, nest the Display tab, hide `pb_display_*` on view displays |
 | **`9007`** | Repair v1 config that does not match v2's tightened config schema (node type `help`, a stray form-display `label`, range defaults stored as strings, null `target_bundles_drag_drop`) |
+| **`9008`** | Realign form and view display layout with the config a fresh install imports — see below |
 | `paragraph_bundle_content_update_9001` | Surgical `pb_content` form-display merge, preserving site-added fields |
 | `paragraph_bundle_image_background_update_9001` | Bundle-specific display wiring |
 | `paragraph_bundle_3d_carousel_update_9001` | Bundle-specific display wiring |
@@ -148,9 +150,10 @@ The three sub-module hooks are declared in `hook_update_dependencies()` to run
 **after** the parent's `9006`. Without that they would sort before it by module
 name, which is the wrong order.
 
-The CSS backfill is a **post-update**, not `update_9008`, so it is structurally
-guaranteed to run after every update hook rather than relying on numbering. A
-fresh v2 install registers it as already-invoked, so new sites never run it.
+The CSS backfill is a **post-update** rather than another numbered hook, so it
+is structurally guaranteed to run after every update hook instead of relying on
+a numbering convention someone has to remember. A fresh v2 install registers it
+as already-invoked, so new sites never run it.
 
 Every hook is **idempotent** and safe to run again.
 
@@ -171,6 +174,33 @@ calls `paragraphs_bundles_pb_wire_shared_fields_for_bundle()`:
 7. Nests Display tab fields into collapsible sections.
 8. Sorts Additional display fields by widget type.
 9. Hides all **`pb_display_*`** fields on paragraph **Manage display**.
+
+### `9008` — same version, same edit forms
+
+`9006` wires the shared fields onto displays that already exist, so it has to
+work out weights from what it finds. A fresh install imports them from
+`config/optional` instead. The two therefore disagreed, and on most bundles by
+enough to change the **order fields appear in** on the paragraph edit form — on
+`icon_bundle`, two content fields ended up scattered among the display fields.
+One module version, two different admin UIs depending on how the site got here.
+
+`9008` treats the shipped `config/optional` file as the source of truth for
+layout and re-applies it:
+
+- component **weights**, for fields this module ships;
+- **field group weights and child order**;
+- stale entries left in a display's `hidden` list for a field that is also in
+  `content` — a contradiction `9006` could leave behind and that nothing else
+  repairs.
+
+It is deliberately conservative about everything else. A field **your site
+added** keeps its weight, a shipped field **you chose to hide** stays hidden,
+and a field you dragged into one of this module's groups stays in it (it is
+moved to the end of that group rather than dropped).
+
+**What you may notice:** if you reordered this module's own `pb_*` fields on a
+paragraph's *Manage form display*, that reordering is reset to the shipped
+order. Re-apply it after upgrading; it will not be reset again.
 
 ---
 
