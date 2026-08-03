@@ -85,7 +85,7 @@ function paragraph_bundle_content_optional_form_display_template(): array|false 
     ->getPath('paragraph_bundle_content');
   $file_storage = new FileStorage($module_path . '/config/optional');
   $data = $file_storage->read('core.entity_form_display.node.pb_content.default');
-  return is_array($data) ? $data : FALSE;
+  return is_array($data) ? paragraphs_bundles_pb_array_prop($data) : FALSE;
 }
 
 /**
@@ -135,10 +135,12 @@ function paragraph_bundle_content_flatten_field_group_children(
     }
     $group = $field_groups[$child] ?? NULL;
     if (is_array($group) && isset($group['children']) && is_array($group['children'])) {
-      $nested = $group['children'];
       $fields = array_merge(
         $fields,
-        paragraph_bundle_content_flatten_field_group_children($field_groups, $nested),
+        paragraph_bundle_content_flatten_field_group_children(
+          $field_groups,
+          array_values($group['children']),
+        ),
       );
       continue;
     }
@@ -164,7 +166,7 @@ function paragraph_bundle_content_grouped_field_names(array $field_groups): arra
     }
     foreach (paragraph_bundle_content_flatten_field_group_children(
       $field_groups,
-      $group['children'],
+      array_values($group['children']),
     ) as $field_name) {
       $grouped[$field_name] = TRUE;
     }
@@ -236,11 +238,12 @@ function paragraph_bundle_content_merge_form_display_dependencies(
       continue;
     }
     $current = isset($merged[$key]) && is_array($merged[$key]) ? $merged[$key] : [];
-    $merged[$key] = array_values(array_unique([
-      ...$current,
-      ...$template[$key],
-    ]));
-    sort($merged[$key]);
+    // A dependency list holds config/module names; anything else in there is
+    // not a dependency and array_unique() cannot compare it anyway.
+    $names = array_filter([...$current, ...$template[$key]], 'is_string');
+    $names = array_values(array_unique($names));
+    sort($names);
+    $merged[$key] = $names;
   }
   return $merged;
 }
@@ -299,7 +302,7 @@ function paragraph_bundle_content_append_custom_fields_to_content_tab(
   }
 
   $content_tab['children'] = array_values(array_unique([
-    ...$content_children,
+    ...array_filter($content_children, 'is_string'),
     ...$orphans,
   ]));
   $field_groups['group_pb_tab_content'] = $content_tab;
@@ -331,15 +334,13 @@ function paragraph_bundle_content_apply_pb_content_form_display(): void {
   }
 
   $content = paragraph_bundle_content_merge_form_display_content(
-    $existing_content,
-    $template_content,
+    paragraphs_bundles_pb_array_prop($existing_content),
+    paragraphs_bundles_pb_array_prop($template_content),
   );
 
-  $existing_hidden = $form_display->get('hidden');
-  $template_hidden = $template['hidden'] ?? [];
   $hidden = paragraph_bundle_content_merge_form_display_hidden(
-    is_array($existing_hidden) ? $existing_hidden : [],
-    is_array($template_hidden) ? $template_hidden : [],
+    paragraphs_bundles_pb_array_prop($form_display->get('hidden')),
+    paragraphs_bundles_pb_array_prop($template['hidden'] ?? NULL),
   );
 
   $third = $form_display->get('third_party_settings');
@@ -357,7 +358,7 @@ function paragraph_bundle_content_apply_pb_content_form_display(): void {
   // side asked for. Site-added fields are put back by the append below.
   $template_field_groups = $template_third['field_group'] ?? NULL;
   if (is_array($template_field_groups)) {
-    $field_groups = $template_field_groups;
+    $field_groups = paragraphs_bundles_pb_array_prop($template_field_groups);
     paragraph_bundle_content_append_custom_fields_to_content_tab(
       $field_groups,
       $content,
@@ -365,11 +366,9 @@ function paragraph_bundle_content_apply_pb_content_form_display(): void {
     $third['field_group'] = $field_groups;
   }
 
-  $existing_deps = $form_display->get('dependencies');
-  $template_deps = $template['dependencies'] ?? [];
   $dependencies = paragraph_bundle_content_merge_form_display_dependencies(
-    is_array($existing_deps) ? $existing_deps : [],
-    is_array($template_deps) ? $template_deps : [],
+    paragraphs_bundles_pb_array_prop($form_display->get('dependencies')),
+    paragraphs_bundles_pb_array_prop($template['dependencies'] ?? NULL),
   );
 
   $form_display->set('content', $content);
