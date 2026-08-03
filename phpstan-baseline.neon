@@ -202,41 +202,6 @@ parameters:
 			path: src/Plugin/Field/FieldWidget/RangeNumberWidget.php
 
 		-
-			message: "#^Cannot access offset 'value' on mixed\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicCssBuilder.php
-
-		-
 			message: "#^Constant Drupal\\\\paragraphs_bundles\\\\Service\\\\Css\\\\PbDynamicCssBuilder\\:\\:OUTER_SCOPE_PATTERN is unused\\.$#"
 			count: 1
 			path: src/Service/Css/PbDynamicCssBuilder.php
-
-		-
-			message: "#^Cannot access offset 'value' on mixed\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Cannot access offset 0 on mixed\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Cannot access offset 1 on mixed\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Parameter \\#2 \\$field of method Drupal\\\\paragraphs_bundles\\\\Service\\\\Css\\\\PbDynamicUserVarBuilder\\:\\:fieldStringValue\\(\\) expects string, mixed given\\.$#"
-			count: 11
-			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Parameter \\#2 \\$field of method Drupal\\\\paragraphs_bundles\\\\Service\\\\Css\\\\PbDynamicUserVarBuilder\\:\\:imageFieldUrl\\(\\) expects string, mixed given\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Parameter \\#2 \\$field of method Drupal\\\\paragraphs_bundles\\\\Service\\\\Css\\\\PbDynamicUserVarBuilder\\:\\:resolveColor\\(\\) expects string, mixed given\\.$#"
-			count: 1
-			path: src/Service/Css/PbDynamicUserVarBuilder.php

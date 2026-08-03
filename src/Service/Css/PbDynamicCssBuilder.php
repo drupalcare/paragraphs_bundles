@@ -569,7 +569,22 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
   }
 
   /**
-   * Read a single-string field value.
+   * Read a single scalar field value as a string.
+   *
+   * **Numbers must be coerced, not rejected.** 47 of this module's 171
+   * paragraph fields are integer, decimal, boolean or range storages, and an
+   * integer column is an `int` on an entity whose value was just set
+   * programmatically — it only becomes a numeric string after a round trip
+   * through the database. `hook_paragraph_insert()` builds the stylesheet from
+   * exactly that in-memory entity, so an `is_string()` gate here silently
+   * dropped every numeric declaration for any paragraph created by a recipe,
+   * a migration or a demo-content script, and left the file wrong until
+   * somebody re-saved the paragraph through the form.
+   *
+   * The allowlist matches PbTwigExtension::cssValue(): numbers are coerced,
+   * booleans / arrays / objects have no meaningful CSS spelling and emit
+   * nothing, which keeps this path fail-closed the same way the colour path
+   * is.
    *
    * @param \Drupal\Core\Entity\FieldableEntityInterface $entity
    *   The fieldable entity.
@@ -577,13 +592,18 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
    *   Field machine name.
    *
    * @return string
-   *   Trimmed value, or empty string when missing/empty.
+   *   Trimmed value, or empty string when missing/empty/not scalar.
    */
   private function fieldStringValue(FieldableEntityInterface $entity, string $field): string {
     if (!$entity->hasField($field) || $entity->get($field)->isEmpty()) {
       return '';
     }
-    $value = $entity->get($field)->first()?->getValue()['value'] ?? '';
+    $item = $entity->get($field)->first();
+    $raw = $item === NULL ? NULL : $item->getValue();
+    $value = is_array($raw) ? ($raw['value'] ?? NULL) : NULL;
+    if (is_int($value) || is_float($value)) {
+      return (string) $value;
+    }
     return is_string($value) ? trim($value) : '';
   }
 

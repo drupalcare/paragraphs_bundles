@@ -78,6 +78,30 @@ final class PbDynamicCssBuilderTest extends TestCase {
   }
 
   /**
+   * An integer opacity emits, exactly as the equivalent string does.
+   *
+   * `pb_display_bg_opacity` is a range storage and the three `*_active_item`
+   * fields are list_integer, so all four hold real `int`s on an entity
+   * populated in memory — which is what hook_paragraph_insert() builds from.
+   * They only become numeric strings after a round trip through the database.
+   * While fieldStringValue() gated on `is_string()`, a paragraph created by a
+   * recipe, migration or demo script silently got a stylesheet with those
+   * declarations missing, and kept it until someone re-saved the paragraph
+   * through the form. Every other test in this class passes strings, which is
+   * why none of them could catch it.
+   */
+  public function testIntegerFieldValuesAreCoercedNotDropped(): void {
+    $paragraph = $this->mockParagraph('simple_bundle', 42, [
+      'pb_display_bg' => '#fafdff',
+      'pb_display_bg_opacity' => 90,
+    ]);
+    $this->assertStringContainsString(
+      '--pb-bg: rgba(250, 253, 255, 0.90);',
+      $this->builder->build($paragraph),
+    );
+  }
+
+  /**
    * Setting only the text color leaves other color vars unset.
    */
   public function testPartialColourFieldsDoNotZeroOthers(): void {

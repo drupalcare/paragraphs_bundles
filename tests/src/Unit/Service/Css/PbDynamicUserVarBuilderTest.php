@@ -71,6 +71,52 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
   }
 
   /**
+   * Integer and float field values emit, they are not dropped.
+   *
+   * Every rule reaching `px` / `px_gt_zero` / `ms` / `rem` / `seconds` reads an
+   * integer or decimal storage. Such a field holds a real `int` on an entity
+   * populated in memory — which is precisely what `hook_paragraph_insert()`
+   * builds the stylesheet from — and only becomes a numeric string once it has
+   * been through the database. While this method gated on `is_string()`, any
+   * paragraph created by a recipe, migration or demo script got a stylesheet
+   * with those declarations missing, and kept it until someone re-saved the
+   * paragraph through the form.
+   *
+   * Every other test in this class passes strings, which is why none of them
+   * could catch it.
+   */
+  public function testNumericFieldValuesAreCoercedNotDropped(): void {
+    $paragraph = $this->mockParagraph('grid_bundle', 42, [
+      'pb_display_grid_gap' => 24,
+    ]);
+    $css = $this->builder->build($paragraph, '#pb__grid-42');
+    $this->assertStringContainsString('gap: 24px;', $css);
+
+    $parallax = $this->mockParagraph('image_background_bundle', 9, [
+      'pb_display_bg' => '#fafdff',
+      'pb_display_bg_opacity' => 36,
+    ]);
+    $this->assertStringContainsString(
+      'background-color: rgba(250, 253, 255, 0.36);',
+      $this->builder->build($parallax, '#pb__image-bg-9'),
+    );
+  }
+
+  /**
+   * A boolean has no CSS spelling and still emits nothing.
+   *
+   * Coercing numbers must not turn into coercing everything — TRUE would
+   * become "1", a value that means nothing as a length. Same fail-closed rule
+   * as the colour path and as PbTwigExtension::cssValue().
+   */
+  public function testBooleanFieldValueEmitsNothing(): void {
+    $paragraph = $this->mockParagraph('grid_bundle', 42, [
+      'pb_display_grid_gap' => TRUE,
+    ]);
+    $this->assertSame('', $this->builder->build($paragraph, '#pb__grid-42'));
+  }
+
+  /**
    * A zero carousel gap is omitted while slide width still emits.
    */
   public function testCarouselGapZeroIsOmitted(): void {

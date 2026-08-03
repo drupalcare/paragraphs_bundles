@@ -281,27 +281,55 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
    *   Resolved CSS value without trailing semicolon.
    */
   private function resolveValue(ParagraphInterface $paragraph, array $rule): string {
+    $field = $this->ruleField($rule, 'field');
     return match ($rule['transform']) {
-      'string' => $this->fieldStringValue($paragraph, $rule['field'] ?? ''),
-      'underscore_space' => str_replace('_', ' ', $this->fieldStringValue($paragraph, $rule['field'] ?? '')),
-      'underscore_dash' => str_replace('_', '-', $this->fieldStringValue($paragraph, $rule['field'] ?? '')),
-      'px' => $this->withUnit($this->fieldStringValue($paragraph, $rule['field'] ?? ''), 'px'),
-      'px_gt_zero' => $this->withUnitGtZero($this->fieldStringValue($paragraph, $rule['field'] ?? ''), 'px'),
-      'ms' => $this->withUnit($this->fieldStringValue($paragraph, $rule['field'] ?? ''), 'ms'),
-      'rem' => $this->withUnit($this->fieldStringValue($paragraph, $rule['field'] ?? ''), 'rem'),
-      'seconds' => $this->withUnit($this->fieldStringValue($paragraph, $rule['field'] ?? ''), 's'),
-      'color' => $this->resolveColor($paragraph, $rule['field'] ?? ''),
-      'image_url' => $this->imageFieldUrl($paragraph, $rule['field'] ?? ''),
+      'string' => $this->fieldStringValue($paragraph, $field),
+      'underscore_space' => str_replace('_', ' ', $this->fieldStringValue($paragraph, $field)),
+      'underscore_dash' => str_replace('_', '-', $this->fieldStringValue($paragraph, $field)),
+      'px' => $this->withUnit($this->fieldStringValue($paragraph, $field), 'px'),
+      'px_gt_zero' => $this->withUnitGtZero($this->fieldStringValue($paragraph, $field), 'px'),
+      'ms' => $this->withUnit($this->fieldStringValue($paragraph, $field), 'ms'),
+      'rem' => $this->withUnit($this->fieldStringValue($paragraph, $field), 'rem'),
+      'seconds' => $this->withUnit($this->fieldStringValue($paragraph, $field), 's'),
+      'color' => $this->resolveColor($paragraph, $field),
+      'image_url' => $this->imageFieldUrl($paragraph, $field),
       'overlay_rgba' => $this->colorNormalizer->overlayRgba(
-        $this->fieldStringValue($paragraph, $rule['fields'][0] ?? ''),
-        $this->fieldStringValue($paragraph, $rule['fields'][1] ?? ''),
+        $this->fieldStringValue($paragraph, $this->ruleField($rule, 'fields', 0)),
+        $this->fieldStringValue($paragraph, $this->ruleField($rule, 'fields', 1)),
       ),
       'bg_image_if_no_sm' => $this->backgroundImageIfNoSmall($paragraph),
-      'grid_minmax_px' => $this->gridMinmaxPx($this->fieldStringValue($paragraph, $rule['field'] ?? '')),
+      'grid_minmax_px' => $this->gridMinmaxPx($this->fieldStringValue($paragraph, $field)),
       'parallax_section_height' => $this->parallaxSectionHeight($paragraph),
       'gms_font_variation' => $this->gmsFontVariation($paragraph),
       default => '',
     };
+  }
+
+  /**
+   * A field machine name out of a rule definition, or '' if it is not one.
+   *
+   * USER_STYLE_SCOPES is a class constant, so in practice these keys always
+   * hold strings. Narrowing here rather than at each of the thirteen call
+   * sites keeps this emit path fail-closed the same way the colour path is: an
+   * unexpected value yields no field name, so nothing is looked up and nothing
+   * is emitted, instead of a `mixed` reaching a `string` parameter.
+   *
+   * @param array<string, mixed> $rule
+   *   Rule definition.
+   * @param string $key
+   *   Rule key holding the field name, or a list of them.
+   * @param int|null $delta
+   *   Index into that list, when the key holds one.
+   *
+   * @return string
+   *   Field machine name, or an empty string.
+   */
+  private function ruleField(array $rule, string $key, ?int $delta = NULL): string {
+    $value = $rule[$key] ?? NULL;
+    if ($delta !== NULL) {
+      $value = is_array($value) ? ($value[$delta] ?? NULL) : NULL;
+    }
+    return is_string($value) ? $value : '';
   }
 
   /**
@@ -477,7 +505,14 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
   }
 
   /**
-   * Read a single-string field value.
+   * Read a single scalar field value as a string.
+   *
+   * Numbers are coerced rather than rejected — see the matching note on
+   * PbDynamicCssBuilder::fieldStringValue() for why an `is_string()` gate here
+   * dropped every numeric declaration on the programmatic-creation path. The
+   * rules that reach this method through the `px`, `px_gt_zero`, `ms`, `rem`
+   * and `seconds` transforms all read integer storages, so it was most of
+   * them.
    *
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The paragraph entity.
@@ -485,13 +520,18 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
    *   Field machine name.
    *
    * @return string
-   *   Trimmed value, or empty string when missing/empty.
+   *   Trimmed value, or empty string when missing/empty/not scalar.
    */
   private function fieldStringValue(ParagraphInterface $paragraph, string $field): string {
     if ($field === '' || !$paragraph->hasField($field) || $paragraph->get($field)->isEmpty()) {
       return '';
     }
-    $value = $paragraph->get($field)->first()?->getValue()['value'] ?? '';
+    $item = $paragraph->get($field)->first();
+    $raw = $item === NULL ? NULL : $item->getValue();
+    $value = is_array($raw) ? ($raw['value'] ?? NULL) : NULL;
+    if (is_int($value) || is_float($value)) {
+      return (string) $value;
+    }
     return is_string($value) ? trim($value) : '';
   }
 

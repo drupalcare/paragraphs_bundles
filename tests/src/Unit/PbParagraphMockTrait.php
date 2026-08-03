@@ -10,7 +10,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 
 /**
- * Builds paragraph/node mocks with string field values for unit tests.
+ * Builds paragraph/node mocks with scalar field values for unit tests.
  */
 trait PbParagraphMockTrait {
 
@@ -21,8 +21,12 @@ trait PbParagraphMockTrait {
    *   Bundle machine name.
    * @param int $id
    *   Entity id.
-   * @param array<string, string> $fields
-   *   Field machine name => stored value.
+   * @param array<string, string|int|float|bool> $fields
+   *   Field machine name => stored value. NOT string-only: 47 of this module's
+   *   171 paragraph fields are integer, decimal, boolean or range storages, and
+   *   an integer column holds an `int` on an entity whose value was just set
+   *   programmatically. Every test here used to pass strings, which is exactly
+   *   why the readers' `is_string()` gate went unnoticed.
    *
    * @return \Drupal\paragraphs\ParagraphInterface
    *   Configured mock.
@@ -58,8 +62,12 @@ trait PbParagraphMockTrait {
    *   Bundle machine name.
    * @param int $id
    *   Entity id.
-   * @param array<string, string> $fields
-   *   Field machine name => stored value.
+   * @param array<string, string|int|float|bool> $fields
+   *   Field machine name => stored value. NOT string-only: 47 of this module's
+   *   171 paragraph fields are integer, decimal, boolean or range storages, and
+   *   an integer column holds an `int` on an entity whose value was just set
+   *   programmatically. Every test here used to pass strings, which is exactly
+   *   why the readers' `is_string()` gate went unnoticed.
    *
    * @return \Drupal\node\NodeInterface
    *   Configured mock.
