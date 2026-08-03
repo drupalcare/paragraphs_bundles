@@ -8,6 +8,7 @@ use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\WidgetInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 
 /**
  * Attaches PB admin/widget libraries once per request when a PB field renders.
@@ -78,9 +79,7 @@ final class PbFieldWidgetHook {
     if (!$this->isPbWidget($context)) {
       return;
     }
-    foreach (self::PARAGRAPH_WIDGET_LIBRARIES as $library) {
-      $element['#attached']['library'][] = $library;
-    }
+    PbRenderArray::attachLibraries($element, ...self::PARAGRAPH_WIDGET_LIBRARIES);
     self::$librariesAttached = TRUE;
   }
 

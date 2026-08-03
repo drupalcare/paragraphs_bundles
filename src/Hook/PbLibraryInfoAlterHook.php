@@ -33,10 +33,14 @@ final class PbLibraryInfoAlterHook {
       return;
     }
     $bridge = 'paragraphs_bundles/' . $this->themeBridge->resolveLibraryName();
-    $libraries['paragraphs-bundles']['dependencies'] ??= [];
-    if (!in_array($bridge, $libraries['paragraphs-bundles']['dependencies'], TRUE)) {
-      $libraries['paragraphs-bundles']['dependencies'][] = $bridge;
+    $dependencies = $libraries['paragraphs-bundles']['dependencies'] ?? [];
+    if (!is_array($dependencies)) {
+      $dependencies = [];
     }
+    if (!in_array($bridge, $dependencies, TRUE)) {
+      $dependencies[] = $bridge;
+    }
+    $libraries['paragraphs-bundles']['dependencies'] = $dependencies;
   }
 
 }

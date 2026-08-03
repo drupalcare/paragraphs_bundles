@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityFormInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 
 /**
  * Attaches PB Content admin assets on pb_content node add/edit forms.
@@ -34,7 +35,7 @@ final class PbcFormHook {
       return;
     }
 
-    $form['#attached']['library'][] = 'paragraph_bundle_content/paragraph-bundle-content-admin';
+    PbRenderArray::attachLibraries($form, 'paragraph_bundle_content/paragraph-bundle-content-admin');
   }
 
 }

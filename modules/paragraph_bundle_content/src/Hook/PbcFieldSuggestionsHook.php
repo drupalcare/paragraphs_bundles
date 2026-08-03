@@ -26,12 +26,16 @@ final class PbcFieldSuggestionsHook {
       'pb_content_type_body',
     ];
     $targetBundle = 'pb_content';
-    $currentFieldName = $variables['element']['#field_name'] ?? '';
+    $element = $variables['element'] ?? NULL;
+    if (!is_array($element)) {
+      return;
+    }
+    $currentFieldName = $element['#field_name'] ?? '';
 
     if (!is_string($currentFieldName) || !in_array($currentFieldName, $targetFields, TRUE)) {
       return;
     }
-    if (!isset($variables['element']['#bundle']) || $variables['element']['#bundle'] !== $targetBundle) {
+    if (($element['#bundle'] ?? NULL) !== $targetBundle) {
       return;
     }
     $suggestions[] = 'field__' . $targetBundle . '__' . $currentFieldName;

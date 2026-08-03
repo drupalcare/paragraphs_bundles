@@ -6,6 +6,7 @@ namespace Drupal\paragraph_bundle_icon\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\AdminContext;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 
 /**
  * Page preprocess — attaches icon admin assets on admin routes.
@@ -28,7 +29,7 @@ final class PbiPageHook {
       return;
     }
 
-    $variables['#attached']['library'][] = 'paragraph_bundle_icon/paragraph-bundle-icon-admin';
+    PbRenderArray::attachLibraries($variables, 'paragraph_bundle_icon/paragraph-bundle-icon-admin');
   }
 
 }

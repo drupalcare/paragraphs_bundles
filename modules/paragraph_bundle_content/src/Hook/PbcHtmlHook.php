@@ -8,6 +8,7 @@ use Drupal\Component\Utility\Html;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 
 /**
  * HTML preprocess — appends max-width body class from pb_content nodes.
@@ -46,7 +47,7 @@ final class PbcHtmlHook {
       return;
     }
     $safe = Html::getClass($trimmed);
-    $variables['attributes']['class'][] = 'pb-' . $safe;
+    PbRenderArray::addClass($variables, 'pb-' . $safe);
   }
 
 }

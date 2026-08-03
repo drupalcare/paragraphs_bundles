@@ -22,7 +22,11 @@ final class PbcThemeSuggestionsHook {
    */
   #[Hook('theme_suggestions_block_alter')]
   public function themeSuggestionsBlockAlter(array &$suggestions, array $variables): void {
-    $content = $variables['elements']['content'] ?? NULL;
+    $elements = $variables['elements'] ?? NULL;
+    if (!is_array($elements)) {
+      return;
+    }
+    $content = $elements['content'] ?? NULL;
     if (!is_array($content)) {
       return;
     }
@@ -48,7 +52,8 @@ final class PbcThemeSuggestionsHook {
    */
   #[Hook('theme_suggestions_block_content_alter')]
   public function themeSuggestionsBlockContentAlter(array &$suggestions, array $variables): void {
-    $block_content = $variables['elements']['#block_content'] ?? NULL;
+    $elements = $variables['elements'] ?? NULL;
+    $block_content = is_array($elements) ? ($elements['#block_content'] ?? NULL) : NULL;
     if (!$block_content instanceof BlockContentInterface) {
       return;
     }

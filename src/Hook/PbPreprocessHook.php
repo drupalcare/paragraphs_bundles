@@ -15,6 +15,7 @@ use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilderInterface;
 use Drupal\paragraphs_bundles\Service\Display\PbDisplayClassResolverInterface;
+use Drupal\paragraphs_bundles\Utility\PbRenderArray;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -150,7 +151,7 @@ final class PbPreprocessHook {
       );
       return;
     }
-    $variables['#attached']['html_head'][] = [
+    PbRenderArray::append($variables, ['#attached', 'html_head'], [
       [
         '#type' => 'html_tag',
         '#tag' => 'style',
@@ -158,7 +159,7 @@ final class PbPreprocessHook {
         '#attributes' => ['data-pb-dynamic' => $slug . '-' . $id],
       ],
       'pb-dynamic-css-' . $slug . '-' . $id,
-    ];
+    ]);
   }
 
   /**
@@ -273,7 +274,8 @@ final class PbPreprocessHook {
     $overlayMode = '';
     if ($paragraph->hasField('pb_display_image_overlay')
       && !$paragraph->get('pb_display_image_overlay')->isEmpty()) {
-      $raw = $paragraph->get('pb_display_image_overlay')->first()?->getValue()['value'] ?? '';
+      $stored = $paragraph->get('pb_display_image_overlay')->first()?->getValue();
+      $raw = is_array($stored) ? ($stored['value'] ?? '') : '';
       $overlayMode = is_string($raw) ? trim($raw) : '';
     }
 
