@@ -192,6 +192,19 @@ user-visible; read this section before upgrading.
 - **`pb_content` form display upgrade** — surgical merge preserves site-added
   fields on the node type; single sub-module hook **`9001`** (removed
 `9002`/`9003`).
+- **The alert removed its own content on a timer nobody could stop** (WCAG 2.2.1
+  Timing Adjustable, Level A). The `countdown` dismissal deleted the alert after
+  N seconds with no way to turn the limit off, adjust it or extend it. There is
+  now a pause/resume control, and it is gated on the countdown **timer**, not on
+  the "show countdown label" setting — the timer runs whenever the dismissal
+  type is `countdown` with seconds above zero, so an alert with the label
+  switched off previously ran the timer and rendered no control at all. The
+  countdown also pauses automatically while pointer or keyboard focus is inside
+  the alert. Two further Level A findings in the same bundle are fixed with it:
+  the close button no longer advertises an `aria-expanded` disclosure state it
+  could never honour (dismissal is one-way, and the re-open branch was
+  unreachable dead code), and focus is moved to the paragraph wrapper before the
+  alert goes `inert`, instead of being dropped to `<body>`.
 - **Slideshow slides claimed a tab role with no tab to own them** — slides
   carried `role="tabpanel"` unconditionally, but the `role="tablist"` container
   and its `role="tab"` buttons render only for four of the five bottom-navigation
