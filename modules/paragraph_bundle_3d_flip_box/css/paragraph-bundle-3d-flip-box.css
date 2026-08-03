@@ -47,20 +47,85 @@
 
 /* ==========================================================================
    Flip Animations - Focus (Keyboard Accessibility)
+
+   `:focus-within` is on the faces wrapper, not the scene. The flip toggle
+   lives in the scene but outside the wrapper, so focusing the toggle no
+   longer flips the box out from under its own button.
    ========================================================================== */
 
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x:focus-within .pb-3d-flip-box__inner {
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:focus-within {
   transform: rotateX(180deg);
 }
 
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y:focus-within .pb-3d-flip-box__inner {
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:focus-within {
   transform: rotateY(180deg);
 }
 
-/* Focus outline on the flip box container */
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:focus-within {
+/* ==========================================================================
+   Flip Animations - Toggle button
+
+   `pb-is-flipped` is set by the behaviour when the button is pressed. It is
+   sticky, unlike hover and focus, so an explicit flip survives the pointer
+   leaving the box.
+   ========================================================================== */
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x.pb-is-flipped .pb-3d-flip-box__inner {
+  transform: rotateX(180deg);
+}
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y.pb-is-flipped .pb-3d-flip-box__inner {
+  transform: rotateY(180deg);
+}
+
+/* Focus outline on the presented face */
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within {
   outline: 2px solid currentcolor;
   outline-offset: 4px;
+}
+
+/* ==========================================================================
+   Flip Toggle
+
+   Sits in the scene but outside the transformed faces wrapper, so it stays
+   put while the box turns. The scene carries `perspective`, which makes it
+   the containing block for this absolutely positioned child.
+
+   System colours rather than `--pb-*`: this control has to stay legible over
+   whatever the editor chose for either face, and Canvas/CanvasText also do
+   the right thing in forced-colors mode.
+   ========================================================================== */
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle {
+  display: inline-flex;
+  position: absolute;
+  z-index: 2;
+  top: 0.5rem;
+  right: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 1px solid CanvasText;
+  border-radius: 50%;
+  background-color: Canvas;
+  color: CanvasText;
+  cursor: pointer;
+}
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle:focus-visible {
+  outline: 2px solid currentcolor;
+  outline-offset: 2px;
+}
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle-icon {
+  display: block;
+  pointer-events: none;
+}
+
+/* The icon reads as a mirror line; turn it to match the axis it flips on. */
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__toggle-icon {
+  transform: rotate(90deg);
 }
 
 /* ==========================================================================
@@ -109,8 +174,10 @@
   /* Instead of 3D flip, show/hide with opacity for reduced motion users */
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x:hover .pb-3d-flip-box__inner,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y:hover .pb-3d-flip-box__inner,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x:focus-within .pb-3d-flip-box__inner,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y:focus-within .pb-3d-flip-box__inner {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x.pb-is-flipped .pb-3d-flip-box__inner,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y.pb-is-flipped .pb-3d-flip-box__inner,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:focus-within,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:focus-within {
     transform: none;
   }
 
@@ -126,24 +193,28 @@
   }
 
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:hover .pb-3d-flip-box__front,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:focus-within .pb-3d-flip-box__front {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-is-flipped .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
     opacity: 0;
   }
 
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:hover .pb-3d-flip-box__back,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:focus-within .pb-3d-flip-box__back {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-is-flipped .pb-3d-flip-box__back,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
     opacity: 1;
   }
 }
 
 @media (prefers-contrast: high) {
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:focus-within {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle:focus-visible {
     outline-width: 3px;
   }
 }
 
 @media (forced-colors: active) {
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:focus-within {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within,
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle:focus-visible {
     outline-color: Highlight;
   }
 }
@@ -151,6 +222,11 @@
 @media print {
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene {
     overflow: visible;
+  }
+
+  /* Both faces print; the control cannot be operated on paper. */
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle {
+    display: none;
   }
 
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner,

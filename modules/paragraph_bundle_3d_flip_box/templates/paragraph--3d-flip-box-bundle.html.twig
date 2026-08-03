@@ -49,11 +49,32 @@
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
 
-      <div class="pb-3d-flip-box__scene{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}" tabindex="0"{% if pb_box_height %} style="height: {{ pb_box_height }}px"{% endif %}>
-        <div class="pb-3d-flip-box__inner">
+      <div class="pb-3d-flip-box__scene{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}"{% if pb_box_height %} style="height: {{ pb_box_height }}px"{% endif %}>
+        <div class="pb-3d-flip-box__inner" id="{{ paragraph_id }}-faces">
           <div class="pb-3d-flip-box__front">{{ content.pb_content_3d_box_front }}</div>
           <div class="pb-3d-flip-box__back{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}">{{ content.pb_content_3d_box_back }}</div>
         </div>
+        {#
+          Hidden until the behaviour attaches: without the script the button
+          has nothing to toggle, and a control that does nothing is worse than
+          no control. The faces are left operable for that no-JS case, exactly
+          as they were before — the script is what makes the face-down one
+          inert.
+        #}
+        <button type="button" class="pb-3d-flip-box__toggle" aria-expanded="false" aria-controls="{{ paragraph_id }}-faces" hidden>
+          {#
+            Two panels either side of a mirror axis — the conventional "flip"
+            glyph. Drawn from primitives rather than borrowed from an icon set,
+            so the bundle carries no third-party licence (B4 removed the
+            Material fonts for that reason).
+          #}
+          <svg class="pb-3d-flip-box__toggle-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
+            <path d="M10 3.5 3 6.5v11l7 3z" fill="currentColor"/>
+            <path d="M14 3.5 21 6.5v11l-7 3z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
+            <path d="M12 1.5v21" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="3 2.5"/>
+          </svg>
+          <span class="visually-hidden">{{ pb_title ? 'Flip @title'|t({'@title': pb_title}) : 'Flip the box'|t }}</span>
+        </button>
       </div>
 
     </div>

@@ -2,3 +2,8 @@ paragraph-bundle-3d-flip-box:
   css:
     theme:
       css/paragraph-bundle-3d-flip-box.css: { }
+  js:
+    js/paragraph-bundle-3d-flip-box.js: { }
+  dependencies:
+    - core/drupal
+    - core/once
