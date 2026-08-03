@@ -192,8 +192,39 @@ user-visible; read this section before upgrading.
 - **`pb_content` form display upgrade** — surgical merge preserves site-added
   fields on the node type; single sub-module hook **`9001`** (removed
 `9002`/`9003`).
+- **Paragraphs created programmatically got an incomplete stylesheet** — both
+  CSS builders read field values behind an `is_string()` gate, but 47 of this
+  module's 171 paragraph fields are integer, decimal, boolean or range
+  storages, and an integer column holds a real `int` on an entity whose value
+  was just set in code (it only becomes a numeric string after a round trip
+  through the database). `hook_paragraph_insert()` builds the stylesheet from
+  exactly that in-memory entity, so every numeric declaration — `gap`,
+  `max-width`, `min-height`, animation durations, sticky offsets, background
+  opacity, the `*_active_item` values — was silently dropped for any paragraph
+  created by a recipe, a migration or a demo-content script, and stayed dropped
+  until somebody re-saved the paragraph through the form. Numbers are now
+  coerced; booleans, arrays and objects still emit nothing, the same
+  fail-closed rule `pb_css_value` already used.
+- **Upgraded sites got different edit forms from new ones** — `9006` wires the
+  shared v2 fields onto displays that already exist, so it computed weights
+  from what it found, while a fresh install imports them from `config/optional`.
+  Measured across all 39 bundles: six `pb_display_*` fields sat on different
+  weights on ~30 form displays, and on 4 of 5 sampled bundles that was enough to
+  change the **order fields render in** — on `icon_bundle`, `pb_content_body`
+  and `pb_content_link` ended up scattered among the display fields. New update
+  **`9008`** re-applies the shipped layout (component weights, field group
+  weights and child order), leaving site-added fields, fields the site has
+  hidden, and site-added group children alone. After it, all 126 displays render
+  in the same order on both install paths.
+- **Displays could list a field as visible and hidden at once** — the v1 wiring
+  path wrote straight into a display's `content` array without clearing the
+  matching `hidden` entry, which `EntityDisplayBase::setComponent()` does and
+  `preSave()` does not repair. 134 such contradictions across 35 of the 39
+  paragraph form displays on an upgraded site, none on a fresh one. The wiring
+  helpers now clear it, and `9008` cleans up sites that already ran them.
 - **Pre-release hook consolidation** — the parent now ships **`9005`**,
-  **`9006`** and **`9007`** only, plus a post-update for the CSS backfill.
+  **`9006`**, **`9007`** and **`9008`** only, plus a post-update for the CSS
+  backfill.
   v2's development hooks were fragmented across `9001`–`9015`; the survivors
   were renumbered above v1's floor (see the **`9005`** note below) and the view
   display cleanup folded into `9006`. Full chain in
