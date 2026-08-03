@@ -96,6 +96,30 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **Every sub-module now declares the modules its own config needs.** All 26
+  bundle modules under-declared their dependencies and relied on the parent to
+  pull the rest in — every one of them was missing `field_group`, and between
+  them they were also missing `options`, `paragraphs`, `link`, `media`,
+  `media_library`, `text`, `file`, `image`, `user` and `views`. Drupal skips
+  optional config whose dependencies are unmet **silently**, and `drush en`
+  still reports success, so a sub-module installed on a site whose parent
+  dependency list had moved on would have installed a paragraph type with no
+  form display and no error. The parent's own list was the mirror image: it
+  declared `block`, `image`, `media_library`, `system`, `user` and `views`,
+  none of which its config or its PHP uses. Both sides are now derived from
+  what each module actually ships, and a unit test fails the build if a module
+  adds config needing something it does not declare.
+- **Sub-module dependencies carry the right project prefix.** Seven `info.yml`
+  files declared `paragraph_bundle_image:paragraph_bundle_image`. The prefix
+  names the drupal.org *project*, which is `paragraphs_bundles`; the
+  sub-modules have no project of their own.
+- **Two CSS rules that had never matched anything now do.** The simple bundle's
+  inner wrapper carries `pb__simple__inner`, but the width rule targeted
+  `.simple__inner`; the slideshow's image rule targeted
+  `field--name-pb__image-field`, while the media field is `pb_image_field` so
+  Drupal emits `field--name-pb-image-field`. Also removed a `--pb-dot-active`
+  fallback from the slideshow dot, a custom property this project emits
+  nowhere and so could never resolve.
 - **An accordion section with no title no longer takes down the page.** The
   accordion template built its fragment slug by lowercasing the section title
   read straight off the field. On an empty field that expression yields an

@@ -42,6 +42,10 @@
   min-width: 0;
 }
 
+/* `--pb-bt-a` is editor-only, emitted per paragraph from
+ * pb_display_accor_active_item. Deliberately no fallback: unset resolves to
+ * transparent, so an unconfigured accordion keeps the item background it
+ * inherits and the open pane carries the active state. */
 .paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active,
 .paragraphs-bundles.pb-accordion .pb-accordion__item.pb-is-active > div {
   background-color: var(--pb-bt-a);

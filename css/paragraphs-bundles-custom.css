@@ -249,7 +249,9 @@ body .page-wrapper li {
   border-radius: 0 !important;
 }
 
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .simple__inner {
+/* The simple bundle's inner carries `pb__simple__inner`, not `simple__inner` —
+ * see paragraph--simple-bundle.html.twig. This selector matched nothing. */
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__simple__inner {
   margin-inline-start: auto;
   margin-inline-end: auto;
   width: 100%;

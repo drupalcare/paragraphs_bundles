@@ -128,6 +128,13 @@ final class PbSectionBodyRenderTest extends KernelTestBase {
     ]);
     $body->save();
 
+    // The section is deliberately created with **no title**. That is
+    // load-bearing, not incidental: `entity.field.value` on an empty field
+    // resolves to `getValue()` and returns an array, so any string filter
+    // chained off it fatals. That is exactly how the untitled-accordion fatal
+    // shipped. Keeping the title empty here is what covers the same expression
+    // in the tabs (`pb_content_tab_name`) and slideshow
+    // (`pb_content_slideshow_title`) templates. Do not populate it.
     $section = Paragraph::create([
       'type' => $sectionBundle,
       $bodyField => [$body],

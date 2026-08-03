@@ -37,7 +37,9 @@
   overflow: hidden;
 }
 
-.paragraphs-bundles.pb-slideshow .field--name-pb__image-field img {
+/* The media field is `pb_image_field`, so Drupal emits
+ * `field--name-pb-image-field`. The double underscore here matched nothing. */
+.paragraphs-bundles.pb-slideshow .field--name-pb-image-field img {
   width: 100%;
 }
 
@@ -320,7 +322,11 @@
   outline-offset: 2px;
 }
 
-/* Nav button active slide */
+/* Nav button active slide.
+ *
+ * `--pb-bt-a` is editor-only (pb_display_slide_active_item). No fallback here,
+ * unlike the dot below: a numbered button still reads as active without a
+ * background, while a dot with no background is invisible. */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active,
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav-play > .pb-slideshow__nav-btn.pb-is-active {
   background-color: var(--pb-bt-a);
@@ -378,7 +384,9 @@
   min-width: calc(2.5 * var(--pb-px10));
   height: var(--pb-px10) !important;
   border-radius: calc(var(--pb-px10) / 2) !important;
-  background-color: var(--pb-bt-a, var(--pb-dot-active, CanvasText));
+  /* `--pb-dot-active` is emitted by nothing in this project, so the middle
+   * fallback could never resolve. Same contract as the carousel dot. */
+  background-color: var(--pb-bt-a, CanvasText);
   transform: none;
   box-shadow: 0 var(--pb-px2) var(--pb-px8) color-mix(in srgb, CanvasText 20%, transparent);
 }

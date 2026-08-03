@@ -75,7 +75,14 @@
   outline-offset: -2px;
 }
 
-/* Active tab button */
+/* Active tab button.
+ *
+ * `--pb-bt-a` is editor-only: PbDynamicCssBuilder emits it per paragraph from
+ * pb_display_tab_active_item, and nothing declares a default. Deliberately no
+ * fallback — unset resolves to transparent, so the tab bar's own background
+ * shows through and the active state reads from the weight and underline. A
+ * fallback of CanvasText would paint the button black behind inherited dark
+ * text. See docs/PB-V2-THEME-BRIDGE.md. */
 .paragraphs-bundles.pb-tabs .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
   font-weight: bold;
   text-decoration: underline;
