@@ -23,6 +23,12 @@ include:
       - '/includes/include.drupalci.workflows.yml'
 
 variables:
+  # cspell is off. It flags the bundle vocabulary (`nmw`, `pmw`, `caro`,
+  # `accor`, the `pb__*` tokens) as misspellings, and those strings are stored
+  # field values and DOM contracts — a dictionary entry per token would be a
+  # list of things nobody may ever correct. Turn this back on together with a
+  # `.cspell-project-words.txt`, the way cloudflare_purge does it.
+  SKIP_CSPELL: '1'
   # Pin the axe-core release used for accessibility assertions. Bump
   # deliberately — a new minor can introduce new rules and turn a green
   # pipeline red.
