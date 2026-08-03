@@ -11,7 +11,7 @@ field_name: pb_display_shadow
 entity_type: paragraph
 bundle: simple_bundle
 label: Shadow
-description: ''
+description: 'Incorporate pre-set custom CSS classes.'
 required: false
 translatable: false
 default_value: {  }
