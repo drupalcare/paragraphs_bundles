@@ -13,8 +13,6 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 ((Drupal, once) => {
-  'use strict';
-
   const DISMISSAL_SELECT = 'select[name*="[pb_display_alert_dismissal_type]"]';
   const DATE_RANGE_FIELDS = [
     '.field--name-pb-display-alert-start-date',
@@ -27,24 +25,44 @@
   const DATE_RANGE_WRAPPER_SELECTOR = DATE_RANGE_FIELDS.join(', ');
 
   function toggleFields(container, value) {
-    const dateWrappers = DATE_RANGE_FIELDS.map((sel) => container.querySelector(sel)).filter(Boolean);
-    const countdownWrappers = COUNTDOWN_FIELDS.map((sel) => container.querySelector(sel)).filter(Boolean);
+    const dateWrappers = DATE_RANGE_FIELDS.map((sel) =>
+      container.querySelector(sel),
+    ).filter(Boolean);
+    const countdownWrappers = COUNTDOWN_FIELDS.map((sel) =>
+      container.querySelector(sel),
+    ).filter(Boolean);
 
     if (value === 'date_range') {
-      dateWrappers.forEach((el) => { el.style.display = ''; });
-      countdownWrappers.forEach((el) => { el.style.display = 'none'; });
+      dateWrappers.forEach((el) => {
+        el.style.display = '';
+      });
+      countdownWrappers.forEach((el) => {
+        el.style.display = 'none';
+      });
     } else if (value === 'countdown') {
-      dateWrappers.forEach((el) => { el.style.display = 'none'; });
-      countdownWrappers.forEach((el) => { el.style.display = ''; });
+      dateWrappers.forEach((el) => {
+        el.style.display = 'none';
+      });
+      countdownWrappers.forEach((el) => {
+        el.style.display = '';
+      });
     } else {
-      dateWrappers.forEach((el) => { el.style.display = 'none'; });
-      countdownWrappers.forEach((el) => { el.style.display = 'none'; });
+      dateWrappers.forEach((el) => {
+        el.style.display = 'none';
+      });
+      countdownWrappers.forEach((el) => {
+        el.style.display = 'none';
+      });
     }
   }
 
   function initDismissalToggle(select) {
-    const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
-    if (!container) { return;
+    const container =
+      select.closest('.pb__tab-display') ||
+      select.closest('.horizontal-tabs-pane') ||
+      select.closest('details');
+    if (!container) {
+      return;
     }
 
     const value = (select.value || 'none').trim();
@@ -61,11 +79,12 @@
   function getTimestampFromDateField(wrapper) {
     const dateInput = wrapper.querySelector('input[type="date"]');
     const timeInput = wrapper.querySelector('input[type="time"]');
-    if (!dateInput || !dateInput.value) { return null;
+    if (!dateInput || !dateInput.value) {
+      return null;
     }
     const dateStr = dateInput.value;
-    const timeStr = (timeInput && timeInput.value) ? timeInput.value : '00:00:00';
-    const ms = Date.parse(dateStr + 'T' + timeStr);
+    const timeStr = timeInput && timeInput.value ? timeInput.value : '00:00:00';
+    const ms = Date.parse(`${dateStr}T${timeStr}`);
     return Number.isNaN(ms) ? null : ms;
   }
 
@@ -75,11 +94,13 @@
   function isDateRangeInvalid(container) {
     const startWrapper = container.querySelector(DATE_RANGE_FIELDS[0]);
     const endWrapper = container.querySelector(DATE_RANGE_FIELDS[1]);
-    if (!startWrapper || !endWrapper) { return false;
+    if (!startWrapper || !endWrapper) {
+      return false;
     }
     const startTs = getTimestampFromDateField(startWrapper);
     const endTs = getTimestampFromDateField(endWrapper);
-    if (startTs == null || endTs == null) { return false;
+    if (startTs == null || endTs == null) {
+      return false;
     }
     return startTs >= endTs;
   }
@@ -90,13 +111,16 @@
   function clearDateRangeInContainer(container) {
     DATE_RANGE_FIELDS.forEach((sel) => {
       const wrapper = container.querySelector(sel);
-      if (!wrapper) { return;
+      if (!wrapper) {
+        return;
       }
-      wrapper.querySelectorAll('input[type="date"], input[type="time"]').forEach((input) => {
-        input.value = '';
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-      });
+      wrapper
+        .querySelectorAll('input[type="date"], input[type="time"]')
+        .forEach((input) => {
+          input.value = '';
+          input.dispatchEvent(new Event('change', { bubbles: true }));
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        });
     });
   }
 
@@ -124,57 +148,74 @@
   }
 
   function addSubmitClearHandler(form) {
-    form.addEventListener('submit', (event) => {
-      // When date range is selected, end date must be after start date.
-      const invalidContainers = [];
-      form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
-        const value = (select.value || 'none').trim();
-        if (value !== 'date_range') { return;
+    form.addEventListener(
+      'submit',
+      (event) => {
+        // When date range is selected, end date must be after start date.
+        const invalidContainers = [];
+        form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
+          const value = (select.value || 'none').trim();
+          if (value !== 'date_range') {
+            return;
+          }
+          const container =
+            select.closest('.pb__tab-display') ||
+            select.closest('.horizontal-tabs-pane') ||
+            select.closest('details');
+          if (container && isDateRangeInvalid(container)) {
+            invalidContainers.push(container);
+          }
+        });
+        if (invalidContainers.length > 0) {
+          event.preventDefault();
+          event.stopPropagation();
+          alert(Drupal.t('End date must be after start date.'));
+          return;
         }
-        const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
-        if (container && isDateRangeInvalid(container)) {
-          invalidContainers.push(container);
-        }
-      });
-      if (invalidContainers.length > 0) {
-        event.preventDefault();
-        event.stopPropagation();
-        alert(Drupal.t('End date must be after start date.'));
-        return;
-      }
 
-      form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
-        const container = select.closest('.pb__tab-display') || select.closest('.horizontal-tabs-pane') || select.closest('details');
-        if (!container) { return;
-        }
-        const value = (select.value || 'none').trim();
-        if (value === 'countdown') {
-          clearDateRangeInContainer(container);
-        } else if (value === 'date_range') {
-          clearCountdownInContainer(container);
-        } else {
-          clearDateRangeInContainer(container);
-          clearCountdownInContainer(container);
-        }
-      });
-    }, false);
+        form.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {
+          const container =
+            select.closest('.pb__tab-display') ||
+            select.closest('.horizontal-tabs-pane') ||
+            select.closest('details');
+          if (!container) {
+            return;
+          }
+          const value = (select.value || 'none').trim();
+          if (value === 'countdown') {
+            clearDateRangeInContainer(container);
+          } else if (value === 'date_range') {
+            clearCountdownInContainer(container);
+          } else {
+            clearDateRangeInContainer(container);
+            clearCountdownInContainer(container);
+          }
+        });
+      },
+      false,
+    );
   }
 
   function addClearButton(wrapper) {
     const dateInput = wrapper.querySelector('input[type="date"]');
     const timeInput = wrapper.querySelector('input[type="time"]');
-    if (!dateInput && !timeInput) { return;
+    if (!dateInput && !timeInput) {
+      return;
     }
 
     const label = wrapper.querySelector('.fieldset__label, .form-item__label');
-    const labelText = (label && label.textContent) ? label.textContent.trim() : '';
+    const labelText =
+      label && label.textContent ? label.textContent.trim() : '';
     const clearLabel = Drupal.t('Clear');
 
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'button button--small paragraph-bundle-alert-clear-date';
     btn.textContent = clearLabel;
-    btn.setAttribute('aria-label', clearLabel + (labelText ? ' ' + labelText : ''));
+    btn.setAttribute(
+      'aria-label',
+      clearLabel + (labelText ? ` ${labelText}` : ''),
+    );
 
     btn.addEventListener('click', () => {
       if (dateInput) {
@@ -207,8 +248,14 @@
 
   Drupal.behaviors.paragraphBundleAlertAdmin = {
     attach(context) {
-      once('paragraph-bundle-alert-admin', DISMISSAL_SELECT, context).forEach(initDismissalToggle);
-      once('paragraph-bundle-alert-admin-clear', DATE_RANGE_WRAPPER_SELECTOR, context).forEach(addClearButton);
+      once('paragraph-bundle-alert-admin', DISMISSAL_SELECT, context).forEach(
+        initDismissalToggle,
+      );
+      once(
+        'paragraph-bundle-alert-admin-clear',
+        DATE_RANGE_WRAPPER_SELECTOR,
+        context,
+      ).forEach(addClearButton);
 
       // On submit: clear date range when countdown is chosen, clear countdown when date range is chosen (once per form).
       context.querySelectorAll(DISMISSAL_SELECT).forEach((select) => {

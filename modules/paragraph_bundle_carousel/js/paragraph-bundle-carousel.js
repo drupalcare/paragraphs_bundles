@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_CAROUSEL = 'pb-carousel';
   const PB_CAROUSEL__VIEWPORT = 'pb-carousel__viewport';
@@ -36,27 +34,17 @@
   const PB_U_SMALL_SCREEN = 'pb-u-small-screen';
   const PB_U_LARGE_SCREEN = 'pb-u-large-screen';
 
-  const PARAGRAPHS_BUNDLES_PB_CAROUSEL =
-    `.${PARAGRAPHS_BUNDLES}.${PB_CAROUSEL}`;
-  const PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT =
-    `${PARAGRAPHS_BUNDLES_PB_CAROUSEL} .${PB_CAROUSEL__VIEWPORT}`;
+  const PARAGRAPHS_BUNDLES_PB_CAROUSEL = `.${PARAGRAPHS_BUNDLES}.${PB_CAROUSEL}`;
+  const PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT = `${PARAGRAPHS_BUNDLES_PB_CAROUSEL} .${PB_CAROUSEL__VIEWPORT}`;
 
-  const PB_CAROUSEL__VIEWPORT_OWNED_WRAPPER =
-    `:scope > .${PB_CAROUSEL__WRAPPER}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_SLIDES =
-    `:scope > .${PB_CAROUSEL__WRAPPER} > .${PB_CAROUSEL__SLIDES}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_SLIDE =
-    `:scope > .${PB_CAROUSEL__WRAPPER} > .${PB_CAROUSEL__SLIDES} > .${PB_CAROUSEL__SLIDE}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_DOTS =
-    `:scope > .${PB_CAROUSEL__BOTTOM_BAR} > .${PB_CAROUSEL__DOTS}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_OPTIONS_BAR =
-    `:scope > .${PB_CAROUSEL__OPTIONS_BAR}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_PREV =
-    `:scope > .${PB_CAROUSEL__OPTIONS_BAR} > .${PB_NAV__PREV}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_NEXT =
-    `:scope > .${PB_CAROUSEL__OPTIONS_BAR} > .${PB_NAV__NEXT}`;
-  const PB_CAROUSEL__VIEWPORT_OWNED_PLAY_PAUSE =
-    `:scope > .${PB_CAROUSEL__BOTTOM_BAR} > .${PB_CAROUSEL__PLAY_PAUSE}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_WRAPPER = `:scope > .${PB_CAROUSEL__WRAPPER}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_SLIDES = `:scope > .${PB_CAROUSEL__WRAPPER} > .${PB_CAROUSEL__SLIDES}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_SLIDE = `:scope > .${PB_CAROUSEL__WRAPPER} > .${PB_CAROUSEL__SLIDES} > .${PB_CAROUSEL__SLIDE}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_DOTS = `:scope > .${PB_CAROUSEL__BOTTOM_BAR} > .${PB_CAROUSEL__DOTS}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_OPTIONS_BAR = `:scope > .${PB_CAROUSEL__OPTIONS_BAR}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_PREV = `:scope > .${PB_CAROUSEL__OPTIONS_BAR} > .${PB_NAV__PREV}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_NEXT = `:scope > .${PB_CAROUSEL__OPTIONS_BAR} > .${PB_NAV__NEXT}`;
+  const PB_CAROUSEL__VIEWPORT_OWNED_PLAY_PAUSE = `:scope > .${PB_CAROUSEL__BOTTOM_BAR} > .${PB_CAROUSEL__PLAY_PAUSE}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_CAROUSEL_VIEWPORT =
     'pb-paragraph-bundle-carousel-viewport';
@@ -79,92 +67,6 @@
   /** @type {WeakMap<HTMLElement, () => void>} */
   const viewportCleanupHandlers = new WeakMap();
 
-  Drupal.behaviors.paragraphCarouselBundle = {
-    attach(context, settings) {
-      const viewports = once(
-        ONCE_PB_PARAGRAPH_BUNDLE_CAROUSEL_VIEWPORT,
-        PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT,
-        context,
-      );
-
-      viewports.forEach((viewport) => {
-        const abortController = new AbortController();
-        const { signal } = abortController;
-
-        const state = createState(viewport);
-        if (!state) {
-          return;
-        }
-
-        let resizeObserver = null;
-        let intersectionObserver = null;
-
-        const stopAutoSlide = () => {
-          if (state.autoSlideTimer) {
-            clearInterval(state.autoSlideTimer);
-            state.autoSlideTimer = null;
-          }
-        };
-
-        const cleanup = () => {
-          abortController.abort();
-          resizeObserver?.disconnect();
-          intersectionObserver?.disconnect();
-          stopAutoSlide();
-        };
-
-        viewportCleanupHandlers.set(viewport, cleanup);
-
-        bindAutoSlide(state, signal, (observer) => {
-          intersectionObserver = observer;
-        }, stopAutoSlide);
-        bindNavigation(state, signal, stopAutoSlide);
-        bindKeyboard(state, signal);
-        bindTouch(state, signal);
-        bindDots(state, signal);
-
-        const debouncedResize = debounce(() => {
-          updateLayout(state);
-          clampPageIndex(state);
-          createDots(state);
-          updateLayout(state);
-        }, 200);
-
-        if ('ResizeObserver' in window && state.wrapper) {
-          resizeObserver = new ResizeObserver(() => updateLayout(state));
-          resizeObserver.observe(state.wrapper);
-        }
-
-        window.addEventListener('resize', debouncedResize, { signal });
-
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
-            updateLayout(state);
-            createDots(state);
-            setTimeout(() => {
-              updateLayout(state);
-            }, 100);
-          });
-        });
-      });
-    },
-
-    detach(context, settings, trigger) {
-      if (trigger !== 'unload') {
-        return;
-      }
-
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_CAROUSEL_VIEWPORT,
-        PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT,
-        context,
-      ).forEach((viewport) => {
-        viewportCleanupHandlers.get(viewport)?.();
-        viewportCleanupHandlers.delete(viewport);
-      });
-    },
-  };
-
   /**
    * Creates the state object for a carousel instance.
    *
@@ -173,7 +75,9 @@
    */
   function createState(viewport) {
     const wrapper = viewport.querySelector(PB_CAROUSEL__VIEWPORT_OWNED_WRAPPER);
-    const itemsContainer = viewport.querySelector(PB_CAROUSEL__VIEWPORT_OWNED_SLIDES);
+    const itemsContainer = viewport.querySelector(
+      PB_CAROUSEL__VIEWPORT_OWNED_SLIDES,
+    );
 
     if (!wrapper || !itemsContainer) {
       return undefined;
@@ -272,9 +176,7 @@
     const isHybrid = state.config.rawOrientation === 'hybrid';
     const smallScreen = isSmallScreen(state);
 
-    const max = smallScreen
-      ? state.config.itemsSmall
-      : state.config.itemsBig;
+    const max = smallScreen ? state.config.itemsSmall : state.config.itemsBig;
 
     if (isVertical) {
       return Math.min(max, state.items.length);
@@ -376,8 +278,7 @@
       state.wrapper.style.height = '';
       state.wrapper.style.maxWidth = '';
       state.centerOffset = 0;
-    }
-    else {
+    } else {
       const totalWidth = visibleItems.reduce((sum, item, idx) => {
         return sum + getItemSize(item, false) + (idx > 0 ? gap : 0);
       }, 0);
@@ -385,8 +286,7 @@
 
       if (totalWidth > 0 && totalWidth <= wrapperWidth) {
         state.centerOffset = Math.max(0, (wrapperWidth - totalWidth) / 2);
-      }
-      else {
+      } else {
         state.centerOffset = 0;
       }
 
@@ -413,8 +313,7 @@
 
     if (state.config.orientation === 'vertical') {
       state.itemsContainer.style.transform = `translateY(${-offset}px)`;
-    }
-    else {
+    } else {
       state.itemsContainer.style.transform = `translateX(${transform}px)`;
     }
   }
@@ -425,7 +324,10 @@
    * @param {Object} state - The carousel state object.
    */
   function updateNavVisibility(state) {
-    if (state.config.navigation !== 'arrows' && state.config.navigation !== 'both') {
+    if (
+      state.config.navigation !== 'arrows' &&
+      state.config.navigation !== 'both'
+    ) {
       return;
     }
 
@@ -434,13 +336,14 @@
 
     if (!state.config.looping) {
       if (state.prevButton) {
-        state.prevButton.style.visibility = state.pageIndex === 0 ? 'hidden' : 'visible';
+        state.prevButton.style.visibility =
+          state.pageIndex === 0 ? 'hidden' : 'visible';
       }
       if (state.nextButton) {
-        state.nextButton.style.visibility = state.pageIndex >= maxPage ? 'hidden' : 'visible';
+        state.nextButton.style.visibility =
+          state.pageIndex >= maxPage ? 'hidden' : 'visible';
       }
-    }
-    else {
+    } else {
       if (state.prevButton) {
         state.prevButton.style.visibility = 'visible';
       }
@@ -492,9 +395,15 @@
       item.toggleAttribute('inert', !isActive);
     });
 
-    if (state.config.navigation === 'dots' || state.config.navigation === 'both') {
-      const dotsContainer = state.viewport.querySelector(PB_CAROUSEL__VIEWPORT_OWNED_DOTS);
-      const dots = dotsContainer?.querySelectorAll(`.${PB_CAROUSEL__DOT}`) ?? [];
+    if (
+      state.config.navigation === 'dots' ||
+      state.config.navigation === 'both'
+    ) {
+      const dotsContainer = state.viewport.querySelector(
+        PB_CAROUSEL__VIEWPORT_OWNED_DOTS,
+      );
+      const dots =
+        dotsContainer?.querySelectorAll(`.${PB_CAROUSEL__DOT}`) ?? [];
 
       dots.forEach((dot, index) => {
         const isActive = index === state.pageIndex;
@@ -517,9 +426,11 @@
     const itemsVisible = getItemsVisible(state);
     const totalPages = Math.ceil(state.config.totalSlides / itemsVisible);
 
-    state.pageIndex = (state.pageIndex >= totalPages - 1)
-      ? (state.config.looping ? 0 : totalPages - 1)
-      : state.pageIndex + 1;
+    if (state.pageIndex < totalPages - 1) {
+      state.pageIndex += 1;
+    } else {
+      state.pageIndex = state.config.looping ? 0 : totalPages - 1;
+    }
 
     updateLayout(state);
   }
@@ -533,9 +444,11 @@
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
 
-    state.pageIndex = (state.pageIndex > 0)
-      ? state.pageIndex - 1
-      : (state.config.looping ? maxPage : 0);
+    if (state.pageIndex > 0) {
+      state.pageIndex -= 1;
+    } else {
+      state.pageIndex = state.config.looping ? maxPage : 0;
+    }
 
     updateLayout(state);
   }
@@ -559,9 +472,10 @@
    * @param {Function} stopAutoSlide - Stops autoplay interval.
    */
   function bindNavigation(state, signal, stopAutoSlide) {
-    const shouldAutoplay = state.config.slideTime > 0
-      && state.config.slideTime >= 1000
-      && state.config.slideTime <= 15000;
+    const shouldAutoplay =
+      state.config.slideTime > 0 &&
+      state.config.slideTime >= 1000 &&
+      state.config.slideTime <= 15000;
 
     const resetAutoSlide = () => {
       if (shouldAutoplay) {
@@ -570,15 +484,23 @@
       }
     };
 
-    state.nextButton?.addEventListener('click', () => {
-      nextSlide(state);
-      resetAutoSlide();
-    }, { signal });
+    state.nextButton?.addEventListener(
+      'click',
+      () => {
+        nextSlide(state);
+        resetAutoSlide();
+      },
+      { signal },
+    );
 
-    state.prevButton?.addEventListener('click', () => {
-      prevSlide(state);
-      resetAutoSlide();
-    }, { signal });
+    state.prevButton?.addEventListener(
+      'click',
+      () => {
+        prevSlide(state);
+        resetAutoSlide();
+      },
+      { signal },
+    );
   }
 
   /**
@@ -591,32 +513,37 @@
     let startX = 0;
     let startY = 0;
 
-    state.wrapper.addEventListener('touchstart', (event) => {
-      startX = event.touches[0].clientX;
-      startY = event.touches[0].clientY;
-    }, { passive: true, signal });
+    state.wrapper.addEventListener(
+      'touchstart',
+      (event) => {
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+      },
+      { passive: true, signal },
+    );
 
-    state.wrapper.addEventListener('touchend', (event) => {
-      const deltaX = event.changedTouches[0].clientX - startX;
-      const deltaY = event.changedTouches[0].clientY - startY;
+    state.wrapper.addEventListener(
+      'touchend',
+      (event) => {
+        const deltaX = event.changedTouches[0].clientX - startX;
+        const deltaY = event.changedTouches[0].clientY - startY;
 
-      if (Math.abs(deltaX) > Math.abs(deltaY)) {
-        if (deltaX < -50) {
-          nextSlide(state);
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          if (deltaX < -50) {
+            nextSlide(state);
+          } else if (deltaX > 50) {
+            prevSlide(state);
+          }
+        } else if (state.config.orientation === 'vertical') {
+          if (deltaY < -50) {
+            nextSlide(state);
+          } else if (deltaY > 50) {
+            prevSlide(state);
+          }
         }
-        else if (deltaX > 50) {
-          prevSlide(state);
-        }
-      }
-      else if (state.config.orientation === 'vertical') {
-        if (deltaY < -50) {
-          nextSlide(state);
-        }
-        else if (deltaY > 50) {
-          prevSlide(state);
-        }
-      }
-    }, { signal });
+      },
+      { signal },
+    );
   }
 
   /**
@@ -626,7 +553,9 @@
    */
   function createDots(state) {
     const navigationType = state.config.navigation;
-    const dotsContainer = state.viewport.querySelector(PB_CAROUSEL__VIEWPORT_OWNED_DOTS);
+    const dotsContainer = state.viewport.querySelector(
+      PB_CAROUSEL__VIEWPORT_OWNED_DOTS,
+    );
 
     if (!dotsContainer) {
       return;
@@ -663,25 +592,31 @@
    * @param {AbortSignal} signal - Abort signal for listeners.
    */
   function bindDots(state, signal) {
-    const dotsContainer = state.viewport.querySelector(PB_CAROUSEL__VIEWPORT_OWNED_DOTS);
+    const dotsContainer = state.viewport.querySelector(
+      PB_CAROUSEL__VIEWPORT_OWNED_DOTS,
+    );
     if (!dotsContainer) {
       return;
     }
 
-    dotsContainer.addEventListener('click', (event) => {
-      const dot = event.target.closest(`.${PB_CAROUSEL__DOT}`);
-      if (!dot || !dotsContainer.contains(dot)) {
-        return;
-      }
+    dotsContainer.addEventListener(
+      'click',
+      (event) => {
+        const dot = event.target.closest(`.${PB_CAROUSEL__DOT}`);
+        if (!dot || !dotsContainer.contains(dot)) {
+          return;
+        }
 
-      const groupIndex = Number.parseInt(dot.dataset.slideGroup ?? '', 10);
-      if (Number.isNaN(groupIndex)) {
-        return;
-      }
+        const groupIndex = Number.parseInt(dot.dataset.slideGroup ?? '', 10);
+        if (Number.isNaN(groupIndex)) {
+          return;
+        }
 
-      state.pageIndex = groupIndex;
-      updateLayout(state);
-    }, { signal });
+        state.pageIndex = groupIndex;
+        updateLayout(state);
+      },
+      { signal },
+    );
   }
 
   /**
@@ -732,9 +667,11 @@
         'aria-label',
         paused ? Drupal.t('Play slideshow') : Drupal.t('Pause slideshow'),
       );
-      button.querySelector('.pb-nav__play-icon')
+      button
+        .querySelector('.pb-nav__play-icon')
         ?.toggleAttribute('hidden', !paused);
-      button.querySelector('.pb-nav__pause-icon')
+      button
+        .querySelector('.pb-nav__pause-icon')
         ?.toggleAttribute('hidden', paused);
     };
 
@@ -743,46 +680,52 @@
       updatePlayPauseButton();
       if (state.isPaused) {
         stopAutoSlide();
-      }
-      else {
+      } else {
         start();
       }
     };
 
-    state.playPauseButton?.addEventListener(
-      'click',
-      togglePlayPause,
-      { signal },
-    );
+    state.playPauseButton?.addEventListener('click', togglePlayPause, {
+      signal,
+    });
     updatePlayPauseButton();
 
     state.wrapper.addEventListener('mouseenter', stopAutoSlide, { signal });
-    state.wrapper.addEventListener('mouseleave', () => {
-      if (isVisible) {
-        start();
-      }
-    }, { signal });
+    state.wrapper.addEventListener(
+      'mouseleave',
+      () => {
+        if (isVisible) {
+          start();
+        }
+      },
+      { signal },
+    );
 
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) {
-        stopAutoSlide();
-      }
-      else if (isVisible) {
-        start();
-      }
-    }, { signal });
+    document.addEventListener(
+      'visibilitychange',
+      () => {
+        if (document.hidden) {
+          stopAutoSlide();
+        } else if (isVisible) {
+          start();
+        }
+      },
+      { signal },
+    );
 
-    const observer = new IntersectionObserver((entries) => {
-      isVisible = entries[0].isIntersecting;
-      if (isVisible) {
-        start();
-      }
-      else {
-        stopAutoSlide();
-      }
-    }, {
-      threshold: 0.3,
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        isVisible = entries[0].isIntersecting;
+        if (isVisible) {
+          start();
+        } else {
+          stopAutoSlide();
+        }
+      },
+      {
+        threshold: 0.3,
+      },
+    );
 
     observer.observe(state.viewport);
     setObserver(observer);
@@ -803,40 +746,136 @@
       return;
     }
 
-    carouselRoot.addEventListener('keydown', (event) => {
-      const activeElement = document.activeElement;
-      if (!(activeElement instanceof HTMLElement)) {
-        return;
-      }
+    carouselRoot.addEventListener(
+      'keydown',
+      (event) => {
+        const activeElement = document.activeElement;
+        if (!(activeElement instanceof HTMLElement)) {
+          return;
+        }
 
-      const activeCarouselRoot = activeElement.closest(
-        PARAGRAPHS_BUNDLES_PB_CAROUSEL,
-      );
-      if (
-        activeElement !== carouselRoot
-        && activeCarouselRoot !== carouselRoot
-      ) {
-        return;
-      }
+        const activeCarouselRoot = activeElement.closest(
+          PARAGRAPHS_BUNDLES_PB_CAROUSEL,
+        );
+        if (
+          activeElement !== carouselRoot &&
+          activeCarouselRoot !== carouselRoot
+        ) {
+          return;
+        }
 
-      const orientation = state.config.orientation;
+        const orientation = state.config.orientation;
 
-      if (
-        (orientation === 'horizontal' && event.key === 'ArrowRight')
-        || (orientation === 'vertical' && event.key === 'ArrowDown')
-      ) {
-        event.preventDefault();
-        nextSlide(state);
-      }
+        if (
+          (orientation === 'horizontal' && event.key === 'ArrowRight') ||
+          (orientation === 'vertical' && event.key === 'ArrowDown')
+        ) {
+          event.preventDefault();
+          nextSlide(state);
+        }
 
-      if (
-        (orientation === 'horizontal' && event.key === 'ArrowLeft')
-        || (orientation === 'vertical' && event.key === 'ArrowUp')
-      ) {
-        event.preventDefault();
-        prevSlide(state);
-      }
-    }, { signal });
+        if (
+          (orientation === 'horizontal' && event.key === 'ArrowLeft') ||
+          (orientation === 'vertical' && event.key === 'ArrowUp')
+        ) {
+          event.preventDefault();
+          prevSlide(state);
+        }
+      },
+      { signal },
+    );
   }
 
+  Drupal.behaviors.paragraphCarouselBundle = {
+    attach(context, settings) {
+      const viewports = once(
+        ONCE_PB_PARAGRAPH_BUNDLE_CAROUSEL_VIEWPORT,
+        PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT,
+        context,
+      );
+
+      viewports.forEach((viewport) => {
+        const abortController = new AbortController();
+        const { signal } = abortController;
+
+        const state = createState(viewport);
+        if (!state) {
+          return;
+        }
+
+        let resizeObserver = null;
+        let intersectionObserver = null;
+
+        const stopAutoSlide = () => {
+          if (state.autoSlideTimer) {
+            clearInterval(state.autoSlideTimer);
+            state.autoSlideTimer = null;
+          }
+        };
+
+        const cleanup = () => {
+          abortController.abort();
+          resizeObserver?.disconnect();
+          intersectionObserver?.disconnect();
+          stopAutoSlide();
+        };
+
+        viewportCleanupHandlers.set(viewport, cleanup);
+
+        bindAutoSlide(
+          state,
+          signal,
+          (observer) => {
+            intersectionObserver = observer;
+          },
+          stopAutoSlide,
+        );
+        bindNavigation(state, signal, stopAutoSlide);
+        bindKeyboard(state, signal);
+        bindTouch(state, signal);
+        bindDots(state, signal);
+
+        const debouncedResize = debounce(() => {
+          updateLayout(state);
+          clampPageIndex(state);
+          createDots(state);
+          updateLayout(state);
+        }, 200);
+
+        if ('ResizeObserver' in window && state.wrapper) {
+          resizeObserver = new ResizeObserver(() => updateLayout(state));
+          resizeObserver.observe(state.wrapper);
+        }
+
+        window.addEventListener('resize', debouncedResize, { signal });
+
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            updateLayout(state);
+            createDots(state);
+            setTimeout(() => {
+              updateLayout(state);
+            }, 100);
+          });
+        });
+      });
+    },
+
+    detach(context, settings, trigger) {
+      if (trigger !== 'unload') {
+        return;
+      }
+
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_CAROUSEL_VIEWPORT,
+          PARAGRAPHS_BUNDLES_PB_CAROUSEL_PB_CAROUSEL__VIEWPORT,
+          context,
+        )
+        .forEach((viewport) => {
+          viewportCleanupHandlers.get(viewport)?.();
+          viewportCleanupHandlers.delete(viewport);
+        });
+    },
+  };
 })(Drupal, once);

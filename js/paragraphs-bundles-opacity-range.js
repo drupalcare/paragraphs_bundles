@@ -13,8 +13,6 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 ((Drupal, once) => {
-  'use strict';
-
   const DATA_PARA_CUSTOM_OPACITY = 'data-para-custom-opacity';
   const OPACITY_RANGE_SELECTOR = 'para-opacity-range';
   const NUMBER_INPUT_SELECTOR =
@@ -100,7 +98,9 @@
    *   The number input to enhance.
    */
   function initRangeInput(integerInput) {
-    if (integerInput.closest(`[data-drupal-selector="${OPACITY_RANGE_SELECTOR}"]`)) {
+    if (
+      integerInput.closest(`[data-drupal-selector="${OPACITY_RANGE_SELECTOR}"]`)
+    ) {
       return;
     }
 
@@ -131,26 +131,20 @@
 
   Drupal.behaviors.paragraphRange = {
     attach(context) {
-      once(
-        'pb-opacity-range',
-        NUMBER_INPUT_SELECTOR,
-        context,
-      ).forEach((integerInput) => {
-        if (integerInput instanceof HTMLInputElement) {
-          initRangeInput(integerInput);
-        }
-      });
+      once('pb-opacity-range', NUMBER_INPUT_SELECTOR, context).forEach(
+        (integerInput) => {
+          if (integerInput instanceof HTMLInputElement) {
+            initRangeInput(integerInput);
+          }
+        },
+      );
     },
 
     detach(context, _settings, trigger) {
       if (trigger !== 'unload') {
         return;
       }
-      once.remove(
-        'pb-opacity-range',
-        NUMBER_INPUT_SELECTOR,
-        context,
-      );
+      once.remove('pb-opacity-range', NUMBER_INPUT_SELECTOR, context);
     },
   };
 })(Drupal, once);

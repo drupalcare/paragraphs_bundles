@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_3D_CAROUSEL = 'pb-3d-carousel';
   const PB_3D_CAROUSEL__RING = 'pb-3d-carousel__ring';
@@ -28,13 +26,10 @@
   const PB_NAV__NEXT = 'pb-nav__next';
   const PB_IS_ACTIVE = 'pb-is-active';
 
-  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL =
-    `.${PARAGRAPHS_BUNDLES}.${PB_3D_CAROUSEL}`;
-  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING =
-    `${PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL} .${PB_3D_CAROUSEL__RING}`;
+  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL = `.${PARAGRAPHS_BUNDLES}.${PB_3D_CAROUSEL}`;
+  const PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING = `${PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL} .${PB_3D_CAROUSEL__RING}`;
 
-  const PB_3D_CAROUSEL__RING_OWNED_SLIDE =
-    `:scope > .${PB_3D_CAROUSEL__SLIDE}`;
+  const PB_3D_CAROUSEL__RING_OWNED_SLIDE = `:scope > .${PB_3D_CAROUSEL__SLIDE}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING =
     'pb-paragraph-bundle-3d-carousel-ring';
@@ -68,8 +63,8 @@
     if (rect.height <= 0) {
       return false;
     }
-    const visibleHeight = Math.min(rect.bottom, window.innerHeight)
-      - Math.max(rect.top, 0);
+    const visibleHeight =
+      Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
     return visibleHeight / rect.height > 0.2;
   };
 
@@ -99,12 +94,12 @@
         const prevButton = document.getElementById(`prev-${uniqueId}`);
         const nextButton = document.getElementById(`next-${uniqueId}`);
         const playPauseButton = document.getElementById(`btn-${uniqueId}`);
-        const playIcon = playPauseButton?.querySelector(
-          `:scope > .${PB_NAV__PLAY_ICON}`,
-        ) ?? null;
-        const pauseIcon = playPauseButton?.querySelector(
-          `:scope > .${PB_NAV__PAUSE_ICON}`,
-        ) ?? null;
+        const playIcon =
+          playPauseButton?.querySelector(`:scope > .${PB_NAV__PLAY_ICON}`) ??
+          null;
+        const pauseIcon =
+          playPauseButton?.querySelector(`:scope > .${PB_NAV__PAUSE_ICON}`) ??
+          null;
 
         let currentIndex = 0;
         let direction = 1;
@@ -116,10 +111,8 @@
         let lastKnownWidth = window.innerWidth;
         let resizeTimeout = null;
 
-        const rotationDelay = Number.parseInt(
-          ring.getAttribute('data-rotation-delay'),
-          10,
-        ) || 0;
+        const rotationDelay =
+          Number.parseInt(ring.getAttribute('data-rotation-delay'), 10) || 0;
 
         if (rotationDelay <= 0) {
           isPaused = true;
@@ -145,29 +138,6 @@
             clearInterval(intervalId);
             intervalId = null;
           }
-        };
-
-        /**
-         * Starts autoplay when allowed.
-         */
-        const startAutoPlay = () => {
-          pauseAutoPlay();
-          if (
-            cellCount > 1
-            && rotationDelay > 0
-            && !isPaused
-            && isMostlyVisible(ring)
-          ) {
-            intervalId = setInterval(() => advanceSlide(), rotationDelay);
-          }
-        };
-
-        /**
-         * Restarts autoplay after manual navigation.
-         */
-        const restartAutoPlay = () => {
-          pauseAutoPlay();
-          startAutoPlay();
         };
 
         /**
@@ -198,11 +168,11 @@
          * @param {boolean} isActive - Whether the slide is active.
          */
         const updateFocusableElements = (cell, isActive) => {
-          cell.querySelectorAll(
-            'a, button, input, textarea, select, [tabindex]',
-          ).forEach((el) => {
-            el.setAttribute('tabindex', isActive ? '0' : '-1');
-          });
+          cell
+            .querySelectorAll('a, button, input, textarea, select, [tabindex]')
+            .forEach((el) => {
+              el.setAttribute('tabindex', isActive ? '0' : '-1');
+            });
         };
 
         /**
@@ -250,8 +220,7 @@
 
           cells.forEach((cell, index) => {
             cell.style.opacity = '1';
-            cell.style.transform =
-              `rotateY(${theta * index}deg) translateZ(${radius}px)`;
+            cell.style.transform = `rotateY(${theta * index}deg) translateZ(${radius}px)`;
             cell.style.transition = reducedMotion ? 'none' : '';
           });
 
@@ -272,8 +241,7 @@
           ring.style.transition = reducedMotion
             ? 'none'
             : 'transform 0.8s ease-in-out';
-          ring.style.transform =
-            `translateZ(${-radius}px) rotateY(${angle}deg)`;
+          ring.style.transform = `translateZ(${-radius}px) rotateY(${angle}deg)`;
 
           cells.forEach((cell, index) => {
             const isActive = index === currentIndex;
@@ -313,13 +281,35 @@
           if (currentIndex >= cellCount) {
             currentIndex = cellCount - 2;
             direction = -1;
-          }
-          else if (currentIndex < 0) {
+          } else if (currentIndex < 0) {
             currentIndex = 1;
             direction = 1;
           }
 
           updateSlide();
+        };
+
+        /**
+         * Starts autoplay when allowed.
+         */
+        const startAutoPlay = () => {
+          pauseAutoPlay();
+          if (
+            cellCount > 1 &&
+            rotationDelay > 0 &&
+            !isPaused &&
+            isMostlyVisible(ring)
+          ) {
+            intervalId = setInterval(() => advanceSlide(), rotationDelay);
+          }
+        };
+
+        /**
+         * Restarts autoplay after manual navigation.
+         */
+        const restartAutoPlay = () => {
+          pauseAutoPlay();
+          startAutoPlay();
         };
 
         /**
@@ -345,8 +335,7 @@
           updatePlayPauseButton(isPaused);
           if (isPaused) {
             pauseAutoPlay();
-          }
-          else {
+          } else {
             restartAutoPlay();
           }
         };
@@ -358,8 +347,7 @@
           const swipeThreshold = 50;
           if (touchStartX - touchEndX > swipeThreshold) {
             manualAdvance(1);
-          }
-          else if (touchEndX - touchStartX > swipeThreshold) {
+          } else if (touchEndX - touchStartX > swipeThreshold) {
             manualAdvance(-1);
           }
         };
@@ -373,8 +361,7 @@
             previousVisibility = currentlyVisible;
             if (currentlyVisible && !isPaused) {
               startAutoPlay();
-            }
-            else {
+            } else {
               pauseAutoPlay();
             }
           }
@@ -404,14 +391,16 @@
         const handleVisibilityChange = () => {
           if (document.hidden) {
             pauseAutoPlay();
-          }
-          else if (isMostlyVisible(ring) && !isPaused) {
+          } else if (isMostlyVisible(ring) && !isPaused) {
             updateSlide();
             startAutoPlay();
           }
         };
 
-        const debouncedHandleVisibility = debounce(handleCarouselVisibility, 200);
+        const debouncedHandleVisibility = debounce(
+          handleCarouselVisibility,
+          200,
+        );
         const debouncedResize = debounce(() => {
           handleCarouselVisibility();
           handleResizeOrRotate();
@@ -430,66 +419,76 @@
           startAutoPlay();
         }
 
-        nextButton?.addEventListener(
-          'click',
-          () => manualAdvance(1),
-          { signal },
-        );
-        prevButton?.addEventListener(
-          'click',
-          () => manualAdvance(-1),
-          { signal },
-        );
+        nextButton?.addEventListener('click', () => manualAdvance(1), {
+          signal,
+        });
+        prevButton?.addEventListener('click', () => manualAdvance(-1), {
+          signal,
+        });
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
-        playPauseButton?.addEventListener('keydown', (event) => {
-          if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            togglePlayPause();
-          }
-        }, { signal });
+        playPauseButton?.addEventListener(
+          'keydown',
+          (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              togglePlayPause();
+            }
+          },
+          { signal },
+        );
 
-        ring.addEventListener('keydown', (event) => {
-          if (event.key === 'ArrowRight') {
-            event.preventDefault();
-            manualAdvance(1);
-          }
-          else if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            manualAdvance(-1);
-          }
-        }, { signal });
+        ring.addEventListener(
+          'keydown',
+          (event) => {
+            if (event.key === 'ArrowRight') {
+              event.preventDefault();
+              manualAdvance(1);
+            } else if (event.key === 'ArrowLeft') {
+              event.preventDefault();
+              manualAdvance(-1);
+            }
+          },
+          { signal },
+        );
 
         ring.addEventListener('mouseenter', pauseAutoPlay, { signal });
-        ring.addEventListener('mouseleave', () => {
-          if (!isPaused) {
-            startAutoPlay();
-          }
-        }, { signal });
+        ring.addEventListener(
+          'mouseleave',
+          () => {
+            if (!isPaused) {
+              startAutoPlay();
+            }
+          },
+          { signal },
+        );
 
-        ring.addEventListener('touchstart', (event) => {
-          touchStartX = event.touches[0].clientX;
-        }, { passive: true, signal });
-        ring.addEventListener('touchmove', (event) => {
-          touchEndX = event.touches[0].clientX;
-        }, { passive: true, signal });
-        ring.addEventListener('touchend', handleSwipe, { signal });
-
-        document.addEventListener(
-          'scroll',
-          debouncedHandleVisibility,
+        ring.addEventListener(
+          'touchstart',
+          (event) => {
+            touchStartX = event.touches[0].clientX;
+          },
           { passive: true, signal },
         );
-        window.addEventListener(
-          'orientationchange',
-          debouncedResize,
-          { signal },
+        ring.addEventListener(
+          'touchmove',
+          (event) => {
+            touchEndX = event.touches[0].clientX;
+          },
+          { passive: true, signal },
         );
+        ring.addEventListener('touchend', handleSwipe, { signal });
+
+        document.addEventListener('scroll', debouncedHandleVisibility, {
+          passive: true,
+          signal,
+        });
+        window.addEventListener('orientationchange', debouncedResize, {
+          signal,
+        });
         window.addEventListener('resize', debouncedResize, { signal });
-        document.addEventListener(
-          'visibilitychange',
-          handleVisibilityChange,
-          { signal },
-        );
+        document.addEventListener('visibilitychange', handleVisibilityChange, {
+          signal,
+        });
 
         ringCleanupHandlers.set(ring, () => {
           abortController.abort();
@@ -506,12 +505,14 @@
             cell.removeAttribute('inert');
           });
           if (root instanceof HTMLElement) {
-            root.querySelectorAll(
-              `#prev-${uniqueId}, #next-${uniqueId}, #btn-${uniqueId}`,
-            ).forEach((button) => {
-              button.classList.remove('pb-is-hidden');
-              button.setAttribute('tabindex', '0');
-            });
+            root
+              .querySelectorAll(
+                `#prev-${uniqueId}, #next-${uniqueId}, #btn-${uniqueId}`,
+              )
+              .forEach((button) => {
+                button.classList.remove('pb-is-hidden');
+                button.setAttribute('tabindex', '0');
+              });
           }
         });
       });
@@ -522,14 +523,16 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING,
-        PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING,
-        context,
-      ).forEach((ring) => {
-        ringCleanupHandlers.get(ring)?.();
-        ringCleanupHandlers.delete(ring);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_3D_CAROUSEL_RING,
+          PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL_PB_3D_CAROUSEL__RING,
+          context,
+        )
+        .forEach((ring) => {
+          ringCleanupHandlers.get(ring)?.();
+          ringCleanupHandlers.delete(ring);
+        });
     },
   };
 })(Drupal, once);

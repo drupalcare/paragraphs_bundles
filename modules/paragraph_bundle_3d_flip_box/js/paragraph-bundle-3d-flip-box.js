@@ -24,8 +24,6 @@
 // phpcs:disable Drupal.NamingConventions.UpperCaseConstant
 // phpcs:disable Generic.PHP.UpperCaseConstant
 ((Drupal, once) => {
-  'use strict';
-
   /**
    * Applies the presented-face state to one flip box.
    *
@@ -116,7 +114,9 @@
 
   Drupal.behaviors.pb3dFlipBox = {
     attach(context) {
-      once('pb3dFlipBox', '.pb-3d-flip-box__scene', context).forEach(initFlipBox);
+      once('pb3dFlipBox', '.pb-3d-flip-box__scene', context).forEach(
+        initFlipBox,
+      );
     },
   };
 })(Drupal, once);

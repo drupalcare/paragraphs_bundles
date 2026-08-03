@@ -14,21 +14,16 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_PARALLAX_SECTION = 'pb-parallax-section';
   const PB_PARALLAX__BG = 'pb-parallax__bg';
   const PB_IS_VISIBLE = 'pb-is-visible';
   const PARALLAX_CSS = 'parallax-css';
 
-  const PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION =
-    `.${PARAGRAPHS_BUNDLES}.${PB_PARALLAX_SECTION}`;
-  const PB_PARALLAX_SECTION_OWNED_INNER =
-    ':scope > .pb-ui-inner';
+  const PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION = `.${PARAGRAPHS_BUNDLES}.${PB_PARALLAX_SECTION}`;
+  const PB_PARALLAX_SECTION_OWNED_INNER = ':scope > .pb-ui-inner';
 
-  const ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX =
-    'pb-paragraph-bundle-parallax';
+  const ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX = 'pb-paragraph-bundle-parallax';
 
   /** @type {Set<HTMLElement>} */
   const activeSections = new Set();
@@ -75,8 +70,8 @@
    */
   const isInViewport = (element) => {
     const rect = element.getBoundingClientRect();
-    const windowHeight = window.innerHeight
-      || document.documentElement.clientHeight;
+    const windowHeight =
+      window.innerHeight || document.documentElement.clientHeight;
 
     return rect.bottom > 0 && rect.top < windowHeight;
   };
@@ -92,8 +87,7 @@
 
     if (isInViewport(element)) {
       inner.classList.add(PB_IS_VISIBLE);
-    }
-    else {
+    } else {
       inner.classList.remove(PB_IS_VISIBLE);
     }
   };
@@ -137,16 +131,17 @@
       return;
     }
 
-    const speed = parseFloat(element.getAttribute('data-parallax-speed') || '')
-      || 0.6;
+    const speed =
+      parseFloat(element.getAttribute('data-parallax-speed') || '') || 0.6;
     const effect = element.getAttribute('data-parallax-effect') || 'translate';
 
     const scrollPosition = window.pageYOffset;
     const windowHeight = window.innerHeight;
     const elementRect = element.getBoundingClientRect();
     const elementTop = elementRect.top + scrollPosition;
-    const offset = ((scrollPosition + windowHeight - elementTop) * speed)
-      - (windowHeight * speed);
+    const offset =
+      (scrollPosition + windowHeight - elementTop) * speed -
+      windowHeight * speed;
 
     bgEl.style.transform = '';
     bgEl.style.filter = '';
@@ -161,7 +156,6 @@
         const blurAmount = Math.min(Math.abs(offset) / 100, 10);
         bgEl.style.filter = `blur(${blurAmount}px)`;
         break;
-
       }
 
       case 'fade':
@@ -169,21 +163,18 @@
         const opacity = Math.max(1 - Math.abs(offset) / 1000, 0);
         bgEl.style.opacity = String(opacity);
         break;
-
       }
 
       case 'scale': {
         const scaleAmount = Math.max(1 + Math.abs(offset) / 1000, 1);
         bgEl.style.transform = `scale(${scaleAmount})`;
         break;
-
       }
 
       case 'rotate': {
         const rotateAmount = Math.max(-8, Math.min(8, offset / 10));
         bgEl.style.transform = `rotate(${rotateAmount}deg)`;
         break;
-
       }
 
       case 'legacy':
@@ -292,13 +283,15 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX,
-        PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION,
-        context,
-      ).forEach((element) => {
-        unregisterSection(element);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_PARALLAX,
+          PARAGRAPHS_BUNDLES_PB_PARALLAX_SECTION,
+          context,
+        )
+        .forEach((element) => {
+          unregisterSection(element);
+        });
     },
   };
 })(Drupal, once);

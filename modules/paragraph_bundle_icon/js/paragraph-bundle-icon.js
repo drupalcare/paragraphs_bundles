@@ -13,8 +13,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_ICON = 'pb-icon';
   const PARAGRAPHS_BUNDLES_PB_ICON = `.${PARAGRAPHS_BUNDLES}.${PB_ICON}`;
@@ -29,14 +27,14 @@
    * @param {HTMLElement} paragraph
    */
   const fadeInIcons = (paragraph) => {
-    paragraph.querySelectorAll(`.${ICON_WRAPPER}.${MATERIAL_ICONS_HIDDEN}`).forEach(
-      (iconWrapper) => {
+    paragraph
+      .querySelectorAll(`.${ICON_WRAPPER}.${MATERIAL_ICONS_HIDDEN}`)
+      .forEach((iconWrapper) => {
         if (iconWrapper.closest(PARAGRAPHS_BUNDLES_PB_ICON) !== paragraph) {
           return;
         }
         iconWrapper.classList.remove(MATERIAL_ICONS_HIDDEN);
-      },
-    );
+      });
   };
 
   /**
@@ -56,9 +54,13 @@
     }
 
     const timeoutId = window.setTimeout(reveal, 500);
-    signal.addEventListener('abort', () => {
-      window.clearTimeout(timeoutId);
-    }, { once: true });
+    signal.addEventListener(
+      'abort',
+      () => {
+        window.clearTimeout(timeoutId);
+      },
+      { once: true },
+    );
   };
 
   /**
@@ -87,17 +89,19 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_ICON,
-        PARAGRAPHS_BUNDLES_PB_ICON,
-        context,
-      ).forEach((paragraph) => {
-        const abortController = iconAbortControllers.get(paragraph);
-        if (abortController) {
-          abortController.abort();
-          iconAbortControllers.delete(paragraph);
-        }
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_ICON,
+          PARAGRAPHS_BUNDLES_PB_ICON,
+          context,
+        )
+        .forEach((paragraph) => {
+          const abortController = iconAbortControllers.get(paragraph);
+          if (abortController) {
+            abortController.abort();
+            iconAbortControllers.delete(paragraph);
+          }
+        });
     },
   };
 })(Drupal, once);

@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_MODAL = 'pb-modal';
   const PB_MODAL__DIALOG = 'pb-modal__dialog';
@@ -26,17 +24,12 @@
   const PB_UI_BTN = 'pb-ui-btn';
   const PB_IS_OPEN = 'pb-is-open';
 
-  const PARAGRAPHS_BUNDLES_PB_MODAL =
-    `.${PARAGRAPHS_BUNDLES}.${PB_MODAL}`;
-  const PARAGRAPHS_BUNDLES_PB_MODAL_PB_MODAL__DIALOG =
-    `${PARAGRAPHS_BUNDLES_PB_MODAL} > .${PB_MODAL__DIALOG}`;
+  const PARAGRAPHS_BUNDLES_PB_MODAL = `.${PARAGRAPHS_BUNDLES}.${PB_MODAL}`;
+  const PARAGRAPHS_BUNDLES_PB_MODAL_PB_MODAL__DIALOG = `${PARAGRAPHS_BUNDLES_PB_MODAL} > .${PB_MODAL__DIALOG}`;
 
-  const PB_MODAL_OWNED_OPEN_BUTTON =
-    `:scope > .${PB_MODAL__BUTTON} > .${PB_UI_BTN}`;
-  const PB_MODAL__DIALOG_OWNED_CONTENT =
-    `:scope > .${PB_MODAL__CONTENT}`;
-  const PB_MODAL__DIALOG_OWNED_CLOSE =
-    `:scope > .${PB_MODAL__CONTENT} > .${PB_MODAL__INNER} > .${PB_MODAL__HEADER} > .${PB_UI_BTN}`;
+  const PB_MODAL_OWNED_OPEN_BUTTON = `:scope > .${PB_MODAL__BUTTON} > .${PB_UI_BTN}`;
+  const PB_MODAL__DIALOG_OWNED_CONTENT = `:scope > .${PB_MODAL__CONTENT}`;
+  const PB_MODAL__DIALOG_OWNED_CLOSE = `:scope > .${PB_MODAL__CONTENT} > .${PB_MODAL__INNER} > .${PB_MODAL__HEADER} > .${PB_UI_BTN}`;
   const FOCUSABLE_SELECTOR = [
     'a[href]',
     'area[href]',
@@ -68,9 +61,11 @@
 
     const style = window.getComputedStyle(element);
 
-    return style.display !== 'none'
-      && style.visibility !== 'hidden'
-      && element.getClientRects().length > 0;
+    return (
+      style.display !== 'none' &&
+      style.visibility !== 'hidden' &&
+      element.getClientRects().length > 0
+    );
   };
 
   /**
@@ -91,8 +86,11 @@
 
     while (branch.parentElement && branch.parentElement !== document.body) {
       const parent = branch.parentElement;
+      // Bound per iteration so the callback closes over a constant rather
+      // than over the reassigned loop variable.
+      const current = branch;
       Array.from(parent.children).forEach((sibling) => {
-        if (sibling !== branch && sibling instanceof HTMLElement) {
+        if (sibling !== current && sibling instanceof HTMLElement) {
           inertElement(sibling);
         }
       });
@@ -161,9 +159,7 @@
         const modalContent = dialog.querySelector(
           PB_MODAL__DIALOG_OWNED_CONTENT,
         );
-        const closeButton = dialog.querySelector(
-          PB_MODAL__DIALOG_OWNED_CLOSE,
-        );
+        const closeButton = dialog.querySelector(PB_MODAL__DIALOG_OWNED_CLOSE);
 
         if (!(openButton instanceof HTMLElement) || !modalContent) {
           return;
@@ -185,7 +181,30 @@
             dialog.querySelectorAll(FOCUSABLE_SELECTOR),
           ).filter(isVisibleFocusable);
           firstFocusableElement = focusableElements[0];
-          lastFocusableElement = focusableElements[focusableElements.length - 1];
+          lastFocusableElement =
+            focusableElements[focusableElements.length - 1];
+        };
+
+        const hideModal = () => {
+          sessionController?.abort();
+          sessionController = null;
+          removeDialogInert(inertedElements);
+
+          dialog.classList.remove(PB_IS_OPEN);
+          dialog.removeAttribute('aria-modal');
+          dialog.setAttribute('aria-hidden', 'true');
+          openButton.setAttribute('aria-expanded', 'false');
+          openButton.focus();
+
+          Drupal.announce(Drupal.t('Dialog closed'), 'polite');
+
+          if (openModalInstance?.root === root) {
+            openModalInstance = null;
+          }
+
+          if (!openModalInstance) {
+            document.documentElement.classList.remove('pb-u-modal-open');
+          }
         };
 
         const trapFocus = (event) => {
@@ -219,8 +238,7 @@
               lastFocusableElement?.focus();
               event.preventDefault();
             }
-          }
-          else if (document.activeElement === lastFocusableElement) {
+          } else if (document.activeElement === lastFocusableElement) {
             firstFocusableElement?.focus();
             event.preventDefault();
           }
@@ -229,28 +247,6 @@
         const closeModalOnBackdropClick = (event) => {
           if (event.target === dialog) {
             hideModal();
-          }
-        };
-
-        const hideModal = () => {
-          sessionController?.abort();
-          sessionController = null;
-          removeDialogInert(inertedElements);
-
-          dialog.classList.remove(PB_IS_OPEN);
-          dialog.removeAttribute('aria-modal');
-          dialog.setAttribute('aria-hidden', 'true');
-          openButton.setAttribute('aria-expanded', 'false');
-          openButton.focus();
-
-          Drupal.announce(Drupal.t('Dialog closed'), 'polite');
-
-          if (openModalInstance?.root === root) {
-            openModalInstance = null;
-          }
-
-          if (!openModalInstance) {
-            document.documentElement.classList.remove('pb-u-modal-open');
           }
         };
 
@@ -276,13 +272,14 @@
           refreshFocusableElements();
           if (firstFocusableElement) {
             firstFocusableElement.focus();
-          }
-          else {
+          } else {
             dialog.focus();
           }
 
           Drupal.announce(
-            Drupal.t('@title opened', { '@title': getDialogAccessibleName(dialog) }),
+            Drupal.t('@title opened', {
+              '@title': getDialogAccessibleName(dialog),
+            }),
             'polite',
           );
 
@@ -314,14 +311,16 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_MODAL_DIALOG,
-        PARAGRAPHS_BUNDLES_PB_MODAL_PB_MODAL__DIALOG,
-        context,
-      ).forEach((dialog) => {
-        modalCleanupHandlers.get(dialog)?.();
-        modalCleanupHandlers.delete(dialog);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_MODAL_DIALOG,
+          PARAGRAPHS_BUNDLES_PB_MODAL_PB_MODAL__DIALOG,
+          context,
+        )
+        .forEach((dialog) => {
+          modalCleanupHandlers.get(dialog)?.();
+          modalCleanupHandlers.delete(dialog);
+        });
     },
   };
 })(Drupal, once);

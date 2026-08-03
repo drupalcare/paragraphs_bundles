@@ -6,8 +6,6 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 (function (Drupal, once) {
-  'use strict';
-
   const FIELD_SELECTORS = {
     vm_title: '.field--name-pb-content-nf-title-only',
     vm_teaser_text: '.field--name-pb-content-nf-teaser-text',
@@ -42,7 +40,9 @@
       }
     });
 
-    const selectedFieldContainer = context.querySelector(FIELD_SELECTORS[value]);
+    const selectedFieldContainer = context.querySelector(
+      FIELD_SELECTORS[value],
+    );
     if (selectedFieldContainer) {
       selectedFieldContainer.style.display = 'block';
     }
@@ -76,13 +76,16 @@
 
   Drupal.behaviors.pbNodeReferenceConditionalFields = {
     attach(context) {
-      once('pbNodeReferenceConditionalFields', '.field--name-pb-content-view-mode select', context)
-        .forEach((viewModeSelect) => {
-          syncViewModeFromFields(context, viewModeSelect);
-          viewModeSelect.addEventListener('change', () => {
-            toggleFields(context, viewModeSelect, true);
-          });
+      once(
+        'pbNodeReferenceConditionalFields',
+        '.field--name-pb-content-view-mode select',
+        context,
+      ).forEach((viewModeSelect) => {
+        syncViewModeFromFields(context, viewModeSelect);
+        viewModeSelect.addEventListener('change', () => {
+          toggleFields(context, viewModeSelect, true);
         });
+      });
     },
   };
 })(Drupal, once);

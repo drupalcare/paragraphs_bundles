@@ -11,8 +11,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_LAYOUT = 'pb-layout';
   const PB_TWO_COLUMNS = 'pb-two-columns';
@@ -23,12 +21,9 @@
   const PB_IS_COLLAPSED = 'pb-is-collapsed';
   const PB_IS_STICKY = 'pb-is-sticky';
 
-  const PARAGRAPHS_BUNDLES_PB_LAYOUT =
-    `.${PARAGRAPHS_BUNDLES}.${PB_LAYOUT}`;
-  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS =
-    `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_TWO_COLUMNS}`;
-  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS =
-    `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_THREE_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT = `.${PARAGRAPHS_BUNDLES}.${PB_LAYOUT}`;
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS = `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_TWO_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS = `${PARAGRAPHS_BUNDLES_PB_LAYOUT}.${PB_THREE_COLUMNS}`;
   const LAYOUT_GRID_SELECTOR = [
     `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_TWO_COLUMNS} .${PB_TWO_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR})`,
     `${PARAGRAPHS_BUNDLES_PB_LAYOUT_PB_THREE_COLUMNS} .${PB_THREE_COLUMNS}:not(.${PB_LAYOUT_COL__TOOLBAR})`,
@@ -43,8 +38,7 @@
   ].join(', ');
 
   const PB_LAYOUT_GRID_OWNED_COLUMN = ':scope > [data-col]';
-  const PB_LAYOUT_COLUMN_OWNED_CONTENT =
-    `:scope > .${PB_LAYOUT_COL__CONTENT}`;
+  const PB_LAYOUT_COLUMN_OWNED_CONTENT = `:scope > .${PB_LAYOUT_COL__CONTENT}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_COLUMN =
     'pb-paragraph-bundle-layout-column';
@@ -91,8 +85,7 @@
   const setCollapsed = (col, collapsed) => {
     if (collapsed) {
       col.setAttribute('data-collapsed', '');
-    }
-    else {
+    } else {
       col.removeAttribute('data-collapsed');
     }
   };
@@ -127,13 +120,12 @@
       return;
     }
 
-    collapsed.sort(
-      (a, b) => COL_ORDER.indexOf(a) - COL_ORDER.indexOf(b),
-    );
+    collapsed.sort((a, b) => COL_ORDER.indexOf(a) - COL_ORDER.indexOf(b));
 
-    const cls = collapsed.length === 1
-      ? `${collapsed[0]}-is-collapsed`
-      : `${collapsed.join('-')}-collapsed`;
+    const cls =
+      collapsed.length === 1
+        ? `${collapsed[0]}-is-collapsed`
+        : `${collapsed.join('-')}-collapsed`;
 
     if (COLLAPSE_CLASSES.includes(cls)) {
       paragraph.classList.add(cls);
@@ -159,21 +151,17 @@
    * @return {number[]}
    */
   const parseRatios = (grid) => {
-    const classes = grid.className.split(/\s+/);
-    for (const className of classes) {
-      const match = className.match(
-        /^pb-(?:two|three)-columns--l(\d+)(?:-l(\d+))?(?:-l(\d+))?$/,
-      );
-      if (match) {
-        const ratios = [parseInt(match[1], 10)];
-        if (match[2]) {
-          ratios.push(parseInt(match[2], 10));
-        }
-        if (match[3]) {
-          ratios.push(parseInt(match[3], 10));
-        }
-        return ratios;
-      }
+    const pattern =
+      /^pb-(?:two|three)-columns--l(\d+)(?:-l(\d+))?(?:-l(\d+))?$/;
+    const match = grid.className
+      .split(/\s+/)
+      .map((className) => className.match(pattern))
+      .find((result) => result !== null);
+
+    if (match) {
+      return [match[1], match[2], match[3]]
+        .filter((ratio) => ratio !== undefined)
+        .map((ratio) => parseInt(ratio, 10));
     }
 
     const count = grid.querySelectorAll(PB_LAYOUT_GRID_OWNED_COLUMN).length;
@@ -187,8 +175,8 @@
    */
   const getToolbar = (grid) => {
     const prev = grid.previousElementSibling;
-    return prev instanceof HTMLElement
-      && prev.classList.contains(PB_LAYOUT_COL__TOOLBAR)
+    return prev instanceof HTMLElement &&
+      prev.classList.contains(PB_LAYOUT_COL__TOOLBAR)
       ? prev
       : null;
   };
@@ -212,8 +200,7 @@
       if (isCollapsed(column)) {
         parts.push('0fr');
         hasCollapsed = true;
-      }
-      else {
+      } else {
         parts.push(`${ratios[index] || 1}fr`);
         visibleCount += 1;
       }
@@ -238,8 +225,7 @@
 
       try {
         mqMatches = window.matchMedia(`(min-width: ${min})`).matches;
-      }
-      catch {
+      } catch {
         mqMatches = true;
       }
 
@@ -340,8 +326,7 @@
       if (btn) {
         if (collapsed) {
           btn.setAttribute('data-collapsed', '');
-        }
-        else {
+        } else {
           btn.removeAttribute('data-collapsed');
         }
       }
@@ -362,7 +347,10 @@
     const iconPos = grid.getAttribute('data-col-icon-position') || 'edge';
     const anim = grid.getAttribute('data-col-anim') || 'slide';
     const animMs = parseInt(grid.getAttribute('data-col-anim-ms') || '300', 10);
-    const stickyTop = parseInt(grid.getAttribute('data-col-sticky-top') || '0', 10);
+    const stickyTop = parseInt(
+      grid.getAttribute('data-col-sticky-top') || '0',
+      10,
+    );
     const layoutMin = grid.getAttribute('data-col-layout-min') || '62rem';
     const toolbar = getToolbar(grid);
 
@@ -379,8 +367,7 @@
 
     try {
       mq = window.matchMedia(`(min-width: ${layoutMin})`);
-    }
-    catch {
+    } catch {
       mq = null;
     }
 
@@ -397,8 +384,7 @@
     if (anim === 'none' || animMs <= 0) {
       grid.style.setProperty('--pb-col-anim-ms', '0ms');
       toolbar.style.setProperty('--pb-col-anim-ms', '0ms');
-    }
-    else if (!Number.isNaN(animMs)) {
+    } else if (!Number.isNaN(animMs)) {
       const animValue = `${animMs}ms`;
       grid.style.setProperty('--pb-col-anim-ms', animValue);
       toolbar.style.setProperty('--pb-col-anim-ms', animValue);
@@ -426,8 +412,7 @@
     if (aboveBreakpoint) {
       updateCollapseClass(grid);
       setGridColumns(grid, ratios);
-    }
-    else {
+    } else {
       expandAllColumns(grid);
     }
 
@@ -437,28 +422,36 @@
       const toggleButton = colName ? getToggleButton(toolbar, colName) : null;
       const content = col.querySelector(PB_LAYOUT_COLUMN_OWNED_CONTENT);
 
-      if (!(content instanceof HTMLElement) || !toggleEnabled || !toggleButton) {
+      if (
+        !(content instanceof HTMLElement) ||
+        !toggleEnabled ||
+        !toggleButton
+      ) {
         return;
       }
 
       syncAriaState(col, toggleButton, content);
 
-      toggleButton.addEventListener('click', () => {
-        if (!aboveBreakpoint) {
-          return;
-        }
+      toggleButton.addEventListener(
+        'click',
+        () => {
+          if (!aboveBreakpoint) {
+            return;
+          }
 
-        const sx = window.scrollX;
-        const sy = window.scrollY;
-        const collapsing = !isCollapsed(col);
+          const sx = window.scrollX;
+          const sy = window.scrollY;
+          const collapsing = !isCollapsed(col);
 
-        setCollapsed(col, collapsing);
-        toggleButton.toggleAttribute('data-collapsed', collapsing);
-        updateCollapseClass(grid);
-        syncAriaState(col, toggleButton, content, true);
-        setGridColumns(grid, ratios);
-        restoreScrollAfterLayout(sx, sy);
-      }, { signal });
+          setCollapsed(col, collapsing);
+          toggleButton.toggleAttribute('data-collapsed', collapsing);
+          updateCollapseClass(grid);
+          syncAriaState(col, toggleButton, content, true);
+          setGridColumns(grid, ratios);
+          restoreScrollAfterLayout(sx, sy);
+        },
+        { signal },
+      );
     });
 
     if (mq) {
@@ -466,8 +459,7 @@
         aboveBreakpoint = event.matches;
         if (aboveBreakpoint) {
           restoreDefaultStates(grid, ratios);
-        }
-        else {
+        } else {
           expandAllColumns(grid);
         }
       };
@@ -534,14 +526,16 @@
         LAYOUT_COLUMN_SELECTOR,
         context,
       );
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_GRID,
-        LAYOUT_GRID_SELECTOR,
-        context,
-      ).forEach((grid) => {
-        gridAbortControllers.get(grid)?.abort();
-        gridAbortControllers.delete(grid);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_GRID,
+          LAYOUT_GRID_SELECTOR,
+          context,
+        )
+        .forEach((grid) => {
+          gridAbortControllers.get(grid)?.abort();
+          gridAbortControllers.delete(grid);
+        });
       once.remove(
         ONCE_PB_PARAGRAPH_BUNDLE_LAYOUT_STICKY,
         LAYOUT_STICKY_SELECTOR,

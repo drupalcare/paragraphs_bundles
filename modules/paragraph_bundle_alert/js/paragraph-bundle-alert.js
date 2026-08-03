@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_ALERT = 'pb-alert';
   const PB_ALERT__CLOSE = 'pb-alert__close';
@@ -24,17 +22,12 @@
   const PB_ALERT__PLAY_ICON = 'pb-alert__play-icon';
   const PB_IS_CLOSED = 'pb-is-closed';
 
-  const PARAGRAPHS_BUNDLES_PB_ALERT =
-    `.${PARAGRAPHS_BUNDLES}.${PB_ALERT}`;
+  const PARAGRAPHS_BUNDLES_PB_ALERT = `.${PARAGRAPHS_BUNDLES}.${PB_ALERT}`;
 
-  const PB_ALERT_OWNED_CLOSE =
-    `:scope > .pb-ui-inner .${PB_ALERT__CLOSE}`;
-  const PB_ALERT_OWNED_CONTENT =
-    `:scope > .pb-ui-inner > .pb-content__full.${PB_ALERT__CONTENT}`;
-  const PB_ALERT_OWNED_COUNTDOWN_LABEL =
-    `:scope [data-pb-countdown-label]`;
-  const PB_ALERT_OWNED_COUNTDOWN_PAUSE =
-    `:scope [data-pb-countdown-pause]`;
+  const PB_ALERT_OWNED_CLOSE = `:scope > .pb-ui-inner .${PB_ALERT__CLOSE}`;
+  const PB_ALERT_OWNED_CONTENT = `:scope > .pb-ui-inner > .pb-content__full.${PB_ALERT__CONTENT}`;
+  const PB_ALERT_OWNED_COUNTDOWN_LABEL = `:scope [data-pb-countdown-label]`;
+  const PB_ALERT_OWNED_COUNTDOWN_PAUSE = `:scope [data-pb-countdown-pause]`;
 
   const FOCUSABLE_SELECTOR =
     'a[href], button, input, textarea, select, [tabindex]:not([tabindex="-1"])';
@@ -42,8 +35,7 @@
 
   const STORAGE_KEY_PREFIX = 'pb-alert-closed-';
 
-  const ONCE_PB_PARAGRAPH_BUNDLE_ALERT =
-    'pb-paragraph-bundle-alert';
+  const ONCE_PB_PARAGRAPH_BUNDLE_ALERT = 'pb-paragraph-bundle-alert';
 
   /** @type {WeakMap<HTMLElement, AbortController>} */
   const alertAbortControllers = new WeakMap();
@@ -74,8 +66,7 @@
       const key = `${STORAGE_KEY_PREFIX}${id}-${getTodayKey()}`;
       try {
         return localStorage.getItem(key) === '1';
-      }
-      catch {
+      } catch {
         return false;
       }
     }
@@ -83,8 +74,7 @@
       const key = `${STORAGE_KEY_PREFIX}${id}`;
       try {
         return sessionStorage.getItem(key) === '1';
-      }
-      catch {
+      } catch {
         return false;
       }
     }
@@ -101,13 +91,11 @@
       if (persist === 'today') {
         const key = `${STORAGE_KEY_PREFIX}${id}-${getTodayKey()}`;
         localStorage.setItem(key, '1');
-      }
-      else if (persist === 'session') {
+      } else if (persist === 'session') {
         const key = `${STORAGE_KEY_PREFIX}${id}`;
         sessionStorage.setItem(key, '1');
       }
-    }
-    catch {
+    } catch {
       // Storage can be unavailable in private contexts; dismissal still works.
     }
   };
@@ -171,8 +159,7 @@
       const originalTabindex = el.getAttribute(DATA_PB_ALERT_TABINDEX);
       if (originalTabindex) {
         el.setAttribute('tabindex', originalTabindex);
-      }
-      else {
+      } else {
         el.removeAttribute('tabindex');
       }
       el.removeAttribute(DATA_PB_ALERT_TABINDEX);
@@ -205,8 +192,7 @@
           anchor.setAttribute('tabindex', '-1');
         }
         anchor.focus({ preventScroll: true });
-      }
-      else if (document.activeElement instanceof HTMLElement) {
+      } else if (document.activeElement instanceof HTMLElement) {
         document.activeElement.blur();
       }
     }
@@ -245,17 +231,18 @@
       alertBox.setAttribute('aria-hidden', 'true');
       alertBox.inert = true;
       updateTabindex(focusableElements, false);
-    }
-    else {
+    } else {
       alertBox.removeAttribute('aria-hidden');
       alertBox.inert = false;
       updateTabindex(focusableElements, true);
     }
 
-    const dismissalType = alertBox.getAttribute('data-dismissal-type') || 'none';
+    const dismissalType =
+      alertBox.getAttribute('data-dismissal-type') || 'none';
 
     if (dismissalType === 'date_range') {
-      const endTs = parseInt(alertBox.getAttribute('data-date-range-end'), 10) || 0;
+      const endTs =
+        parseInt(alertBox.getAttribute('data-date-range-end'), 10) || 0;
       if (endTs > 0) {
         const checkEnd = () => {
           if (signal.aborted) {
@@ -273,16 +260,18 @@
       }
     }
 
-    let countdownSeconds = parseInt(
-      alertBox.getAttribute('data-countdown-seconds'),
-      10,
-    ) || 0;
+    let countdownSeconds =
+      parseInt(alertBox.getAttribute('data-countdown-seconds'), 10) || 0;
     const showCountdownLabel =
       alertBox.getAttribute('data-show-countdown-label') === '1';
     const countdownLabelEl = alertBox.querySelector(
       PB_ALERT_OWNED_COUNTDOWN_LABEL,
     );
-    if (dismissalType === 'countdown' && countdownSeconds <= 0 && countdownLabelEl) {
+    if (
+      dismissalType === 'countdown' &&
+      countdownSeconds <= 0 &&
+      countdownLabelEl
+    ) {
       const fromLabel = parseInt(countdownLabelEl.textContent ?? '', 10);
       if (!Number.isNaN(fromLabel) && fromLabel > 0) {
         countdownSeconds = fromLabel;
@@ -303,7 +292,9 @@
       //     timer that is about to delete what they are reading.
       //   - `hoverPaused` — pointer or keyboard focus inside the alert. Reading
       //     or tabbing through it is itself evidence the user needs more time.
-      const pauseButton = alertBox.querySelector(PB_ALERT_OWNED_COUNTDOWN_PAUSE);
+      const pauseButton = alertBox.querySelector(
+        PB_ALERT_OWNED_COUNTDOWN_PAUSE,
+      );
       let manuallyPaused = false;
       let hoverPaused = false;
       const isPaused = () => manuallyPaused || hoverPaused;
@@ -331,14 +322,19 @@
 
       if (pauseButton) {
         const syncPauseButton = () => {
-          pauseButton.setAttribute('aria-pressed', manuallyPaused ? 'true' : 'false');
+          pauseButton.setAttribute(
+            'aria-pressed',
+            manuallyPaused ? 'true' : 'false',
+          );
           pauseButton.setAttribute(
             'aria-label',
             manuallyPaused
               ? Drupal.t('Resume the countdown that dismisses this alert')
               : Drupal.t('Pause the countdown that dismisses this alert'),
           );
-          const pauseIcon = pauseButton.querySelector(`.${PB_ALERT__PAUSE_ICON}`);
+          const pauseIcon = pauseButton.querySelector(
+            `.${PB_ALERT__PAUSE_ICON}`,
+          );
           const playIcon = pauseButton.querySelector(`.${PB_ALERT__PLAY_ICON}`);
           if (pauseIcon) {
             pauseIcon.hidden = manuallyPaused;
@@ -348,29 +344,55 @@
           }
         };
 
-        pauseButton.addEventListener('click', () => {
-          manuallyPaused = !manuallyPaused;
-          syncPauseButton();
-          if (typeof Drupal.announce === 'function') {
-            Drupal.announce(
-              manuallyPaused
-                ? Drupal.t('Countdown paused')
-                : Drupal.t('Countdown resumed'),
-              'polite',
-            );
-          }
-        }, { signal });
+        pauseButton.addEventListener(
+          'click',
+          () => {
+            manuallyPaused = !manuallyPaused;
+            syncPauseButton();
+            if (typeof Drupal.announce === 'function') {
+              Drupal.announce(
+                manuallyPaused
+                  ? Drupal.t('Countdown paused')
+                  : Drupal.t('Countdown resumed'),
+                'polite',
+              );
+            }
+          },
+          { signal },
+        );
       }
 
-      alertBox.addEventListener('mouseenter', () => { hoverPaused = true; }, { signal });
-      alertBox.addEventListener('mouseleave', () => { hoverPaused = false; }, { signal });
-      alertBox.addEventListener('focusin', () => { hoverPaused = true; }, { signal });
-      alertBox.addEventListener('focusout', (event) => {
-        // relatedTarget is where focus is going; null means it left the document.
-        if (!alertBox.contains(event.relatedTarget)) {
+      alertBox.addEventListener(
+        'mouseenter',
+        () => {
+          hoverPaused = true;
+        },
+        { signal },
+      );
+      alertBox.addEventListener(
+        'mouseleave',
+        () => {
           hoverPaused = false;
-        }
-      }, { signal });
+        },
+        { signal },
+      );
+      alertBox.addEventListener(
+        'focusin',
+        () => {
+          hoverPaused = true;
+        },
+        { signal },
+      );
+      alertBox.addEventListener(
+        'focusout',
+        (event) => {
+          // relatedTarget is where focus is going; null means it left the document.
+          if (!alertBox.contains(event.relatedTarget)) {
+            hoverPaused = false;
+          }
+        },
+        { signal },
+      );
 
       scheduleTimeout(alertBox, 1000, tick);
     }
@@ -379,10 +401,14 @@
       // One-way dismiss — see closeAlert(). The former re-open branch was dead
       // code: it could only be reached by clicking a button that closeAlert()
       // had already made inert.
-      closeButton.addEventListener('click', () => {
-        setClosedPersist(alertBox);
-        closeAlert(alertBox, closeButton, focusableElements, true);
-      }, { signal });
+      closeButton.addEventListener(
+        'click',
+        () => {
+          setClosedPersist(alertBox);
+          closeAlert(alertBox, closeButton, focusableElements, true);
+        },
+        { signal },
+      );
     }
   };
 
@@ -391,12 +417,15 @@
    */
   Drupal.behaviors.paragraphBundleAlert = {
     attach(context, settings) {
-      once(ONCE_PB_PARAGRAPH_BUNDLE_ALERT, PARAGRAPHS_BUNDLES_PB_ALERT, context)
-        .forEach((alertBox) => {
-          const abortController = new AbortController();
-          alertAbortControllers.set(alertBox, abortController);
-          initAlert(alertBox, abortController.signal);
-        });
+      once(
+        ONCE_PB_PARAGRAPH_BUNDLE_ALERT,
+        PARAGRAPHS_BUNDLES_PB_ALERT,
+        context,
+      ).forEach((alertBox) => {
+        const abortController = new AbortController();
+        alertAbortControllers.set(alertBox, abortController);
+        initAlert(alertBox, abortController.signal);
+      });
     },
 
     /**
@@ -409,18 +438,20 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_ALERT,
-        PARAGRAPHS_BUNDLES_PB_ALERT,
-        context,
-      ).forEach((alertBox) => {
-        const abortController = alertAbortControllers.get(alertBox);
-        if (abortController) {
-          abortController.abort();
-          alertAbortControllers.delete(alertBox);
-        }
-        clearAlertTimeouts(alertBox);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_ALERT,
+          PARAGRAPHS_BUNDLES_PB_ALERT,
+          context,
+        )
+        .forEach((alertBox) => {
+          const abortController = alertAbortControllers.get(alertBox);
+          if (abortController) {
+            abortController.abort();
+            alertAbortControllers.delete(alertBox);
+          }
+          clearAlertTimeouts(alertBox);
+        });
     },
   };
 })(Drupal, once);

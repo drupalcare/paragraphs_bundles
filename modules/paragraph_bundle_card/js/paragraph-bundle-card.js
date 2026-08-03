@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_CARD = 'pb-card';
   const PB_CARD_TWO_COLUMNS = 'pb-card-two-columns';
@@ -25,19 +23,13 @@
   const PB_CARD_TWO_COLUMNS__RIGHT = 'pb-card-two-columns__right';
   const PB_U_IMAGE_TOP = 'pb-u-image-top';
 
-  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS =
-    `.${PARAGRAPHS_BUNDLES}.${PB_CARD}.${PB_CARD_TWO_COLUMNS}`;
-  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS_PB_CARD_TWO_COLUMNS =
-    `${PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS} .${PB_CARD_TWO_COLUMNS}`;
-  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_IMAGE_SECTION =
-    `.${PARAGRAPHS_BUNDLES}.${PB_CARD}.${PB_CARD_IMAGE_SECTION}`;
-  const PB_CARD_TWO_COLUMNS_PB_CARD_THREE_COLUMNS =
-    `.${PB_CARD_TWO_COLUMNS}, .${PB_CARD_THREE_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS = `.${PARAGRAPHS_BUNDLES}.${PB_CARD}.${PB_CARD_TWO_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS_PB_CARD_TWO_COLUMNS = `${PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS} .${PB_CARD_TWO_COLUMNS}`;
+  const PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_IMAGE_SECTION = `.${PARAGRAPHS_BUNDLES}.${PB_CARD}.${PB_CARD_IMAGE_SECTION}`;
+  const PB_CARD_TWO_COLUMNS_PB_CARD_THREE_COLUMNS = `.${PB_CARD_TWO_COLUMNS}, .${PB_CARD_THREE_COLUMNS}`;
 
-  const PB_CARD_TWO_COLUMNS_OWNED_PB_CARD_TWO_COLUMNS__LEFT =
-    `:scope > .${PB_CARD_TWO_COLUMNS__LEFT}`;
-  const PB_CARD_TWO_COLUMNS_OWNED_PB_CARD_TWO_COLUMNS__RIGHT =
-    `:scope > .${PB_CARD_TWO_COLUMNS__RIGHT}`;
+  const PB_CARD_TWO_COLUMNS_OWNED_PB_CARD_TWO_COLUMNS__LEFT = `:scope > .${PB_CARD_TWO_COLUMNS__LEFT}`;
+  const PB_CARD_TWO_COLUMNS_OWNED_PB_CARD_TWO_COLUMNS__RIGHT = `:scope > .${PB_CARD_TWO_COLUMNS__RIGHT}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_CARD_IMAGE_TOP =
     'pb-paragraph-bundle-card-image-top';
@@ -56,9 +48,7 @@
    */
   const columnHasOwnedImageSection = (column, grid) =>
     Array.from(
-      column.querySelectorAll(
-        PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_IMAGE_SECTION,
-      ),
+      column.querySelectorAll(PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_IMAGE_SECTION),
     ).some(
       (imageSection) =>
         imageSection.closest(PB_CARD_TWO_COLUMNS_PB_CARD_THREE_COLUMNS) ===
@@ -85,8 +75,7 @@
 
     if (rightHasImage && !leftHasImage) {
       grid.classList.add(PB_U_IMAGE_TOP);
-    }
-    else {
+    } else {
       grid.classList.remove(PB_U_IMAGE_TOP);
     }
   };
@@ -115,13 +104,15 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_CARD_IMAGE_TOP,
-        PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS_PB_CARD_TWO_COLUMNS,
-        context,
-      ).forEach((grid) => {
-        grid.classList.remove(PB_U_IMAGE_TOP);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_CARD_IMAGE_TOP,
+          PARAGRAPHS_BUNDLES_PB_CARD_PB_CARD_TWO_COLUMNS_PB_CARD_TWO_COLUMNS,
+          context,
+        )
+        .forEach((grid) => {
+          grid.classList.remove(PB_U_IMAGE_TOP);
+        });
     },
   };
 })(Drupal, once);

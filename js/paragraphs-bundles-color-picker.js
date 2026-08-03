@@ -19,8 +19,6 @@
 // phpcs:disable Generic.PHP.UpperCaseConstant
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 (function (Drupal, once) {
-  'use strict';
-
   // -------------------------------------------------------------------------
   // Pure helpers (no DOM side-effects).
   // -------------------------------------------------------------------------
@@ -45,7 +43,9 @@
    * @return {string} Six-digit hex color.
    */
   const toSixDigitHex = (value) => {
-    if (!value) { return value; }
+    if (!value) {
+      return value;
+    }
     const m = /^#([A-Fa-f0-9]{3})$/.exec(value);
     if (m) {
       const [r, g, b] = m[1].split('');
@@ -66,11 +66,12 @@
    */
   const updateEmptyState = (wrapper, value) => {
     const card = wrapper.closest('[data-drupal-selector="pb-color-picker"]');
-    if (!card) { return; }
+    if (!card) {
+      return;
+    }
     if (!value || value === '') {
       card.classList.add('pb-color-empty');
-    }
-    else {
+    } else {
       card.classList.remove('pb-color-empty');
     }
   };
@@ -85,16 +86,15 @@
    */
   const syncInputs = (source, target, wrapper) => {
     const { value } = source;
-    if (!isValidColor(value)) { return; }
+    if (!isValidColor(value)) {
+      return;
+    }
     requestAnimationFrame(() => {
       if (value === '') {
         target.value = target.type === 'color' ? '#000000' : '';
-      }
-      else {
+      } else {
         target.value =
-          target.type === 'color'
-            ? toSixDigitHex(value)
-            : value.toUpperCase();
+          target.type === 'color' ? toSixDigitHex(value) : value.toUpperCase();
       }
       updateEmptyState(wrapper, value);
     });
@@ -127,8 +127,7 @@
   const createColorInput = (textInput) => {
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
-    colorInput.className =
-      'form-color form-element form-element--type-color';
+    colorInput.className = 'form-color form-element form-element--type-color';
     const val = textInput.value;
     colorInput.value =
       val && isValidColor(val) ? toSixDigitHex(val) : '#000000';
@@ -160,7 +159,9 @@
    * @param {HTMLInputElement} textInput - The text input to enhance.
    */
   const initColorPicker = (textInput) => {
-    if (!textInput || textInput.nodeType !== 1) { return; }
+    if (!textInput || textInput.nodeType !== 1) {
+      return;
+    }
 
     const colorInput = createColorInput(textInput);
     const clearBtn = createClearButton();
@@ -182,7 +183,7 @@
       clearTimeout(textTimeout);
       textTimeout = setTimeout(
         () => syncInputs(textInput, colorInput, wrapper),
-        300
+        300,
       );
     });
     textInput.addEventListener('change', () => {
@@ -212,18 +213,19 @@
       once(
         'pb-color-picker',
         '[data-drupal-selector="pb-color-picker"] input[type="text"]',
-        context
+        context,
       ).forEach(initColorPicker);
     },
 
     detach(context, _settings, trigger) {
-      if (trigger !== 'unload') { return; }
+      if (trigger !== 'unload') {
+        return;
+      }
       once.remove(
         'pb-color-picker',
         '[data-drupal-selector="pb-color-picker"] input[type="text"]',
-        context
+        context,
       );
     },
   };
-
 })(Drupal, once);

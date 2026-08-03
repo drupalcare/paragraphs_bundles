@@ -13,8 +13,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_IMAGE_GRID = 'pb-image-grid';
   const PB_IMAGE_GRID_SECTION = 'pb-image-grid-section';
@@ -26,12 +24,9 @@
   const PB_MODAL__NEXT = 'pb-modal__next';
   const PB_MODAL__PREV = 'pb-modal__prev';
 
-  const PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_PB_IMAGE_GRID__WRAPPER =
-    `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_GRID} .${PB_IMAGE_GRID__WRAPPER}`;
-  const PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION =
-    `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_GRID_SECTION}`;
-  const PB_IMAGE_GRID__WRAPPER_OWNED_PB_IMAGE_GRID_SECTION =
-    `:scope > ${PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION}`;
+  const PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_PB_IMAGE_GRID__WRAPPER = `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_GRID} .${PB_IMAGE_GRID__WRAPPER}`;
+  const PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION = `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_GRID_SECTION}`;
+  const PB_IMAGE_GRID__WRAPPER_OWNED_PB_IMAGE_GRID_SECTION = `:scope > ${PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION}`;
 
   const FOCUSABLE_SELECTOR = [
     'a[href]',
@@ -55,6 +50,19 @@
   const gridInertedElements = new WeakMap();
 
   /**
+   * Reads a layout property so the browser flushes pending style changes.
+   *
+   * The read is the whole point and the value is discarded: without it the
+   * opacity written next is coalesced with the one written before it and the
+   * fade never runs.
+   *
+   * @param {HTMLElement} element - The element to measure.
+   *
+   * @return {number} The measured height, unused by callers.
+   */
+  const forceReflow = (element) => element.offsetHeight;
+
+  /**
    * Inert page branches outside the open lightbox.
    *
    * @param {HTMLElement} dialog
@@ -72,8 +80,11 @@
 
     while (branch.parentElement && branch.parentElement !== document.body) {
       const parent = branch.parentElement;
+      // Bound per iteration so the callback closes over a constant rather
+      // than over the reassigned loop variable.
+      const current = branch;
       Array.from(parent.children).forEach((sibling) => {
-        if (sibling !== branch && sibling instanceof HTMLElement) {
+        if (sibling !== current && sibling instanceof HTMLElement) {
           inertElement(sibling);
         }
       });
@@ -122,10 +133,11 @@
    */
   const initImageGridWrapper = (wrapper) => {
     const lightbox = wrapper.querySelector(`.${PB_GRID__LIGHTBOX}`);
-    const modalContent = wrapper.querySelector(
-      `.${PB_GRID__LIGHTBOX_CONTENT}`,
-    );
-    if (!(lightbox instanceof HTMLElement) || !(modalContent instanceof HTMLElement)) {
+    const modalContent = wrapper.querySelector(`.${PB_GRID__LIGHTBOX_CONTENT}`);
+    if (
+      !(lightbox instanceof HTMLElement) ||
+      !(modalContent instanceof HTMLElement)
+    ) {
       return;
     }
 
@@ -135,7 +147,9 @@
     /** @type {HTMLElement|null} */
     let lastFocusedElement = null;
     let items = Array.from(
-      wrapper.querySelectorAll(PB_IMAGE_GRID__WRAPPER_OWNED_PB_IMAGE_GRID_SECTION),
+      wrapper.querySelectorAll(
+        PB_IMAGE_GRID__WRAPPER_OWNED_PB_IMAGE_GRID_SECTION,
+      ),
     );
     const controller = new AbortController();
     const { signal } = controller;
@@ -153,7 +167,10 @@
         ),
       );
       const itemCount = items.length;
-      wrapper.className = wrapper.className.replace(/\bpb-image-grid--count-\d+\b/g, '');
+      wrapper.className = wrapper.className.replace(
+        /\bpb-image-grid--count-\d+\b/g,
+        '',
+      );
       wrapper.classList.add(`pb-image-grid--count-${itemCount}`);
     };
 
@@ -171,9 +188,11 @@
       clonedElement.querySelectorAll('[id]').forEach((element) => {
         element.removeAttribute('id');
       });
-      clonedElement.querySelectorAll(`.${PB_GRID__EXPAND}`).forEach((button) => {
-        button.remove();
-      });
+      clonedElement
+        .querySelectorAll(`.${PB_GRID__EXPAND}`)
+        .forEach((button) => {
+          button.remove();
+        });
       const imageElement = clonedElement.querySelector('img');
       if (imageElement instanceof HTMLImageElement) {
         imageElement.src = fullImageUrl;
@@ -181,7 +200,7 @@
         imageElement.removeAttribute('width');
       }
       modalContent.replaceChildren(clonedElement);
-      modalContent.offsetHeight;
+      forceReflow(modalContent);
       modalContent.style.opacity = '1';
       modalContent.classList.remove('pb-is-fade-in');
       requestAnimationFrame(() => modalContent.classList.add('pb-is-fade-in'));
@@ -199,9 +218,8 @@
       }
 
       const activeElement = document.activeElement;
-      lastFocusedElement = activeElement instanceof HTMLElement
-        ? activeElement
-        : null;
+      lastFocusedElement =
+        activeElement instanceof HTMLElement ? activeElement : null;
 
       const section = trigger.closest(PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION);
       if (!(section instanceof HTMLElement)) {
@@ -260,12 +278,12 @@
 
       if (direction === 'next') {
         currentIndex = (currentIndex + 1) % items.length;
-      }
-      else {
+      } else {
         currentIndex = (currentIndex - 1 + items.length) % items.length;
       }
 
-      const fullImageUrl = items[currentIndex].getAttribute('data-full-image-url') || '';
+      const fullImageUrl =
+        items[currentIndex].getAttribute('data-full-image-url') || '';
       updateModalContent(fullImageUrl);
     };
 
@@ -294,13 +312,11 @@
         if (event.shiftKey && document.activeElement === firstElement) {
           lastElement.focus();
           event.preventDefault();
-        }
-        else if (!event.shiftKey && document.activeElement === lastElement) {
+        } else if (!event.shiftKey && document.activeElement === lastElement) {
           firstElement.focus();
           event.preventDefault();
         }
-      }
-      else if (event.key === 'Escape') {
+      } else if (event.key === 'Escape') {
         handleCloseLightbox(event);
       }
     };
@@ -321,28 +337,38 @@
       `.${PB_MODAL__NEXT}, .${PB_MODAL__PREV}`,
       wrapper,
     ).forEach((button) => {
-      button.addEventListener('click', (event) => {
-        const direction = button.classList.contains(PB_MODAL__NEXT)
-          ? 'next'
-          : 'prev';
-        navigateLightbox(direction);
-        event.stopPropagation();
-      }, { signal });
+      button.addEventListener(
+        'click',
+        (event) => {
+          const direction = button.classList.contains(PB_MODAL__NEXT)
+            ? 'next'
+            : 'prev';
+          navigateLightbox(direction);
+          event.stopPropagation();
+        },
+        { signal },
+      );
     });
 
-    wrapper.addEventListener('click', (event) => {
-      const target = event.target;
-      if (!(target instanceof Element)) {
-        return;
-      }
+    wrapper.addEventListener(
+      'click',
+      (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
 
-      if (target.matches(`.${PB_GRID__CLOSE}`)
-        || target.closest(`.${PB_GRID__CLOSE}`)
-        || target === lightbox
-        || target === modalContent) {
-        handleCloseLightbox(event);
-      }
-    }, { signal });
+        if (
+          target.matches(`.${PB_GRID__CLOSE}`) ||
+          target.closest(`.${PB_GRID__CLOSE}`) ||
+          target === lightbox ||
+          target === modalContent
+        ) {
+          handleCloseLightbox(event);
+        }
+      },
+      { signal },
+    );
 
     lightbox.addEventListener('keydown', trapFocus, { signal });
 
@@ -373,26 +399,28 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_GRID_WRAPPER,
-        PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_PB_IMAGE_GRID__WRAPPER,
-        context,
-      ).forEach((wrapper) => {
-        const controller = gridAbortControllers.get(wrapper);
-        if (controller) {
-          controller.abort();
-          gridAbortControllers.delete(wrapper);
-        }
-        const inertedElements = gridInertedElements.get(wrapper);
-        if (inertedElements) {
-          gridInertedElements.delete(wrapper);
-        }
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_GRID_WRAPPER,
+          PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_PB_IMAGE_GRID__WRAPPER,
+          context,
+        )
+        .forEach((wrapper) => {
+          const controller = gridAbortControllers.get(wrapper);
+          if (controller) {
+            controller.abort();
+            gridAbortControllers.delete(wrapper);
+          }
+          const inertedElements = gridInertedElements.get(wrapper);
+          if (inertedElements) {
+            gridInertedElements.delete(wrapper);
+          }
 
-        const lightbox = wrapper.querySelector(`.${PB_GRID__LIGHTBOX}`);
-        if (lightbox instanceof HTMLElement) {
-          closeLightbox(wrapper, lightbox, inertedElements);
-        }
-      });
+          const lightbox = wrapper.querySelector(`.${PB_GRID__LIGHTBOX}`);
+          if (lightbox instanceof HTMLElement) {
+            closeLightbox(wrapper, lightbox, inertedElements);
+          }
+        });
 
       once.remove(
         ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_GRID_EXPAND,

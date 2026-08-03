@@ -14,8 +14,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_SLIDESHOW = 'pb-slideshow';
   const PB_SLIDESHOW__STAGE = 'pb-slideshow__stage';
@@ -35,23 +33,15 @@
   const PB_IS_PAUSED = 'pb-is-paused';
   const PB_U_REDUCED_MOTION = 'pb-u-reduced-motion';
 
-  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW =
-    `.${PARAGRAPHS_BUNDLES}.${PB_SLIDESHOW}`;
-  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE =
-    `${PARAGRAPHS_BUNDLES_PB_SLIDESHOW} .${PB_SLIDESHOW__STAGE}`;
+  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW = `.${PARAGRAPHS_BUNDLES}.${PB_SLIDESHOW}`;
+  const PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE = `${PARAGRAPHS_BUNDLES_PB_SLIDESHOW} .${PB_SLIDESHOW__STAGE}`;
 
-  const PB_SLIDESHOW__STAGE_OWNED_SLIDES =
-    `:scope > .${PB_SLIDESHOW__SLIDES}`;
-  const PB_SLIDESHOW__STAGE_OWNED_SLIDE =
-    `:scope > .${PB_SLIDESHOW__SLIDES} > .${PB_SLIDESHOW__SLIDE}`;
-  const PB_SLIDESHOW__STAGE_OWNED_NAV =
-    `:scope > .${PB_SLIDESHOW__NAV}`;
-  const PB_SLIDESHOW__STAGE_OWNED_NAV_BTN =
-    `:scope > .${PB_SLIDESHOW__NAV} > .${PB_SLIDESHOW__NAV_BTN}`;
-  const PB_SLIDESHOW__STAGE_OWNED_PLAY =
-    `:scope > .${PB_SLIDESHOW__NAV} > .${PB_NAV__PLAY}`;
-  const PB_SLIDESHOW__STAGE_OWNED_ARROWS =
-    `:scope > .${PB_SLIDESHOW__ARROWS}`;
+  const PB_SLIDESHOW__STAGE_OWNED_SLIDES = `:scope > .${PB_SLIDESHOW__SLIDES}`;
+  const PB_SLIDESHOW__STAGE_OWNED_SLIDE = `:scope > .${PB_SLIDESHOW__SLIDES} > .${PB_SLIDESHOW__SLIDE}`;
+  const PB_SLIDESHOW__STAGE_OWNED_NAV = `:scope > .${PB_SLIDESHOW__NAV}`;
+  const PB_SLIDESHOW__STAGE_OWNED_NAV_BTN = `:scope > .${PB_SLIDESHOW__NAV} > .${PB_SLIDESHOW__NAV_BTN}`;
+  const PB_SLIDESHOW__STAGE_OWNED_PLAY = `:scope > .${PB_SLIDESHOW__NAV} > .${PB_NAV__PLAY}`;
+  const PB_SLIDESHOW__STAGE_OWNED_ARROWS = `:scope > .${PB_SLIDESHOW__ARROWS}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE =
     'pb-paragraph-bundle-slideshow-stage';
@@ -62,8 +52,8 @@
 
   /** Elements that Space activates natively. */
   const PB_KEY_OWNING_CONTROL =
-    `${PB_KEY_OWNING_TEXT_ENTRY}, a[href], button, summary, audio, video,`
-    + ' [role="button"], [role="tab"], [role="checkbox"], [role="radio"]';
+    `${PB_KEY_OWNING_TEXT_ENTRY}, a[href], button, summary, audio, video,` +
+    ' [role="button"], [role="tab"], [role="checkbox"], [role="radio"]';
 
   /**
    * Debounce utility to limit function execution frequency.
@@ -95,7 +85,9 @@
         const abortController = new AbortController();
         const { signal } = abortController;
 
-        const slidesContainer = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_SLIDES);
+        const slidesContainer = stage.querySelector(
+          PB_SLIDESHOW__STAGE_OWNED_SLIDES,
+        );
         if (!slidesContainer) {
           return;
         }
@@ -105,16 +97,18 @@
         const playPauseButton = stage.querySelector(
           PB_SLIDESHOW__STAGE_OWNED_PLAY,
         );
-        const playIcon = playPauseButton?.querySelector(
-          `:scope > .${PB_NAV__PLAY_ICON}`,
-        ) ?? null;
-        const pauseIcon = playPauseButton?.querySelector(
-          `:scope > .${PB_NAV__PAUSE_ICON}`,
-        ) ?? null;
+        const playIcon =
+          playPauseButton?.querySelector(`:scope > .${PB_NAV__PLAY_ICON}`) ??
+          null;
+        const pauseIcon =
+          playPauseButton?.querySelector(`:scope > .${PB_NAV__PAUSE_ICON}`) ??
+          null;
         const arrows = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_ARROWS);
         const nextButton = arrows?.querySelector(`.${PB_NAV__NEXT}`) ?? null;
         const prevButton = arrows?.querySelector(`.${PB_NAV__PREV}`) ?? null;
-        const dotsContainer = stage.querySelector(PB_SLIDESHOW__STAGE_OWNED_NAV);
+        const dotsContainer = stage.querySelector(
+          PB_SLIDESHOW__STAGE_OWNED_NAV,
+        );
         const dots = stage.querySelectorAll(PB_SLIDESHOW__STAGE_OWNED_NAV_BTN);
         const slideTime = Number.parseInt(stage.dataset.slideTime, 10) || 0;
         const totalSlides = slides.length;
@@ -141,25 +135,6 @@
         };
 
         /**
-         * Updates slide visibility and accessibility state.
-         */
-        const updateSlideVisibility = () => {
-          slides.forEach((slide, index) => {
-            const isActive = (index + 1 === slideIndex);
-            slide.style.display = isActive ? 'block' : 'none';
-            slide.setAttribute('aria-hidden', String(!isActive));
-            slide.toggleAttribute('inert', !isActive);
-            slide.classList.toggle(PB_IS_ACTIVE, isActive);
-            slide.querySelectorAll('a, button, input, textarea, select, [tabindex]').forEach((el) => {
-              el.setAttribute('tabindex', isActive ? '0' : '-1');
-            });
-          });
-          updateDots();
-          announceSlide();
-          adjustHeight();
-        };
-
-        /**
          * Adjusts slides container height to match the active slide.
          */
         const adjustHeight = () => {
@@ -170,10 +145,18 @@
           const computedStyle = window.getComputedStyle(slidesContainer);
           const contentHeight = currentSlide.offsetHeight;
           const paddingTop = Number.parseFloat(computedStyle.paddingTop) || 0;
-          const paddingBottom = Number.parseFloat(computedStyle.paddingBottom) || 0;
-          const borderTop = Number.parseFloat(computedStyle.borderTopWidth) || 0;
-          const borderBottom = Number.parseFloat(computedStyle.borderBottomWidth) || 0;
-          const totalHeight = contentHeight + paddingTop + paddingBottom + borderTop + borderBottom;
+          const paddingBottom =
+            Number.parseFloat(computedStyle.paddingBottom) || 0;
+          const borderTop =
+            Number.parseFloat(computedStyle.borderTopWidth) || 0;
+          const borderBottom =
+            Number.parseFloat(computedStyle.borderBottomWidth) || 0;
+          const totalHeight =
+            contentHeight +
+            paddingTop +
+            paddingBottom +
+            borderTop +
+            borderBottom;
           slidesContainer.style.height = `${totalHeight}px`;
         };
 
@@ -195,7 +178,8 @@
         const scrollDotIntoView = (container, dot) => {
           const containerRect = container.getBoundingClientRect();
           const dotRect = dot.getBoundingClientRect();
-          const dotLeft = dotRect.left - containerRect.left + container.scrollLeft;
+          const dotLeft =
+            dotRect.left - containerRect.left + container.scrollLeft;
           const dotRight = dotLeft + dotRect.width;
           const containerWidth = container.clientWidth;
           const scrollLeft = container.scrollLeft;
@@ -205,8 +189,7 @@
               left: dotLeft - 16,
               behavior: 'smooth',
             });
-          }
-          else if (dotRight > scrollLeft + containerWidth) {
+          } else if (dotRight > scrollLeft + containerWidth) {
             container.scrollTo({
               left: dotRight - containerWidth + 16,
               behavior: 'smooth',
@@ -229,13 +212,26 @@
         };
 
         /**
-         * Starts automatic slide rotation.
+         * Updates slide visibility and accessibility state.
          */
-        const startAutoSlide = () => {
-          stopAutoSlide();
-          if (slideTime > 0 && !isPaused && isVisible) {
-            autoSlideIntervalId = setInterval(nextSlide, slideTime);
-          }
+        const updateSlideVisibility = () => {
+          slides.forEach((slide, index) => {
+            const isActive = index + 1 === slideIndex;
+            slide.style.display = isActive ? 'block' : 'none';
+            slide.setAttribute('aria-hidden', String(!isActive));
+            slide.toggleAttribute('inert', !isActive);
+            slide.classList.toggle(PB_IS_ACTIVE, isActive);
+            slide
+              .querySelectorAll(
+                'a, button, input, textarea, select, [tabindex]',
+              )
+              .forEach((el) => {
+                el.setAttribute('tabindex', isActive ? '0' : '-1');
+              });
+          });
+          updateDots();
+          announceSlide();
+          adjustHeight();
         };
 
         /**
@@ -247,10 +243,20 @@
         };
 
         /**
+         * Starts automatic slide rotation.
+         */
+        const startAutoSlide = () => {
+          stopAutoSlide();
+          if (slideTime > 0 && !isPaused && isVisible) {
+            autoSlideIntervalId = setInterval(nextSlide, slideTime);
+          }
+        };
+
+        /**
          * Goes to the previous slide.
          */
         const prevSlide = () => {
-          slideIndex = (slideIndex === 1) ? totalSlides : slideIndex - 1;
+          slideIndex = slideIndex === 1 ? totalSlides : slideIndex - 1;
           updateSlideVisibility();
         };
 
@@ -272,8 +278,7 @@
           if (slideTime > 0) {
             if (isPaused) {
               stopAutoSlide();
-            }
-            else {
+            } else {
               startAutoSlide();
             }
           }
@@ -317,8 +322,8 @@
          */
         const isMostlyVisible = () => {
           const rect = stage.getBoundingClientRect();
-          const visibleHeight = Math.min(rect.bottom, window.innerHeight)
-            - Math.max(rect.top, 0);
+          const visibleHeight =
+            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
           return visibleHeight / rect.height > 0.2;
         };
 
@@ -331,8 +336,7 @@
             previousVisibility = currentlyVisible;
             if (currentlyVisible && !isPaused) {
               startAutoSlide();
-            }
-            else {
+            } else {
               stopAutoSlide();
             }
           }
@@ -369,13 +373,15 @@
           }
           if (event.key === 'ArrowRight') {
             nextSlide();
-          }
-          else if (event.key === 'ArrowLeft') {
+          } else if (event.key === 'ArrowLeft') {
             prevSlide();
           }
           // Space activates a focused control natively (WCAG 2.1.1), so the
           // play/pause shortcut only applies outside one.
-          else if (event.key === ' ' && !active.closest(PB_KEY_OWNING_CONTROL)) {
+          else if (
+            event.key === ' ' &&
+            !active.closest(PB_KEY_OWNING_CONTROL)
+          ) {
             event.preventDefault();
             togglePlayPause();
           }
@@ -399,25 +405,26 @@
           const delta = event.changedTouches[0].clientX - touchStartX;
           if (delta > 50) {
             prevSlide();
-          }
-          else if (delta < -50) {
+          } else if (delta < -50) {
             nextSlide();
           }
           startAutoSlide();
         };
 
-        const intersectionObserver = new IntersectionObserver((entries) => {
-          const entry = entries[0];
-          isVisible = entry.isIntersecting;
-          if (isVisible && !isPaused) {
-            startAutoSlide();
-          }
-          else {
-            stopAutoSlide();
-          }
-        }, {
-          threshold: 0.5,
-        });
+        const intersectionObserver = new IntersectionObserver(
+          (entries) => {
+            const entry = entries[0];
+            isVisible = entry.isIntersecting;
+            if (isVisible && !isPaused) {
+              startAutoSlide();
+            } else {
+              stopAutoSlide();
+            }
+          },
+          {
+            threshold: 0.5,
+          },
+        );
         intersectionObserver.observe(stage);
 
         const debouncedHandleVisibility = debounce(handleVisibility, 200);
@@ -431,21 +438,31 @@
         prevButton?.addEventListener('click', prevSlide, { signal });
 
         dots.forEach((dot, index) => {
-          dot.addEventListener('click', () => handleDotClick(index), { signal });
+          dot.addEventListener('click', () => handleDotClick(index), {
+            signal,
+          });
         });
 
-        slidesContainer.addEventListener('mouseenter', stopAutoSlide, { signal });
-        slidesContainer.addEventListener('mouseleave', () => {
-          if (!isPaused) {
-            startAutoSlide();
-          }
-        }, { signal });
+        slidesContainer.addEventListener('mouseenter', stopAutoSlide, {
+          signal,
+        });
+        slidesContainer.addEventListener(
+          'mouseleave',
+          () => {
+            if (!isPaused) {
+              startAutoSlide();
+            }
+          },
+          { signal },
+        );
 
         slidesContainer.addEventListener('touchstart', handleTouchStart, {
           passive: true,
           signal,
         });
-        slidesContainer.addEventListener('touchend', handleTouchEnd, { signal });
+        slidesContainer.addEventListener('touchend', handleTouchEnd, {
+          signal,
+        });
         stage.addEventListener('keydown', handleKeydown, { signal });
         document.addEventListener('scroll', debouncedHandleVisibility, {
           passive: true,
@@ -475,14 +492,16 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE,
-        PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE,
-        context,
-      ).forEach((stage) => {
-        stageCleanupHandlers.get(stage)?.();
-        stageCleanupHandlers.delete(stage);
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_SLIDESHOW_STAGE,
+          PARAGRAPHS_BUNDLES_PB_SLIDESHOW_PB_SLIDESHOW__STAGE,
+          context,
+        )
+        .forEach((stage) => {
+          stageCleanupHandlers.get(stage)?.();
+          stageCleanupHandlers.delete(stage);
+        });
     },
   };
 })(Drupal, once);

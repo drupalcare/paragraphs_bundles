@@ -13,8 +13,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal) => {
-  'use strict';
-
   /**
    * Initialize the accordion namespace if it doesn't exist.
    *
@@ -33,8 +31,23 @@
     paddingTop: '0',
     paddingBottom: '0',
     marginTop: '0',
-    marginBottom: '0'
+    marginBottom: '0',
   };
+
+  /**
+   * Reads a layout property so the browser flushes pending style changes.
+   *
+   * The read is the whole point and the value is discarded: without it the
+   * browser coalesces the height just written with the one written next and
+   * the transition never runs. Written as a call rather than a bare
+   * `target.offsetHeight;` statement because that reads as dead code to both
+   * ESLint and the next person.
+   *
+   * @param {HTMLElement} target - The element to measure.
+   *
+   * @return {number} The measured height, unused by callers.
+   */
+  const forceReflow = (target) => target.offsetHeight;
 
   /**
    * Removes transition-related inline styles from an element.
@@ -50,9 +63,9 @@
       'marginBottom',
       'overflow',
       'transitionDuration',
-      'transitionProperty'
+      'transitionProperty',
     ];
-    styles.forEach(style => target.style.removeProperty(style));
+    styles.forEach((style) => target.style.removeProperty(style));
   };
 
   /**
@@ -71,11 +84,11 @@
     target.style.transitionTimingFunction = 'ease-in-out';
     target.style.boxSizing = 'border-box';
     target.style.height = `${target.offsetHeight}px`;
-    target.offsetHeight; // Force reflow
+    forceReflow(target);
 
     target.setAttribute('aria-hidden', 'true');
 
-    Object.keys(cssStyles).forEach(style => {
+    Object.keys(cssStyles).forEach((style) => {
       target.style[style] = cssStyles[style];
     });
 
@@ -105,11 +118,11 @@
     target.style.display = computedDisplay;
 
     const height = target.offsetHeight;
-    Object.keys(cssStyles).forEach(style => {
+    Object.keys(cssStyles).forEach((style) => {
       target.style[style] = cssStyles[style];
     });
 
-    target.offsetHeight; // Force reflow
+    forceReflow(target);
     target.style.transitionProperty = 'height, margin, padding';
     target.style.transitionDuration = `${duration}ms`;
     target.style.transitionTimingFunction = 'ease-in-out';
@@ -118,12 +131,19 @@
 
     target.setAttribute('aria-hidden', 'false');
 
-    ['paddingTop', 'paddingBottom', 'marginTop', 'marginBottom'].forEach(prop => {
-      target.style.removeProperty(prop);
-    });
+    ['paddingTop', 'paddingBottom', 'marginTop', 'marginBottom'].forEach(
+      (prop) => {
+        target.style.removeProperty(prop);
+      },
+    );
 
     setTimeout(() => {
-      ['height', 'overflow', 'transitionDuration', 'transitionProperty'].forEach(prop => {
+      [
+        'height',
+        'overflow',
+        'transitionDuration',
+        'transitionProperty',
+      ].forEach((prop) => {
         target.style.removeProperty(prop);
       });
     }, duration);
@@ -132,5 +152,4 @@
   // Export utilities to Drupal namespace
   Drupal.paragraphBundleAccordion.slideUp = slideUp;
   Drupal.paragraphBundleAccordion.slideDown = slideDown;
-
 })(Drupal);

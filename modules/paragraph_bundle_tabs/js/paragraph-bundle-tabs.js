@@ -16,8 +16,6 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_TABS = 'pb-tabs';
   const PB_TABS__TABSET = 'pb-tabs__tabset';
@@ -28,25 +26,20 @@
   const PB_IS_ACTIVE = 'pb-is-active';
 
   /** `.paragraphs-bundles.pb-tabs` */
-  const PARAGRAPHS_BUNDLES_PB_TABS =
-    `.${PARAGRAPHS_BUNDLES}.${PB_TABS}`;
+  const PARAGRAPHS_BUNDLES_PB_TABS = `.${PARAGRAPHS_BUNDLES}.${PB_TABS}`;
 
   /** `.paragraphs-bundles.pb-tabs .pb-tabs__tabset` */
-  const PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET =
-    `${PARAGRAPHS_BUNDLES_PB_TABS} .${PB_TABS__TABSET}`;
+  const PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET = `${PARAGRAPHS_BUNDLES_PB_TABS} .${PB_TABS__TABSET}`;
 
   /** Tab buttons owned by one tabset host. */
-  const PB_TABS__TABSET_OWNED_TAB =
-    `:scope > .${PB_TABS__TABLIST} > .${PB_TABS__TAB}`;
+  const PB_TABS__TABSET_OWNED_TAB = `:scope > .${PB_TABS__TABLIST} > .${PB_TABS__TAB}`;
 
   /** Tab panels owned by one tabset host. */
-  const PB_TABS__TABSET_OWNED_PANEL =
-    `:scope > .${PB_TABS__PANELS} > .${PB_TABS__PANEL}`;
+  const PB_TABS__TABSET_OWNED_PANEL = `:scope > .${PB_TABS__PANELS} > .${PB_TABS__PANEL}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET =
     'pb-paragraph-bundle-tabs-tabset';
-  const ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB =
-    'pb-paragraph-bundle-tabs-tab';
+  const ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB = 'pb-paragraph-bundle-tabs-tab';
   const ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH =
     'pb-paragraph-bundle-tabs-global-hash';
 
@@ -116,7 +109,10 @@
           const paneId = `${button.id}-pane`;
           const currentPanel = tabset.querySelector(`#${CSS.escape(paneId)}`);
 
-          if (!currentPanel || currentPanel.parentElement?.parentElement !== tabset) {
+          if (
+            !currentPanel ||
+            currentPanel.parentElement?.parentElement !== tabset
+          ) {
             return;
           }
 
@@ -133,7 +129,7 @@
           button.focus();
 
           const slug = button.getAttribute('data-fragment') || button.id;
-          history.replaceState(null, '', `#${slug}`);
+          window.history.replaceState(null, '', `#${slug}`);
         };
 
         /**
@@ -156,7 +152,8 @@
               break;
 
             case prevKey:
-              newIndex = (currentIndex - 1 + tabButtons.length) % tabButtons.length;
+              newIndex =
+                (currentIndex - 1 + tabButtons.length) % tabButtons.length;
               break;
 
             case 'Home':
@@ -184,20 +181,29 @@
           PB_TABS__TABSET_OWNED_TAB,
           tabset,
         ).forEach((button, index) => {
-          button.addEventListener('click', () => {
-            activateTab(button);
-          }, { signal });
+          button.addEventListener(
+            'click',
+            () => {
+              activateTab(button);
+            },
+            { signal },
+          );
 
-          button.addEventListener('keydown', (event) => {
-            handleKeyboardNavigation(event, index);
-          }, { signal });
+          button.addEventListener(
+            'keydown',
+            (event) => {
+              handleKeyboardNavigation(event, index);
+            },
+            { signal },
+          );
         });
 
         const hash = window.location.hash.replace('#', '');
         if (hash) {
           const button = Array.from(tabButtons).find(
-            (candidate) => candidate.id === hash
-              || candidate.getAttribute('data-fragment') === hash,
+            (candidate) =>
+              candidate.id === hash ||
+              candidate.getAttribute('data-fragment') === hash,
           );
           if (button) {
             activateTab(button);
@@ -221,47 +227,55 @@
         globalHashAbortController = new AbortController();
         const { signal } = globalHashAbortController;
 
-        document.addEventListener('click', (event) => {
-          const anchor = event.target.closest('a[href^="#"]');
-          if (!anchor) {
-            return;
-          }
+        document.addEventListener(
+          'click',
+          (event) => {
+            const anchor = event.target.closest('a[href^="#"]');
+            if (!anchor) {
+              return;
+            }
 
-          const linkHash = anchor.getAttribute('href').slice(1);
-          if (!linkHash) {
-            return;
-          }
+            const linkHash = anchor.getAttribute('href').slice(1);
+            if (!linkHash) {
+              return;
+            }
 
-          const scopedTabsets = document.querySelectorAll(
-            PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
-          );
-
-          let tabActivated = false;
-
-          scopedTabsets.forEach((tabset) => {
-            const ownedTabs = tabset.querySelectorAll(PB_TABS__TABSET_OWNED_TAB);
-            const button = Array.from(ownedTabs).find(
-              (candidate) => candidate.id === linkHash
-                || candidate.getAttribute('data-fragment') === linkHash,
+            const scopedTabsets = document.querySelectorAll(
+              PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
             );
 
-            if (button) {
-              event.preventDefault();
-              button.click();
-              const reduceMotion = window
-                .matchMedia('(prefers-reduced-motion: reduce)').matches;
-              button.scrollIntoView({
-                behavior: reduceMotion ? 'auto' : 'smooth',
-                block: 'start',
-              });
-              tabActivated = true;
-            }
-          });
+            let tabActivated = false;
 
-          if (tabActivated) {
-            history.replaceState(null, '', `#${linkHash}`);
-          }
-        }, { signal });
+            scopedTabsets.forEach((tabset) => {
+              const ownedTabs = tabset.querySelectorAll(
+                PB_TABS__TABSET_OWNED_TAB,
+              );
+              const button = Array.from(ownedTabs).find(
+                (candidate) =>
+                  candidate.id === linkHash ||
+                  candidate.getAttribute('data-fragment') === linkHash,
+              );
+
+              if (button) {
+                event.preventDefault();
+                button.click();
+                const reduceMotion = window.matchMedia(
+                  '(prefers-reduced-motion: reduce)',
+                ).matches;
+                button.scrollIntoView({
+                  behavior: reduceMotion ? 'auto' : 'smooth',
+                  block: 'start',
+                });
+                tabActivated = true;
+              }
+            });
+
+            if (tabActivated) {
+              window.history.replaceState(null, '', `#${linkHash}`);
+            }
+          },
+          { signal },
+        );
       });
     },
 
@@ -270,19 +284,21 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET,
-        PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
-        context,
-      ).forEach((tabset) => {
-        tabsetAbortControllers.get(tabset)?.abort();
-        tabsetAbortControllers.delete(tabset);
-        once.remove(
-          ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB,
-          PB_TABS__TABSET_OWNED_TAB,
-          tabset,
-        );
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_TABS_TABSET,
+          PARAGRAPHS_BUNDLES_PB_TABS_PB_TABS__TABSET,
+          context,
+        )
+        .forEach((tabset) => {
+          tabsetAbortControllers.get(tabset)?.abort();
+          tabsetAbortControllers.delete(tabset);
+          once.remove(
+            ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB,
+            PB_TABS__TABSET_OWNED_TAB,
+            tabset,
+          );
+        });
 
       once.remove(
         ONCE_PB_PARAGRAPH_BUNDLE_TABS_GLOBAL_HASH,

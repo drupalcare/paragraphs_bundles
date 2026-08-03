@@ -13,13 +13,10 @@
 // phpcs:disable Squiz.WhiteSpace.OperatorSpacing
 
 ((Drupal, once) => {
-  'use strict';
-
   const PARAGRAPHS_BUNDLES = 'paragraphs-bundles';
   const PB_IMAGE_BACKGROUND = 'pb-image-background';
 
-  const PARAGRAPHS_BUNDLES_PB_IMAGE_BACKGROUND =
-    `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_BACKGROUND}`;
+  const PARAGRAPHS_BUNDLES_PB_IMAGE_BACKGROUND = `.${PARAGRAPHS_BUNDLES}.${PB_IMAGE_BACKGROUND}`;
 
   const ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_BACKGROUND =
     'pb-paragraph-bundle-image-background';
@@ -42,8 +39,7 @@
 
     if (window.innerWidth <= breakpoint && breakpoint !== 0) {
       paragraph.style.backgroundImage = `url(${imageSmall})`;
-    }
-    else {
+    } else {
       paragraph.style.backgroundImage = `url(${imageBig})`;
     }
   };
@@ -54,9 +50,13 @@
    */
   const initImageBackground = (paragraph, signal) => {
     applyBackgroundImage(paragraph);
-    window.addEventListener('resize', () => {
-      applyBackgroundImage(paragraph);
-    }, { signal });
+    window.addEventListener(
+      'resize',
+      () => {
+        applyBackgroundImage(paragraph);
+      },
+      { signal },
+    );
   };
 
   /**
@@ -85,18 +85,21 @@
         return;
       }
 
-      once.remove(
-        ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_BACKGROUND,
-        PARAGRAPHS_BUNDLES_PB_IMAGE_BACKGROUND,
-        context,
-      ).forEach((paragraph) => {
-        const abortController = imageBackgroundAbortControllers.get(paragraph);
-        if (abortController) {
-          abortController.abort();
-          imageBackgroundAbortControllers.delete(paragraph);
-        }
-        paragraph.style.backgroundImage = '';
-      });
+      once
+        .remove(
+          ONCE_PB_PARAGRAPH_BUNDLE_IMAGE_BACKGROUND,
+          PARAGRAPHS_BUNDLES_PB_IMAGE_BACKGROUND,
+          context,
+        )
+        .forEach((paragraph) => {
+          const abortController =
+            imageBackgroundAbortControllers.get(paragraph);
+          if (abortController) {
+            abortController.abort();
+            imageBackgroundAbortControllers.delete(paragraph);
+          }
+          paragraph.style.backgroundImage = '';
+        });
     },
   };
 })(Drupal, once);
