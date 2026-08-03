@@ -2,11 +2,6 @@ parameters:
 	ignoreErrors:
 
 		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_accordion/src/Hook/PbacThemeSuggestionsHook.php
-
-		-
 			message: "#^Cannot access offset '\\#date_timezone' on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_alert/src/Hook/PbaFieldWidgetHook.php
@@ -40,54 +35,6 @@ parameters:
 			message: "#^Cannot access offset 'library' on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_alert/src/Hook/PbaPageHook.php
-
-		-
-			message: "#^Cannot access offset 'max\\-age' on mixed\\.$#"
-			count: 4
-			path: modules/paragraph_bundle_alert/src/Hook/PbaPreprocessAlertHook.php
-
-		-
-			message: "#^Cannot cast mixed to int\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_alert/src/Hook/PbaPreprocessAlertHook.php
-
-		-
-			message: "#^Parameter \\#1 \\$time of class Drupal\\\\Core\\\\Datetime\\\\DrupalDateTime constructor expects string, mixed given\\.$#"
-			count: 2
-			path: modules/paragraph_bundle_alert/src/Hook/PbaPreprocessAlertHook.php
-
-		-
-			message: "#^Parameter \\#1 \\.\\.\\.\\$max_ages of static method Drupal\\\\Core\\\\Cache\\\\Cache\\:\\:mergeMaxAges\\(\\) expects int, mixed given\\.$#"
-			count: 2
-			path: modules/paragraph_bundle_alert/src/Hook/PbaPreprocessAlertHook.php
-
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_block/src/Hook/PbbThemeSuggestionsHook.php
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_block_content/src/Hook/PbbcThemeSuggestionsHook.php
-
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_card/src/Hook/PbcardThemeSuggestionsHook.php
-
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_carousel/src/Hook/PbcaThemeSuggestionsHook.php
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_contact_form/src/Hook/PbcfThemeSuggestionsHook.php
 
 		-
 			message: "#^Cannot access offset 'children' on mixed\\.$#"
@@ -164,13 +111,6 @@ parameters:
 			count: 1
 			path: modules/paragraph_bundle_content/tests/src/Unit/Service/Region/PbcRegionMapTest.php
 
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_grid/src/Hook/PbgThemeSuggestionsHook.php
-
-
 		-
 			message: "#^Cannot access an offset on mixed\\.$#"
 			count: 1
@@ -180,34 +120,6 @@ parameters:
 			message: "#^Cannot access offset 'library' on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_icon/src/Hook/PbiPageHook.php
-
-
-
-		-
-			message: "#^Cannot access an offset on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
-
-		-
-			message: "#^Cannot access offset 'tags' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
-
-		-
-			message: "#^Parameter \\#1 \\$path of method Drupal\\\\image\\\\Entity\\\\ImageStyle\\:\\:buildUrl\\(\\) expects string, string\\|null given\\.$#"
-			count: 2
-			path: modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_link/src/Hook/PblThemeSuggestionsHook.php
-
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_modal/src/Hook/PbmThemeSuggestionsHook.php
 
 		-
 			message: "#^Cannot access an offset on mixed\\.$#"
@@ -243,37 +155,6 @@ parameters:
 			message: "#^Cannot call method getPluginId\\(\\) on mixed\\.$#"
 			count: 1
 			path: modules/paragraph_bundle_node_reference/src/Hook/PbnrFieldWidgetHook.php
-
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_tabs/src/Hook/PbtThemeSuggestionsHook.php
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_views/src/Hook/PbvThemeSuggestionsHook.php
-
-		-
-			message: "#^Cannot access offset '\\#paragraph' on mixed\\.$#"
-			count: 1
-			path: modules/paragraph_bundle_webform/src/Hook/PbwThemeSuggestionsHook.php
-
-		-
-			message: "#^Call to an undefined method Drupal\\\\Core\\\\Entity\\\\EntityStorageInterface\\:\\:createFromStorageRecord\\(\\)\\.$#"
-			count: 1
-			path: paragraphs_bundles.install
-
-		-
-			message: "#^Cannot access offset 'children' on mixed\\.$#"
-			count: 1
-			path: paragraphs_bundles.install
-
-		-
-			message: "#^Cannot access offset 'weight' on mixed\\.$#"
-			count: 7
-			path: paragraphs_bundles.install
 
 		-
 			message: "#^Cannot access an offset on mixed\\.$#"
@@ -311,60 +192,6 @@ parameters:
 			path: src/Hook/PbPreprocessHook.php
 
 		-
-			message: "#^Class Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorSwatchFormatter extends generic class Drupal\\\\Core\\\\Field\\\\FormatterBase but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorSwatchFormatter.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorSwatchFormatter\\:\\:viewElements\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorSwatchFormatter.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorSwatchFormatter\\:\\:viewElements\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorSwatchFormatter.php
-
-		-
-			message: "#^Class Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterHEX extends generic class Drupal\\\\Core\\\\Field\\\\FormatterBase but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterHEX.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterHEX\\:\\:viewElements\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterHEX.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterHEX\\:\\:viewElements\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterHEX.php
-
-		-
-			message: "#^Class Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterRGB extends generic class Drupal\\\\Core\\\\Field\\\\FormatterBase but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterRGB.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterRGB\\:\\:viewElements\\(\\) has parameter \\$items with generic interface Drupal\\\\Core\\\\Field\\\\FieldItemListInterface but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterRGB.php
-
-		-
-			message: "#^Method Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\ColorTextFormatterRGB\\:\\:viewElements\\(\\) has parameter \\$items with no value type specified in iterable type Drupal\\\\Core\\\\Field\\\\FieldItemListInterface\\.$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/ColorTextFormatterRGB.php
-
-		-
-			message: "#^Class Drupal\\\\paragraphs_bundles\\\\Plugin\\\\Field\\\\FieldFormatter\\\\RangeNumberFormatter extends generic class Drupal\\\\Core\\\\Field\\\\FormatterBase but does not specify its types\\: T$#"
-			count: 1
-			path: src/Plugin/Field/FieldFormatter/RangeNumberFormatter.php
-
-
-
-
-
-		-
 			message: "#^Parameter \\#1 \\$hex of static method Drupal\\\\Component\\\\Utility\\\\Color\\:\\:validateHex\\(\\) expects string, mixed given\\.$#"
 			count: 1
 			path: src/Plugin/Field/FieldWidget/ColorTextWidget.php
@@ -373,8 +200,6 @@ parameters:
 			message: "#^Cannot cast mixed to int\\.$#"
 			count: 1
 			path: src/Plugin/Field/FieldWidget/RangeNumberWidget.php
-
-
 
 		-
 			message: "#^Cannot access offset 'value' on mixed\\.$#"
@@ -415,48 +240,3 @@ parameters:
 			message: "#^Parameter \\#2 \\$field of method Drupal\\\\paragraphs_bundles\\\\Service\\\\Css\\\\PbDynamicUserVarBuilder\\:\\:resolveColor\\(\\) expects string, mixed given\\.$#"
 			count: 1
 			path: src/Service/Css/PbDynamicUserVarBuilder.php
-
-		-
-			message: "#^Binary operation \"\\+\" between int\\|string and 1 results in an error\\.$#"
-			count: 2
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Cannot access offset 'children' on mixed\\.$#"
-			count: 7
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Cannot access offset 'config' on mixed\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Cannot access offset 'field_group' on mixed\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Cannot access offset 'weight' on mixed\\.$#"
-			count: 5
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Part \\$bgWeight \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Part \\$fieldWeight \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Part \\$groupWeight \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php
-
-		-
-			message: "#^Part \\$opacityWeight \\(mixed\\) of encapsed string cannot be cast to string\\.$#"
-			count: 1
-			path: src/Service/Form/PbFormDisplayVerifier.php

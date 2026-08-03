@@ -13,6 +13,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  * Renders the stored hex value as a `<div>`.
  *
  * Plugin id `color_text_formatter_hex`.
+ *
+ * @extends \Drupal\Core\Field\FormatterBase<\Drupal\Core\Field\FieldItemListInterface<\Drupal\paragraphs_bundles\Plugin\Field\FieldType\ColorItem>>
  */
 #[FieldFormatter(
   id: 'color_text_formatter_hex',
@@ -23,6 +25,12 @@ final class ColorTextFormatterHEX extends FormatterBase {
 
   /**
    * {@inheritdoc}
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\paragraphs_bundles\Plugin\Field\FieldType\ColorItem> $items
+   *   Field items. The formatter is declared for `paragraphs_bundles_rgb`
+   *   only, so every item is a ColorItem.
+   * @param string $langcode
+   *   Language code.
    *
    * @return array<int, array<string, mixed>>
    *   Render array, one per item.

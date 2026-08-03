@@ -47,6 +47,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/paragraphs_bundles.display.inc';
 
+use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
@@ -89,6 +90,17 @@ function paragraphs_bundles_import_optional_config_if_missing(string $module_nam
     return;
   }
   $storage = \Drupal::entityTypeManager()->getStorage($entity_type);
+  // createFromStorageRecord() is declared on ConfigEntityStorageInterface, not
+  // on EntityStorageInterface. getEntityTypeIdByName() should only ever name a
+  // config entity type, but an unguarded call here would fatal mid-`updatedb`,
+  // which is the worst possible place to find out otherwise.
+  if (!$storage instanceof ConfigEntityStorageInterface) {
+    \Drupal::logger('paragraphs_bundles')->error(
+      'Skipped optional config @config: storage for entity type @type is not a config entity storage.',
+      ['@config' => $config_name, '@type' => $entity_type]
+    );
+    return;
+  }
   $entity = $storage->createFromStorageRecord($config_record);
   $entity->save();
 }
@@ -142,7 +154,8 @@ function paragraphs_bundles_pb_bump_content_tab_tail_weights(
   array &$content,
   array &$groups,
 ): void {
-  $children = $groups['group_pb_tab_content']['children'] ?? [];
+  $content_group = $groups['group_pb_tab_content'] ?? NULL;
+  $children = is_array($content_group) ? $content_group['children'] ?? [] : [];
   if (!is_array($children)) {
     return;
   }
@@ -153,12 +166,14 @@ function paragraphs_bundles_pb_bump_content_tab_tail_weights(
       continue;
     }
     if (str_starts_with($child, 'group_')) {
-      if (isset($groups[$child]) && ($groups[$child]['weight'] ?? 99) <= 3) {
+      if (isset($groups[$child]) && is_array($groups[$child])
+        && ($groups[$child]['weight'] ?? 99) <= 3) {
         $groups[$child]['weight'] = $weight++;
       }
       continue;
     }
-    if (isset($content[$child]) && ($content[$child]['weight'] ?? 99) <= 3) {
+    if (isset($content[$child]) && is_array($content[$child])
+      && ($content[$child]['weight'] ?? 99) <= 3) {
       $content[$child]['weight'] = $weight++;
     }
   }
@@ -179,31 +194,23 @@ function paragraphs_bundles_pb_title_wire_bundle(string $bundle): void {
     return;
   }
 
-  if (!isset($content['pb_content_title_tag'])) {
-    $content['pb_content_title_tag'] = [
-      'type' => 'options_select',
-      'weight' => 2,
-      'region' => 'content',
-      'settings' => [],
-      'third_party_settings' => [],
-    ];
+  // Existing widget settings are kept; only the weight is forced, so the three
+  // title fields always lead the Content tab in a fixed order.
+  foreach (['pb_content_title_tag' => 2, 'pb_content_title_alignment' => 3] as $field => $field_weight) {
+    $existing = $content[$field] ?? NULL;
+    $content[$field] = is_array($existing)
+      ? ['weight' => $field_weight] + $existing
+      : [
+        'type' => 'options_select',
+        'weight' => $field_weight,
+        'region' => 'content',
+        'settings' => [],
+        'third_party_settings' => [],
+      ];
   }
-  else {
-    $content['pb_content_title_tag']['weight'] = 2;
+  if (is_array($content['pb_content_title'])) {
+    $content['pb_content_title']['weight'] = 1;
   }
-  if (!isset($content['pb_content_title_alignment'])) {
-    $content['pb_content_title_alignment'] = [
-      'type' => 'options_select',
-      'weight' => 3,
-      'region' => 'content',
-      'settings' => [],
-      'third_party_settings' => [],
-    ];
-  }
-  else {
-    $content['pb_content_title_alignment']['weight'] = 3;
-  }
-  $content['pb_content_title']['weight'] = 1;
 
   $third = paragraphs_bundles_pb_array_prop($fd->get('third_party_settings'));
   if (!empty($third['field_group']) && is_array($third['field_group'])) {
@@ -688,29 +695,19 @@ function paragraphs_bundles_pb_link_wire_bundle(string $bundle): void {
   $border_hover = paragraphs_bundles_pb_array_prop($content['pb_display_border_hover'] ?? NULL);
   $base_weight = is_int($border_hover['weight'] ?? NULL) ? $border_hover['weight'] : 22;
 
-  if (!isset($content['pb_display_link'])) {
-    $content['pb_display_link'] = [
-      'type' => 'color_text_widget',
-      'weight' => $base_weight + 1,
-      'region' => 'content',
-      'settings' => [],
-      'third_party_settings' => [],
-    ];
-  }
-  else {
-    $content['pb_display_link']['weight'] = $base_weight + 1;
-  }
-  if (!isset($content['pb_display_link_hover'])) {
-    $content['pb_display_link_hover'] = [
-      'type' => 'color_text_widget',
-      'weight' => $base_weight + 2,
-      'region' => 'content',
-      'settings' => [],
-      'third_party_settings' => [],
-    ];
-  }
-  else {
-    $content['pb_display_link_hover']['weight'] = $base_weight + 2;
+  // Existing widget settings are kept; only the weight is forced, so the two
+  // link colours always follow pb_display_border_hover.
+  foreach (['pb_display_link' => 1, 'pb_display_link_hover' => 2] as $field => $offset) {
+    $existing = $content[$field] ?? NULL;
+    $content[$field] = is_array($existing)
+      ? ['weight' => $base_weight + $offset] + $existing
+      : [
+        'type' => 'color_text_widget',
+        'weight' => $base_weight + $offset,
+        'region' => 'content',
+        'settings' => [],
+        'third_party_settings' => [],
+      ];
   }
   $fd->set('content', $content);
 

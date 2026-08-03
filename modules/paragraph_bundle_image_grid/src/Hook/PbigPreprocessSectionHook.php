@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraph_bundle_image_grid\Hook;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Hook\Attribute\Hook;
 use Drupal\file\FileInterface;
@@ -51,20 +52,30 @@ final class PbigPreprocessSectionHook {
       return;
     }
 
+    // A File row can carry a NULL uri if the record is damaged; buildUrl()
+    // is typed string and would TypeError, white-screening the whole page.
     $uri = $file->getFileUri();
-    $style_storage = $this->entityTypeManager->getStorage('image_style');
-    $preferred = $style_storage->load('pb_image_grid_full');
-    if ($preferred instanceof ImageStyleInterface) {
-      $variables['pb_full_size_url'] = $preferred->buildUrl($uri);
-    }
-    else {
-      $fallback = $style_storage->load('pb_original_size');
-      if ($fallback instanceof ImageStyleInterface) {
-        $variables['pb_full_size_url'] = $fallback->buildUrl($uri);
-      }
+    if ($uri === NULL) {
+      return;
     }
 
-    $variables['#cache']['tags'][] = 'file:' . $file->id();
+    $style_storage = $this->entityTypeManager->getStorage('image_style');
+    $style = $style_storage->load('pb_image_grid_full');
+    if (!$style instanceof ImageStyleInterface) {
+      $style = $style_storage->load('pb_original_size');
+    }
+    if (!$style instanceof ImageStyleInterface) {
+      return;
+    }
+    $variables['pb_full_size_url'] = $style->buildUrl($uri);
+
+    // The URL is derived from the file, the media that owns it and the style
+    // that builds it — all three have to invalidate it.
+    $cacheability = CacheableMetadata::createFromRenderArray($variables);
+    $cacheability->addCacheableDependency($file);
+    $cacheability->addCacheableDependency($media);
+    $cacheability->addCacheableDependency($style);
+    $cacheability->applyTo($variables);
   }
 
 }

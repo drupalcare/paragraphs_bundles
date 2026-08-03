@@ -13,6 +13,8 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
  * Renders the opacity number as a `<div>`.
  *
  * Plugin id `range_number_formatter`.
+ *
+ * @extends \Drupal\Core\Field\FormatterBase<\Drupal\Core\Field\FieldItemListInterface<\Drupal\paragraphs_bundles\Plugin\Field\FieldType\RangeItem>>
  */
 #[FieldFormatter(
   id: 'range_number_formatter',

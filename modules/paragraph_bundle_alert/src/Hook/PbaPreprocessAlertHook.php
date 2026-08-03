@@ -39,7 +39,8 @@ final class PbaPreprocessAlertHook {
     $variables['pb_countdown_seconds'] = 0;
     if ($paragraph->hasField('pb_display_alert_countdown_sec')
       && !$paragraph->get('pb_display_alert_countdown_sec')->isEmpty()) {
-      $variables['pb_countdown_seconds'] = (int) $paragraph->get('pb_display_alert_countdown_sec')->value;
+      $seconds = $paragraph->get('pb_display_alert_countdown_sec')->value;
+      $variables['pb_countdown_seconds'] = is_scalar($seconds) ? (int) $seconds : 0;
     }
     $variables['pb_show_countdown_label'] = $paragraph->hasField('pb_display_alert_show_cdown_lbl')
       && !$paragraph->get('pb_display_alert_show_cdown_lbl')->isEmpty()
@@ -54,19 +55,22 @@ final class PbaPreprocessAlertHook {
       return;
     }
 
-    $start = $paragraph->get('pb_display_alert_start_date')->value ?? NULL;
-    $end = $paragraph->get('pb_display_alert_end_date')->value ?? NULL;
+    // Every other field read in this method is guarded by hasField(); these two
+    // were not, so a site that had deleted either field fataled on any alert
+    // set to 'date_range'.
+    $start = $this->dateValue($paragraph, 'pb_display_alert_start_date');
+    $end = $this->dateValue($paragraph, 'pb_display_alert_end_date');
     $utc = new \DateTimeZone('UTC');
     $now_ts = time();
     $start_ts = 0;
     $end_ts = 0;
-    if ($start) {
+    if ($start !== NULL) {
       $start_dt = new DrupalDateTime($start, $utc);
       if (!$start_dt->hasErrors()) {
         $start_ts = $start_dt->getTimestamp();
       }
     }
-    if ($end) {
+    if ($end !== NULL) {
       $end_dt = new DrupalDateTime($end, $utc);
       if (!$end_dt->hasErrors()) {
         $end_ts = $end_dt->getTimestamp();
@@ -82,9 +86,7 @@ final class PbaPreprocessAlertHook {
     if ($start_ts && $now_ts < $start_ts) {
       $variables['pb_alert_hidden'] = TRUE;
       $variables['pb_default_state'] = 'closed';
-      $max_age = $start_ts - $now_ts;
-      $current = $variables['#cache']['max-age'] ?? Cache::PERMANENT;
-      $variables['#cache']['max-age'] = Cache::mergeMaxAges($current, $max_age);
+      $this->mergeMaxAge($variables, $start_ts - $now_ts);
       return;
     }
 
@@ -96,10 +98,39 @@ final class PbaPreprocessAlertHook {
 
     $variables['pb_date_range_end'] = $end_ts;
     if ($end_ts && $now_ts <= $end_ts) {
-      $max_age = $end_ts - $now_ts;
-      $current = $variables['#cache']['max-age'] ?? Cache::PERMANENT;
-      $variables['#cache']['max-age'] = Cache::mergeMaxAges($current, $max_age);
+      $this->mergeMaxAge($variables, $end_ts - $now_ts);
     }
+  }
+
+  /**
+   * Reads a date field as a string, or NULL when it is absent or empty.
+   */
+  private function dateValue(ParagraphInterface $paragraph, string $field): ?string {
+    if (!$paragraph->hasField($field) || $paragraph->get($field)->isEmpty()) {
+      return NULL;
+    }
+    $value = $paragraph->get($field)->value;
+
+    return is_string($value) && $value !== '' ? $value : NULL;
+  }
+
+  /**
+   * Lowers the render array's max-age, never raising it.
+   *
+   * @param array<string, mixed> $variables
+   *   Render variables (passed by reference).
+   * @param int $max_age
+   *   The max-age to merge in, in seconds.
+   */
+  private function mergeMaxAge(array &$variables, int $max_age): void {
+    $cache = $variables['#cache'] ?? NULL;
+    $cache = is_array($cache) ? $cache : [];
+    $current = $cache['max-age'] ?? Cache::PERMANENT;
+    $cache['max-age'] = Cache::mergeMaxAges(
+      is_int($current) ? $current : Cache::PERMANENT,
+      $max_age,
+    );
+    $variables['#cache'] = $cache;
   }
 
 }

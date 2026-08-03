@@ -15,6 +15,10 @@ use Drupal\Core\TypedData\DataDefinition;
  *
  * Plugin id `paragraphs_bundles_rgb`. Identical to v1 in storage shape
  * and semantics; modernised to the Drupal 11 `#[FieldType]` attribute.
+ *
+ * @property string|null $value
+ *   The stored colour. Says once, for static analysis, what schema() and
+ *   propertyDefinitions() below already agree on.
  */
 #[FieldType(
   id: 'paragraphs_bundles_rgb',
