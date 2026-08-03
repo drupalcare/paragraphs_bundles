@@ -3,8 +3,6 @@ services:
     arguments:
       - '@extension.list.module'
 
-  Drupal\paragraph_bundle_contact_form\Hook\PbcfThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_contact_form\Hook\PbcfHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

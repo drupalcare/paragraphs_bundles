@@ -20,7 +20,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * `paragraphs-bundles` class, so each rendered bundle must contain it. Enables
  * the full bundle family, including the four needing external contrib when that
  * contrib is installed. Also confirms the content module creates a paragraphs
- * host node.
+ * host node, and that no sub-module outranks a theme's per-view-mode template
+ * suggestion.
  */
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
@@ -165,6 +166,52 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
         sprintf('id="%s-%d"', $prefix, $paragraph->id()),
         $html,
         sprintf('Bundle %s emits the DOM id its dynamic CSS targets.', $type_id),
+      );
+    }
+  }
+
+  /**
+   * No PB module may outrank the view-mode template suggestion.
+   *
+   * The Paragraphs module already emits `paragraph__<bundle>` for every
+   * paragraph, and emits it BEFORE `paragraph__<bundle>__<view_mode>`.
+   * ThemeManager scans suggestions in reverse, so a PB module that appends
+   * `paragraph__<bundle>` from hook_theme_suggestions_paragraph_alter() adds
+   * nothing except a duplicate that outranks — and therefore silently
+   * disables — a theme's per-view-mode template override. Twelve sub-modules
+   * used to do exactly that, affecting 17 of the 39 bundles.
+   */
+  public function testViewModeSuggestionsAreNotOutranked(): void {
+    $module_handler = $this->container->get('module_handler');
+    $type_ids = array_keys(
+      $this->container->get('entity_type.manager')
+        ->getStorage('paragraphs_type')
+        ->loadMultiple(),
+    );
+    $this->assertGreaterThan(10, count($type_ids));
+
+    foreach ($type_ids as $type_id) {
+      $paragraph = Paragraph::create(['type' => $type_id]);
+      $variables = [
+        'elements' => ['#paragraph' => $paragraph, '#view_mode' => 'teaser'],
+      ];
+      $suggestions = $module_handler->invokeAll(
+        'theme_suggestions_paragraph',
+        [$variables],
+      );
+      $module_handler->alter(
+        'theme_suggestions_paragraph',
+        $suggestions,
+        $variables,
+      );
+
+      $this->assertSame(
+        'paragraph__' . $type_id . '__teaser',
+        end($suggestions),
+        sprintf(
+          'Bundle %s leaves the view-mode suggestion highest-priority.',
+          $type_id,
+        ),
       );
     }
   }

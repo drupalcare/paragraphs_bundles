@@ -3,8 +3,6 @@ services:
     arguments:
       - '@extension.list.module'
 
-  Drupal\paragraph_bundle_webform\Hook\PbwThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_webform\Hook\PbwHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

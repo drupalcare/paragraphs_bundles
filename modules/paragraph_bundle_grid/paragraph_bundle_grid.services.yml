@@ -1,8 +1,6 @@
 services:
   Drupal\paragraph_bundle_grid\Hook\PbgThemeHook: {}
 
-  Drupal\paragraph_bundle_grid\Hook\PbgThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_grid\Hook\PbgHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

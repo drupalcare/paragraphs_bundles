@@ -1,8 +1,6 @@
 services:
   Drupal\paragraph_bundle_tabs\Hook\PbtThemeHook: {}
 
-  Drupal\paragraph_bundle_tabs\Hook\PbtThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_tabs\Hook\PbtHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

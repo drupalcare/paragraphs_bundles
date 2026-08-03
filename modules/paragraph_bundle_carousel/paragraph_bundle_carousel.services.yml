@@ -1,8 +1,6 @@
 services:
   Drupal\paragraph_bundle_carousel\Hook\PbcaThemeHook: {}
 
-  Drupal\paragraph_bundle_carousel\Hook\PbcaThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_carousel\Hook\PbcaHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

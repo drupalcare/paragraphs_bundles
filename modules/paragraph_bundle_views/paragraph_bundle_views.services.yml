@@ -3,8 +3,6 @@ services:
     arguments:
       - '@extension.list.module'
 
-  Drupal\paragraph_bundle_views\Hook\PbvThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_views\Hook\PbvHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

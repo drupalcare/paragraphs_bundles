@@ -1,8 +1,6 @@
 services:
   Drupal\paragraph_bundle_accordion\Hook\PbacThemeHook: {}
 
-  Drupal\paragraph_bundle_accordion\Hook\PbacThemeSuggestionsHook: {}
-
   Drupal\paragraph_bundle_accordion\Hook\PbacHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'
