@@ -7,5 +7,6 @@ dependencies:
   - drupal:options
   - drupal:text
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

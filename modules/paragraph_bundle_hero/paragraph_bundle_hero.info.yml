@@ -4,5 +4,11 @@ description: 'Hero banner paragraph with background image and positioned overlay
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:link
+  - drupal:media_library
+  - drupal:options
+  - drupal:text
+  - field_group:field_group
+  - paragraphs:paragraphs
+  - paragraphs_bundles:paragraph_bundle_image
   - paragraphs_bundles:paragraphs_bundles
-  - paragraph_bundle_image:paragraph_bundle_image

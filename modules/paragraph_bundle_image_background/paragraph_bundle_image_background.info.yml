@@ -4,8 +4,10 @@ description: 'Paragraph with CSS background image, optional overlay, and nested 
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:file
   - drupal:image
   - drupal:options
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

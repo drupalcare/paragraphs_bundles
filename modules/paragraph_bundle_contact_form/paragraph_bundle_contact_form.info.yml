@@ -4,6 +4,9 @@ description: 'Embed a contact form inside a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
-  - drupal:contact
   - contact_formatter:contact_formatter
+  - drupal:contact
+  - drupal:options
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

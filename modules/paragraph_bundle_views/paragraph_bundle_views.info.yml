@@ -4,5 +4,9 @@ description: 'Embed a Views reference inside a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
-  - viewsreference:viewsreference
+  - drupal:options
+  - drupal:views
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
+  - viewsreference:viewsreference

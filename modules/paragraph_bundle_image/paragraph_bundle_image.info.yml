@@ -4,10 +4,16 @@ description: 'Paragraph bundles for wide, narrow, and original-size images with 
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:file
+  - drupal:image
+  - drupal:link
   - drupal:media
   - drupal:media_library
+  - drupal:options
   # core.entity_form_display.media.pb_media_image.default.yml uses the 'path'
   # widget.
   - drupal:path
   - drupal:responsive_image
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

@@ -6,4 +6,7 @@ package: 'Paragraphs Bundles'
 dependencies:
   - drupal:block
   - drupal:block_content
+  - drupal:options
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles

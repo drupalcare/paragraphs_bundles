@@ -4,6 +4,7 @@ description: 'Paragraph bundle that references PB Node Reference content with vi
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:file
   - drupal:image
   # node.type.pb_node_reference.yml declares menu_ui; unmet optional-config
   # dependencies are skipped silently, so without this the node type never
@@ -18,12 +19,15 @@ dependencies:
   # formatter. Unlike paragraph_bundle_card, this module has no dependency that
   # pulls responsive_image in transitively.
   - drupal:responsive_image
+  - drupal:text
+  - drupal:user
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - paragraphs:paragraphs
-  - paragraphs_bundles:paragraphs_bundles
   # Owns responsive_image.styles.pb_responsive_image_wide, which the .default
   # and .pb_slideshow view displays below reference. Verified on a fresh
   # install: without this, BOTH are skipped silently and pb_node_reference has
   # no default view display at all. paragraph_bundle_card already declares this
   # dependency for the same reason.
-  - paragraph_bundle_image:paragraph_bundle_image
+  - paragraphs_bundles:paragraph_bundle_image
+  - paragraphs_bundles:paragraphs_bundles

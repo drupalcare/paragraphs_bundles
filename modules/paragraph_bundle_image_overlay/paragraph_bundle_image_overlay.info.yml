@@ -4,7 +4,10 @@ description: 'Image with hover overlay effects (fade, zoom, slide, title bar).'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:link
+  - drupal:media_library
   - drupal:options
+  - field_group:field_group
   - paragraphs:paragraphs
-  - paragraph_bundle_image:paragraph_bundle_image
+  - paragraphs_bundles:paragraph_bundle_image
   - paragraphs_bundles:paragraphs_bundles

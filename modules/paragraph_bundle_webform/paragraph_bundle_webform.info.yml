@@ -4,5 +4,8 @@ description: 'Embed a Webform inside a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
-  - webform:webform
+  - drupal:options
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
+  - webform:webform

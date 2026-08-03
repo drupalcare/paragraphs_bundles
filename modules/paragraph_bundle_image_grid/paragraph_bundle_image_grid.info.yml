@@ -5,8 +5,12 @@ core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
   - drupal:image
+  - drupal:link
+  - drupal:media
+  - drupal:media_library
   - drupal:options
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - paragraphs:paragraphs
-  - paragraph_bundle_image:paragraph_bundle_image
+  - paragraphs_bundles:paragraph_bundle_image
   - paragraphs_bundles:paragraphs_bundles

@@ -16,6 +16,7 @@ dependencies:
   - drupal:responsive_image
   - drupal:text
   - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
   - paragraphs:paragraphs
+  - paragraphs_bundles:paragraph_bundle_image
   - paragraphs_bundles:paragraphs_bundles
-  - paragraph_bundle_image:paragraph_bundle_image

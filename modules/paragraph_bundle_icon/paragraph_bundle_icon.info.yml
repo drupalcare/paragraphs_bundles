@@ -4,8 +4,11 @@ description: 'Icon paragraph with Google Material Symbols or uploaded image icon
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
+  - drupal:file
   - drupal:image
   - drupal:link
   - drupal:options
   - drupal:text
+  - field_group:field_group
+  - paragraphs:paragraphs
   - paragraphs_bundles:paragraphs_bundles
