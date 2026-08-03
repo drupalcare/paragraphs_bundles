@@ -1,6 +1,9 @@
-includes:
-  - phpstan-baseline.neon
-
+# There is deliberately no baseline file. The suppression list started at 145
+# entries and burning it down found five shipped defects — three live fatals, a
+# silent data-loss bug, and a dead conditional-fields branch — so a suppressed
+# finding here has a poor track record of being noise. `level: max` passes with
+# nothing ignored except the one documented entry below; fix new findings
+# rather than running `--generate-baseline`.
 parameters:
   level: max
   paths:
