@@ -102,6 +102,14 @@ function paragraph_bundle_content_core_ungrouped_form_fields(): array {
     'promote',
     'sticky',
     'status',
+    // `langcode` and `revision_log` are core node form components too, and
+    // leaving them off this list is what put them inside the Content tab on
+    // every upgraded site: the append below saw two components in `content`
+    // that no group claimed, read them as fields the site had added, and
+    // adopted them. That also made this whole function non-idempotent —
+    // running it twice moved config the first run had left alone.
+    'langcode',
+    'revision_log',
   ];
 }
 
@@ -125,9 +133,9 @@ function paragraph_bundle_content_flatten_field_group_children(
     if (!is_string($child) || $child === '') {
       continue;
     }
-    if (isset($field_groups[$child]['children'])
-      && is_array($field_groups[$child]['children'])) {
-      $nested = $field_groups[$child]['children'];
+    $group = $field_groups[$child] ?? NULL;
+    if (is_array($group) && isset($group['children']) && is_array($group['children'])) {
+      $nested = $group['children'];
       $fields = array_merge(
         $fields,
         paragraph_bundle_content_flatten_field_group_children($field_groups, $nested),
@@ -252,8 +260,9 @@ function paragraph_bundle_content_append_custom_fields_to_content_tab(
   array &$field_groups,
   array $content,
 ): void {
-  if (!isset($field_groups['group_pb_tab_content']['children'])
-    || !is_array($field_groups['group_pb_tab_content']['children'])) {
+  $content_tab = $field_groups['group_pb_tab_content'] ?? NULL;
+  if (!is_array($content_tab) || !isset($content_tab['children'])
+    || !is_array($content_tab['children'])) {
     return;
   }
 
@@ -262,7 +271,7 @@ function paragraph_bundle_content_append_custom_fields_to_content_tab(
     paragraph_bundle_content_core_ungrouped_form_fields(),
     TRUE,
   );
-  $content_children = $field_groups['group_pb_tab_content']['children'];
+  $content_children = $content_tab['children'];
   $content_child_map = array_fill_keys(
     array_filter($content_children, 'is_string'),
     TRUE,
@@ -289,10 +298,11 @@ function paragraph_bundle_content_append_custom_fields_to_content_tab(
     return;
   }
 
-  $field_groups['group_pb_tab_content']['children'] = array_values(array_unique([
+  $content_tab['children'] = array_values(array_unique([
     ...$content_children,
     ...$orphans,
   ]));
+  $field_groups['group_pb_tab_content'] = $content_tab;
 }
 
 /**
@@ -337,13 +347,17 @@ function paragraph_bundle_content_apply_pb_content_form_display(): void {
     $third = [];
   }
   $template_third = $template['third_party_settings'] ?? [];
-  if (is_array($template_third)) {
-    $third = array_replace_recursive($third, $template_third);
+  if (!is_array($template_third)) {
+    $template_third = [];
   }
-  $field_groups = $third['field_group'] ?? [];
-  if (is_array($field_groups) && isset($template_third['field_group'])
-    && is_array($template_third['field_group'])) {
-    $field_groups = $template_third['field_group'];
+  $third = array_replace_recursive($third, $template_third);
+
+  // The shipped group tree replaces the merged one wholesale — a recursive
+  // merge of two `children` lists interleaves them into an order neither
+  // side asked for. Site-added fields are put back by the append below.
+  $template_field_groups = $template_third['field_group'] ?? NULL;
+  if (is_array($template_field_groups)) {
+    $field_groups = $template_field_groups;
     paragraph_bundle_content_append_custom_fields_to_content_tab(
       $field_groups,
       $content,
