@@ -427,7 +427,14 @@ win
 - `drush pb:regenerate-css` now rebuilds **pb_content nodes** as well as
   paragraphs.
 
-### Added
+### Port detail
+
+> These are implementation notes kept from the v1 → v2 port, module by module.
+> They are the *how*, not the *what* — the sections above are the release
+> summary. Corrected on 2026-08-04: this block was drafted mid-port and still
+> used v1 class names and the pre-consolidation update-hook numbering.
+
+#### Added during the port
 - `pb_display_link` / `pb_display_link_hover` shared field storages and
   `simple_bundle` instances. Emit `--pb-lk` / `--pb-lk-h` into the
   per-paragraph dynamic CSS file; foundation CSS in
@@ -437,7 +444,7 @@ win
   the fields when it is ported.
 - Per-paragraph dynamic CSS files in `public://paragraphs_bundles/`,
   replacing the v1 inline `style="--pb-bg:rgba(...);"` attribute. Each
-  file scopes `--pb-*` declarations to `#pb__{slug}-{id}__inner`;
+  file scopes `--pb-*` declarations to `#pb__{slug}-{id} > .pb-ui-inner`;
   element-id specificity (1,0,0) makes editor choices win without
   `!important`.
 - New `--pb-lk` / `--pb-lk-h` link colour variables. Falls back to
@@ -445,28 +452,31 @@ win
   colour. Preserves link affordance independently of paragraph text.
 - Drush command `pb:regenerate-css` (alias `pb-regen`) with
   `--purge` to wipe and rebuild every CSS file.
-- `update_9005()` backfills CSS files for existing paragraphs on
-  upgrade.
-- `update_9006()`–`update_9008()` wire shared fields on `simple_bundle`
-  (title tag/alignment, link colors, display tab color order).
-- `update_9009()` wires shared v2 fields on **every** PB bundle
-  (auto-discovers bundles via `pb_display_bg`; creates link field
-  instances programmatically when v2 YAML is not shipped yet).
-- `update_9010()` nests Display tab fields into collapsible sections
-  (Colors, Border & radius, Spacing, Size & effects) on every PB bundle.
+- The update chain that ships is `update_9005()`–`update_9008()` plus one
+  post-update. During the port it was fragmented across `9001`–`9015`; those
+  development hooks were consolidated and renumbered above v1's floor before
+  release, so **`update_9009()` and `update_9010()` do not exist** in the
+  shipped module. What they did is now done by `9006`. The authoritative
+  chain is in [`docs/UPGRADE-V1-TO-V2.md`](docs/UPGRADE-V1-TO-V2.md):
+  - `9005` — shared field storages, title help text, optional flags.
+  - `9006` — wire shared v2 fields on every PB bundle, nest the Display tab,
+    hide `pb_display_*` on view displays.
+  - `9007` — repair v1 config against v2's tightened config schema.
+  - `9008` — realign form and view display layout with a fresh install.
+  - `post_update` — regenerate every per-paragraph CSS file.
 - Reusable install helper
   `paragraphs_bundles_pb_wire_shared_fields_for_bundle()` — single entry
   point for all shared v2 field wiring (no sub-module `.install`
   required).
 - `paragraph_bundle_hero` sub-module port (`hero_bundle`): v1 Twig DOM
   preserved; dynamic CSS scoped to
-  `#pb__hero-{id} .pb__hero-txt-wrapper-inner` (nested color target).
+  `#pb__hero-{id} .pb-hero__text-inner` (nested color target).
 - `paragraph_bundle_icon` sub-module port (`icon_bundle`): v1 Twig DOM
   preserved; Google Material Symbols libraries + admin assets; dynamic CSS
-  on `.paragraph__inner`; nested Display tab + link/title shared fields.
+  on `.pb-ui-inner`; nested Display tab + link/title shared fields.
 - `paragraph_bundle_alert` sub-module port (`alert_bundle`): v1 Twig DOM
   preserved (dismissal, countdown, date range, close button); dynamic CSS on
-  `.paragraph__inner`; OOP preprocess + datetime timezone widget + admin JS.
+  `.pb-ui-inner`; OOP preprocess + datetime timezone widget + admin JS.
 - `paragraph_bundle_link` sub-module port (`link_bundle` +
   `link_section_bundle`):
   Track A default template for `link_bundle`; nested link sections; nested
@@ -479,34 +489,34 @@ title;
   `card_image_section_bundle`.
 - `paragraph_bundle_modal` sub-module port (`modal_bundle`): v1 Twig DOM/ARIA
   preserved; modal JS (focus trap, Escape); dynamic CSS on
-  `#pb__modal-id-{id}-win .pb-modal-content > .paragraph__inner`; outer-id
+  `#pb__modal-id-{id}-win .pb-modal__content > .pb-ui-inner`; outer-id
   suffix `-win` in `PbDynamicCssBuilder`.
 - `paragraph_bundle_accordion` sub-module port (`accordion_bundle` +
   `accordion_section_bundle`): v1 Twig DOM/ARIA preserved; accordion JS;
-  dynamic CSS on `#pb__accor-wrap-{id} > .paragraph__inner`; `--pb-bt-a` from
+  dynamic CSS on `#pb__accor-wrap-{id} > .pb-ui-inner`; `--pb-bt-a` from
   `pb_display_accor_active_item` via `BUNDLE_EXTRA_COLOR_FIELDS`.
 - `paragraph_bundle_tabs` sub-module port (`tabs_bundle` +
   `tab_section_bundle`): v1 Twig DOM/ARIA preserved; tabs JS; dynamic CSS on
-  `#pb__tabs-{id} > .paragraph__inner`; `--pb-bt-a` from
+  `#pb__tabs-{id} > .pb-ui-inner`; `--pb-bt-a` from
   `pb_display_tab_active_item`.
 - `paragraph_bundle_grid` sub-module port (`grid_bundle`): v1 Twig preserved;
   responsive breakpoint CSS libraries; dynamic CSS on
-  `#pb__grid-{id} > .paragraph__inner`; inline gap on `.pb__grid-wrapper`.
+  `#pb__grid-{id} > .pb-ui-inner`; inline gap on `.pb-grid__wrapper`.
 - `paragraph_bundle_carousel` sub-module port (`carousel_bundle`): v1 Twig
   DOM/ARIA preserved; carousel JS; dynamic CSS on
-  `#pb__carousel-{id} > .paragraph__inner`; breakpoint libraries; title block
+  `#pb__carousel-{id} > .pb-ui-inner`; breakpoint libraries; title block
   weights 1–3 via `wire-bundle-shared-fields.php`.
 - `paragraph_bundle_node_reference` sub-module port (`node_reference_bundle`):
   `pb_node_reference` content type and node view modes; v1 Twig DOM preserved;
-  dynamic CSS on `#pb__nf-{id} > .paragraph__inner`; conditional NF fields via
+  dynamic CSS on `#pb__nf-{id} > .pb-ui-inner`; conditional NF fields via
   `PbnrFieldWidgetHook` and `pb-conditional-fields` JS; title block weights 1–3.
 - `paragraph_bundle_parallax` sub-module port (`parallax_bundle` +
   `parallax_section_bundle`): v1 parallax JS/CSS preserved; wrapper dynamic CSS
-  on `#pb__parallax-{id} > .paragraph__inner`; section colors scoped to
-  `.pb__parallax-text`; breakpoint libraries; title block weights 1–3.
+  on `#pb-parallax-{id} > .pb-ui-inner`; section colors scoped to
+  `.pb-parallax__text`; breakpoint libraries; title block weights 1–3.
 - `paragraph_bundle_slideshow` sub-module port (`slideshow_bundle` +
   `slideshow_section_bundle`): v1 slideshow DOM/ARIA/JS preserved; dynamic CSS
-  on `#pb__slide-wrap-{id} > .paragraph__inner` with `--pb-bt-a` active slide
+  on `#pb__slide-wrap-{id} > .pb-ui-inner` with `--pb-bt-a` active slide
   color; title block weights 1–3.
 - `paragraph_bundle_image_background` sub-module port
   (`image_background_bundle`):
@@ -515,32 +525,31 @@ title;
   SKIP).
 - `paragraph_bundle_image_grid` sub-module port (`image_grid_bundle` +
   `image_grid_section_bundle`): v1 grid/lightbox DOM/JS preserved; dynamic CSS
-  on `#pb__image-grid-{id} > .paragraph__inner`; section split colors (border on
-  inner, bg/text on `.pb__image-grid-title`); `PbigPreprocessSectionHook` sets
+  on `#pb__image-grid-{id} > .pb-ui-inner`; section split colors (border on
+  inner, bg/text on `.pb-image-grid__title`); `PbigPreprocessSectionHook` sets
   lightbox full-size URL; title block weights 1–3 on both bundles.
 - `paragraph_bundle_image_overlay` sub-module port (`image_overlay_bundle`):
   v1 overlay DOM/effects CSS preserved; split dynamic CSS (border on inner,
-  bg/text on `.pb__overlay-container` and `.pb__overlay-title`); outer id
+  bg/text on `.pb-overlay__container` and `.pb-overlay__title`); outer id
   `#pb__image-overlay-{id}`; title block weights 1–3.
 - `paragraph_bundle_3d_carousel` sub-module port (`3d_carousel_bundle`): v1 3D
-  carousel DOM/JS/ARIA preserved; dynamic CSS on `#pb__caro-wrap-{id} >
-  .paragraph__inner`; inline perspective px; breakpoint libraries; no title
+  carousel DOM/JS/ARIA preserved; dynamic CSS on `#pb-3d-carousel-{id} >
+  .pb-ui-inner`; inline perspective px; breakpoint libraries; no title
   field (wire/verify SKIP).
 - `paragraph_bundle_3d_flip_box` sub-module port (`3d_flip_box_bundle`): v1
   flip-box DOM/CSS preserved; dynamic CSS on `#pb__3d-flip-box-{id} >
-  .paragraph__inner`; inline height px + flip axis class on `.pb__flip-box`;
+  .pb-ui-inner`; inline height px + flip axis class on `.pb-3d-flip-box__scene`;
   title block weights 1–3.
 - `paragraph_bundle_layout` sub-module port (`one_column_bundle`,
   `two_columns_bundle`, `three_columns_bundle`): v1 column layout DOM/ARIA/JS
   preserved; dynamic CSS on each bundle's `#pb__{layout-slug}-{id} >
-  .paragraph__inner`; breakpoint libraries; column toggle toolbar + sticky
+  .pb-ui-inner`; breakpoint libraries; column toggle toolbar + sticky
   inline grid vars; title block weights 1–3 on all three bundles.
 - All v2 `*.info.yml` files: `package: 'Paragraphs Bundles'` (separate Extend
   list group from core Paragraphs).
 - Removed `paragraph_bundle_block.install` — `hook_install()` ran before the
   paragraph type was registered; use optional YAML on enable + parent
-`9009`/`9010`
-  on upgrade.
+  `9006` on upgrade.
 - `block_bundle` form/view displays: title tag and title alignment wired
   (Content tab + hidden on view), matching `simple_bundle` / `hero_bundle`.
 - Track A sub-modules (`paragraph_bundle_block`,
@@ -553,7 +562,7 @@ title;
 - Grouping of Additional display fields by widget type (selects, colors,
   numbers, checkboxes, datetime, range, media) for a two-per-row admin layout.
 
-### Changed
+#### Changed during the port
 - Display tab **Additional** section admin layout: number, checkbox,
   datetime, and color accent fields use the same two-per-row flex rules as
   margin/padding selects; image/media fields stay full width.
@@ -572,7 +581,7 @@ title;
   removed per-field duplicate `#attached` and broken form-level hooks.
 - Display tab on paragraph forms uses nested `details` field groups:
   Colors (open), Border & radius, Spacing, Size & effects, and
-  Additional (bundle-specific fields). `update_9010()` applies this to
+  Additional (bundle-specific fields). `update_9006()` applies this to
   every PB bundle; fresh installs get it from optional form display YAML.
 - Drupal version requirement: `^11.3 || ^12`.
 - PHP version requirement: `8.3+`.
@@ -595,23 +604,27 @@ title;
   inheritance, breaking editor-set colours including hover).
 - `PbDynamicCssBuilder` supports per-bundle inner scope overrides when
   v1 Twig applies colours to a nested element (first: `hero_bundle` →
-  `.pb__hero-txt-wrapper-inner`). `OUTER_ID_PREFIX_OVERRIDES` keeps v1
+  `.pb-hero__text-inner`). `OUTER_ID_PREFIX_OVERRIDES` keeps v1
   outer ids (e.g. `#pb__hero-{id}`) in sync with preprocess + CSS.
 
-### Fixed
+#### Fixed during the port
 - `paragraph_bundle_image` Twig: read display list keys from
   `paragraph.field.value` (view display hides `pb_display_*` fields).
 - `image_narrow_bundle` / `image_wide_bundle`: restore v1 outer ids
   (`pb__image-n-{id}`, `pb__image-w-{id}`) in Twig + `PbDynamicCssBuilder`
   so dynamic CSS scopes match the DOM.
 
-### Preserved
+#### Preserved
 - All field machine names (`pb_content_*`, `pb_display_*`).
 - All CSS custom properties (`--pb-bg`, `--pb-bg-h`, `--pb-br`,
   `--pb-br-h`, `--pb-tx`, `--pb-tx-h`, `--pb-px*`).
-- All BEM class names from v1 templates (any future rename will be
-  documented in `docs/CSS-CLASS-MIGRATION.md` and applied via the
-  migration scripts).
+- **Not** class names. This line previously claimed v1 class names were
+  preserved; that was true only of the earliest port drafts. v2 renames 299
+  structural classes — see
+  [`docs/CSS-CLASS-MIGRATION.md`](docs/CSS-CLASS-MIGRATION.md) for the full
+  map and the 69 tokens that genuinely did not change.
 - Library names `paragraphs_bundles/color-picker` and
   `paragraphs_bundles/opacity-range` (referenced by widget plugins).
-- Update hooks 9001–9004 ported verbatim from v1.
+- v1's update hooks `9001`–`9004` are **removed**, not ported: v2 declares
+  `hook_update_last_removed() = 9004`, so a site below that schema must
+  finish upgrading on 1.x first. v2's own chain starts at `9005`.
