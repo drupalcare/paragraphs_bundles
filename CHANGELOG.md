@@ -12,8 +12,8 @@ upgrading — the upgrade is one-way, and it has a prerequisite (your site must
 already be on the last 1.x release).
 
 Two things do change for site builders, both detailed below: **structural CSS
-class names were renamed** (see `docs/CSS-CLASS-MIGRATION.md` for all 166
-renames and the 87 frozen tokens that did not change), and three things v1
+class names were renamed** (see `docs/CSS-CLASS-MIGRATION.md` for all 304
+renames and the 69 frozen tokens that did not change), and three things v1
 bundled are no longer in the package (see **Removed**).
 
 ### Security

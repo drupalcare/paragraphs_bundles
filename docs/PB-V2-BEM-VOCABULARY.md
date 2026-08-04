@@ -23,34 +23,27 @@ shipped record.
 
 ## Frozen L2 config (not renamed)
 
-These classes double as stored field values, so renaming one would require a
-content migration. They are frozen for that reason and keep their v1 spelling.
+Most of these double as stored field values, so renaming one would require a
+content migration; the rest are asset-library suffixes (`pb__576`…) or admin
+form-group names held in form-display config. They are frozen for those reasons
+and keep their v1 spelling. Classes that v1 *built* from a stored value (e.g.
+`pb__3d-caro-100`, `pb__image-overlay-fade`) are **renames, not frozen tokens** —
+they are listed in the per-bundle tables below.
 
-<details><summary>Frozen class list (87)</summary>
+<details><summary>Frozen class list (69)</summary>
 
 | Class |
 |-------|
 | `pb__1200` |
+| `pb__nmw_100` |
+| `pb__nmw_800` |
+| `pb__nmw_1024` |
+| `pb__nmw_1280` |
+| `pb__nmw_1440` |
+| `pb__nmw_1600` |
+| `pb__nmw_1920` |
+| `pb__nmw_2560` |
 | `pb__1400` |
-| `pb__3d-caro-100` |
-| `pb__3d-caro-150` |
-| `pb__3d-caro-200` |
-| `pb__3d-caro-250` |
-| `pb__3d-caro-300` |
-| `pb__3d-caro-350` |
-| `pb__3d-caro-400` |
-| `pb__3d-caro-450` |
-| `pb__3d-caro-500` |
-| `pb__3d-caro-550` |
-| `pb__3d-caro-s-100` |
-| `pb__3d-caro-s-150` |
-| `pb__3d-caro-s-200` |
-| `pb__3d-caro-s-250` |
-| `pb__3d-caro-s-300` |
-| `pb__3d-caro-s-350` |
-| `pb__3d-caro-s-400` |
-| `pb__3d-caro-s-450` |
-| `pb__3d-caro-s-500` |
 | `pb__576` |
 | `pb__768` |
 | `pb__992` |
@@ -80,13 +73,6 @@ content migration. They are frozen for that reason and keep their v1 spelling.
 | `pb__ds_top_left` |
 | `pb__ds_top_middle` |
 | `pb__ds_top_right` |
-| `pb__image-overlay-fade` |
-| `pb__image-overlay-slide_bottom` |
-| `pb__image-overlay-slide_left` |
-| `pb__image-overlay-slide_right` |
-| `pb__image-overlay-slide_top` |
-| `pb__image-overlay-title` |
-| `pb__image-overlay-zoom` |
 | `pb__left_bar` |
 | `pb__margin` |
 | `pb__margin_bottom` |
@@ -204,10 +190,10 @@ content migration. They are frozen for that reason and keep their v1 spelling.
 
 | Legacy | Target |
 |--------|--------|
-| `pb__caro-item` | `pb-carousel__item` |
-| `pb__caro-options` | `pb-carousel__options` |
-| `pb__caro-options-inner` | `pb-carousel__options-inner` |
-| `pb__caro-wrap__inner` | `pb-carousel__inner` |
+| `pb__caro-item` | `pb-carousel__slide` |
+| `pb__caro-options` | `pb-carousel__options-bar` |
+| `pb__caro-options-inner` | `pb-3d-carousel__options-inner` |
+| `pb__caro-wrap__inner` | `pb-carousel__track-inner` |
 | `pb__carousel-announcer` | `pb-carousel__announcer` |
 | `pb__carousel-dot` | `pb-carousel__dot` |
 | `pb__carousel-dots` | `pb-carousel__dots` |
@@ -222,10 +208,29 @@ content migration. They are frozen for that reason and keep their v1 spelling.
 
 | Legacy | Target |
 |--------|--------|
-| `pb__3d-back` | `pb-3d-carousel__back` |
+| `pb__3d-back` | `pb-3d-flip-box__back` |
 | `pb__3d-carousel` | `pb-3d-carousel` |
+| `pb__3d-caro-100` | `pb-3d-carousel--h100` |
+| `pb__3d-caro-150` | `pb-3d-carousel--h150` |
+| `pb__3d-caro-200` | `pb-3d-carousel--h200` |
+| `pb__3d-caro-250` | `pb-3d-carousel--h250` |
+| `pb__3d-caro-300` | `pb-3d-carousel--h300` |
+| `pb__3d-caro-350` | `pb-3d-carousel--h350` |
+| `pb__3d-caro-400` | `pb-3d-carousel--h400` |
+| `pb__3d-caro-450` | `pb-3d-carousel--h450` |
+| `pb__3d-caro-500` | `pb-3d-carousel--h500` |
+| `pb__3d-caro-550` | `pb-3d-carousel--h550` |
+| `pb__3d-caro-s-100` | `pb-3d-carousel--sh100` |
+| `pb__3d-caro-s-150` | `pb-3d-carousel--sh150` |
+| `pb__3d-caro-s-200` | `pb-3d-carousel--sh200` |
+| `pb__3d-caro-s-250` | `pb-3d-carousel--sh250` |
+| `pb__3d-caro-s-300` | `pb-3d-carousel--sh300` |
+| `pb__3d-caro-s-350` | `pb-3d-carousel--sh350` |
+| `pb__3d-caro-s-400` | `pb-3d-carousel--sh400` |
+| `pb__3d-caro-s-450` | `pb-3d-carousel--sh450` |
+| `pb__3d-caro-s-500` | `pb-3d-carousel--sh500` |
 | `pb__3d-flip-box__inner` | `pb-ui-inner` |
-| `pb__3d-front` | `pb-3d-carousel__front` |
+| `pb__3d-front` | `pb-3d-flip-box__front` |
 
 ## 3D Flip Box
 
@@ -318,7 +323,7 @@ content migration. They are frozen for that reason and keep their v1 spelling.
 | `pb-modal-title` | `pb-modal__title` |
 | `pb__modal-next` | `pb-modal__next` |
 | `pb__modal-prev` | `pb-modal__prev` |
-| `pb__modal-wrapper` | `pb-modal__wrapper` |
+| `pb__modal-wrapper` | `pb-modal__wrapper-{id}` (id) |
 | `pb__modal__inner` | `pb-modal__inner` |
 
 ## Parallax

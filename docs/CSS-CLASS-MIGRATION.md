@@ -38,8 +38,17 @@ of the release package; these tables are the shipped record.
 
 | | Count |
 |---|------:|
-| Structural class renames (v1 → v2) | **166** |
-| Frozen display/breakpoint tokens (unchanged) | **87** |
+| Structural class renames (v1 → v2) | **185** |
+| Manual-only renames (below) | **119** |
+| Frozen tokens (unchanged) | **69** |
+
+That is 304 rows and **299 distinct renames** — a few names appear in both a
+per-bundle table and a thematic one.
+
+Every v2 name in the tables below was checked against the shipped source on
+2026-08-04: **all 299 exist**. Every frozen token was checked the same way, and
+the ones that turned out to be renamed classes rather than stored values were
+moved into the rename tables where they belong.
 
 ### What changed
 
@@ -63,6 +72,13 @@ of the release package; these tables are the shipped record.
 | Breakpoint classes | `pb__576` … `pb__1400` | **Same** (frozen) |
 | Admin form / widget CSS | `pb__tab-display`, color picker, … | **Same**
 (frozen) |
+| Two inner wrappers | `pb__simple__inner`, `pb__default__inner` | **Same** — see note below |
+
+`pb__simple__inner` (simple bundle) and `pb__default__inner` (default template)
+are the only two `pb__` names that are ordinary **classes** on the rendered
+page. They carry no stored-value, config or asset-library coupling — unlike
+every other row here — and were left unrenamed during the BEM pass. If you
+override either, expect them to move to `pb-` in a future major.
 
 Frozen tokens are output verbatim from Display tab field values. See
 [Display field classes (unchanged)](#display-field-classes-unchanged) below.
@@ -157,10 +173,10 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 | v1 class | v2 class |
 |----------|----------|
-| `pb__caro-item` | `pb-carousel__item` |
-| `pb__caro-options` | `pb-carousel__options` |
-| `pb__caro-options-inner` | `pb-carousel__options-inner` |
-| `pb__caro-wrap__inner` | `pb-carousel__inner` |
+| `pb__caro-item` | `pb-carousel__slide` |
+| `pb__caro-options` | `pb-carousel__options-bar` |
+| `pb__caro-options-inner` | `pb-3d-carousel__options-inner` (3D carousel) |
+| `pb__caro-wrap__inner` | `pb-carousel__track-inner` |
 | `pb__carousel-announcer` | `pb-carousel__announcer` |
 | `pb__carousel-dot` | `pb-carousel__dot` |
 | `pb__carousel-dots` | `pb-carousel__dots` |
@@ -175,10 +191,29 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 | v1 class | v2 class |
 |----------|----------|
-| `pb__3d-back` | `pb-3d-carousel__back` |
+| `pb__3d-back` | `pb-3d-flip-box__back` (3D flip box) |
 | `pb__3d-carousel` | `pb-3d-carousel` |
+| `pb__3d-caro-100` | `pb-3d-carousel--h100` |
+| `pb__3d-caro-150` | `pb-3d-carousel--h150` |
+| `pb__3d-caro-200` | `pb-3d-carousel--h200` |
+| `pb__3d-caro-250` | `pb-3d-carousel--h250` |
+| `pb__3d-caro-300` | `pb-3d-carousel--h300` |
+| `pb__3d-caro-350` | `pb-3d-carousel--h350` |
+| `pb__3d-caro-400` | `pb-3d-carousel--h400` |
+| `pb__3d-caro-450` | `pb-3d-carousel--h450` |
+| `pb__3d-caro-500` | `pb-3d-carousel--h500` |
+| `pb__3d-caro-550` | `pb-3d-carousel--h550` |
+| `pb__3d-caro-s-100` | `pb-3d-carousel--sh100` |
+| `pb__3d-caro-s-150` | `pb-3d-carousel--sh150` |
+| `pb__3d-caro-s-200` | `pb-3d-carousel--sh200` |
+| `pb__3d-caro-s-250` | `pb-3d-carousel--sh250` |
+| `pb__3d-caro-s-300` | `pb-3d-carousel--sh300` |
+| `pb__3d-caro-s-350` | `pb-3d-carousel--sh350` |
+| `pb__3d-caro-s-400` | `pb-3d-carousel--sh400` |
+| `pb__3d-caro-s-450` | `pb-3d-carousel--sh450` |
+| `pb__3d-caro-s-500` | `pb-3d-carousel--sh500` |
 | `pb__3d-flip-box__inner` | `pb-ui-inner` |
-| `pb__3d-front` | `pb-3d-carousel__front` |
+| `pb__3d-front` | `pb-3d-flip-box__front` (3D flip box) |
 
 ### 3D flip box
 
@@ -271,7 +306,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | `pb-modal-title` | `pb-modal__title` |
 | `pb__modal-next` | `pb-modal__next` |
 | `pb__modal-prev` | `pb-modal__prev` |
-| `pb__modal-wrapper` | `pb-modal__wrapper` |
+| `pb__modal-wrapper` | `pb-modal__wrapper-{id}` — now an **id**, not a class |
 | `pb__modal__inner` | `pb-modal__inner` |
 
 ### Parallax
@@ -490,7 +525,7 @@ run them through `migrate-class-names.sh`. Two reasons:
 | `pb__image-overlay-slide_top` | `pb-image-overlay--slide-top` |
 | `pb__image-overlay-title` | `pb-image-overlay--title` |
 | `pb__image-overlay-zoom` | `pb-image-overlay--zoom` |
-| `play` | `pb-slideshow__nav--play` |
+| `play` | `pb-slideshow__nav--dot-play` / `pb-slideshow__nav--nav-play` |
 | `rotate-effect` | `pb-parallax--rotate` |
 | `scale-effect` | `pb-parallax--scale` |
 | `shadow-effect` | `pb-parallax--shadow` |
@@ -534,38 +569,12 @@ In v2 the template renders a modern BEM class from the value via the
 
 | Class | Typical use |
 |-------|-------------|
-| `pb__3d-caro-100` | 3D carousel sizing |
-| `pb__3d-caro-150` | 3D carousel sizing |
-| `pb__3d-caro-200` | 3D carousel sizing |
-| `pb__3d-caro-250` | 3D carousel sizing |
-| `pb__3d-caro-300` | 3D carousel sizing |
-| `pb__3d-caro-350` | 3D carousel sizing |
-| `pb__3d-caro-400` | 3D carousel sizing |
-| `pb__3d-caro-450` | 3D carousel sizing |
-| `pb__3d-caro-500` | 3D carousel sizing |
-| `pb__3d-caro-550` | 3D carousel sizing |
-| `pb__3d-caro-s-100` | 3D carousel sizing |
-| `pb__3d-caro-s-150` | 3D carousel sizing |
-| `pb__3d-caro-s-200` | 3D carousel sizing |
-| `pb__3d-caro-s-250` | 3D carousel sizing |
-| `pb__3d-caro-s-300` | 3D carousel sizing |
-| `pb__3d-caro-s-350` | 3D carousel sizing |
-| `pb__3d-caro-s-400` | 3D carousel sizing |
-| `pb__3d-caro-s-450` | 3D carousel sizing |
-| `pb__3d-caro-s-500` | 3D carousel sizing |
 | `pb__animate_bottom` | Animation / overlay |
 | `pb__animate_left` | Animation / overlay |
 | `pb__animate_opacity` | Animation / overlay |
 | `pb__animate_right` | Animation / overlay |
 | `pb__animate_top` | Animation / overlay |
 | `pb__animate_zoom` | Animation / overlay |
-| `pb__image-overlay-fade` | Animation / overlay |
-| `pb__image-overlay-slide_bottom` | Animation / overlay |
-| `pb__image-overlay-slide_left` | Animation / overlay |
-| `pb__image-overlay-slide_right` | Animation / overlay |
-| `pb__image-overlay-slide_top` | Animation / overlay |
-| `pb__image-overlay-title` | Animation / overlay |
-| `pb__image-overlay-zoom` | Animation / overlay |
 | `pb__border` | Border |
 | `pb__border_3px` | Border |
 | `pb__border_6px` | Border |
@@ -578,6 +587,14 @@ In v2 the template renders a modern BEM class from the value via the
 | `pb__round_small` | Border radius |
 | `pb__round_xlarge` | Border radius |
 | `pb__round_xxlarge` | Border radius |
+| `pb__nmw_100` | Node content width (renders body class `pb-nmw-100`) |
+| `pb__nmw_800` | Node content width (renders body class `pb-nmw-800`) |
+| `pb__nmw_1024` | Node content width (renders body class `pb-nmw-1024`) |
+| `pb__nmw_1280` | Node content width (renders body class `pb-nmw-1280`) |
+| `pb__nmw_1440` | Node content width (renders body class `pb-nmw-1440`) |
+| `pb__nmw_1600` | Node content width (renders body class `pb-nmw-1600`) |
+| `pb__nmw_1920` | Node content width (renders body class `pb-nmw-1920`) |
+| `pb__nmw_2560` | Node content width (renders body class `pb-nmw-2560`) |
 | `pb__1200` | Breakpoints (library suffix) |
 | `pb__1400` | Breakpoints (library suffix) |
 | `pb__576` | Breakpoints (library suffix) |

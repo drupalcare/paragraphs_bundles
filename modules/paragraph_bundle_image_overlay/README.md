@@ -38,5 +38,6 @@ drush cr
 
 - Split dynamic CSS: border/link on `#pb__image-overlay-{id} > .pb-ui-inner`;
   bg/text on `.pb-overlay__container` and `.pb-overlay__title`.
-- Overlay style class `pb__image-overlay-{key}` remains on outer wrapper.
+- Overlay style class `pb-image-overlay--{key}` on the outer wrapper (v1 shipped
+  `pb__image-overlay-{key}`; the stored field value is unchanged).
 - Border radius class on `.pb-overlay__container`; padding class on title.
