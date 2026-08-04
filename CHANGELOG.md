@@ -97,6 +97,12 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **The carousel had no accessible name.** Its slide container is
+  `role="group"` with `aria-roledescription="carousel"`, which requires one,
+  and it pointed `aria-labelledby` at `index-{id}` — an element only the *3D*
+  carousel renders. The reference has been dangling since v1, so screen
+  readers announced an unnamed carousel. It now carries a direct
+  `aria-label`. Found by the id sweep, not by the audit.
 - **The slideshow's play button is no longer a non-tab child of a
   `role="tablist"`.** Whenever autoplay ran, WCAG 2.2.2 required a pause
   control, and that control lives in the same row as the numbered nav — so any
@@ -402,6 +408,17 @@ user-visible; read this section before upgrading.
   writes the matching scope — the per-bundle override map they used to disagree
   through is deleted. Per-paragraph CSS regenerates itself; no stored data
   changes; no update hook is needed.
+- **Eight un-prefixed DOM ids are now inside the `pb-` namespace.** The
+  carousel, 3D carousel and slideshow emitted `prev-{id}`, `next-{id}`,
+  `btn-{id}`, `co-{id}`, `index-{id}`, `item-{id}-{n}`, `label-item-{id}-{n}`
+  and `play-pause-{id}`. An id is global to the document: a host theme or
+  another module can own `#next-42` just as legitimately, and whichever loses
+  is broken with no error anywhere. They are now
+  `pb-carousel__prev-{id}`, `pb-3d-carousel__play-pause-{id}`,
+  `pb-slideshow__play-pause-{id}` and so on. The 3D carousel's ring id moved
+  with them (`pb-3d-carousel-ring-{id}` → `pb-3d-carousel__ring-{id}`), and its
+  JavaScript, which derives the other four ids from that one, was updated in
+  the same commit.
 - **The last two off-grammar classes were renamed**: `pb__simple__inner` →
   `pb-simple__inner` and `pb__default__inner` → `pb-default__inner`. They were
   the only `pb__` names left that were ordinary classes rather than stored

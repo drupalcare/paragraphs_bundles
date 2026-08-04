@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles\Unit;
 
+use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
@@ -108,7 +109,7 @@ final class PbDomIdGrammarTest extends TestCase {
    * A selector naming an id nothing emits is invisible: the page renders, the
    * rule simply never applies.
    */
-  public function testNoCssSelectorTargetsALegacyId(): void {
+  public function testNoCssSelectorTargetsLegacyId(): void {
     $hits = [];
     foreach (self::shippedFiles('css') as $file) {
       $hits = [...$hits, ...self::hits($file, '/#pb__/')];
@@ -128,7 +129,7 @@ final class PbDomIdGrammarTest extends TestCase {
    * (`{% set foo_id = 'pb__x-' ~ paragraph.id.value %}`), which is how every
    * bespoke v1 id was actually built.
    */
-  public function testNoTemplateEmitsALegacyId(): void {
+  public function testNoTemplateEmitsLegacyId(): void {
     $hits = [];
     foreach (self::shippedFiles('twig') as $file) {
       $hits = [...$hits, ...self::hits($file, '/id\s*=\s*["\']pb__|_id\s*=\s*\'pb__/')];
@@ -144,7 +145,7 @@ final class PbDomIdGrammarTest extends TestCase {
   /**
    * No JavaScript may look an element up by a legacy `pb__…` id.
    */
-  public function testNoJavascriptLooksUpALegacyId(): void {
+  public function testNoJavascriptLooksUpLegacyId(): void {
     $hits = [];
     foreach (self::shippedFiles('js') as $file) {
       $hits = [...$hits, ...self::hits($file, '/getElementById\([`\'"]pb__|[`\'"]#pb__/')];
@@ -154,6 +155,33 @@ final class PbDomIdGrammarTest extends TestCase {
       $hits,
       "JavaScript looks up a `pb__` DOM id that nothing emits any more:\n"
       . implode("\n", $hits),
+    );
+  }
+
+  /**
+   * Every id a template renders starts with the `pb-` prefix.
+   *
+   * An id is global to the document. `#next-42` or `#item-42-1` can be owned
+   * just as legitimately by a host theme or another module, and whichever one
+   * loses is silently broken — no error, no warning, just a control that stops
+   * responding. Until 2.0.0 this module emitted eight such ids.
+   */
+  public function testNoTemplateEmitsUnprefixedId(): void {
+    $hits = [];
+    foreach (self::shippedFiles('twig') as $file) {
+      // `id="…"` whose value does not begin with `pb-`, `{{`, or `{%`.
+      foreach (self::hits($file, '/\sid\s*=\s*"(?!pb-|\{\{|\{%)/') as $hit) {
+        $hits[] = $hit;
+      }
+      // `{% set …_id = 'x-' ~ … %}` where the literal does not start `pb-`.
+      foreach (self::hits($file, '/set\s+\w*_?id\s*=\s*\'(?!pb-)[a-z]/') as $hit) {
+        $hits[] = $hit;
+      }
+    }
+    $this->assertSame(
+      [],
+      $hits,
+      "A template emits an id outside the `pb-` namespace:\n" . implode("\n", $hits),
     );
   }
 
@@ -174,7 +202,7 @@ final class PbDomIdGrammarTest extends TestCase {
   public function testOuterIdFollowsTheDocumentedGrammar(string $slug, int $id, string $expected): void {
     $this->assertSame(
       $expected,
-      \Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder::outerElementId($slug, $id),
+      PbDynamicCssBuilder::outerElementId($slug, $id),
     );
   }
 

@@ -81,7 +81,7 @@
         const { signal } = abortController;
 
         const ringId = ring.id;
-        const uniqueId = ringId.replace(/^pb-3d-carousel-ring-/, '');
+        const uniqueId = ringId.replace(/^pb-3d-carousel__ring-/, '');
         const cells = ring.querySelectorAll(PB_3D_CAROUSEL__RING_OWNED_SLIDE);
         const cellCount = cells.length;
 
@@ -90,10 +90,10 @@
         }
 
         const root = ring.closest(PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL);
-        const slideNumberElement = document.getElementById(`index-${uniqueId}`);
-        const prevButton = document.getElementById(`prev-${uniqueId}`);
-        const nextButton = document.getElementById(`next-${uniqueId}`);
-        const playPauseButton = document.getElementById(`btn-${uniqueId}`);
+        const slideNumberElement = document.getElementById(`pb-3d-carousel__index-${uniqueId}`);
+        const prevButton = document.getElementById(`pb-3d-carousel__prev-${uniqueId}`);
+        const nextButton = document.getElementById(`pb-3d-carousel__next-${uniqueId}`);
+        const playPauseButton = document.getElementById(`pb-3d-carousel__play-pause-${uniqueId}`);
         const playIcon =
           playPauseButton?.querySelector(`:scope > .${PB_NAV__PLAY_ICON}`) ??
           null;

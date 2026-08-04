@@ -220,12 +220,21 @@ pb-{bundle-slug}__{element}-{paragraph id}   any further id inside that bundle
 | Prefix | `pb-` | single hyphen, never `pb__` |
 | Body | the **full bundle slug** from §3.1 | never an abbreviation |
 | Case | kebab, lowercase | `pb-node-reference-42`, not `pb-nodeReference-42` |
-| Suffix | `-{paragraph.id}` | always last, always numeric |
+| Suffix | `-{paragraph.id}` | always numeric |
 | Inner ids | BEM element between stem and number | `pb-tabs__tabset-42` |
+| Repeated elements | append the 1-based loop index | `pb-accordion__item-42-3` |
 
 Examples: `#pb-accordion-42`, `#pb-image-narrow-7`,
 `#pb-accordion__sections-42`, `#pb-slideshow__stage-42`,
+`#pb-carousel__slide-42-3`, `#pb-carousel__slide-42-3-label`,
 `#pb-modal-42-win` (the modal dialog is the one documented suffix).
+
+**Never emit an un-prefixed id.** `prev-42`, `next-42`, `btn-42`, `co-42`,
+`index-42`, `item-42-1` were all real ids in this module until 2.0.0. An id is
+global to the document: a host theme, another contrib module, or a second
+instance of your own markup can own `#next-42` just as legitimately as you can,
+and whichever loses is broken with no error anywhere. The `pb-` prefix is what
+makes the id ours.
 
 **When to use `__` (BEM) and when not.** `__` marks an *element inside a
 block*. A bundle's outer id is the block itself, so it never contains `__`;

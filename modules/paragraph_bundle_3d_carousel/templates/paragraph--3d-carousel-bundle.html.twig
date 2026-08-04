@@ -51,8 +51,8 @@
   pb_sheight_raw ? 'pb-3d-carousel--sh' ~ pb_sheight_raw,
 ] %}
 
-{% set carousel_id = 'pb-3d-carousel-ring-' ~ paragraph.id.value %}
-{% set co_id = 'co-' ~ paragraph.id.value %}
+{% set carousel_id = 'pb-3d-carousel__ring-' ~ paragraph.id.value %}
+{% set co_id = 'pb-3d-carousel__options-' ~ paragraph.id.value %}
 {% set valid_slides = content.pb_content_3d_car_body|filter((item, key) => key|first != '#') %}
 {% set total_slides = valid_slides|length %}
 
@@ -63,17 +63,17 @@
          class="pb-3d-carousel__ring"
          role="group"
          aria-roledescription="carousel"
-         aria-labelledby="index-{{ paragraph.id.value }}"
+         aria-labelledby="pb-3d-carousel__index-{{ paragraph.id.value }}"
          data-rotation-delay="{{ pb_play_stop }}">
 
       {% for key, item in valid_slides %}
-        <div id="item-{{ paragraph.id.value }}-{{ loop.index }}"
-             class="pb-3d-carousel__slide item-{{ paragraph.id.value }}-{{ loop.index }}"
+        <div id="pb-3d-carousel__slide-{{ paragraph.id.value }}-{{ loop.index }}"
+             class="pb-3d-carousel__slide"
              role="group"
              aria-hidden="{{ loop.first ? 'false' : 'true' }}"
              tabindex="{{ loop.first ? 0 : -1 }}"
-             aria-labelledby="label-item-{{ paragraph.id.value }}-{{ loop.index }}">
-          <div id="label-item-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">{{ 'Slide @current of @total'|t({'@current': loop.index, '@total': total_slides}) }}</div>
+             aria-labelledby="pb-3d-carousel__slide-label-{{ paragraph.id.value }}-{{ loop.index }}">
+          <div id="pb-3d-carousel__slide-label-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">{{ 'Slide @current of @total'|t({'@current': loop.index, '@total': total_slides}) }}</div>
           {{ item }}
         </div>
       {% endfor %}
@@ -82,14 +82,14 @@
 
     <div id="{{ co_id }}" class="pb-3d-carousel__options" aria-label="{{ 'Carousel Controls'|t }}">
       <div class="pb-ui-row pb-3d-carousel__options-inner">
-        <button id="prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+        <button id="pb-3d-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-prev.svg') }}</span>
         </button>
-        <span id="index-{{ paragraph.id.value }}" class="pb-slideshow__number" aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
+        <span id="pb-3d-carousel__index-{{ paragraph.id.value }}" class="pb-slideshow__number" aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
 
         {% if pb_play_stop > 0 %}
-          <button id="btn-{{ paragraph.id.value }}"
+          <button id="pb-3d-carousel__play-pause-{{ paragraph.id.value }}"
                   type="button"
                   class="pb-ui-btn pb-nav__pause"
                   aria-controls="{{ carousel_id }}"
@@ -101,7 +101,7 @@
           </button>
         {% endif %}
 
-        <button id="next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+        <button id="pb-3d-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
           <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-next.svg') }}</span>
         </button>

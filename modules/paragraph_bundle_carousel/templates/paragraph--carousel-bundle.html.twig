@@ -75,7 +75,12 @@
              class="pb-carousel__slides{{ pb_play_stop == 0 ? ' pb-u-zero' : ' pb-u-not-zero' }}"
              role="group"
              aria-roledescription="carousel"
-             aria-labelledby="index-{{ paragraph.id.value }}"
+             {# Was `aria-labelledby="index-{id}"` in v1 and every v2 release
+                candidate, but this template has never rendered an element with
+                that id — only the 3D carousel does. A dangling `aria-labelledby`
+                leaves the carousel with no accessible name at all, so name it
+                directly. #}
+             aria-label="{{ 'Image Carousel'|t }}"
              data-slide-time="{{ pb_play_stop }}"
              data-small-screen="{{ pb_small_screen }}"
              data-big-screen="{{ pb_big_screen }}"
@@ -87,16 +92,19 @@
             {% if vertical_carousel %}data-orientation="{{ vertical_carousel }}"{% endif %}>
 
           {% for key, item in valid_slides %}
-            {% set item_id = 'item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
-            {% set item_classes = 'pb-carousel__slide item-' ~ paragraph.id.value ~ '-' ~ loop.index %}
+            {% set item_id = 'pb-carousel__slide-' ~ paragraph.id.value ~ '-' ~ loop.index %}
+            {# The slide used to carry a second, bare `item-{id}-{n}` class as
+               well. Nothing in the module's CSS or JS ever selected it and it
+               only duplicated the id, so it is gone. #}
+            {% set item_classes = 'pb-carousel__slide' %}
 
             <div
               id="{{ item_id }}"
               class="{{ item_classes }}"
               role="group"
-              aria-labelledby="label-{{ item_id }}">
+              aria-labelledby="{{ item_id }}-label">
 
-              <div id="label-{{ item_id }}" class="visually-hidden">
+              <div id="{{ item_id }}-label" class="visually-hidden">
                 {{ 'Slide @current of @total'|t({'@current': loop.index, '@total': total_slides}) }}
               </div>
 
@@ -113,7 +121,7 @@
       {% if total_slides > 1 and (pb_show_dots or pb_play_stop > 0) %}
         <div class="pb-carousel__bottom-bar">
           {% if pb_play_stop > 0 %}
-            <button id="play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}" aria-pressed="true">
+            <button id="pb-carousel__play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}" aria-pressed="true">
               <span class="visually-hidden">{{ 'Play or pause the carousel'|t }}</span>
               <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_carousel/svg/svg-pause.svg') }}</span>
               <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_carousel/svg/svg-play.svg') }}</span>
@@ -131,12 +139,12 @@
       {% set pb_show_arrows = pb_navigation in ['arrows', 'both'] %}
       {% if total_slides > 1 and pb_show_arrows %}
         <div class="pb-carousel__options-bar" aria-label="{{ 'Carousel Controls'|t }}">
-          <button id="prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+          <button id="pb-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-prev.svg') }}
           </button>
 
-          <button id="next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+          <button id="pb-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
             <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-next.svg') }}
           </button>

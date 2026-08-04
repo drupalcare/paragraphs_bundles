@@ -115,7 +115,7 @@
           <div id="pb-slideshow__nav-{{ paragraph.id.value }}" role="group" aria-label="{{ 'Slideshow Controls'|t }}" class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
 
             {% if show_play_button %}
-              <button id="btn-{{ paragraph.id.value }}" type="button"
+              <button id="pb-slideshow__play-pause-{{ paragraph.id.value }}" type="button"
                       aria-label="{{ 'Pause slideshow'|t }}"
                       class="pb-ui-btn pb-nav__play pb-is-playing"
                       aria-live="polite">
