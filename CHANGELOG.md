@@ -96,6 +96,24 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **Three crash guards on paths a visitor can reach.** A theme that leaves a
+  Markup object in a paragraph's `class` list made `array_diff()` cast it to
+  string — harmless — but an array in that list is a fatal, and the class list
+  is whatever the theme put there. A render array whose `#cache` is not an
+  array made `unset($build['#cache']['keys'])` fatal rather than a no-op. And
+  the form-display verifier passed raw config into methods that index it by
+  name, so a non-string child reached `implode()` and failed while reporting a
+  failure. All three now normalise or guard first.
+- **Template suggestions could be built from a foreign cache entry.** The
+  managed-bundle list was returned from cache after only an `is_array()`
+  check, so anything else written to that cache id — most plausibly an entry
+  from a different version of this code — would have been handed to the
+  suggestion builder as bundle names. The entry is now validated and
+  recomputed when it does not hold.
+- **`PbcRegionMap::layoutLibraryName()` no longer claims it can return NULL.**
+  It never could — the `match` has a default arm — but the interface said
+  `?string` and documented a "no library" case, so every caller carried a dead
+  null-check.
 - **Every high-contrast style the module ships now actually applies.** 28 CSS
   files carried an `@media (prefers-contrast: high)` block — thicker focus
   outlines, heavier borders, stronger checkbox outlines. `high` was renamed to

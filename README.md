@@ -115,6 +115,7 @@ front-end preview.
 
 | Guide | Purpose |
 |-------|---------|
+| `docs/WHATS-NEW-IN-2.0.md` | **Start here if you are on 1.x** — what changed, and why |
 | `docs/CONFIGURATION.md` | Display tab, theme bridge, dynamic CSS |
 | `docs/DEVELOPING.md` | Services, hooks, adding a new bundle |
 | `docs/UPGRADE-V1-TO-V2.md` | v1 → v2 upgrade |
