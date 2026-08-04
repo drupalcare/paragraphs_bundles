@@ -243,9 +243,11 @@ body .page-wrapper li {
   border-radius: 0 !important;
 }
 
-/* The simple bundle's inner carries `pb__simple__inner`, not `simple__inner` —
- * see paragraph--simple-bundle.html.twig. This selector matched nothing. */
-.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb__simple__inner {
+/* The simple bundle's inner carries `pb-simple__inner` — see
+ * paragraph--simple-bundle.html.twig. Two earlier names for this element
+ * matched nothing: `simple__inner` (no prefix) and, until 2.0.0,
+ * `pb__simple__inner` (double underscore after the prefix, off-grammar). */
+.paragraphs-bundles:not(.page-node-type-pb-content .paragraphs-bundles) > .pb-simple__inner {
   width: 100%;
   max-width: 100%;
   margin-inline-start: auto;

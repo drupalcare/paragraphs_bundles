@@ -35,8 +35,8 @@ release package.
 |-------|---------------|--------|---------|
 | **L0 Global** | `paragraphs-bundles` | Twig (every paragraph root) | Scope
 root shared by all bundles |
-| **L1 Identity** | `#pb__{slug}-{id}` | Preprocess | Dynamic CSS anchor (id,
-not class) |
+| **L1 Identity** | `#pb-{slug}-{id}` | Preprocess | Dynamic CSS anchor (id,
+not class) — see §3.10 |
 | **L2 Config** | `pb__{token}` | List field `allowed_values` or Twig prefix +
 field | `pb__pmw_500`, `pb__992` |
 | **L3 Private** | `pb-{bundle-slug}` | Twig (**paragraph root only**) | `pb-
@@ -204,6 +204,79 @@ pb-nav__{control}
 ```
 
 Examples: `pb-nav__prev`, `pb-nav__next`, `pb-nav__play`, `pb-nav__pause`.
+
+### 3.10 DOM ids (L1) — kebab, never abbreviated
+
+Ids use the **same grammar as classes**, plus the paragraph entity id. There
+is no second convention to remember.
+
+```
+pb-{bundle-slug}-{paragraph id}              outer element, one per paragraph
+pb-{bundle-slug}__{element}-{paragraph id}   any further id inside that bundle
+```
+
+| Rule | | |
+|---|---|---|
+| Prefix | `pb-` | single hyphen, never `pb__` |
+| Body | the **full bundle slug** from §3.1 | never an abbreviation |
+| Case | kebab, lowercase | `pb-node-reference-42`, not `pb-nodeReference-42` |
+| Suffix | `-{paragraph.id}` | always last, always numeric |
+| Inner ids | BEM element between stem and number | `pb-tabs__tabset-42` |
+
+Examples: `#pb-accordion-42`, `#pb-image-narrow-7`,
+`#pb-accordion__sections-42`, `#pb-slideshow__stage-42`,
+`#pb-modal-42-win` (the modal dialog is the one documented suffix).
+
+**When to use `__` (BEM) and when not.** `__` marks an *element inside a
+block*. A bundle's outer id is the block itself, so it never contains `__`;
+an id on a node inside that bundle names the element it sits on and therefore
+does. Never use `__` as a separator before the numeric id, and never use it as
+a general word separator — that is what `-` is for.
+
+**One source of truth.** `PbDynamicCssBuilder::outerElementId()` builds the
+outer id, and both writers call it: `PbPreprocessHook` (which sets the DOM
+attribute via `pb_paragraph_id`) and the dynamic CSS builder (which writes the
+matching `#…` scope). **Templates must not compose an outer id themselves** —
+use `pb_paragraph_id`. Inner ids are Twig-built, so keep them derived from
+`paragraph.id.value` and named after the element.
+
+**Ids must not collide with a sibling id.** Before naming an inner id, check
+it is not already the outer id of some bundle: `pb-accordion-{id}` is the
+accordion's outer id, so the section host inside it is
+`pb-accordion__sections-{id}`.
+
+---
+
+## 3.11 Changing a name — nothing may be left behind
+
+A class or id name is a contract shared by **five** surfaces. Renaming one
+without the others is the single most common way to ship a dead selector, and
+this module has shipped several (see `CSS-CLASS-MIGRATION.md`). When you
+rename anything, the same commit updates all of these:
+
+| # | Surface | What to check |
+|---|---|---|
+| 1 | **Twig** | The name where it is written, plus every `{% set %}` that composes it and every docblock line quoting it |
+| 2 | **CSS** | Every file in `css/` and `modules/*/css/`, including breakpoint variants — a selector nobody updates silently stops matching |
+| 3 | **JS** | `querySelector`/`getElementById`/`closest`/`classList` and any template literal that builds the name from a fragment |
+| 4 | **Tests** | Unit expectations, Kernel render assertions, FunctionalJavascript selectors |
+| 5 | **Docs** | The bundle `README.md` (it becomes the module's help page), plus `CSS-CLASS-MIGRATION.md`, this spec, and `CHANGELOG.md` |
+
+Verify with a sweep that no old name survives anywhere, not just where you
+expected it:
+
+```bash
+# Nothing may match the old name in shipped code.
+grep -rn 'OLD-NAME' --include='*.twig' --include='*.css' --include='*.js' \
+  --include='*.php' --include='*.md' . | grep -v '^./docs/PB-V2-'
+
+# Every dynamic-CSS scope still resolves to a real DOM id.
+vendor/bin/phpunit --filter 'PbDynamicCssBuilderTest|PbBundleRenderKernelTest'
+```
+
+A rename that only a v1 → v2 migration table still mentions is correct — those
+tables are supposed to name the old token. A rename that a **CSS selector, JS
+lookup, or README** still mentions is a defect.
 
 ---
 

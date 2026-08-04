@@ -128,7 +128,7 @@ front-end preview.
 
 - Drupal 11.3+ / 12, PHP 8.3+, OOP hooks (`src/Hook/`).
 - Per-paragraph dynamic CSS files (no inline `style="--pb-*"`).
-- Element-id scoping (`#pb__{slug}-{id}__inner`) so editor settings
+- Element-id scoping (`#pb-{slug}-{id} > .pb-ui-inner`) so editor settings
   beat theme defaults without `!important`.
 - BEM class naming with Twig `pb_class` filter; stored field values
   unchanged from v1.

@@ -13,24 +13,24 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  * Default {@see PbDynamicCssBuilderInterface} implementation.
  *
  * Emits two un-layered rule blocks scoped to the paragraph's wrapper
- * via the standardised v2 outer-element id (`pb__{slug}-{id}`):
+ * via the standardised v2 outer-element id (`pb-{slug}-{id}`):
  *
- *   #pb__{slug}-{id} > .pb-ui-inner {
+ *   #pb-{slug}-{id} > .pb-ui-inner {
  *     --pb-bg: ...;  --pb-bg-h: ...;  ...
  *     --pb-lk: ...;  --pb-lk-h: ...;
  *     background-color: var(--pb-bg);
  *     border-color:     var(--pb-br);
  *     color:            var(--pb-tx);
  *   }
- *   #pb__{slug}-{id} > .pb-ui-inner:hover {
+ *   #pb-{slug}-{id} > .pb-ui-inner:hover {
  *     background-color: var(--pb-bg-h);
  *     border-color:     var(--pb-br-h);
  *     color:            var(--pb-tx-h);
  *   }
- *   #pb__{slug}-{id} > .pb-ui-inner :where(a) {
+ *   #pb-{slug}-{id} > .pb-ui-inner :where(a) {
  *     color: var(--pb-lk);
  *   }
- *   #pb__{slug}-{id} > .pb-ui-inner:hover :where(a) {
+ *   #pb-{slug}-{id} > .pb-ui-inner:hover :where(a) {
  *     color: var(--pb-lk-h);
  *   }
  *
@@ -40,14 +40,14 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  *
  * --- Why this selector ---------------------------------------------
  *
- * v2 standardises the outer-element id as `pb__{slug}-{id}` for every
+ * v2 standardises the outer-element id as `pb-{slug}-{id}` for every
  * bundle (v1 used 30 distinct bespoke patterns: `pb__nf-`, `pb__caro-wrap-`,
  * `pb__slide-wrap-`, `pb-card-text-section-`, etc.). Each v2 paragraph
  * template sets the same id format via `pb_paragraph_id` from
  * {@see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook}, so the
  * builder and the templates stay in lock-step.
  *
- * Selector specificity: `#pb__{slug}-{id} > .pb-ui-inner` = (1,1,1).
+ * Selector specificity: `#pb-{slug}-{id} > .pb-ui-inner` = (1,1,1).
  * Beats `paragraphs-bundles-custom.css` rule
  * `.paragraphs-bundles > .pb-ui-inner` (0,2,1) and any reasonable
  * host-theme rule decisively. Editor settings always win without
@@ -65,20 +65,20 @@ use Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface;
  *
  * --- Where to change the DOM contract ------------------------------
  *
- * {@see self::scopeSelector()} composes the whole selector from four
- * class constants below, and nothing else builds one:
+ * {@see self::scopeSelector()} composes the whole selector, and nothing
+ * else builds one:
  *
- *   - {@see self::OUTER_ID_PREFIX_OVERRIDES} — v1 id prefixes, per bundle
- *   - {@see self::OUTER_ID_SUFFIX_OVERRIDES} — v1 id suffixes, per bundle
+ *   - {@see self::outerElementId()}          — `pb-{slug}-{id}`, the DOM id
+ *   - {@see self::OUTER_ID_SUFFIX_OVERRIDES} — id suffixes, per bundle
  *   - {@see self::INNER_DESCENDANT}          — `> .pb-ui-inner`
  *   - {@see self::INNER_DESCENDANT_OVERRIDES} — per-bundle inner element
  *
  * Bundles absent from the two override maps take the standard
- * `#pb__{slug}-{id} > .pb-ui-inner`. If a future v2 template change moves
- * the outer id format or restructures the inner element, update these
- * constants — no other call site needs to know. Templates must keep the
- * outer id in sync; `pb_paragraph_id` in the preprocess hook reads
- * {@see self::OUTER_ID_PREFIX_OVERRIDES} for exactly that reason.
+ * `#pb-{slug}-{id} > .pb-ui-inner`. If a future template change moves the
+ * outer id format or restructures the inner element, update these — no
+ * other call site needs to know. The preprocess hook writes the DOM id by
+ * calling {@see self::outerElementId()}, so the id a paragraph carries and
+ * the id its CSS scopes to cannot drift apart.
  *
  * Property declarations are only emitted for variables that are
  * actually set; partial input (e.g. only `--pb-bg`) does NOT zero out
@@ -112,34 +112,11 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
   ];
 
   /**
-   * V1 outer-element id prefix overrides (bundle machine name => prefix).
+   * Outer-element id suffix appended after `pb-{slug}-{id}`.
    *
-   * When set, preprocess and CSS scope use `prefix-{id}` instead of
-   * `pb__{slug}-{id}`. Must stay in sync with the bundle Twig template.
-   *
-   * @var array<string, string>
-   */
-  public const array OUTER_ID_PREFIX_OVERRIDES = [
-    'hero_bundle' => 'pb__hero',
-    'image_narrow_bundle' => 'pb__image-n',
-    'image_wide_bundle' => 'pb__image-w',
-    'accordion_bundle' => 'pb__accor-wrap',
-    'card_two_columns_bundle' => 'pb__card-two-columns',
-    'card_three_columns_bundle' => 'pb__card-three-columns',
-    'card_text_section_bundle' => 'pb-card-text-section',
-    'card_image_section_bundle' => 'pb__image',
-    'modal_bundle' => 'pb__modal-id',
-    'node_reference_bundle' => 'pb__nf',
-    'parallax_bundle' => 'pb-parallax',
-    'parallax_section_bundle' => 'pb-parallax',
-    'slideshow_bundle' => 'pb__slide-wrap',
-    'image_background_bundle' => 'pb__image-bg',
-    'image_grid_bundle' => 'pb__image-grid',
-    '3d_carousel_bundle' => 'pb-3d-carousel',
-  ];
-
-  /**
-   * V1 outer-element id suffix appended after `{prefix}-{id}`.
+   * Modal is the one bundle whose colours are not on the element carrying
+   * `pb_paragraph_id`: that id is the trigger button, and the dialog it
+   * opens is `{id}-win`. The CSS scope has to target the dialog.
    *
    * @var array<string, string>
    */
@@ -505,7 +482,7 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
   }
 
   /**
-   * Resolves the v1-compatible outer `#prefix-{id}{suffix}` selector.
+   * Resolves the outer `#pb-{slug}-{id}{suffix}` selector.
    *
    * @param string $bundle
    *   Paragraph bundle machine name.
@@ -518,9 +495,29 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
    *   Outer scope selector (includes leading `#`).
    */
   private function outerScopeId(string $bundle, string $slug, int $paragraphId): string {
-    $prefix = self::OUTER_ID_PREFIX_OVERRIDES[$bundle] ?? ('pb__' . $slug);
     $suffix = self::OUTER_ID_SUFFIX_OVERRIDES[$bundle] ?? '';
-    return sprintf('#%s-%d%s', $prefix, $paragraphId, $suffix);
+    return '#' . self::outerElementId($slug, $paragraphId) . $suffix;
+  }
+
+  /**
+   * Builds the outer DOM id a paragraph carries (no leading `#`).
+   *
+   * One derivable form for all 39 bundles: `pb-` plus the bundle slug plus
+   * the entity id. This is the single source of truth — the preprocess hook
+   * writes the attribute with it, {@see self::outerScopeId()} scopes the
+   * generated CSS with it, and no template composes its own.
+   *
+   * @param string $slug
+   *   Kebab-case bundle slug, from
+   *   {@see \Drupal\paragraphs_bundles\Service\Bundle\BundleSluggerInterface}.
+   * @param int $paragraphId
+   *   Paragraph entity id.
+   *
+   * @return string
+   *   DOM id, e.g. `pb-accordion-42`.
+   */
+  public static function outerElementId(string $slug, int $paragraphId): string {
+    return sprintf('pb-%s-%d', $slug, $paragraphId);
   }
 
   /**

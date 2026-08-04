@@ -121,7 +121,10 @@ The same reasoning covers the other frozen tokens:
 | CSS custom properties (`--pb-bg`, …) | Your CSS depends on them |
 | Breakpoint tokens (`pb__576` … `pb__1400`) | They double as asset library names other modules can depend on |
 | Admin form group names (`pb__tab-display`, …) | They live in your form-display config and style the edit form only |
-| Element ids (`#pb__{slug}-{id}`) | Per-paragraph CSS is scoped by them, and so is any site CSS targeting one paragraph |
+
+**Element ids are not on that list.** They were frozen for most of v2's
+development and then deliberately un-frozen; the next section says why they
+were the exception.
 
 ---
 
@@ -131,15 +134,35 @@ Three, and only three.
 
 **1. Structural CSS class names changed.** 299 of them. See above.
 
-**2. Two element ids changed**, despite the rule above:
+**2. Outer element ids are now one derivable form**, `#pb-{bundle-slug}-{id}`.
+29 of the 30 bundles that had a v1 id therefore changed.
+
+v1 had thirty different id patterns, and most were abbreviations rather than
+the bundle's name — `#pb__nf-42` for a node reference, `#pb__accor-wrap-42`
+for an accordion, `#pb__slide-wrap-42` for a slideshow. Two different bundles
+(parallax and parallax section) even shared a prefix, so the id did not
+identify what it was on. There was no rule you could apply; you had to look
+each one up.
 
 | Bundle | v1 | v2 |
 |---|---|---|
-| Parallax | `#pb__parallax-{id}` | `#pb-parallax-{id}` |
-| 3D carousel | `#pb__caro-wrap-{id}` | `#pb-3d-carousel-{id}` |
+| Accordion | `#pb__accor-wrap-{id}` | `#pb-accordion-{id}` |
+| Node reference | `#pb__nf-{id}` | `#pb-node-reference-{id}` |
+| Slideshow | `#pb__slide-wrap-{id}` | `#pb-slideshow-{id}` |
+| Image (narrow) | `#pb__image-n-{id}` | `#pb-image-narrow-{id}` |
+| Modal | `#pb__modal-id-{id}` | `#pb-modal-{id}` |
+| … 25 more | | [full table](CSS-CLASS-MIGRATION.md#outer-element-ids-v1--v2) |
 
-If you styled a specific parallax or 3D carousel by id, that rule stops
-applying. Every other bundle keeps its v1 id.
+**Why this one was not frozen with the rest.** Two of the thirty ids had
+already changed before 2.0.0 while the documentation still promised they had
+not — so the guarantee was worth less than it appeared. And an id is markup,
+not data: correcting it costs a find-and-replace in your own CSS, while
+correcting it after a stable 2.0.0 would be a breaking change in a stable
+series. A major release is the only honest place to do it.
+
+Your per-paragraph CSS is regenerated automatically and needs no action. What
+needs action is CSS or JS **you** wrote that names a PB id. `card_text_section`
+is the one bundle whose id is unchanged.
 
 **3. You must be on the latest 1.x before upgrading.** v2 declares
 `hook_update_last_removed() = 9004`. A site below that schema is refused with

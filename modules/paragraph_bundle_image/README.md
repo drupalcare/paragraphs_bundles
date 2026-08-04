@@ -52,15 +52,15 @@ drush pb:regenerate-css
 3. Resize the viewport across the six breakpoints and confirm the source set
    changes.
 4. Set Display colors and confirm dynamic CSS lands on
-   `#pb__image-{id} > .pb-ui-inner`, `#pb__image-n-{id} > .pb-ui-inner`, and
-   `#pb__image-w-{id} > .pb-ui-inner`.
+   `#pb-card-image-section-{id} > .pb-ui-inner`, `#pb-image-narrow-{id} > .pb-ui-inner`, and
+   `#pb-image-wide-{id} > .pb-ui-inner`.
 5. Add an image link and link title; confirm the wrapper anchor and its
    `title` attribute.
 
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
-- The three bundles keep distinct id prefixes (`pb__image-`, `pb__image-n-`,
-  `pb__image-w-`), so their dynamic CSS never collides.
+- The three bundles have distinct ids — `pb-image-{id}`, `pb-image-narrow-{id}`,
+  `pb-image-wide-{id}` — so their dynamic CSS never collides.
 - This module ships no CSS of its own; layout comes from the parent's base
   stylesheet.

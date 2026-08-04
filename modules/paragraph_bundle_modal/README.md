@@ -23,11 +23,11 @@ drush pb:regenerate-css
 2. Set Display colors and optional animation class.
 3. Open/close modal with keyboard (Escape, Tab trap) and backdrop click.
 4. Confirm dynamic CSS selector:
-   `#pb__modal-id-{id}-win .pb-modal-content > .paragraph__inner`
+   `#pb-modal-{id}-win .pb-modal__content > .pb-ui-inner`
 
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
 - v1 DOM ids preserved: wrapper `pb__modal-wrapper-{id}`, button
-  `pb__modal-id-{id}`, dialog `pb__modal-id-{id}-win`.
+  `pb-modal-{id}`, dialog `pb-modal-{id}-win`.
 - `PbDynamicCssBuilder` uses outer-id suffix `-win` for modal scope.

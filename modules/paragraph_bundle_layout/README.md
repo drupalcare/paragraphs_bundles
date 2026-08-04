@@ -36,7 +36,7 @@ drush cr
 1. Add One Column, Two Columns, and Three Columns paragraphs with nested body
    items.
 2. Set Display colors; confirm dynamic CSS on each bundle's
-   `#pb__{layout-slug}-{id} > .paragraph__inner`.
+   `#pb-{layout-slug}-{id} > .pb-ui-inner`.
 3. On two/three column bundles: enable column toggles, sticky columns, and a
    layout breakpoint; resize viewport and test keyboard toggle buttons.
 4. Confirm column animation ms and sticky top offset apply via inline grid

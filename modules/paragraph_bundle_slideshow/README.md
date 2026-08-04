@@ -27,11 +27,11 @@ drush pb:regenerate-css
 1. Add a Slideshow paragraph with 2+ section children (each with body items).
 2. Set bottom navigation (dots, numbers, play/pause) and prev/next arrows.
 3. Content tab order: Title → Title tag → Title alignment → Sections.
-4. Confirm dynamic CSS on `#pb__slide-wrap-{id} > .paragraph__inner`.
+4. Confirm dynamic CSS on `#pb-slideshow-{id} > .pb-ui-inner`.
 5. Test keyboard focus, dot navigation, arrows, and autoplay pause on hover.
 
 ## v2 notes
 
 - Display colors and active slide color (`--pb-bt-a`) use per-paragraph dynamic
   CSS, not inline `--pb-*`.
-- Outer wrapper id prefix is `pb__slide-wrap-{id}` (v1 parity).
+- Outer wrapper id prefix is `pb-slideshow-{id}` (v1 parity).

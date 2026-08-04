@@ -66,22 +66,132 @@ moved into the rename tables where they belong.
 |------|----|----|
 | Field machine names | `pb_content_*`, `pb_display_*` | **Same** |
 | CSS custom properties | `--pb-bg`, `--pb-tx`, … | **Same** |
-| Outer element ids | `#pb__{slug}-{id}` | **Same** |
 | Display list field classes | `pb__pmw_500`, `pb__padding_16`, … | **Same**
 (frozen) |
 | Breakpoint classes | `pb__576` … `pb__1400` | **Same** (frozen) |
 | Admin form / widget CSS | `pb__tab-display`, color picker, … | **Same**
 (frozen) |
-| Two inner wrappers | `pb__simple__inner`, `pb__default__inner` | **Same** — see note below |
 
-`pb__simple__inner` (simple bundle) and `pb__default__inner` (default template)
-are the only two `pb__` names that are ordinary **classes** on the rendered
-page. They carry no stored-value, config or asset-library coupling — unlike
-every other row here — and were left unrenamed during the BEM pass. If you
-override either, expect them to move to `pb-` in a future major.
+**Two inner wrappers did change**, and they are easy to miss because they are
+the last `pb__` names that were ordinary classes rather than stored values:
+
+| v1 class | v2 class |
+|---|---|
+| `pb__simple__inner` | `pb-simple__inner` |
+| `pb__default__inner` | `pb-default__inner` |
+
+They carry no stored-value, config or asset-library coupling — which is why
+they could be renamed when the rest of the `pb__` family could not — and their
+old names broke the grammar twice over: a double underscore straight after the
+prefix, and a second one before the element. `pb-simple__inner` is a plain BEM
+element of the `pb-simple` block, like every other inner wrapper in the module.
 
 Frozen tokens are output verbatim from Display tab field values. See
 [Display field classes (unchanged)](#display-field-classes-unchanged) below.
+
+---
+
+## Outer element ids (v1 → v2)
+
+**This is the one section that is not about classes, and the one most likely
+to affect a site that has never touched a PB class.** If your CSS targets a
+single paragraph by id — `#pb__accor-wrap-42 { … }` — read this table.
+
+### The rule v2 follows
+
+> **Every DOM id Paragraphs Bundles emits is `pb-` + the bundle machine name
+> in kebab-case + `-{paragraph id}`.** No abbreviations, no per-bundle
+> exceptions. Given a bundle machine name you can write its id without
+> looking anything up: `accordion_bundle` → `#pb-accordion-42`.
+
+Secondary ids inside a bundle follow the same stem plus the BEM element they
+sit on: `#pb-accordion__sections-42`, `#pb-tabs__tabset-42`,
+`#pb-slideshow__stage-42`.
+
+The rule is stated normatively in
+[`PB-V2-CLASS-NAMING-SPEC.md`](PB-V2-CLASS-NAMING-SPEC.md) (**L1 Identity**)
+and enforced in one place in code —
+`PbDynamicCssBuilder::outerElementId()`, which both the preprocess hook (which
+writes the attribute) and the dynamic-CSS builder (which writes the matching
+`#…` scope) call. Neither can drift from the other.
+
+### Why it changed, when so much else was frozen
+
+v1 had **30 bespoke id patterns** and most were abbreviations of a bundle name
+rather than the name: `pb__nf-` for node reference, `pb__accor-wrap-` for
+accordion, `pb__slide-wrap-` for slideshow, `pb__image-` for *both* the image
+bundle and the card image section. Four bundles already used `pb-`. There was
+no rule to state, so nothing could be derived and nothing could be checked.
+
+Freezing them was considered and rejected for three reasons:
+
+1. **The freeze was already broken.** `parallax_bundle` and
+   `3d_carousel_bundle` had changed id before 2.0.0 — and the migration doc
+   still said ids were unchanged. A promise that is already false for two
+   bundles is not protecting anyone; it is hiding a breakage.
+2. **`parallax_bundle` and `parallax_section_bundle` shared one prefix**, so
+   the id did not even identify the bundle. It does now.
+3. **A major release is the only place this is allowed.** Ids are a public
+   DOM contract. Changing them in 2.0.0 costs a documented find-and-replace;
+   changing them later would be a breaking change in a stable series.
+
+Regenerated per-paragraph CSS follows automatically — the scope selector comes
+from the same function. Nothing in the database changes. The only thing that
+can break is **your own CSS or JS that names a PB id**, and the table below is
+the complete list of what to change.
+
+### The 30 ids that existed in v1
+
+| Bundle | v1 id | 2.0.0 id |
+|---|---|---|
+| `3d_carousel_bundle` | `#pb__caro-wrap-{id}` | `#pb-3d-carousel-{id}` |
+| `3d_flip_box_bundle` | `#pb__3d-flip-box-{id}` | `#pb-3d-flip-box-{id}` |
+| `accordion_bundle` | `#pb__accor-wrap-{id}` | `#pb-accordion-{id}` |
+| `alert_bundle` | `#pb__alert-{id}` | `#pb-alert-{id}` |
+| `card_image_section_bundle` | `#pb__image-{id}` | `#pb-card-image-section-{id}` |
+| `card_text_section_bundle` | `#pb-card-text-section-{id}` | **unchanged** |
+| `card_three_columns_bundle` | `#pb__card-three-columns-{id}` | `#pb-card-three-columns-{id}` |
+| `card_two_columns_bundle` | `#pb__card-two-columns-{id}` | `#pb-card-two-columns-{id}` |
+| `carousel_bundle` | `#pb__carousel-{id}` | `#pb-carousel-{id}` |
+| `grid_bundle` | `#pb__grid-{id}` | `#pb-grid-{id}` |
+| `hero_bundle` | `#pb__hero-{id}` | `#pb-hero-{id}` |
+| `icon_bundle` | `#pb__icon-{id}` | `#pb-icon-{id}` |
+| `image_background_bundle` | `#pb__image-bg-{id}` | `#pb-image-background-{id}` |
+| `image_bundle` | `#pb__image-{id}` | `#pb-image-{id}` |
+| `image_grid_bundle` | `#pb__image-grid-{id}` | `#pb-image-grid-{id}` |
+| `image_grid_section_bundle` | `#pb__image-grid-section-{id}` | `#pb-image-grid-section-{id}` |
+| `image_narrow_bundle` | `#pb__image-n-{id}` | `#pb-image-narrow-{id}` |
+| `image_overlay_bundle` | `#pb__image-overlay-{id}` | `#pb-image-overlay-{id}` |
+| `image_wide_bundle` | `#pb__image-w-{id}` | `#pb-image-wide-{id}` |
+| `modal_bundle` | `#pb__modal-id-{id}` | `#pb-modal-{id}` |
+| `node_reference_bundle` | `#pb__nf-{id}` | `#pb-node-reference-{id}` |
+| `one_column_bundle` | `#pb__one-column-{id}` | `#pb-one-column-{id}` |
+| `parallax_bundle` | `#pb__parallax-{id}` | `#pb-parallax-{id}` |
+| `parallax_section_bundle` | `#pb__parallax-{id}` | `#pb-parallax-section-{id}` |
+| `simple_bundle` | `#pb__simple-{id}` | `#pb-simple-{id}` |
+| `slideshow_bundle` | `#pb__slide-wrap-{id}` | `#pb-slideshow-{id}` |
+| `tabs_bundle` | `#pb__tabs-{id}` | `#pb-tabs-{id}` |
+| `three_columns_bundle` | `#pb__three-columns-{id}` | `#pb-three-columns-{id}` |
+| `two_columns_bundle` | `#pb__two-columns-{id}` | `#pb-two-columns-{id}` |
+| default template (any other bundle) | `#pb__default-{id}` | `#pb-default-{id}` |
+
+**29 changed, 1 unchanged.** The modal dialog keeps its `-win` suffix, so
+`#pb__modal-id-42-win` becomes `#pb-modal-42-win`.
+
+**Ten bundles gained an id in v2** and had none in v1, so nothing can break:
+`accordion_section`, `block`, `block_content`, `contact_form`, `link`,
+`link_section`, `slideshow_section`, `tab_section`, `views`, `webform`.
+
+### Secondary ids that also moved
+
+| Element | v1 id | 2.0.0 id |
+|---|---|---|
+| Accordion section host | `#pb__accor-{id}` | `#pb-accordion__sections-{id}` |
+| Tabs tabset host | `#pb__tab-{id}` | `#pb-tabs__tabset-{id}` |
+| Slideshow stage | `#pb__slideshow-{id}` | `#pb-slideshow__stage-{id}` |
+
+These three had to move regardless: each one's old name is now the *outer* id
+of its own bundle, and a page cannot carry the same id twice.
 
 ---
 

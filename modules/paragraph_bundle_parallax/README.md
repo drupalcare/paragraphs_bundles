@@ -27,13 +27,14 @@ drush pb:regenerate-css
 1. Add a Parallax paragraph with one or more section children.
 2. Set scroll effect (legacy CSS vs JS), speed, breakpoints, and height.
 3. Content tab on wrapper: Title → Title tag → Title alignment → Sections.
-4. Confirm dynamic CSS on wrapper `#pb__parallax-{id} > .paragraph__inner`.
-5. Confirm section colors on `#pb__parallax-{id} .pb__parallax-text`.
+4. Confirm dynamic CSS on wrapper `#pb-parallax-{id} > .pb-ui-inner`.
+5. Confirm section colors on `#pb-parallax-{id} .pb-parallax__text`.
 6. Test reduced-motion and breakpoint-specific CSS libraries.
 
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS (not inline `--pb-*` on text).
-- Section keeps inline `--section-height`, animation vars on `.pb__parallax-bg`,
+- Section keeps inline `--section-height`, animation vars on `.pb-parallax__bg`,
   and `background-image` URL (v1 behavior).
-- Both bundles share outer id prefix `pb__parallax-{id}`.
+- The two bundles now have distinct ids: `pb-parallax-{id}` and
+  `pb-parallax-section-{id}`. In v1 both were `pb__parallax-{id}`.

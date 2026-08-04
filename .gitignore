@@ -47,6 +47,7 @@ docs/PB-V2-MASTER-PLAN.md
 docs/PB-V2-PROGRESS.md
 docs/PB-V2-A11Y-AUDIT-REPORT.md
 docs/PB-V2-CLASS-TRACKING.md
+docs/PB-V2-CLASS-INVENTORY.md
 docs/PB-V2-CLASS-RENAME-CONSTRAINTS.md
 docs/PB-V2-CSS-MODERNIZATION-PLAN.md
 docs/PB-V2-DEMO-BASELINE.md
@@ -64,6 +65,9 @@ docs/BUNDLE-PORT-WORKFLOW.md
 docs/class-renames.md
 docs/legacy.md
 docs/generated/
+# Rendered copies of shipped guides, made for the drupal.org release node.
+# The Markdown is what ships; the HTML is a local artefact.
+docs/*.html
 recipes/paragraphs_bundles_demo/WORKSTREAM.md
 
 # One-off v1 -> v2 porting and migration tooling. Single-use, never invoked by

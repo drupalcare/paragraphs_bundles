@@ -156,16 +156,24 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
       // Only bundles whose template actually scopes itself can be held to
       // that: the tab, slideshow and accordion section templates are
       // pass-through wrappers rendered inside their parent and deliberately
-      // emit no id. The modal bundle builds its own ids (button vs dialog).
+      // emit no id. The modal bundle puts the id on the trigger button and
+      // the CSS scope on the `-win` dialog, so it is asserted separately.
       if ($type_id === 'modal_bundle' || !in_array($type_id, $this->bundlesWithScopedTemplates(), TRUE)) {
         continue;
       }
-      $prefix = PbDynamicCssBuilder::OUTER_ID_PREFIX_OVERRIDES[$type_id]
-        ?? 'pb__' . $slugger->slugify($type_id);
+      // One derivable form for every bundle — `pb-{slug}-{id}`, built by the
+      // same function the dynamic CSS scope is built from. Asserting the
+      // literal here (rather than calling the builder) is deliberate: it
+      // fails if the rule itself is changed, not merely if a caller drifts.
       $this->assertStringContainsString(
-        sprintf('id="%s-%d"', $prefix, $paragraph->id()),
+        sprintf('id="pb-%s-%d"', $slugger->slugify($type_id), $paragraph->id()),
         $html,
         sprintf('Bundle %s emits the DOM id its dynamic CSS targets.', $type_id),
+      );
+      $this->assertStringNotContainsString(
+        'id="pb__',
+        $html,
+        sprintf('Bundle %s emits no legacy `pb__` DOM id.', $type_id),
       );
     }
   }

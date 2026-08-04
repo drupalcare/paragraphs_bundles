@@ -15,7 +15,7 @@
  * | pb_display_slide_play_stop      | `data-slide-time`       | entity integer value |
  * | pb_display_slide_prev_next      | `.pb-slideshow__arrows`     | conditional render |
  *
- * Dynamic CSS selector: `#pb__slide-wrap-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb-slideshow-{id} > .pb-ui-inner`
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -29,7 +29,9 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set slide_id = 'pb__slideshow-' ~ paragraph.id.value %}
+{# Not `pb-slideshow-{id}` — that is now the outer id from preprocess. This
+   names the stage the way its siblings below are named. #}
+{% set slide_id = 'pb-slideshow__stage-' ~ paragraph.id.value %}
 {% set classes_inner = ['pb-ui-inner', 'pb-slideshow__wrap-inner']|merge(pb_display_classes)|join(' ') %}
 
 {% set pb_prev_next = not paragraph.pb_display_slide_prev_next.isEmpty and paragraph|pb_field_value('pb_display_slide_prev_next') %}

@@ -37,7 +37,7 @@ drush cr
 
 ## v2 notes
 
-- Wrapper colors use dynamic CSS on `#pb__image-grid-{id} > .paragraph__inner`.
-- Section colors split: border on inner, bg/text on `.pb__image-grid-title`.
-- Grid width/gap remain inline on `.pb__image-grid-wrapper` (editor px values).
+- Wrapper colors use dynamic CSS on `#pb-image-grid-{id} > .pb-ui-inner`.
+- Section colors split: border on inner, bg/text on `.pb-image-grid__title`.
+- Grid width/gap remain inline on `.pb-image-grid__wrapper` (editor px values).
 - `PbigPreprocessSectionHook` sets `pb_full_size_url` for lightbox JS.

@@ -20,7 +20,7 @@ drush pb:regenerate-css
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS (`pb_dynamic_library`) on
-  `#pb__alert-{id} > .paragraph__inner`, not inline `--pb-*` styles.
+  `#pb-alert-{id} > .pb-ui-inner`, not inline `--pb-*` styles.
 - List display fields read stored keys via `paragraph.field.value` in Twig.
 - Dismissal, date range, and cache max-age logic live in
   `PbaPreprocessAlertHook`.

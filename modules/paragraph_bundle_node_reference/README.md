@@ -29,12 +29,12 @@ drush pb:regenerate-css
 3. Confirm only the matching NF field shows on the Content tab (others hidden).
 4. Content tab order: Title → Title tag → Title alignment → View mode → NF
    fields.
-5. Set Display colors; confirm dynamic CSS on `#pb__nf-{id} > .pb-ui-inner`.
+5. Set Display colors; confirm dynamic CSS on `#pb-node-reference-{id} > .pb-ui-inner`.
 
 ## v2 notes
 
 - L0 `pb-node-reference` on paragraph root; L1 `pb-node-reference__inner`.
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
-- Outer wrapper id prefix is `pb__nf-{id}` (v1 parity).
+- Outer wrapper id prefix is `pb-node-reference-{id}` (v1 parity).
 - Admin conditional fields: `#states` via `PbnrFieldWidgetHook` plus
   `pb-conditional-fields` JS behavior.

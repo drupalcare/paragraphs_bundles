@@ -64,7 +64,7 @@ final class PbDynamicCssBuilderTest extends TestCase {
     ]);
     $css = $this->builder->build($paragraph);
     $this->assertStringContainsString(
-      '#pb__simple-42 > .pb-ui-inner',
+      '#pb-simple-42 > .pb-ui-inner',
       $css,
     );
     $this->assertStringContainsString(
@@ -125,7 +125,7 @@ final class PbDynamicCssBuilderTest extends TestCase {
     ]);
     $css = $this->builder->build($paragraph);
     $this->assertStringContainsString(
-      '#pb__hero-12 .pb-hero__text-inner',
+      '#pb-hero-12 .pb-hero__text-inner',
       $css,
     );
     $this->assertStringNotContainsString('> .pb-ui-inner', $css);
@@ -143,7 +143,7 @@ final class PbDynamicCssBuilderTest extends TestCase {
     ]);
     $css = $this->builder->build($paragraph);
     $this->assertStringContainsString(
-      '#pb__image-overlay-23 > .pb-ui-inner',
+      '#pb-image-overlay-23 > .pb-ui-inner',
       $css,
     );
     $this->assertStringContainsString('--pb-br:', $css);
@@ -207,6 +207,10 @@ final class PbDynamicCssBuilderTest extends TestCase {
 
   /**
    * Parallax section colors are scoped to the text layer selector.
+   *
+   * The section's id is its own — `pb-parallax-section-{id}`. Until 2.0.0 it
+   * shared `pb-parallax-{id}` with `parallax_bundle`, so the id did not say
+   * which of the two bundles it was on.
    */
   public function testParallaxSectionColorsScopeTextLayer(): void {
     $paragraph = $this->mockParagraph('parallax_section_bundle', 42, [
@@ -215,7 +219,7 @@ final class PbDynamicCssBuilderTest extends TestCase {
     ]);
     $css = $this->builder->build($paragraph);
     $this->assertStringContainsString(
-      '#pb-parallax-42 .pb-parallax__text',
+      '#pb-parallax-section-42 .pb-parallax__text',
       $css,
     );
     $this->assertStringContainsString('--pb-bg:', $css);

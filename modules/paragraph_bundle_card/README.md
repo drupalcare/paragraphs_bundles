@@ -24,14 +24,14 @@ drush pb:regenerate-css
 1. Add a two- or three-column card; nest text/image sections in each column.
 2. Set layout + breakpoint on the parent; confirm responsive CSS library loads.
 3. Confirm dynamic CSS selectors match v1 outer ids:
-   - `#pb__card-two-columns-{id} > .paragraph__inner`
-   - `#pb__card-three-columns-{id} > .paragraph__inner`
-   - `#pb-card-text-section-{id} > .paragraph__inner`
-   - `#pb__image-{id}` split scopes (inner border + `.pb__card-image-title`
+   - `#pb-card-two-columns-{id} > .pb-ui-inner`
+   - `#pb-card-three-columns-{id} > .pb-ui-inner`
+   - `#pb-card-text-section-{id} > .pb-ui-inner`
+   - `#pb-card-image-section-{id}` split scopes (inner border + `.pb-card__image-title`
      overlay)
 
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
 - Card image section splits border colours (inner) from overlay bg/text
-  (`.pb__card-image-title`) via `PbDynamicCssBuilder::SPLIT_COLOR_SCOPES`.
+  (`.pb-card__image-title`) via `PbDynamicCssBuilder::SPLIT_COLOR_SCOPES`.

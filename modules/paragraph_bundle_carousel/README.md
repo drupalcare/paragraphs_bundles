@@ -23,7 +23,7 @@ drush pb:regenerate-css
 2. Set navigation (arrows, dots, both), autoplay interval, and breakpoint.
 3. Test keyboard focus, prev/next buttons, and dot navigation.
 4. Set Display colors; confirm dynamic CSS on
-   `#pb__carousel-{id} > .paragraph__inner`.
+   `#pb-carousel-{id} > .pb-ui-inner`.
 5. Content tab order: Title → Title tag → Title alignment → Carousel items.
 
 ## v2 notes

@@ -56,7 +56,7 @@ into a `style=""` attribute on the same element. There is nothing to `var()`
 against and nothing for a theme bridge to map — to change one of these, target
 the element in your own CSS with equal-or-higher specificity.
 
-Scopes are relative to the outer `#pb__{slug}-{id}` id. The single source of
+Scopes are relative to the outer `#pb-{slug}-{id}` id. The single source of
 truth is `USER_STYLE_SCOPES` in `src/Service/Css/PbDynamicUserVarBuilder.php`;
 this table mirrors it.
 

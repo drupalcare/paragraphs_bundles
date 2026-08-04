@@ -20,7 +20,7 @@ interface PbDynamicUserVarBuilderInterface {
    * @param \Drupal\paragraphs\ParagraphInterface $paragraph
    *   The paragraph entity.
    * @param string $outerSelector
-   *   Outer scope selector (e.g. `#pb__grid-42`).
+   *   Outer scope selector (e.g. `#pb-grid-42`).
    *
    * @return string
    *   CSS source. Empty when no user values need emission.

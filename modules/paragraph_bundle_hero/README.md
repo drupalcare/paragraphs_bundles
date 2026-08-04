@@ -47,7 +47,7 @@ drush pb:regenerate-css
 1. Add a Hero paragraph with an image, a title, and body text.
 2. Step through the nine Display Classes values and confirm the overlay moves.
 3. Set Display colors and confirm dynamic CSS lands on
-   `#pb__hero-{id} .pb-hero__text-inner`.
+   `#pb-hero-{id} .pb-hero__text-inner`.
 4. Add an image link and link title; confirm the whole overlay becomes the
    link and carries the `title` attribute.
 5. Confirm width, border, border radius, padding, and shadow classes apply to

@@ -6,15 +6,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [2.0.0] — 2026-07-06
 
 A ground-up rewrite of the suite for Drupal 11.3+ / 12, shipped as a **drop-in
-upgrade from 1.x**: no content or field changes are required and every v1
-bundle keeps its rendered DOM. Read **`docs/UPGRADE-V1-TO-V2.md`** before
-upgrading — the upgrade is one-way, and it has a prerequisite (your site must
-already be on the last 1.x release).
+upgrade from 1.x**: no content or field changes are required, and every v1
+bundle keeps its rendered DOM *structure*. Read
+**`docs/UPGRADE-V1-TO-V2.md`** before upgrading — the upgrade is one-way, and
+it has a prerequisite (your site must already be on the last 1.x release).
 
-Two things do change for site builders, both detailed below: **structural CSS
-class names were renamed** (see `docs/CSS-CLASS-MIGRATION.md` for all 304
-renames and the 69 frozen tokens that did not change), and three things v1
-bundled are no longer in the package (see **Removed**).
+Three things do change for site builders, all detailed below: **structural CSS
+class names were renamed**, **outer element ids were standardised** (both in
+`docs/CSS-CLASS-MIGRATION.md`, which lists all 304 class renames, the 69 frozen
+tokens that did not change, and the full id table), and three things v1 bundled
+are no longer in the package (see **Removed**).
 
 ### Security
 Editor-supplied display values reach the page through two unescaped sinks: the
@@ -377,6 +378,34 @@ user-visible; read this section before upgrading.
 - Unit tests for `PbColorNormalizer` (opacity, hex overlay rgba).
 
 ### Changed
+- **Outer element ids are one derivable form: `pb-{bundle-slug}-{paragraph id}`.**
+  **This is a breaking change for site CSS or JS that names a PB id**, and it
+  affects 29 of the 30 bundles that had an id in v1 — the full old → new table
+  is in `docs/CSS-CLASS-MIGRATION.md`.
+
+  v1 had thirty bespoke patterns and most were abbreviations rather than the
+  bundle name (`pb__nf-`, `pb__accor-wrap-`, `pb__slide-wrap-`, `pb__image-`
+  for two different bundles). Nothing could be derived from a bundle machine
+  name and nothing could be checked. Two of the thirty had already changed
+  before 2.0.0 while the migration doc still promised ids were unchanged, so
+  the guarantee that had justified freezing them was already false.
+
+  `parallax_bundle` and `parallax_section_bundle` had shared one id prefix, so
+  a parallax id did not say which bundle it was on; they are now distinct. The
+  three inner ids whose old names collide with a new outer id moved with them:
+  `pb__accor-{id}` → `pb-accordion__sections-{id}`, `pb__tab-{id}` →
+  `pb-tabs__tabset-{id}`, `pb__slideshow-{id}` → `pb-slideshow__stage-{id}`.
+
+  The rule is now written down (`docs/PB-V2-CLASS-NAMING-SPEC.md` §3.10) and
+  has one implementation, `PbDynamicCssBuilder::outerElementId()`, called both
+  by the preprocess hook that writes the attribute and by the CSS builder that
+  writes the matching scope — the per-bundle override map they used to disagree
+  through is deleted. Per-paragraph CSS regenerates itself; no stored data
+  changes; no update hook is needed.
+- **The last two off-grammar classes were renamed**: `pb__simple__inner` →
+  `pb-simple__inner` and `pb__default__inner` → `pb-default__inner`. They were
+  the only `pb__` names left that were ordinary classes rather than stored
+  field values, and both carried a double underscore straight after the prefix.
 - **One owner for the node-reference conditional fields.** The view-mode field
   widget hook also tried to set `#states` on the four NF reference fields, but
   the element it inspected has no `subform` key, so that branch had never run on
@@ -475,7 +504,7 @@ win
   the fields when it is ported.
 - Per-paragraph dynamic CSS files in `public://paragraphs_bundles/`,
   replacing the v1 inline `style="--pb-bg:rgba(...);"` attribute. Each
-  file scopes `--pb-*` declarations to `#pb__{slug}-{id} > .pb-ui-inner`;
+  file scopes `--pb-*` declarations to `#pb-{slug}-{id} > .pb-ui-inner`;
   element-id specificity (1,0,0) makes editor choices win without
   `!important`.
 - New `--pb-lk` / `--pb-lk-h` link colour variables. Falls back to
@@ -501,7 +530,7 @@ win
   required).
 - `paragraph_bundle_hero` sub-module port (`hero_bundle`): v1 Twig DOM
   preserved; dynamic CSS scoped to
-  `#pb__hero-{id} .pb-hero__text-inner` (nested color target).
+  `#pb-hero-{id} .pb-hero__text-inner` (nested color target).
 - `paragraph_bundle_icon` sub-module port (`icon_bundle`): v1 Twig DOM
   preserved; Google Material Symbols libraries + admin assets; dynamic CSS
   on `.pb-ui-inner`; nested Display tab + link/title shared fields.
@@ -520,26 +549,26 @@ title;
   `card_image_section_bundle`.
 - `paragraph_bundle_modal` sub-module port (`modal_bundle`): v1 Twig DOM/ARIA
   preserved; modal JS (focus trap, Escape); dynamic CSS on
-  `#pb__modal-id-{id}-win .pb-modal__content > .pb-ui-inner`; outer-id
+  `#pb-modal-{id}-win .pb-modal__content > .pb-ui-inner`; outer-id
   suffix `-win` in `PbDynamicCssBuilder`.
 - `paragraph_bundle_accordion` sub-module port (`accordion_bundle` +
   `accordion_section_bundle`): v1 Twig DOM/ARIA preserved; accordion JS;
-  dynamic CSS on `#pb__accor-wrap-{id} > .pb-ui-inner`; `--pb-bt-a` from
+  dynamic CSS on `#pb-accordion-{id} > .pb-ui-inner`; `--pb-bt-a` from
   `pb_display_accor_active_item` via `BUNDLE_EXTRA_COLOR_FIELDS`.
 - `paragraph_bundle_tabs` sub-module port (`tabs_bundle` +
   `tab_section_bundle`): v1 Twig DOM/ARIA preserved; tabs JS; dynamic CSS on
-  `#pb__tabs-{id} > .pb-ui-inner`; `--pb-bt-a` from
+  `#pb-tabs-{id} > .pb-ui-inner`; `--pb-bt-a` from
   `pb_display_tab_active_item`.
 - `paragraph_bundle_grid` sub-module port (`grid_bundle`): v1 Twig preserved;
   responsive breakpoint CSS libraries; dynamic CSS on
-  `#pb__grid-{id} > .pb-ui-inner`; inline gap on `.pb-grid__wrapper`.
+  `#pb-grid-{id} > .pb-ui-inner`; inline gap on `.pb-grid__wrapper`.
 - `paragraph_bundle_carousel` sub-module port (`carousel_bundle`): v1 Twig
   DOM/ARIA preserved; carousel JS; dynamic CSS on
-  `#pb__carousel-{id} > .pb-ui-inner`; breakpoint libraries; title block
+  `#pb-carousel-{id} > .pb-ui-inner`; breakpoint libraries; title block
   weights 1–3 via `wire-bundle-shared-fields.php`.
 - `paragraph_bundle_node_reference` sub-module port (`node_reference_bundle`):
   `pb_node_reference` content type and node view modes; v1 Twig DOM preserved;
-  dynamic CSS on `#pb__nf-{id} > .pb-ui-inner`; conditional NF fields via
+  dynamic CSS on `#pb-node-reference-{id} > .pb-ui-inner`; conditional NF fields via
   `PbnrFieldWidgetHook` and `pb-conditional-fields` JS; title block weights 1–3.
 - `paragraph_bundle_parallax` sub-module port (`parallax_bundle` +
   `parallax_section_bundle`): v1 parallax JS/CSS preserved; wrapper dynamic CSS
@@ -547,33 +576,33 @@ title;
   `.pb-parallax__text`; breakpoint libraries; title block weights 1–3.
 - `paragraph_bundle_slideshow` sub-module port (`slideshow_bundle` +
   `slideshow_section_bundle`): v1 slideshow DOM/ARIA/JS preserved; dynamic CSS
-  on `#pb__slide-wrap-{id} > .pb-ui-inner` with `--pb-bt-a` active slide
+  on `#pb-slideshow-{id} > .pb-ui-inner` with `--pb-bt-a` active slide
   color; title block weights 1–3.
 - `paragraph_bundle_image_background` sub-module port
   (`image_background_bundle`):
   v1 background/overlay DOM preserved; inline background CSS and overlay rgba;
-  responsive bg swap JS; outer id `pb__image-bg-{id}`; no title field (verify
+  responsive bg swap JS; outer id `pb-image-background-{id}`; no title field (verify
   SKIP).
 - `paragraph_bundle_image_grid` sub-module port (`image_grid_bundle` +
   `image_grid_section_bundle`): v1 grid/lightbox DOM/JS preserved; dynamic CSS
-  on `#pb__image-grid-{id} > .pb-ui-inner`; section split colors (border on
+  on `#pb-image-grid-{id} > .pb-ui-inner`; section split colors (border on
   inner, bg/text on `.pb-image-grid__title`); `PbigPreprocessSectionHook` sets
   lightbox full-size URL; title block weights 1–3 on both bundles.
 - `paragraph_bundle_image_overlay` sub-module port (`image_overlay_bundle`):
   v1 overlay DOM/effects CSS preserved; split dynamic CSS (border on inner,
   bg/text on `.pb-overlay__container` and `.pb-overlay__title`); outer id
-  `#pb__image-overlay-{id}`; title block weights 1–3.
+  `#pb-image-overlay-{id}`; title block weights 1–3.
 - `paragraph_bundle_3d_carousel` sub-module port (`3d_carousel_bundle`): v1 3D
   carousel DOM/JS/ARIA preserved; dynamic CSS on `#pb-3d-carousel-{id} >
   .pb-ui-inner`; inline perspective px; breakpoint libraries; no title
   field (wire/verify SKIP).
 - `paragraph_bundle_3d_flip_box` sub-module port (`3d_flip_box_bundle`): v1
-  flip-box DOM/CSS preserved; dynamic CSS on `#pb__3d-flip-box-{id} >
+  flip-box DOM/CSS preserved; dynamic CSS on `#pb-3d-flip-box-{id} >
   .pb-ui-inner`; inline height px + flip axis class on `.pb-3d-flip-box__scene`;
   title block weights 1–3.
 - `paragraph_bundle_layout` sub-module port (`one_column_bundle`,
   `two_columns_bundle`, `three_columns_bundle`): v1 column layout DOM/ARIA/JS
-  preserved; dynamic CSS on each bundle's `#pb__{layout-slug}-{id} >
+  preserved; dynamic CSS on each bundle's `#pb-{layout-slug}-{id} >
   .pb-ui-inner`; breakpoint libraries; column toggle toolbar + sticky
   inline grid vars; title block weights 1–3 on all three bundles.
 - All v2 `*.info.yml` files: `package: 'Paragraphs Bundles'` (separate Extend
@@ -636,13 +665,13 @@ title;
 - `PbDynamicCssBuilder` supports per-bundle inner scope overrides when
   v1 Twig applies colours to a nested element (first: `hero_bundle` →
   `.pb-hero__text-inner`). `OUTER_ID_PREFIX_OVERRIDES` keeps v1
-  outer ids (e.g. `#pb__hero-{id}`) in sync with preprocess + CSS.
+  outer ids (e.g. `#pb-hero-{id}`) in sync with preprocess + CSS.
 
 #### Fixed during the port
 - `paragraph_bundle_image` Twig: read display list keys from
   `paragraph.field.value` (view display hides `pb_display_*` fields).
 - `image_narrow_bundle` / `image_wide_bundle`: restore v1 outer ids
-  (`pb__image-n-{id}`, `pb__image-w-{id}`) in Twig + `PbDynamicCssBuilder`
+  (`pb-image-narrow-{id}`, `pb-image-wide-{id}`) in Twig + `PbDynamicCssBuilder`
   so dynamic CSS scopes match the DOM.
 
 #### Preserved

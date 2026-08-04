@@ -13,7 +13,7 @@
  * | pb_display_tab_animated_tabs | `.pb-tabs__panel`          | class on panel |
  * | pb_display_tabs_breakpoints | `.pb-tabs__tabset`          | v/h + breakpoint classes |
  *
- * Dynamic CSS selector: `#pb__tabs-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb-tabs-{id} > .pb-ui-inner`
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -54,7 +54,8 @@
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
 
-      {% set tab_id = 'pb__tab-' ~ paragraph.id.value %}
+      {# Named for the element it sits on; `pb-tabs-{id}` is the outer id. #}
+      {% set tab_id = 'pb-tabs__tabset-' ~ paragraph.id.value %}
       {# L3 behavior host — JS once() target #}
       <div id="{{ tab_id }}" class="pb-tabs__tabset pb-ui-row {{ tabset_layout }}">
 

@@ -12,7 +12,7 @@
  * | pb_display_accor_active_item | `--pb-bt-a` on inner       | dynamic CSS |
  * | pb_display_accor_animated | `.pb-accordion__pane`             | class on pane |
  *
- * Dynamic CSS selector: `#pb__accor-wrap-{id} > .pb-ui-inner`
+ * Dynamic CSS selector: `#pb-accordion-{id} > .pb-ui-inner`
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -51,7 +51,9 @@
   <div class="{{ classes_inner }}">
 
     <div class="pb-content__full">
-      {% set acc_id = 'pb-accordion-' ~ paragraph.id.value %}
+      {# Named for the element it sits on. `pb-accordion-{id}` is now the
+         outer id from preprocess, so this must not reuse it. #}
+      {% set acc_id = 'pb-accordion__sections-' ~ paragraph.id.value %}
       {# L3 behavior host — JS once() target #}
       <div id="{{ acc_id }}" class="pb-accordion__sections pb-ui-row">
 

@@ -30,8 +30,8 @@ drush cr
 
 1. Add a 3D Flip Box paragraph with front and back nested content.
 2. Set flip axis (X/Y) and box height (px).
-3. Set Display colors; confirm dynamic CSS on `#pb__3d-flip-box-{id} >
-   .paragraph__inner`.
+3. Set Display colors; confirm dynamic CSS on `#pb-3d-flip-box-{id} >
+   .pb-ui-inner`.
 4. Hover the box — confirm 3D flip animation.
 
 ## v2 notes

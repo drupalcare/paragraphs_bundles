@@ -12,10 +12,10 @@
  * | pb_display_animated_modal | `.pb-modal__content`                    | animation class |
  *
  * Dynamic CSS selector:
- * `#pb__modal-id-{id}-win .pb-modal__content > .pb-ui-inner`
+ * `#pb-modal-{id}-win .pb-modal__content > .pb-ui-inner`
  *
  * Outer wrapper id: `pb-modal__wrapper-{id}` (trigger area).
- * Button id: `pb__modal-id-{id}`; dialog id: `pb__modal-id-{id}-win`.
+ * Button id: `pb-modal-{id}`; dialog id: `pb-modal-{id}-win`.
  *
  * @see template_preprocess_paragraph()
  * @see \Drupal\paragraphs_bundles\Hook\PbPreprocessHook
@@ -29,7 +29,7 @@
 {{ attach_library('paragraph_bundle_modal/paragraph-bundle-modal') }}
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
-{% set paragraph_id = 'pb__modal-id-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id %}
 {% set modal_wrapper_id = 'pb-modal__wrapper-' ~ paragraph.id.value %}
 {% set classes_inner = ['pb-ui-inner', 'pb-modal__inner', 'pb-content__full']|merge(pb_display_classes)|join(' ') %}
 

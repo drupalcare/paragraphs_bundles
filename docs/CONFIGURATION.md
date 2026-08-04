@@ -63,7 +63,7 @@ formatter output.
 
 1. `PbEntityHook` runs on paragraph insert/update.
 2. `PbDynamicCssBuilder` reads display field values and builds CSS
-   scoped to `#pb__{slug}-{id}__inner` (and bundle-specific targets).
+   scoped to `#pb-{slug}-{id} > .pb-ui-inner` (and bundle-specific targets).
 3. `PbCssFileManager` writes
    `public://paragraphs_bundles/pb-{slug}-{id}.{hash}.css`.
 4. `PbPreprocessHook` attaches the matching library in Twig

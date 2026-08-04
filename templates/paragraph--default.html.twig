@@ -10,14 +10,14 @@
  *     `style="--pb-bg:rgba(...);"` are now written to a dedicated CSS
  *     file (`pb-{slug}-{id}.css`) by `paragraphs_bundles.css.dynamic_builder`
  *     on save, and attached here via `attach_library('paragraphs_bundles/dynamic--…')`.
- *   - The DOM id (`pb__{slug}-{id}`) and inner class names are kept
+ *   - The DOM id (`pb-{slug}-{id}`) and inner class names are kept
  *     verbatim from v1 so existing sub-theme CSS keeps working.
  *
  * Available variables:
  * - paragraph: Full paragraph entity.
  * - content: All paragraph items.
  * - attributes: HTML attributes for the containing element.
- * - pb_paragraph_id: DOM id added by PbPreprocessHook (`pb__{slug}-{id}`).
+ * - pb_paragraph_id: DOM id added by PbPreprocessHook (`pb-{slug}-{id}`).
  * - pb_dynamic_library: Library id for this paragraph's dynamic CSS.
  *
  * @see template_preprocess_paragraph()
@@ -34,9 +34,9 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {# DOM id used as the CSS scope for the dynamic file. #}
-{% set paragraph_id = pb_paragraph_id ?: 'pb__default-' ~ paragraph.id.value %}
+{% set paragraph_id = pb_paragraph_id ?: 'pb-default-' ~ paragraph.id.value %}
 {# Inner-wrapper classes (sub-theme contract). #}
-{% set classes_inner = ['pb-ui-inner', 'pb__default__inner']|merge(pb_display_classes|default([]))|join(' ') %}
+{% set classes_inner = ['pb-ui-inner', 'pb-default__inner']|merge(pb_display_classes|default([]))|join(' ') %}
 
 {% set classes = [
   'paragraph',

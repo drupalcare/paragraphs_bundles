@@ -33,8 +33,8 @@ drush cr
 2. Set column count, gap (px), and breakpoint library.
 3. Resize viewport — confirm column count changes at the chosen breakpoint
    (`pb__576`, `pb__768`, `pb__992`, `pb__1200`, `pb__1400`).
-4. Set Display colors; confirm dynamic CSS on `#pb__grid-{id} > .pb-ui-inner`.
-5. Set grid gap (px); confirm `#pb__grid-{id} .pb-grid__wrapper { gap: … }` in
+4. Set Display colors; confirm dynamic CSS on `#pb-grid-{id} > .pb-ui-inner`.
+5. Set grid gap (px); confirm `#pb-grid-{id} .pb-grid__wrapper { gap: … }` in
    dynamic CSS.
 
 ## v2 notes

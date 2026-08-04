@@ -117,7 +117,7 @@ Then report the failure with the output of `drush updb` before retrying.
 |------|--------------|------------|
 | Paragraph content | Inline `style="--pb-*"` on inner wrapper | Unchanged in the database; a post-update writes per-paragraph CSS files |
 | Field machine names | `pb_content_*`, `pb_display_*` | **Unchanged** |
-| CSS class names / DOM ids | `pb__{slug}-{id}`, BEM classes | Ids unchanged; structural classes renamed — see `CSS-CLASS-MIGRATION.md` |
+| CSS class names / DOM ids | 30 bespoke id patterns, legacy `pb__` classes | Ids standardised to `pb-{slug}-{id}`; structural classes renamed — see `CSS-CLASS-MIGRATION.md` |
 | Title tag / alignment | Missing on some bundles | `9006` imports instances and wires the Content tab |
 | Link colour fields | Did not exist | `9006` creates instances and wires the Display tab |
 | Display tab layout | Flat list / legacy group names | `9006` nests into Colors / Border / Spacing / Size |
@@ -221,18 +221,28 @@ If your sub-theme overrides PB Twig templates:
 3. Remove any dependency on inline `style="--pb-*"` — v2 attaches a
    per-paragraph library instead.
 
-CSS custom property names are unchanged and element ids are unchanged **for all
-but two bundles** (see below), but **structural class names were renamed** in v2.
-If your theme targets PB classes, work through
-[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) — it lists all 299 renames
-and the 69 frozen tokens that did not change.
+CSS custom property names are unchanged, but **structural class names and
+outer element ids were both renamed** in v2. If your theme targets PB classes
+or ids, work through [`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) — it
+lists all 299 class renames, the 69 frozen tokens that did not change, and the
+full id table.
 
-**Two element ids did change**, and CSS targeting them stops applying:
+**Element ids changed for 29 of the 30 bundles that had one in v1.** v2 emits
+one derivable form everywhere — `#pb-{bundle-slug}-{paragraph id}` — replacing
+30 bespoke v1 patterns, most of them abbreviations (`pb__nf-`,
+`pb__accor-wrap-`, `pb__slide-wrap-`). CSS or JS naming an old id stops
+applying; nothing else is affected, and no stored data changes.
 
 | Bundle | v1 id | v2 id |
 |---|---|---|
+| Accordion | `#pb__accor-wrap-{id}` | `#pb-accordion-{id}` |
+| Node reference | `#pb__nf-{id}` | `#pb-node-reference-{id}` |
+| Slideshow | `#pb__slide-wrap-{id}` | `#pb-slideshow-{id}` |
 | Parallax | `#pb__parallax-{id}` | `#pb-parallax-{id}` |
 | 3D carousel | `#pb__caro-wrap-{id}` | `#pb-3d-carousel-{id}` |
+| … 25 more | | [full table](CSS-CLASS-MIGRATION.md#outer-element-ids-v1--v2) |
+
+Only `card_text_section_bundle` keeps its v1 id — it was already `pb-`.
 
 ---
 

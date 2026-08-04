@@ -15,12 +15,12 @@ use Drupal\paragraphs\ParagraphInterface;
  * pb-lk / pb-lk-h) was rendered onto the inner wrapper as
  * `style="--pb-bg:rgba(...);"`.
  *
- * v2 collects the same values in PHP, scopes them to a class-based
- * selector that's universal across every paragraph bundle, and emits
- * an un-layered CSS block. The selector pattern is decoupled from any
- * specific bundle's bespoke outer id (`pb__nf-`, `pb__caro-wrap-`,
- * `pb__slide-wrap-`, etc. all coexist in v1) so the same builder
- * works uniformly for every paragraph type without lookups.
+ * v2 collects the same values in PHP, scopes them to the paragraph's
+ * outer id, and emits an un-layered CSS block. That id is derived, not
+ * looked up: `pb-{slug}-{id}` for every bundle, where v1 had thirty
+ * bespoke patterns (`pb__nf-`, `pb__caro-wrap-`, `pb__slide-wrap-`, …).
+ * One rule, so the same builder works uniformly for every paragraph
+ * type and cannot disagree with what the template rendered.
  */
 interface PbDynamicCssBuilderInterface {
 

@@ -22,7 +22,7 @@ use Psr\Log\LoggerInterface;
  * Preprocess hook — exposes per-paragraph data to Twig.
  *
  * Sets extra variables on every paragraph render:
- *   - `pb_paragraph_id`: DOM id (`pb__{slug}-{id}` or v1 prefix override).
+ *   - `pb_paragraph_id`: DOM id (`pb-{slug}-{id}`, one form for every bundle).
  *   - `pb_display_classes`: inner-wrapper classes from this bundle's display
  *     fields, in the bundle's declared field order.
  *   - `pb_dynamic_library`: library id when a dynamic CSS file exists,
@@ -85,10 +85,10 @@ final class PbPreprocessHook {
     $slug = $this->slugger->slugify($paragraph->bundle());
     $id = (int) $paragraph->id();
     $bundle = $paragraph->bundle();
-    $prefix = PbDynamicCssBuilder::OUTER_ID_PREFIX_OVERRIDES[$bundle]
-      ?? ('pb__' . $slug);
 
-    $variables['pb_paragraph_id'] = $prefix . '-' . $id;
+    // The DOM id and the generated CSS scope come from one function, so a
+    // template can never carry an id the stylesheet does not target.
+    $variables['pb_paragraph_id'] = PbDynamicCssBuilder::outerElementId($slug, $id);
     // Inner-wrapper classes for this bundle's display fields. Every template
     // used to rebuild this with an identical five-line Twig loop over its own
     // copy of the field list; the list is a DOM contract and now has one home.

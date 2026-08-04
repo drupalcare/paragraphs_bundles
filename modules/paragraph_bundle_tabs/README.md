@@ -25,7 +25,7 @@ drush pb:regenerate-css
 3. Set Display colors including Active tab item color (`--pb-bt-a`).
 4. Confirm keyboard navigation (arrow keys) and ARIA roles on
    tablist/tab/tabpanel.
-5. Confirm dynamic CSS selector: `#pb__tabs-{id} > .paragraph__inner`
+5. Confirm dynamic CSS selector: `#pb-tabs-{id} > .pb-ui-inner`
 
 ## Tab section icon field
 
@@ -36,5 +36,6 @@ must load the icon font library.
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
-- v1 outer id preserved: `pb__tabs-{id}`; tab grid id `pb__tab-{id}`.
+- Outer id `pb-tabs-{id}` (v1: `pb__tabs-{id}`); the tabset host inside it is
+  `pb-tabs__tabset-{id}` (v1: `pb__tab-{id}`).
 - `PbDynamicCssBuilder` emits `--pb-bt-a` from `pb_display_tab_active_item`.

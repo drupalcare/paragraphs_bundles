@@ -20,7 +20,7 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = ['pb-ui-inner', 'pb__simple__inner']|merge(pb_display_classes)|join(' ') %}
+{% set classes_inner = ['pb-ui-inner', 'pb-simple__inner']|merge(pb_display_classes)|join(' ') %}
 
 {% set classes = [
   'paragraph',

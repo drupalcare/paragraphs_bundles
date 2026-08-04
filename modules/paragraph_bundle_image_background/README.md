@@ -23,7 +23,7 @@ drush cr
 2. Set position, sizing, attachment, min-height, and overlay color/opacity.
 3. Add nested content in `pb_content_main`.
 4. Resize browser below breakpoint — JS swaps to small background image.
-5. Confirm outer id `#pb__image-bg-{id}` and overlay `.img-color-overlay`.
+5. Confirm outer id `#pb-image-background-{id}` and overlay `.img-color-overlay`.
 
 ## v2 notes
 
