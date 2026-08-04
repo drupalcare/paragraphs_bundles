@@ -72,11 +72,11 @@ final class PbSlideshowAriaTest extends KernelTestBase {
    * Every bottom-navigation value, plus the unset default.
    *
    * @return array<string, array{string|null, bool}>
-   *   Field value (NULL = unset), and whether it renders a tablist.
+   *   Field value (NULL = unset), and whether it renders numbered nav buttons.
    */
   public static function bottomNavProvider(): array {
     return [
-      // The default. This is the configuration the bug shipped in.
+      // The default. This is the configuration the original bug shipped in.
       'unset (default)' => [NULL, FALSE],
       'play' => ['play', FALSE],
       'dot' => ['dot', TRUE],
@@ -87,42 +87,72 @@ final class PbSlideshowAriaTest extends KernelTestBase {
   }
 
   /**
-   * Tabpanels and tabs appear together, and never one without the other.
+   * The tab pattern is gone: no configuration may emit tab roles.
+   *
+   * The slideshow uses the ARIA APG basic carousel pattern. The tabbed variant
+   * cannot be used here, because the same container holds the play/pause
+   * control WCAG 2.2.2 requires, and a `tablist` may only own `tab`s. This
+   * asserts the whole family is absent rather than that it is balanced — a
+   * balanced tablist would still be wrong once a play button joins it.
    *
    * @param string|null $bottomNav
    *   Bottom-navigation field value, or NULL to leave it unset.
-   * @param bool $expectsTablist
-   *   Whether this configuration renders a tablist.
+   * @param bool $expectsNavButtons
+   *   Whether this configuration renders numbered nav buttons.
    */
   #[DataProvider('bottomNavProvider')]
-  public function testSlideRolesMatchTheNavigation(?string $bottomNav, bool $expectsTablist): void {
+  public function testSlideRolesMatchTheNavigation(?string $bottomNav, bool $expectsNavButtons): void {
     $html = $this->renderSlideshow($bottomNav, 2);
 
-    $tabpanels = substr_count($html, 'role="tabpanel"');
-    $tabs = substr_count($html, 'role="tab"');
-    $tablists = substr_count($html, 'role="tablist"');
-
-    if ($expectsTablist) {
-      $this->assertSame(1, $tablists, 'One tablist.');
-      $this->assertSame(2, $tabs, 'One tab per slide.');
-      $this->assertSame(2, $tabpanels, 'One tabpanel per slide.');
-      return;
+    foreach (['tablist', 'tab', 'tabpanel'] as $role) {
+      $this->assertSame(
+        0,
+        substr_count($html, sprintf('role="%s"', $role)),
+        sprintf(
+          'No role="%s" anywhere: the slideshow uses the basic carousel '
+          . 'pattern, because its nav also holds the play/pause control.',
+          $role,
+        ),
+      );
     }
 
-    $this->assertSame(0, $tablists, 'No tablist in this configuration.');
-    $this->assertSame(0, $tabs, 'No tabs in this configuration.');
-    $this->assertSame(
-      0,
-      $tabpanels,
-      'A tabpanel with no tab and no tablist is an orphan — slides must not '
-      . 'claim the role when nothing owns them.',
-    );
-    // They are still announced as slides, per the ARIA APG carousel pattern.
+    // Every slide announces itself as a slide, in every configuration.
     $this->assertSame(
       2,
       substr_count($html, 'aria-roledescription="slide"'),
-      'Slides without tabs are groups with a slide role description.',
+      'Each slide is a group with a slide role description.',
     );
+
+    if (!$expectsNavButtons) {
+      $this->assertStringNotContainsString(
+        'pb-slideshow__nav-btn',
+        $html,
+        'No numbered nav buttons in this configuration.',
+      );
+      return;
+    }
+
+    // Exactly one dot is current, and each points at a slide that exists.
+    $this->assertSame(
+      1,
+      substr_count($html, 'aria-current="true"'),
+      'Exactly one nav button is the current slide.',
+    );
+    $this->assertSame(
+      1,
+      substr_count($html, 'aria-current="false"'),
+      'Every other nav button is explicitly not current.',
+    );
+
+    preg_match_all('/aria-controls="([^"]+)"/', $html, $matches);
+    $this->assertNotEmpty($matches[1], 'Nav buttons carry aria-controls.');
+    foreach ($matches[1] as $target) {
+      $this->assertStringContainsString(
+        sprintf('id="%s"', $target),
+        $html,
+        sprintf('aria-controls="%s" points at an element that is rendered.', $target),
+      );
+    }
   }
 
   /**

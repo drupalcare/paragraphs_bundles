@@ -204,7 +204,7 @@
           dots.forEach((dot, index) => {
             const isActive = index + 1 === slideIndex;
             dot.classList.toggle(PB_IS_ACTIVE, isActive);
-            dot.setAttribute('aria-selected', String(isActive));
+            dot.setAttribute('aria-current', String(isActive));
             if (isActive && dotsContainer) {
               scrollDotIntoView(dotsContainer, dot);
             }

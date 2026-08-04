@@ -65,21 +65,25 @@
          regardless of which bottom-navigation style is selected. #}
       {% set show_play_button = pb_slide_time > 0 %}
 
-      {# A slide is a `tabpanel` only when there are tabs to own it. The nav is
-         a `tablist` of `role="tab"` buttons for four of the five bottom-nav
-         values; for `play` and for the unset default (which is what most
-         slideshows ship with) there are no tabs at all, and an unowned
-         tabpanel is an ARIA violation. Those slides are `role="group"` with
-         `aria-roledescription="slide"` instead — the ARIA APG carousel pattern
-         for a slide with no tabbed picker.
+      {# This slideshow uses the ARIA APG **basic carousel** pattern, not the
+         tabbed-picker variant: every slide is a `role="group"` with
+         `aria-roledescription="slide"`, the nav is a `role="group"`, and the
+         numbered buttons are plain buttons carrying `aria-controls` and
+         `aria-current`.
 
-         `aria-labelledby` follows the same flag rather than a plain
-         `pb_bottom_nav` truth test: with `play` the field IS set, but the
-         nav-button ids it referenced are never rendered, so it pointed at
-         nothing.
+         The tabbed variant was tried and dropped. It requires a `tablist`
+         whose children are all `tab`s, and this nav also holds the play/pause
+         button that WCAG 2.2.2 requires whenever autoplay can run — so with
+         both dots and autoplay the play button was a non-tab child of a
+         tablist. Getting it out meant either wrapping the dots in an inner
+         tablist (which breaks the fourteen
+         `.pb-slideshow__nav > .pb-slideshow__nav-btn` child combinators the
+         CSS relies on) or moving the button out of the nav row. The basic
+         pattern needs neither, and it removes the split where slides had two
+         different roles depending on the bottom-nav value.
 
-         Defined here, above the loop, because both the slides and the nav
-         below need it. #}
+         Kept as a flag because the nav is only rendered at all for these
+         values. #}
       {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
 
       {# L3 behavior host — JS once() target #}
@@ -89,7 +93,7 @@
             {% if key|first != '#' %}
               {% set total_slides = total_slides + 1 %}
 
-              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" {% if show_navigation_buttons %}role="tabpanel" aria-labelledby="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}"{% else %}role="group" aria-roledescription="{{ 'slide'|t }}" aria-label="{{ 'Slide '|t ~ (key + 1) }}"{% endif %} data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
+              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" role="group" aria-roledescription="{{ 'slide'|t }}" aria-label="{{ 'Slide '|t ~ (key + 1) }}" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
                 <div class="pb-ui-row pb-slideshow__slide-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
                   {{ item|pb_section_bodies('pb_content_slideshow_body') }}
                   {% if item['#paragraph'].pb_content_slideshow_title.value %}
@@ -106,7 +110,7 @@
         {# show_play_button and show_navigation_buttons are set above the slide
            loop, because the slides' roles depend on the same flag. #}
         {% if show_play_button or show_navigation_buttons %}
-          <div id="pb-slideshow__nav-{{ paragraph.id.value }}" {% if show_navigation_buttons %}role="tablist" aria-label="{{ 'Slideshow Tabs'|t }}"{% else %}role="group" aria-label="{{ 'Slideshow Controls'|t }}"{% endif %} class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
+          <div id="pb-slideshow__nav-{{ paragraph.id.value }}" role="group" aria-label="{{ 'Slideshow Controls'|t }}" class="pb-slideshow__nav pb-slideshow__number{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}">
 
             {% if show_play_button %}
               <button id="btn-{{ paragraph.id.value }}" type="button"
@@ -122,12 +126,11 @@
             {% if show_navigation_buttons %}
               {% for key, item in content.pb_content_slideshow_section %}
                 {% if key|first != '#' %}
-                  <button id="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}" type="button" role="tab"
+                  <button id="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}" type="button"
                           aria-label="{{ 'Slide '|t ~ (key + 1) }}"
-                          aria-selected="{{ key == 0 ? 'true' : 'false' }}"
+                          aria-current="{{ key == 0 ? 'true' : 'false' }}"
                           aria-controls="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}"
-                          class="pb-ui-btn pb-slideshow__nav-btn{{ key == 0 ? ' pb-is-active' : '' }}"
-                          {% if key != 0 %}tabindex="-1"{% endif %}>
+                          class="pb-ui-btn pb-slideshow__nav-btn{{ key == 0 ? ' pb-is-active' : '' }}">
                     <span>{{ key + 1 }}</span>
                   </button>
                 {% endif %}

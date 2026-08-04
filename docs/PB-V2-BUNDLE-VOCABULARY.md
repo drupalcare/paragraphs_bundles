@@ -86,9 +86,10 @@ hybrid-carousel` | Orientation on L0 | was `*-carousel` |
 `active`) |
 | L4 | `pb-slideshow__slide-inner` | Slide content wrapper | |
 | L4 | `pb-slideshow__title` | Slide caption | |
-| L4 | `pb-slideshow__nav` | Bottom tablist / dots row | `role="tablist"` when
-used |
-| L4 | `pb-slideshow__nav-btn` | Nav dot/button | |
+| L4 | `pb-slideshow__nav` | Bottom controls / dots row | `role="group"` — it
+also holds the play/pause control, so it is not a `tablist` |
+| L4 | `pb-slideshow__nav-btn` | Nav dot/button | plain button, carries
+`aria-controls` + `aria-current` |
 | L4 | `pb-slideshow__arrows` | Prev/next row | |
 | L4 | `pb-nav__play` `pb-nav__prev` `pb-nav__next` | Shared controls | state:
 `pb-is-playing` / `pb-is-paused` |

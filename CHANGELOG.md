@@ -96,6 +96,19 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **The slideshow's play button is no longer a non-tab child of a
+  `role="tablist"`.** Whenever autoplay ran, WCAG 2.2.2 required a pause
+  control, and that control lives in the same row as the numbered nav — so any
+  slideshow with both dots and autoplay put a plain button inside a tablist,
+  which may only own tabs. The slideshow now uses the ARIA APG **basic
+  carousel** pattern throughout: the nav is a `role="group"`, the numbered
+  buttons are plain buttons carrying `aria-controls` and `aria-current`, and
+  every slide is a `role="group"` with `aria-roledescription="slide"`. Two
+  consequences worth knowing: every dot is now reachable with Tab rather than
+  arrow keys within a roving-tabindex group, and slides no longer change role
+  depending on which bottom-navigation style is selected. Guarded by
+  `PbSlideshowAriaTest`, which now asserts the tab roles are absent in all six
+  configurations rather than merely balanced.
 - **Three crash guards on paths a visitor can reach.** A theme that leaves a
   Markup object in a paragraph's `class` list made `array_diff()` cast it to
   string — harmless — but an array in that list is a fatal, and the class list
