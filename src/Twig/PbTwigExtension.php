@@ -95,7 +95,11 @@ final class PbTwigExtension extends AbstractExtension {
       $child['#paragraph'] = $body;
       // Without this the body renders from — and pollutes — the section's
       // render-cache entry, which is shared by every body of that section.
-      unset($child['#cache']['keys'], $child['#cache']['bin']);
+      // Guarded: `#cache` comes off a render array we did not build, and
+      // unsetting an offset on a string is a fatal, not a no-op.
+      if (isset($child['#cache']) && is_array($child['#cache'])) {
+        unset($child['#cache']['keys'], $child['#cache']['bin']);
+      }
 
       $cacheability = CacheableMetadata::createFromRenderArray($child);
       $cacheability->addCacheableDependency($body);

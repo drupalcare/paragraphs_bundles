@@ -86,6 +86,7 @@ final class ColorItem extends FieldItemBase {
    *   Validation constraints for this field item.
    */
   public function getConstraints(): array {
+    /** @var list<\Symfony\Component\Validator\Constraint> $constraints */
     $constraints = parent::getConstraints();
     $manager = $this->getTypedDataManager()->getValidationConstraintManager();
 

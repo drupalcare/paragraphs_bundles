@@ -190,8 +190,15 @@ final class PbPreprocessHook {
     $cid = 'paragraphs_bundles:managed_bundles:' . hash('xxh128', implode(',', $moduleNames));
     $cached = $this->cache->get($cid);
     if ($cached !== FALSE && is_array($cached->data)) {
-      $this->managedBundles = $cached->data;
-      return $this->managedBundles;
+      // Only trust the entry if every value is a bundle name. A cache written
+      // by a different version of this code — or by anything else that lands
+      // on the same cid — would otherwise be returned as `list<string>` and
+      // fed straight into template suggestions. Recompute instead.
+      $bundles = array_values(array_filter($cached->data, 'is_string'));
+      if (count($bundles) === count($cached->data)) {
+        $this->managedBundles = $bundles;
+        return $bundles;
+      }
     }
 
     $bundles = [];
@@ -239,8 +246,20 @@ final class PbPreprocessHook {
     if (!is_array($classes)) {
       $classes = (array) $classes;
     }
+    // Normalise before array_diff(): a theme can leave a Markup object in the
+    // class list, and array_diff() casts every element to string — which is a
+    // fatal on an array element, not a skipped one.
+    $normalized = [];
+    foreach ($classes as $class) {
+      if (is_string($class)) {
+        $normalized[] = $class;
+      }
+      elseif ($class instanceof \Stringable) {
+        $normalized[] = (string) $class;
+      }
+    }
     $classes = array_values(
-      array_diff($classes, ['paragraph', 'paragraphs-bundles']),
+      array_diff($normalized, ['paragraph', 'paragraphs-bundles']),
     );
     array_unshift($classes, 'paragraph', 'paragraphs-bundles');
     $attributes['class'] = $classes;

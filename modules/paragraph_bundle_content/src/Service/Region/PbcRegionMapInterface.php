@@ -53,9 +53,11 @@ interface PbcRegionMapInterface {
    * @param string $family
    *   Theme family from {@see PbcThemeFamilyResolverInterface}.
    *
-   * @return string|null
-   *   Library id without module prefix, or NULL when only shared CSS applies.
+   * @return string
+   *   Library id without module prefix. Always resolves: an unrecognised
+   *   family falls back to the neutral layout, so there is no "no library"
+   *   case for a caller to handle.
    */
-  public function layoutLibraryName(string $family): ?string;
+  public function layoutLibraryName(string $family): string;
 
 }

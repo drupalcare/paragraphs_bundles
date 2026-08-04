@@ -37,8 +37,16 @@ parameters:
     # Tests are validated by PHPUnit; PHPStan scopes to shipped code. These
     # two entries carry that intent onto the drupal.org job, which analyses
     # "." and so reached the tests regardless of `paths` above.
+    # `tests` is a plain directory path and matches. `modules/*/tests` did NOT:
+    # PHPStan fnmatches excludePaths entries against each analysed FILE path, so
+    # a pattern containing a wildcard has to match the file, not the directory.
+    # `modules/*/tests` matched nothing, which is why the drupal.org job kept
+    # reporting findings inside
+    # modules/paragraph_bundle_content/tests/src/Unit/. The trailing `/*` fixes
+    # it. Verified on CI, not locally: the local runner is PHPStan 1.x and the
+    # job is 2.x.
     - tests
-    - modules/*/tests
+    - modules/*/tests/*
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     # The batched post_update cannot carry a `@param array<string, mixed>`
@@ -51,3 +59,24 @@ parameters:
     - message: '#^Function paragraphs_bundles_post_update_regenerate_dynamic_css\(\) has parameter \$sandbox with no value type specified in iterable type array\.$#'
       path: paragraphs_bundles.post_update.php
       count: 1
+    # `parameterByRef.type` cannot be resolved from this side. It fires where a
+    # by-reference `array<string, mixed>` of ours meets a core signature that
+    # types the same parameter as a bare `array` — `NestedArray::getValue()` /
+    # `setValue()`, and the `#element_validate` callback contract, which Drupal
+    # invokes with a plain `array &$element`. Widening our own docblocks to
+    # `array` to silence it would delete real type information from the code
+    # that actually reads these arrays, which is the wrong trade. Narrow in
+    # scope: only this identifier, only where core is the other side.
+    - identifier: parameterByRef.type
+      paths:
+        - src/Utility/PbRenderArray.php
+        - src/Plugin/Field/FieldWidget
+        - modules/*/src/Hook
+    # `Drupal\apex\…` is a genuinely optional integration: the APEX theme is a
+    # `suggest`, never a `require`, and paragraph_bundle_content degrades to the
+    # neutral layout when it is absent (see PbcRegionMap::layoutLibraryName()).
+    # The class is therefore unresolvable on any site that does not run APEX,
+    # including CI. The constructor argument is nullable and every call site
+    # null-checks it.
+    - identifier: class.notFound
+      path: modules/paragraph_bundle_content/src/Service/Theme/PbcThemeFamilyResolver.php

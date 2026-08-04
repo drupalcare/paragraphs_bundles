@@ -138,7 +138,7 @@ final class PbcRegionMap implements PbcRegionMapInterface {
   /**
    * {@inheritdoc}
    */
-  public function layoutLibraryName(string $family): ?string {
+  public function layoutLibraryName(string $family): string {
     return match ($family) {
       PbcThemeFamilyResolverInterface::FAMILY_APEX => 'paragraph-bundle-content-apex',
       PbcThemeFamilyResolverInterface::FAMILY_SOLO => 'paragraph-bundle-content-solo',

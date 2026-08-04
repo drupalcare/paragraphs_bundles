@@ -10,6 +10,30 @@ namespace Drupal\paragraphs_bundles\Service\Form;
 final class PbFormDisplayVerifier implements PbFormDisplayVerifierInterface {
 
   /**
+   * Narrows a raw config array to its string-keyed entries.
+   *
+   * Config read off an entity display is `array<mixed, mixed>` as far as static
+   * analysis is concerned. Every consumer here indexes by field or group name,
+   * so anything not string-keyed is not addressable and is dropped rather than
+   * carried into methods that promise `array<string, mixed>`.
+   *
+   * @param array<mixed, mixed> $value
+   *   Raw config array.
+   *
+   * @return array<string, mixed>
+   *   The string-keyed subset.
+   */
+  private static function stringKeyed(array $value): array {
+    $out = [];
+    foreach ($value as $key => $item) {
+      if (is_string($key)) {
+        $out[$key] = $item;
+      }
+    }
+    return $out;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function verify(
@@ -24,6 +48,7 @@ final class PbFormDisplayVerifier implements PbFormDisplayVerifierInterface {
       $errors[] = 'third_party_settings.field_group missing or invalid';
       return $errors;
     }
+    $groups = self::stringKeyed($groups);
 
     if ($rejectLegacyTabGroups) {
       $legacy = [
@@ -45,6 +70,7 @@ final class PbFormDisplayVerifier implements PbFormDisplayVerifierInterface {
       $errors[] = 'content section missing';
       return $errors;
     }
+    $content = self::stringKeyed($content);
 
     if ($expectsTitleFields) {
       $this->verifyContentTab($groups, $content, $errors);
@@ -83,7 +109,12 @@ final class PbFormDisplayVerifier implements PbFormDisplayVerifierInterface {
         $errors[] = 'Content tab: pb_content_title, pb_content_title_tag, and '
           . 'pb_content_title_alignment must be the first three children '
           . '(in that order). Found: '
-          . implode(', ', array_slice($contentChildren, 0, 5));
+          . implode(', ', array_map(
+            static fn (mixed $child): string => is_scalar($child)
+              ? (string) $child
+              : '<' . get_debug_type($child) . '>',
+            array_slice($contentChildren, 0, 5),
+          ));
         break;
       }
     }

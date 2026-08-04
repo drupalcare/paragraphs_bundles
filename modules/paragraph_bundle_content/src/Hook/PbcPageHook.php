@@ -47,9 +47,7 @@ final class PbcPageHook {
 
     PbRenderArray::attachLibraries($variables, 'paragraph_bundle_content/paragraph-bundle-content-base');
     $layoutLibrary = $this->regionMap->layoutLibraryName($family);
-    if ($layoutLibrary !== NULL) {
-      PbRenderArray::attachLibraries($variables, 'paragraph_bundle_content/' . $layoutLibrary);
-    }
+    PbRenderArray::attachLibraries($variables, 'paragraph_bundle_content/' . $layoutLibrary);
 
     $this->hideRegions($variables, $this->regionMap->defaultHiddenRegions($family));
 
