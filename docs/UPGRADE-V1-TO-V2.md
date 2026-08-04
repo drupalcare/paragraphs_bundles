@@ -221,10 +221,18 @@ If your sub-theme overrides PB Twig templates:
 3. Remove any dependency on inline `style="--pb-*"` — v2 attaches a
    per-paragraph library instead.
 
-CSS custom property names and element ids are unchanged, but **structural class
-names were renamed** in v2. If your theme targets PB classes, work through
-[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) — it lists all 166 renames
-and the 87 frozen tokens that did not change.
+CSS custom property names are unchanged and element ids are unchanged **for all
+but two bundles** (see below), but **structural class names were renamed** in v2.
+If your theme targets PB classes, work through
+[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) — it lists all 299 renames
+and the 69 frozen tokens that did not change.
+
+**Two element ids did change**, and CSS targeting them stops applying:
+
+| Bundle | v1 id | v2 id |
+|---|---|---|
+| Parallax | `#pb__parallax-{id}` | `#pb-parallax-{id}` |
+| 3D carousel | `#pb__caro-wrap-{id}` | `#pb-3d-carousel-{id}` |
 
 ---
 
