@@ -135,10 +135,34 @@ Freezing them was considered and rejected for three reasons:
    DOM contract. Changing them in 2.0.0 costs a documented find-and-replace;
    changing them later would be a breaking change in a stable series.
 
-Regenerated per-paragraph CSS follows automatically — the scope selector comes
-from the same function. Nothing in the database changes. The only thing that
-can break is **your own CSS or JS that names a PB id**, and the table below is
-the complete list of what to change.
+Nothing in the database changes. The only thing that can break is **your own
+CSS or JS that names a PB id**, and the table below is the complete list of
+what to change.
+
+### Your per-paragraph CSS files are rewritten by the upgrade
+
+Each paragraph's editor colours live in a generated stylesheet under
+`public://paragraphs_bundles/`, and that file **contains the id as its scope
+selector**. A file written by v1 says `#pb__hero-9 > .pb-ui-inner`, so until it
+is rewritten it no longer matches the `pb-hero-9` the page now renders — the
+paragraph would render with its colours silently missing.
+
+The v1 → v2 upgrade handles this: `drush updb` ends with
+`paragraphs_bundles_post_update_regenerate_dynamic_css`, which rewrites every
+file. **Nothing is required of you.**
+
+The one case that needs a manual step is **coming from a `2.0.x-dev`
+snapshot** rather than from 1.x: that post-update has already been recorded as
+run on your site, so it will not run again. Rebuild the files once:
+
+```bash
+drush pb:regenerate-css --purge
+```
+
+`--purge` also clears stylesheets left behind by paragraphs that no longer
+exist. Verified on a live site: before regenerating, eight files still scoped
+to `#pb__…`; after it, every file's selector matched the id its paragraph
+renders.
 
 ### The 30 ids that existed in v1
 

@@ -160,9 +160,15 @@ not data: correcting it costs a find-and-replace in your own CSS, while
 correcting it after a stable 2.0.0 would be a breaking change in a stable
 series. A major release is the only honest place to do it.
 
-Your per-paragraph CSS is regenerated automatically and needs no action. What
-needs action is CSS or JS **you** wrote that names a PB id. `card_text_section`
-is the one bundle whose id is unchanged.
+Your per-paragraph CSS files carry the id as their scope selector, so they have
+to be rewritten too — and the upgrade does that for you: `drush updb` finishes
+by regenerating every one of them. The exception is a site coming from a
+`2.0.x-dev` snapshot rather than from 1.x, where that step has already been
+recorded as run; there, rebuild them once with
+`drush pb:regenerate-css --purge`.
+
+What needs action from you is CSS or JS **you** wrote that names a PB id.
+`card_text_section` is the one bundle whose id is unchanged.
 
 **3. You must be on the latest 1.x before upgrading.** v2 declares
 `hook_update_last_removed() = 9004`. A site below that schema is refused with

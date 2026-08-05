@@ -406,8 +406,15 @@ user-visible; read this section before upgrading.
   has one implementation, `PbDynamicCssBuilder::outerElementId()`, called both
   by the preprocess hook that writes the attribute and by the CSS builder that
   writes the matching scope — the per-bundle override map they used to disagree
-  through is deleted. Per-paragraph CSS regenerates itself; no stored data
-  changes; no update hook is needed.
+  through is deleted. No stored data changes.
+
+  Each paragraph's generated stylesheet carries the id as its scope selector,
+  so those files are rewritten by the upgrade: `drush updb` ends with
+  `paragraphs_bundles_post_update_regenerate_dynamic_css`. A site coming from a
+  `2.0.x-dev` snapshot instead of from 1.x has already recorded that
+  post-update as run and should rebuild once with
+  `drush pb:regenerate-css --purge`; otherwise its paragraphs keep stylesheets
+  scoped to the old ids and render without their editor colours.
 - **Eight un-prefixed DOM ids are now inside the `pb-` namespace.** The
   carousel, 3D carousel and slideshow emitted `prev-{id}`, `next-{id}`,
   `btn-{id}`, `co-{id}`, `index-{id}`, `item-{id}-{n}`, `label-item-{id}-{n}`
