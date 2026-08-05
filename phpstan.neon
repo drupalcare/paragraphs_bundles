@@ -67,11 +67,17 @@ parameters:
     # `array` to silence it would delete real type information from the code
     # that actually reads these arrays, which is the wrong trade. Narrow in
     # scope: only this identifier, only where core is the other side.
+    #
+    # The third path is spelled out rather than globbed. `modules/*/src/Hook`
+    # was kept literal by PHPStan — it matched nothing, and the run then failed
+    # twice over: once on the unsuppressed error, once on "Ignored error
+    # pattern … was not matched". A plain directory (the FieldWidget entry
+    # below) resolves; a directory with a wildcard segment does not.
     - identifier: parameterByRef.type
       paths:
         - src/Utility/PbRenderArray.php
         - src/Plugin/Field/FieldWidget
-        - modules/*/src/Hook
+        - modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
     # `Drupal\apex\…` is a genuinely optional integration: the APEX theme is a
     # `suggest`, never a `require`, and paragraph_bundle_content degrades to the
     # neutral layout when it is absent (see PbcRegionMap::layoutLibraryName()).

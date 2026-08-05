@@ -90,10 +90,18 @@
         }
 
         const root = ring.closest(PARAGRAPHS_BUNDLES_PB_3D_CAROUSEL);
-        const slideNumberElement = document.getElementById(`pb-3d-carousel__index-${uniqueId}`);
-        const prevButton = document.getElementById(`pb-3d-carousel__prev-${uniqueId}`);
-        const nextButton = document.getElementById(`pb-3d-carousel__next-${uniqueId}`);
-        const playPauseButton = document.getElementById(`pb-3d-carousel__play-pause-${uniqueId}`);
+        const slideNumberElement = document.getElementById(
+          `pb-3d-carousel__index-${uniqueId}`,
+        );
+        const prevButton = document.getElementById(
+          `pb-3d-carousel__prev-${uniqueId}`,
+        );
+        const nextButton = document.getElementById(
+          `pb-3d-carousel__next-${uniqueId}`,
+        );
+        const playPauseButton = document.getElementById(
+          `pb-3d-carousel__play-pause-${uniqueId}`,
+        );
         const playIcon =
           playPauseButton?.querySelector(`:scope > .${PB_NAV__PLAY_ICON}`) ??
           null;
