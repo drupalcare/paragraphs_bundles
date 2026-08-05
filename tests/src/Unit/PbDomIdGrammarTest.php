@@ -41,7 +41,25 @@ final class PbDomIdGrammarTest extends TestCase {
   }
 
   /**
-   * Shipped files of one extension, excluding maintainer-only trees.
+   * The module's own asset directories, relative to the root.
+   *
+   * **Enumerated, not discovered.** On drupal.org CI this module *is* the
+   * repository root and the job installs Drupal into `web/` underneath it, so
+   * a recursive walk from the root reads the whole of core — which is how the
+   * first version of this test failed the pipeline on
+   * `ckeditor5-settings-toolbar.html.twig`. Naming our own directories makes
+   * the scan immune to whatever else the runner puts beside them.
+   *
+   * `scripts/` and `docs/` are maintainer-only and never reach a user;
+   * `tests/` holds this file and its siblings, which quote the old names on
+   * purpose.
+   *
+   * @var list<string>
+   */
+  private const array ASSET_DIRECTORIES = ['css', 'js', 'templates', 'modules', 'src'];
+
+  /**
+   * Files of one extension inside the module's own directories.
    *
    * @param string $extension
    *   File extension without the dot.
@@ -52,25 +70,50 @@ final class PbDomIdGrammarTest extends TestCase {
   private static function shippedFiles(string $extension): array {
     $root = self::root();
     $found = [];
-    $iterator = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
-    );
-    foreach ($iterator as $file) {
-      if (!$file instanceof \SplFileInfo || $file->getExtension() !== $extension) {
+    foreach (self::ASSET_DIRECTORIES as $directory) {
+      $base = $root . '/' . $directory;
+      if (!is_dir($base)) {
         continue;
       }
-      $path = $file->getPathname();
-      // `scripts/` and `docs/` never reach a user; `vendor/` and `node_modules/`
-      // are not ours. Tests are checked by their own case below.
-      foreach (['/scripts/', '/docs/', '/vendor/', '/node_modules/', '/.git/'] as $skip) {
-        if (str_contains($path, $skip)) {
-          continue 2;
+      $iterator = new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
+      );
+      foreach ($iterator as $file) {
+        if (!$file instanceof \SplFileInfo || $file->getExtension() !== $extension) {
+          continue;
         }
+        // A sub-module's own `tests/` directory is out of scope for the same
+        // reason the parent's is.
+        if (str_contains($file->getPathname(), '/tests/')) {
+          continue;
+        }
+        $found[] = $file->getPathname();
       }
-      $found[] = $path;
     }
     sort($found);
     return $found;
+  }
+
+  /**
+   * The scan reaches the files it claims to check.
+   *
+   * A file sweep that silently matches nothing passes every assertion built on
+   * it, so the count is asserted rather than assumed. These floors are far
+   * below the real totals (70 CSS, 40 templates, 20 scripts at 2.0.0) and only
+   * fail if the scan stops finding the tree at all.
+   */
+  public function testTheScanFindsTheModulesOwnFiles(): void {
+    $this->assertGreaterThan(30, count(self::shippedFiles('css')), 'CSS files are being scanned.');
+    $this->assertGreaterThan(30, count(self::shippedFiles('twig')), 'Templates are being scanned.');
+    $this->assertGreaterThan(10, count(self::shippedFiles('js')), 'Scripts are being scanned.');
+    // Nothing from a Drupal install that may sit beside us on CI.
+    foreach ([...self::shippedFiles('twig'), ...self::shippedFiles('css')] as $path) {
+      $this->assertStringNotContainsString(
+        '/web/',
+        $path,
+        'The scan stays inside the module and never reads an installed Drupal.',
+      );
+    }
   }
 
   /**
