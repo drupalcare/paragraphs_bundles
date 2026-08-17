@@ -10,7 +10,7 @@
 .paragraphs-bundles.pb-layout .pb-three-columns {
   display: grid;
   grid-auto-flow: row;
-  align-items: start;
+  align-items: stretch;
   gap: var(--pb-px16);
 }
 
@@ -58,6 +58,31 @@
 .paragraphs-bundles.pb-layout .pb-three-columns > div.pb-has-multiple .paragraphs-bundles:last-child {
   flex-grow: 1;
   block-size: 100%;
+}
+
+/* Fill the column: content pane and last nested paragraph stretch to 100%.
+ * Earlier siblings (e.g. image + body) stay content-sized; only :last-child grows.
+ * Sticky columns keep align-self: start / block-size: auto in breakpoint CSS. */
+.paragraphs-bundles.pb-layout .pb-two-columns:not(.pb-layout-col__toolbar) > [data-col] > .pb-layout-col__content,
+.paragraphs-bundles.pb-layout .pb-three-columns:not(.pb-layout-col__toolbar) > [data-col] > .pb-layout-col__content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.paragraphs-bundles.pb-layout .pb-two-columns .pb-layout-col__content > .paragraphs-bundles:last-child,
+.paragraphs-bundles.pb-layout .pb-three-columns .pb-layout-col__content > .paragraphs-bundles:last-child,
+.paragraphs-bundles.pb-layout .pb-two-columns .pb-layout-col__content > .paragraphs-bundles:last-child > .pb-ui-inner,
+.paragraphs-bundles.pb-layout .pb-three-columns .pb-layout-col__content > .paragraphs-bundles:last-child > .pb-ui-inner,
+.paragraphs-bundles.pb-layout .pb-two-columns .pb-layout-col__content > .paragraphs-bundles:last-child > .pb-ui-inner > .pb-content__full,
+.paragraphs-bundles.pb-layout .pb-three-columns .pb-layout-col__content > .paragraphs-bundles:last-child > .pb-ui-inner > .pb-content__full {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  block-size: 100%;
+  min-block-size: 0;
 }
 
 .paragraphs-bundles.pb-layout .pb-two-columns__inner,
