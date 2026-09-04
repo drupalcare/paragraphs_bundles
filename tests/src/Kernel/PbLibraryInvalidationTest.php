@@ -7,6 +7,7 @@ namespace Drupal\Tests\paragraphs_bundles\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
  * Library info is invalidated only when a paragraph's CSS actually changes.
@@ -21,6 +22,7 @@ use PHPUnit\Framework\Attributes\Group;
  * as cache misses.
  */
 #[Group('paragraphs_bundles')]
+#[RunTestsInSeparateProcesses]
 final class PbLibraryInvalidationTest extends KernelTestBase {
 
   /**

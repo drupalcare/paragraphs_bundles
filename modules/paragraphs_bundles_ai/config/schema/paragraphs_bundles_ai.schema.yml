@@ -1,0 +1,9 @@
+paragraphs_bundles_ai.settings:
+  type: config_object
+  label: 'Paragraphs Bundles AI settings'
+  mapping:
+    assistant:
+      type: string
+      label: 'AI assistant used on node forms'
+      # '' means the surface is off, which is the installed default and a
+      # legitimate resting state — not a missing value.

@@ -13,8 +13,13 @@ namespace Drupal\Tests\paragraphs_bundles\Traits;
  * them. They ship five paragraph types between them, and excluding them
  * outright meant the render tests covered 34 of 39 bundles.
  *
- * This enables each one whose dependency is actually present and reports the
- * rest, so a run that covers less says so instead of looking complete.
+ * This enables each one whose dependency is actually present and RETURNS the
+ * rest, so a caller can tell full coverage from partial. It deliberately
+ * writes nothing: see the note in enableOptionalBundleModules().
+ *
+ * On Drupal 12 two of the four are always skipped — `webform` and
+ * `contact_formatter` have no Drupal 12 release — and that is a fact about
+ * those projects, not a defect in these bundle modules.
  */
 trait PbOptionalBundleModulesTrait {
 
@@ -60,16 +65,20 @@ trait PbOptionalBundleModulesTrait {
       $this->container->get('config.installer')->installOptionalConfig();
     }
 
-    if ($skipped !== []) {
-      // Not a failure: a site without the contrib is a supported shape. But
-      // the run must not read as full coverage when it is not.
-      fwrite(STDERR, sprintf(
-        "\n[%s] optional bundle modules not covered: %s\n",
-        static::class,
-        implode(', ', $skipped),
-      ));
-    }
-
+    // WHAT USED TO BE HERE, AND WHY IT HAD TO GO. This wrote the skipped list
+    // to STDERR, under a comment saying "Not a failure". Drupal's
+    // phpunit.xml.dist sets `beStrictAboutOutputDuringTests="true"`, so that
+    // write DID fail the test — the mechanism contradicted its own intent.
+    //
+    // It went unnoticed because on a site that has all four contrib modules
+    // nothing is skipped and nothing is written. Measured on d12a.local
+    // 2026-09-04: `webform` declares ^10.3 || ^11.0 and `contact_formatter`
+    // ^8 .. ^11, so neither installs on Drupal 12 — and both render tests
+    // errored there with the skip message as the exception text, on a site
+    // where the bundle modules themselves are perfectly fine.
+    //
+    // The list is returned instead. A caller that cares about coverage can
+    // assert on it; nothing writes to test output.
     return $skipped;
   }
 

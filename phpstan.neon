@@ -78,6 +78,9 @@ parameters:
         - src/Utility/PbRenderArray.php
         - src/Plugin/Field/FieldWidget
         - modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
+        # ConfigFormBase::submitForm() takes `array &$form`. Same situation as
+        # the three above: core is the other side of the reference.
+        - modules/paragraphs_bundles_ai/src/Form/PbAiSettingsForm.php
     # `Drupal\apex\…` is a genuinely optional integration: the APEX theme is a
     # `suggest`, never a `require`, and paragraph_bundle_content degrades to the
     # neutral layout when it is absent (see PbcRegionMap::layoutLibraryName()).

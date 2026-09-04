@@ -1,0 +1,190 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\paragraphs_bundles_ai\Form;
+
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\Core\Form\ConfigFormBase;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Config\TypedConfigManagerInterface;
+use Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+/**
+ * One setting, and an answer to "why is nothing showing".
+ *
+ * THE STATUS LINE IS THE REASON THIS PAGE EXISTS. Choosing an assistant is one
+ * select; it would not need a page of its own. What needs a page is the four
+ * invisible preconditions behind the chat bar — a module, a setting, an
+ * assistant that still exists, a permission — because when the bar does not
+ * appear on a node form, the node form is the one place that cannot say which
+ * one is missing.
+ */
+final class PbAiSettingsForm extends ConfigFormBase {
+
+  /**
+   * Constructs the form.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   *   The config factory.
+   * @param \Drupal\Core\Config\TypedConfigManagerInterface $typedConfigManager
+   *   The typed config manager.
+   * @param \Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface $surface
+   *   Supplies the status line.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   Lists the assistants to choose from.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $moduleHandler
+   *   Tells whether ai_assistant_api is present at all.
+   */
+  public function __construct(
+    ConfigFactoryInterface $config_factory,
+    TypedConfigManagerInterface $typedConfigManager,
+    // PROTECTED, not private, and that is not a style choice.
+    // ConfigFormBase uses DependencySerializationTrait, which cannot restore
+    // private properties (drupal.org #3110266): the form is serialised into
+    // the form cache and these would come back unset, so the next submit
+    // fatals. Caught by PHPStan 2.x at level 10 —
+    // `dependencySerializationTraitProperty.unsupportedPrivateProperty` —
+    // which PHPStan 1.x at level 9 does not report. Same defect, same fix, as
+    // vvj_core's VvjStylePluginBase::$cachedUniqueId earlier in this work.
+    protected readonly ChatSurfaceInterface $surface,
+    protected readonly EntityTypeManagerInterface $entityTypeManager,
+    protected readonly ModuleHandlerInterface $moduleHandler,
+  ) {
+    parent::__construct($config_factory, $typedConfigManager);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('config.factory'),
+      $container->get('config.typed'),
+      $container->get(ChatSurfaceInterface::class),
+      $container->get('entity_type.manager'),
+      $container->get('module_handler'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFormId(): string {
+    return 'paragraphs_bundles_ai_settings';
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @return list<string>
+   *   The editable config names.
+   */
+  protected function getEditableConfigNames(): array {
+    return ['paragraphs_bundles_ai.settings'];
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return array<string, mixed>
+   *   The form.
+   */
+  public function buildForm(array $form, FormStateInterface $form_state): array {
+    $decision = $this->surface->decide();
+
+    $form['status'] = [
+      '#theme' => 'status_messages',
+      '#message_list' => $decision->show
+        ? ['status' => [$this->t('The chat bar is showing on node add and edit forms, using the assistant below.')]]
+        : ['warning' => [$this->t('The chat bar is not showing. @reason', ['@reason' => $decision->reason])]],
+    ];
+
+    $options = $this->assistantOptions();
+
+    $form['assistant'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Assistant'),
+      '#description' => $this->t('Which assistant answers on node forms. Assistants are created at Configuration › AI › AI Assistants; this module never creates or edits one, and never changes its settings.'),
+      '#options' => ['' => $this->t('- Off -')] + $options,
+      '#default_value' => $this->chosenAssistant(),
+      '#disabled' => $options === [],
+    ];
+
+    if ($options === []) {
+      $form['assistant']['#description'] = $this->moduleHandler->moduleExists('ai_assistant_api')
+        ? $this->t('There are no assistants to choose from yet. Create one at Configuration › AI › AI Assistants first.')
+        : $this->t('The AI Assistant API module is not enabled, so there are no assistants to choose from.');
+    }
+
+    // parent::buildForm() is typed as a bare `array`, so the value has to be
+    // narrowed here for the stricter return type above to hold. PHPStan 2.x at
+    // level 10 — the level drupal.org CI runs — requires it; level 9 does not.
+    /** @var array<string, mixed> $built */
+    $built = parent::buildForm($form, $form_state);
+
+    return $built;
+  }
+
+  /**
+   * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   */
+  public function submitForm(array &$form, FormStateInterface $form_state): void {
+    $chosen = $form_state->getValue('assistant');
+
+    $this->config('paragraphs_bundles_ai.settings')
+      ->set('assistant', is_string($chosen) ? $chosen : '')
+      ->save();
+
+    parent::submitForm($form, $form_state);
+  }
+
+  /**
+   * The assistant currently chosen, as a string.
+   *
+   * @return string
+   *   The assistant id, or '' when the surface is off. Config values are
+   *   mixed, and casting one is an assumption rather than a check.
+   */
+  private function chosenAssistant(): string {
+    $chosen = $this->config('paragraphs_bundles_ai.settings')->get('assistant');
+
+    return is_string($chosen) ? $chosen : '';
+  }
+
+  /**
+   * The assistants on this site, as select options.
+   *
+   * @return array<string, string>
+   *   Assistant id => label. Empty when there are none, or when
+   *   ai_assistant_api is not installed — the storage does not exist then, and
+   *   asking for it would fatal rather than return nothing.
+   */
+  private function assistantOptions(): array {
+    if (!$this->moduleHandler->moduleExists('ai_assistant_api')) {
+      return [];
+    }
+
+    $out = [];
+
+    foreach ($this->entityTypeManager->getStorage('ai_assistant')->loadMultiple() as $id => $assistant) {
+      $out[(string) $id] = (string) $assistant->label();
+    }
+
+    return $out;
+  }
+
+}

@@ -1,0 +1,55 @@
+services:
+  # The resolver is a service, not logic inside the tool plugin, for two
+  # reasons: it can be tested without the AI stack, and `create_sections`
+  # re-checks by calling it rather than trusting that the model called
+  # `resolve_target` first. See docs/PB-AI-BRIEF.md section 5.
+  paragraphs_bundles_ai.target_resolver:
+    class: Drupal\paragraphs_bundles_ai\Service\TargetResolver
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+      - '@current_user'
+
+  Drupal\paragraphs_bundles_ai\Service\TargetResolverInterface: '@paragraphs_bundles_ai.target_resolver'
+
+  # The only service that writes. It takes the resolver as a dependency and
+  # re-runs it, so a model that skips `resolve_target` cannot cause a bad
+  # write — the redundancy IS the safety model, not belt-and-braces.
+  paragraphs_bundles_ai.section_writer:
+    class: Drupal\paragraphs_bundles_ai\Service\SectionWriter
+    arguments:
+      - '@entity_type.manager'
+      - '@current_user'
+      - '@paragraphs_bundles_ai.target_resolver'
+
+  Drupal\paragraphs_bundles_ai\Service\SectionWriterInterface: '@paragraphs_bundles_ai.section_writer'
+
+  # Reads only. It answers "what does this section hold, and will this text
+  # fit" — the two things nothing else in the module can tell a caller, and
+  # both of which a model otherwise guesses.
+  paragraphs_bundles_ai.field_drafter:
+    class: Drupal\paragraphs_bundles_ai\Service\FieldDrafter
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+
+  Drupal\paragraphs_bundles_ai\Service\FieldDrafterInterface: '@paragraphs_bundles_ai.field_drafter'
+
+  # The chat surface. It reads four things that are each invisible from a node
+  # form — a module, a setting, an assistant, a permission — which is why the
+  # decision lives here where it can be tested one refusal at a time.
+  paragraphs_bundles_ai.chat_surface:
+    class: Drupal\paragraphs_bundles_ai\Service\ChatSurface
+    arguments:
+      - '@config.factory'
+      - '@module_handler'
+      - '@entity_type.manager'
+      - '@current_user'
+      - '@plugin.manager.block'
+
+  Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface: '@paragraphs_bundles_ai.chat_surface'
+
+  # Hook classes are services in Drupal 11's OOP hook system, and this one
+  # takes the surface rather than reaching for \Drupal::service().
+  Drupal\paragraphs_bundles_ai\Hook\PbAiFormHook:
+    autowire: true
