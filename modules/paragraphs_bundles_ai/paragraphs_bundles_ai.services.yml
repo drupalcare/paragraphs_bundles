@@ -46,6 +46,7 @@ services:
       - '@entity_type.manager'
       - '@current_user'
       - '@plugin.manager.block'
+      - '@paragraphs_bundles_ai.target_resolver'
 
   Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface: '@paragraphs_bundles_ai.chat_surface'
 

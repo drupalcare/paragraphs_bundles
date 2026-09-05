@@ -72,7 +72,10 @@ final class PbAiFormHook {
       return;
     }
 
-    $bar = $this->surface->build();
+    // The bundle decides whether the bar is any use here: a content type with
+    // no paragraph field can only ever produce a refusal.
+    $entity = $object->getEntity();
+    $bar = $this->surface->build($entity->bundle());
 
     if ($bar === []) {
       return;

@@ -61,6 +61,8 @@ final class ChatSurface implements ChatSurfaceInterface {
    *   Checked for the permission this module adds.
    * @param \Drupal\Core\Block\BlockManagerInterface $blockManager
    *   Builds the chat block.
+   * @param \Drupal\paragraphs_bundles_ai\Service\TargetResolverInterface $resolver
+   *   Names the content types that actually have a paragraph field.
    */
   public function __construct(
     private readonly ConfigFactoryInterface $configFactory,
@@ -68,12 +70,13 @@ final class ChatSurface implements ChatSurfaceInterface {
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly AccountInterface $currentUser,
     private readonly BlockManagerInterface $blockManager,
+    private readonly TargetResolverInterface $resolver,
   ) {}
 
   /**
    * {@inheritdoc}
    */
-  public function decide(): SurfaceDecision {
+  public function decide(?string $contentType = NULL): SurfaceDecision {
     // Permission first. Someone without it does not need to hear about the
     // site's AI configuration, and checking it last would leak that anyway
     // through the reason text.
@@ -145,14 +148,31 @@ final class ChatSurface implements ChatSurfaceInterface {
       ));
     }
 
+    // A content type with no paragraph reference field cannot take sections.
+    // Offering the assistant there invites a conversation whose only possible
+    // outcome is a refusal — the tools would work correctly and the person
+    // would still have wasted their time. Checked last because it is the only
+    // precondition that depends on WHICH form is being built.
+    if ($contentType !== NULL && $contentType !== '') {
+      $usable = $this->resolver->contentTypesWithParagraphFields();
+
+      if (!isset($usable[$contentType])) {
+        return SurfaceDecision::hide(sprintf(
+          'The content type "%s" has no paragraph field, so there is nowhere here for the assistant to add sections. It appears on: %s.',
+          $contentType,
+          $usable === [] ? 'no content type on this site' : implode(', ', array_keys($usable)),
+        ));
+      }
+    }
+
     return SurfaceDecision::show($chosen);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function build(): array {
-    $decision = $this->decide();
+  public function build(?string $contentType = NULL): array {
+    $decision = $this->decide($contentType);
 
     if (!$decision->show) {
       return [];
