@@ -133,6 +133,22 @@ final class PbAiSettingsForm extends ConfigFormBase {
       '#disabled' => $options === [],
     ];
 
+    $form['tools'] = [
+      '#type' => 'item',
+      '#title' => $this->t('Reaching the tools'),
+      // The step people miss, and it costs an afternoon each time: an
+      // assistant built with ai_assistant_api alone builds its tool list from
+      // actions_enabled, which is a different plugin type. FunctionCall tools
+      // like this module's reach an assistant only through ai_agents.
+      //
+      // The status line above cannot catch this one. Every precondition it
+      // reports is on THIS side of the boundary; whether the chosen assistant
+      // has an agent behind it is the assistant's own configuration, and a
+      // chat that answers questions but silently creates nothing looks
+      // identical to one that is working.
+      '#markup' => $this->t('This module ships its tools as AI function calls. An assistant reaches them only through the AI Agents module: create an agent, enable the pb_content tools on it, and point the assistant at that agent. An assistant configured without an agent will answer questions but will never create a section. This module ships a ready-made agent — paragraphs_bundles_agent — which installs automatically when AI Agents is enabled before this module.'),
+    ];
+
     if ($options === []) {
       $form['assistant']['#description'] = $this->moduleHandler->moduleExists('ai_assistant_api')
         ? $this->t('There are no assistants to choose from yet. Create one at Configuration › AI › AI Assistants first.')
