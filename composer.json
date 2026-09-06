@@ -21,10 +21,15 @@
         "drupal/field_group": "^3.4 || ^4"
     },
     "require-dev": {
+        "drupal/coder": "^8.3",
+        "drupal/contact_formatter": "^2.0",
+        "drupal/link_attributes": "^2.1",
         "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.2",
-        "drupal/contact_formatter": "^2.0",
-        "drupal/link_attributes": "^2.1"
+        "mglaman/phpstan-drupal": "^2.0",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.0",
+        "squizlabs/php_codesniffer": "^3.7"
     },
     "suggest": {
         "drupal/ai": "^1.2 — required by the paragraphs_bundles_ai sub-module, which is optional.",
@@ -37,5 +42,14 @@
     "support": {
         "issues": "https://drupal.org/project/issues/paragraphs_bundles",
         "source": "https://git.drupalcode.org/project/paragraphs_bundles"
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=phpcs.xml.dist",
+        "phpcbf": "phpcbf --standard=phpcs.xml.dist",
+        "phpstan": "phpstan analyse -c phpstan.neon --memory-limit=512M",
+        "lint": [
+            "@phpcs",
+            "@phpstan"
+        ]
     }
 }
