@@ -168,6 +168,24 @@ final class PbInlineAssetSurfaceTest extends TestCase {
   }
 
   /**
+   * Directories and root files that belong to THIS project.
+   *
+   * WHY AN EXPLICIT LIST RATHER THAN "everything under the project root".
+   * Measured in CI, 2026-09-06: the drupal.org pipeline installs Drupal INSIDE
+   * the project directory, at `web/`. So walking the project root walked all
+   * of core and every contrib module with it, and the first run of this test
+   * dutifully reported core's own inline scripts — BigPipe, the filter module,
+   * navigation templates — as findings against this project. Locally there is
+   * no `web/`, so it passed here and failed there.
+   *
+   * Naming this project's own directories is immune to whatever else appears
+   * in the root, now or later.
+   *
+   * @var list<string>
+   */
+  private const PROJECT_PATHS = ['src', 'templates', 'modules', 'js', 'css', 'config'];
+
+  /**
    * Yields shipped source files, keyed by path relative to the project root.
    *
    * Tests are excluded deliberately: fixtures here assert that markup like
@@ -182,24 +200,59 @@ final class PbInlineAssetSurfaceTest extends TestCase {
    */
   private function sourceFiles(array $extensions): \Generator {
     $root = dirname(__DIR__, 4);
-    $iterator = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
-    );
+    $seen = 0;
 
-    foreach ($iterator as $file) {
-      $path = $file->getPathname();
-
-      if (!in_array(strtolower($file->getExtension()), $extensions, TRUE)) {
+    foreach (self::PROJECT_PATHS as $dir) {
+      $base = $root . '/' . $dir;
+      if (!is_dir($base)) {
         continue;
       }
-      foreach (['/tests/', '/node_modules/', '/.git/', '/vendor/'] as $skip) {
-        if (str_contains($path, $skip)) {
-          continue 2;
+      $iterator = new \RecursiveIteratorIterator(
+        new \RecursiveDirectoryIterator($base, \FilesystemIterator::SKIP_DOTS),
+      );
+      foreach ($iterator as $file) {
+        $path = $file->getPathname();
+        if (!in_array(strtolower($file->getExtension()), $extensions, TRUE)) {
+          continue;
         }
+        foreach (['/tests/', '/node_modules/', '/.git/', '/vendor/'] as $skip) {
+          if (str_contains($path, $skip)) {
+            continue 2;
+          }
+        }
+        $seen++;
+        yield str_replace($root . '/', '', $path) => (string) file_get_contents($path);
       }
-
-      yield str_replace($root . '/', '', $path) => (string) file_get_contents($path);
     }
+
+    // Root-level files only, never a recursive walk of the root — see
+    // PROJECT_PATHS for what a recursive walk picked up in CI.
+    foreach ((array) scandir($root) as $entry) {
+      $path = $root . '/' . $entry;
+      if (!is_file($path)) {
+        continue;
+      }
+      $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+      if (!in_array($ext, $extensions, TRUE)) {
+        continue;
+      }
+      $seen++;
+      yield $entry => (string) file_get_contents($path);
+    }
+
+    // A scanner that reaches nothing and a project that is clean look
+    // identical from the outside. Fail loudly instead.
+    self::assertGreaterThan(
+      5,
+      $seen,
+      sprintf(
+        'The scan reached only %d file(s) of type [%s] under %s, which means it '
+        . 'is not looking where it thinks it is. A pass here would be vacuous.',
+        $seen,
+        implode(', ', $extensions),
+        $root,
+      ),
+    );
   }
 
 }
