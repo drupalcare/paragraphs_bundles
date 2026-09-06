@@ -5,6 +5,21 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [2.0.0] — 2026-07-06
 
+### Added — AI (optional)
+
+- **`paragraphs_bundles_ai`** — optional AI sub-module. Three tools:
+  `pb_resolve_target` (checks whether sections can be added and returns the
+  exact question to ask when they cannot), `pb_draft_field_text` (reports a
+  section's real fields and character limits before any text is written), and
+  `pb_create_sections` (creates them). Pages are created **unpublished** or
+  added as a **new revision**; nothing is ever published for you.
+  Requires `drupal/ai`; the parent module does not.
+- **`ai_agents.ai_agent.paragraphs_bundles_agent`** in `config/optional/` —
+  without an agent, a FunctionCall plugin is unreachable by anything on the
+  site. Installs only when `ai_agents` is present.
+- `composer.json` suggests `drupal/ai`, naming the sub-module that needs it.
+
+
 A ground-up rewrite of the suite for Drupal 11.3+ / 12, shipped as a **drop-in
 upgrade from 1.x**: no content or field changes are required, and every v1
 bundle keeps its rendered DOM *structure*. Read
