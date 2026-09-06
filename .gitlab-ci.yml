@@ -80,3 +80,29 @@ phpunit:
 
 "phpunit (next major)":
   <<: *pb-fetch-axe
+
+# THE DRUPAL 12 JOBS CANNOT PASS YET, AND THE REASON IS UPSTREAM.
+#
+# Measured on drupal.org 2026-09-05, every contrib dependency of this module
+# declares Drupal 11 as its ceiling:
+#
+#   drupal/paragraphs                 8.x-1.23      ^10.3 || ^11
+#   drupal/entity_reference_revisions 8.x-1.14      ^10.2 || ^11
+#   drupal/field_group                4.1.0-alpha4  ^10.3 || ^11
+#
+# So `composer (next major)` fails at dependency resolution, before a single
+# line of this module is examined. Nothing in this repository can fix that.
+#
+# The job is kept ON and made non-blocking rather than switched off, because
+# its failure is TRUE and worth seeing: the day paragraphs ships a Drupal 12
+# release, this turns green on its own and tells us the claim is real. Turning
+# it off would hide the answer instead of recording it.
+#
+# REMOVE THESE TWO OVERRIDES once the dependencies above support Drupal 12 —
+# at that point the jobs should gate again, and if they fail then it is our bug.
+"composer (next major)":
+  allow_failure: true
+
+"phpunit (next major)":
+  <<: *pb-fetch-axe
+  allow_failure: true
