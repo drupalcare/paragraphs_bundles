@@ -99,6 +99,14 @@ final class PbImageGridJavascriptTest extends WebDriverTestBase {
     $this->assertJsCondition(
       "document.querySelector('.pb-grid__lightbox').getAttribute('aria-hidden') === 'true'",
     );
+    // And actually not rendered, which the attribute alone does not prove.
+    // The template used to carry style="display: none;" and no longer does —
+    // the stylesheet is what hides it now, so a regression there would leave a
+    // full-screen overlay sitting on top of the page while every attribute
+    // assertion above still passed.
+    $this->assertJsCondition(
+      "getComputedStyle(document.querySelector('.pb-grid__lightbox')).display === 'none'",
+    );
 
     // Clicking an item's expand button opens the lightbox. The button is an
     // absolutely-positioned overlay with zero box size when the demo section
@@ -115,6 +123,9 @@ final class PbImageGridJavascriptTest extends WebDriverTestBase {
     $this->assertJsCondition(
       "document.querySelector('.pb-grid__expand').getAttribute('aria-expanded') === 'true'",
     );
+    $this->assertJsCondition(
+      "getComputedStyle(document.querySelector('.pb-grid__lightbox')).display !== 'none'",
+    );
 
     // The close button dismisses the lightbox and resets the expand trigger.
     $this->getSession()->executeScript(
@@ -125,6 +136,9 @@ final class PbImageGridJavascriptTest extends WebDriverTestBase {
     );
     $this->assertJsCondition(
       "document.querySelector('.pb-grid__expand').getAttribute('aria-expanded') === 'false'",
+    );
+    $this->assertJsCondition(
+      "getComputedStyle(document.querySelector('.pb-grid__lightbox')).display === 'none'",
     );
 
     // No serious/critical accessibility violations in the rendered widget.
