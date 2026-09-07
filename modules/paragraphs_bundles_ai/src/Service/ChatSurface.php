@@ -201,17 +201,29 @@ final class ChatSurface implements ChatSurfaceInterface {
         'verbose_mode' => FALSE,
       ],
       'bot_name' => 'Sections',
-      // THE TWO KEYS BELOW WERE BOTH WRONG IN THE FIRST VERSION, and only a
-      // browser could show it — the block took the values without complaint
-      // and did something else.
+      // `toggle_state` IS SET FOR INTENT AND DOES NOTHING AT THIS PLACEMENT.
       //
-      // `toggle_state` accepts exactly 'remember', 'open' or 'close'. It was
-      // set to 'collapsed', which is not one of them, so the panel opened. An
-      // invalid value here does not warn: it is read, ignored, and the control
-      // silently does nothing. 'close' is the brief's "hidden until you click
-      // it", and it is preferred over 'remember' so that a node form never
-      // opens with a chat panel over the fields because of something the
-      // person did yesterday.
+      // An earlier version of this comment said otherwise — that the key
+      // accepts 'remember', 'open' or 'close', that an earlier 'collapsed' was
+      // rejected, and that 'close' was therefore the working control. The
+      // first two are true and the conclusion is not, measured afterwards in
+      // the vvj_core_ai copy and back-ported here.
+      //
+      // DeepChatFormBlock::build() does attach the value to
+      // drupalSettings.ai_deepchat.toggle_state, but the only JS that reads a
+      // toggle_state is form-stream.js, which reads the OTHER block's
+      // drupalSettings.ai_chatbot. The sticky widget used for every
+      // non-toolbar placement initialises purely from
+      // localStorage.deepChatState_<chatId>, defaulting to closed when unset.
+      // So a first-time visitor gets a collapsed bar, which is what is wanted
+      // — but it is the localStorage default doing it, not this line. Keep the
+      // key for intent; do not read it as a working control.
+      //
+      // AND THE KEY IS NOT NAMESPACED: it is `deepChatState_bot1` for every
+      // deepchat block on the site, so opening a sibling module's bar leaves
+      // this one open too, and vice versa. That is a contrib limitation, not
+      // something this module can fix from here — worth knowing before
+      // treating an open bar as a bug in this code.
       'toggle_state' => 'close',
       // `placement` defaults to 'toolbar', which styles the widget for
       // Drupal's toolbar. Left at the default it rendered 679px tall inside
