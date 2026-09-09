@@ -7,7 +7,6 @@ namespace Drupal\Tests\paragraphs_bundles\Kernel;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Tests\paragraphs_bundles\Traits\PbOptionalBundleModulesTrait;
-use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 

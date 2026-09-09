@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Service;
 
-use Drupal\paragraphs_bundles_ai\Model\DraftableField;
 use Drupal\paragraphs_bundles_ai\Model\FieldDraft;
 
 /**
