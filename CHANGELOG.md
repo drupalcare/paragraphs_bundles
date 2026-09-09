@@ -77,24 +77,16 @@ path) or to be stripped of every structural character (user-variable path), and
 legitimate colour input is asserted to still emit.
 
 ### Removed
-Three things that 1.x shipped are no longer in the package. All three are
+Two things that 1.x shipped are no longer in the package. Both are
 user-visible; read this section before upgrading.
 
-- **The bundled Material Symbols web fonts (3 files, ~11 MB).**
-  `paragraph_bundle_icon` no longer ships
-  `material-symbols-{outlined,rounded,sharp}.woff2`, and the module's CSS no
-  longer declares an `@font-face` for them. They are Apache-2.0 licensed, which
-  is not compatible with this project's GPL-2.0-or-later, and drupal.org does
-  not package bundled third-party font binaries. **Sites using the Material
-  Symbols icon styles must now supply the font themselves** — from the theme,
-  or self-hosted; `modules/paragraph_bundle_icon/README.md` documents both,
-  including the privacy trade-off of loading it from Google. The class rules
-  that turn a ligature into a glyph still ship, so supplying the font under its
-  standard family name is all that is needed. If the font is missing the icon
-  renders as its ligature name in plain text (a `home` icon shows the word
-  "home") — that is the symptom to look for. Sites that use the image-icon
-  field rather than Material Symbols are unaffected, and no stored value
-  changes either way.
+> **The Material Symbols fonts are NOT among them.** An earlier 2.0.x-dev
+> commit removed the three bundled `.woff2` files and required every site to
+> supply the font itself. **That was reverted before release**, because
+> upgrading from 1.x silently turned every icon into its ligature name in plain
+> text — a `home` icon rendering the word "home" — with no update path and
+> nothing logged. The fonts ship, and icons keep working on upgrade.
+
 - **28 bundled `LICENSE` / `LICENSE.txt` files**, one per sub-module. The
   project's licence is unchanged and is still declared in `composer.json` and
   every `.info.yml`; drupal.org adds the canonical GPL `LICENSE.txt` to the
@@ -160,9 +152,9 @@ user-visible; read this section before upgrading.
   defining its own `fadeIn` would win or lose at random depending on load
   order. It is now `pb-fade-in`.
 - **The Material Symbols CSS names a fallback font.** The three icon
-  stylesheets set a font family the module deliberately does not bundle, with
-  no generic fallback after it — so the branch that actually runs on a site
-  that has not supplied the font was the unspecified one.
+  stylesheets set the icon family with no generic fallback after it, so a site
+  that overrides or fails to load the family fell through to an unspecified
+  font. A `sans-serif` fallback is now named explicitly.
 - **The 3D flip box can be operated with a keyboard, and its hidden face is
   hidden from screen readers too.** The box carried `tabindex="0"` on a plain
   `<div>` with no role, no name and no key handler — a keyboard user could land

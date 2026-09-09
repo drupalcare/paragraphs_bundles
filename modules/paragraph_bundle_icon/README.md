@@ -7,51 +7,34 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 
 - `paragraphs_bundles` (parent)
 - Core `image`, `link`, `options`, `text`
-- **The Material Symbols web font, supplied by your site** — see below
+- The Material Symbols web fonts — **bundled with this module**, nothing to install
 
-## The Material Symbols font is not bundled
+## The Material Symbols fonts are bundled
 
-Version 1.x shipped the three Material Symbols `.woff2` files inside this
-module. 2.0.0 removed them: they are Apache-2.0 licensed, which is not
-compatible with this project's GPL-2.0-or-later, and drupal.org does not
-package bundled third-party font binaries. **Your site must now supply the
-font.** The module still ships the class rules that turn the ligature into a
-glyph (`css/material-symbols-{outlined,rounded,sharp}.css`), only the binary is
-gone.
+The three Material Symbols `.woff2` files ship inside this module, in `fonts/`,
+and `css/material-symbols-{outlined,rounded,sharp}.css` declare the matching
+`@font-face`. **Icons work on install with nothing to configure.**
 
-If the font is missing, the icon renders as its ligature name in plain text —
-a paragraph set to `home` shows the word "home". That is the symptom.
+2.0.0 briefly removed these files and required every site to supply the font
+itself. That was a mistake and it was reverted: upgrading from 1.x silently
+turned every icon into its ligature name in plain text — a paragraph set to
+`home` rendered the word "home" — with no update path and no error anywhere.
+Breaking working sites on upgrade is a worse outcome than the repository being
+11 MB larger.
 
-Pick one of:
+The fonts are Google's Material Symbols, licensed Apache-2.0 — see
+`fonts/LICENSE-Material-Symbols.txt`. Apache-2.0 permits redistribution with
+attribution, and is compatible with this project's GPL-2.0-**or-later** via the
+"or later" clause (Apache-2.0 is GPLv3-compatible).
 
-**1. Load it in your theme (simplest).** Add the Google Fonts stylesheet for
-each style you use to your theme's library. Note this makes a request to
-`fonts.googleapis.com` on every page, which has privacy/GDPR consequences you
-should confirm are acceptable for your site:
-
-```html
-<link rel="stylesheet"
-  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-```
-
-**2. Self-host it (recommended for privacy).** Download the woff2 from
-[Google Fonts](https://fonts.google.com/icons), put it somewhere your site
-serves, and declare the family in your theme's CSS with the exact family name
-this module's classes reference — `Material Symbols Outlined`,
-`Material Symbols Rounded` or `Material Symbols Sharp`:
-
-```css
-@font-face {
-  font-family: 'Material Symbols Outlined';
-  font-style: normal;
-  font-weight: 100 700;
-  src: url("/path/to/material-symbols-outlined.woff2") format('woff2');
-  font-display: swap;
-}
-```
+If you would rather not serve the bundled binaries, you can still override the
+family from your theme — declare the same family names
+(`Material Symbols Outlined`, `Material Symbols Rounded`,
+`Material Symbols Sharp`) against your own woff2 or the Google Fonts
+stylesheet, and your declaration wins by cascade order.
 
 Sites that only use the **image icon** field (`pb_content_image_icon`) instead
-of Material Symbols need none of this.
+of Material Symbols never touch these fonts.
 
 ## Enable
 

@@ -16,11 +16,6 @@ LICENSE
 LICENSE.txt
 modules/*/LICENSE.txt
 
-# Third-party assets must not live in a GPL-2.0-or-later drupal.org repo.
-# Material Symbols web fonts are Apache-2.0 (not GPLv2-compatible) and 11 MB;
-# the site must supply the font. Kept on disk for local work, never committed.
-modules/paragraph_bundle_icon/fonts/
-
 # axe-core is MPL-2.0 and 572 KB. CI downloads a pinned release and exports
 # PB_AXE_CORE_PATH; see .gitlab-ci.yml and tests/src/Traits/AxeTestTrait.php.
 tests/fixtures/axe.min.js
