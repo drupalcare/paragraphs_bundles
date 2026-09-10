@@ -77,12 +77,25 @@
   box-sizing: border-box;
 }
 
+/* `all: unset` MUST come first. It resets every property to inherit-or-initial,
+   so any declaration above it in this same block is wiped -- and `box-sizing`
+   does not inherit, so it fell back to its initial value `content-box` on every
+   button and link in the module.
+
+   Measured on sts.local 2026-09-10, accordion node: with `all` last, ALL 12 PB
+   buttons/links on the page computed to content-box, so `width: 100%` became the
+   CONTENT width and the 24px inline padding was ADDED on top. The accordion
+   button then overhung its `overflow: hidden` parent by exactly 24px and clipped
+   the right half of the 24px plus icon -- the icon rendered as the left half of
+   a `+`. With `all` first: overhang 24px -> 0px, and the icon sits 12px inside
+   the edge. `cursor` and `outline` were being wiped the same way and only looked
+   correct because later rules re-declare them. */
 .paragraphs-bundles a,
 .paragraphs-bundles button {
+  all: unset;
   box-sizing: border-box;
   cursor: pointer;
   outline: revert;
-  all: unset;
 }
 
 /* Button */
