@@ -11,7 +11,8 @@
  * Three things happen here:
  *   - the toggle button is revealed (it is rendered `hidden`, so a page
  *     without this script never shows a control that cannot work);
- *   - `inert` + `aria-hidden` follow whichever face is actually presented;
+ *   - `inert` + `aria-hidden` follow whichever face is actually presented,
+ *     and so do the icon's rotation and the button's spoken label;
  *   - the button flips the box for keyboard and touch users, which `:hover`
  *     alone never did.
  *
@@ -45,7 +46,27 @@
     down.setAttribute('aria-hidden', 'true');
 
     box.scene.classList.toggle('pb-is-flipped', box.pressed);
+
+    // `pb-is-flipped` tracks the BUTTON only, because it is what the sticky CSS
+    // transform keys off. The icon needs the presented face instead: hovering
+    // shows the back while leaving `pressed` false, and the control was still
+    // drawing the front-facing icon over a back-facing card.
+    box.scene.classList.toggle('pb-is-showing-back', showBack);
+
     box.toggle.setAttribute('aria-expanded', showBack ? 'true' : 'false');
+
+    // Swap the spoken label with the state. `aria-expanded` says open/closed,
+    // which does not describe a card with two equal sides -- "Show the front of
+    // X" / "Show the back of X" names what pressing will DO. Both strings are
+    // translated in the template and carried on the element.
+    if (box.label) {
+      const next = showBack
+        ? box.label.dataset.pbLabelBack
+        : box.label.dataset.pbLabelFront;
+      if (next && box.label.textContent !== next) {
+        box.label.textContent = next;
+      }
+    }
   }
 
   /**
@@ -59,6 +80,10 @@
     const front = scene.querySelector('.pb-3d-flip-box__front');
     const back = scene.querySelector('.pb-3d-flip-box__back');
     const toggle = scene.querySelector('.pb-3d-flip-box__toggle');
+    // Optional: an older rendered page may still carry a static label.
+    const label = toggle
+      ? toggle.querySelector('[data-pb-label-front]')
+      : null;
 
     if (!faces || !front || !back || !toggle) {
       return;
@@ -70,6 +95,7 @@
       front,
       back,
       toggle,
+      label,
       pressed: false,
       hovered: false,
       focused: false,

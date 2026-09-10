@@ -123,9 +123,28 @@
   pointer-events: none;
 }
 
-/* The icon reads as a mirror line; turn it to match the axis it flips on. */
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__toggle-icon {
-  transform: rotate(90deg);
+/* The icon no longer reads as a mirror line, so it is no longer turned to match
+   the flip AXIS -- a card-and-arrow means "turn this over" whichever way the box
+   rotates, and turning it 90deg for flip-x only made the arrow point sideways.
+
+   It now turns to show the STATE instead. `pb-is-showing-back` is set by the
+   behaviour from the same value that decides which face is presented, so it
+   follows a press, a hover AND a focus -- previously the only visual state class
+   was `pb-is-flipped`, which tracked the button press alone, so a sighted user
+   hovering the box saw the back face while the control still showed the
+   front-facing icon. */
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle-icon {
+  transition: transform 0.25s ease-out;
+}
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-is-showing-back .pb-3d-flip-box__toggle-icon {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle-icon {
+    transition: none;
+  }
 }
 
 /* ==========================================================================

@@ -104,6 +104,21 @@ user-visible; read this section before upgrading.
   `zoom`) are unaffected and are now reduced-motion aware.
 
 ### Fixed
+- **The 3D flip box's control showed the wrong state, and its icon said the
+  wrong thing.** The glyph was two panels either side of a dashed mirror axis —
+  what design tools use for *flip horizontal*, i.e. mirror an object — and at
+  the 24px it renders at, the 3px dashes aliased into a smudge while the solid
+  panel read as an off-centre blob. It is now a card with an arrow turning over
+  it: one stroke weight, no sub-pixel detail, and it means "show the other
+  side". Separately, the icon only reflected an explicit button press, so
+  **hovering the box turned it over while the control still drew the
+  front-facing icon**; the icon now rotates from the same value that decides
+  which face is presented, so it follows hover and focus too. The button's
+  spoken label follows that value as well — "Show the back of X" / "Show the
+  front of X" instead of a fixed "Flip X", because `aria-expanded` alone says
+  open/closed, which does not describe a card with two equal sides. The icon
+  is no longer rotated 90° for `flip-x`: that made sense for a mirror line and
+  only pointed the arrow sideways for an arrow.
 - **The carousel had no accessible name.** Its slide container is
   `role="group"` with `aria-roledescription="carousel"`, which requires one,
   and it pointed `aria-labelledby` at `index-{id}` — an element only the *3D*
