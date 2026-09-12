@@ -52,8 +52,28 @@
   background-color: transparent !important;
 }
 
+/* `all: unset` MUST be the FIRST declaration in this block.
+ *
+ * It resets every property to inherit-or-initial, so anything declared above it
+ * here is wiped -- and it was declared tenth of eleven, which silently removed
+ * `position: absolute` along with min-width, min-height, cursor, transition,
+ * outline and line-height. Seven declarations, gone.
+ *
+ * The visible symptom was the arrows moving from the middle of the slide to the
+ * bottom of it: without `position: absolute` the buttons fall into normal flow,
+ * and the `inset-block-start` below (plus the `inset-inline-start/end` on
+ * .pb-nav__prev / .pb-nav__next) have no effect on a static element. Only the
+ * two `!important` declarations survived, which is why the arrows still looked
+ * transparent while sitting in the wrong place.
+ *
+ * V1 positioned the CONTAINER (`.pb__slide-arrows`, `top: calc(50% - 48px)`,
+ * flex with `margin-left: auto` on next). V2 positions each BUTTON instead --
+ * a deliberate change, and a sound one. `.pb-slideshow__stage` is
+ * `position: relative` (line 31), so the containing block is already there. */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button {
+  all: unset;
   position: absolute;
+  inset-block-start: calc(50% - var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
   min-height: calc(2 * var(--pb-px18));
   cursor: pointer;
@@ -64,8 +84,6 @@
   outline: none;
   background-color: transparent !important;
   line-height: 1;
-  all: unset;
-  inset-block-start: calc(50% - var(--pb-px18));
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button span {
