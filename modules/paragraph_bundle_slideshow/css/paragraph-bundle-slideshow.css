@@ -73,6 +73,22 @@
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button {
   all: unset;
   position: absolute;
+  /* Above the slide content, below Drupal's contextual links.
+   *
+   * An IMAGE slide wraps its image in `a.pb-ui-link`, and
+   * paragraphs-bundles-base.css gives that `z-index: 1`. Its parent is
+   * `display: flex`, so the link is a FLEX ITEM -- and z-index applies to a
+   * flex item even when it is `position: static`, creating a stacking context
+   * at level 1. These buttons were `z-index: auto`, so the image painted over
+   * them and the arrows vanished.
+   *
+   * A TEXT slide has no such link, which is why the arrows were visible there
+   * and only disappeared on image slides. The symptom looked like the arrows
+   * were missing; they were drawn, in the right place, underneath.
+   *
+   * 2 clears the link. It deliberately does NOT chase the 500 used by
+   * contextual links -- admin chrome should stay on top. */
+  z-index: 2;
   inset-block-start: calc(50% - var(--pb-px18));
   min-width: calc(2 * var(--pb-px18));
   min-height: calc(2 * var(--pb-px18));
