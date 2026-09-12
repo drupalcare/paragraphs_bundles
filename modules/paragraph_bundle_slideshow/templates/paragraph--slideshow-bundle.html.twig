@@ -55,6 +55,12 @@
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}">
+    {# Deliberately NOT `pb-width-own`. The slideshow inherited an exclusion
+       from the old structural list (`.pb-slideshow__wrap-inner > .pb-content__full`),
+       which meant the node width never clamped it and it rendered full-bleed on
+       every pb_content node. Its own wrapper carries the bundle max-width, so
+       nothing else was holding it either. It respects the node width like any
+       other bundle. #}
     <div class="pb-content__full">
 
       {% if pb_title %}

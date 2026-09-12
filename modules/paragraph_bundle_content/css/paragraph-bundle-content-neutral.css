@@ -12,7 +12,7 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 .page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
-.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
+.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-width-own) {
   width: 100%;
   max-width: var(--pb-content-width);
   margin-inline: auto;

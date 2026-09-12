@@ -5,6 +5,10 @@
  * Applied on `<body class="page-node-type-pb-content pb-nmw-*">` via
  * PbcHtmlHook. Consumed by Solo and APEX layout stylesheets.
  */
+.page-node-type-pb-content .pb-content__full .pb-content__full:not(.pb-width-own) {
+  --pb-content-width: initial;
+}
+
 .page-node-type-pb-content.pb-nmw-2560 {
   --pb-content-width: 160rem;
 }
@@ -37,8 +41,22 @@
   --pb-content-width: 100%;
 }
 
-.page-node-type-pb-content .pb-content__full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
-  --pb-content-width: initial;
+/* LAYER 2 -- the bundle max-width -- defeated in ONE place.
+ *
+ * A bundle's max-width works in two halves: one rule sets `--pb-width`, another
+ * consumes it as `max-width: var(--pb-width)`. Previously every consumer had to
+ * carry `:not(.page-node-type-pb-content .paragraphs-bundles)` itself -- 19
+ * selectors, each a chance to forget. `paragraph-bundle-parallax.css` did
+ * forget, and its `.pb-parallax__text` kept the bundle width on pb_content
+ * nodes where the node width should have won. One module out of forty.
+ *
+ * Blanking the TOKEN instead of negating every consumer fixes that class of bug
+ * outright: any consumer of `var(--pb-width)`, in any stylesheet, present or
+ * future, resolves to `none` here without knowing this rule exists.
+ *
+ * `.pb-width-own` opts an element out -- see the four templates that emit it. */
+.page-node-type-pb-content .paragraphs-bundles [class*="pb-u-mw--"]:not(.pb-width-own) {
+  --pb-width: none;
 }
 
 .page-node-type-pb-content .paragraphs-bundles.pb-carousel .pb-carousel__slide > div {

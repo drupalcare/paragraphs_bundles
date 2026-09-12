@@ -28,12 +28,16 @@ in where it can sit, or in what it can hold.
 
 ### Rule 1 — Leaves go anywhere ✅
 
-Fourteen bundles have **no child slot at all**. They cannot create a nesting
+Thirteen bundles have **no child slot at all**. They cannot create a nesting
 problem, so they are the right default for the inside of any container.
 
 `simple` · `hero` · `image` · `image_wide` · `image_narrow` · `image_overlay` ·
 `icon` · `block` · `block_content` · `views` · `webform` · `contact_form` ·
-`node_reference` · `pb_target`
+`node_reference`
+
+> Counts here are of the bundles **this module ships**. A site may define its
+> own paragraph types alongside them; those are outside this contract and are
+> not counted.
 
 ### Rule 2 — Perspective never nests in perspective 🚫
 
@@ -114,7 +118,7 @@ to **refuse** an impossible nesting rather than generate one.
 {
   "leaves": ["simple_bundle","hero_bundle","image_bundle","image_wide_bundle","image_narrow_bundle",
              "image_overlay_bundle","icon_bundle","block_bundle","block_content_bundle","views_bundle",
-             "webform_bundle","contact_form_bundle","node_reference_bundle","pb_target_bundle"],
+             "webform_bundle","contact_form_bundle","node_reference_bundle"],
   "traits": {
     "perspective": ["parallax_bundle","3d_carousel_bundle","3d_flip_box_bundle"],
     "autoplay":    ["3d_carousel_bundle","carousel_bundle","slideshow_bundle"],

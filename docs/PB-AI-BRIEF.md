@@ -191,8 +191,9 @@ contain what**, and it ends with the same rules as JSON so this module can read
 them instead of re-deriving them. Six rules, each traced to a measured trait of
 the bundle rather than to taste:
 
-1. **Leaves go anywhere.** Fourteen bundles have no child slot; they are always
-   a safe choice and should be the default.
+1. **Leaves go anywhere.** Thirteen bundles have no child slot; they are always
+   a safe choice and should be the default. The count is of bundles this module
+   ships -- a site's own paragraph types are outside this contract.
 2. **Perspective never nests in perspective** — `parallax`, `3d_carousel`,
    `3d_flip_box` flatten each other.
 3. **Nothing that autoplays goes somewhere hidden** — no carousel, slideshow or
@@ -209,6 +210,11 @@ belongs in the list above.
 📐 Width behaves differently on `pb_content` than on a plain landing page, and
 a generated page has to expect that: see
 **[PB-CONTENT-WIDTH-CONTRACT.md](PB-CONTENT-WIDTH-CONTRACT.md)**.
+
+⚠ **Do not set a bundle max-width expecting it to show on a `pb_content` node.**
+The node's own width wins there, and the bundle value is deliberately blanked.
+Only two elements are exempt -- the 3D carousel's inner box and the modal -- and
+that exemption is a template decision, not something content can request.
 
 ---
 

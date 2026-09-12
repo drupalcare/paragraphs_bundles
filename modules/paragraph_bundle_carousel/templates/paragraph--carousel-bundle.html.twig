@@ -69,6 +69,11 @@
     {% endif %}
 
     {# L3 behavior host — JS once() target #}
+    {# Deliberately NOT `pb-width-own` -- same finding as the slideshow. The
+       carousel inherited an exclusion from the old structural list, so the node
+       width never clamped it and it rendered full-bleed on every pb_content
+       node. The JS measures slide widths from this element at runtime, so it
+       follows whatever width it is given. #}
     <div class="pb-carousel__viewport pb-content__full">
       <div class="pb-carousel__wrapper">
         <div id="{{ items_id }}"

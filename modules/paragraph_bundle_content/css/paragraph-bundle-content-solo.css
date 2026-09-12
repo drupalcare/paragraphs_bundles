@@ -21,7 +21,7 @@
 .page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb-content__title,
 .page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
 .page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
-.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-carousel__viewport.pb-content__full, .pb-3d-carousel__inner.pb-content__full, .pb-slideshow__wrap-inner > .pb-content__full, .pb-modal__content .pb-content__full) {
+.page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-width-own) {
   width: 100%;
   max-width: var(--pb-content-width);
   margin-inline-start: auto;

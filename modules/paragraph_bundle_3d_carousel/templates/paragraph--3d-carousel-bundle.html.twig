@@ -32,7 +32,18 @@
 {% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = ['pb-ui-inner', 'pb-3d-carousel__inner', 'pb-content__full']|merge(pb_display_classes)|join(' ') %}
+{# `pb-width-own` -- this element OWNS its width: the node width does not clamp
+   it and its bundle max-width is not blanked.
+
+   Load-bearing here, not cosmetic. The slide transforms and the `perspective`
+   are computed from THIS box, so clamping it to the node width would skew the
+   3D geometry rather than merely narrow it. The editor's own max-width on the
+   paragraph is the right authority.
+
+   Checked against the other three inherited owners: the slideshow and the plain
+   carousel were WRONG to be on that list and now follow the node width. This one
+   and the modal are correct. #}
+{% set classes_inner = ['pb-ui-inner', 'pb-3d-carousel__inner', 'pb-content__full', 'pb-width-own']|merge(pb_display_classes)|join(' ') %}
 {% set pb_play_stop = paragraph|pb_field_value('pb_display_3d_play_stop', 0) %}
 
 {% set pb_lheight_raw = paragraph|pb_field_value('pb_content_3dcar_lheight') %}
