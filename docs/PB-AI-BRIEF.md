@@ -180,6 +180,35 @@ have been exercised on `sts.local` against a real provider.
   call, as narrowing `utilikit` to `^11.2 || ^12` was.
 - **A test fails for a reason not understood.** A green suite reached by
   changing the test is worse than a red one.
+- **The requested nesting is on the forbidden list.** Refuse and say which rule
+  it breaks, rather than creating it and letting the page look wrong. See
+  below — this is a refusal condition, not a preference.
+
+### 4a · Nesting is a hard constraint, not a style choice
+
+**[PB-NESTING-GUIDE.md](PB-NESTING-GUIDE.md) is the authority on what may
+contain what**, and it ends with the same rules as JSON so this module can read
+them instead of re-deriving them. Six rules, each traced to a measured trait of
+the bundle rather than to taste:
+
+1. **Leaves go anywhere.** Fourteen bundles have no child slot; they are always
+   a safe choice and should be the default.
+2. **Perspective never nests in perspective** — `parallax`, `3d_carousel`,
+   `3d_flip_box` flatten each other.
+3. **Nothing that autoplays goes somewhere hidden** — no carousel, slideshow or
+   3D carousel inside a modal, a closed accordion pane or an inactive tab.
+4. **Parallax needs the real viewport** — never inside a transformed ancestor.
+5. **Backgrounds do not stack.**
+6. **One container deep.**
+
+⚠ **A slot accepting a bundle is not permission to put it there.** Eighteen
+slots across twelve bundles accept *any* bundle, so field config will not stop
+a nesting that renders wrong. The guide is what stops it, which is why refusing
+belongs in the list above.
+
+📐 Width behaves differently on `pb_content` than on a plain landing page, and
+a generated page has to expect that: see
+**[PB-CONTENT-WIDTH-CONTRACT.md](PB-CONTENT-WIDTH-CONTRACT.md)**.
 
 ---
 
