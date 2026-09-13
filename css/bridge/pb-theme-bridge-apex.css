@@ -2,18 +2,76 @@
  * @file
  * PB theme bridge - APEX (`--r-text`, `--r-link`, `--r-border`).
  *
- * Maps host region variables to paragraph `--pb-*` token DEFAULTS on
- * `.paragraphs-bundles`. Token-mapping ONLY - all element painting lives
- * once in paragraphs-bundles-custom.css (`.pb-ui-inner`); bridges never
- * repeat it. Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` /
- * `--pb-bg-h`) are editor-only and never bridged. `:where()` keeps these
- * at zero specificity so per-region and editor id-scoped values win.
+ * Maps host region variables to paragraph `--pb-*` token DEFAULTS. Token
+ * mapping is the bridge's job; element painting lives once in
+ * paragraphs-bundles-custom.css (`.pb-ui-inner`). The one exception is the
+ * counter-rule at the bottom, which exists only because APEX repaints
+ * `color` on every element rather than letting it inherit - see there.
+ *
+ * Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` / `--pb-bg-h`) are
+ * editor-only and never bridged. `:where()` keeps the mapping at zero
+ * specificity so per-region and editor id-scoped values win.
+ *
+ * THE CONTRACT: the theme supplies the default; any of the eight editor
+ * colour fields that is set takes over, per field, for that paragraph and
+ * everything inside it.
  */
 
-:where(.paragraphs-bundles) {
+/**
+ * Bridge the OUTERMOST paragraph only.
+ *
+ * A bare `:where(.paragraphs-bundles)` matches nested paragraphs too, and
+ * re-declaring the token on a child DISCARDS the value it would otherwise
+ * have inherited from an ancestor the editor styled. Specificity cannot
+ * save it: on the nested element there is no competing rule at all, so the
+ * bridge is unopposed and (0,0,0) wins by default.
+ *
+ * Measured 2026-09-12 on solo.local node 317 under apex_theme: with the bare
+ * selector, 39 nested paragraphs had `--pb-tx` reset from their ancestor's
+ * editor value to `--r-text`. Proven causal by deleting the rule from the
+ * live CSSOM and re-reading - the child went from `rgb(85,84,96)` back to
+ * the ancestor's `#165f7e`, and back again on restore.
+ *
+ * Scoped to the outermost paragraph, nested ones simply inherit: the
+ * editor's value where an ancestor set one, the bridged default otherwise.
+ */
+:where(.paragraphs-bundles:not(.paragraphs-bundles .paragraphs-bundles)) {
   --pb-tx: var(--r-text);
   --pb-br: var(--r-border);
   --pb-lk: var(--r-link, var(--r-text));
+}
+
+/**
+ * Counter APEX's page-wide `color` repaint inside paragraph subtrees.
+ *
+ * paragraphs-bundles-custom.css deliberately does NOT force inheritance on
+ * `p, span, div, ...`, on the reasoning that they "have NO UA colour
+ * override and inherit naturally". That holds for most themes. It does not
+ * hold for APEX, which re-declares colour on nearly every element:
+ *
+ *   .apex-page :where(p, span, div, li, td, th, small):not(:has(svg)),
+ *   .apex-page :where(.field, .views-field, .block) { color: var(--r-text); }
+ *
+ * At (0,1,1) that wins uncontested, because PB owns no colour rule on those
+ * elements at all - so inheritance from the editor-styled `.pb-ui-inner` is
+ * severed at the very next `div`. Measured on paragraph 635: the inner
+ * computed the editor's `#eef8fc` correctly while `.pb-content__full` (PB's
+ * own class) and `.field__item` inside it both computed `rgb(85,84,96)`.
+ * `--pb-tx` was still `#eef8fc` throughout - the token was never touched,
+ * only `color` was repainted.
+ *
+ * `inherit` rather than `var(--pb-tx)` is what keeps the contract per-field:
+ * the chain flows from whichever ancestor last set it, which is the editor's
+ * `.pb-ui-inner` when a field is set and APEX's own paint when it is not.
+ *
+ * `:not(.pb-ui-inner)` is load-bearing. Without it this rule also matches a
+ * NESTED paragraph's inner and, outranking
+ * `.paragraphs-bundles > .pb-ui-inner { color: var(--pb-tx) }`, stops that
+ * inner painting - the whole subtree then inherits its way up to black.
+ * That was measured while developing this rule, not theorised.
+ */
+.apex-page .paragraphs-bundles .pb-ui-inner :where(p, span, div, li, td, th, small, .field, .views-field, .block):not(.pb-ui-inner) {
+  color: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {

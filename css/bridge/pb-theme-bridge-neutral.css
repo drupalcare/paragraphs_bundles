@@ -8,9 +8,26 @@
  * repeat it. Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` /
  * `--pb-bg-h`) are editor-only and never bridged. `:where()` keeps these
  * at zero specificity so per-region and editor id-scoped values win.
+ *
+ * THE CONTRACT: the theme supplies the default; any of the eight editor
+ * colour fields that is set takes over, per field, for that paragraph and
+ * everything inside it.
  */
 
-:where(.paragraphs-bundles) {
+/**
+ * Bridge the OUTERMOST paragraph only.
+ *
+ * A bare `:where(.paragraphs-bundles)` matches nested paragraphs too, and
+ * re-declaring the token on a child DISCARDS the value it would otherwise
+ * have inherited from an ancestor the editor styled. Specificity cannot
+ * save it: on the nested element there is no competing rule at all, so the
+ * bridge is unopposed and (0,0,0) wins by default.
+ *
+ * Measured 2026-09-12 on the APEX bridge, which had the identical selector;
+ * see pb-theme-bridge-apex.css for the numbers. This file carried the same
+ * flaw and is corrected the same way.
+ */
+:where(.paragraphs-bundles:not(.paragraphs-bundles .paragraphs-bundles)) {
   --pb-tx: CanvasText;
   --pb-br: currentColor;
   --pb-lk: LinkText;

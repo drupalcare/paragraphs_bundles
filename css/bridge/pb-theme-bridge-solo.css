@@ -8,12 +8,63 @@
  * repeat it. Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` /
  * `--pb-bg-h`) are editor-only and never bridged. `:where()` keeps these
  * at zero specificity so per-region and editor id-scoped values win.
+ *
+ * THE CONTRACT: the theme supplies the default; any of the eight editor
+ * colour fields that is set takes over, per field, for that paragraph and
+ * everything inside it.
  */
 
-:where(.paragraphs-bundles) {
+/**
+ * Bridge the OUTERMOST paragraph only.
+ *
+ * A bare `:where(.paragraphs-bundles)` matches nested paragraphs too, and
+ * re-declaring the token on a child DISCARDS the value it would otherwise
+ * have inherited from an ancestor the editor styled. Specificity cannot
+ * save it: on the nested element there is no competing rule at all, so the
+ * bridge is unopposed and (0,0,0) wins by default.
+ *
+ * Measured 2026-09-12 on the APEX bridge, which had the identical selector;
+ * see pb-theme-bridge-apex.css for the numbers. This file carried the same
+ * flaw and is corrected the same way.
+ */
+:where(.paragraphs-bundles:not(.paragraphs-bundles .paragraphs-bundles)) {
   --pb-tx: var(--r-tx);
   --pb-br: var(--r-br);
   --pb-lk: var(--r-lk, var(--r-tx));
+}
+
+/**
+ * Counter Solo's page-wide `color` repaint inside paragraph subtrees.
+ *
+ * paragraphs-bundles-custom.css deliberately does NOT force inheritance on
+ * `p`, on the reasoning that it "has NO UA colour override and inherits
+ * naturally". Measured 2026-09-12 on solo.local node 317 with Solo active:
+ * that is false here too. Solo repaints, at (0,0,0):
+ *
+ *   :where(.page-wrapper) :where(img, code, pre, kbd, samp, p, hr, ul, ol,
+ *     li, table, th, td, tr, blockquote) { color: var(--r-tx, var(--r-tx-dark)); }
+ *
+ * Zero specificity is not harmless: on those elements PB owns no colour rule
+ * at all, so the declaration is unopposed and beats plain inheritance from
+ * the editor-styled `.pb-ui-inner`. Six `<p>` elements inside simple_bundle
+ * bodies rendered Solo's dark `#14191c` on backgrounds the editor had set
+ * for pale text - a real contrast failure, not a cosmetic one.
+ *
+ * Only the elements custom.css does not already cover are listed here. It
+ * already handles `code, kbd, samp, pre, li, blockquote` (plus the headings)
+ * at (0,2,0); the gap is `p, hr, ul, ol, table, th, td, tr`.
+ *
+ * Measured with this rule injected: mismatches 6 -> 0 across 316 elements,
+ * and four `<p>` elements in paragraphs with NO editor colour kept Solo's
+ * `rgb(20,25,28)` unchanged - the theme still supplies the default.
+ *
+ * `:not(.pb-ui-inner)` mirrors the APEX bridge. It cannot match here, since
+ * every selector above is an element and `.pb-ui-inner` is a div with a
+ * class, but it keeps the two bridges readable as one pattern and stops the
+ * rule ever outranking `.paragraphs-bundles > .pb-ui-inner`.
+ */
+.paragraphs-bundles .pb-ui-inner :where(p, hr, ul, ol, table, th, td, tr):not(.pb-ui-inner) {
+  color: inherit;
 }
 
 @media (prefers-reduced-motion: reduce) {
