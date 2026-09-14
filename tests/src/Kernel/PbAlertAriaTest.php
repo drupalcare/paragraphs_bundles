@@ -85,6 +85,29 @@ final class PbAlertAriaTest extends KernelTestBase {
   }
 
   /**
+   * The same cases, without the timer-runs flag.
+   *
+   * PHPUnit maps a provider's tuple onto the test method's parameters one for
+   * one. Feeding the four-argument dismissalProvider() to a three-argument
+   * test raised "has more arguments (4) than the test method accepts (3)" -
+   * a warning in PHPUnit 12 and an error in later versions, and in the
+   * meantime a silent hint that a dimension is not being exercised.
+   *
+   * Deriving from dismissalProvider() rather than copying the rows keeps one
+   * source of truth: a case added there is covered by both tests.
+   *
+   * @return array<string, array{string, int, bool}>
+   *   Dismissal type, countdown seconds, whether the label is shown.
+   */
+  public static function dismissalProviderWithoutTimerFlag(): array {
+    $cases = [];
+    foreach (self::dismissalProvider() as $name => $arguments) {
+      $cases[$name] = array_slice($arguments, 0, 3);
+    }
+    return $cases;
+  }
+
+  /**
    * Wherever the countdown can run, a control to stop it is rendered.
    *
    * @param string $type
@@ -136,7 +159,7 @@ final class PbAlertAriaTest extends KernelTestBase {
    * @param bool $showLabel
    *   Whether the numeric label is enabled.
    */
-  #[DataProvider('dismissalProvider')]
+  #[DataProvider('dismissalProviderWithoutTimerFlag')]
   public function testCloseButtonHasNoDisclosureState(
     string $type,
     int $seconds,
