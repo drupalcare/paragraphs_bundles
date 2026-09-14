@@ -41,6 +41,26 @@
   min-width: 0;
 }
 
+/**
+ * With a state, this row carries the state icon on the reading-start side and
+ * the countdown/close controls on the end side.
+ *
+ * The icon used to be a SIBLING below this row, which made it a block of its
+ * own and added an empty line above the alert text. Grouping them removes that
+ * gap and puts the two icons on one line, split left and right.
+ *
+ * justify-content only changes when a state is present, so an alert without
+ * one keeps its controls hard against the end edge exactly as before.
+ */
+.paragraphs-bundles.pb-alert .pb-alert--top.pb--has-state {
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+  margin-inline-end: auto;
+}
+
 .paragraphs-bundles.pb-alert .pb-alert__countdown {
   display: inline-flex;
   align-items: center;
@@ -178,5 +198,121 @@
 @media print {
   .paragraphs-bundles.pb-alert.pb-is-closed {
     display: none;
+  }
+}
+
+/**
+ * The alert's leading text block sits flush with the top of the box.
+ *
+ * A body paragraph's first <p> carries margin-block-start: 16px, and with the
+ * alert's .pb-ui-inner establishing its own formatting context that margin
+ * cannot collapse out - it renders as a 16px band of empty colour above the
+ * first line. Measured on node/241: content top to first <p> top was exactly
+ * 16px, with every ancestor at margin 0 and padding 0, so the gap was entirely
+ * this one margin.
+ *
+ * Scoped as narrowly as the problem allows:
+ *  - `> .paragraph:first-of-type` limits it to the FIRST bundle in the body.
+ *    :first-of-type rather than :first-child because the visually-hidden state
+ *    word is the content's first child and would otherwise defeat the match.
+ *  - `:first-child` on the text element limits it to the opening block only.
+ *
+ * Measured after: gap 16px -> 0, one element matched, and the second paragraph
+ * in the same field keeps its 16px. The rule reaches into the first nested
+ * bundle because that is where the margin lives; it changes nothing else
+ * inside that bundle, and nothing at all in any later one.
+ */
+.paragraphs-bundles.pb-alert
+  > .pb-ui-inner
+  > .pb-alert__content
+  > .paragraph:first-of-type
+  :where(p, h1, h2, h3, h4, h5, h6, ul, ol, dl, blockquote):first-child {
+  margin-block-start: 0;
+}
+
+/**
+ * Alert states (U.S. Web Design System).
+ *
+ * Every selector below is a CHILD path, never a descendant. An alert's body
+ * accepts any paragraph bundle - including another alert - so a descendant
+ * selector would let an outer alert recolour a nested one's icon. Nothing here
+ * may reach into a bundle placed inside the alert.
+ *
+ * Semantics follow USWDS (Success / Info / Warning / Error); the colours do
+ * not. The USWDS state tokens render muddy at these sizes - their tints are
+ * noticeably duller (mean relative luminance 0.865 against 0.933 here) and
+ * their `-darker` icon family bottomed out at 4.11:1.
+ *
+ * These are the 50/700 steps of a modern scale. Measured icon-on-tint:
+ * success 5.21:1, info 6.16:1, warning 4.84:1, error 5.91:1 - every one above
+ * the 3:1 WCAG 1.4.11 asks of a graphical object, and better than the palette
+ * they replace. Body ink on these tints measures 15.75-16.61:1.
+ *
+ * The 600 step was brighter still but fell to 3.07:1 on warning, too close to
+ * the line to ship.
+ *
+ * Only the icon and bar are set here. The BACKGROUND deliberately is not: it
+ * is seeded into pb_display_bg when the editor picks a state, so it is real
+ * field data they can see and change, and it renders through the module's
+ * normal dynamic-CSS path like every other bundle.
+ */
+.paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner {
+  border-inline-start: var(--pb-px4, 4px) solid var(--pb-alert-state-color);
+}
+
+.paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+  color: var(--pb-alert-state-color);
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon svg {
+  inline-size: var(--pb-px24, 24px);
+  block-size: var(--pb-px24, 24px);
+}
+
+.paragraphs-bundles.pb-alert--success {
+  --pb-alert-state-color: #047857;
+}
+
+.paragraphs-bundles.pb-alert--info {
+  --pb-alert-state-color: #1d4ed8;
+}
+
+.paragraphs-bundles.pb-alert--warning {
+  --pb-alert-state-color: #b45309;
+}
+
+.paragraphs-bundles.pb-alert--error {
+  --pb-alert-state-color: #b91c1c;
+}
+
+/**
+ * Windows High Contrast / forced-colors.
+ *
+ * Government desktops use this heavily. Tinted backgrounds and authored
+ * colours are discarded there, so the state would be conveyed by nothing at
+ * all. CanvasText keeps the icon and bar drawn in the user's own palette.
+ */
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner {
+    border-inline-start-color: CanvasText;
+  }
+
+  .paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+    color: CanvasText;
+  }
+}
+
+/**
+ * Print.
+ *
+ * Background tints are commonly dropped when printing, which would leave an
+ * unmarked box. The bar and icon are ink, so they survive.
+ */
+@media print {
+  .paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner {
+    border-inline-start-width: var(--pb-px4, 4px);
   }
 }

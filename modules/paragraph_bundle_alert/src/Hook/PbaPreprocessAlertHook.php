@@ -15,6 +15,15 @@ use Drupal\paragraphs\ParagraphInterface;
 final class PbaPreprocessAlertHook {
 
   /**
+   * The states the template can render.
+   *
+   * Mirrors the allowed_values in
+   * field.storage.paragraph.pb_display_alert_state.yml. Guarded by
+   * PbAlertStateContractTest so the two cannot drift apart.
+   */
+  private const STATES = ['success', 'info', 'warning', 'error'];
+
+  /**
    * Implements hook_preprocess_paragraph__alert_bundle().
    *
    * @param array<string, mixed> $variables
@@ -29,6 +38,21 @@ final class PbaPreprocessAlertHook {
 
     $variables['pb_default_state'] = 'open';
     $variables['pb_alert_hidden'] = FALSE;
+
+    // Set BEFORE the dismissal branches below, every one of which can return
+    // early. A countdown or date-range alert still has a state, and reading it
+    // late would have silently dropped the icon on exactly those alerts.
+    $variables['pb_alert_state'] = '';
+    if ($paragraph->hasField('pb_display_alert_state')
+      && !$paragraph->get('pb_display_alert_state')->isEmpty()) {
+      $state = $paragraph->get('pb_display_alert_state')->value;
+      // Whitelist rather than trust storage: the widget's validation does not
+      // run for config import, migration or JSON:API writes, and this value
+      // reaches a CSS class name and picks an icon.
+      if (is_string($state) && in_array($state, self::STATES, TRUE)) {
+        $variables['pb_alert_state'] = $state;
+      }
+    }
 
     if (!$paragraph->hasField('pb_display_alert_dismissal_type')) {
       return;

@@ -1,0 +1,102 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks for paragraph_bundle_alert.
+ *
+ * V2 update hooks:
+ *  - 9001: add the Alert state field (USWDS states) to existing sites.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Display tab group overrides for alert_bundle.
+ *
+ * The state field joins the Colors group because choosing a state seeds the
+ * background colour, and the two belong next to each other for that to read as
+ * cause and effect. It is appended to `children` rather than inserted, so the
+ * order PbFormDisplayVerifier enforces inside that group - bg_opacity before
+ * bg, link_hover immediately after link - is untouched. Its weight of 15 puts
+ * it above bg_opacity (16) when the group renders.
+ *
+ * @return array<string, array{remove?: list<string>, add?: list<string>}>
+ *   Group id => remove/add field lists.
+ */
+function paragraph_bundle_alert_display_group_overrides(): array {
+  return [
+    'group_pb_display_colors' => [
+      'add' => ['pb_display_alert_state'],
+    ],
+  ];
+}
+
+/**
+ * Applies the alert Display tab field group layout.
+ */
+function paragraph_bundle_alert_apply_form_display_layout(): void {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'inc', 'paragraphs_bundles.display');
+  paragraphs_bundles_pb_nest_display_field_groups(
+    'alert_bundle',
+    paragraph_bundle_alert_display_group_overrides(),
+  );
+}
+
+/**
+ * Adds the Alert state field to sites that already have the bundle.
+ *
+ * Config in config/optional only installs on a FRESH install, so without this
+ * an existing site keeps the bundle it has and never sees the new field - the
+ * feature would ship and be invisible to every site that already uses it.
+ *
+ * Every step is guarded, so the hook is safe to re-run and safe on a site that
+ * already has the field from a fresh install of the same code.
+ */
+function paragraph_bundle_alert_update_9001(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+
+  // 1. Storage, then instance. Order matters: the instance depends on it.
+  foreach ([
+    'field.storage.paragraph.pb_display_alert_state',
+    'field.field.paragraph.alert_bundle.pb_display_alert_state',
+  ] as $config_name) {
+    paragraphs_bundles_import_optional_config_if_missing(
+      'paragraph_bundle_alert',
+      $config_name,
+    );
+  }
+
+  $created = (bool) \Drupal::entityTypeManager()
+    ->getStorage('field_config')
+    ->load('paragraph.alert_bundle.pb_display_alert_state');
+
+  // 2. Put it on the edit form. Weight 15 renders it above the colour fields.
+  $form_display = \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load('paragraph.alert_bundle.default');
+  if ($form_display && !$form_display->getComponent('pb_display_alert_state')) {
+    $form_display->setComponent('pb_display_alert_state', [
+      'type' => 'options_select',
+      'weight' => 15,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ])->save();
+  }
+
+  // 3. Keep it off the rendered output, like its sibling display controls -
+  //    the template reads the value, it is never printed as a field.
+  $view_display = \Drupal::entityTypeManager()
+    ->getStorage('entity_view_display')
+    ->load('paragraph.alert_bundle.default');
+  if ($view_display && $view_display->getComponent('pb_display_alert_state')) {
+    $view_display->removeComponent('pb_display_alert_state')->save();
+  }
+
+  // 4. Nest it under Display → Colors.
+  paragraph_bundle_alert_apply_form_display_layout();
+
+  return $created
+    ? (string) t('Alert state field added to alert_bundle and placed under Display → Colors.')
+    : (string) t('Alert state field was already present; display layout re-applied.');
+}

@@ -8,6 +8,10 @@
  * - Countdown: show Countdown (seconds), Show countdown label; hide date range.
  *
  * "When user closes" is shown for all dismissal types.
+ *
+ * Also seeds the background colour when an Alert state is chosen, so an editor
+ * who picks a state but forgets the colour still gets the USWDS tint. Seeding
+ * is NON-DESTRUCTIVE: a colour the editor typed is never overwritten.
  */
 // phpcs:disable Drupal.NamingConventions.UpperCaseConstant
 // phpcs:disable Generic.PHP.UpperCaseConstant
@@ -246,11 +250,99 @@
     }
   }
 
+  // --- Alert state seeds the background colour -----------------------------
+
+  const STATE_SELECT = 'select[name*="[pb_display_alert_state]"]';
+
+  // The background tints seeded into pb_display_bg. The icon and left bar use
+  // the matching 700 step in CSS. Kept in sync with the colour block in
+  // paragraph-bundle-alert.css - PbAlertStateContractTest checks every state
+  // has a rule there, but the exact hex pairing lives in these two files.
+  const STATE_TINTS = {
+    success: '#ecfdf5',
+    info: '#eff6ff',
+    warning: '#fffbeb',
+    error: '#fef2f2',
+  };
+
+  const isUntouchedPreset = (value) => {
+    const v = (value || '').trim().toLowerCase();
+    if (v === '') {
+      return true;
+    }
+    return Object.values(STATE_TINTS).some((tint) => tint === v);
+  };
+
+  /**
+   * The background input belonging to the SAME paragraph as this select.
+   *
+   * Scoping by closest('.paragraphs-subform') and then querySelector() is
+   * wrong, and wrong in a way that silently writes to the wrong entity: an
+   * alert's nested body paragraphs render their own subforms INSIDE the
+   * alert's, and pb_content_alert_body is a Content field, so a child's
+   * pb_display_bg appears in the DOM *before* the alert's own Display field.
+   * The descendant search found the child and coloured that instead.
+   *
+   * Drupal's form names carry the answer exactly. For an alert at
+   *   apex_sections[0][subform][pb_display_alert_state]
+   * its own background is
+   *   apex_sections[0][subform][pb_display_bg][0][value]
+   * - the same prefix. A nested child's is one or more [subform] levels
+   * deeper, so an exact prefix match can never reach it.
+   */
+  function ownBackgroundInput(select) {
+    const suffix = '[pb_display_alert_state]';
+    const name = select.name || '';
+    if (!name.endsWith(suffix)) {
+      return null;
+    }
+    const prefix = name.slice(0, -suffix.length);
+    const form = select.closest('form') || document;
+    return form.querySelector(
+      `input[name="${prefix}[pb_display_bg][0][value]"]`,
+    );
+  }
+
+  function seedBackgroundColour(select) {
+    const input = ownBackgroundInput(select);
+    if (!input) {
+      return;
+    }
+    const state = (select.value || '').trim();
+    const tint = STATE_TINTS[state];
+    if (!tint) {
+      // Back to "- None -": leave whatever is there. Clearing it would throw
+      // away a colour the editor may have chosen deliberately.
+      return;
+    }
+    // Only fill when the field is empty, or still holds another state's tint -
+    // i.e. it is demonstrably untouched. A colour the editor typed themselves
+    // never equals a preset, so it is never destroyed.
+    if (!isUntouchedPreset(input.value)) {
+      return;
+    }
+    input.value = tint;
+    // Notify the colour widget's own listeners (swatch preview, validation).
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function initStateSeeding(select) {
+    // Deliberately NOT seeded on load: that would write a value into every
+    // existing alert the moment its form is opened.
+    select.addEventListener('change', () => seedBackgroundColour(select));
+  }
+
   Drupal.behaviors.paragraphBundleAlertAdmin = {
     attach(context) {
       once('paragraph-bundle-alert-admin', DISMISSAL_SELECT, context).forEach(
         initDismissalToggle,
       );
+      once(
+        'paragraph-bundle-alert-admin-state',
+        STATE_SELECT,
+        context,
+      ).forEach(initStateSeeding);
       once(
         'paragraph-bundle-alert-admin-clear',
         DATE_RANGE_WRAPPER_SELECTOR,

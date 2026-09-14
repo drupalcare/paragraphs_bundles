@@ -12,6 +12,7 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_alert_end_date
     - field.field.paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
     - field.field.paragraph.alert_bundle.pb_display_alert_start_date
+    - field.field.paragraph.alert_bundle.pb_display_alert_state
     - field.field.paragraph.alert_bundle.pb_display_bg
     - field.field.paragraph.alert_bundle.pb_display_bg_hover
     - field.field.paragraph.alert_bundle.pb_display_bg_opacity
@@ -242,6 +243,12 @@ content:
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  pb_display_alert_state:
+    type: options_select
+    weight: 15
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_display_alert_dismissal_type:
     type: options_select

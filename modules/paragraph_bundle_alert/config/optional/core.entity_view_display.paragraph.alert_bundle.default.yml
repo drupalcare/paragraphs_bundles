@@ -12,6 +12,7 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_alert_end_date
     - field.field.paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
     - field.field.paragraph.alert_bundle.pb_display_alert_start_date
+    - field.field.paragraph.alert_bundle.pb_display_alert_state
     - field.field.paragraph.alert_bundle.pb_display_bg
     - field.field.paragraph.alert_bundle.pb_display_bg_hover
     - field.field.paragraph.alert_bundle.pb_display_bg_opacity
@@ -66,6 +67,7 @@ hidden:
   pb_display_alert_end_date: true
   pb_display_alert_show_cdown_lbl: true
   pb_display_alert_start_date: true
+  pb_display_alert_state: true
   pb_display_bg: true
   pb_display_bg_hover: true
   pb_display_bg_opacity: true

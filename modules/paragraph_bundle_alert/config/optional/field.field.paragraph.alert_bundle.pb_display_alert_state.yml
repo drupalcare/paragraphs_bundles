@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_state
+    - paragraphs.paragraphs_type.alert_bundle
+  module:
+    - options
+id: paragraph.alert_bundle.pb_display_alert_state
+field_name: pb_display_alert_state
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Alert state'
+description: 'Adds a state icon and a coloured left bar, following the U.S. Web Design System. Choosing a state fills in the background colour below if it is still empty - change it afterwards to anything you like. Leave as - None - for an unstyled alert.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string
