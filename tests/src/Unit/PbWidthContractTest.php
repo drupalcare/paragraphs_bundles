@@ -135,7 +135,7 @@ class PbWidthContractTest extends TestCase {
   }
 
   /**
-   * `pb-width-own` modifies `pb-content__full`, so it never appears alone.
+   * The `pb-width-own` class modifies `pb-content__full`, never standing alone.
    */
   public function testWidthOwnAlwaysAccompaniesContentFull(): void {
     foreach (array_keys(self::WIDTH_OWNERS) as $rel) {
@@ -197,7 +197,7 @@ class PbWidthContractTest extends TestCase {
   }
 
   /**
-   * `all:` must be the first declaration in its block, or it wipes the rest.
+   * Declaring `all:` first matters: placed last, it wipes the whole block.
    *
    * Not strictly a width rule, but the same class of silent failure and it has
    * now bitten twice: `all: unset` declared last removed `box-sizing:

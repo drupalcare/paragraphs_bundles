@@ -116,7 +116,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 1 · No content type named — the answer lists the ones that would work.
+   * Precondition 1 · No type named: the answer lists the ones that work.
    */
   public function testWithoutContentTypeItAsksAndListsTheUsableOnes(): void {
     $result = $this->resolver->resolve(NULL, NULL, 'slideshow_bundle');
@@ -141,7 +141,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 2 · A real content type with no paragraph field gets a DIFFERENT sentence.
+   * Precondition 2 · A real type with no paragraph field gets its own line.
    *
    * The distinction is the point: a typo is fixed by retyping, a type with no
    * paragraph field is fixed by a site builder adding one. Collapsing both
@@ -156,7 +156,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 3 · One paragraph field is chosen silently; two are asked about.
+   * Precondition 3 · One paragraph field is silent; two prompt a question.
    */
   public function testSingleFieldIsChosenButTwoAreAskedAbout(): void {
     $single = $this->resolver->resolve('simple_page', NULL, 'slideshow_bundle');
@@ -170,7 +170,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 3 · A field name that is not on the type lists the ones that are.
+   * Precondition 3 · An unknown field name lists the ones that do exist.
    */
   public function testAnUnknownFieldNameListsTheRealOnes(): void {
     $result = $this->resolver->resolve('simple_page', 'field_nope', 'slideshow_bundle');
@@ -181,7 +181,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 4 · A field that does not accept the bundle says what it does accept.
+   * Precondition 4 · A field refusing the bundle says what it does accept.
    *
    * The check people forget. `field_card_strip` is restricted to cards, so a
    * slideshow must be refused even though both the field and the bundle exist
@@ -196,7 +196,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 4 · An UNRESTRICTED field accepts anything — the empty-means-all trap.
+   * Precondition 4 · An UNRESTRICTED field takes all: empty means all.
    *
    * Drupal stores "any bundle allowed" as an EMPTY target_bundles, not as a
    * list of every bundle. A naive in_array() check rejects everything on a
@@ -242,7 +242,7 @@ final class TargetResolverTest extends KernelTestBase {
   }
 
   /**
-   * Precondition 7 · Without create permission the answer is permission, not fields.
+   * Precondition 7 · Without create permission, the answer is permission.
    *
    * Checked before the field questions on purpose: telling someone which field
    * to choose and then refusing on permission wastes their time.

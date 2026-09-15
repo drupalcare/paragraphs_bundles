@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Pins the inline-asset surface this project presents to a Content-Security-Policy.
+ * Pins the inline-asset surface this project presents to a strict CSP.
  *
  * WHY THIS TEST EXISTS. A site running a strict CSP forbids inline code, so
  * every inline <script>, on* handler or style attribute a module emits forces
