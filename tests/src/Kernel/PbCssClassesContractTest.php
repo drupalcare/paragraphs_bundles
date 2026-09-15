@@ -201,8 +201,9 @@ final class PbCssClassesContractTest extends KernelTestBase {
       if (($advanced['parent_name'] ?? '') !== 'group_pb_tab_display') {
         $missing[] = $bundle . ' (group parent)';
       }
-      if (($advanced['format_settings']['open'] ?? NULL) !== TRUE) {
-        $missing[] = $bundle . ' (group not open)';
+      // Closed, like its sibling display groups - the maintainer's call.
+      if (($advanced['format_settings']['open'] ?? NULL) !== FALSE) {
+        $missing[] = $bundle . ' (group should be closed)';
       }
       $tab = $groups['group_pb_tab_display']['children'] ?? [];
       if (!in_array(self::GROUP, $tab, TRUE)) {
@@ -218,6 +219,56 @@ final class PbCssClassesContractTest extends KernelTestBase {
     $this->assertSame([], $missing, 'Every shipped parent form display has the CSS Classes component.');
     $this->assertSame([], $printed, 'No view display prints it as field markup.');
     $this->assertGreaterThan(25, $checked, 'The scan found the shipped form displays.');
+  }
+
+  /**
+   * Every field on a shipped parent form display sits in a field group.
+   *
+   * This is the general form of a bug this module has now shipped TWICE: a
+   * component added to `content` without being added to any group's
+   * `children`. The update hook nests it, so every existing site looks right,
+   * while a fresh install renders it outside the Display tab entirely.
+   *
+   * It happened to `pb_display_alert_state` in the alert-state commit and to
+   * `pb_display_css_classes` in this one, and in both cases every test passed.
+   * The guard is deliberately about ALL fields rather than this feature's,
+   * because the next occurrence will be some other field.
+   */
+  public function testEveryShippedComponentIsGrouped(): void {
+    $ungrouped = [];
+    $checked = 0;
+
+    foreach ($this->shippedDisplayFiles('core.entity_form_display.paragraph.') as $bundle => $data) {
+      $groups = $data['third_party_settings']['field_group'] ?? [];
+      if ($groups === []) {
+        // A bundle with no groups at all is a different shape, not this bug.
+        continue;
+      }
+      $grouped = [];
+      foreach ($groups as $group) {
+        foreach ($group['children'] ?? [] as $child) {
+          $grouped[$child] = TRUE;
+        }
+      }
+      foreach (array_keys($data['content'] ?? []) as $field) {
+        // Only this module's own fields: a site or another module may add a
+        // component here and grouping it is not this module's business.
+        if (!str_starts_with((string) $field, 'pb_')) {
+          continue;
+        }
+        $checked++;
+        if (!isset($grouped[$field])) {
+          $ungrouped[] = $bundle . '.' . $field;
+        }
+      }
+    }
+
+    $this->assertSame(
+      [],
+      $ungrouped,
+      'Every pb_* component on a shipped parent form display belongs to a field group.',
+    );
+    $this->assertGreaterThan(200, $checked, 'The scan examined the shipped components.');
   }
 
   /**
@@ -250,8 +301,8 @@ final class PbCssClassesContractTest extends KernelTestBase {
       if ($advanced === NULL) {
         $wrong[] = $type . ' (no Advanced group after a fresh install)';
       }
-      elseif (($advanced['format_settings']['open'] ?? NULL) !== TRUE) {
-        $wrong[] = $type . ' (Advanced group not open)';
+      elseif (($advanced['format_settings']['open'] ?? NULL) !== FALSE) {
+        $wrong[] = $type . ' (Advanced group should be closed)';
       }
       $vd = $em->getStorage('entity_view_display')->load('paragraph.' . $type . '.default');
       if ($vd !== NULL && $vd->getComponent(self::FIELD)) {
@@ -296,7 +347,7 @@ final class PbCssClassesContractTest extends KernelTestBase {
   }
 
   /**
-   * The Advanced group exists, opens by default, and sits last.
+   * The Advanced group exists, is collapsed, and sits last.
    */
   public function testAdvancedGroupDefinition(): void {
     $this->container->get('module_handler')
@@ -306,9 +357,10 @@ final class PbCssClassesContractTest extends KernelTestBase {
     $this->assertArrayHasKey('group_pb_display_advanced', $groups);
     $group = $groups['group_pb_display_advanced'];
     $this->assertSame([self::FIELD], $group['fields']);
-    // Open by default: a class set here leaves no visible trace on the page,
-    // so it must not hide behind a closed summary like the other groups.
-    $this->assertTrue($group['open'], 'The Advanced group opens by default.');
+    // Collapsed, like every other display group. Opening it was tried and
+    // rejected by the maintainer: the Display tab is a stack of closed
+    // sections and one standing open breaks that rhythm.
+    $this->assertFalse($group['open'], 'The Advanced group is collapsed by default.');
     $weights = array_map(static fn (array $g): int => $g['weight'], $groups);
     $this->assertSame(max($weights), $group['weight'], 'Advanced is last on the Display tab.');
   }

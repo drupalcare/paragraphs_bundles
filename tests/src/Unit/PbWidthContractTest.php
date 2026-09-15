@@ -44,9 +44,9 @@ class PbWidthContractTest extends TestCase {
    */
   private const array WIDTH_OWNERS = [
     'modules/paragraph_bundle_3d_carousel/templates/paragraph--3d-carousel-bundle.html.twig'
-      => 'slide transforms and perspective are computed from this box; clamping it skews the 3D geometry rather than merely narrowing it',
+    => 'slide transforms and perspective are computed from this box; clamping it skews the 3D geometry rather than merely narrowing it',
     'modules/paragraph_bundle_modal/templates/paragraph--modal-bundle.html.twig'
-      => 'a modal is an overlay, lifted out of the content column, so the node content width has no authority over it',
+    => 'a modal is an overlay, lifted out of the content column, so the node content width has no authority over it',
   ];
 
   /**

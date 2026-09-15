@@ -171,6 +171,7 @@ third_party_settings:
       children:
         - pb_display_alert_dismissal_type
         - pb_display_alert_close_persist
+        - pb_display_alert_state
         - pb_display_alert_countdown_sec
         - pb_display_alert_show_cdown_lbl
         - pb_display_show_close_button
@@ -202,7 +203,7 @@ third_party_settings:
         show_empty_fields: false
         id: ''
         label_as_html: false
-        open: true
+        open: false
         description: ''
         required_fields: true
 id: paragraph.alert_bundle.default
