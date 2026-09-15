@@ -13,6 +13,7 @@ dependencies:
     - field.field.paragraph.image_grid_bundle.pb_display_border_color
     - field.field.paragraph.image_grid_bundle.pb_display_border_hover
     - field.field.paragraph.image_grid_bundle.pb_display_border_radius
+    - field.field.paragraph.image_grid_bundle.pb_display_css_classes
     - field.field.paragraph.image_grid_bundle.pb_display_grid_width
     - field.field.paragraph.image_grid_bundle.pb_display_image_grid_gap
     - field.field.paragraph.image_grid_bundle.pb_display_link
@@ -60,6 +61,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_css_classes: true
   pb_display_grid_width: true
   pb_display_image_grid_gap: true
   pb_display_link: true

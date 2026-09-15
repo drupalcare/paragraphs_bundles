@@ -107,9 +107,17 @@ final class PbDomIdGrammarTest extends TestCase {
     $this->assertGreaterThan(30, count(self::shippedFiles('twig')), 'Templates are being scanned.');
     $this->assertGreaterThan(10, count(self::shippedFiles('js')), 'Scripts are being scanned.');
     // Nothing from a Drupal install that may sit beside us on CI.
+    //
+    // Asserted against the module root, not against the literal '/web/': the
+    // module is normally INSTALLED under a `web/` docroot, so the string test
+    // failed for anyone running this suite from inside a site rather than
+    // from a bare checkout. It passed on drupal.org CI only because the repo
+    // sits at the root there. Measured 2026-09-14 on sts.local, where every
+    // scanned path legitimately contains '/web/'.
+    $root = self::root();
     foreach ([...self::shippedFiles('twig'), ...self::shippedFiles('css')] as $path) {
-      $this->assertStringNotContainsString(
-        '/web/',
+      $this->assertStringStartsWith(
+        $root . '/',
         $path,
         'The scan stays inside the module and never reads an installed Drupal.',
       );

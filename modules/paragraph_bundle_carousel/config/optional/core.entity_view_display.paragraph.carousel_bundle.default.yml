@@ -17,6 +17,7 @@ dependencies:
     - field.field.paragraph.carousel_bundle.pb_display_border_radius
     - field.field.paragraph.carousel_bundle.pb_display_carousel_breakpoints
     - field.field.paragraph.carousel_bundle.pb_display_carousel_play_stop
+    - field.field.paragraph.carousel_bundle.pb_display_css_classes
     - field.field.paragraph.carousel_bundle.pb_display_custom_slide_width
     - field.field.paragraph.carousel_bundle.pb_display_link
     - field.field.paragraph.carousel_bundle.pb_display_link_hover
@@ -71,6 +72,7 @@ hidden:
   pb_display_border_radius: true
   pb_display_carousel_breakpoints: true
   pb_display_carousel_play_stop: true
+  pb_display_css_classes: true
   pb_display_custom_slide_width: true
   pb_display_link: true
   pb_display_link_hover: true

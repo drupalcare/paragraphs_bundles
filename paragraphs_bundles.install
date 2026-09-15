@@ -53,9 +53,81 @@ require_once __DIR__ . '/paragraphs_bundles.display.inc';
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface;
+
+/**
+ * Adds the CSS Classes field to one bundle on a site that already has it.
+ *
+ * Config in `config/optional` installs on a FRESH install only, so without
+ * this an existing site keeps the bundle it has and never sees the field.
+ * Every sub-module owning a parent bundle calls this from its own
+ * `hook_update_N`, so a site that installed only some sub-modules updates
+ * exactly the bundles it actually has.
+ *
+ * Safe to re-run: every step is guarded, and re-running on a site that got
+ * the field from a fresh install of the same code changes nothing.
+ *
+ * @param string $module_name
+ *   Module whose `config/optional` holds the field instance.
+ * @param string $bundle
+ *   Paragraph type machine name.
+ *
+ * @return bool
+ *   TRUE when the field exists on the bundle once the call returns.
+ */
+function paragraphs_bundles_pb_css_classes_wire_bundle(string $module_name, string $bundle): bool {
+  // Storage lives in the parent module and is shared by all 31 bundles; the
+  // instance lives with the sub-module that owns the bundle.
+  paragraphs_bundles_import_optional_config_if_missing(
+    'paragraphs_bundles',
+    'field.storage.paragraph.pb_display_css_classes',
+  );
+  paragraphs_bundles_import_optional_config_if_missing(
+    $module_name,
+    'field.field.paragraph.' . $bundle . '.pb_display_css_classes',
+  );
+
+  $em = \Drupal::entityTypeManager();
+  $exists = (bool) $em->getStorage('field_config')
+    ->load('paragraph.' . $bundle . '.pb_display_css_classes');
+  if (!$exists) {
+    return FALSE;
+  }
+
+  // On the edit form. Weight 60 keeps it below every other display field;
+  // the Advanced group it lands in is ordered by the group registry, not
+  // by this weight, but the weight still decides the ungrouped fallback.
+  $fd = $em->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+  if ($fd instanceof EntityFormDisplayInterface
+    && !$fd->getComponent('pb_display_css_classes')) {
+    $fd->setComponent('pb_display_css_classes', [
+      'type' => 'string_textfield',
+      'weight' => 60,
+      'region' => 'content',
+      'settings' => ['size' => 60, 'placeholder' => ''],
+      'third_party_settings' => [],
+    ])->save();
+  }
+
+  // Off the rendered output: the preprocess hook reads the stored value and
+  // puts it on the wrapper, so printing it as a field would duplicate it as
+  // visible text.
+  $vd = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($vd instanceof EntityViewDisplayInterface
+    && $vd->getComponent('pb_display_css_classes')) {
+    $vd->removeComponent('pb_display_css_classes')->save();
+  }
+
+  // Nest it under Display → Advanced, from the one group registry.
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'inc', 'paragraphs_bundles.display');
+  paragraphs_bundles_pb_nest_display_field_groups($bundle);
+
+  return TRUE;
+}
 
 /**
  * Implements hook_uninstall().
@@ -1112,4 +1184,24 @@ function paragraphs_bundles_update_9008(): string {
       '@help' => $help_filled,
     ],
   );
+}
+
+/**
+ * Adds the CSS Classes field to the bundle this module owns.
+ *
+ * The field lets a site put its own class on every instance of a bundle and
+ * style them all with one theme rule. New sites get it from config/optional;
+ * this is the path for sites that already have the bundle.
+ */
+function paragraphs_bundles_update_9009(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $done = [];
+  foreach (['simple_bundle'] as $bundle) {
+    if (paragraphs_bundles_pb_css_classes_wire_bundle('paragraphs_bundles', $bundle)) {
+      $done[] = $bundle;
+    }
+  }
+  return $done === []
+    ? (string) t('CSS Classes field was already present; nothing to do.')
+    : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }

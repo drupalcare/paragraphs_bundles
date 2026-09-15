@@ -95,6 +95,42 @@ drush pb:regenerate-css         # Rebuild all dynamic CSS files
 drush pb:regenerate-css --purge # Wipe folder, then rebuild
 ```
 
+### 4. Your own CSS classes
+
+Every parent bundle has a **CSS Classes** box under **Display → Advanced**.
+Type one or more class names, separated by spaces, and they are added to
+the paragraph's outer element alongside the classes it already has.
+
+This is how you style *all* instances of a bundle at once. Per-paragraph
+styling is already covered - each paragraph has its own `#pb-{slug}-{id}`
+id and its own generated CSS file - so this box exists for the other case:
+a rule you write once in your theme and apply wherever you want it.
+
+```css
+/* your theme */
+.brand-callout { border-inline-start: 4px solid #b45309; padding-inline: 1rem; }
+```
+
+Put `brand-callout` in the box on any Simple bundle, and every one that
+carries it picks up the rule.
+
+Notes:
+
+- Framework utilities work as typed - Tailwind (`md:w-full`, `top-1/2`,
+  `bg-[#1da1f2]`), Bootstrap, w3.css. Class names are never rewritten or
+  lower-cased, so `myBrandBox` stays `myBrandBox`.
+- A token containing `<`, `>`, `&`, a quote, `=`, a backtick, a backslash,
+  a brace or a semicolon is refused, because the value ends up in an HTML
+  attribute. **Saving is blocked and the message names the token**, so a class
+  is never dropped silently; fix or remove it and the rest saves. This also rules out
+  Tailwind's arbitrary-*variant* syntax (`[&>*]:mt-0`); arbitrary *values*
+  like `w-[calc(100%-2rem)]` are fine.
+- Classes are never rewritten to make them valid. A refused token is reported
+  so you can fix it, rather than quietly turned into something you did not
+  type.
+- Section bundles (the children inside accordions, tabs, slideshows and
+  the like) do not have the box. Style them through their parent.
+
 ## Upgrading from 1.x
 
 v2 is a **drop-in upgrade**: same field machine names, same stored
@@ -133,6 +169,8 @@ front-end preview.
 - BEM class naming with Twig `pb_class` filter; stored field values
   unchanged from v1.
 - Theme bridge for Solo, APEX, and neutral (any other theme).
+- **CSS Classes** field on all 31 parent bundles (Display → Advanced),
+  for styling every instance of a bundle with one theme rule.
 
 ## Maintainers
 

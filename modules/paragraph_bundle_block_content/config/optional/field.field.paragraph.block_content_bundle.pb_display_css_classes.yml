@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_css_classes
+    - paragraphs.paragraphs_type.block_content_bundle
+id: paragraph.block_content_bundle.pb_display_css_classes
+field_name: pb_display_css_classes
+entity_type: paragraph
+bundle: block_content_bundle
+label: 'CSS Classes'
+description: "Extra classes for this paragraph's outer element, separated by spaces. They are added to the classes it already has, never replacing them. Put the same class on every Block Content and one rule in your theme styles them all."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -8,13 +8,14 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_background_image_sm
     - field.field.paragraph.image_background_bundle.pb_display_bg
     - field.field.paragraph.image_background_bundle.pb_display_bg_opacity
-    - field.field.paragraph.image_background_bundle.pb_display_link
-    - field.field.paragraph.image_background_bundle.pb_display_link_hover
+    - field.field.paragraph.image_background_bundle.pb_display_css_classes
     - field.field.paragraph.image_background_bundle.pb_display_image_alignment
     - field.field.paragraph.image_background_bundle.pb_display_image_breakpoint
     - field.field.paragraph.image_background_bundle.pb_display_image_min_height
     - field.field.paragraph.image_background_bundle.pb_display_image_repetition
     - field.field.paragraph.image_background_bundle.pb_display_image_sizing
+    - field.field.paragraph.image_background_bundle.pb_display_link
+    - field.field.paragraph.image_background_bundle.pb_display_link_hover
     - field.field.paragraph.image_background_bundle.pb_display_padding
     - field.field.paragraph.image_background_bundle.pb_display_width
     - image.style.thumbnail
@@ -62,6 +63,7 @@ third_party_settings:
         - group_pb_display_spacing
         - group_pb_display_size
         - group_pb_display_extra
+        - group_pb_display_advanced
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -148,6 +150,22 @@ third_party_settings:
         open: false
         description: ''
         required_fields: true
+    group_pb_display_advanced:
+      children:
+        - pb_display_css_classes
+      label: Advanced
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 60
+      format_type: details
+      format_settings:
+        classes: pb__display-advanced
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
+        description: ''
+        required_fields: true
 id: paragraph.image_background_bundle.default
 targetEntityType: paragraph
 bundle: image_background_bundle
@@ -206,6 +224,14 @@ content:
     weight: 16
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_css_classes:
+    type: string_textfield
+    weight: 60
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   pb_display_link:
     type: color_text_widget

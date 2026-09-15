@@ -16,6 +16,7 @@ dependencies:
     - field.field.paragraph.card_two_columns_bundle.pb_display_border_radius
     - field.field.paragraph.card_two_columns_bundle.pb_display_card_breakpoints
     - field.field.paragraph.card_two_columns_bundle.pb_display_card_layout_two
+    - field.field.paragraph.card_two_columns_bundle.pb_display_css_classes
     - field.field.paragraph.card_two_columns_bundle.pb_display_link
     - field.field.paragraph.card_two_columns_bundle.pb_display_link_hover
     - field.field.paragraph.card_two_columns_bundle.pb_display_margin
@@ -72,6 +73,7 @@ hidden:
   pb_display_border_radius: true
   pb_display_card_breakpoints: true
   pb_display_card_layout_two: true
+  pb_display_css_classes: true
   pb_display_link: true
   pb_display_link_hover: true
   pb_display_margin: true

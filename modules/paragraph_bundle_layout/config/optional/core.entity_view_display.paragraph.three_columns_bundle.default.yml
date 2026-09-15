@@ -30,6 +30,7 @@ dependencies:
     - field.field.paragraph.three_columns_bundle.pb_display_border_color
     - field.field.paragraph.three_columns_bundle.pb_display_border_hover
     - field.field.paragraph.three_columns_bundle.pb_display_border_radius
+    - field.field.paragraph.three_columns_bundle.pb_display_css_classes
     - field.field.paragraph.three_columns_bundle.pb_display_layout_breakpoints
     - field.field.paragraph.three_columns_bundle.pb_display_link
     - field.field.paragraph.three_columns_bundle.pb_display_link_hover
@@ -110,6 +111,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_css_classes: true
   pb_display_layout_breakpoints: true
   pb_display_link: true
   pb_display_link_hover: true

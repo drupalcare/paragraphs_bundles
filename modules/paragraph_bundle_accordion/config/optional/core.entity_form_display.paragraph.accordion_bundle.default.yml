@@ -18,6 +18,7 @@ dependencies:
     - field.field.paragraph.accordion_bundle.pb_display_border_color
     - field.field.paragraph.accordion_bundle.pb_display_border_hover
     - field.field.paragraph.accordion_bundle.pb_display_border_radius
+    - field.field.paragraph.accordion_bundle.pb_display_css_classes
     - field.field.paragraph.accordion_bundle.pb_display_link
     - field.field.paragraph.accordion_bundle.pb_display_link_hover
     - field.field.paragraph.accordion_bundle.pb_display_margin
@@ -74,6 +75,7 @@ third_party_settings:
         - group_pb_display_spacing
         - group_pb_display_size
         - group_pb_display_extra
+        - group_pb_display_advanced
       label: Display
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -179,6 +181,22 @@ third_party_settings:
         id: ''
         label_as_html: false
         open: false
+        description: ''
+        required_fields: true
+    group_pb_display_advanced:
+      children:
+        - pb_display_css_classes
+      label: Advanced
+      region: content
+      parent_name: group_pb_tab_display
+      weight: 60
+      format_type: details
+      format_settings:
+        classes: pb__display-advanced
+        show_empty_fields: false
+        id: ''
+        label_as_html: false
+        open: true
         description: ''
         required_fields: true
 id: paragraph.accordion_bundle.default
@@ -299,6 +317,14 @@ content:
     weight: 26
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_css_classes:
+    type: string_textfield
+    weight: 60
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   pb_display_margin:
     type: options_select

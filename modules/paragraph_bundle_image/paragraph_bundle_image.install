@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Install and update hooks for paragraph_bundle_image.
+ */
+
+declare(strict_types=1);
+
+/**
+ * Adds the CSS Classes field to the bundles this module owns.
+ *
+ * The field lets a site put its own class on every instance of a bundle and
+ * style them all with one theme rule. New sites get it from config/optional;
+ * this is the path for sites that already have the bundles.
+ */
+function paragraph_bundle_image_update_9001(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $done = [];
+  foreach (['image_bundle', 'image_narrow_bundle', 'image_wide_bundle'] as $bundle) {
+    if (paragraphs_bundles_pb_css_classes_wire_bundle('paragraph_bundle_image', $bundle)) {
+      $done[] = $bundle;
+    }
+  }
+  return $done === []
+    ? (string) t('CSS Classes field was already present; nothing to do.')
+    : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}

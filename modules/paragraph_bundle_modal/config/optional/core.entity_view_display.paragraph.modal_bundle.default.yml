@@ -17,14 +17,15 @@ dependencies:
     - field.field.paragraph.modal_bundle.pb_display_border_color
     - field.field.paragraph.modal_bundle.pb_display_border_hover
     - field.field.paragraph.modal_bundle.pb_display_border_radius
+    - field.field.paragraph.modal_bundle.pb_display_css_classes
+    - field.field.paragraph.modal_bundle.pb_display_link
+    - field.field.paragraph.modal_bundle.pb_display_link_hover
     - field.field.paragraph.modal_bundle.pb_display_margin
     - field.field.paragraph.modal_bundle.pb_display_padding
     - field.field.paragraph.modal_bundle.pb_display_shadow
     - field.field.paragraph.modal_bundle.pb_display_text
     - field.field.paragraph.modal_bundle.pb_display_text_hover
     - field.field.paragraph.modal_bundle.pb_display_width
-    - field.field.paragraph.modal_bundle.pb_display_link
-    - field.field.paragraph.modal_bundle.pb_display_link_hover
     - paragraphs.paragraphs_type.modal_bundle
   module:
     - entity_reference_revisions
@@ -88,6 +89,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_css_classes: true
   pb_display_link: true
   pb_display_link_hover: true
   pb_display_margin: true

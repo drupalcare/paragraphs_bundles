@@ -15,6 +15,7 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_color
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_hover
     - field.field.paragraph.3d_carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.3d_carousel_bundle.pb_display_css_classes
     - field.field.paragraph.3d_carousel_bundle.pb_display_margin
     - field.field.paragraph.3d_carousel_bundle.pb_display_padding
     - field.field.paragraph.3d_carousel_bundle.pb_display_shadow
@@ -65,6 +66,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_css_classes: true
   pb_display_margin: true
   pb_display_padding: true
   pb_display_shadow: true

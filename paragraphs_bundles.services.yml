@@ -175,6 +175,10 @@ services:
   Drupal\paragraphs_bundles\Hook\PbCssAlterHook:
     autowire: true
 
+  # Attaches the CSS-classes validator to every bundle carrying that field.
+  Drupal\paragraphs_bundles\Hook\PbCssClassesFieldHook:
+    autowire: true
+
   Drupal\paragraphs_bundles\Hook\PbEntityHook:
     arguments:
       - '@paragraphs_bundles.css.file_manager'

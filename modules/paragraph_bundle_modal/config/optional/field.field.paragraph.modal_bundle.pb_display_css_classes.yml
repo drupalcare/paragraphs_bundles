@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_css_classes
+    - paragraphs.paragraphs_type.modal_bundle
+id: paragraph.modal_bundle.pb_display_css_classes
+field_name: pb_display_css_classes
+entity_type: paragraph
+bundle: modal_bundle
+label: 'CSS Classes'
+description: "Extra classes for this paragraph's outer element, separated by spaces. They are added to the classes it already has, never replacing them. Put the same class on every Modal and one rule in your theme styles them all."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

@@ -81,6 +81,9 @@ final class PbPreprocessHook {
     // per-paragraph dynamic CSS both hook onto `.paragraphs-bundles`, so
     // losing it silently breaks styling. Matches v1's belt + suspenders.
     $this->pinBaseClasses($variables);
+    // Author-supplied classes go on the OUTER element, in preprocess for the
+    // same reason as the base classes: a theme override must not lose them.
+    $this->applyCustomClasses($variables, $paragraph);
 
     $slug = $this->slugger->slugify($paragraph->bundle());
     $id = (int) $paragraph->id();
@@ -263,6 +266,55 @@ final class PbPreprocessHook {
     );
     array_unshift($classes, 'paragraph', 'paragraphs-bundles');
     $attributes['class'] = $classes;
+    $variables['attributes'] = $attributes;
+  }
+
+  /**
+   * Adds the author's `pb_display_css_classes` to the outer element.
+   *
+   * The point of the field is a class shared by every instance of a bundle,
+   * so a site can write one rule and style them all. Sanitising happens in
+   * the resolver; this only places what survived.
+   *
+   * @param array<string, mixed> $variables
+   *   Paragraph preprocess variables (by reference).
+   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
+   *   The paragraph being rendered.
+   */
+  private function applyCustomClasses(array &$variables, ParagraphInterface $paragraph): void {
+    $classes = $this->displayClasses->customClasses($paragraph);
+    if ($classes === []) {
+      return;
+    }
+    $attributes = $variables['attributes'] ?? NULL;
+    if ($attributes instanceof Attribute) {
+      $attributes->addClass(...$classes);
+      return;
+    }
+    if (!is_array($attributes)) {
+      $attributes = [];
+    }
+    $existing = $attributes['class'] ?? [];
+    if (!is_array($existing)) {
+      $existing = (array) $existing;
+    }
+    // Same normalisation as pinBaseClasses(): a theme can leave a Markup
+    // object here, and array_merge would carry it into the class list.
+    $normalized = [];
+    foreach ($existing as $class) {
+      if (is_string($class)) {
+        $normalized[] = $class;
+      }
+      elseif ($class instanceof \Stringable) {
+        $normalized[] = (string) $class;
+      }
+    }
+    foreach ($classes as $class) {
+      if (!in_array($class, $normalized, TRUE)) {
+        $normalized[] = $class;
+      }
+    }
+    $attributes['class'] = $normalized;
     $variables['attributes'] = $attributes;
   }
 

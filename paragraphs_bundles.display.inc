@@ -129,6 +129,19 @@ function paragraphs_bundles_pb_display_subgroup_definitions(): array {
         'pb_display_shadow',
       ],
     ],
+    'group_pb_display_advanced' => [
+      'label' => 'Advanced',
+      'weight' => 60,
+      // The only display group that opens by default. A class typed here is
+      // invisible in the rendered output - unlike a colour or a width, there
+      // is nothing on the page to remind an author it is set - so it stays on
+      // screen rather than hiding behind a closed summary.
+      'open' => TRUE,
+      'classes' => 'pb__display-advanced',
+      'fields' => [
+        'pb_display_css_classes',
+      ],
+    ],
     'group_pb_display_extra' => [
       'label' => 'Additional',
       'weight' => 50,

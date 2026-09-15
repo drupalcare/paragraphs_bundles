@@ -108,6 +108,96 @@ final class PbDisplayClassResolver implements PbDisplayClassResolverInterface {
   }
 
   /**
+   * Field holding author-supplied classes for the outer element.
+   */
+  public const string CUSTOM_CLASS_FIELD = 'pb_display_css_classes';
+
+  /**
+   * Most class tokens one paragraph may contribute.
+   *
+   * The field is capped at 255 characters, so this is a backstop against a
+   * pathological value rather than a limit an author will meet.
+   */
+  private const int CUSTOM_CLASS_MAX = 32;
+
+  /**
+   * Characters a class token may contain.
+   *
+   * Deliberately permissive: Tailwind utilities need `:` (`md:w-full`), `/`
+   * (`top-1/2`), `[]()` and `#` (`bg-[#1da1f2]`, `w-[calc(100%-2rem)]`), `!`
+   * (`!font-bold`) and `@` (container queries). Rejected are the characters
+   * that end a class attribute or open a tag - `< > " \' & = \\ ` - plus
+   * braces, semicolons and control characters.
+   *
+   * Tailwind's arbitrary-VARIANT syntax (`[&>*]:mt-0`) contains `&` and `>`
+   * and is refused on purpose: those two characters are what an attribute
+   * injection needs, and no styling need justifies admitting them here.
+   *
+   * @see ::customClasses()
+   */
+  private const string CUSTOM_CLASS_PATTERN = '/^[A-Za-z0-9_:.\\/\\[\\]()%#,!@*+~$-]+$/';
+
+  /**
+   * Classes the preprocess hook pins itself; never duplicated from the field.
+   */
+  private const array CUSTOM_CLASS_RESERVED = ['paragraph', 'paragraphs-bundles'];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function customClasses(FieldableEntityInterface $paragraph): array {
+    if (!$paragraph->hasField(self::CUSTOM_CLASS_FIELD)) {
+      return [];
+    }
+    $items = $paragraph->get(self::CUSTOM_CLASS_FIELD);
+    if ($items->isEmpty()) {
+      return [];
+    }
+    $value = $items->value;
+    if (!is_string($value)) {
+      return [];
+    }
+    return $this->filterClassTokens($value)['accepted'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function filterClassTokens(string $value): array {
+    $result = ['accepted' => [], 'rejected' => [], 'over_cap' => []];
+    if (trim($value) === '') {
+      return $result;
+    }
+
+    // Split on any whitespace run, including the newlines a paste can carry.
+    $tokens = preg_split('/\\s+/', trim($value)) ?: [];
+
+    $accepted = [];
+    foreach ($tokens as $token) {
+      if ($token === '' || in_array($token, self::CUSTOM_CLASS_RESERVED, TRUE)) {
+        continue;
+      }
+      // Reject, never rewrite. Html::getClass() would lowercase `myBrandBox`
+      // and mangle every Tailwind token containing `[`, `/` or `#`; silently
+      // emitting a class the author did not type is worse than emitting none.
+      if (preg_match(self::CUSTOM_CLASS_PATTERN, $token) !== 1) {
+        $result['rejected'][$token] = $token;
+        continue;
+      }
+      if (count($accepted) >= self::CUSTOM_CLASS_MAX && !isset($accepted[$token])) {
+        $result['over_cap'][$token] = $token;
+        continue;
+      }
+      $accepted[$token] = $token;
+    }
+
+    $result['accepted'] = array_values($accepted);
+    $result['rejected'] = array_values($result['rejected']);
+    $result['over_cap'] = array_values($result['over_cap']);
+    return $result;
+  }
+
+  /**
    * Loads the generated stored-value → BEM class map once per request.
    *
    * @return array<string, string>

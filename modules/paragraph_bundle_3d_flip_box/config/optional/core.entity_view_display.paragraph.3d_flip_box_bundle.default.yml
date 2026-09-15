@@ -15,6 +15,7 @@ dependencies:
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_color
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_hover
     - field.field.paragraph.3d_flip_box_bundle.pb_display_border_radius
+    - field.field.paragraph.3d_flip_box_bundle.pb_display_css_classes
     - field.field.paragraph.3d_flip_box_bundle.pb_display_flip_xy
     - field.field.paragraph.3d_flip_box_bundle.pb_display_link
     - field.field.paragraph.3d_flip_box_bundle.pb_display_link_hover
@@ -71,6 +72,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_css_classes: true
   pb_display_flip_xy: true
   pb_display_link: true
   pb_display_link_hover: true

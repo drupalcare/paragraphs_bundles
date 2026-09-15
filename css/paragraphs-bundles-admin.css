@@ -335,3 +335,32 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 .field--name-pb-content-tab-name-icon .form-item {
   margin-block: 0;
 }
+
+/* ==========================================================================
+   Display tab - Advanced group (CSS Classes).
+   The field takes a whole row of its own: a class list is free text that can
+   run long, and the half-width treatment the Additional group gives a
+   string_textfield truncates it to about thirty visible characters.
+   ========================================================================== */
+
+.pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes {
+  flex: 0 0 100%;
+  inline-size: 100%;
+  min-inline-size: 0;
+  box-sizing: border-box;
+}
+
+.pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes input {
+  inline-size: 100%;
+  box-sizing: border-box;
+  font-family: var(--pb-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+}
+
+/* Description sits under a full-width input, so let it use the width. Claro
+   emits `.form-item__description`, not `.description` - measured on sts.local,
+   where the first version of this rule matched nothing. Both are listed so a
+   non-Claro admin theme is covered too. */
+.pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes .form-item__description,
+.pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes .description {
+  max-inline-size: 100%;
+}

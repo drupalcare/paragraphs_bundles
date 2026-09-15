@@ -8,6 +8,7 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_background_image_sm
     - field.field.paragraph.image_background_bundle.pb_display_bg
     - field.field.paragraph.image_background_bundle.pb_display_bg_opacity
+    - field.field.paragraph.image_background_bundle.pb_display_css_classes
     - field.field.paragraph.image_background_bundle.pb_display_image_alignment
     - field.field.paragraph.image_background_bundle.pb_display_image_breakpoint
     - field.field.paragraph.image_background_bundle.pb_display_image_min_height
@@ -41,6 +42,7 @@ hidden:
   pb_display_background_image_sm: true
   pb_display_bg: true
   pb_display_bg_opacity: true
+  pb_display_css_classes: true
   pb_display_image_alignment: true
   pb_display_image_breakpoint: true
   pb_display_image_min_height: true
