@@ -309,7 +309,8 @@ user-visible; read this section before upgrading.
   alert goes `inert`, instead of being dropped to `<body>`.
 - **Slideshow slides claimed a tab role with no tab to own them** — slides
   carried `role="tabpanel"` unconditionally, but the `role="tablist"` container
-  and its `role="tab"` buttons render only for four of the five bottom-navigation
+  and its `role="tab"` buttons render only for four of the five
+  bottom-navigation
   values. With `play`, or with the field **unset — the shipped default** — the
   page got tabpanels with no tab and no tablist anywhere, which assistive
   technology cannot make sense of. Those slides are now `role="group"` with
@@ -406,7 +407,8 @@ user-visible; read this section before upgrading.
 - Unit tests for `PbColorNormalizer` (opacity, hex overlay rgba).
 
 ### Changed
-- **Outer element ids are one derivable form: `pb-{bundle-slug}-{paragraph id}`.**
+- **Outer element ids are one derivable form: `pb-{bundle-slug}-{paragraph
+  id}`.**
   **This is a breaking change for site CSS or JS that names a PB id**, and it
   affects 29 of the 30 bundles that had an id in v1 — the full old → new table
   is in `docs/CSS-CLASS-MIGRATION.md`.
@@ -455,7 +457,8 @@ user-visible; read this section before upgrading.
 - **One owner for the node-reference conditional fields.** The view-mode field
   widget hook also tried to set `#states` on the four NF reference fields, but
   the element it inspected has no `subform` key, so that branch had never run on
-  any site — while `pb-conditional-field.js`, which also clears hidden fields and
+  any site — while `pb-conditional-field.js`, which also clears hidden fields
+  and
   infers the mode from populated ones, did the whole job. The dead branch is
   gone; the hook now only attaches that library.
 - **No jQuery on the front end.** Six bundle libraries (tabs, carousel, 3D
@@ -614,7 +617,8 @@ title;
   weights 1–3 via `wire-bundle-shared-fields.php`.
 - `paragraph_bundle_node_reference` sub-module port (`node_reference_bundle`):
   `pb_node_reference` content type and node view modes; v1 Twig DOM preserved;
-  dynamic CSS on `#pb-node-reference-{id} > .pb-ui-inner`; conditional NF fields via
+  dynamic CSS on `#pb-node-reference-{id} > .pb-ui-inner`; conditional NF fields
+  via
   `PbnrFieldWidgetHook` and `pb-conditional-fields` JS; title block weights 1–3.
 - `paragraph_bundle_parallax` sub-module port (`parallax_bundle` +
   `parallax_section_bundle`): v1 parallax JS/CSS preserved; wrapper dynamic CSS
@@ -627,7 +631,8 @@ title;
 - `paragraph_bundle_image_background` sub-module port
   (`image_background_bundle`):
   v1 background/overlay DOM preserved; inline background CSS and overlay rgba;
-  responsive bg swap JS; outer id `pb-image-background-{id}`; no title field (verify
+  responsive bg swap JS; outer id `pb-image-background-{id}`; no title field
+  (verify
   SKIP).
 - `paragraph_bundle_image_grid` sub-module port (`image_grid_bundle` +
   `image_grid_section_bundle`): v1 grid/lightbox DOM/JS preserved; dynamic CSS

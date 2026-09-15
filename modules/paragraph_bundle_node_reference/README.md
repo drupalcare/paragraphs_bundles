@@ -29,7 +29,8 @@ drush pb:regenerate-css
 3. Confirm only the matching NF field shows on the Content tab (others hidden).
 4. Content tab order: Title → Title tag → Title alignment → View mode → NF
    fields.
-5. Set Display colors; confirm dynamic CSS on `#pb-node-reference-{id} > .pb-ui-inner`.
+5. Set Display colors; confirm dynamic CSS on `#pb-node-reference-{id} >
+   .pb-ui-inner`.
 
 ## v2 notes
 

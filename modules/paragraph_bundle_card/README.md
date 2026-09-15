@@ -27,7 +27,8 @@ drush pb:regenerate-css
    - `#pb-card-two-columns-{id} > .pb-ui-inner`
    - `#pb-card-three-columns-{id} > .pb-ui-inner`
    - `#pb-card-text-section-{id} > .pb-ui-inner`
-   - `#pb-card-image-section-{id}` split scopes (inner border + `.pb-card__image-title`
+   - `#pb-card-image-section-{id}` split scopes (inner border +
+     `.pb-card__image-title`
      overlay)
 
 ## v2 notes

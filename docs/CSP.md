@@ -1,6 +1,7 @@
 # Content-Security-Policy — findings, and what to do
 
-Raised by [#3620924](https://www.drupal.org/project/paragraphs_bundles/issues/3620924),
+Raised by
+[#3620924](https://www.drupal.org/project/paragraphs_bundles/issues/3620924),
 which asked for "nonce generation for your elements, if csp is active in the
 system", on the premise that inline **scripts** in the paragraphs and/or theme
 break CSP.

@@ -148,7 +148,8 @@ around each occurrence.
 
 ### Why `all:` is in a width test
 
-Not strictly a width rule, but the same class of silent failure, and it has bitten
+Not strictly a width rule, but the same class of silent failure, and it has
+bitten
 twice. `all: unset` declared **last** in a block wipes every declaration above
 it; only `!important` ones survive, which is what disguises it both times:
 

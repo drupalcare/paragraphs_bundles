@@ -27,7 +27,8 @@ Most of these double as stored field values, so renaming one would require a
 content migration; the rest are asset-library suffixes (`pb__576`…) or admin
 form-group names held in form-display config. They are frozen for those reasons
 and keep their v1 spelling. Classes that v1 *built* from a stored value (e.g.
-`pb__3d-caro-100`, `pb__image-overlay-fade`) are **renames, not frozen tokens** —
+`pb__3d-caro-100`, `pb__image-overlay-fade`) are **renames, not frozen tokens**
+—
 they are listed in the per-bundle tables below.
 
 <details><summary>Frozen class list (69)</summary>

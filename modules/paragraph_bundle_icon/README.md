@@ -7,7 +7,8 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 
 - `paragraphs_bundles` (parent)
 - Core `image`, `link`, `options`, `text`
-- The Material Symbols web fonts — **bundled with this module**, nothing to install
+- The Material Symbols web fonts — **bundled with this module**, nothing to
+  install
 
 ## The Material Symbols fonts are bundled
 

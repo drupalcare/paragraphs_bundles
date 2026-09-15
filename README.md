@@ -122,7 +122,8 @@ Notes:
 - A token containing `<`, `>`, `&`, a quote, `=`, a backtick, a backslash,
   a brace or a semicolon is refused, because the value ends up in an HTML
   attribute. **Saving is blocked and the message names the token**, so a class
-  is never dropped silently; fix or remove it and the rest saves. This also rules out
+  is never dropped silently; fix or remove it and the rest saves. This also
+  rules out
   Tailwind's arbitrary-*variant* syntax (`[&>*]:mt-0`); arbitrary *values*
   like `w-[calc(100%-2rem)]` are fine.
 - Classes are never rewritten to make them valid. A refused token is reported

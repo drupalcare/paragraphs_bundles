@@ -52,7 +52,8 @@ drush pb:regenerate-css
 3. Resize the viewport across the six breakpoints and confirm the source set
    changes.
 4. Set Display colors and confirm dynamic CSS lands on
-   `#pb-card-image-section-{id} > .pb-ui-inner`, `#pb-image-narrow-{id} > .pb-ui-inner`, and
+   `#pb-card-image-section-{id} > .pb-ui-inner`, `#pb-image-narrow-{id} >
+   .pb-ui-inner`, and
    `#pb-image-wide-{id} > .pb-ui-inner`.
 5. Add an image link and link title; confirm the wrapper anchor and its
    `title` attribute.
