@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.pb_playground_sections
+    - node.type.pb_playground
+  module:
+    - entity_reference_revisions
+id: node.pb_playground.pb_playground_sections
+field_name: pb_playground_sections
+entity_type: node
+bundle: pb_playground
+label: Sections
+description: 'Everything you build here. Add any section, look at it, change it — none of it is published.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles: null
+    negate: 0
+field_type: entity_reference_revisions

@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.pb_playground.pb_playground_sections
+    - node.type.pb_playground
+  module:
+    - entity_reference_revisions
+id: node.pb_playground.default
+targetEntityType: node
+bundle: pb_playground
+mode: default
+content:
+  pb_playground_sections:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden: {  }

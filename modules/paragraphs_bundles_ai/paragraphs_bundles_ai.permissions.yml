@@ -1,3 +1,9 @@
+'view any pb playground page':
+  title: 'View any PB Playground page'
+  description: 'Playground pages are never published, and core only lets a person see their OWN unpublished content. Without this, a shared playground lists pages that nobody but their author can open. Grant it to the roles that share one.'
+  # Not restricted. It reveals unpublished pages of ONE content type, which
+  # exists to hold experiments and can never be published.
+
 'use paragraphs bundles ai assistant':
   title: 'Use the Paragraphs Bundles assistant'
   description: 'Show the section assistant on node add and edit forms. The assistant can only do what the person using it may already do by hand — every tool re-checks their permissions.'

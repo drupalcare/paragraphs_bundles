@@ -66,3 +66,9 @@ services:
   # takes the surface rather than reaching for \Drupal::service().
   Drupal\paragraphs_bundles_ai\Hook\PbAiFormHook:
     autowire: true
+
+  # The playground's three rules: forced unpublished on every save, a
+  # permission that reveals someone else's playground page, and the banner
+  # that says so on the page.
+  Drupal\paragraphs_bundles_ai\Hook\PbPlaygroundHook:
+    autowire: true
