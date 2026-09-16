@@ -5,5 +5,5 @@ id: image_narrow_bundle
 label: 'Image Narrow'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A picture kept narrower than the page, centred.'
 behavior_plugins: {  }

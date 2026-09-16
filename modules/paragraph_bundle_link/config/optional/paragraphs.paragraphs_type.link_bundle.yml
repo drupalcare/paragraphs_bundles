@@ -5,5 +5,5 @@ id: link_bundle
 label: 'Link'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A set of links or buttons grouped together.'
 behavior_plugins: {  }

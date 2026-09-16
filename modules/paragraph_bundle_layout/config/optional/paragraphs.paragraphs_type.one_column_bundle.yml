@@ -5,5 +5,5 @@ id: one_column_bundle
 label: 'One Column'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A single column that holds other sections.'
 behavior_plugins: {  }

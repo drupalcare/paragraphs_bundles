@@ -5,5 +5,5 @@ id: contact_form_bundle
 label: 'Contact Form'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Puts a contact form on the page.'
 behavior_plugins: {  }

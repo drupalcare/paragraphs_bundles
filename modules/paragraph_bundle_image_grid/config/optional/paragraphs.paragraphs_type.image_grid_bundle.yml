@@ -5,5 +5,5 @@ id: image_grid_bundle
 label: 'Image Grid'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A gallery of pictures in a grid.'
 behavior_plugins: {  }

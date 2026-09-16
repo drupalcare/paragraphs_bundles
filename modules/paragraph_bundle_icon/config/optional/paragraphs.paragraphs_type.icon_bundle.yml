@@ -5,5 +5,5 @@ id: icon_bundle
 label: Icon
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'An icon with a short label, for a row of features or benefits.'
 behavior_plugins: {  }

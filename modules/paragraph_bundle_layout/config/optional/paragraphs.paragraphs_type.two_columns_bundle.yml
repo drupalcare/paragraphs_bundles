@@ -5,5 +5,5 @@ id: two_columns_bundle
 label: 'Two Columns'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Two columns that hold other sections.'
 behavior_plugins: {  }

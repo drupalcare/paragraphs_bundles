@@ -5,5 +5,5 @@ id: webform_bundle
 label: 'Webform'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Puts a Webform on the page.'
 behavior_plugins: {  }

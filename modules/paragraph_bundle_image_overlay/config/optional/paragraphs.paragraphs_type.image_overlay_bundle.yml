@@ -5,5 +5,5 @@ id: image_overlay_bundle
 label: 'Image Overlay'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A picture with words laid over it.'
 behavior_plugins: {  }

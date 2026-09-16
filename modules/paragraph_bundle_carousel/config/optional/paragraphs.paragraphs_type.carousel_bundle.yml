@@ -5,5 +5,5 @@ id: carousel_bundle
 label: Carousel
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Slides that move one at a time, across or down, with arrows or dots.'
 behavior_plugins: {  }

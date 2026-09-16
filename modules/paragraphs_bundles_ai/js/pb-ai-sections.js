@@ -130,13 +130,31 @@
         return;
       }
 
+      const wrapper = document.createElement('span');
+      wrapper.className = 'pb-ai-mark';
+
       const badge = document.createElement('button');
       badge.type = 'button';
       badge.className = 'pb-ai-badge';
       badge.textContent = label;
       badge.title = Drupal.t('Dismiss');
-      layer().appendChild(badge);
-      place(badge, target);
+      wrapper.appendChild(badge);
+
+      // Undo is core's revert form, linked rather than reimplemented: it
+      // carries its own permission check, which a bespoke undo would have to
+      // repeat and could get wrong.
+      const revert = params.get('pb-ai-revert');
+
+      if (revert) {
+        const undo = document.createElement('a');
+        undo.className = 'pb-ai-undo';
+        undo.href = revert;
+        undo.textContent = Drupal.t('Undo');
+        wrapper.appendChild(undo);
+      }
+
+      layer().appendChild(wrapper);
+      place(wrapper, target);
 
       const keepUp = () => place(badge, target);
       window.addEventListener('scroll', keepUp, { passive: true });

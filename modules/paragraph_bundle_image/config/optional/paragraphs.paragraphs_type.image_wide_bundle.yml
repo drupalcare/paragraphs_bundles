@@ -5,5 +5,5 @@ id: image_wide_bundle
 label: 'Image Wide'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A picture that runs the full width of the page.'
 behavior_plugins: {  }

@@ -5,5 +5,5 @@ id: parallax_bundle
 label: 'Parallax'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A background picture that drifts more slowly than the page as you scroll.'
 behavior_plugins: {  }

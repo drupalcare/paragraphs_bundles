@@ -5,5 +5,5 @@ id: accordion_bundle
 label: 'Accordion'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Stacked headings that open one at a time. Good for questions and answers.'
 behavior_plugins: {  }

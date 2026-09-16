@@ -5,5 +5,5 @@ id: grid_bundle
 label: Grid
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A grid of items that reflows as the screen gets narrower.'
 behavior_plugins: {  }

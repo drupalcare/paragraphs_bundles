@@ -5,5 +5,5 @@ id: card_two_columns_bundle
 label: 'Card Two Columns'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Two cards side by side, each one a picture or a piece of text.'
 behavior_plugins: {  }

@@ -5,5 +5,5 @@ id: node_reference_bundle
 label: 'Node Reference'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Shows another page''s title, picture and summary, and links to it.'
 behavior_plugins: {  }

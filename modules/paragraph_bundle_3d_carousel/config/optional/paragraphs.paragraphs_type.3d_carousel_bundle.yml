@@ -5,5 +5,5 @@ id: 3d_carousel_bundle
 label: '3D Carousel'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Images or cards turning in 3D space. Showy, and best with a small set of pictures.'
 behavior_plugins: {  }

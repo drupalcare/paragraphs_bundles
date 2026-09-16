@@ -5,5 +5,5 @@ id: hero_bundle
 label: 'Hero'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A full-width opener with a heading, a line of text and a link. The top of a landing page.'
 behavior_plugins: {  }

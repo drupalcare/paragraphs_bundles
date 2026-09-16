@@ -5,5 +5,5 @@ id: simple_bundle
 label: Simple
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A heading and some text. The plainest section there is.'
 behavior_plugins: {  }

@@ -98,9 +98,25 @@
 }
 
 .pb-ai-note,
-.pb-ai-badge {
+.pb-ai-mark {
   position: fixed;
   transform: translateY(-100%);
+}
+
+.pb-ai-mark {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.pb-ai-undo {
+  padding: 0.12rem 0.5rem;
+  border-radius: 999px;
+  background: rgb(21 25 26 / 92%);
+  color: #eef2ec;
+  font-size: 0.7rem;
+  text-decoration: underline;
+  pointer-events: auto;
 }
 
 .pb-ai-note {

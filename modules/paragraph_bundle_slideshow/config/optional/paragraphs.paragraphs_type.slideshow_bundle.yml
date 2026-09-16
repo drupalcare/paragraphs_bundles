@@ -5,5 +5,5 @@ id: slideshow_bundle
 label: 'Slideshow'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Full-size slides with navigation, for a rotating set of messages.'
 behavior_plugins: {  }

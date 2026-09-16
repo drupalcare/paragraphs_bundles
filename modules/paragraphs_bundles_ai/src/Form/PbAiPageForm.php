@@ -207,6 +207,12 @@ final class PbAiPageForm extends FormBase {
     $words = (string) $form_state->getValue('words');
     $count = (int) $form_state->getValue('count');
 
+    // The revision as it stands BEFORE anything is written. That is what undo
+    // has to return to — the revision the write creates is the thing being
+    // undone, and offering it back would be a link to no change at all.
+    $node = $this->entityTypeManager->getStorage('node')->load($nodeId);
+    $before = $node instanceof NodeInterface ? (int) $node->getRevisionId() : 0;
+
     $draft = $this->drafter->draft($bundle, $words, max(0, $count));
 
     if (!$draft->usable) {
@@ -232,9 +238,12 @@ final class PbAiPageForm extends FormBase {
     }
 
     // Back to the page, so the section is seen rather than described. The
-    // query parameter is what marks it as new once the badge exists.
+    // query carries what the script needs to mark it and to offer the way back.
     $url = Url::fromRoute('entity.node.canonical', ['node' => $nodeId], [
-      'query' => ['pb-ai-added' => $result->nodeId === NULL ? '' : (string) $result->sections],
+      'query' => array_filter([
+        'pb-ai-added' => (string) $result->sections,
+        'pb-ai-revert' => $this->revertUrl($nodeId, $before),
+      ]),
     ])->toString();
 
     return $response->addCommand(new RedirectCommand($url));
@@ -272,6 +281,7 @@ final class PbAiPageForm extends FormBase {
       return $this->say($response, 'error', ['This page could not be loaded again.']);
     }
 
+    $before = (int) $node->getRevisionId();
     $current = $this->editor->currentValues($paragraphId);
     $bundle = $this->bundleOf($node, $field, $paragraphId);
 
@@ -298,10 +308,41 @@ final class PbAiPageForm extends FormBase {
     }
 
     $url = Url::fromRoute('entity.node.canonical', ['node' => $nodeId], [
-      'query' => ['pb-ai-updated' => (string) $paragraphId],
+      'query' => array_filter([
+        'pb-ai-updated' => (string) $paragraphId,
+        'pb-ai-revert' => $this->revertUrl($nodeId, $before),
+      ]),
     ])->toString();
 
     return $response->addCommand(new RedirectCommand($url));
+  }
+
+  /**
+   * A link to core's own revert form, for the revision before the change.
+   *
+   * UNDO IS CORE'S, DELIBERATELY. Reverting a revision is a confirm form
+   * Drupal already ships, with its own permission check — "revert all
+   * revisions" — and its own log message. Building a second way to do it here
+   * would mean re-implementing that check, and a bespoke undo that skips a
+   * permission is worse than no undo at all.
+   *
+   * @param int $nodeId
+   *   The page.
+   * @param int $revisionId
+   *   The revision to go back to. Zero when there is nothing to go back to.
+   *
+   * @return string
+   *   The URL, or an empty string when undo is not available.
+   */
+  private function revertUrl(int $nodeId, int $revisionId): string {
+    if ($revisionId === 0) {
+      return '';
+    }
+
+    return Url::fromRoute('node.revision_revert_confirm', [
+      'node' => $nodeId,
+      'node_revision' => $revisionId,
+    ])->toString();
   }
 
   /**

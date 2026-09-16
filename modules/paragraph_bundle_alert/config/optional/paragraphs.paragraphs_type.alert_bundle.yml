@@ -5,5 +5,5 @@ id: alert_bundle
 label: Alert
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A short coloured notice: information, a warning, or a success message.'
 behavior_plugins: {  }

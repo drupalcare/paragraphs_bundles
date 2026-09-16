@@ -5,5 +5,5 @@ id: block_content_bundle
 label: 'Block Content'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Places a reusable custom block you have already built.'
 behavior_plugins: {  }

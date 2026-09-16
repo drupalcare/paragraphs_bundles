@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Cache\Cache;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
@@ -216,5 +217,84 @@ function paragraphs_bundles_post_update_regenerate_dynamic_css(array &$sandbox):
   return (string) t('Regenerating dynamic CSS files: @progress / @total.', [
     '@progress' => $sandbox['progress'],
     '@total' => $sandbox['total'],
+  ]);
+}
+
+/**
+ * Gives each section a sentence saying what it is for.
+ */
+function paragraphs_bundles_post_update_bundle_descriptions(): string {
+  // WHY AN UPDATE HOOK AT ALL. The sentences ship in config/optional, and
+  // config/optional is installed ONCE — when the module that provides it is
+  // installed. Config added to a module that is already installed never
+  // arrives on its own. Measured on sts.local 2026-09-15 on a different
+  // change: the files were right, the site had none of them, and there was
+  // nothing pending to explain it. So every site that already has these
+  // bundles needs this, and a fresh install ignores it.
+  //
+  // WHY IT READS THE SHIPPED FILES INSTEAD OF CARRYING THE SENTENCES. A copy
+  // of 31 strings in PHP is a second place for them to be edited, and the two
+  // would drift the first time somebody improved one. The yml is the source;
+  // this only moves it.
+  //
+  // IT NEVER OVERWRITES A SITE'S OWN WORDS. A description that is already
+  // filled in was written by somebody, and their sentence about their site
+  // beats the module's. Only empty ones are filled.
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraphs_type');
+  $directory = \Drupal::root() . '/' . \Drupal::service('extension.list.module')->getPath('paragraphs_bundles');
+
+  $files = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS),
+  );
+
+  $filled = 0;
+  $kept = 0;
+
+  foreach ($files as $file) {
+    $name = $file->getFilename();
+
+    if (!str_starts_with($name, 'paragraphs.paragraphs_type.') || !str_ends_with($name, '.yml')) {
+      continue;
+    }
+
+    $data = Yaml::decode((string) file_get_contents($file->getPathname()));
+
+    if (!is_array($data)) {
+      continue;
+    }
+
+    // `id`, not `type`. A node type config keys its machine name as `type`,
+    // and a paragraphs type keys it as `id` — measured across all 39 shipped
+    // files on 2026-09-16, after the first version of this hook read `type`,
+    // matched nothing, and correctly reported "Described 0 section(s)".
+    // The hook was honest; the key was wrong.
+    $id = (string) ($data['id'] ?? '');
+    $sentence = trim((string) ($data['description'] ?? ''));
+
+    // The eight section bundles ship no sentence on purpose: a slide is never
+    // chosen from a list, it arrives with its slideshow.
+    if ($id === '' || $sentence === '') {
+      continue;
+    }
+
+    $type = $storage->load($id);
+
+    if ($type === NULL) {
+      continue;
+    }
+
+    if (trim((string) $type->getDescription()) !== '') {
+      $kept++;
+      continue;
+    }
+
+    $type->set('description', $sentence);
+    $type->save();
+    $filled++;
+  }
+
+  return (string) t('Described @filled section(s); left @kept with the words this site already had.', [
+    '@filled' => $filled,
+    '@kept' => $kept,
   ]);
 }

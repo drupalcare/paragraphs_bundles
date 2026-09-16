@@ -5,5 +5,5 @@ id: block_bundle
 label: 'Drupal Block'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Places a Drupal block that already exists somewhere in this page.'
 behavior_plugins: {  }

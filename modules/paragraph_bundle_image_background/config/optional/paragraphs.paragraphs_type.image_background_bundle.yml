@@ -5,5 +5,5 @@ id: image_background_bundle
 label: 'Image Background'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A section with a picture behind it and content on top.'
 behavior_plugins: {  }

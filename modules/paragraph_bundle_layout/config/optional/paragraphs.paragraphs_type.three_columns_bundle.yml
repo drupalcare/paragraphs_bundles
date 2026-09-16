@@ -5,5 +5,5 @@ id: three_columns_bundle
 label: 'Three Columns'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Three columns that hold other sections.'
 behavior_plugins: {  }

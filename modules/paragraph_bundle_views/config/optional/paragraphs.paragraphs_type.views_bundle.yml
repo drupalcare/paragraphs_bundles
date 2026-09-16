@@ -5,5 +5,5 @@ id: views_bundle
 label: 'Views'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Puts a view on the page — a list of content you have already set up.'
 behavior_plugins: {  }

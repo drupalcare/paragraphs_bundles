@@ -5,5 +5,5 @@ id: modal_bundle
 label: 'Modal'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Content that opens in a dialog over the page, from a button.'
 behavior_plugins: {  }

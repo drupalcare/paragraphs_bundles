@@ -5,5 +5,5 @@ id: tabs_bundle
 label: 'Tabs'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'Content split across tabs, one panel showing at a time.'
 behavior_plugins: {  }

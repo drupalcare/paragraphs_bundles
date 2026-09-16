@@ -5,5 +5,5 @@ id: 3d_flip_box_bundle
 label: '3D Flip Box'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'A panel that flips over to show its other side: a fact on the front, the detail behind it.'
 behavior_plugins: {  }
