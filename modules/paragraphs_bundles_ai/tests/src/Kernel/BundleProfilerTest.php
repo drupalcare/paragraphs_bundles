@@ -58,6 +58,12 @@ final class BundleProfilerTest extends KernelTestBase {
     // one owner. A kernel test that installs this module WITHOUT its parent is
     // therefore testing a configuration that cannot exist on a site — and it
     // fails at container compile, taking all 55 tests in the module with it.
+    // And drupal/ai, for the same reason: SectionDrafter takes the provider
+    // manager, so without it the container cannot compile either. `key` comes
+    // with it — drupal/ai stores every credential through that module, which
+    // is why this one never handles an API key itself.
+    'key',
+    'ai',
     'paragraphs_bundles',
     'paragraphs_bundles_ai',
   ];

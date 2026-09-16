@@ -1,0 +1,83 @@
+/**
+ * @file
+ * The assistant bar, on a page being viewed.
+ *
+ * Deliberately small and unopinionated: this sits on somebody else's theme,
+ * so it claims the bottom of the viewport and nothing else. No resets, no
+ * typography, no colours beyond what it needs to stay readable on either a
+ * light or a dark page.
+ */
+
+.pb-ai {
+  position: fixed;
+  z-index: 501; /* Above Drupal's toolbar tray shadow, below its dialogs. */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 0.75rem clamp(0.75rem, 4vw, 2rem);
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: #15191a;
+  color: #eef2ec;
+  box-shadow: 0 -2px 12px rgb(0 0 0 / 25%);
+}
+
+.pb-ai-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-end;
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.pb-ai-bar .form-item {
+  margin: 0;
+}
+
+.pb-ai-bar label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #a8b3ad;
+}
+
+.pb-ai-bar select,
+.pb-ai-bar textarea,
+.pb-ai-bar input[type="number"] {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #3b4541;
+  border-radius: 4px;
+  background: #1e2422;
+  color: inherit;
+  font: inherit;
+}
+
+.pb-ai-bar textarea {
+  min-width: 18rem;
+  resize: vertical;
+}
+
+.pb-ai-bar input[type="number"] {
+  width: 5rem;
+}
+
+.pb-ai-bar .form-actions {
+  margin: 0;
+}
+
+.pb-ai-bar__status {
+  flex-basis: 100%;
+}
+
+.pb-ai-bar__status:empty {
+  display: none;
+}
+
+/* The bar wraps to two rows on a phone rather than scrolling sideways. */
+@media (max-width: 40rem) {
+  .pb-ai-bar textarea {
+    min-width: 100%;
+  }
+}

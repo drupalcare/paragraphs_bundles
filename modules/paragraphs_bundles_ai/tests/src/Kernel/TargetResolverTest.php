@@ -51,6 +51,10 @@ final class TargetResolverTest extends KernelTestBase {
     // The parent is a hard dependency in info.yml, and this module's services
     // now reference one of its services. Installing this module without it is
     // a configuration no site can have, and it fails at container compile.
+    // drupal/ai too: SectionDrafter takes its provider manager, so the
+    // container cannot compile without it.
+    'key',
+    'ai',
     'paragraphs_bundles',
     'paragraphs_bundles_ai',
   ];

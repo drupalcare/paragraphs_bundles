@@ -1,0 +1,5 @@
+bar:
+  version: VERSION
+  css:
+    component:
+      css/pb-ai-bar.css: {}

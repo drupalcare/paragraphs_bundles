@@ -99,9 +99,24 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface: '@paragraphs_bundles_ai.chat_surface'
 
+  # Asks the model for the words, inside a JSON schema built from the bundle's
+  # own fields. It never chooses a section or a page: both come from the person.
+  paragraphs_bundles_ai.section_drafter:
+    class: Drupal\paragraphs_bundles_ai\Service\SectionDrafter
+    arguments:
+      - '@paragraphs_bundles_ai.bundle_profiler'
+      - '@config.factory'
+      - '@ai.provider'
+
+  Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface: '@paragraphs_bundles_ai.section_drafter'
+
   # Hook classes are services in Drupal 11's OOP hook system, and this one
   # takes the surface rather than reaching for \Drupal::service().
   Drupal\paragraphs_bundles_ai\Hook\PbAiFormHook:
+    autowire: true
+
+  # Places the assistant on a page being viewed.
+  Drupal\paragraphs_bundles_ai\Hook\PbAiPageHook:
     autowire: true
 
   # The playground's three rules: forced unpublished on every save, a
