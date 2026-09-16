@@ -81,3 +81,68 @@
     min-width: 100%;
   }
 }
+
+/**
+ * The floating layer.
+ *
+ * One fixed layer for the whole page, so nothing is ever added inside a
+ * section: giving a section a positioning context would move the absolutely
+ * positioned children that image overlay, image background and the flip box
+ * place inside themselves.
+ */
+.pb-ai-layer {
+  position: fixed;
+  z-index: 500;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pb-ai-note,
+.pb-ai-badge {
+  position: fixed;
+  transform: translateY(-100%);
+}
+
+.pb-ai-note {
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: rgb(21 25 26 / 92%);
+  color: #eef2ec;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.pb-ai-note:not([hidden]) {
+  opacity: 1;
+  transform: translateY(calc(-100% - 6px));
+}
+
+.pb-ai-badge {
+  padding: 0.12rem 0.5rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0e5e54;
+  color: #fff;
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+/* Fade, but do not slide, for anyone who asked for less movement. */
+@media (prefers-reduced-motion: reduce) {
+  .pb-ai-note {
+    transition: opacity 120ms ease;
+  }
+
+  .pb-ai-note:not([hidden]) {
+    transform: translateY(-100%);
+  }
+}

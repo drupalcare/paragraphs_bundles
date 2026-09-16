@@ -3,3 +3,8 @@ bar:
   css:
     component:
       css/pb-ai-bar.css: {}
+  js:
+    js/pb-ai-sections.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

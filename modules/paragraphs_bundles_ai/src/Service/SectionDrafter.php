@@ -102,6 +102,97 @@ final class SectionDrafter implements SectionDrafterInterface {
       json_schema: $schema,
     ));
 
+    $answer = $this->ask($input, $providerId, $modelId);
+
+    if (is_string($answer)) {
+      return DraftedSection::refused([$answer]);
+    }
+
+    return DraftedSection::of(
+      $this->pickValues($profile, $answer),
+      $this->pickChildren($answer, $childBundle),
+      $modelId,
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function draftEdit(string $bundle, array $current, string $words): DraftedSection {
+    $words = trim($words);
+
+    if ($words === '') {
+      return DraftedSection::refused(['Say what should change about this section.']);
+    }
+
+    $profile = $this->profiler->profile($bundle);
+
+    if ($profile === NULL) {
+      return DraftedSection::refused([sprintf('There is no section "%s" on this site.', $bundle)]);
+    }
+
+    [$providerId, $modelId] = $this->chosenProvider();
+
+    if ($providerId === '') {
+      return DraftedSection::refused([
+        'No default AI provider is set for chat. Choose one at Configuration › AI › Settings.',
+      ]);
+    }
+
+    $properties = $this->propertiesFor($profile);
+
+    if ($properties === []) {
+      return DraftedSection::refused([
+        sprintf('The section %s has no text fields to change.', $profile->label),
+      ]);
+    }
+
+    $lines = [
+      sprintf('You are rewriting one "%s" section that already exists on a Drupal site.', $profile->label),
+      'It currently says:',
+    ];
+
+    foreach ($current as $name => $value) {
+      $lines[] = sprintf('- %s: %s', $name, $value);
+    }
+
+    $lines[] = 'Return ONLY the fields that should change. Leave out every field that should stay as it is.';
+    $lines[] = 'Write plain text, within any character limit in the schema. No HTML, no Markdown.';
+
+    $input = new ChatInput([new ChatMessage('user', $words)]);
+    $input->setSystemPrompt(implode("\n", $lines));
+    $input->setChatStructuredJsonSchema(new StructuredOutputSchema(
+      name: 'pb_section_edit',
+      description: sprintf('Replacement words for a %s section.', $profile->label),
+      strict: FALSE,
+      json_schema: ['type' => 'object', 'properties' => $properties],
+    ));
+
+    $answer = $this->ask($input, $providerId, $modelId);
+
+    if (is_string($answer)) {
+      return DraftedSection::refused([$answer]);
+    }
+
+    // No children, ever: changing what a section CONTAINS is a different act
+    // from changing what it SAYS, and only the second one was asked for.
+    return DraftedSection::of($this->pickValues($profile, $answer), [], $modelId);
+  }
+
+  /**
+   * Sends one request and decodes the answer.
+   *
+   * @param \Drupal\ai\OperationType\Chat\ChatInput $input
+   *   The prepared request.
+   * @param string $providerId
+   *   Provider plugin id.
+   * @param string $modelId
+   *   Model id.
+   *
+   * @return array<string, mixed>|string
+   *   The decoded answer, or a sentence explaining why there is none.
+   */
+  private function ask(ChatInput $input, string $providerId, string $modelId): array|string {
     try {
       $provider = $this->providerManager->createInstance($providerId);
       $output = $provider->chat($input, $modelId, ['paragraphs_bundles_ai']);
@@ -112,24 +203,14 @@ final class SectionDrafter implements SectionDrafterInterface {
       // The provider's own message is relayed rather than replaced: "model not
       // found" and "rate limited" need different actions from the person, and
       // one generic sentence hides which one happened.
-      return DraftedSection::refused([
-        'The AI provider could not answer: ' . $error->getMessage(),
-      ]);
+      return 'The AI provider could not answer: ' . $error->getMessage();
     }
 
     $decoded = json_decode($text, TRUE);
 
-    if (!is_array($decoded)) {
-      return DraftedSection::refused([
-        'The model did not answer in the shape this section needs. Try again, or say it differently.',
-      ]);
-    }
-
-    return DraftedSection::of(
-      $this->pickValues($profile, $decoded),
-      $this->pickChildren($decoded, $childBundle),
-      $modelId,
-    );
+    return is_array($decoded)
+      ? $decoded
+      : 'The model did not answer in the shape this section needs. Try again, or say it differently.';
   }
 
   /**

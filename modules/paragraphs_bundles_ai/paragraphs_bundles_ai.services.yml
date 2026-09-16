@@ -110,6 +110,20 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface: '@paragraphs_bundles_ai.section_drafter'
 
+  # Changes the words in ONE section the person pointed at. It proves the
+  # section is on the page being viewed before touching it, writes a new
+  # paragraph revision and then a new node revision, and returns the revision
+  # number so the change can be undone.
+  paragraphs_bundles_ai.section_editor:
+    class: Drupal\paragraphs_bundles_ai\Service\SectionEditor
+    arguments:
+      - '@entity_type.manager'
+      - '@paragraphs_bundles_ai.bundle_profiler'
+      - '@paragraphs_bundles_ai.field_drafter'
+      - '@current_user'
+
+  Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface: '@paragraphs_bundles_ai.section_editor'
+
   # Hook classes are services in Drupal 11's OOP hook system, and this one
   # takes the surface rather than reaching for \Drupal::service().
   Drupal\paragraphs_bundles_ai\Hook\PbAiFormHook:

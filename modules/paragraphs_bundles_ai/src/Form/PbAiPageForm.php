@@ -7,6 +7,7 @@ namespace Drupal\paragraphs_bundles_ai\Form;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\RedirectCommand;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -14,6 +15,7 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface;
+use Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -45,6 +47,19 @@ final class PbAiPageForm extends FormBase {
   protected SectionComposerInterface $composer;
 
   /**
+   * Changes the words in a section that is already here.
+   */
+  protected SectionEditorInterface $editor;
+
+  /**
+   * Loads the page again when the change is applied.
+   *
+   * FormBase does not carry one — that is ControllerBase — so it is injected
+   * rather than reached for through \Drupal.
+   */
+  protected EntityTypeManagerInterface $entityTypeManager;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
@@ -52,6 +67,8 @@ final class PbAiPageForm extends FormBase {
     $form->catalog = $container->get(SectionCatalogInterface::class);
     $form->drafter = $container->get(SectionDrafterInterface::class);
     $form->composer = $container->get(SectionComposerInterface::class);
+    $form->editor = $container->get(SectionEditorInterface::class);
+    $form->entityTypeManager = $container->get('entity_type.manager');
 
     return $form;
   }
@@ -114,6 +131,32 @@ final class PbAiPageForm extends FormBase {
       '#placeholder' => $this->t('A hero about our autumn range, warm and short.'),
     ];
 
+    // The second dropdown, and only when there is something in it. An empty
+    // "change a section" control on a page with no sections is a control that
+    // cannot do anything.
+    $sections = $this->catalog->onPage($node, $field);
+
+    if ($sections !== []) {
+      $options = [];
+
+      foreach ($sections as $section) {
+        $options[$section['id']] = sprintf(
+          '%d · %s — %s — %s',
+          $section['position'],
+          $section['label'],
+          $section['title'] === '' ? $this->t('no title') : '"' . $section['title'] . '"',
+          $section['dom_id'],
+        );
+      }
+
+      $form['existing'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Or change a section'),
+        '#options' => $options,
+        '#empty_option' => $this->t('- Choose a section -'),
+      ];
+    }
+
     $form['actions'] = ['#type' => 'actions'];
     $form['actions']['draft'] = [
       '#type' => 'submit',
@@ -124,6 +167,18 @@ final class PbAiPageForm extends FormBase {
         'progress' => ['type' => 'throbber', 'message' => $this->t('Writing it…')],
       ],
     ];
+
+    if ($sections !== []) {
+      $form['actions']['change'] = [
+        '#type' => 'submit',
+        '#value' => $this->t('Change that section'),
+        '#ajax' => [
+          'callback' => '::change',
+          'wrapper' => 'pb-ai-status',
+          'progress' => ['type' => 'throbber', 'message' => $this->t('Rewriting it…')],
+        ],
+      ];
+    }
 
     $form['status'] = [
       '#type' => 'container',
@@ -183,6 +238,96 @@ final class PbAiPageForm extends FormBase {
     ])->toString();
 
     return $response->addCommand(new RedirectCommand($url));
+  }
+
+  /**
+   * Rewrites the words in the section the person pointed at.
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The response.
+   */
+  public function change(array &$form, FormStateInterface $form_state): AjaxResponse {
+    $response = new AjaxResponse();
+    $nodeId = (int) $form_state->get('pb_ai_node');
+    $field = (string) $form_state->get('pb_ai_field');
+    $paragraphId = (int) $form_state->getValue('existing');
+    $words = trim((string) $form_state->getValue('words'));
+
+    if ($paragraphId === 0) {
+      return $this->say($response, 'error', ['Choose which section to change.']);
+    }
+
+    if ($words === '') {
+      return $this->say($response, 'error', ['Say what should change about it.']);
+    }
+
+    $node = $this->entityTypeManager->getStorage('node')->load($nodeId);
+
+    if (!$node instanceof NodeInterface) {
+      return $this->say($response, 'error', ['This page could not be loaded again.']);
+    }
+
+    $current = $this->editor->currentValues($paragraphId);
+    $bundle = $this->bundleOf($node, $field, $paragraphId);
+
+    if ($bundle === '') {
+      return $this->say($response, 'error', [
+        'That section is not on this page. Pick one from the list.',
+      ]);
+    }
+
+    $draft = $this->drafter->draftEdit($bundle, $current, $words);
+
+    if (!$draft->usable) {
+      return $this->say($response, 'error', $draft->refusals);
+    }
+
+    $outcome = $this->editor->edit($node, $field, $paragraphId, $draft->values);
+
+    if (!$outcome->changed) {
+      return $this->say(
+        $response,
+        $outcome->refusals === [] ? 'status' : 'error',
+        $outcome->refusals === [] ? $outcome->notes : $outcome->refusals,
+      );
+    }
+
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $nodeId], [
+      'query' => ['pb-ai-updated' => (string) $paragraphId],
+    ])->toString();
+
+    return $response->addCommand(new RedirectCommand($url));
+  }
+
+  /**
+   * The bundle of a section that is on this page.
+   *
+   * Asked of the PAGE rather than of the paragraph storage, so an id that
+   * belongs to some other page cannot be edited through this form.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The page.
+   * @param string $field
+   *   The paragraph field.
+   * @param int $paragraphId
+   *   The section.
+   *
+   * @return string
+   *   The bundle, or an empty string when that section is not on this page.
+   */
+  private function bundleOf(NodeInterface $node, string $field, int $paragraphId): string {
+    foreach ($this->catalog->onPage($node, $field) as $section) {
+      if ($section['id'] === $paragraphId) {
+        return $section['bundle'];
+      }
+    }
+
+    return '';
   }
 
   /**

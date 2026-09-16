@@ -30,4 +30,24 @@ interface SectionDrafterInterface {
    */
   public function draft(string $bundle, string $words, int $children = 0): DraftedSection;
 
+  /**
+   * Rewrites the words in a section that already exists.
+   *
+   * The current values go to the model so it can change what was asked and
+   * leave the rest alone. It returns only the fields it wants changed — a
+   * rewrite of a title is not permission to invent an alignment.
+   *
+   * @param string $bundle
+   *   Paragraph bundle machine name of the section being changed.
+   * @param array<string, string> $current
+   *   Field machine name => what the section says now.
+   * @param string $words
+   *   What the person asked for.
+   *
+   * @return \Drupal\paragraphs_bundles_ai\Model\DraftedSection
+   *   The proposal, or why there is none. Children are never proposed here:
+   *   changing the structure of an existing section is not this feature.
+   */
+  public function draftEdit(string $bundle, array $current, string $words): DraftedSection;
+
 }
