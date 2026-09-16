@@ -78,6 +78,19 @@ final class FieldDrafter implements FieldDrafterInterface {
         continue;
       }
 
+      // NOR IS STYLING CONTENT, and one field made this worth its own check:
+      // `pb_display_css_classes` is a text field, so it passed the type test
+      // and was offered on 31 bundles — inviting a model to invent CSS class
+      // names. The validator would reject anything unsafe, so this was never a
+      // hole; it was an invitation, and it should never have been on the menu.
+      //
+      // The name is the right test here, not the form display: this asks what
+      // a person may be given WORDS for, and no styling field qualifies
+      // whichever tab a site has moved it to.
+      if (str_starts_with((string) $name, 'pb_display_')) {
+        continue;
+      }
+
       $type = $definition->getType();
 
       if (!array_key_exists($type, self::TEXTUAL)) {

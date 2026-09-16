@@ -146,17 +146,25 @@ final class SectionWriter implements SectionWriterInterface {
       if ($limit !== FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED) {
         $room = $limit - $existing->get($fieldName)->count();
 
+        // THE LABEL, NOT THE MACHINE NAME. These sentences reach an editor
+        // through a chat window, word for word: "The field
+        // pb_content_reference_para_block holds at most 2" tells a person
+        // nothing they can act on, and it was the shipped behaviour until
+        // 2026-09-16. The site builder already named this field in words;
+        // this says what they said.
+        $label = (string) $existing->get($fieldName)->getFieldDefinition()->getLabel();
+
         if ($count > $room) {
           return CreationResult::refused([
             $room <= 0
               ? sprintf(
-                'The field %s is full — it holds %d and that is its limit. Replace the sections, or remove one first.',
-                $fieldName,
+                'The "%s" field is full — it holds %d and that is its limit. Remove one first, or replace what is there.',
+                $label,
                 $limit,
             )
               : sprintf(
-                'The field %s holds at most %d, so there is room for %d more, not %d.',
-                $fieldName,
+                'The "%s" field holds at most %d, so there is room for %d more, not %d.',
+                $label,
                 $limit,
                 $room,
                 $count,
