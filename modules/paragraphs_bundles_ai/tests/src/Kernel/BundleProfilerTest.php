@@ -52,6 +52,13 @@ final class BundleProfilerTest extends KernelTestBase {
     'field_group',
     'entity_reference_revisions',
     'paragraphs',
+    // REQUIRED SINCE 2026-09-16, and the reason is worth keeping. This module
+    // declares paragraphs_bundles as a hard dependency in its info.yml, and
+    // SectionCatalog now injects the parent's bundle_slugger so the DOM id has
+    // one owner. A kernel test that installs this module WITHOUT its parent is
+    // therefore testing a configuration that cannot exist on a site — and it
+    // fails at container compile, taking all 55 tests in the module with it.
+    'paragraphs_bundles',
     'paragraphs_bundles_ai',
   ];
 

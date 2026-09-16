@@ -48,6 +48,10 @@ final class TargetResolverTest extends KernelTestBase {
     'file',
     'entity_reference_revisions',
     'paragraphs',
+    // The parent is a hard dependency in info.yml, and this module's services
+    // now reference one of its services. Installing this module without it is
+    // a configuration no site can have, and it fails at container compile.
+    'paragraphs_bundles',
     'paragraphs_bundles_ai',
   ];
 

@@ -185,6 +185,24 @@ final class BundleProfiler implements BundleProfilerInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function parents(): array {
+    $all = $this->all();
+    $children = [];
+
+    foreach ($all as $profile) {
+      foreach ($profile->childFields as $accepts) {
+        foreach ($accepts as $bundle) {
+          $children[$bundle] = TRUE;
+        }
+      }
+    }
+
+    return array_diff_key($all, $children);
+  }
+
+  /**
    * The default form display for a bundle, when it has one.
    *
    * @param string $bundle

@@ -60,6 +60,30 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface: '@paragraphs_bundles_ai.section_composer'
 
+  # Decides whether the assistant appears on a page being VIEWED. Five
+  # conditions, none of them visible from the page, and the reason travels with
+  # the answer so "nothing appeared" is a sentence rather than a mystery.
+  paragraphs_bundles_ai.page_surface:
+    class: Drupal\paragraphs_bundles_ai\Service\PageSurface
+    arguments:
+      - '@entity_field.manager'
+      - '@config.factory'
+      - '@current_user'
+
+  Drupal\paragraphs_bundles_ai\Service\PageSurfaceInterface: '@paragraphs_bundles_ai.page_surface'
+
+  # Fills the two dropdowns: the parents a person may add, and the sections
+  # already on this page. Both built on the server, so the model is handed a
+  # machine name and a paragraph id rather than asked to guess either.
+  paragraphs_bundles_ai.section_catalog:
+    class: Drupal\paragraphs_bundles_ai\Service\SectionCatalog
+    arguments:
+      - '@paragraphs_bundles_ai.bundle_profiler'
+      - '@entity_field.manager'
+      - '@paragraphs_bundles.bundle_slugger'
+
+  Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface: '@paragraphs_bundles_ai.section_catalog'
+
   # The chat surface. It reads four things that are each invisible from a node
   # form — a module, a setting, an assistant, a permission — which is why the
   # decision lives here where it can be tested one refusal at a time.

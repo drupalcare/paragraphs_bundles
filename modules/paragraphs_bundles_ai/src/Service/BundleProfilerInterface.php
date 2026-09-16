@@ -36,4 +36,24 @@ interface BundleProfilerInterface {
    */
   public function all(): array;
 
+  /**
+   * The bundles a person adds to a page, as opposed to inside another section.
+   *
+   * THE RULE IS COMPUTED, NOT NAMED. A bundle is a CHILD when some other
+   * bundle's field names it explicitly — which is a fact in config, not a
+   * guess from the `_section_` naming convention. Measured 2026-09-16 on
+   * sts.local: 8 of the 40 installed bundles are named that way, leaving 32
+   * parents, and every one of the 8 is a `*_section_bundle`. The two agree
+   * today; when they disagree, config is right and the name is decoration.
+   *
+   * ⚠ A field that accepts ANY bundle names nothing, so it marks nothing as a
+   * child. On a site where every field accepts anything, every bundle is a
+   * parent — which is the honest answer, not a bug: nothing there says a slide
+   * belongs inside a slideshow.
+   *
+   * @return array<string, \Drupal\paragraphs_bundles_ai\Model\BundleProfile>
+   *   Bundle machine name => profile, sorted, children removed.
+   */
+  public function parents(): array;
+
 }
