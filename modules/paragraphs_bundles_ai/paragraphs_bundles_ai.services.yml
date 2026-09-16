@@ -24,6 +24,18 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionWriterInterface: '@paragraphs_bundles_ai.section_writer'
 
+  # Reads only, and the one every other service should ask before it guesses at
+  # a field name. The content/display split it reports comes from the INSTALLED
+  # form display, not from the module's shipped files, because the site a
+  # person is looking at is the one the assistant has to describe.
+  paragraphs_bundles_ai.bundle_profiler:
+    class: Drupal\paragraphs_bundles_ai\Service\BundleProfiler
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+
+  Drupal\paragraphs_bundles_ai\Service\BundleProfilerInterface: '@paragraphs_bundles_ai.bundle_profiler'
+
   # Reads only. It answers "what does this section hold, and will this text
   # fit" — the two things nothing else in the module can tell a caller, and
   # both of which a model otherwise guesses.
