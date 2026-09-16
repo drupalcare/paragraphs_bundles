@@ -61,6 +61,34 @@ final class SectionWriter implements SectionWriterInterface {
     bool $replace = FALSE,
   ): CreationResult {
     $count = max(1, $count);
+
+    return $this->attach(
+      $contentType,
+      $field,
+      $bundle,
+      $count,
+      fn(): array => $this->createEmpty($bundle, $count),
+      $title,
+      $nodeId,
+      $replace,
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function attach(
+    ?string $contentType,
+    ?string $field,
+    string $bundle,
+    int $count,
+    callable $build,
+    string $title = '',
+    ?int $nodeId = NULL,
+    bool $replace = FALSE,
+    bool $empty = TRUE,
+  ): CreationResult {
+    $count = max(1, $count);
     $existing = NULL;
 
     // An existing node fixes the content type: taking one from the caller as
@@ -146,16 +174,10 @@ final class SectionWriter implements SectionWriterInterface {
       ]);
     }
 
-    $paragraphs = [];
-
-    for ($i = 0; $i < $count; $i++) {
-      $paragraph = Paragraph::create(['type' => $bundle]);
-      $paragraph->save();
-      $paragraphs[] = [
-        'target_id' => $paragraph->id(),
-        'target_revision_id' => $paragraph->getRevisionId(),
-      ];
-    }
+    // Built only now, after every precondition has passed. Creating the
+    // paragraphs earlier and refusing afterwards would leave them saved,
+    // parentless and invisible to the person who asked.
+    $paragraphs = $build();
 
     // Rule 3, stated as code: append unless told otherwise, and say which
     // happened. `replace` is never inferred from context.
@@ -192,7 +214,9 @@ final class SectionWriter implements SectionWriterInterface {
       $existing->setRevisionUserId((int) $this->currentUser->id());
       $existing->save();
 
-      $notes[] = 'The new sections are empty — fill them in on the page.';
+      if ($empty) {
+        $notes[] = 'The new sections are empty — fill them in on the page.';
+      }
 
       return CreationResult::written(
         (int) $existing->id(),
@@ -221,9 +245,37 @@ final class SectionWriter implements SectionWriterInterface {
     $notes[] = $node->isPublished()
       ? 'CAREFUL: this site published the page on save, despite being asked not to — check the content type\'s moderation workflow.'
       : 'The page is UNPUBLISHED — nobody can see it but you.';
-    $notes[] = 'The new sections are empty — fill them in on the page.';
+    if ($empty) {
+      $notes[] = 'The new sections are empty — fill them in on the page.';
+    }
 
     return CreationResult::written((int) $node->id(), NULL, TRUE, $count, $notes);
+  }
+
+  /**
+   * Creates empty paragraphs of one bundle.
+   *
+   * @param string $bundle
+   *   Paragraph bundle.
+   * @param int $count
+   *   How many.
+   *
+   * @return list<array{target_id: int|string|null, target_revision_id: int|string|null}>
+   *   Reference values for the host field.
+   */
+  private function createEmpty(string $bundle, int $count): array {
+    $paragraphs = [];
+
+    for ($i = 0; $i < $count; $i++) {
+      $paragraph = Paragraph::create(['type' => $bundle]);
+      $paragraph->save();
+      $paragraphs[] = [
+        'target_id' => $paragraph->id(),
+        'target_revision_id' => $paragraph->getRevisionId(),
+      ];
+    }
+
+    return $paragraphs;
   }
 
 }

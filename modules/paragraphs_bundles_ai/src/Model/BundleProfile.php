@@ -49,6 +49,10 @@ final readonly class BundleProfile {
    *   Fields the form display puts in no group and whose name follows neither
    *   convention. Never empty in silence: a caller shows this rather than
    *   pretending the bundle is fully understood.
+   * @param array<string, \Drupal\paragraphs_bundles_ai\Model\FieldFact> $fields
+   *   Every non-base field on the bundle, keyed by machine name, with what it
+   *   accepts. The lists above say WHERE a field lives; this says what may be
+   *   put in it, which is the half a caller needs before writing anything.
    */
   public function __construct(
     public string $bundle,
@@ -59,7 +63,21 @@ final readonly class BundleProfile {
     public array $displayFields,
     public array $childFields,
     public array $unclassified,
+    public array $fields = [],
   ) {}
+
+  /**
+   * One field's facts, when the bundle has it.
+   *
+   * @param string $name
+   *   Field machine name.
+   *
+   * @return \Drupal\paragraphs_bundles_ai\Model\FieldFact|null
+   *   The facts, or NULL when this bundle has no such field.
+   */
+  public function field(string $name): ?FieldFact {
+    return $this->fields[$name] ?? NULL;
+  }
 
   /**
    * Whether this bundle can hold child sections.

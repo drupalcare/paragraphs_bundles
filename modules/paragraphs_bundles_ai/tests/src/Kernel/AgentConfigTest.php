@@ -187,10 +187,38 @@ final class AgentConfigTest extends KernelTestBase {
       $prompt,
       'Nothing is published; a person told otherwise thinks it failed.',
     );
+    // THE ORDER CHANGED ON 2026-09-16, AND SO DID THIS ASSERTION. It used to
+    // require the words "pb_resolve_target FIRST". That stopped being true
+    // when pb_list_bundles and pb_describe_bundle were added in front of it:
+    // a model cannot resolve a target for a section whose machine name it had
+    // to invent, so discovery now comes first and resolution third.
+    //
+    // The assertion follows the RULE rather than the wording — the prompt must
+    // state an order, and discovery must come before building — so that a
+    // future reshuffle that drops the ordering entirely still fails here.
     self::assertMatchesRegularExpression(
-      '/pb_resolve_target FIRST/i',
+      '/ORDER MATTERS/i',
       $prompt,
       'The order is the safety model, and it has to be stated.',
+    );
+
+    $discovery = strpos($prompt, 'pb_list_bundles');
+    $building = strpos($prompt, 'pb_compose_section');
+
+    self::assertIsInt($discovery, 'The prompt must name the tool that finds what this site has.');
+    self::assertIsInt($building, 'The prompt must name the tool that builds.');
+    self::assertLessThan(
+      $building,
+      $discovery,
+      'Discovery is instructed before building, or the model builds with names it invented.',
+    );
+
+    // The add-only promise. A model that believes it can rewrite an existing
+    // section will offer to, and there is no tool behind the offer.
+    self::assertMatchesRegularExpression(
+      '/cannot change a section that already exists/i',
+      $prompt,
+      'The prompt must say plainly what it cannot do, or it will promise it.',
     );
   }
 

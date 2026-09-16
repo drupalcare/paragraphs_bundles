@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
+use Drupal\paragraphs_bundles_ai\Model\FieldFact;
 
 /**
  * Default bundle profiler.
@@ -125,6 +126,29 @@ final class BundleProfiler implements BundleProfilerInterface {
     sort($styling);
     sort($unclassified);
 
+    $children = $this->childFields($definitions);
+    $facts = [];
+
+    foreach ($definitions as $name => $definition) {
+      $storage = $definition->getFieldStorageDefinition();
+      $limit = $storage->getSetting('max_length');
+      $holdsSections = isset($children[$name]);
+
+      $facts[$name] = new FieldFact(
+        $name,
+        (string) $definition->getLabel(),
+        $definition->getType(),
+        in_array($name, $content, TRUE) ? 'content' : (in_array($name, $styling, TRUE) ? 'display' : 'unknown'),
+        $definition->isRequired(),
+        is_numeric($limit) ? (int) $limit : NULL,
+        $this->allowedValues($definition),
+        $holdsSections ? $children[$name] : [],
+        $holdsSections,
+      );
+    }
+
+    ksort($facts);
+
     return new BundleProfile(
       $bundle,
       (string) $type->label(),
@@ -135,8 +159,9 @@ final class BundleProfiler implements BundleProfilerInterface {
       $this->titleField($content, $definitions),
       $content,
       $styling,
-      $this->childFields($definitions),
+      $children,
       $unclassified,
+      $facts,
     );
   }
 
@@ -348,6 +373,30 @@ final class BundleProfiler implements BundleProfilerInterface {
     sort($out);
 
     return $out;
+  }
+
+  /**
+   * The keys a list field accepts, when it is one.
+   *
+   * THE KEYS, NOT THE LABELS. A list field stores the key and displays the
+   * label, and a caller writing "Heading 2" into a field whose key is `h2`
+   * produces a value the field does not have. Handing over the keys is the
+   * difference between a choice and a guess.
+   *
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $definition
+   *   The field.
+   *
+   * @return list<string>
+   *   Allowed keys, or an empty list for a field with no fixed set.
+   */
+  private function allowedValues(FieldDefinitionInterface $definition): array {
+    $allowed = $definition->getFieldStorageDefinition()->getSetting('allowed_values');
+
+    if (!is_array($allowed) || $allowed === []) {
+      return [];
+    }
+
+    return array_map(strval(...), array_keys($allowed));
   }
 
 }

@@ -56,6 +56,9 @@ final class ToolDiscoveryTest extends KernelTestBase {
     'pb_resolve_target' => 'pb_content:resolve_target',
     'pb_draft_field_text' => 'pb_content:draft_field_text',
     'pb_create_sections' => 'pb_content:create_sections',
+    'pb_list_bundles' => 'pb_content:list_bundles',
+    'pb_describe_bundle' => 'pb_content:describe_bundle',
+    'pb_compose_section' => 'pb_content:compose_section',
   ];
 
   /**
