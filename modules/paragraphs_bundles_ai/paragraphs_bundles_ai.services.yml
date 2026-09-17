@@ -110,6 +110,16 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface: '@paragraphs_bundles_ai.section_drafter'
 
+  # The named looks. Reads config a person wrote, and filters each preset to
+  # the fields the chosen bundle actually has — which is what lets one preset
+  # apply to all 35 sections with a Display tab.
+  paragraphs_bundles_ai.style_presets:
+    class: Drupal\paragraphs_bundles_ai\Service\StylePresets
+    arguments:
+      - '@config.factory'
+
+  Drupal\paragraphs_bundles_ai\Service\StylePresetsInterface: '@paragraphs_bundles_ai.style_presets'
+
   # Changes the words in ONE section the person pointed at. It proves the
   # section is on the page being viewed before touching it, writes a new
   # paragraph revision and then a new node revision, and returns the revision

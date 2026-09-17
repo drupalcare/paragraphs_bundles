@@ -12,10 +12,12 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\node\NodeInterface;
+use Drupal\paragraphs_bundles_ai\Service\BundleProfilerInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface;
+use Drupal\paragraphs_bundles_ai\Service\StylePresetsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -60,6 +62,16 @@ final class PbAiPageForm extends FormBase {
   protected EntityTypeManagerInterface $entityTypeManager;
 
   /**
+   * The named looks a person may apply.
+   */
+  protected StylePresetsInterface $presets;
+
+  /**
+   * Says which fields a bundle has, so a preset can be filtered to it.
+   */
+  protected BundleProfilerInterface $profiler;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
@@ -69,6 +81,8 @@ final class PbAiPageForm extends FormBase {
     $form->composer = $container->get(SectionComposerInterface::class);
     $form->editor = $container->get(SectionEditorInterface::class);
     $form->entityTypeManager = $container->get('entity_type.manager');
+    $form->presets = $container->get(StylePresetsInterface::class);
+    $form->profiler = $container->get(BundleProfilerInterface::class);
 
     return $form;
   }
@@ -130,6 +144,20 @@ final class PbAiPageForm extends FormBase {
       '#required' => TRUE,
       '#placeholder' => $this->t('A hero about our autumn range, warm and short.'),
     ];
+
+    // A named look, chosen by a person. The assistant is never asked for a
+    // colour: these values were written and their contrast checked once, and
+    // applying one repeats that decision rather than making a new one.
+    $styles = $this->presets->options();
+
+    if ($styles !== []) {
+      $form['style'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Style'),
+        '#options' => $styles,
+        '#empty_option' => $this->t('- Leave the styling alone -'),
+      ];
+    }
 
     // The second dropdown, and only when there is something in it. An empty
     // "change a section" control on a page with no sections is a control that
@@ -219,6 +247,17 @@ final class PbAiPageForm extends FormBase {
       return $this->say($response, 'error', $draft->refusals);
     }
 
+    // The preset is resolved HERE, against this bundle, rather than trusted as
+    // written: a section without a border simply does not get one, and a key a
+    // site has renamed is dropped instead of saved and silently ignored.
+    $styling = [];
+    $style = (string) $form_state->getValue('style');
+    $profile = $style === '' ? NULL : $this->profiler->profile($bundle);
+
+    if ($profile !== NULL) {
+      $styling = $this->presets->valuesFor($style, $profile);
+    }
+
     // The composer re-checks every value against the real fields, so a model
     // that answered with something impossible is refused here rather than
     // written and discovered later.
@@ -231,6 +270,7 @@ final class PbAiPageForm extends FormBase {
       NULL,
       '',
       $nodeId,
+      $styling,
     );
 
     if (!$result->created) {

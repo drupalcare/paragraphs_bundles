@@ -46,6 +46,16 @@ interface SectionComposerInterface {
    *   Title for a new page. Required when $nodeId is NULL.
    * @param int|null $nodeId
    *   Page to add to, or NULL to create a new unpublished one.
+   * @param array<string, mixed> $styling
+   *   Display-field values from a NAMED PRESET, already checked against this
+   *   bundle by StylePresets.
+   *
+   *   These are the one exception to "styling is refused". The refusal exists
+   *   because a model choosing colours produces a section nobody checked; a
+   *   preset is colours a PERSON chose and checked once, so applying them is
+   *   repeating a human decision rather than making a machine one. They
+   *   therefore arrive in their own parameter — never mixed into $values,
+   *   where a model's answer lives.
    *
    * @return \Drupal\paragraphs_bundles_ai\Model\CreationResult
    *   What was written, or why nothing was.
@@ -59,6 +69,7 @@ interface SectionComposerInterface {
     ?string $childField = NULL,
     string $title = '',
     ?int $nodeId = NULL,
+    array $styling = [],
   ): CreationResult;
 
 }

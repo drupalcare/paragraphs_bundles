@@ -60,6 +60,7 @@ final class SectionComposer implements SectionComposerInterface {
     ?string $childField = NULL,
     string $title = '',
     ?int $nodeId = NULL,
+    array $styling = [],
   ): CreationResult {
     $bundle = trim($bundle);
     $profile = $this->profiler->profile($bundle);
@@ -92,6 +93,12 @@ final class SectionComposer implements SectionComposerInterface {
     if ($problems !== []) {
       return CreationResult::refused($problems);
     }
+
+    // Preset values join the section's own values only here, at the last
+    // moment, and never go through check() — that function's job is to judge
+    // what a MODEL proposed. These were judged by a person when the preset was
+    // written, and by StylePresets against this bundle's real fields.
+    $parentValues += $styling;
 
     $result = $this->writer->attach(
       $contentType,

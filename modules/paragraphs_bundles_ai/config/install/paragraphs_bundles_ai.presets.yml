@@ -1,0 +1,59 @@
+## Named looks a person can apply to any section.
+#
+# WHY THESE ARE CONFIG AND NOT SOMETHING THE MODEL INVENTS. A colour field
+# here takes any hex value, so "warm" means whatever somebody decides it
+# means. A model deciding it produces a section nobody checked; a person
+# deciding it once, here, produces a section that was checked once and then
+# works everywhere. The assistant may name a preset. It never names a colour.
+#
+# EVERY VALUE IS REAL. The colour fields validate at the field layer against
+# `#abc`, `#1a2b3c` or an "r, g, b" triplet, opacity is an integer 0-100, and
+# the spacing fields accept only their own keys — so these were written from
+# the field definitions rather than from taste alone.
+#
+# THEY APPLY TO ANY BUNDLE because they are written in the fields that exist
+# on all 35 sections with a Display tab. A section missing one simply does not
+# get that value; nothing errors and nothing is invented to fill the gap.
+presets:
+  warm:
+    label: Warm
+    values:
+      pb_display_bg: '#fff4e6'
+      pb_display_bg_opacity: 100
+      pb_display_text: '#3b2a1a'
+      pb_display_link: '#9a4a16'
+      pb_display_link_hover: '#6e3410'
+      pb_display_padding: pb__padding_32
+      pb_display_border_radius: pb__round_medium
+      pb_display_shadow: pb__card_2
+  calm:
+    label: Calm
+    values:
+      pb_display_bg: '#eef3f6'
+      pb_display_bg_opacity: 100
+      pb_display_text: '#1f2a30'
+      pb_display_link: '#1b5e73'
+      pb_display_link_hover: '#123f4e'
+      pb_display_padding: pb__padding_32
+      pb_display_border_radius: pb__round_small
+  dark:
+    label: Dark
+    values:
+      pb_display_bg: '#15191a'
+      pb_display_bg_opacity: 100
+      pb_display_text: '#eef2ec'
+      pb_display_link: '#6fc7b6'
+      pb_display_link_hover: '#a7e0d4'
+      pb_display_padding: pb__padding_48
+      pb_display_border_radius: pb__round_medium
+  high_contrast:
+    label: 'High contrast'
+    values:
+      pb_display_bg: '#ffffff'
+      pb_display_bg_opacity: 100
+      pb_display_text: '#000000'
+      pb_display_link: '#0033cc'
+      pb_display_link_hover: '#001f7a'
+      pb_display_border: pb__border
+      pb_display_border_color: '#000000'
+      pb_display_padding: pb__padding_32

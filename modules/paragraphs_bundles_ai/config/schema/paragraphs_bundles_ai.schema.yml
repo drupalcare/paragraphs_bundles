@@ -7,3 +7,29 @@ paragraphs_bundles_ai.settings:
       label: 'AI assistant used on node forms'
       # '' means the surface is off, which is the installed default and a
       # legitimate resting state — not a missing value.
+
+paragraphs_bundles_ai.presets:
+  type: config_object
+  label: 'Named looks a person can apply to a section'
+  mapping:
+    presets:
+      type: sequence
+      label: Presets
+      sequence:
+        type: mapping
+        label: Preset
+        mapping:
+          label:
+            type: label
+            label: 'What it is called'
+          values:
+            type: sequence
+            label: 'Field values'
+            sequence:
+              # Deliberately `ignore`: the keys are display field names that
+              # differ per site, and the values are whatever those fields take
+              # — a hex colour, an integer, or one of a list field's own keys.
+              # StylePresets checks each one against the real field before it
+              # is used, which is a check the schema cannot make.
+              type: ignore
+              label: Value
