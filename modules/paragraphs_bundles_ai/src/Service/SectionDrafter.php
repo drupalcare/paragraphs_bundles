@@ -6,6 +6,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\ai\Dto\StructuredOutputSchema;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
@@ -31,17 +32,14 @@ use Drupal\paragraphs_bundles_ai\Model\DraftedSection;
  *
  * IT NEVER CHOOSES A TARGET. No bundle, no node, no field comes from the
  * model: those arrive from two dropdowns and the page the person is on.
+ * WHICH FIELDS CAN BE FILLED BY WRITING IS NOT DECIDED HERE. It is a property
+ * of the field, answered by FieldFact::isWords(), so a reference, an image or
+ * a colour never reaches the schema — and the answer lives in one place rather
+ * than in three services that could drift apart.
  */
 final class SectionDrafter implements SectionDrafterInterface {
 
-  /**
-   * Field types this can ask for. Everything else is left alone.
-   *
-   * Plain text only, by decision: an image, a link or a reference needs a
-   * value that exists on this site, and a model that guesses one produces
-   * something that looks right and points nowhere.
-   */
-  private const TEXTUAL = ['string', 'string_long', 'text', 'text_long', 'list_string'];
+  use StringTranslationTrait;
 
   /**
    * Constructs the drafter.
@@ -67,29 +65,41 @@ final class SectionDrafter implements SectionDrafterInterface {
     $words = trim($words);
 
     if ($words === '') {
-      return DraftedSection::refused(['Say what the section should be about.']);
+      return DraftedSection::refused([$this->t('Say what the section should be about.')]);
     }
 
     $profile = $this->profiler->profile($bundle);
 
     if ($profile === NULL) {
-      return DraftedSection::refused([sprintf('There is no section "%s" on this site.', $bundle)]);
+      return DraftedSection::refused([
+        $this->t('There is no section "@section" on this site.', ['@section' => $bundle]),
+      ]);
     }
 
     [$providerId, $modelId] = $this->chosenProvider();
 
     if ($providerId === '') {
       return DraftedSection::refused([
-        'No default AI provider is set for chat. Choose one at Configuration › AI › Settings.',
+        $this->t('No default AI provider is set for chat. Choose one at Configuration › AI › Settings.'),
       ]);
     }
 
-    $childBundle = $children > 0 ? $this->soleChildBundle($profile) : NULL;
+    $childBundle = $children > 0 ? $profile->soleChildBundle() : NULL;
+
+    // ASKED FOR CHILDREN THAT CANNOT BE WRITTEN — say so, rather than build
+    // the section without them and report success. Measured 2026-09-17: this
+    // was silent on 12 of the 18 nesting bundles PB ships, so "Two columns,
+    // how many: 3" produced an empty section, badged New, with notes that
+    // never mentioned the three missing cards.
+    if ($children > 0 && $childBundle === NULL) {
+      return DraftedSection::refused([$this->whyNoChildren($profile)]);
+    }
+
     $schema = $this->schemaFor($profile, $childBundle, $children);
 
     if ($schema === []) {
       return DraftedSection::refused([
-        sprintf('The section %s has no text fields to fill in.', $profile->label),
+        $this->t('The section @section has no text fields to fill in.', ['@section' => $profile->label]),
       ]);
     }
 
@@ -104,7 +114,7 @@ final class SectionDrafter implements SectionDrafterInterface {
 
     $answer = $this->ask($input, $providerId, $modelId);
 
-    if (is_string($answer)) {
+    if (!is_array($answer)) {
       return DraftedSection::refused([$answer]);
     }
 
@@ -122,20 +132,22 @@ final class SectionDrafter implements SectionDrafterInterface {
     $words = trim($words);
 
     if ($words === '') {
-      return DraftedSection::refused(['Say what should change about this section.']);
+      return DraftedSection::refused([$this->t('Say what should change about this section.')]);
     }
 
     $profile = $this->profiler->profile($bundle);
 
     if ($profile === NULL) {
-      return DraftedSection::refused([sprintf('There is no section "%s" on this site.', $bundle)]);
+      return DraftedSection::refused([
+        $this->t('There is no section "@section" on this site.', ['@section' => $bundle]),
+      ]);
     }
 
     [$providerId, $modelId] = $this->chosenProvider();
 
     if ($providerId === '') {
       return DraftedSection::refused([
-        'No default AI provider is set for chat. Choose one at Configuration › AI › Settings.',
+        $this->t('No default AI provider is set for chat. Choose one at Configuration › AI › Settings.'),
       ]);
     }
 
@@ -143,7 +155,7 @@ final class SectionDrafter implements SectionDrafterInterface {
 
     if ($properties === []) {
       return DraftedSection::refused([
-        sprintf('The section %s has no text fields to change.', $profile->label),
+        $this->t('The section @section has no text fields to change.', ['@section' => $profile->label]),
       ]);
     }
 
@@ -170,7 +182,7 @@ final class SectionDrafter implements SectionDrafterInterface {
 
     $answer = $this->ask($input, $providerId, $modelId);
 
-    if (is_string($answer)) {
+    if (!is_array($answer)) {
       return DraftedSection::refused([$answer]);
     }
 
@@ -189,10 +201,10 @@ final class SectionDrafter implements SectionDrafterInterface {
    * @param string $modelId
    *   Model id.
    *
-   * @return array<string, mixed>|string
+   * @return array<string, mixed>|string|\Stringable
    *   The decoded answer, or a sentence explaining why there is none.
    */
-  private function ask(ChatInput $input, string $providerId, string $modelId): array|string {
+  private function ask(ChatInput $input, string $providerId, string $modelId): array|string|\Stringable {
     try {
       $provider = $this->providerManager->createInstance($providerId);
       $output = $provider->chat($input, $modelId, ['paragraphs_bundles_ai']);
@@ -203,14 +215,14 @@ final class SectionDrafter implements SectionDrafterInterface {
       // The provider's own message is relayed rather than replaced: "model not
       // found" and "rate limited" need different actions from the person, and
       // one generic sentence hides which one happened.
-      return 'The AI provider could not answer: ' . $error->getMessage();
+      return $this->t('The AI provider could not answer: @error', ['@error' => $error->getMessage()]);
     }
 
     $decoded = json_decode($text, TRUE);
 
     return is_array($decoded)
       ? $decoded
-      : 'The model did not answer in the shape this section needs. Try again, or say it differently.';
+      : $this->t('The model did not answer in the shape this section needs. Try again, or say it differently.');
   }
 
   /**
@@ -234,26 +246,36 @@ final class SectionDrafter implements SectionDrafterInterface {
   }
 
   /**
-   * The one bundle a section's children must be, when there is exactly one.
+   * Why children could not be written, in words the person can act on.
    *
-   * Every nesting bundle PB ships that names its children names exactly one —
-   * a slideshow takes slides and nothing else — so the person never has to
-   * choose a child type, and neither does the model.
+   * The two causes need different actions — one is a question only the person
+   * can answer, the other is a gap in how the site configured the field — so
+   * collapsing them into "could not add children" would hide which.
    *
    * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
    *   The parent.
    *
-   * @return string|null
-   *   The child bundle, or NULL when it is not a single obvious one.
+   * @return \Stringable|string
+   *   A complete sentence.
    */
-  private function soleChildBundle(BundleProfile $profile): ?string {
-    if (count($profile->childFields) !== 1) {
-      return NULL;
+  private function whyNoChildren(BundleProfile $profile): \Stringable|string {
+    $fields = array_keys($profile->childFields);
+
+    if (count($fields) > 1) {
+      return $this->t('A "@section" holds sections in more than one place (@fields), so I cannot tell where these should go. Add the section first, then put them in the one you want.', [
+        '@section' => $profile->label,
+        '@fields' => implode(' and ', $fields),
+      ]);
     }
 
-    $accepts = reset($profile->childFields);
+    if ($fields === []) {
+      return $this->t('A "@section" cannot hold other sections.', ['@section' => $profile->label]);
+    }
 
-    return count($accepts) === 1 ? (string) reset($accepts) : NULL;
+    return $this->t('The "@field" field on a "@section" accepts any kind of section, so this site has never said what belongs inside one. I can add the section itself, but you will need to choose what goes in it.', [
+      '@field' => (string) $fields[0],
+      '@section' => $profile->label,
+    ]);
   }
 
   /**
@@ -311,15 +333,19 @@ final class SectionDrafter implements SectionDrafterInterface {
     foreach ($profile->contentFields as $name) {
       $fact = $profile->field($name);
 
-      if ($fact === NULL || $fact->holdsSections) {
+      if ($fact === NULL || !$fact->isWords()) {
         continue;
       }
 
-      if (!in_array($fact->type, self::TEXTUAL, TRUE)) {
-        continue;
-      }
-
-      $property = ['type' => 'string', 'description' => $fact->label];
+      // The label says what the field is CALLED; the description says what
+      // belongs in it. Both go, because the label alone described
+      // `pb_content_title` to the model as "Title" and nothing more.
+      $property = [
+        'type' => 'string',
+        'description' => $fact->description === ''
+          ? $fact->label
+          : $fact->label . ' — ' . $fact->description,
+      ];
 
       // A list field's real keys, so the answer is a choice rather than a
       // guess at what "centre" might be stored as.
@@ -353,13 +379,36 @@ final class SectionDrafter implements SectionDrafterInterface {
   private function systemPrompt(BundleProfile $profile, ?string $childBundle, int $children): string {
     $lines = [
       sprintf('You are writing the content of one "%s" section on a Drupal site.', $profile->label),
-      'Answer only with the fields in the schema. Leave out any field the person did not ask for rather than inventing something to fill it.',
-      'Write plain text. No HTML, no Markdown, no quotation marks around the whole value.',
-      'Keep to any character limit in the schema: the field will not hold more.',
     ];
 
+    // WHAT THE SECTION IS, not just what it is called. A label alone leaves the
+    // model guessing from a name: asked for a parallax it returned a
+    // description of the layout, because nothing had told it a parallax is a
+    // banner with content over a fixed image. PB ships this text already.
+    if ($profile->description !== '') {
+      $lines[] = sprintf('What a "%s" is: %s', $profile->label, $profile->description);
+    }
+
+    $lines[] = 'Answer only with the fields in the schema. Leave out any field the person did not ask for rather than inventing something to fill it.';
+    $lines[] = 'Write plain text. No HTML, no Markdown, no quotation marks around the whole value.';
+    $lines[] = 'Keep to any character limit in the schema: the field will not hold more.';
+
     if ($childBundle !== NULL && $children > 0) {
-      $lines[] = sprintf('Also write %d child section(s) in "children", in the order they should appear.', $children);
+      $childProfile = $this->profiler->profile($childBundle);
+      $childLabel = $childProfile === NULL ? $childBundle : $childProfile->label;
+
+      $lines[] = sprintf(
+        'Also write %d "%s" child section(s) in "children", in the order they should appear.',
+        $children,
+        $childLabel,
+      );
+
+      // And what a child IS, for the same reason as the parent.
+      if ($childProfile !== NULL && $childProfile->description !== '') {
+        $lines[] = sprintf('Each "%s" is: %s', $childLabel, $childProfile->description);
+      }
+
+      $lines[] = 'Write real content for each child, not a description of what the section looks like.';
     }
 
     return implode("\n", $lines);

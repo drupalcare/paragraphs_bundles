@@ -53,6 +53,13 @@ final readonly class BundleProfile {
    *   Every non-base field on the bundle, keyed by machine name, with what it
    *   accepts. The lists above say WHERE a field lives; this says what may be
    *   put in it, which is the half a caller needs before writing anything.
+   * @param string $description
+   *   What this section IS, in the site builder's words — PB ships one for
+   *   nearly every bundle. Everything else here describes a bundle's SHAPE; a
+   *   shape does not tell a model that a parallax is a banner that scrolls
+   *   behind its text, so it filled parallax children with descriptions of the
+   *   layout instead of content. Measured 2026-09-17: nothing in this module
+   *   read a description at all.
    */
   public function __construct(
     public string $bundle,
@@ -64,7 +71,34 @@ final readonly class BundleProfile {
     public array $childFields,
     public array $unclassified,
     public array $fields = [],
+    public string $description = '',
   ) {}
+
+  /**
+   * The fields a person must fill in themselves for this section to work.
+   *
+   * A views section needs a view; a webform section needs a webform; an image
+   * section needs an image. None of those can be written, and a model that
+   * guessed one would produce a section that saves cleanly and shows nothing.
+   *
+   * So the section is still created — the words are worth having — and this is
+   * what the person is told to finish. Measured on sts.local: 4 of the 32
+   * sections have exactly one such field, and icon_bundle has six.
+   *
+   * @return array<string, \Drupal\paragraphs_bundles_ai\Model\FieldFact>
+   *   Field machine name => facts, for the fields that need a human.
+   */
+  public function needsByHand(): array {
+    $out = [];
+
+    foreach ($this->fields as $name => $fact) {
+      if ($fact->tab === 'content' && $fact->needsChoosing()) {
+        $out[$name] = $fact;
+      }
+    }
+
+    return $out;
+  }
 
   /**
    * One field's facts, when the bundle has it.
@@ -87,6 +121,55 @@ final readonly class BundleProfile {
    */
   public function nests(): bool {
     return $this->childFields !== [];
+  }
+
+  /**
+   * The one bundle this section's children must be, when there is exactly one.
+   *
+   * ONE OWNER FOR THIS QUESTION, and it was two. The drafter answered it
+   * privately while the form asked a different one — `nests()`, which is only
+   * "has a field that holds sections". They disagree on 12 of the 18 nesting
+   * bundles PB ships: the form offered "How many", the drafter quietly
+   * returned no children, and the section was created empty and reported as a
+   * success.
+   *
+   * NULL is an honest answer in two distinct cases, and a caller must say
+   * which rather than treating both as "no children":
+   * - more than one field holds sections — two_columns has a left and a right,
+   *   so "put three cards in it" has not said where;
+   * - the single field accepts ANY bundle, which Drupal stores as an EMPTY
+   *   list, so the site itself has never said what kind of child belongs
+   *   there. This is the module's own empty-means-all trap, and it accounts
+   *   for 6 of the 12.
+   *
+   * @return string|null
+   *   The child bundle, or NULL when it is not a single obvious one.
+   */
+  public function soleChildBundle(): ?string {
+    // ARRAY_VALUES, NOT RESET: reset() moves the array's internal pointer,
+    // which PHP counts as modifying the property, and this class is readonly.
+    $childFields = array_values($this->childFields);
+
+    if (count($childFields) !== 1) {
+      return NULL;
+    }
+
+    $accepts = array_values($childFields[0]);
+
+    return count($accepts) === 1 ? (string) $accepts[0] : NULL;
+  }
+
+  /**
+   * Whether children can actually be written into this section.
+   *
+   * The question "How many inside it?" is worth asking only when the answer
+   * can be acted on. `nests()` is not that question.
+   *
+   * @return bool
+   *   TRUE when the assistant can both place a child and know what it is.
+   */
+  public function canDraftChildren(): bool {
+    return $this->soleChildBundle() !== NULL;
   }
 
   /**

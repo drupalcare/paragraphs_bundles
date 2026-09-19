@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Model;
 
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+
 /**
  * What changed in one section, and what it was before.
  *
@@ -24,9 +26,9 @@ final readonly class EditOutcome {
    *   The node revision that holds the change, for undo.
    * @param array<string, array{from: string, to: string}> $fields
    *   Field machine name => what it was and what it is now.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   Anything the person must be told, such as text that had to be shortened.
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Why nothing changed. Empty when $changed is TRUE.
    */
   private function __construct(
@@ -44,7 +46,7 @@ final readonly class EditOutcome {
    *   The new node revision.
    * @param array<string, array{from: string, to: string}> $fields
    *   What changed.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   What the person must be told.
    *
    * @return self
@@ -57,7 +59,7 @@ final readonly class EditOutcome {
   /**
    * Nothing changed, and why.
    *
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Complete sentences a person can act on.
    *
    * @return self
@@ -80,7 +82,13 @@ final readonly class EditOutcome {
    *   The outcome.
    */
   public static function unchanged(): self {
-    return new self(FALSE, NULL, [], ['Nothing changed — the wording that came back was the same.'], []);
+    // A STATIC FACTORY HAS NO $this, so this is the one place a
+    // TranslatableMarkup is constructed directly rather than through t().
+    // Leaving it a bare string because the trait was not reachable here is how
+    // a single untranslated sentence survives a whole translation pass.
+    return new self(FALSE, NULL, [], [
+      new TranslatableMarkup('Nothing changed — the wording that came back was the same.'),
+    ], []);
   }
 
 }

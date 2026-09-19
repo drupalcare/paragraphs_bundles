@@ -1,0 +1,119 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Drupal\paragraphs_bundles_ai\Service;
+
+use Drupal\Core\Config\ConfigFactoryInterface;
+
+/**
+ * Default reader of the shipped briefs.
+ *
+ * IT READS CONFIG, WHICH IS THE WHOLE POINT. The text lives in
+ * `config/install/paragraphs_bundles_ai.briefs.yml`, so a site can override any
+ * of it the way it overrides anything else — and, because the schema types
+ * every string as `label` or `text`, `locale` collects it for translation.
+ * Going through the config factory rather than reading the YAML by hand is what
+ * makes both of those work: the factory applies language overrides, so a French
+ * site gets the French practices without this class knowing a language exists.
+ *
+ * WHY NOT THE PARAGRAPHS TYPE DESCRIPTION, which is what the panel used until
+ * 2026-09-19 and what the maintainer reported as a bug — choosing Carousel
+ * showed *"Slides that move one at a time, across or down, with arrows or
+ * dots."* instead of the brief. The description is one sentence saying what a
+ * section IS; it shows in the paragraphs-type admin list, and editing 26 of
+ * them means 26 admin screens. A brief is a category, a line about when to
+ * reach for it, ten lines of advice and an example prompt. They are different
+ * texts with different readers, and collapsing them cost a day.
+ */
+final class Briefs implements BriefsInterface {
+
+  /**
+   * The config object holding every brief.
+   */
+  private const CONFIG = 'paragraphs_bundles_ai.briefs';
+
+  /**
+   * Constructs the reader.
+   *
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $configFactory
+   *   Reads the briefs, with any site override and any translation applied.
+   */
+  public function __construct(
+    private readonly ConfigFactoryInterface $configFactory,
+  ) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public function forBundle(string $bundle): ?array {
+    $all = $this->all();
+    $one = $all[trim($bundle)] ?? NULL;
+
+    return is_array($one) ? $this->shape($one) : NULL;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function forBundles(array $bundles): array {
+    $all = $this->all();
+    $out = [];
+
+    foreach ($bundles as $bundle) {
+      $key = trim((string) $bundle);
+
+      // Left out rather than returned empty, so a caller can tell "no brief
+      // written" from "brief written and blank". Six bundles have no brief on
+      // purpose — the ones a model cannot create.
+      if (isset($all[$key]) && is_array($all[$key])) {
+        $out[$key] = $this->shape($all[$key]);
+      }
+    }
+
+    return $out;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function practicesFor(string $bundle): string {
+    return $this->forBundle($bundle)['practices'] ?? '';
+  }
+
+  /**
+   * Every brief, as config has them.
+   *
+   * @return array<string, mixed>
+   *   Bundle machine name => brief, or an empty array when the config is
+   *   missing entirely, which is what a site that deleted it looks like.
+   */
+  private function all(): array {
+    $briefs = $this->configFactory->get(self::CONFIG)->get('briefs');
+
+    return is_array($briefs) ? $briefs : [];
+  }
+
+  /**
+   * One brief with every key present.
+   *
+   * A caller should never have to ask whether a key exists. A brief with no
+   * prompt yet — which is all of them until the maintainer writes them — comes
+   * back with an empty string rather than a missing key.
+   *
+   * @param array<string, mixed> $brief
+   *   The brief as config has it.
+   *
+   * @return array{category: string, good_for: string, practices: string, prompt: string}
+   *   The brief, complete.
+   */
+  private function shape(array $brief): array {
+    return [
+      'category' => trim((string) ($brief['category'] ?? '')),
+      'good_for' => trim((string) ($brief['good_for'] ?? '')),
+      'practices' => trim((string) ($brief['practices'] ?? '')),
+      'prompt' => trim((string) ($brief['prompt'] ?? '')),
+    ];
+  }
+
+}

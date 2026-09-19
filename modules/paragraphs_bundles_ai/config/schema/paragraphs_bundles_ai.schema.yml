@@ -1,12 +1,40 @@
-paragraphs_bundles_ai.settings:
+# WITHOUT A SCHEMA ENTRY, SHIPPED CONFIG IS NOT TRANSLATABLE AT ALL, and
+# nothing says so. `locale` collects a module's config/install strings only for
+# schema elements typed `label` or `text`; config with no schema is skipped in
+# silence, and a kernel test with strict schema checking is the only thing that
+# ever complains. The briefs below shipped for one afternoon with no entry here
+# — 32 sections of English that no site could translate.
+paragraphs_bundles_ai.briefs:
   type: config_object
-  label: 'Paragraphs Bundles AI settings'
+  label: 'Best-practice briefs, per section'
   mapping:
-    assistant:
-      type: string
-      label: 'AI assistant used on node forms'
-      # '' means the surface is off, which is the installed default and a
-      # legitimate resting state — not a missing value.
+    briefs:
+      type: sequence
+      label: Briefs
+      # Keyed by paragraph bundle machine name. A sequence rather than a fixed
+      # mapping because a site may add a brief for a bundle this module has
+      # never heard of, which is the whole point of it being config.
+      sequence:
+        type: mapping
+        label: Brief
+        mapping:
+          category:
+            # The maintainer's own grouping, by what a person is trying to
+            # BUILD. `label` because it is one short line.
+            type: label
+            label: 'Category'
+          good_for:
+            type: label
+            label: 'What it is good for'
+          practices:
+            # `text`, NOT `label`: these are many lines, and `label` is the
+            # single-line type. Both are translatable; only `text` keeps the
+            # newlines the panel splits on.
+            type: text
+            label: 'Best practices'
+          prompt:
+            type: text
+            label: 'Example prompt'
 
 paragraphs_bundles_ai.presets:
   type: config_object

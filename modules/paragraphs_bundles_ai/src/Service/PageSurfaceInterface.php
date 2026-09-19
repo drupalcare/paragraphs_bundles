@@ -23,7 +23,8 @@ interface PageSurfaceInterface {
    *   The view mode it is being rendered in.
    *
    * @return \Drupal\paragraphs_bundles_ai\Model\PageDecision
-   *   Show plus the field to write into, or hide plus the reason.
+   *   Show plus every displayed paragraph field it may write into, or hide
+   *   plus the reason.
    */
   public function decide(NodeInterface $node, string $viewMode): PageDecision;
 

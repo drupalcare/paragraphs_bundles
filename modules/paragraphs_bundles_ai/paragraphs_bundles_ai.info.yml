@@ -1,6 +1,6 @@
 name: 'Paragraphs Bundles AI'
 type: module
-description: 'Optional. Lets an editor create and fill paragraph sections by describing them, using the contrib AI module (drupal/ai). Paragraphs Bundles works exactly as before without it.'
+description: 'Optional. Adds a bar to the foot of a page you can edit: choose a section, say what it should say, and it is written for you. Uses the contrib AI module (drupal/ai). Paragraphs Bundles works exactly as before without it.'
 package: 'Paragraphs Bundles'
 
 # NOT `^11.3 || ^12`, and the difference is deliberate rather than an oversight.
@@ -28,10 +28,26 @@ core_version_requirement: ^11.3
 # tell Composer or the module installer that drupal/ai is what makes the
 # feature work. The parent must stay installable with neither.
 #
-# ai_assistant_api and ai_chatbot are deliberately absent: each adds only a
-# surface, and requiring them would make a site take modules it did not ask
-# for. The chat surface checks for them at runtime and does not render when
-# they are missing; the tools work through any drupal/ai caller regardless.
+# ai_assistant_api, ai_agents and ai_chatbot are NOT needed, and that is the
+# point of this design. This module talks to drupal/ai directly: it hands the
+# model a JSON schema built from one bundle's own fields and asks only for the
+# words. There is no assistant entity to create and no agent to wire up — the
+# setup step that every site got wrong when this module shipped a chat bar.
 dependencies:
   - paragraphs_bundles:paragraphs_bundles
   - ai:ai
+  # DECLARED BECAUSE THIS MODULE'S OWN CONFIG NAMES THEM, not because a sibling
+  # happens to pull them in today. `ai_image_bundle` — the media-less fallback,
+  # for a site that has no Media module — ships a plain image field, and its
+  # storage, field, form display and view display name `image`, `file` and
+  # `paragraphs` between them.
+  #
+  # WHY THESE HAVE TO BE WRITTEN DOWN, measured 2026-09-17: Drupal skips
+  # optional config whose dependencies are unmet SILENTLY, and `drush en` still
+  # reports success. Without these three, `ai_image_bundle` would install with
+  # no field at all and nothing would say so. PbModuleDependencyTest went red
+  # on exactly this and named all three — the config was added a day before the
+  # declaration, and only the test caught the gap.
+  - drupal:image
+  - drupal:file
+  - paragraphs:paragraphs

@@ -1,0 +1,402 @@
+# THE ONE PLACE THE BRIEFS LIVE.
+#
+# Maintainer, 2026-09-18: "we must have one source of truth for everything. so
+# the prompt and best practices they should be in one file easy for me to
+# update, or tweak."
+#
+# FOUR KEYS PER BUNDLE, in the order they are shown:
+#
+#   category   the group it belongs to, in the maintainer's own grouping —
+#              by what a person is trying to BUILD, never by how it nests.
+#              An earlier version grouped these by nesting mechanics and he
+#              rejected it outright: "Your category is not usfull." Nobody
+#              opens that dropdown thinking "I need one with a child slot."
+#   good_for   one line: when you would reach for this one.
+#   practices  the advice, in his template. Ends with the REQUIRED fields,
+#              each marked (Content) or (Display) so a person knows which tab
+#              to open. "Required" means what must be set for the section to
+#              WORK, which is his sense of the word — measured from the real
+#              fields, and wider than Drupal's own required flag.
+#   prompt     NOT WRITTEN YET, and not mine to write. His words, 2026-09-19:
+#              "before the draft we must agree on words… we need a very good
+#              example and I will write it."
+#
+# THE CATEGORIES (2026-09-19). Six are offered; the seventh is the excluded set.
+#   Banners · Images, icons and links · Interactive sections · Layout and
+#   structure · Reveal · Text · (Reference-only — EXCLUDED, see below)
+#
+# RENAMED 2026-09-19, and four of the five were mine to fix. "Complex content"
+# warned people off the sections that do the most work; "Two faces", "Words on
+# their own" and "One element" were a metaphor, a poetic phrase and a count —
+# writing, not labels somebody scans in a dropdown.
+#
+# 🚨 SIX BUNDLES ARE DELIBERATELY ABSENT — block_content, block, node_reference,
+# views, webform, contact_form. His words: "Ai can not creat them, you must
+# reference created content from the system in a field." That absence IS the
+# dropdown filter, not an oversight. `pb_target_bundle` is absent too: it
+# belongs to pb_import.
+#
+# Every number and option list below was read off the installed fields on
+# sts.local, not recalled.
+#
+# THREE ENTRIES ARE HIS OWN WORDS, kept verbatim including their typos, because
+# they are the template everything else was written against: slideshow,
+# 3d_carousel, 3d_flip_box.
+
+briefs:
+
+  # ===================================================== INTERACTIVE SECTIONS
+  accordion_bundle:
+    category: 'Interactive sections'
+    good_for: 'Questions and answers — long content broken into rows the reader opens one at a time.'
+    practices: |
+      Best practices for creating professional content:
+      Each row has its own section, each section accepts any paragraph bundle.
+      Best paragraph bundle you can use simple, image or one column.
+      Row headings should be a short question, and about the same length.
+      best accordion from 3 to 8 rows
+      Keep answers short, 2 or 3 lines — long answers push the next row off the screen.
+      Opened item background should contrast with the closed rows.
+      Required (Content): Accordion Section — and each row needs its own title and body.
+      Required (Display): none, it works on the defaults.
+      Additional (Display): animated section — zoom, top, bottom, left, right or opacity.
+      Expand first item, show indicators, show collapse or expand all.
+
+  slideshow_bundle:
+    category: 'Interactive sections'
+    good_for: 'One message at a time, moving on its own — several things shown in one space.'
+    practices: |
+      Best practices for creating professional content:
+      Each slide has its own section, each section accpt paragrpah bundle.
+      Best paragraph bundle you can use image, simple or hero.
+      Images/hero should be styled in view modes to have same height and widht and resposive.
+      Text also should be almost same length
+      best slideshow from 3 to 6
+      Additional: PREV/Next, time in secons, bottom navigation, animate slide
+      Required (Content): Slideshow Section — each slide needs its own title and body.
+      Required (Display): animated slide — zoom, top, bottom, left, right or opacity.
+      Additional (Display): bottom navigation — play, dots, dots and play, arrows, or arrows and play.
+      Time in seconds from 3 to 15, show prev and next arrows, active button background.
+
+  tabs_bundle:
+    category: 'Interactive sections'
+    good_for: 'One topic split into parts the reader chooses between — specs, sizes, delivery.'
+    practices: |
+      Best practices for creating professional content:
+      Each tab has its own section, each section accepts any paragraph bundle.
+      Best paragraph bundle you can use simple, image or one column.
+      Tab names should be short, 1 or 2 words, and about the same length so the row does not wrap.
+      Best tabs from 2 to 5 — more than 6 and the names run off on mobile.
+      Each tab can use an icon instead of plain text.
+      Active tab background should contrast with the normal tab colour.
+      Required (Content): Tab Section — each tab needs its name and its body.
+      Required (Display): none, it works on the defaults.
+      Additional (Display): animated tab — zoom, top, bottom, left, right or opacity.
+      Vertical tabs for long name lists, with the breakpoint it switches at, 576 to 1400.
+
+  carousel_bundle:
+    category: 'Interactive sections'
+    good_for: 'A row of items that scrolls — products, logos, photos — several visible at once.'
+    practices: |
+      Best practices for creating professional content:
+      Carousel items accept any paragraph bundle, best with image, card text or simple.
+      Items should be the same height and width, style them in view modes.
+      Show 3 or 4 on a big screen and 1 on a small one, more than 4 and nothing can be read.
+      best carousel from 6 to 12 items — fewer than the number shown and it cannot scroll.
+      Time in seconds 0 stops it moving on its own, which is right when the items are links.
+      This section asks for more settings than any other: set them before judging the result.
+      Required (Content): Carousel Items.
+      Required (Display): carousel layout — horizontal, vertical or hybrid — showing number
+      on big screen, showing number on small screen, slide gap, navigation — arrows, dots,
+      both or none — time in seconds, available breakpoints.
+      Additional (Display): activate looping, max slide width.
+
+  3d_carousel_bundle:
+    category: 'Interactive sections'
+    good_for: 'A rotating ring of items — showy, for a small set of equal things.'
+    practices: |
+      Best practices for creating professional content:
+      3D Carousel Rotate is good with image or text
+      Images or text should be the same length
+      better for 7 or 11 content
+      height from 100 to 550px
+      max width from 300 to 100%
+      Required (Content): 3D Carousel Items, and large screen height from 100 to 550.
+      Required (Display): available breakpoints, max width.
+      Additional (Content): small screen height, up to 500.
+      Additional (Display): perspective, and a rotation time from 3 to 15 seconds.
+
+  image_grid_bundle:
+    category: 'Interactive sections'
+    good_for: 'A gallery — pictures in a grid that open larger when clicked.'
+    practices: |
+      Best practices for creating professional content:
+      Each picture has its own section, with an optional heading and a link.
+      Pictures should be the same shape, style them in view modes so the grid stays even.
+      best grid from 6 to 12 pictures, a grid of 2 or 3 looks unfinished.
+      Grid image width sets how many fit per row — smaller width, more per row.
+      Keep the gap small, 8 to 16, a large gap breaks the grid into separate pictures.
+      Required (Content): Image — one section per picture, each needs its own image.
+      Required (Display): grid image width, grid gap.
+
+  parallax_bundle:
+    category: 'Interactive sections'
+    good_for: 'A band of the page where the background drifts slower than the words as you scroll.'
+    practices: |
+      Best practices for creating professional content:
+      Each parallax section has its own background picture and its own words.
+      Picture should be large and quiet in the middle — the words sit over it and move.
+      Keep the words short, one heading and two or three lines.
+      One or two parallax sections on a page, more and the page feels seasick.
+      Required (Content): Parallax Section — each one needs its body and its image.
+      Required (Display): background image height, set on the section itself.
+      Additional (Display): parallax speed, scroll effect, background position and easing.
+
+  modal_bundle:
+    category: 'Interactive sections'
+    good_for: 'Content that opens in a dialog over the page — terms, a form, a larger picture.'
+    practices: |
+      Best practices for creating professional content:
+      Modal body accepts any paragraph bundle, best with simple, image or one column.
+      Modal button is the words a visitor clicks — 2 or 3 words saying what opens.
+      Keep the body short enough to read without scrolling inside the dialog.
+      Footer is for the buttons, not for more content.
+      Required (Content): Modal Body, Modal Button.
+      Required (Display): background colour — the dialog needs its own, or it sits on the page colour.
+      Additional (Content): modal title, modal footer.
+      Additional (Display): animated modal — zoom, top, bottom, left, right or opacity.
+
+  # =================================================================== REVEAL
+  3d_flip_box_bundle:
+    category: 'Reveal'
+    good_for: 'A card that turns over — the question in front, the answer behind.'
+    practices: |
+      Best practices for creating professional content:
+      3D Flip card is good with image or text small cards
+      Images or text should be the same length
+      You can create as many as you want
+      choose max height, flip horizontal or vertical
+      max width from 300 to 100%
+      Front and back should hold the same KIND of thing — a picture flipping to a wall of text jars.
+      Required (Content): Front Card and Back Card — both faces, both accept any bundle.
+      Required (Display): 3D box height, and flip direction — horizontal or vertical.
+
+  image_overlay_bundle:
+    category: 'Reveal'
+    good_for: 'A picture with words over it that arrive on hover — the same idea as the flip box, different motion.'
+    practices: |
+      Best practices for creating professional content:
+      Picture should be quiet where the words land, a busy picture makes them unreadable.
+      Title should be short, 2 to 5 words — it appears over the picture, not beside it.
+      Overlay style sets how the words arrive: fade, zoom, title, or slide from any side.
+      Use the same overlay style for every one on a page.
+      Required (Content): Image, Title.
+      Required (Display): image overlay style.
+      Additional (Content): image link and link title.
+
+  # ===================================================== LAYOUT AND STRUCTURE
+  one_column_bundle:
+    category: 'Layout and structure'
+    good_for: 'A wrapper — put any section inside it to give it its own width, background or spacing.'
+    practices: |
+      Best practices for creating professional content:
+      One column holds any paragraph bundle, including ones you built yourself.
+      Use it when a section needs its own background, padding or max width.
+      It adds nothing visible on its own — an empty one column renders an empty space.
+      Required (Content): One Column.
+
+  two_columns_bundle:
+    category: 'Layout and structure'
+    good_for: 'Two sections side by side — text next to an image, or a menu next to content.'
+    practices: |
+      Best practices for creating professional content:
+      Left and right column each accept any paragraph bundle.
+      Both columns are required — a column left empty still takes its width.
+      Keep the two columns close in length, a short one next to a long one leaves a gap.
+      Layout style sets the split: 6/6 equal, 4/8, 8/4, 3/9 or 9/3.
+      Required (Content): Left Column, Right Column.
+      Required (Display): layout style, toggle animation effect, available breakpoints.
+      Additional (Display): either column sticky or collapsible, open or closed by default,
+      toggle icon chevron, caret, plus/minus or angle, animation duration in ms.
+
+  three_columns_bundle:
+    category: 'Layout and structure'
+    good_for: 'Three sections side by side — a feature row, or content with a menu on each side.'
+    practices: |
+      Best practices for creating professional content:
+      Left, middle and right column each accept any paragraph bundle.
+      All three are required — an empty column still takes its width.
+      Keep the three close in length, and say the same kind of thing in each.
+      Layout style sets the split: 4/4/4 equal, 2/8/2, 3/6/3, or weighted to one side.
+      Three columns is tight on a small screen — check the breakpoint it stacks at.
+      Required (Content): Left Column, Middle Column, Right Column.
+      Required (Display): layout style, toggle animation effect, available breakpoints.
+      Additional (Display): any column sticky or collapsible, open or closed by default,
+      toggle icon style and position.
+
+  card_two_columns_bundle:
+    category: 'Layout and structure'
+    good_for: 'Two cards side by side — each one a picture or a piece of text.'
+    practices: |
+      Best practices for creating professional content:
+      Each side takes a card image section or a card text section, nothing else.
+      Pair them deliberately: picture and text, or two of the same. Two pictures of
+      different shapes look like a mistake.
+      Card text should be a heading and 2 or 3 lines, not a paragraph.
+      Card layout sets the split: 6/6 equal, 4/8, 8/4, 3/9 or 9/3.
+      Required (Content): Left, Right — each a card image or card text section.
+      Required (Display): card layout, available breakpoints.
+
+  card_three_columns_bundle:
+    category: 'Layout and structure'
+    good_for: 'Three cards side by side — the classic feature or service row.'
+    practices: |
+      Best practices for creating professional content:
+      Each side takes a card image section or a card text section, nothing else.
+      Use the same kind in all three — three pictures, or three texts — or it looks uneven.
+      Keep the three headings the same length, and the body text within a line of each other.
+      Card layout sets the split: 4/4/4 equal, 2/8/2, 3/6/3, or weighted to one side.
+      Required (Content): Left, Middle, Right — each a card image or card text section.
+      Required (Display): card layout, available breakpoints.
+
+  grid_bundle:
+    category: 'Layout and structure'
+    good_for: 'Items in a grid that reflows as the screen narrows — when the count varies.'
+    practices: |
+      Best practices for creating professional content:
+      Content accepts any paragraph bundle, best with card text, image or icon.
+      Items should be the same height, style them in view modes.
+      Number of columns is what it shows on a big screen, it reflows down from there.
+      Keep the gap even with the padding inside the items, or the grid reads as uneven.
+      Watch this one: the content field is NOT required, so a grid can be saved empty
+      and then renders as nothing at all.
+      Required (Display): number of columns, grid gap, available breakpoints.
+      Additional (Content): Content — the items themselves.
+
+  # ===================================================================== TEXT
+  simple_bundle:
+    category: 'Text'
+    good_for: 'A heading and some text. The plainest section there is, and the one to reach for first.'
+    practices: |
+      Best practices for creating professional content:
+      Body is the whole section — one heading and a few lines.
+      Keep to one idea. Two ideas want two simple sections, or an accordion.
+      Use it inside columns, tabs, slides and accordions — it is the usual filling.
+      Required (Content): Body.
+      Additional (Content): a link.
+
+  alert_bundle:
+    category: 'Text'
+    good_for: 'A short coloured notice — information, a warning, a success message.'
+    practices: |
+      Best practices for creating professional content:
+      Alert body accepts any paragraph bundle, but simple is almost always the right one.
+      Keep it to one or two lines. An alert nobody can read at a glance is not an alert.
+      One alert per page. Two competing alerts mean neither is urgent.
+      Alert state sets the colour: success, info, warning or error — match it to the words.
+      Required (Content): Alert Body.
+      Additional (Display): alert state, show close button, and whether closing it lasts
+      for the session or the day. It can also show between two dates, or count down.
+
+  # ================================================================== BANNERS
+  hero_bundle:
+    category: 'Banners'
+    good_for: 'The top of a landing page — one heading, one line, one link, over a picture.'
+    practices: |
+      Best practices for creating professional content:
+      Body and image are both required, a hero with no picture is just text.
+      Keep the body to one or two lines, it sits over the image and long text covers it.
+      Image should be wide and quiet in the middle, the words sit on top of it.
+      Style the image in view modes so every hero is the same height and responsive.
+      Link title should be 2 or 3 words, "Read more" tells nobody anything.
+      Required (Content): Body, Image.
+      Required (Display): display classes — where the words sit: top left, top middle,
+      top right, left, middle, right, bottom left, bottom middle, bottom right.
+      Additional (Content): image link and link title, title, title tag and alignment.
+
+  image_background_bundle:
+    category: 'Banners'
+    good_for: 'A whole band of the page with a picture behind it and sections on top.'
+    practices: |
+      Best practices for creating professional content:
+      Main content accepts any paragraph bundle — simple, one column or columns.
+      The picture is a background, not content: choose one that is quiet everywhere,
+      because the words move over it as the section grows.
+      Set a second picture for small screens, a wide one crops to nothing on a phone.
+      Sizing cover fills the band, contain shows the whole picture — cover is usually right.
+      Attachment fixed makes it hold still as the page scrolls.
+      Required (Content): Main Content.
+      Required (Display): background image (big screen), image sizing, image alignment,
+      image repetition, background attachment.
+      Additional (Display): background image (small screen), image breakpoint,
+      container min height.
+
+  # ================================================== IMAGES, ICONS AND LINKS
+  image_bundle:
+    category: 'Images, icons and links'
+    good_for: 'One picture, with a caption if you want it.'
+    practices: |
+      Best practices for creating professional content:
+      Picture comes from the media library, so it can be reused and restyled in one place.
+      Style it in a view mode rather than sizing it here, so every image on the site matches.
+      Alt text is what a screen reader announces — say what the picture shows, not "image".
+      Required (Content): Image.
+      Additional (Content): image link and link title.
+
+  image_wide_bundle:
+    category: 'Images, icons and links'
+    good_for: 'A picture that runs the full width of the page — a band between two sections.'
+    practices: |
+      Best practices for creating professional content:
+      Use a wide picture, at least 1600 across, or it stretches and softens.
+      Nothing important near the edges, a full-width picture crops on narrow screens.
+      One or two on a page. Full width is emphasis, and everything emphasised is nothing.
+      Required (Content): Image.
+      Additional (Content): image link and link title.
+
+  image_narrow_bundle:
+    category: 'Images, icons and links'
+    good_for: 'A picture kept narrower than the page, centred — inside an article.'
+    practices: |
+      Best practices for creating professional content:
+      Good for portraits, screenshots and diagrams, where full width would be too much.
+      Keep the same width for every narrow image on a page so the text edge stays steady.
+      Required (Content): Image.
+      Additional (Content): image link and link title.
+
+  ai_image_bundle:
+    category: 'Images, icons and links'
+    good_for: 'One picture held as a plain file — for sites where the Media module is not installed.'
+    practices: |
+      Best practices for creating professional content:
+      Use the ordinary Image section instead if this site has Media — that one reuses a
+      picture in many places, and this one does not.
+      The file is uploaded here and belongs to this section alone.
+      Alt text is required: say what the picture shows.
+      Required (Content): Image.
+
+  icon_bundle:
+    category: 'Images, icons and links'
+    good_for: 'An icon with a short label — a row of features, benefits or steps.'
+    practices: |
+      Best practices for creating professional content:
+      Icon name comes from Google Material Symbols — the name, not a picture, for example
+      "rocket_launch" or "verified".
+      Use the same style for every icon on a page: sharp, outlined or rounded.
+      Keep labels to 1 or 3 words, and the same length, they usually sit in a row.
+      Put several inside a grid or card columns rather than stacking them.
+      Required (Content): icon name, material symbols style, icon colour, icon font size,
+      and the three shape settings — grade, optical size and weight.
+      Additional (Content): body, a link, fill, or an uploaded image in place of the icon.
+
+  link_bundle:
+    category: 'Images, icons and links'
+    good_for: 'A set of links or buttons grouped together — a call to action, or a short menu.'
+    practices: |
+      Best practices for creating professional content:
+      Each link has its own section: the words a visitor clicks, and where it goes.
+      Link text should say what happens — "Book a table", not "Click here".
+      2 to 5 links. More than that is a menu, and belongs in one.
+      Keep the link text about the same length so the buttons match.
+      Required (Content): Body — one link section per link, each needs its address.
+      Additional (Content): a title on each link.

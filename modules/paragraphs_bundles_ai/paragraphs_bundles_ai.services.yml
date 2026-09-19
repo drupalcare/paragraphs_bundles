@@ -17,6 +17,8 @@ services:
   # write — the redundancy IS the safety model, not belt-and-braces.
   paragraphs_bundles_ai.section_writer:
     class: Drupal\paragraphs_bundles_ai\Service\SectionWriter
+    calls:
+      - [setStringTranslation, ['@string_translation']]
     arguments:
       - '@entity_type.manager'
       - '@current_user'
@@ -41,11 +43,80 @@ services:
   # both of which a model otherwise guesses.
   paragraphs_bundles_ai.field_drafter:
     class: Drupal\paragraphs_bundles_ai\Service\FieldDrafter
+    calls:
+      - [setStringTranslation, ['@string_translation']]
     arguments:
       - '@entity_type.manager'
       - '@entity_field.manager'
 
   Drupal\paragraphs_bundles_ai\Service\FieldDrafterInterface: '@paragraphs_bundles_ai.field_drafter'
+
+  # Keeps a text field's format when its words are replaced. Both the composer
+  # and the editor hand plain strings to set(), which drops the format and
+  # leaves the body rendering through the site's fallback format — measured on
+  # a real value, 'basic_html' -> NULL. One owner, so the two cannot drift.
+  # The '@?' is not decoration: filter.module is NOT a dependency of this
+  # module, and the repository only exists from Drupal 11.4 while this module
+  # supports ^11.3. An optional reference resolves to NULL in both of those
+  # cases, and the service falls back to the deprecated function it replaces.
+  paragraphs_bundles_ai.text_formats:
+    class: Drupal\paragraphs_bundles_ai\Service\TextFormats
+    arguments:
+      - '@current_user'
+      - '@?Drupal\filter\FilterFormatRepositoryInterface'
+
+  Drupal\paragraphs_bundles_ai\Service\TextFormatsInterface: '@paragraphs_bundles_ai.text_formats'
+
+  # Tells a person what to say for the section they just chose, so the one empty
+  # box stops being a guess. Built from the bundle's real fields rather than a
+  # hand-written map, which would be a second home for what the profiler
+  # already owns and wrong the first time a site added a field.
+  paragraphs_bundles_ai.prompt_hints:
+    class: Drupal\paragraphs_bundles_ai\Service\PromptHints
+    calls:
+      - [setStringTranslation, ['@string_translation']]
+    arguments:
+      - '@paragraphs_bundles_ai.bundle_profiler'
+
+  Drupal\paragraphs_bundles_ai\Service\PromptHintsInterface: '@paragraphs_bundles_ai.prompt_hints'
+
+  # The brief a person reads before typing: the category, what the section is
+  # good for, the practices, and the example prompt. CONFIG, NOT CODE — the
+  # text is the maintainer's to edit in one file, and typing every string as
+  # label/text in the schema is what lets `locale` translate it. Read through
+  # config.factory rather than the YAML directly, because the factory is what
+  # applies a site's overrides and the active language's translation.
+  #
+  # No '@string_translation': this service translates nothing itself. Every
+  # string it returns came from config a human wrote.
+  paragraphs_bundles_ai.briefs:
+    class: Drupal\paragraphs_bundles_ai\Service\Briefs
+    arguments:
+      - '@config.factory'
+
+  Drupal\paragraphs_bundles_ai\Service\BriefsInterface: '@paragraphs_bundles_ai.briefs'
+
+  # Supplies the picture the module ships, for a required image field that a
+  # model cannot fill — an image is chosen, not composed. Measured 2026-09-17:
+  # 8 of PB's bundles have a required image, and without this the assistant
+  # produced a hero with real copy, no picture, and nothing saying so.
+  #
+  # The '@?' on file.repository is the same reasoning as text_formats above:
+  # this module does not depend on the File module, and an optional reference
+  # resolves to NULL instead of refusing to compile the container. Media is
+  # never injected at all — it is checked for at runtime, because the whole
+  # point of ai_image_bundle is that a site may not have it.
+  paragraphs_bundles_ai.default_image:
+    class: Drupal\paragraphs_bundles_ai\Service\DefaultImage
+    calls:
+      - [setStringTranslation, ['@string_translation']]
+    arguments:
+      - '@entity_type.manager'
+      - '@extension.list.module'
+      - '@file_system'
+      - '@?file.repository'
+
+  Drupal\paragraphs_bundles_ai\Service\DefaultImageInterface: '@paragraphs_bundles_ai.default_image'
 
   # Creates a section WITH its content and its children. It writes nothing
   # itself: every value is checked against the real fields first, and then the
@@ -53,10 +124,14 @@ services:
   # and appending stay in exactly one place.
   paragraphs_bundles_ai.section_composer:
     class: Drupal\paragraphs_bundles_ai\Service\SectionComposer
+    calls:
+      - [setStringTranslation, ['@string_translation']]
     arguments:
       - '@paragraphs_bundles_ai.bundle_profiler'
       - '@paragraphs_bundles_ai.field_drafter'
       - '@paragraphs_bundles_ai.section_writer'
+      - '@paragraphs_bundles_ai.text_formats'
+      - '@paragraphs_bundles_ai.default_image'
 
   Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface: '@paragraphs_bundles_ai.section_composer'
 
@@ -84,25 +159,12 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface: '@paragraphs_bundles_ai.section_catalog'
 
-  # The chat surface. It reads four things that are each invisible from a node
-  # form — a module, a setting, an assistant, a permission — which is why the
-  # decision lives here where it can be tested one refusal at a time.
-  paragraphs_bundles_ai.chat_surface:
-    class: Drupal\paragraphs_bundles_ai\Service\ChatSurface
-    arguments:
-      - '@config.factory'
-      - '@module_handler'
-      - '@entity_type.manager'
-      - '@current_user'
-      - '@plugin.manager.block'
-      - '@paragraphs_bundles_ai.target_resolver'
-
-  Drupal\paragraphs_bundles_ai\Service\ChatSurfaceInterface: '@paragraphs_bundles_ai.chat_surface'
-
   # Asks the model for the words, inside a JSON schema built from the bundle's
   # own fields. It never chooses a section or a page: both come from the person.
   paragraphs_bundles_ai.section_drafter:
     class: Drupal\paragraphs_bundles_ai\Service\SectionDrafter
+    calls:
+      - [setStringTranslation, ['@string_translation']]
     arguments:
       - '@paragraphs_bundles_ai.bundle_profiler'
       - '@config.factory'
@@ -126,25 +188,19 @@ services:
   # number so the change can be undone.
   paragraphs_bundles_ai.section_editor:
     class: Drupal\paragraphs_bundles_ai\Service\SectionEditor
+    calls:
+      - [setStringTranslation, ['@string_translation']]
     arguments:
       - '@entity_type.manager'
       - '@paragraphs_bundles_ai.bundle_profiler'
       - '@paragraphs_bundles_ai.field_drafter'
       - '@current_user'
+      - '@paragraphs_bundles_ai.text_formats'
 
   Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface: '@paragraphs_bundles_ai.section_editor'
 
-  # Hook classes are services in Drupal 11's OOP hook system, and this one
-  # takes the surface rather than reaching for \Drupal::service().
-  Drupal\paragraphs_bundles_ai\Hook\PbAiFormHook:
-    autowire: true
-
-  # Places the assistant on a page being viewed.
+  # Puts the assistant at the foot of a page being viewed. Hook classes are
+  # services in Drupal 11's OOP hook system, and this one takes the surface
+  # rather than reaching for \Drupal::service().
   Drupal\paragraphs_bundles_ai\Hook\PbAiPageHook:
-    autowire: true
-
-  # The playground's three rules: forced unpublished on every save, a
-  # permission that reveals someone else's playground page, and the banner
-  # that says so on the page.
-  Drupal\paragraphs_bundles_ai\Hook\PbPlaygroundHook:
     autowire: true

@@ -7,4 +7,5 @@ bar:
     js/pb-ai-sections.js: {}
   dependencies:
     - core/drupal
+    - core/drupalSettings
     - core/once

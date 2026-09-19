@@ -6,6 +6,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs_bundles_ai\Model\DraftableField;
 use Drupal\paragraphs_bundles_ai\Model\FieldDraft;
 
@@ -25,11 +26,20 @@ use Drupal\paragraphs_bundles_ai\Model\FieldDraft;
  */
 final class FieldDrafter implements FieldDrafterInterface {
 
+  use StringTranslationTrait;
+
   /**
-   * Field types holding text a person writes.
+   * Field types holding text a person writes, and whether each renders markup.
    *
    * The two families differ in one way that matters here: `text*` runs through
    * a text format and renders markup, `string*` does not and shows the tags.
+   *
+   * NOT A DUPLICATE OF FieldFact::WORDS, and please do not "fix" it into one.
+   * That list answers "can this be filled by writing?" for the assistant; this
+   * map answers "will markup render?" for fitting a draft, which is a
+   * different question with a different answer: `text_with_summary` belongs
+   * here and `list_string` does not, because a list field takes a key rather
+   * than a sentence.
    */
   private const TEXTUAL = [
     'string' => FALSE,
@@ -125,10 +135,9 @@ final class FieldDrafter implements FieldDrafterInterface {
 
     if ($fields === NULL) {
       return FieldDraft::refused([
-        sprintf(
-          'There is no paragraph type "%s" on this site. Its module may not be enabled.',
-          trim($bundle),
-        ),
+        $this->t('There is no paragraph type "@bundle" on this site. Its module may not be enabled.', [
+          '@bundle' => trim($bundle),
+        ]),
       ]);
     }
 
@@ -143,18 +152,18 @@ final class FieldDrafter implements FieldDrafterInterface {
 
       return FieldDraft::refused([
         $exists
-          ? sprintf(
-            'The field %s on %s is a %s field, so there is no text to draft for it.',
-            $field,
-            $bundle,
-            $all[$field]->getType(),
-        )
-          : sprintf(
-            'There is no text field "%s" on %s. It has: %s.',
-            $field,
-            $bundle,
-            $fields === [] ? 'no text fields at all' : implode(', ', array_keys($fields)),
-        ),
+          ? $this->t('The field @field on @bundle is a @type field, so there is no text to draft for it.', [
+            '@field' => $field,
+            '@bundle' => $bundle,
+            '@type' => $all[$field]->getType(),
+          ])
+          : $this->t('There is no text field "@field" on @bundle. It has: @fields.', [
+            '@field' => $field,
+            '@bundle' => $bundle,
+            '@fields' => $fields === []
+              ? $this->t('no text fields at all')
+              : implode(', ', array_keys($fields)),
+          ]),
       ]);
     }
 
@@ -162,7 +171,7 @@ final class FieldDrafter implements FieldDrafterInterface {
 
     if ($draft === '') {
       return FieldDraft::refused([
-        sprintf('There is nothing to fit — no draft was supplied for %s.', $field),
+        $this->t('There is nothing to fit — no draft was supplied for @field.', ['@field' => $field]),
       ]);
     }
 
@@ -174,10 +183,9 @@ final class FieldDrafter implements FieldDrafterInterface {
     if (!$definition->allowsHtml && $draft !== strip_tags($draft)) {
       // Not stripped. Rewriting someone's copy on a guess is worse than saying
       // what will happen, and the tags may well be intentional.
-      $notes[] = sprintf(
-        '%s is a plain text field — any markup here will be shown to visitors as tags, not rendered.',
-        $field,
-      );
+      $notes[] = $this->t('@field is a plain text field — any markup here will be shown to visitors as tags, not rendered.', [
+        '@field' => $field,
+      ]);
     }
 
     if ($limit === NULL || $original <= $limit) {
@@ -185,13 +193,12 @@ final class FieldDrafter implements FieldDrafterInterface {
     }
 
     $text = $this->shorten($draft, $limit);
-    $notes[] = sprintf(
-      'Shortened from %d characters to %d — %s holds at most %d. Check nothing important was at the end.',
-      $original,
-      mb_strlen($text),
-      $field,
-      $limit,
-    );
+    $notes[] = $this->t('Shortened from @was characters to @now — @field holds at most @limit. Check nothing important was at the end.', [
+      '@was' => $original,
+      '@now' => mb_strlen($text),
+      '@field' => $field,
+      '@limit' => $limit,
+    ]);
 
     return FieldDraft::fitted($field, $text, TRUE, $original, $limit, $notes);
   }

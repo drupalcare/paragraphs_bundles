@@ -1,5 +1,0 @@
-paragraphs_bundles_ai.settings:
-  title: 'Paragraphs Bundles AI'
-  description: 'Choose the assistant that appears on node forms, and see why the chat bar is or is not showing.'
-  parent: system.admin_config_content
-  route_name: paragraphs_bundles_ai.settings

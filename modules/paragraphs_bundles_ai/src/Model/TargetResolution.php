@@ -33,7 +33,7 @@ final readonly class TargetResolution {
    *   The paragraph bundle that was validated against the field, when
    *   resolved. Carried back so a caller can hand the whole target on without
    *   re-deriving any part of it.
-   * @param list<string> $questions
+   * @param list<string|\Stringable> $questions
    *   Everything the caller must answer, when not resolved. Each entry is a
    *   complete sentence a person can act on, not an error code.
    */
@@ -65,7 +65,7 @@ final readonly class TargetResolution {
   /**
    * A target that cannot be determined yet, and why.
    *
-   * @param list<string> $questions
+   * @param list<string|\Stringable> $questions
    *   One or more complete sentences naming what is missing or wrong.
    *
    * @return self

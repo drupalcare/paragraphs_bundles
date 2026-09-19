@@ -142,8 +142,15 @@ final class BundleProfiler implements BundleProfilerInterface {
         $definition->isRequired(),
         is_numeric($limit) ? (int) $limit : NULL,
         $this->allowedValues($definition),
-        $holdsSections ? $children[$name] : [],
+        // Every reference field, not only the section-holding ones. A media
+        // reference names the media types it accepts in exactly the same
+        // setting, and whatever fills a picture needs to know which.
+        $holdsSections ? $children[$name] : $this->acceptedBundles($definition),
         $holdsSections,
+        // The site builder's help text for this field. Usually empty, and worth
+        // passing through precisely when it is not.
+        trim(strip_tags((string) $definition->getDescription())),
+        $this->targetType($definition),
       );
     }
 
@@ -162,6 +169,9 @@ final class BundleProfiler implements BundleProfilerInterface {
       $children,
       $unclassified,
       $facts,
+      // What the bundle IS, from its own config. PB ships a description for
+      // nearly every bundle and nothing here ever read one.
+      trim(strip_tags((string) $type->getDescription())),
     );
   }
 
@@ -391,6 +401,29 @@ final class BundleProfiler implements BundleProfilerInterface {
     sort($out);
 
     return $out;
+  }
+
+  /**
+   * The entity type a reference field points at.
+   *
+   * READ FROM THE SETTING, NEVER INFERRED FROM THE FIELD NAME. `pb_content_
+   * image` is a reference to media and `pb_content_webform` is a reference to
+   * a webform; both are plain `entity_reference`, and a name-based guess would
+   * be right until a site renamed something.
+   *
+   * @param \Drupal\Core\Field\FieldDefinitionInterface $definition
+   *   The field.
+   *
+   * @return string
+   *   The target entity type id, or an empty string when this is not a
+   *   reference field at all.
+   */
+  private function targetType(FieldDefinitionInterface $definition): string {
+    if (!in_array($definition->getType(), ['entity_reference', 'entity_reference_revisions'], TRUE)) {
+      return '';
+    }
+
+    return (string) ($definition->getSettings()['target_type'] ?? '');
   }
 
   /**

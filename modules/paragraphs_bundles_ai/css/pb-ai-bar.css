@@ -3,9 +3,16 @@
  * The assistant bar, on a page being viewed.
  *
  * Deliberately small and unopinionated: this sits on somebody else's theme,
- * so it claims the bottom of the viewport and nothing else. No resets, no
- * typography, no colours beyond what it needs to stay readable on either a
- * light or a dark page.
+ * so it claims the bottom of the viewport and nothing else. No resets beyond
+ * the toggle, no typography, no colours past what it needs to stay readable on
+ * either a light or a dark page.
+ *
+ * IT HIDES BY SLIDING DOWN, and the toggle sits ABOVE the bar rather than
+ * inside it — `bottom: 100%` on an absolutely positioned child. That single
+ * choice is why hiding needs no measurement anywhere: translating the bar down
+ * by its own height puts it entirely off screen and leaves the toggle resting
+ * on the bottom edge, still clickable. A toggle inside the bar would have
+ * needed the bar's height minus its own, in JS, recomputed on every resize.
  */
 
 .pb-ai {
@@ -19,15 +26,75 @@
   background: #15191a;
   color: #eef2ec;
   box-shadow: 0 -2px 12px rgb(0 0 0 / 25%);
+  transition: transform 300ms ease;
 }
 
+/* NO `overflow` DECLARATION HERE, deliberately. The toggle is positioned above
+   this element's top edge, so any overflow value other than `visible` would
+   clip the one control that brings the bar back. */
+
+.pb-ai--hidden {
+  transform: translateY(100%);
+}
+
+/**
+ * The bar's own layout.
+ *
+ * Two rows, both defined here rather than left to whatever the theme does with
+ * loose form items: the choices go across the top, the prompt and the buttons
+ * across the bottom. Every width is set in this file, so the bar looks the same
+ * on any theme it lands on.
+ */
 .pb-ai-bar {
+  max-width: 72rem;
+  margin: 0 auto;
+}
+
+.pb-ai-bar__intro {
+  margin: 0 0 0.5rem;
+  color: #a8b3ad;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+/**
+ * Two rows, across the full width of the bar: the choices along the top, the
+ * prompt and its buttons underneath.
+ *
+ * ONE DEFINITION, and that is not a style preference. A second
+ * `.pb-ai-bar__row` block lived further down this file for about four minutes
+ * on 2026-09-17, until the duplicate-selector contract test refused it — the
+ * same defect as the two `.pb-ai-note` blocks that put the id tooltip a whole
+ * tooltip-height off, caught this time by a parser rather than by somebody
+ * looking at the screen.
+ */
+.pb-ai-bar__row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: flex-end;
-  max-width: 72rem;
-  margin: 0 auto;
+}
+
+.pb-ai-bar__row + .pb-ai-bar__row {
+  margin-top: 0.6rem;
+}
+
+/* The choices row: each control takes an equal share, none goes narrower than
+   is readable, and the count is deliberately small. */
+.pb-ai-bar__row--choices > .form-item {
+  flex: 1 1 14rem;
+  min-width: 10rem;
+}
+
+.pb-ai-bar__row--choices > .pb-ai-bar__count {
+  flex: 0 0 7rem;
+  min-width: 0;
+}
+
+/* The prompt row: the box takes everything the buttons do not. */
+.pb-ai-bar__row--prompt > .form-item {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .pb-ai-bar .form-item {
@@ -54,17 +121,25 @@
   font: inherit;
 }
 
+.pb-ai-bar select,
 .pb-ai-bar textarea {
-  min-width: 18rem;
+  width: 100%;
+}
+
+.pb-ai-bar textarea {
+  min-height: 2.6rem;
   resize: vertical;
 }
 
 .pb-ai-bar input[type="number"] {
-  width: 5rem;
+  width: 100%;
 }
 
 .pb-ai-bar .form-actions {
+  display: flex;
+  gap: 0.5rem;
   margin: 0;
+  flex: 0 0 auto;
 }
 
 .pb-ai-bar__status {
@@ -97,13 +172,75 @@
   pointer-events: none;
 }
 
-.pb-ai-note,
-.pb-ai-mark {
+/**
+ * The id tooltip, and why every property is spelled out.
+ *
+ * `all: initial` first, then only what this needs. These elements are injected
+ * into somebody else's page, and a theme that styles `span`, sets a global
+ * `font`, or inherits a colour would otherwise reach them. Resetting first
+ * means no theme can touch this, and nothing here depends on what the page
+ * happens to set.
+ */
+.pb-ai-note {
+  all: initial;
   position: fixed;
-  transform: translateY(-100%);
+  z-index: 1;
+  padding: 0.2rem 0.45rem;
+  border-radius: 4px;
+  background: #15191a;
+  color: #f4f7f3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
+  opacity: 0;
+  /* Starts 6px high and slides DOWN onto the section's top-left corner. The
+     script positions this element; nothing else may add a transform to it.
+     A SECOND `.pb-ai-note` BLOCK ONCE SAT LOWER IN THIS FILE carrying
+     `translateY(calc(-100% - 6px))`, and it won on the cascade: every tooltip
+     was lifted by its own full height on top of the position the script had
+     already set, which is exactly the "too far from the top" this fixes. */
+  transform: translateY(-6px);
+  transition: opacity 120ms ease, transform 120ms ease;
 }
 
+/* No arrow: the tooltip sits ON the section's corner, so there is nothing for
+   it to point at. */
+
+.pb-ai-note:not([hidden]) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/**
+ * The section the person picked in the Edit dropdown.
+ *
+ * Drawn OVER the section from the floating layer, never as a border on the
+ * section itself: a border there would move the page, and inside image
+ * overlay, image background and the flip box it would move their contents too.
+ */
+.pb-ai-highlight {
+  all: initial;
+  position: fixed;
+  z-index: 0;
+  /* REQUIRED, because `all: initial` resets box-sizing to content-box. The
+     script sizes this from the section's own rectangle, so without this the
+     2px border is added on top and the outline sits 4px too big on both
+     axes — visibly off against a section edge. */
+  box-sizing: border-box;
+  border: 2px dashed #2f6fed;
+  border-radius: 3px;
+  background: rgb(47 111 237 / 6%);
+  pointer-events: none;
+}
+
+/* The badge sits ON the section too, same corner, same reasoning as the
+   tooltip. It carried `translateY(-100%)` while the tooltip was anchored
+   above; both are placed by the script now, so neither translates. */
 .pb-ai-mark {
+  position: fixed;
   display: flex;
   gap: 0.35rem;
   align-items: center;
@@ -117,24 +254,6 @@
   font-size: 0.7rem;
   text-decoration: underline;
   pointer-events: auto;
-}
-
-.pb-ai-note {
-  padding: 0.15rem 0.45rem;
-  border-radius: 3px;
-  background: rgb(21 25 26 / 92%);
-  color: #eef2ec;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 120ms ease, transform 120ms ease;
-}
-
-.pb-ai-note:not([hidden]) {
-  opacity: 1;
-  transform: translateY(calc(-100% - 6px));
 }
 
 .pb-ai-badge {
@@ -152,13 +271,373 @@
   pointer-events: auto;
 }
 
-/* Fade, but do not slide, for anyone who asked for less movement. */
+/**
+ * THE TOGGLE, AND WHY EVERY PROPERTY IS SPELLED OUT.
+ *
+ * `all: initial` first, then only what this needs — the same treatment the id
+ * tooltip gets above, for the same reason and more of it. This is a <button>
+ * injected into somebody else's page, and nearly every theme styles `button`,
+ * so without the reset a theme owns its padding, its radius, its font and its
+ * background. Resetting first means it looks identical on every theme it lands
+ * on, which is the point.
+ *
+ * WHAT `all: initial` DOES NOT BEAT, said plainly rather than left to be
+ * discovered: a theme declaring `button { … !important }`. That still wins,
+ * because importance beats the cascade rather than losing to it. Nothing here
+ * is !important, because nothing has yet been measured competing with it — the
+ * same discipline the rest of this file keeps. If a real theme is ever found
+ * fighting this, add importance to the property it is losing, and name the
+ * theme in the comment.
+ *
+ * It sits ON the bar's top edge and travels WITH the bar, so hiding needs no
+ * second position to keep in step.
+ */
+.pb-ai-toggle {
+  all: initial;
+  position: absolute;
+  /* Centred on the bar's top border. The BAR owns the position, so the button
+     cannot drift out of step with it — there is no second place to keep
+     updated, and nothing to recompute on resize. */
+  bottom: 100%;
+  left: 50%;
+  /* REQUIRED, because `all: initial` resets box-sizing to content-box — the
+     same trap documented on the highlight above. */
+  box-sizing: border-box;
+  /* A HALF CIRCLE. The height is exactly half the width and the top corners
+     are rounded by the full height, which resolves to a single 180° arc; the
+     bottom corners stay square so the flat edge sits flush on the border. */
+  width: 3.5rem;
+  height: 1.75rem;
+  border-radius: 1.75rem 1.75rem 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0e5e54;
+  color: #f4f7f3;
+  cursor: pointer;
+  box-shadow: 0 -2px 8px rgb(0 0 0 / 25%);
+  transform: translateX(-50%);
+}
+
+.pb-ai-toggle:hover {
+  background: #12776a;
+}
+
+.pb-ai-toggle:focus-visible {
+  outline: 2px solid #f4f7f3;
+  outline-offset: 2px;
+}
+
+/**
+ * NO TEXT INSIDE, and that is what the shape costs: a half circle 28px tall
+ * holds an icon and nothing else.
+ *
+ * So the accessible name lives in `aria-label` and the state in
+ * `aria-expanded` — which means a screen reader is told more than a sighted
+ * person here, not less. Both are on the button in the template, where a
+ * translation can reach them.
+ */
+.pb-ai-toggle__icon {
+  all: initial;
+  display: flex;
+  color: inherit;
+}
+
+.pb-ai-toggle__icon svg {
+  display: block;
+  width: 16px;
+  height: 16px;
+  fill: currentcolor;
+}
+
+/**
+ * ROW ONE: the sentence, and the brief switch pinned to the right of it.
+ */
+.pb-ai-bar__row--intro {
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.pb-ai-bar__switch {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 0.35rem;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* The label sits BESIDE the box on this one row, against the uppercase block
+   labels the select rows use. */
+.pb-ai-bar__switch label {
+  margin: 0;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 0.75rem;
+}
+
+/**
+ * ROW FOUR: the buttons.
+ *
+ * ONE button sits left. TWO put the second on the right — `space-between` does
+ * both with no modifier class, so there is no state for the form to keep in
+ * step with the number of buttons it rendered.
+ */
+.pb-ai-bar__row--actions {
+  justify-content: space-between;
+}
+
+/**
+ * THE BEST-PRACTICE BRIEF.
+ *
+ * The bar arrives from the bottom; this arrives from the TOP, so with both open
+ * the page stays readable in the band between them. It is fixed to its own
+ * edge and never pushes the document.
+ *
+ * `all: initial` first, then only what this needs — the same treatment the
+ * toggle and the id tooltip get, for the same reason: this is injected into
+ * somebody else's page, and a theme that styles `div`, `h2`, `p` or `button`
+ * would otherwise reach inside it.
+ */
+.pb-ai-brief {
+  all: initial;
+  position: fixed;
+  z-index: 502;
+  top: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  padding: clamp(0.5rem, 2vw, 1rem);
+  padding-top: calc(clamp(0.5rem, 2vw, 1rem) + env(safe-area-inset-top, 0px));
+  pointer-events: none;
+  transform: translateY(-100%);
+  transition: transform 300ms ease;
+}
+
+.pb-ai-brief--open {
+  transform: translateY(0);
+}
+
+.pb-ai-brief__card {
+  all: initial;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 72rem;
+  /* RAISED WHEN THE PRACTICES WENT INTO TWO COLUMNS. At 42vh/20rem a brief in
+     one narrow column scrolled; two columns roughly halve the height, and the
+     point of the change was that "the user will see all data and they will not
+     scroll". The BODY still scrolls as a safety net for the longest brief
+     (Carousel, 13 lines) and for a short viewport. */
+  max-height: min(62vh, 28rem);
+  display: flex;
+  flex-direction: column;
+  padding: 0.85rem 1rem;
+  border: 1px solid #cfe0db;
+  border-left: 4px solid #0e5e54;
+  border-radius: 10px;
+  background: #f7fbfa;
+  color: #14201d;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 12px;
+  line-height: 1.55;
+  box-shadow: 0 10px 30px rgb(12 32 28 / 22%);
+  pointer-events: auto;
+}
+
+/* ROW ONE: category, name and what the section is for, on one line, with the
+   close button at the right end of that same line. There is no head bar any
+   more — the name used to live in one, and row one carries it now, so a head
+   would have shown it twice.
+
+   `align-items: flex-start` is what keeps the button in the top right when the
+   About text wraps to a second line. */
+.pb-ai-brief__meta {
+  all: initial;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+
+/* SELECTED THROUGH __body, like everything else here that is a <p>:
+   `.pb-ai-brief__body p` is (0,1,1) and a bare `.pb-ai-brief__about` is
+   (0,1,0), so the bare class would lose and this would silently keep the
+   generic paragraph margin. */
+.pb-ai-brief__body .pb-ai-brief__about {
+  all: initial;
+  display: block;
+  flex: 1 1 auto;
+  margin: 0;
+  color: #14201d;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* "Category:", "Name:", "About:" — the labels, not their values. */
+.pb-ai-brief__key {
+  all: initial;
+  color: #0e5e54;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* No padding: the separator carries a real space either side in the text
+   itself, so padding here would double the gap. */
+.pb-ai-brief__sep {
+  all: initial;
+  color: #8aa79e;
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.pb-ai-brief__close {
+  all: initial;
+  box-sizing: border-box;
+  display: flex;
+  flex: 0 0 auto;
+  width: 1.5rem;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #486258;
+  cursor: pointer;
+}
+
+.pb-ai-brief__close:hover {
+  background: #e2efec;
+  color: #0e5e54;
+}
+
+.pb-ai-brief__close:focus-visible {
+  outline: 2px solid #0e5e54;
+  outline-offset: 1px;
+}
+
+.pb-ai-brief__close svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  fill: currentcolor;
+}
+
+.pb-ai-brief__body {
+  all: initial;
+  display: block;
+  overflow-y: auto;
+  color: #14201d;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* One line per practice, the way the text is written. */
+.pb-ai-brief__body p {
+  all: initial;
+  display: block;
+  margin: 0 0 0.25rem;
+  color: inherit;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+/* ROW TWO: the heading line. Through __body for the specificity reason above. */
+.pb-ai-brief__body .pb-ai-brief__heading {
+  all: initial;
+  display: block;
+  margin: 0 0 0.4rem;
+  color: #0e5e54;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
+/* ROW THREE: the practices, two across, so the card uses the width it already
+   has — about 60% of it sat empty while these were one narrow column. */
+.pb-ai-brief__list {
+  all: initial;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* `minmax(0, 1fr)` above, not `1fr`: a grid track's default minimum is
+   `auto`, so one long unbroken practice line would push its column wider than
+   half and knock the other one out of alignment. */
+.pb-ai-brief__list li {
+  all: initial;
+  display: block;
+  margin: 0 0 0.22rem;
+  padding-left: 0.85rem;
+  color: #14201d;
+  font-family: inherit;
+  font-size: 12px;
+  line-height: 1.5;
+  text-indent: -0.85rem;
+}
+
+/* The bullet is drawn, not inherited: `all: initial` strips the list marker
+   along with everything else, which is the price of not being reachable by the
+   host theme. The hanging indent keeps a wrapped line clear of it. */
+.pb-ai-brief__list li::before {
+  content: "•";
+  margin-right: 0.35rem;
+  color: #0e5e54;
+}
+
+/* SMALL SCREENS: one column, as asked. Below this width two columns leave
+   about twenty characters a line, which wraps every item into three rows and
+   is worse than the scrolling it was meant to prevent. */
+@media (max-width: 992px) {
+  .pb-ai-brief__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phone. Row one keeps its shape — the close button must not drop under the
+   text, which is why __meta stays a flex ROW and never wraps — but the card
+   may use more of the screen, because one column is taller than two. */
+@media (max-width: 576px) {
+  .pb-ai-brief__card {
+    max-height: min(72vh, 30rem);
+    padding: 0.7rem 0.8rem;
+  }
+
+  .pb-ai-brief__meta {
+    gap: 0.5rem;
+  }
+}
+
+@media print {
+  .pb-ai,
+  .pb-ai-brief,
+  .pb-ai-toggle {
+    display: none;
+  }
+}
+
+/* Fade, but do not slide, for anyone who asked for less movement. The tooltip
+   now starts 6px above its resting place, so both states share one position
+   and only the opacity changes. The bar still hides — it simply arrives rather
+   than travels. */
 @media (prefers-reduced-motion: reduce) {
-  .pb-ai-note {
+  .pb-ai-note,
+  .pb-ai-note:not([hidden]) {
+    transform: translateY(0);
     transition: opacity 120ms ease;
   }
 
-  .pb-ai-note:not([hidden]) {
-    transform: translateY(-100%);
+  .pb-ai,
+  .pb-ai-brief {
+    transition: none;
   }
 }

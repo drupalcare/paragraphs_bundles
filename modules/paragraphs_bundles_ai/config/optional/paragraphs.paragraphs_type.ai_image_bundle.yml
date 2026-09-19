@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies: {  }
+id: ai_image_bundle
+label: 'AI Image'
+icon_uuid: null
+icon_default: null
+description: 'One picture, held as a plain image file rather than a media item — for sites where the Media module is not installed.'
+behavior_plugins: {  }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Service;
 
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
 use Drupal\paragraphs_bundles_ai\Model\CreationResult;
@@ -32,6 +33,8 @@ use Drupal\paragraphs_bundles_ai\Model\CreationResult;
  */
 final class SectionComposer implements SectionComposerInterface {
 
+  use StringTranslationTrait;
+
   /**
    * Constructs the composer.
    *
@@ -41,11 +44,17 @@ final class SectionComposer implements SectionComposerInterface {
    *   Fits text to the real character limits, and reports when it had to.
    * @param \Drupal\paragraphs_bundles_ai\Service\SectionWriterInterface $writer
    *   Owns every precondition and the three writing rules.
+   * @param \Drupal\paragraphs_bundles_ai\Service\TextFormatsInterface $formats
+   *   Gives a formatted field a format instead of leaving it NULL.
+   * @param \Drupal\paragraphs_bundles_ai\Service\DefaultImageInterface $images
+   *   Supplies a picture for a required image field, which no model can fill.
    */
   public function __construct(
     private readonly BundleProfilerInterface $profiler,
     private readonly FieldDrafterInterface $drafter,
     private readonly SectionWriterInterface $writer,
+    private readonly TextFormatsInterface $formats,
+    private readonly DefaultImageInterface $images,
   ) {}
 
   /**
@@ -67,10 +76,9 @@ final class SectionComposer implements SectionComposerInterface {
 
     if ($profile === NULL) {
       return CreationResult::refused([
-        sprintf(
-          'There is no section "%s" on this site. Call pb_list_bundles and use a machine name from that list.',
-          $bundle,
-        ),
+        $this->t('There is no section "@section" on this site. Call pb_list_bundles and use a machine name from that list.', [
+          '@section' => $bundle,
+        ]),
       ]);
     }
 
@@ -98,6 +106,36 @@ final class SectionComposer implements SectionComposerInterface {
     // moment, and never go through check() — that function's job is to judge
     // what a MODEL proposed. These were judged by a person when the preset was
     // written, and by StylePresets against this bundle's real fields.
+    //
+    // WHAT THE MODEL WROTE IS CAPTURED FIRST. The report below used to count
+    // after this merge, so it named the preset's colour keys as fields the
+    // model had filled — crediting it with a border colour it never saw.
+    $written = array_keys($parentValues);
+
+    // AFTER $written ON PURPOSE, for the same reason the preset values are.
+    // A supplied picture is not something the model wrote, and counting it
+    // there would credit the model with choosing an image — the exact false
+    // credit the line above was written to prevent.
+    $pictures = $this->fillPictures($profile, $parentValues);
+
+    foreach ($childPlans as $index => $plan) {
+      if ($plan['bundle'] === '') {
+        continue;
+      }
+
+      $childProfile = $this->profiler->profile($plan['bundle']);
+
+      if ($childProfile === NULL) {
+        continue;
+      }
+
+      $filled = $this->fillPictures($childProfile, $childPlans[$index]['values']);
+
+      foreach ($filled as $name => $label) {
+        $pictures[$name] = $label;
+      }
+    }
+
     $parentValues += $styling;
 
     $result = $this->writer->attach(
@@ -121,16 +159,76 @@ final class SectionComposer implements SectionComposerInterface {
     // What was filled, and what was not, said out loud. A composer that
     // reported only success would leave the model claiming a section is
     // finished when half its fields are empty.
-    $filled = count($parentValues);
-    $notes[] = $filled === 0
-      ? 'No fields were filled on the section itself — it is empty.'
-      : sprintf('Filled %d field(s) on the section: %s.', $filled, implode(', ', array_keys($parentValues)));
+    $notes[] = $written === []
+      ? $this->t('No fields were filled on the section itself — it is empty.')
+      : $this->formatPlural(
+        count($written),
+        'Filled 1 field on the section: @fields.',
+        'Filled @count fields on the section: @fields.',
+        ['@fields' => implode(', ', $written)],
+      );
 
-    if ($childPlans !== []) {
-      $notes[] = sprintf('Created %d child section(s) in %s.', count($childPlans), (string) $target);
+    // Said separately, because a person applying a named look did that
+    // themselves and should see it confirmed as their doing, not the model's.
+    if ($styling !== []) {
+      $notes[] = $this->formatPlural(
+        count($styling),
+        'Applied the chosen look to 1 styling field.',
+        'Applied the chosen look to @count styling fields.',
+      );
     }
 
-    $notes[] = 'Nothing was published, and nothing that was already on the page was changed.';
+    if ($childPlans !== []) {
+      $notes[] = $this->formatPlural(
+        count($childPlans),
+        'Created 1 child section in @field.',
+        'Created @count child sections in @field.',
+        ['@field' => (string) $target],
+      );
+    }
+
+    // WHAT THE PERSON STILL HAS TO DO, said plainly and by LABEL. A views
+    // section without a view renders nothing at all, and a tool that reported
+    // only success would leave somebody looking at an empty space wondering
+    // what went wrong. Saying it here costs one sentence and saves that.
+    if ($pictures !== []) {
+      $notes[] = $this->t('No picture can be written, so the placeholder that ships with this module was put in @fields. Open the section and replace it with your own.', [
+        '@fields' => implode(' and ', array_map(
+          static fn(string $label): string => '"' . $label . '"',
+          array_values($pictures),
+        )),
+      ]);
+    }
+
+    $byHand = [];
+
+    foreach ($profile->needsByHand() as $name => $fact) {
+      // A field that just received the placeholder is filled. Telling the
+      // person it still needs choosing would be the report contradicting the
+      // section they are looking at.
+      if (isset($pictures[$name])) {
+        continue;
+      }
+
+      $byHand[] = '"' . $fact->label . '"';
+    }
+
+    $warnings = [];
+
+    if ($byHand !== []) {
+      // formatPlural, not two sentences glued together: the old version built
+      // "a value like that" / "value like those" as a SEPARATE fragment and
+      // dropped it into the middle of the sentence, which no translator can
+      // agree with a noun they cannot see.
+      $warnings[] = $this->formatPlural(
+        count($byHand),
+        'This section still needs you to choose @fields — a value like that cannot be written, so open the page and set it. Until then the section will not show anything.',
+        'This section still needs you to choose @fields — values like those cannot be written, so open the page and set them. Until then the section will not show anything.',
+        ['@fields' => implode(' and ', $byHand)],
+      );
+    }
+
+    $notes[] = $this->t('Nothing was published, and nothing that was already on the page was changed.');
 
     return CreationResult::written(
       (int) $result->nodeId,
@@ -138,7 +236,48 @@ final class SectionComposer implements SectionComposerInterface {
       $result->isNewNode,
       $result->sections,
       array_merge($result->notes, $notes),
+      array_merge($result->warnings, $warnings),
     );
+  }
+
+  /**
+   * Puts the shipped picture in every required image field left empty.
+   *
+   * ONLY REQUIRED ONES, AND ONLY EMPTY ONES. An optional image a person did
+   * not ask for should stay empty — filling it would put a stand-in on a page
+   * nobody wanted one on. A field the caller already supplied is left exactly
+   * as it came.
+   *
+   * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
+   *   The bundle being filled.
+   * @param array<string, mixed> $values
+   *   Checked values, added to in place.
+   *
+   * @return array<string, string>
+   *   Field machine name => label, for each field that received a picture.
+   */
+  private function fillPictures(BundleProfile $profile, array &$values): array {
+    $filled = [];
+
+    foreach ($profile->fields as $name => $fact) {
+      if (!$fact->isPicture() || !$fact->required || isset($values[$name])) {
+        continue;
+      }
+
+      $value = $this->images->valueFor($fact);
+
+      // NULL is a real answer: no Media module, no image media type, or the
+      // file could not be written. The section is still created, and the
+      // "you must choose" note below still names the field.
+      if ($value === NULL) {
+        continue;
+      }
+
+      $values[$name] = $value;
+      $filled[$name] = $fact->label;
+    }
+
+    return $filled;
   }
 
   /**
@@ -148,9 +287,9 @@ final class SectionComposer implements SectionComposerInterface {
    *   The bundle being filled.
    * @param array<string, mixed> $values
    *   Field name => value, as asked for.
-   * @param list<string> $problems
+   * @param list<string|\Stringable> $problems
    *   Refusals, appended to.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   Things the caller must be told, appended to.
    *
    * @return array<string, mixed>
@@ -164,47 +303,45 @@ final class SectionComposer implements SectionComposerInterface {
       $fact = $profile->field($name);
 
       if ($fact === NULL) {
-        $problems[] = sprintf(
-          'The section %s has no field "%s". It has: %s.',
-          $profile->bundle,
-          $name,
-          $profile->contentFields === [] ? 'no fillable fields' : implode(', ', $profile->contentFields),
-        );
+        $problems[] = $this->t('The section @section has no field "@field". It has: @fields.', [
+          '@section' => $profile->bundle,
+          '@field' => $name,
+          '@fields' => $profile->contentFields === []
+            ? $this->t('no fillable fields')
+            : implode(', ', $profile->contentFields),
+        ]);
 
         continue;
       }
 
       if ($fact->holdsSections) {
-        $problems[] = sprintf(
-          'The field %s holds child sections, not a value. Pass them as children instead.',
-          $name,
-        );
+        $problems[] = $this->t('The field @field holds child sections, not a value. Pass them as children instead.', [
+          '@field' => $name,
+        ]);
 
         continue;
       }
 
       if ($fact->tab === 'display') {
-        $problems[] = sprintf(
-          'The field %s is a styling field, and styling is not supported yet — the contrast checker does not exist, so colours are not set from here.',
-          $name,
-        );
+        $problems[] = $this->t('The field @field is a styling field, and styling is not supported yet — the contrast checker does not exist, so colours are not set from here.', [
+          '@field' => $name,
+        ]);
 
         continue;
       }
 
       if ($fact->allowedValues !== [] && !in_array((string) $value, $fact->allowedValues, TRUE)) {
-        $problems[] = sprintf(
-          'The field %s only accepts: %s. It was given "%s".',
-          $name,
-          implode(', ', $fact->allowedValues),
-          is_scalar($value) ? (string) $value : gettype($value),
-        );
+        $problems[] = $this->t('The field @field only accepts: @values. It was given "@given".', [
+          '@field' => $name,
+          '@values' => implode(', ', $fact->allowedValues),
+          '@given' => is_scalar($value) ? (string) $value : gettype($value),
+        ]);
 
         continue;
       }
 
       if (!is_scalar($value)) {
-        $problems[] = sprintf('The value for %s must be text or a number.', $name);
+        $problems[] = $this->t('The value for @field must be text or a number.', ['@field' => $name]);
 
         continue;
       }
@@ -218,7 +355,7 @@ final class SectionComposer implements SectionComposerInterface {
         $out[$name] = $draft->text;
 
         foreach ($draft->notes as $note) {
-          $notes[] = $name . ': ' . $note;
+          $notes[] = $this->t('@field: @note', ['@field' => $name, '@note' => $note]);
         }
 
         continue;
@@ -239,7 +376,7 @@ final class SectionComposer implements SectionComposerInterface {
    *   The parent bundle.
    * @param string|null $asked
    *   The field the caller named, if any.
-   * @param list<string> $problems
+   * @param list<string|\Stringable> $problems
    *   Refusals, appended to.
    *
    * @return string|null
@@ -249,10 +386,9 @@ final class SectionComposer implements SectionComposerInterface {
     $fields = array_keys($profile->childFields);
 
     if ($fields === []) {
-      $problems[] = sprintf(
-        'The section %s cannot hold other sections, so children cannot be added to it.',
-        $profile->bundle,
-      );
+      $problems[] = $this->t('The section @section cannot hold other sections, so children cannot be added to it.', [
+        '@section' => $profile->bundle,
+      ]);
 
       return NULL;
     }
@@ -261,12 +397,11 @@ final class SectionComposer implements SectionComposerInterface {
       $asked = trim($asked);
 
       if (!isset($profile->childFields[$asked])) {
-        $problems[] = sprintf(
-          '%s has no child field "%s". It has: %s.',
-          $profile->bundle,
-          $asked,
-          implode(', ', $fields),
-        );
+        $problems[] = $this->t('@section has no child field "@field". It has: @fields.', [
+          '@section' => $profile->bundle,
+          '@field' => $asked,
+          '@fields' => implode(', ', $fields),
+        ]);
 
         return NULL;
       }
@@ -278,12 +413,11 @@ final class SectionComposer implements SectionComposerInterface {
       // two_columns has a left and a right; three_columns adds a middle; modal
       // has a body and a footer. "Put it in the left column" is a real
       // sentence, and picking one here would answer it at random.
-      $problems[] = sprintf(
-        '%s has %d fields that hold sections: %s. Say which one the children go in.',
-        $profile->bundle,
-        count($fields),
-        implode(', ', $fields),
-      );
+      $problems[] = $this->t('@section has @count fields that hold sections: @fields. Say which one the children go in.', [
+        '@section' => $profile->bundle,
+        '@count' => count($fields),
+        '@fields' => implode(', ', $fields),
+      ]);
 
       return NULL;
     }
@@ -302,9 +436,9 @@ final class SectionComposer implements SectionComposerInterface {
    *   One child, as ['bundle' => string, 'values' => array].
    * @param int $index
    *   Position, for messages a person can follow.
-   * @param list<string> $problems
+   * @param list<string|\Stringable> $problems
    *   Refusals, appended to.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   Notes, appended to.
    *
    * @return array{bundle: string, values: array<string, mixed>}
@@ -322,7 +456,7 @@ final class SectionComposer implements SectionComposerInterface {
     $bundle = isset($child['bundle']) && is_string($child['bundle']) ? trim($child['bundle']) : '';
 
     if ($bundle === '') {
-      $problems[] = sprintf('Child %d does not say which section it is.', $position);
+      $problems[] = $this->t('Child @position does not say which section it is.', ['@position' => $position]);
 
       return ['bundle' => '', 'values' => []];
     }
@@ -330,7 +464,10 @@ final class SectionComposer implements SectionComposerInterface {
     $profile = $this->profiler->profile($bundle);
 
     if ($profile === NULL) {
-      $problems[] = sprintf('Child %d asks for "%s", which is not a section on this site.', $position, $bundle);
+      $problems[] = $this->t('Child @position asks for "@section", which is not a section on this site.', [
+        '@position' => $position,
+        '@section' => $bundle,
+      ]);
 
       return ['bundle' => '', 'values' => []];
     }
@@ -342,13 +479,12 @@ final class SectionComposer implements SectionComposerInterface {
       // empty setting, and reading it as "none" would refuse every child on
       // the most permissive fields there are.
       if ($accepts !== [] && !in_array($bundle, $accepts, TRUE)) {
-        $problems[] = sprintf(
-          'Child %d is a %s, but %s only accepts: %s.',
-          $position,
-          $bundle,
-          $target,
-          implode(', ', $accepts),
-        );
+        $problems[] = $this->t('Child @position is a @section, but @field only accepts: @values.', [
+          '@position' => $position,
+          '@section' => $bundle,
+          '@field' => $target,
+          '@values' => implode(', ', $accepts),
+        ]);
 
         return ['bundle' => '', 'values' => []];
       }
@@ -359,7 +495,10 @@ final class SectionComposer implements SectionComposerInterface {
     $checked = $this->check($profile, $values, $childProblems, $notes);
 
     foreach ($childProblems as $problem) {
-      $problems[] = sprintf('Child %d: %s', $position, $problem);
+      $problems[] = $this->t('Child @position: @problem', [
+        '@position' => $position,
+        '@problem' => $problem,
+      ]);
     }
 
     return ['bundle' => $bundle, 'values' => $checked];
@@ -383,13 +522,13 @@ final class SectionComposer implements SectionComposerInterface {
    *   The reference value for the host field.
    */
   private function build(string $bundle, array $values, string $childField, array $children): array {
-    $parent = Paragraph::create(['type' => $bundle] + $values);
+    $parent = $this->make($bundle, $values);
 
     if ($children !== [] && $childField !== '') {
       $items = [];
 
       foreach ($children as $child) {
-        $paragraph = Paragraph::create(['type' => $child['bundle']] + $child['values']);
+        $paragraph = $this->make($child['bundle'], $child['values']);
         $paragraph->save();
         $items[] = [
           'target_id' => $paragraph->id(),
@@ -406,6 +545,42 @@ final class SectionComposer implements SectionComposerInterface {
       'target_id' => $parent->id(),
       'target_revision_id' => $parent->getRevisionId(),
     ];
+  }
+
+  /**
+   * One paragraph, filled field by field rather than by array union.
+   *
+   * `Paragraph::create(['type' => $b] + $values)` looks equivalent and is not:
+   * a formatted field given a bare string is stored with `format` NULL, and a
+   * NULL format renders through the site's fallback — so the body appears as
+   * escaped source. Setting each field through the format helper gives it one.
+   *
+   * @param string $bundle
+   *   Paragraph bundle.
+   * @param array<string, mixed> $values
+   *   Checked values.
+   *
+   * @return \Drupal\paragraphs\Entity\Paragraph
+   *   The unsaved paragraph.
+   */
+  private function make(string $bundle, array $values): Paragraph {
+    $paragraph = Paragraph::create(['type' => $bundle]);
+
+    foreach ($values as $name => $value) {
+      $name = (string) $name;
+
+      // check() already refused unknown fields, so this only guards the
+      // preset values merged in afterwards.
+      if (!$paragraph->hasField($name)) {
+        continue;
+      }
+
+      $paragraph->set($name, is_string($value)
+        ? $this->formats->valueFor($paragraph->get($name), $value)
+        : $value);
+    }
+
+    return $paragraph;
   }
 
 }

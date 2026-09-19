@@ -7,6 +7,7 @@ namespace Drupal\paragraphs_bundles_ai\Hook;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs_bundles_ai\Form\PbAiPageForm;
 use Drupal\paragraphs_bundles_ai\Service\PageSurfaceInterface;
@@ -25,6 +26,14 @@ use Drupal\paragraphs_bundles_ai\Service\PageSurfaceInterface;
  * anonymous copy and conclude the feature is broken.
  */
 final class PbAiPageHook {
+
+  // REQUIRED BY THE HANDLE'S LABEL. This class is a plain service, not a form
+  // or a controller, so it has no t() of its own — and `$this->t()` without
+  // this trait is an undefined method that `php -l` cannot see. It would not
+  // have surfaced in testing either: decide() refuses at the provider check
+  // before the button is built, so nothing on a site without a configured
+  // provider ever reaches the line that would have thrown.
+  use StringTranslationTrait;
 
   /**
    * Constructs the hook.
@@ -69,8 +78,42 @@ final class PbAiPageHook {
     $build['paragraphs_bundles_ai_assistant'] = [
       '#type' => 'container',
       '#weight' => 1000,
-      '#attributes' => ['class' => ['pb-ai']],
-      'form' => $this->formBuilder->getForm(PbAiPageForm::class, $node, $decision->field),
+      '#attributes' => [
+        'id' => 'pb-ai-panel',
+        'class' => ['pb-ai'],
+      ],
+      // THE TOGGLE IS A CHILD OF THE BAR, not a fixed element beside it. It is
+      // positioned against the bar's own box — `bottom: 100%` — so it travels
+      // with it, and hiding is one transform on the bar with no second
+      // position to keep in step.
+      //
+      // RENDERED HERE, not built by the script: a button that arrives over
+      // HTTP fails silently when the response is not what was expected, and
+      // one built in JS is absent for as long as the script takes to run.
+      // Rendered with the bar, it exists whenever the bar does.
+      'toggle' => [
+        '#type' => 'inline_template',
+        '#weight' => -10,
+        '#template' => <<<'TWIG'
+          <button type="button" class="pb-ai-toggle" aria-controls="pb-ai-panel" aria-expanded="true" aria-label="{{ label }}">
+            <span class="pb-ai-toggle__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M19 9l1.25-2.75L23 5l-2.75-1.25L19 1l-1.25 2.75L15 5l2.75 1.25L19 9zm-7.5.5L9 4 6.5 9.5 1 12l5.5 2.5L9 20l2.5-5.5L17 12l-5.5-2.5zM19 15l-1.25 2.75L15 19l2.75 1.25L19 23l1.25-2.75L23 19l-2.75-1.25L19 15z"/></svg>
+            </span>
+          </button>
+          TWIG,
+        // A HALF CIRCLE HOLDS NO TEXT, so the name is an aria-label and the
+        // state is aria-expanded, which the script keeps current. Both live
+        // here rather than in JS, where no translation could reach them.
+        '#context' => ['label' => $this->t('Show or hide the assistant')],
+        // Asked for here as well as by the form below. Measured 2026-09-17:
+        // the form does attach it and it does bubble, so this changes nothing
+        // today — it removes a contract held across two classes. If
+        // buildForm() ever returned early, the toggle would otherwise render
+        // as a raw browser button. Drupal de-duplicates libraries, so asking
+        // twice costs nothing.
+        '#attached' => ['library' => ['paragraphs_bundles_ai/bar']],
+      ],
+      'form' => $this->formBuilder->getForm(PbAiPageForm::class, $node, $decision->fields),
     ];
   }
 

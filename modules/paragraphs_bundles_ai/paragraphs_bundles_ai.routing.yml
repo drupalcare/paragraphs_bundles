@@ -1,7 +1,0 @@
-paragraphs_bundles_ai.settings:
-  path: '/admin/config/content/paragraphs-bundles-ai'
-  defaults:
-    _form: 'Drupal\paragraphs_bundles_ai\Form\PbAiSettingsForm'
-    _title: 'Paragraphs Bundles AI'
-  requirements:
-    _permission: 'administer site configuration'

@@ -106,7 +106,10 @@ final class PageSurface implements PageSurfaceInterface {
       );
     }
 
-    return PageDecision::show((string) array_key_first($displayed));
+    // EVERY displayed field, not the first of them. Choosing here would be
+    // choosing on the person's behalf, silently, on a fact they can see and
+    // the code cannot: which of their two paragraph fields they meant.
+    return PageDecision::show($displayed);
   }
 
   /**

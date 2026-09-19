@@ -34,9 +34,9 @@ final readonly class FieldDraft {
    *   Character count before fitting.
    * @param int|null $limit
    *   The field's limit, or NULL when it has none.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   Anything the caller must be told about the fit.
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Why there is no draft. Empty when $usable is TRUE.
    */
   private function __construct(
@@ -63,7 +63,7 @@ final readonly class FieldDraft {
    *   Length before fitting.
    * @param int|null $limit
    *   The field's limit.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   What the caller must be told.
    *
    * @return self
@@ -83,7 +83,7 @@ final readonly class FieldDraft {
   /**
    * No draft, and why.
    *
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Complete sentences a person can act on.
    *
    * @return self

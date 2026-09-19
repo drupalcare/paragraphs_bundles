@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.ai_image_bundle.pb_content_ai_image
+    - paragraphs.paragraphs_type.ai_image_bundle
+  module:
+    - image
+id: paragraph.ai_image_bundle.default
+targetEntityType: paragraph
+bundle: ai_image_bundle
+mode: default
+content:
+  pb_content_ai_image:
+    type: image
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden: {  }

@@ -23,7 +23,7 @@ final readonly class DraftedSection {
    *   Field machine name => proposed value, for the section itself.
    * @param list<array<string, mixed>> $children
    *   Child sections, each ['bundle' => string, 'values' => array].
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Why there is no draft. Empty when $usable is TRUE.
    * @param string $model
    *   The model that answered, for the line shown to the person.
@@ -56,7 +56,7 @@ final readonly class DraftedSection {
   /**
    * No draft, and why.
    *
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Complete sentences a person can act on.
    *
    * @return self

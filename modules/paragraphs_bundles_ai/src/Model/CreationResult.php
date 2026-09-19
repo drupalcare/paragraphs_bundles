@@ -28,11 +28,19 @@ final readonly class CreationResult {
    *   TRUE when the node itself was created by this call.
    * @param int $sections
    *   How many paragraphs were added.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   Anything the caller must be told — fields left empty, defaults applied.
    *   Never empty on success: silence about what was skipped is how a tool
    *   ends up trusted for work it did not do.
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $warnings
+   *   The subset of those the person has to ACT on. Separate from $notes
+   *   because severity used to be recovered by reading the English: the form
+   *   asked `str_starts_with($note, 'CAREFUL:')`. That works on exactly one
+   *   language, so translating the notes — the thing this module now does —
+   *   would have silently demoted every warning to a status message, in every
+   *   locale, with nothing going red. Severity is a property of the note and
+   *   is now carried as one.
+   * @param list<string|\Stringable> $refusals
    *   Why nothing was written. Empty when $created is TRUE.
    */
   private function __construct(
@@ -42,6 +50,7 @@ final readonly class CreationResult {
     public bool $isNewNode = FALSE,
     public int $sections = 0,
     public array $notes = [],
+    public array $warnings = [],
     public array $refusals = [],
   ) {}
 
@@ -56,8 +65,10 @@ final readonly class CreationResult {
    *   Whether the node was created here.
    * @param int $sections
    *   Paragraphs added.
-   * @param list<string> $notes
+   * @param list<string|\Stringable> $notes
    *   What the caller must be told.
+   * @param list<string|\Stringable> $warnings
+   *   The ones the person has to act on.
    *
    * @return self
    *   The result.
@@ -68,14 +79,23 @@ final readonly class CreationResult {
     bool $isNewNode,
     int $sections,
     array $notes = [],
+    array $warnings = [],
   ): self {
-    return new self(TRUE, $nodeId, $revisionId, $isNewNode, $sections, array_values($notes));
+    return new self(
+      TRUE,
+      $nodeId,
+      $revisionId,
+      $isNewNode,
+      $sections,
+      array_values($notes),
+      array_values($warnings),
+    );
   }
 
   /**
    * Nothing was written, and why.
    *
-   * @param list<string> $refusals
+   * @param list<string|\Stringable> $refusals
    *   Complete sentences a person can act on.
    *
    * @return self

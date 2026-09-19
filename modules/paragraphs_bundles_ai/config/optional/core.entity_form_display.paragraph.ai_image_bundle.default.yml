@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.ai_image_bundle.pb_content_ai_image
+    - paragraphs.paragraphs_type.ai_image_bundle
+  module:
+    - image
+id: paragraph.ai_image_bundle.default
+targetEntityType: paragraph
+bundle: ai_image_bundle
+mode: default
+content:
+  pb_content_ai_image:
+    type: image_image
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

@@ -6,6 +6,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs_bundles_ai\Model\EditOutcome;
@@ -25,13 +26,13 @@ use Drupal\paragraphs_bundles_ai\Model\EditOutcome;
  * revision. Saving the node and hoping the paragraph follows leaves the old
  * revision pointing at mutated content, which quietly breaks the undo this
  * whole feature promises.
+ * WHICH FIELDS HOLD WORDS IS NOT DECIDED HERE. It is a property of the field,
+ * answered by FieldFact::isWords(), because three services used to keep their
+ * own list of text types and three lists are three chances to disagree.
  */
 final class SectionEditor implements SectionEditorInterface {
 
-  /**
-   * Field types a person types words into.
-   */
-  private const TEXTUAL = ['string', 'string_long', 'text', 'text_long', 'list_string'];
+  use StringTranslationTrait;
 
   /**
    * Constructs the editor.
@@ -44,12 +45,15 @@ final class SectionEditor implements SectionEditorInterface {
    *   Fits text to the field's real limit, and says when it had to.
    * @param \Drupal\Core\Session\AccountInterface $currentUser
    *   Checked for edit access on the page.
+   * @param \Drupal\paragraphs_bundles_ai\Service\TextFormatsInterface $formats
+   *   Keeps a formatted field's format when its words are replaced.
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $entityTypeManager,
     private readonly BundleProfilerInterface $profiler,
     private readonly FieldDrafterInterface $drafter,
     private readonly AccountInterface $currentUser,
+    private readonly TextFormatsInterface $formats,
   ) {}
 
   /**
@@ -57,32 +61,34 @@ final class SectionEditor implements SectionEditorInterface {
    */
   public function edit(NodeInterface $node, string $field, int $paragraphId, array $values): EditOutcome {
     if (!$node->access('update', $this->currentUser)) {
-      return EditOutcome::refused(['You do not have permission to edit this page.']);
+      return EditOutcome::refused([$this->t('You do not have permission to edit this page.')]);
     }
 
     if (!$node->hasField($field)) {
-      return EditOutcome::refused([sprintf('This page has no field %s.', $field)]);
+      return EditOutcome::refused([$this->t('This page has no field @field.', ['@field' => $field])]);
     }
 
     $delta = $this->deltaOf($node, $field, $paragraphId);
 
     if ($delta === NULL) {
       return EditOutcome::refused([
-        'That section is not on this page. Pick one from the list rather than typing an id.',
+        $this->t('That section is not on this page. Pick one from the list rather than typing an id.'),
       ]);
     }
 
     $paragraph = $node->get($field)->get($delta)->entity;
 
     if (!$paragraph instanceof ParagraphInterface) {
-      return EditOutcome::refused(['That section could not be loaded.']);
+      return EditOutcome::refused([$this->t('That section could not be loaded.')]);
     }
 
     $profile = $this->profiler->profile($paragraph->bundle());
 
     if ($profile === NULL) {
       return EditOutcome::refused([
-        sprintf('The section type %s is not installed on this site any more.', $paragraph->bundle()),
+        $this->t('The section type @section is not installed on this site any more.', [
+          '@section' => $paragraph->bundle(),
+        ]),
       ]);
     }
 
@@ -95,33 +101,43 @@ final class SectionEditor implements SectionEditorInterface {
       $fact = $profile->field($name);
 
       if ($fact === NULL) {
-        $problems[] = sprintf('%s has no field "%s".', $profile->label, $name);
+        $problems[] = $this->t('@section has no field "@field".', [
+          '@section' => $profile->label,
+          '@field' => $name,
+        ]);
         continue;
       }
 
       if ($fact->tab !== 'content' || $fact->holdsSections) {
-        $problems[] = sprintf(
-          '%s is not a field this can write to — only the words on the Content tab can be changed.',
-          $name,
-        );
+        $problems[] = $this->t('@field is not a field this can write to — only the words on the Content tab can be changed.', [
+          '@field' => $name,
+        ]);
         continue;
       }
 
-      if (!in_array($fact->type, self::TEXTUAL, TRUE)) {
-        $problems[] = sprintf('%s is a %s field, not text.', $name, $fact->type);
+      if (!$fact->isWords()) {
+        $problems[] = $this->t('The "@field" field holds a @type, not words, so it cannot be changed from here.', [
+          '@field' => $fact->label,
+          '@type' => $fact->type,
+        ]);
         continue;
       }
 
       if ($fact->allowedValues !== [] && !in_array((string) $value, $fact->allowedValues, TRUE)) {
-        $problems[] = sprintf(
-          '%s only accepts: %s.',
-          $name,
-          implode(', ', $fact->allowedValues),
-        );
+        $problems[] = $this->t('@field only accepts: @values.', [
+          '@field' => $name,
+          '@values' => implode(', ', $fact->allowedValues),
+        ]);
         continue;
       }
 
-      $before = trim((string) $paragraph->get($name)->getString());
+      // ->value, NOT getString(). On a formatted field getString() joins every
+      // non-computed property with ", ", so a text_long came back as
+      // "Our autumn range, basic_html" — measured on sts.local 2026-09-17.
+      // That made $before permanently unequal to any clean $after, so the
+      // "nothing actually changed" branch below could never be reached and a
+      // no-op rewrite still wrote two new revisions.
+      $before = trim((string) ($paragraph->get($name)->value ?? ''));
       $after = trim((string) $value);
 
       if ($after === '' || $after === $before) {
@@ -134,11 +150,15 @@ final class SectionEditor implements SectionEditorInterface {
         $after = $draft->text;
 
         foreach ($draft->notes as $note) {
-          $notes[] = $name . ': ' . $note;
+          $notes[] = $this->t('@field: @note', ['@field' => $name, '@note' => $note]);
         }
       }
 
-      $paragraph->set($name, $after);
+      // THROUGH THE FORMAT HELPER, never the bare string. Passing $after
+      // straight to set() replaces the whole item and drops the `format`
+      // property — measured: 'basic_html' became NULL, and the body then
+      // rendered through the fallback format, as escaped source.
+      $paragraph->set($name, $this->formats->valueFor($paragraph->get($name), $after));
       $changes[$name] = ['from' => $before, 'to' => $after];
     }
 
@@ -172,7 +192,7 @@ final class SectionEditor implements SectionEditorInterface {
     $node->setRevisionUserId((int) $this->currentUser->id());
     $node->save();
 
-    $notes[] = 'Nothing was published, and no other section was touched.';
+    $notes[] = $this->t('Nothing was published, and no other section was touched.');
 
     return EditOutcome::changed((int) $node->getRevisionId(), $changes, $notes);
   }
@@ -198,11 +218,15 @@ final class SectionEditor implements SectionEditorInterface {
     foreach ($profile->contentFields as $name) {
       $fact = $profile->field($name);
 
-      if ($fact === NULL || $fact->holdsSections || !in_array($fact->type, self::TEXTUAL, TRUE)) {
+      if ($fact === NULL || !$fact->isWords()) {
         continue;
       }
 
-      $value = trim((string) $paragraph->get($name)->getString());
+      // ->value, for the same reason as in edit(): getString() appends the
+      // text format id, and these lines are read to the model as what the
+      // section currently says. "basic_html" is not part of anybody's copy,
+      // and a model shown it may well write it back.
+      $value = trim((string) ($paragraph->get($name)->value ?? ''));
 
       if ($value !== '') {
         $out[$name] = $value;

@@ -7,6 +7,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs_bundles_ai\Model\CreationResult;
@@ -31,6 +32,8 @@ use Drupal\paragraphs_bundles_ai\Model\CreationResult;
  * safety model.
  */
 final class SectionWriter implements SectionWriterInterface {
+
+  use StringTranslationTrait;
 
   /**
    * Constructs the writer.
@@ -98,13 +101,13 @@ final class SectionWriter implements SectionWriterInterface {
 
       if (!$existing instanceof NodeInterface) {
         return CreationResult::refused([
-          sprintf('There is no node %d on this site.', $nodeId),
+          $this->t('There is no node @id on this site.', ['@id' => $nodeId]),
         ]);
       }
 
       if (!$existing->access('update', $this->currentUser)) {
         return CreationResult::refused([
-          sprintf('You do not have permission to edit node %d.', $nodeId),
+          $this->t('You do not have permission to edit node @id.', ['@id' => $nodeId]),
         ]);
       }
 
@@ -157,18 +160,16 @@ final class SectionWriter implements SectionWriterInterface {
         if ($count > $room) {
           return CreationResult::refused([
             $room <= 0
-              ? sprintf(
-                'The "%s" field is full — it holds %d and that is its limit. Remove one first, or replace what is there.',
-                $label,
-                $limit,
-            )
-              : sprintf(
-                'The "%s" field holds at most %d, so there is room for %d more, not %d.',
-                $label,
-                $limit,
-                $room,
-                $count,
-            ),
+              ? $this->t('The "@field" field is full — it holds @limit and that is its limit. Remove one first, or replace what is there.', [
+                '@field' => $label,
+                '@limit' => $limit,
+              ])
+              : $this->t('The "@field" field holds at most @limit, so there is room for @room more, not @asked.', [
+                '@field' => $label,
+                '@limit' => $limit,
+                '@room' => $room,
+                '@asked' => $count,
+              ]),
           ]);
         }
       }
@@ -178,7 +179,7 @@ final class SectionWriter implements SectionWriterInterface {
     // title is the thing a person will look for in a content list.
     if ($existing === NULL && trim($title) === '') {
       return CreationResult::refused([
-        'A title is required to create a new page. Ask the person what to call it.',
+        $this->t('A title is required to create a new page. Ask the person what to call it.'),
       ]);
     }
 
@@ -197,9 +198,10 @@ final class SectionWriter implements SectionWriterInterface {
 
       if ($replace) {
         $existing->set($fieldName, $paragraphs);
-        $notes[] = sprintf(
-          'Replaced %d existing section(s) — the previous revision still has them.',
+        $notes[] = $this->formatPlural(
           $before,
+          'Replaced 1 existing section — the previous revision still has it.',
+          'Replaced @count existing sections — the previous revision still has them.',
         );
       }
       else {
@@ -207,7 +209,11 @@ final class SectionWriter implements SectionWriterInterface {
           $items->appendItem($item);
         }
         if ($before > 0) {
-          $notes[] = sprintf('Added after the %d section(s) already there.', $before);
+          $notes[] = $this->formatPlural(
+            $before,
+            'Added after the 1 section already there.',
+            'Added after the @count sections already there.',
+          );
         }
       }
 
@@ -223,7 +229,7 @@ final class SectionWriter implements SectionWriterInterface {
       $existing->save();
 
       if ($empty) {
-        $notes[] = 'The new sections are empty — fill them in on the page.';
+        $notes[] = $this->t('The new sections are empty — fill them in on the page.');
       }
 
       return CreationResult::written(
@@ -250,14 +256,20 @@ final class SectionWriter implements SectionWriterInterface {
     // save, so a site could publish this page despite the 0 above. Rule 1 is
     // still the intent — but a note that says UNPUBLISHED without checking
     // would be the tool lying about the one thing it promised.
-    $notes[] = $node->isPublished()
-      ? 'CAREFUL: this site published the page on save, despite being asked not to — check the content type\'s moderation workflow.'
-      : 'The page is UNPUBLISHED — nobody can see it but you.';
-    if ($empty) {
-      $notes[] = 'The new sections are empty — fill them in on the page.';
+    $warnings = [];
+
+    if ($node->isPublished()) {
+      $warnings[] = $this->t("CAREFUL: this site published the page on save, despite being asked not to — check the content type's moderation workflow.");
+    }
+    else {
+      $notes[] = $this->t('The page is UNPUBLISHED — nobody can see it but you.');
     }
 
-    return CreationResult::written((int) $node->id(), NULL, TRUE, $count, $notes);
+    if ($empty) {
+      $notes[] = $this->t('The new sections are empty — fill them in on the page.');
+    }
+
+    return CreationResult::written((int) $node->id(), NULL, TRUE, $count, $notes, $warnings);
   }
 
   /**
