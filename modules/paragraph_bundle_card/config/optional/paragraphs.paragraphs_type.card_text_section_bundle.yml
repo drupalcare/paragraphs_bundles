@@ -5,5 +5,5 @@ id: card_text_section_bundle
 label: 'Card Text Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One text card in a card row: a heading, a paragraph of words, and an optional link.'
 behavior_plugins: {  }

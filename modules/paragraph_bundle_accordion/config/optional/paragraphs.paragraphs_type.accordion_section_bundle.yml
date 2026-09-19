@@ -5,5 +5,5 @@ id: accordion_section_bundle
 label: 'Accordion Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One row of an accordion: the heading a visitor clicks, and the sections that unfold beneath it.'
 behavior_plugins: {  }

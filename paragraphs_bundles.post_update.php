@@ -224,6 +224,30 @@ function paragraphs_bundles_post_update_regenerate_dynamic_css(array &$sandbox):
  * Gives each section a sentence saying what it is for.
  */
 function paragraphs_bundles_post_update_bundle_descriptions(): string {
+  return _paragraphs_bundles_describe_sections();
+}
+
+/**
+ * Gives the eight inner section bundles their sentence too.
+ */
+function paragraphs_bundles_post_update_section_bundle_descriptions(): string {
+  // WHY A SECOND HOOK THAT RUNS THE SAME CODE. A post_update is recorded by
+  // NAME once it has run, and never runs again. Every site that updated
+  // between 2026-09-16 and today has `bundle_descriptions` in its
+  // `existing_updates` — measured on sts.local — and at that moment the eight
+  // section bundles shipped `description: ''`, so the hook skipped them and
+  // will never look again. Filling the yml alone would reach nobody but a
+  // fresh install. A new name is the only thing that re-opens the question.
+  return _paragraphs_bundles_describe_sections();
+}
+
+/**
+ * Copies every shipped section sentence onto the site's own bundles.
+ *
+ * @return string
+ *   A sentence naming how many were filled and how many were left alone.
+ */
+function _paragraphs_bundles_describe_sections(): string {
   // WHY AN UPDATE HOOK AT ALL. The sentences ship in config/optional, and
   // config/optional is installed ONCE — when the module that provides it is
   // installed. Config added to a module that is already installed never
@@ -271,8 +295,13 @@ function paragraphs_bundles_post_update_bundle_descriptions(): string {
     $id = (string) ($data['id'] ?? '');
     $sentence = trim((string) ($data['description'] ?? ''));
 
-    // The eight section bundles ship no sentence on purpose: a slide is never
-    // chosen from a list, it arrives with its slideshow.
+    // THE EIGHT SECTION BUNDLES USED TO SHIP NO SENTENCE ON PURPOSE, AND THAT
+    // REASONING WAS RETIRED ON 2026-09-17. It ran: a slide is never chosen
+    // from a list, it arrives with its slideshow — true of the person using
+    // the Add form, and false of the assistant, which has to WRITE the slide.
+    // Given only the label "Parallax Section" it filled the body with a
+    // description of the layout instead of content. All eight now ship a
+    // sentence; this skip remains for a site that empties one by hand.
     if ($id === '' || $sentence === '') {
       continue;
     }

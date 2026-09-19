@@ -5,5 +5,5 @@ id: slideshow_section_bundle
 label: 'Slideshow Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One slide of a slideshow: a heading and whatever sections make up the slide.'
 behavior_plugins: {  }

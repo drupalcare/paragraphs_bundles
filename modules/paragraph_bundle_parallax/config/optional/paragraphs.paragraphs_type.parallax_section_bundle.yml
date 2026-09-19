@@ -5,5 +5,5 @@ id: parallax_section_bundle
 label: 'Parallax Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'The words that scroll in front of a parallax background, with the picture behind them.'
 behavior_plugins: {  }

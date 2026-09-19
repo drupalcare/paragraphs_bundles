@@ -5,5 +5,5 @@ id: link_section_bundle
 label: 'Link Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One link in a list of links: the words a visitor clicks and the address they go to.'
 behavior_plugins: {  }

@@ -5,5 +5,5 @@ id: tab_section_bundle
 label: 'Tab Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One tab: the name written on the tab, and the sections shown when it is open.'
 behavior_plugins: {  }

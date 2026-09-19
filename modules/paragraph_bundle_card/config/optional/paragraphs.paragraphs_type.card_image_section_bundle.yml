@@ -5,5 +5,5 @@ id: card_image_section_bundle
 label: 'Card Image Section'
 icon_uuid: null
 icon_default: null
-description: ''
+description: 'One picture card in a card row: an image, an optional heading, and a link on the image.'
 behavior_plugins: {  }
