@@ -53,4 +53,43 @@
   <rule ref="Squiz.ControlStructures.SwitchDeclaration.SpacingAfterBreak">
     <exclude-pattern>*\.js$</exclude-pattern>
   </rule>
+
+  <!-- 🚨 TWO PHP-ONLY SNIFFS, TURNED OFF FOR JAVASCRIPT ONLY, BECAUSE THEIR
+       AUTOFIX PRODUCES JAVASCRIPT THAT DOES NOT RUN.
+
+       Generic.PHP.UpperCaseConstant enforces Drupal's PHP convention that
+       `true`, `false` and `null` are written TRUE, FALSE and NULL. In PHP those
+       are case-insensitive constants and the rule is pure style. In JavaScript
+       they are lowercase KEYWORDS: `TRUE` is an undefined identifier, so the
+       "fix" turns working code into a ReferenceError the moment the file runs.
+
+       Squiz.WhiteSpace.OperatorSpacing reads `^=` and `$=` inside a CSS
+       attribute selector as operators, because to a PHP tokenizer that is what
+       they look like.
+
+       MEASURED 2026-09-19 on modules/paragraphs_bundles_ai/js/pb-ai-sections.js,
+       by running phpcbf against a THROWAWAY COPY rather than the file itself.
+       It reported "41 ERRORS WERE FIXED" and produced:
+         notice.hidden = true;                  ->  = TRUE;
+         const usable = ... || null;            ->  || NULL;
+         querySelector(`[id^="pb-"]...`)        ->  `[id^ = "pb-"]...`
+         a regex literal mangled into           ->  / ^\ / [^ / \\] /
+       A syntax check on the result failed with SyntaxError at that regex. So
+       these 41 were never defects in the JavaScript; they were PHP rules aimed
+       at a language that does not have them, and "fixing" them would have
+       shipped a file that throws on load.
+
+       Drupal core avoids this by not sniffing JavaScript at all — its
+       phpcs.xml.dist `extensions` list has no `js`. This project keeps JS under
+       PHPCS for the rest of the standard (see the note above), so only the
+       rules that are actively wrong for JS are switched off, and only for JS.
+       PHP files keep both sniffs in full. JavaScript style is owned by ESLint
+       and Prettier, which the drupal.org CI templates already run. -->
+  <rule ref="Generic.PHP.UpperCaseConstant">
+    <exclude-pattern>*\.js$</exclude-pattern>
+  </rule>
+
+  <rule ref="Squiz.WhiteSpace.OperatorSpacing">
+    <exclude-pattern>*\.js$</exclude-pattern>
+  </rule>
 </ruleset>

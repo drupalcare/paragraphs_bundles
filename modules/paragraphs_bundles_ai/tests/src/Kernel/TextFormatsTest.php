@@ -101,7 +101,7 @@ final class TextFormatsTest extends KernelTestBase {
    * Without this, every assertion below could pass because the helper wraps
    * everything in an item array regardless.
    */
-  public function testAPlainStringFieldIsUnchanged(): void {
+  public function testPlainStringFieldIsUnchanged(): void {
     $paragraph = Paragraph::create(['type' => 'worded']);
     $value = $this->formats->valueFor($paragraph->get('plain_line'), 'Just words.');
 
@@ -154,7 +154,7 @@ final class TextFormatsTest extends KernelTestBase {
   /**
    * A new section gets a real format rather than NULL.
    */
-  public function testANewValueIsGivenTheUsersDefaultFormat(): void {
+  public function testNewValueIsGivenTheUsersDefaultFormat(): void {
     $paragraph = Paragraph::create(['type' => 'worded']);
 
     $paragraph->set(

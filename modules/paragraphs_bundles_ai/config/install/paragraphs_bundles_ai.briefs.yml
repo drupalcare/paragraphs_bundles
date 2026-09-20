@@ -128,13 +128,14 @@ briefs:
 
   image_grid_bundle:
     category: 'Interactive sections'
-    good_for: 'A gallery — pictures in a grid that open larger when clicked.'
+    good_for: 'A gallery — pictures that open full size in a lightbox when clicked.'
     practices: |
       Best practices for creating professional content:
       Each picture has its own section, with an optional heading and a link.
       Pictures should be the same shape, style them in view modes so the grid stays even.
-      best grid from 6 to 12 pictures, a grid of 2 or 3 looks unfinished.
+      best gallery from 6 to 12 pictures, a gallery of 2 or 3 looks unfinished.
       Grid image width sets how many fit per row — smaller width, more per row.
+      Clicking any picture opens it full size; that is what makes it a lightbox.
       Keep the gap small, 8 to 16, a large gap breaks the grid into separate pictures.
       Required (Content): Image — one section per picture, each needs its own image.
       Required (Display): grid image width, grid gap.
@@ -400,3 +401,59 @@ briefs:
       Keep the link text about the same length so the buttons match.
       Required (Content): Body — one link section per link, each needs its address.
       Additional (Content): a title on each link.
+
+# ============================================================================
+# WHAT GOES INSIDE AN OPEN SLOT
+#
+# A field that accepts ANY bundle is a technical fact, not a sensible one. The
+# maintainer, 2026-09-19: "we can really say any bundle can go inside, but in
+# fact not really any bundle because it does not make sense. so we must use
+# logic and think how it will show and what actually the page need."
+#
+# ONLY OPEN SLOTS ARE LISTED. Where the field names what it takes — a slideshow
+# section, a card image or card text — the field decides and nothing is written
+# here: "if any of the parent has a child bundle, then we must use".
+#
+# THE FIRST NAME IS THE DEFAULT. The assistant uses it unless the person says
+# otherwise; the rest are what it may be told to use instead.
+#
+# PROVENANCE, so you know what to argue with:
+#   [yours]  lifted from your own practice text above.
+#   [draft]  mine. Ten slots, and the layout ones are the guess to check.
+#
+# The last three are the inner section bundles — the accordion row, the slide,
+# the tab. They hold the content a reader actually sees, and they are why those
+# three sections came out as skeletons. They have no brief on purpose: a brief
+# is what puts a section in the Add dropdown, and these are never chosen.
+nesting:
+  carousel_bundle:
+    pb_content_carousel_body: [image_bundle, card_text_section_bundle, simple_bundle]   # [yours]
+  3d_carousel_bundle:
+    pb_content_3d_car_body: [image_bundle, simple_bundle]                               # [draft]
+  modal_bundle:
+    pb_content_modal_body: [simple_bundle, image_bundle, one_column_bundle]             # [yours]
+    pb_content_modal_footer: [link_bundle]                                              # [draft]
+  3d_flip_box_bundle:
+    pb_content_3d_box_front: [simple_bundle, image_bundle]                              # [draft]
+    pb_content_3d_box_back: [simple_bundle, image_bundle]                               # [draft]
+  one_column_bundle:
+    pb_content_one_column: [simple_bundle, image_bundle]                                # [draft]
+  two_columns_bundle:
+    pb_content_left_column: [simple_bundle, image_bundle]                               # [draft]
+    pb_content_right_column: [simple_bundle, image_bundle]                              # [draft]
+  three_columns_bundle:
+    pb_content_left_column: [simple_bundle, image_bundle]                               # [draft]
+    pb_content_middle_column: [simple_bundle, image_bundle]                             # [draft]
+    pb_content_right_column: [simple_bundle, image_bundle]                              # [draft]
+  grid_bundle:
+    pb_content_grid_body: [card_text_section_bundle, image_bundle, icon_bundle]         # [yours]
+  alert_bundle:
+    pb_content_alert_body: [simple_bundle]                                              # [yours]
+  image_background_bundle:
+    pb_content_main: [simple_bundle, one_column_bundle]                                 # [yours]
+  accordion_section_bundle:
+    pb_content_accordion_body: [simple_bundle, image_bundle, one_column_bundle]         # [yours]
+  slideshow_section_bundle:
+    pb_content_slideshow_body: [image_bundle, simple_bundle, hero_bundle]               # [yours]
+  tab_section_bundle:
+    pb_content_tab_body: [simple_bundle, image_bundle, one_column_bundle]               # [yours]

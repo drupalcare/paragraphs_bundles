@@ -36,6 +36,33 @@ paragraphs_bundles_ai.briefs:
             type: text
             label: 'Example prompt'
 
+    # WHAT GOES INSIDE AN OPEN SLOT, and it is a SEPARATE key from `briefs` on
+    # purpose. Three of these slots belong to the inner section bundles — the
+    # accordion row, the slide, the tab — which must NOT have a brief, because
+    # "has a brief" is what filters the Add dropdown and those are never chosen
+    # from a list.
+    #
+    # Only slots that accept ANY bundle appear here. Where the field itself
+    # names what it takes, the field decides and there is nothing to write
+    # down: the maintainer's rule, "if any of the parent has a child bundle,
+    # then we must use".
+    #
+    # NOT TRANSLATABLE, and that is why these are `string` rather than `label`:
+    # every value is a paragraph bundle machine name, and a translated machine
+    # name is a machine name that no longer resolves.
+    nesting:
+      type: sequence
+      label: 'What goes inside each open slot'
+      sequence:
+        type: sequence
+        label: 'The open slots on one bundle'
+        sequence:
+          type: sequence
+          label: 'Bundles that may go in one slot, best first'
+          sequence:
+            type: string
+            label: 'Paragraph bundle machine name'
+
 paragraphs_bundles_ai.presets:
   type: config_object
   label: 'Named looks a person can apply to a section'

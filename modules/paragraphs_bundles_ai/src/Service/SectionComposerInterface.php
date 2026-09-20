@@ -35,13 +35,32 @@ interface SectionComposerInterface {
    *   Field machine name => value, for the section itself. Unknown fields,
    *   styling fields and values outside a list field's keys are refused by
    *   name rather than dropped.
-   * @param list<array<string, mixed>> $children
-   *   Child sections, each ['bundle' => string, 'values' => array]. Empty when
-   *   the section holds nothing.
+   * @param list<array<string, mixed>>|array<string, list<array<string, mixed>>> $children
+   *   Child sections, in either of two shapes. Empty when the section holds
+   *   nothing.
+   *
+   *   A LIST — every child goes in one field. This is what every caller used
+   *   before slots were supported, and it behaves exactly as it always did:
+   *   @code
+   *   [['bundle' => 'slideshow_section_bundle', 'values' => [...]], ...]
+   *   @endcode
+   *
+   *   A MAP KEYED BY FIELD — for a section that holds sections in more than
+   *   one place. Two columns has a left and a right, a flip box has a front
+   *   and a back, a modal has a body and a footer, and "a Simple in each"
+   *   names two different places:
+   *   @code
+   *   ['pb_content_left_column'  => [['bundle' => 'simple_bundle', ...]],
+   *    'pb_content_right_column' => [['bundle' => 'image_bundle', ...]]]
+   *   @endcode
+   *
+   *   EACH SLOT TAKES AS MANY AS IT IS GIVEN. A slot is an ordinary paragraph
+   *   field, so a column holds however many sections the person wants — not
+   *   one — subject to the field's own cardinality.
    * @param string|null $childField
-   *   Which field the children go in. Required only when the section has more
-   *   than one — two_columns has a left and a right, and guessing is worse
-   *   than asking.
+   *   Which field a LIST goes in. Ignored when $children is keyed by field,
+   *   because the keys have already said. Still required for a list when the
+   *   section has more than one slot, since a bare list has not said where.
    * @param string $title
    *   Title for a new page. Required when $nodeId is NULL.
    * @param int|null $nodeId

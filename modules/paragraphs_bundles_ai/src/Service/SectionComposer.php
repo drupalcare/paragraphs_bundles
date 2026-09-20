@@ -86,17 +86,11 @@ final class SectionComposer implements SectionComposerInterface {
     $notes = [];
     $parentValues = $this->check($profile, $values, $problems, $notes);
 
-    $target = NULL;
-
-    if ($children !== []) {
-      $target = $this->childField($profile, $childField, $problems);
-    }
-
-    $childPlans = [];
-
-    foreach (array_values($children) as $index => $child) {
-      $childPlans[] = $this->planChild($profile, $target, $child, $index, $problems, $notes);
-    }
+    // WHICH SLOT EACH CHILD GOES IN. A section with one place to put them
+    // takes a plain list, which is what every caller sent before this; one
+    // with several takes a map keyed by the field, because "a Simple in each
+    // column" names two different places and a list cannot.
+    $plansBySlot = $this->planSlots($profile, $children, $childField, $problems, $notes);
 
     if ($problems !== []) {
       return CreationResult::refused($problems);
@@ -118,23 +112,31 @@ final class SectionComposer implements SectionComposerInterface {
     // credit the line above was written to prevent.
     $pictures = $this->fillPictures($profile, $parentValues);
 
-    foreach ($childPlans as $index => $plan) {
-      if ($plan['bundle'] === '') {
-        continue;
-      }
+    // BY REFERENCE, because fillPictures() fills the values in place. Taking
+    // a copy here would fill the copy and build the child without its picture.
+    foreach ($plansBySlot as &$plans) {
+      foreach ($plans as &$plan) {
+        if ($plan['bundle'] === '') {
+          continue;
+        }
 
-      $childProfile = $this->profiler->profile($plan['bundle']);
+        $childProfile = $this->profiler->profile($plan['bundle']);
 
-      if ($childProfile === NULL) {
-        continue;
-      }
+        if ($childProfile === NULL) {
+          continue;
+        }
 
-      $filled = $this->fillPictures($childProfile, $childPlans[$index]['values']);
+        $filled = $this->fillPictures($childProfile, $plan['values']);
 
-      foreach ($filled as $name => $label) {
-        $pictures[$name] = $label;
+        foreach ($filled as $name => $label) {
+          $pictures[$name] = $label;
+        }
       }
     }
+
+    // PHP keeps the last reference of a foreach alive afterwards, and the next
+    // write to either name would land inside the array. Unset both.
+    unset($plans, $plan);
 
     $parentValues += $styling;
 
@@ -143,7 +145,7 @@ final class SectionComposer implements SectionComposerInterface {
       $field,
       $bundle,
       1,
-      fn(): array => [$this->build($bundle, $parentValues, (string) $target, $childPlans)],
+      fn(): array => [$this->build($bundle, $parentValues, $plansBySlot)],
       $title,
       $nodeId,
       FALSE,
@@ -178,12 +180,18 @@ final class SectionComposer implements SectionComposerInterface {
       );
     }
 
-    if ($childPlans !== []) {
+    $childCount = 0;
+
+    foreach ($plansBySlot as $plans) {
+      $childCount += count($plans);
+    }
+
+    if ($childCount > 0) {
       $notes[] = $this->formatPlural(
-        count($childPlans),
-        'Created 1 child section in @field.',
-        'Created @count child sections in @field.',
-        ['@field' => (string) $target],
+        $childCount,
+        'Created 1 child section in @fields.',
+        'Created @count child sections in @fields.',
+        ['@fields' => implode(', ', array_keys($plansBySlot))],
       );
     }
 
@@ -426,6 +434,102 @@ final class SectionComposer implements SectionComposerInterface {
   }
 
   /**
+   * Works out which slot each child goes in, and checks every one.
+   *
+   * TWO SHAPES, ONE ANSWER. A list means "all of them in one field", which is
+   * every caller that existed before a section could fill several slots. A map
+   * keyed by field name says where each group goes, because "a Simple in each
+   * column" names two different places.
+   *
+   * A SLOT IS AN ORDINARY PARAGRAPH FIELD. It takes as many sections as it is
+   * given rather than one, so three Simples down the left column is a normal
+   * thing for an editor to ask for.
+   *
+   * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
+   *   The parent bundle.
+   * @param list<array<string, mixed>>|array<string, list<array<string, mixed>>> $children
+   *   The children, in either shape.
+   * @param string|null $childField
+   *   The field a LIST goes in. Ignored for the keyed shape, whose keys said.
+   * @param list<string|\Stringable> $problems
+   *   Refusals, appended to.
+   * @param list<string|\Stringable> $notes
+   *   Notes, appended to.
+   *
+   * @return array<string, list<array{bundle: string, values: array<string, mixed>}>>
+   *   Field machine name => the checked children for that field.
+   */
+  private function planSlots(
+    BundleProfile $profile,
+    array $children,
+    ?string $childField,
+    array &$problems,
+    array &$notes,
+  ): array {
+    if ($children === []) {
+      return [];
+    }
+
+    // array_is_list() IS the shape test: a keyed map has field names for keys,
+    // a list has 0, 1, 2. Nothing else separates them.
+    if (array_is_list($children)) {
+      $target = $this->childField($profile, $childField, $problems);
+
+      if ($target === NULL) {
+        return [];
+      }
+
+      $plans = [];
+
+      foreach ($children as $index => $child) {
+        // is_array(), NOT an (array) cast. The cast turns a scalar into a
+        // list, which hands planChild() an array<int, mixed> it is not typed
+        // for — and, worse, a "child" with no 'bundle' key, which only fails
+        // further downstream where the message no longer names the cause.
+        if (!is_array($child)) {
+          continue;
+        }
+
+        $plans[] = $this->planChild($profile, $target, $child, $index, $problems, $notes);
+      }
+
+      return [$target => $plans];
+    }
+
+    $out = [];
+    $position = 0;
+
+    foreach ($children as $slot => $list) {
+      $slot = (string) $slot;
+
+      if (!isset($profile->childFields[$slot])) {
+        $problems[] = $this->t('@section has no child field "@field". It has: @fields.', [
+          '@section' => $profile->bundle,
+          '@field' => $slot,
+          '@fields' => implode(', ', array_keys($profile->childFields)),
+        ]);
+
+        continue;
+      }
+
+      foreach ((array) $list as $child) {
+        // Same reasoning as the list path above: a non-array child is not a
+        // child, and casting one would invent an array with no 'bundle' key.
+        if (!is_array($child)) {
+          continue;
+        }
+
+        // Numbered across every slot, so "Child 3" is the third one asked for
+        // rather than the third in whichever column it happened to land in.
+        $out[$slot][] = $this->planChild($profile, $slot, $child, $position, $problems, $notes);
+        $position++;
+      }
+    }
+
+    return $out;
+  }
+
+  /**
    * Checks one child and returns what to build, or records why not.
    *
    * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $parent
@@ -513,21 +617,28 @@ final class SectionComposer implements SectionComposerInterface {
    *   Parent bundle.
    * @param array<string, mixed> $values
    *   Checked parent values.
-   * @param string $childField
-   *   Field the children go in. Empty when there are none.
-   * @param list<array{bundle: string, values: array<string, mixed>}> $children
-   *   Checked children.
+   * @param array<string, list<array{bundle: string, values: array<string, mixed>}>> $bySlot
+   *   Checked children, keyed by the field each group belongs in. Empty when
+   *   the section holds nothing.
    *
    * @return array{target_id: int|string|null, target_revision_id: int|string|null}
    *   The reference value for the host field.
    */
-  private function build(string $bundle, array $values, string $childField, array $children): array {
+  private function build(string $bundle, array $values, array $bySlot): array {
     $parent = $this->make($bundle, $values);
 
-    if ($children !== [] && $childField !== '') {
+    // ONE FIELD AT A TIME. A flat list arrives here as a single-entry map, so
+    // there is one path underneath rather than two that can drift apart.
+    foreach ($bySlot as $slot => $children) {
       $items = [];
 
       foreach ($children as $child) {
+        // A child that failed its checks is already a refusal; it must not
+        // also become an empty paragraph on the page.
+        if ($child['bundle'] === '') {
+          continue;
+        }
+
         $paragraph = $this->make($child['bundle'], $child['values']);
         $paragraph->save();
         $items[] = [
@@ -536,7 +647,9 @@ final class SectionComposer implements SectionComposerInterface {
         ];
       }
 
-      $parent->set($childField, $items);
+      if ($items !== []) {
+        $parent->set($slot, $items);
+      }
     }
 
     $parent->save();

@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: image_grid_bundle
-label: 'Image Grid'
+label: 'Lightbox Gallery'
 icon_uuid: null
 icon_default: null
-description: 'A gallery of pictures in a grid.'
+description: 'A gallery of pictures that open full size in a lightbox when clicked. Use it when the pictures are the content.'
 behavior_plugins: {  }

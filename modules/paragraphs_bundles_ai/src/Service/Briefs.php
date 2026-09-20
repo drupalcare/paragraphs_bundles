@@ -82,6 +82,44 @@ final class Briefs implements BriefsInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function nestingFor(string $bundle): array {
+    $nesting = $this->configFactory->get(self::CONFIG)->get('nesting');
+    $slots = is_array($nesting) ? ($nesting[trim($bundle)] ?? NULL) : NULL;
+
+    if (!is_array($slots)) {
+      return [];
+    }
+
+    $out = [];
+
+    foreach ($slots as $field => $bundles) {
+      if (!is_array($bundles)) {
+        continue;
+      }
+
+      $clean = [];
+
+      foreach ($bundles as $child) {
+        $child = trim((string) $child);
+
+        if ($child !== '') {
+          $clean[] = $child;
+        }
+      }
+
+      // A slot listed with an empty list says nothing, and returning it would
+      // read to a caller as "this slot is settled, put nothing in it".
+      if ($clean !== []) {
+        $out[(string) $field] = $clean;
+      }
+    }
+
+    return $out;
+  }
+
+  /**
    * Every brief, as config has them.
    *
    * @return array<string, mixed>

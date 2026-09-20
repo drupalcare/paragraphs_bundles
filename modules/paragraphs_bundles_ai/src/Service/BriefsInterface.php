@@ -79,4 +79,31 @@ interface BriefsInterface {
    */
   public function practicesFor(string $bundle): string;
 
+  /**
+   * What may go inside each OPEN slot on a bundle.
+   *
+   * A field that accepts ANY bundle is a technical fact, not a sensible one.
+   * The maintainer, 2026-09-19: *"we can really say any bundle can go inside,
+   * but in fact not really any bundle because it does not make sense. so we
+   * must use logic and think how it will show and what actually the page
+   * need."* Drupal stores "accepts everything" as an empty setting, so without
+   * this the assistant has no way to tell "anything is allowed" from "nobody
+   * has said", and it answered both by building an empty shell.
+   *
+   * ONLY OPEN SLOTS ARE HERE. Where the field names the bundles it takes, the
+   * field decides and nothing is written down — *"if any of the parent has a
+   * child bundle, then we must use"*. So an empty return means either the
+   * bundle holds nothing, or what it holds was never in question.
+   *
+   * THE FIRST NAME IS THE DEFAULT, and the rest are what a person may ask for
+   * instead. Order is the maintainer's, not alphabetical.
+   *
+   * @param string $bundle
+   *   Paragraph bundle machine name.
+   *
+   * @return array<string, list<string>>
+   *   Child field machine name => paragraph bundle machine names, best first.
+   */
+  public function nestingFor(string $bundle): array;
+
 }

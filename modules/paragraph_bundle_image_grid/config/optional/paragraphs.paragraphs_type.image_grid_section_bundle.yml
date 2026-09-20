@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies: {  }
 id: image_grid_section_bundle
-label: 'Image Grid Section'
+label: 'Lightbox Image'
 icon_uuid: null
 icon_default: null
-description: 'One picture in an image grid, with an optional heading and a link.'
+description: 'One picture in a lightbox gallery, with an optional heading and a link.'
 behavior_plugins: {  }

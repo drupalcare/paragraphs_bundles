@@ -176,8 +176,9 @@ final class MultipleParagraphFieldsTest extends KernelTestBase {
   /**
    * Every OTHER way of hiding also returns rather than throwing.
    *
-   * decide() has five hide() calls and the one above only reaches the first.
-   * A TypeError in a later branch would be just as fatal and just as invisible.
+   * There are five hide() calls in decide(), and the test above only reaches
+   * the first. A TypeError in a later branch would be just as fatal and just
+   * as invisible.
    */
   public function testHidingWithoutPermissionAlsoReturns(): void {
     $this->setUpCurrentUser(permissions: ['access content']);
@@ -196,7 +197,7 @@ final class MultipleParagraphFieldsTest extends KernelTestBase {
    * Adding a section to a field the page does not render puts it somewhere
    * nobody can see, which reads as the tool having done nothing at all.
    */
-  public function testAHiddenFieldIsNotOffered(): void {
+  public function testHiddenFieldIsNotOffered(): void {
     $display = \Drupal::service('entity_display.repository')
       ->getViewDisplay('node', 'two_field_page', 'default');
     $display->removeComponent('field_footer_sections')->save();

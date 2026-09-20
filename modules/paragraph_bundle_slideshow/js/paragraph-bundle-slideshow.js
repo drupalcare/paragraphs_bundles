@@ -271,7 +271,7 @@
           pauseIcon?.toggleAttribute('hidden', isPaused);
           playPauseButton?.setAttribute(
             'aria-label',
-            isPaused ? 'Play slideshow' : 'Pause slideshow',
+            isPaused ? Drupal.t('Play slideshow') : Drupal.t('Pause slideshow'),
           );
           playPauseButton?.classList.toggle(PB_IS_PAUSED, isPaused);
           playPauseButton?.classList.toggle(PB_IS_PLAYING, !isPaused);
@@ -310,7 +310,7 @@
           }
           playIcon?.removeAttribute('hidden');
           pauseIcon?.setAttribute('hidden', '');
-          playPauseButton.setAttribute('aria-label', 'Play slideshow');
+          playPauseButton.setAttribute('aria-label', Drupal.t('Play slideshow'));
           playPauseButton.classList.add(PB_IS_PAUSED);
           playPauseButton.classList.remove(PB_IS_PLAYING);
         };
