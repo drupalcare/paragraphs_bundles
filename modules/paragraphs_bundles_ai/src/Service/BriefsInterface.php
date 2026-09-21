@@ -22,15 +22,26 @@ namespace Drupal\paragraphs_bundles_ai\Service;
  * - `good_for` — one line saying when to reach for this section.
  * - `practices` — the advice, ending with the required fields, each marked
  *   (Content) or (Display) so a person knows which tab to open.
- * - `prompt` — an example prompt. **Written by the maintainer, not generated:**
- *   *"before the draft we must agree on words… we need a very good example and
- *   I will write it."*
+ * - `prompts` — the example prompts. **Written by the maintainer, never
+ *   generated:** *"before the draft we must agree on words… we need a very good
+ *   example and I will write it."*
+ *
+ *   THE FILE ACCEPTS TWO FORMS AND THIS RETURNS ONE. `prompt:` is a single
+ *   example; `prompts:` is a named set, for a section that reads differently
+ *   depending on what goes inside it — a slideshow of text is not a slideshow
+ *   of images. Both normalise to a list of `['name' => …, 'text' => …]`, in the
+ *   order the file wrote them, so no caller has to know which was used. A
+ *   single `prompt:` carries an empty name.
+ *
+ *   The maintainer's rule, 2026-09-20: *"we must be flexible and easy for us so
+ *   I can go in one place and update the text without any trouble."* Two forms
+ *   exist so the common case stays one line in the file, not so callers branch.
  *
  * TWO READERS, AND THEY GET DIFFERENT PARTS.
  * - `practices` goes to the panel AND may go to the model. It says what good
  *   looks like for this section, which is what both of them need.
- * - `prompt` goes to the panel ONLY. It is an example for a person to edit, and
- *   a model handed it writes about whatever the example mentions — the bakery
+ * - `prompts` go to the panel ONLY. They are examples for a person to edit, and
+ *   a model handed one writes about whatever the example mentions — the bakery
  *   in the example rather than the business in front of them.
  *
  * SIX BUNDLES HAVE NO BRIEF ON PURPOSE — block_content, block, node_reference,
@@ -47,10 +58,11 @@ interface BriefsInterface {
    * @param string $bundle
    *   Paragraph bundle machine name.
    *
-   * @return array{category: string, good_for: string, practices: string, prompt: string}|null
+   * @return array{category: string, good_for: string, practices: string, prompts: list<array{name: string, text: string}>}|null
    *   The brief with every key present, or NULL when the file has no entry for
    *   this bundle — which is ordinary for a bundle a site added itself, and
-   *   deliberate for the six a model cannot create.
+   *   deliberate for the six a model cannot create. `prompts` is an empty list
+   *   when none are written, which is not the same as a blank one.
    */
   public function forBundle(string $bundle): ?array;
 
@@ -63,7 +75,7 @@ interface BriefsInterface {
    * @param list<string> $bundles
    *   Bundle machine names.
    *
-   * @return array<string, array{category: string, good_for: string, practices: string, prompt: string}>
+   * @return array<string, array{category: string, good_for: string, practices: string, prompts: list<array{name: string, text: string}>}>
    *   Machine name => brief.
    */
   public function forBundles(array $bundles): array;

@@ -32,9 +32,26 @@ paragraphs_bundles_ai.briefs:
             # newlines the panel splits on.
             type: text
             label: 'Best practices'
+          # TWO FORMS, BECAUSE ONE FILE HAS TO STAY EASY TO EDIT BY HAND.
+          # The maintainer, 2026-09-20: "we must be flexible and easy for us so
+          # I can go in one place and update the text without any trouble."
+          #
+          #   prompt:   one example, for a section that needs only one.
+          #   prompts:  named variants, for a section that reads differently
+          #             depending on what goes inside it — a slideshow of text
+          #             is not a slideshow of images.
+          #
+          # A bundle uses whichever fits; Briefs normalises both into one list
+          # so nothing downstream has to know which was written.
           prompt:
             type: text
             label: 'Example prompt'
+          prompts:
+            type: sequence
+            label: 'Example prompts, by variant'
+            sequence:
+              type: text
+              label: 'Example prompt'
 
     # WHAT GOES INSIDE AN OPEN SLOT, and it is a SEPARATE key from `briefs` on
     # purpose. Three of these slots belong to the inner section bundles — the

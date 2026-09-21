@@ -296,16 +296,6 @@ final class PbAiPageForm extends FormBase {
       '#attributes' => ['class' => ['pb-ai-bar__intro']],
     ];
 
-    // Top right, on this same line. Checked by default: somebody who has never
-    // built this section is exactly who the brief is for, and they are not
-    // going to go looking for a switch to turn it on.
-    $form['intro']['best_practices'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Best practices'),
-      '#default_value' => TRUE,
-      '#wrapper_attributes' => ['class' => ['pb-ai-bar__switch']],
-    ];
-
     // ROW ONE: everything that is a choice.
     $form['choices'] = [
       '#type' => 'container',
@@ -460,6 +450,28 @@ final class PbAiPageForm extends FormBase {
         ],
       ];
     }
+
+    // THE TWO SWITCHES SIT WITH THE BUTTONS, and they are declared last so the
+    // row reads Add · Edit · Prompts · Best practices in source order. The CSS
+    // lays this out with a plain `display: flex` and nothing else, so an RTL
+    // language reverses it for free rather than needing its own rule.
+    //
+    // BOTH ON BY DEFAULT. Somebody who has never built this section is exactly
+    // who the panel is for, and they will not go looking for a switch to turn
+    // it on. They are independent: either, both, or neither.
+    $form['actions']['prompts'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Prompts'),
+      '#default_value' => TRUE,
+      '#wrapper_attributes' => ['class' => ['pb-ai-bar__switch']],
+    ];
+
+    $form['actions']['best_practices'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Best practices'),
+      '#default_value' => TRUE,
+      '#wrapper_attributes' => ['class' => ['pb-ai-bar__switch']],
+    ];
 
     $form['status'] = [
       '#type' => 'container',

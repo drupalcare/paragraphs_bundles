@@ -150,8 +150,56 @@ final class Briefs implements BriefsInterface {
       'category' => trim((string) ($brief['category'] ?? '')),
       'good_for' => trim((string) ($brief['good_for'] ?? '')),
       'practices' => trim((string) ($brief['practices'] ?? '')),
-      'prompt' => trim((string) ($brief['prompt'] ?? '')),
+      'prompts' => $this->prompts($brief),
     ];
+  }
+
+  /**
+   * The example prompts, however they were written.
+   *
+   * TWO FORMS COLLAPSE INTO ONE LIST HERE, so that no caller has to ask which
+   * one the maintainer used. `prompt:` is a single example; `prompts:` is a
+   * named set for a section that reads differently depending on what goes
+   * inside it — a slideshow of text is not a slideshow of images. A bundle may
+   * write either, and a bundle that writes neither gets an empty list rather
+   * than a blank entry, so "none written yet" stays distinguishable from
+   * "written and empty".
+   *
+   * THE ORDER IS THE FILE'S ORDER. Whatever the maintainer put first is what
+   * the panel offers first, because that is the one decision this service must
+   * not take away from the text.
+   *
+   * @param array<string, mixed> $brief
+   *   The brief as config has it.
+   *
+   * @return list<array{name: string, text: string}>
+   *   Each prompt with the label to show above it. A single `prompt:` has no
+   *   name of its own and carries an empty one.
+   */
+  private function prompts(array $brief): array {
+    $out = [];
+
+    $single = trim((string) ($brief['prompt'] ?? ''));
+
+    if ($single !== '') {
+      $out[] = ['name' => '', 'text' => $single];
+    }
+
+    $named = $brief['prompts'] ?? NULL;
+
+    if (!is_array($named)) {
+      return $out;
+    }
+
+    foreach ($named as $name => $text) {
+      $text = trim((string) $text);
+
+      if ($text !== '') {
+        $out[] = ['name' => trim((string) $name), 'text' => $text];
+      }
+    }
+
+    return $out;
   }
 
 }

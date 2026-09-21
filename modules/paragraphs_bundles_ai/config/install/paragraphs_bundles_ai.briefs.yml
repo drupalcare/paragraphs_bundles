@@ -65,6 +65,20 @@ briefs:
   slideshow_bundle:
     category: 'Interactive sections'
     good_for: 'One message at a time, moving on its own — several things shown in one space.'
+    prompts:
+      text: |
+        Write a slideshow of four slides about our autumn planting range.
+        Heading "Plant now, enjoy it in spring" as an h2, centred. Name each
+        slide after one plant, with a Simple inside saying in one line why it
+        is worth planting now. Keep the slide titles the same length.
+      images: |
+        Write a slideshow of five slides for our display gardens. Heading
+        "The gardens in September" as an h2, centred. Each slide holds an
+        Image, titled with what it shows in two or three words.
+      hero: |
+        Write a slideshow of three slides for the top of the home page.
+        Heading "Autumn at the nursery" as an h2, centred. Each slide holds a
+        Hero with one line of body and a two-word link title.
     practices: |
       Best practices for creating professional content:
       Each slide has its own section, each section accpt paragrpah bundle.
@@ -209,6 +223,10 @@ briefs:
   two_columns_bundle:
     category: 'Layout and structure'
     good_for: 'Two sections side by side — text next to an image, or a menu next to content.'
+    prompt: |
+      Write two columns comparing bare-root and potted roses. Heading
+      "Bare-root or potted?" as an h2, centred. A Simple in each column, three
+      lines each, kept the same length so neither side leaves a gap.
     practices: |
       Best practices for creating professional content:
       Left and right column each accept any paragraph bundle.
