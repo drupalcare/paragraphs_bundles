@@ -59,6 +59,58 @@ final class PbBundleInstallFunctionalTest extends BrowserTestBase {
   }
 
   /**
+   * A fresh install with no icon content keeps the bundled font.
+   *
+   * `paragraph_bundle_icon` repoints its stylesheet at a Google Fonts subset of
+   * the icons a site actually uses. A fresh install uses none, so there is
+   * nothing to subset and the local `@font-face` must be left exactly as
+   * shipped. Getting this wrong would point every new site at a stylesheet for
+   * an empty icon list — which the API answers with HTTP 400 — and the visible
+   * symptom would be icons rendering as their ligature NAMES in plain text,
+   * the same failure that forced the revert in 4ea0ce5.
+   *
+   * This can only be checked on a real install: `hook_library_info_alter()`
+   * fires on the first library-cache build, potentially before the module's
+   * optional field config has been imported, so the field tables may not exist
+   * yet. The Unit suite covers the guards in isolation
+   * (`PbiIconUsageTest`); this covers the ordering.
+   */
+  public function testFreshInstallKeepsTheBundledIconFont(): void {
+    $library = $this->container->get('library.discovery')
+      ->getLibraryByName('paragraph_bundle_icon', 'paragraph-bundle-icon-outlined');
+
+    $this->assertIsArray($library, 'The icon library exists after install.');
+    $this->assertNotEmpty($library['css'], 'The icon library still declares a stylesheet.');
+
+    foreach ($library['css'] as $asset) {
+      $this->assertSame(
+        'file',
+        $asset['type'],
+        'A fresh install uses no icons, so the stylesheet must still be the '
+        . 'bundled local file rather than a subset URL.',
+      );
+      $this->assertStringEndsWith('material-symbols-outlined.css', $asset['data']);
+    }
+  }
+
+  /**
+   * The icon services work immediately after install, with no content.
+   */
+  public function testFreshInstallRegistersTheIconServices(): void {
+    $usage = $this->container->get('paragraph_bundle_icon.icon_usage');
+    $registry = $this->container->get('paragraph_bundle_icon.icon_name_registry');
+
+    // Must not throw when no icon paragraph exists yet.
+    $this->assertSame([], $usage->iconsByStyle());
+
+    // The shipped name list is readable from the installed module, which is
+    // what makes free-text icon names validatable at all.
+    $this->assertGreaterThan(4000, count($registry->all()));
+    $this->assertTrue($registry->isValid('home'));
+    $this->assertFalse($registry->isValid('thisdoesnotexist'));
+  }
+
+  /**
    * Installing the content module creates the host node type.
    */
   public function testInstallCreatesHostNodeType(): void {

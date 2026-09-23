@@ -1,4 +1,52 @@
 services:
+  # ---------------------------------------------------------------------------
+  # Icon name registry — knows which Material Symbols names are real, so a
+  # free-text field cannot send rubbish to the font subsetting API. Google
+  # drops an unknown name silently, and falls back to the complete 344 KB font
+  # when every name is unknown. Single-concern.
+  # ---------------------------------------------------------------------------
+  paragraph_bundle_icon.icon_name_registry:
+    class: Drupal\paragraph_bundle_icon\Service\PbiIconNameRegistry
+
+  Drupal\paragraph_bundle_icon\Service\PbiIconNameRegistryInterface:
+    alias: paragraph_bundle_icon.icon_name_registry
+
+  # ---------------------------------------------------------------------------
+  # Font URL builder — builds the Google Fonts stylesheet URL for exactly the
+  # icons a page uses, keeping all four variable axes. Returns an empty string
+  # when there is nothing valid to request, which means "attach nothing" and
+  # leaves the bundled font as the fallback. Single-concern.
+  # ---------------------------------------------------------------------------
+  paragraph_bundle_icon.font_url_builder:
+    class: Drupal\paragraph_bundle_icon\Service\PbiFontUrlBuilder
+
+  Drupal\paragraph_bundle_icon\Service\PbiFontUrlBuilderInterface:
+    alias: paragraph_bundle_icon.font_url_builder
+
+  # ---------------------------------------------------------------------------
+  # Icon usage — which icons this site actually uses, per style. Reads the field
+  # tables directly: loading every icon paragraph measured 144.8 ms against
+  # 1.1 ms for the query, and this runs during a library-cache rebuild.
+  # Single-concern.
+  # ---------------------------------------------------------------------------
+  paragraph_bundle_icon.icon_usage:
+    class: Drupal\paragraph_bundle_icon\Service\PbiIconUsage
+    arguments:
+      - '@database'
+      - '@paragraph_bundle_icon.icon_name_registry'
+
+  Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface:
+    alias: paragraph_bundle_icon.icon_usage
+
+  Drupal\paragraph_bundle_icon\Hook\PbiLibraryInfoAlterHook:
+    arguments:
+      - '@paragraph_bundle_icon.icon_usage'
+      - '@paragraph_bundle_icon.font_url_builder'
+
+  Drupal\paragraph_bundle_icon\Hook\PbiEntityHook: {}
+
+  Drupal\paragraph_bundle_icon\Hook\PbiPreprocessIconHook: {}
+
   Drupal\paragraph_bundle_icon\Hook\PbiThemeHook: {}
 
   Drupal\paragraph_bundle_icon\Hook\PbiHelpHook:

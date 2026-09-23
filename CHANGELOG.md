@@ -32,6 +32,45 @@ class names were renamed**, **outer element ids were standardised** (both in
 tokens that did not change, and the full id table), and two things v1 bundled
 are no longer in the package (see **Removed**).
 
+### Performance — the icon font is now subsetted to the icons you use
+
+`paragraph_bundle_icon` bundles the three Material Symbols variable fonts, and
+each one carries all 4,284 icons: 3,411,436 bytes for Outlined, 4,644,048 for
+Rounded, 3,012,704 for Sharp. A page draws a handful. Google's own guidance
+labels that configuration **not recommended** and names subsetting as the fix.
+
+Icon pages now request only the icons the site actually uses, through Google
+Fonts' `icon_names` parameter. Measured on a page with an outlined icon:
+**9,118 bytes — 686 of CSS and 8,432 of font — against 3,411,436 before, 374x
+smaller.** The bundled font is no longer requested at all.
+
+- **Nothing changes for authors.** All four variable axes — Fill, Weight, Grade
+  and Optical Size — still work; the computed `font-variation-settings` on the
+  glyph is unchanged. Icon names are still free text.
+- **The bundled fonts still ship, and are still used as the fallback.** A style
+  with no icons in use keeps its local `@font-face` untouched, and so does a
+  site whose icon names cannot be validated. Removing the fonts is what broke
+  upgrades once before; they stay.
+- **Icon names are validated** against the 4,284 names Google publishes, shipped
+  as `modules/paragraph_bundle_icon/data/material-symbols-names.txt`. This
+  matters because an unrecognised name is dropped silently by the API, and a
+  request where *every* name is unrecognised falls back to the complete 344 KB
+  font.
+- **`font-display: block` replaces `swap`** for icons. With `swap` the browser
+  paints the fallback face while loading, and for a ligature icon font that
+  paints the ligature TEXT — an icon set to `home` briefly showed the word
+  "home".
+- **Strict CSP is handled with no configuration.** The stylesheet host is picked
+  up automatically from the library definition by the Content-Security-Policy
+  module; the font host is declared per element via `#attached['csp']`. Neither
+  adds a dependency — both degrade to nothing when `csp` is absent.
+- The template, `paragraph_bundle_icon.libraries.yml` and every
+  `attach_library()` call are unchanged; the swap happens in
+  `hook_library_info_alter()`.
+
+⚠ **Sites without outbound access to fonts.googleapis.com** will find icon pages
+have no icon font. The bundled files remain on disk; see the sub-module README.
+
 ### Security
 Editor-supplied display values reach the page through two unescaped sinks: the
 generated per-paragraph stylesheet, and `style` attributes written by Twig
