@@ -67,35 +67,26 @@
    autoescape offers no protection, because `(`, `)` and `;` are not escaped.
    `pb_image_field_url` returns a generated, path-encoded URL. #}
 {% set pb_image_url = paragraph|pb_image_field_url('pb_content_image') %}
-{% set pb_image_height = paragraph|pb_field_value('pb_display_parallax_height') %}
-
-{# Every value below lands inside a `style` attribute, so each one goes
-   through `pb_css_value` — the same sanitizer the PHP CSS builders use. #}
-{% set pb_css_vars = [] %}
-{% if pb_scroll_affect != 'legacy' %}
-  {% if pb_anim_speed %}
-    {% set pb_css_vars = pb_css_vars|merge(['--animation-speed: ' ~ pb_anim_speed|pb_css_value ~ 's;']) %}
-  {% endif %}
-  {% if pb_anim_easing %}
-    {% set pb_css_vars = pb_css_vars|merge(['--animation-easing: ' ~ pb_easing_css|pb_css_value ~ ';']) %}
-  {% endif %}
-  {% if pb_bg_position %}
-    {% set pb_css_vars = pb_css_vars|merge(['--background-position: ' ~ pb_bg_position|pb_css_value ~ ';']) %}
-  {% endif %}
-{% endif %}
-
-{% set section_height = '' %}
-{% if pb_image_height and pb_bg_height_unit %}
-  {% set section_height = '--section-height: ' ~ pb_image_height|pb_css_value ~ pb_height_unit_css|pb_css_value %}
-{% endif %}
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id).setAttribute('data-breakpoint', pb_breakpoints).setAttribute('data-parallax-speed', pb_parallax_speed).setAttribute('data-parallax-effect', pb_effect_css) }}>
-  <div class="pb-ui-inner pb-parallax-section__inner {{ effect_class }}"{% if section_height %} style="{{ section_height }};"{% endif %}>
+  <div class="pb-ui-inner pb-parallax-section__inner {{ effect_class }}">
 
+    {#
+      NO INLINE STYLES HERE. The background image and the animation custom
+      properties now come from this paragraph's generated stylesheet — see
+      PbDynamicUserVarBuilder::USER_STYLE_SCOPES, `parallax_section_bundle`.
+      A style ATTRIBUTE cannot be permitted by a Content Security Policy
+      except through `'unsafe-inline'`; unlike a `<style>` element it cannot
+      carry a nonce.
+
+      THE BRANCH STAYS. `image-url-empty` is a state the stylesheet renders
+      differently (it centres a message at full viewport height), so it is
+      markup, not styling.
+    #}
     {% if pb_image_url %}
-      <div class="pb-parallax__bg" style="background-image: url(&quot;{{ pb_image_url }}&quot;); {{ pb_css_vars|join(' ') }}"></div>
+      <div class="pb-parallax__bg"></div>
     {% else %}
-      <div class="pb-parallax__bg image-url-empty" style="{{ pb_css_vars|join(' ') }}"></div>
+      <div class="pb-parallax__bg image-url-empty"></div>
     {% endif %}
 
     <div class="pb-parallax__text{{ classes_inner == '' ? '' : ' ' ~ classes_inner }}">

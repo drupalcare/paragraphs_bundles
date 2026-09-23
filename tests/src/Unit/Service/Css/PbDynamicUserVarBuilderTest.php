@@ -199,4 +199,207 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
     $this->assertStringContainsString('perspective: 900px;', $css);
   }
 
+  /**
+   * The flip box scene height is emitted on the scene selector.
+   *
+   * MOVED OUT OF THE TEMPLATE FOR CSP, 2026-09-20. This was the bundle's last
+   * inline `style="height: Npx"`, and a style ATTRIBUTE cannot be permitted by
+   * a Content Security Policy except through `'unsafe-inline'`: unlike a
+   * `<style>` element it cannot carry a nonce. PbInlineAssetSurfaceTest pins
+   * the attribute's absence; this pins that the value still arrives, which is
+   * the half that would otherwise fail silently — a scene with no height looks
+   * like a styling bug, not a missing rule.
+   */
+  public function testFlipBoxHeightOnScene(): void {
+    $paragraph = $this->mockParagraph('3d_flip_box_bundle', 309, [
+      'pb_display_3d_height' => '350',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-3d-flip-box-309');
+    $this->assertStringContainsString(
+      '#pb-3d-flip-box-309 .pb-3d-flip-box__scene',
+      $css,
+    );
+    $this->assertStringContainsString('height: 350px;', $css);
+  }
+
+  /**
+   * An unset flip box height emits nothing rather than `height: px`.
+   *
+   * The template guarded this with `{% if pb_box_height %}`. That guard was not
+   * lost when the value moved: build() skips any rule whose resolved value is
+   * empty. Without this test the relocation of a guard is invisible.
+   */
+  public function testFlipBoxWithoutHeightEmitsNoCss(): void {
+    $paragraph = $this->mockParagraph('3d_flip_box_bundle', 310);
+    $this->assertSame(
+      '',
+      $this->builder->build($paragraph, '#pb-3d-flip-box-310'),
+    );
+  }
+
+  /**
+   * Parallax section height lands on the element the CSS reads it from.
+   *
+   * `.pb-parallax-section > div` declares
+   * `min-height: var(--section-height, 400px)`. THE FALLBACK IS THE HAZARD:
+   * every stored height on sts.local is 400, so a rule that silently emitted
+   * nothing would still render a 400px section and look perfectly correct.
+   * Asserting the declaration is the only honest check.
+   */
+  public function testParallaxSectionHeightOnInner(): void {
+    $paragraph = $this->mockParagraph('parallax_section_bundle', 294, [
+      'pb_display_parallax_height' => '400',
+      'pb_display_para_height_unit' => 'px',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-parallax-section-294');
+    $this->assertStringContainsString(
+      '#pb-parallax-section-294 > .pb-parallax-section__inner',
+      $css,
+    );
+    $this->assertStringContainsString('--section-height: 400px;', $css);
+  }
+
+  /**
+   * The `pr` unit is written as a percentage, not the stored token.
+   */
+  public function testParallaxSectionHeightPercentUnit(): void {
+    $paragraph = $this->mockParagraph('parallax_section_bundle', 295, [
+      'pb_display_parallax_height' => '80',
+      'pb_display_para_height_unit' => 'pr',
+    ]);
+    $this->assertStringContainsString(
+      '--section-height: 80%;',
+      $this->builder->build($paragraph, '#pb-parallax-section-295'),
+    );
+  }
+
+  /**
+   * 🚨 AN UNSET SCROLL FIELD MEANS LEGACY, so no animation variables.
+   *
+   * This is the regression this change nearly introduced. The template reads
+   * the field as `pb_field_value('pb_display_parallax_scroll', 'legacy')`, so
+   * an unset value has always selected the legacy effect. The `when` guard
+   * originally spelled this `!== 'legacy'`, which is TRUE for an empty field —
+   * and all six parallax sections on sts.local have it unset, so every one of
+   * them would have silently gained three custom properties it never had.
+   */
+  public function testParallaxUnsetScrollEmitsNoAnimationVars(): void {
+    $paragraph = $this->mockParagraph('parallax_section_bundle', 296, [
+      'pb_display_parallax_height' => '400',
+      'pb_display_para_height_unit' => 'px',
+      'pb_display_para_bg_anim_speed' => '0.3',
+      'pb_display_para_anim_easing' => 'ease_in_out',
+      'pb_display_parallax_bg_position' => 'center',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-parallax-section-296');
+
+    $this->assertStringContainsString('--section-height: 400px;', $css);
+    $this->assertStringNotContainsString('--animation-speed', $css);
+    $this->assertStringNotContainsString('--animation-easing', $css);
+    $this->assertStringNotContainsString('--background-position', $css);
+  }
+
+  /**
+   * An explicit legacy scroll value likewise emits no animation variables.
+   */
+  public function testParallaxLegacyScrollEmitsNoAnimationVars(): void {
+    $paragraph = $this->mockParagraph('parallax_section_bundle', 297, [
+      'pb_display_parallax_scroll' => 'legacy',
+      'pb_display_para_bg_anim_speed' => '0.3',
+    ]);
+    $this->assertStringNotContainsString(
+      '--animation-speed',
+      $this->builder->build($paragraph, '#pb-parallax-section-297'),
+    );
+  }
+
+  /**
+   * A JS-mode section emits all three animation variables on the bg element.
+   *
+   * The rules reading them sit behind `.parallax-js .pb-parallax__bg`, so the
+   * selector matters as much as the values. `ease_in_out` becomes
+   * `ease-in-out`, matching the template's `|replace({_: '-'})`.
+   */
+  public function testParallaxJsModeEmitsAnimationVarsOnBg(): void {
+    $paragraph = $this->mockParagraph('parallax_section_bundle', 298, [
+      'pb_display_parallax_scroll' => 'js',
+      'pb_display_para_bg_anim_speed' => '0.3',
+      'pb_display_para_anim_easing' => 'ease_in_out',
+      'pb_display_parallax_bg_position' => 'center',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-parallax-section-298');
+
+    $this->assertStringContainsString(
+      '#pb-parallax-section-298 .pb-parallax__bg',
+      $css,
+    );
+    $this->assertStringContainsString('--animation-speed: 0.3s;', $css);
+    $this->assertStringContainsString('--animation-easing: ease-in-out;', $css);
+    $this->assertStringContainsString('--background-position: center;', $css);
+  }
+
+  /**
+   * Image overlay colours land on the WRAPPER, for the CSS to inherit.
+   *
+   * The strings asserted here are the ones the removed inline path produced —
+   * PbDynamicCssBuilderTest::testImageOverlayInlineStyle pinned exactly
+   * `--pb-bg: rgba(0,0,0, 0.80);` and `--pb-tx: #ffffff`. `overlay_rgba` and
+   * buildDeclaration() compose an identical sprintf over the same normaliser,
+   * so this is a transport change, not a colour change. A raw triplet passes
+   * through `normaliseToRgbTriplet` untouched, which is why the spacing here
+   * differs from the hex-sourced `rgba(250, 253, 255, 0.36)` elsewhere.
+   */
+  public function testImageOverlayColoursOnWrapper(): void {
+    $paragraph = $this->mockParagraph('image_overlay_bundle', 23, [
+      'pb_display_bg' => '0,0,0',
+      'pb_display_bg_opacity' => '80',
+      'pb_display_text' => '#ffffff',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-image-overlay-23');
+
+    $this->assertStringContainsString('--pb-bg: rgba(0,0,0, 0.80);', $css);
+    $this->assertStringContainsString('--pb-tx: #ffffff;', $css);
+  }
+
+  /**
+   * 🚨 The overlay colours must NOT be scoped to a descendant.
+   *
+   * Scoping to `.pb-overlay__container` would colour the container even in
+   * title mode, where the stylesheet forces it transparent — and it would
+   * break PbDynamicCssBuilderTest, which asserts that selector never appears
+   * in this bundle's generated CSS. The wrapper is the only target that lets
+   * BOTH existing mode rules inherit.
+   */
+  public function testImageOverlayColoursAreNotScopedToDescendant(): void {
+    $paragraph = $this->mockParagraph('image_overlay_bundle', 23, [
+      'pb_display_bg' => '0,0,0',
+      'pb_display_bg_opacity' => '80',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-image-overlay-23');
+
+    $this->assertStringContainsString('#pb-image-overlay-23 {', $css);
+    $this->assertStringNotContainsString('.pb-overlay__container', $css);
+    $this->assertStringNotContainsString('.pb-overlay__title', $css);
+  }
+
+  /**
+   * Hover colours emit without the opacity treatment.
+   *
+   * collectColorVariables() applied opacity to `pb_display_bg` only; every
+   * other colour took the plain branch. Reproducing that asymmetry is the
+   * difference between the same colour and a similar one.
+   */
+  public function testImageOverlayHoverColoursSkipOpacity(): void {
+    $paragraph = $this->mockParagraph('image_overlay_bundle', 24, [
+      'pb_display_bg_hover' => '#123456',
+      'pb_display_text_hover' => '#abcdef',
+      'pb_display_bg_opacity' => '50',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-image-overlay-24');
+
+    $this->assertStringContainsString('--pb-bg-h: #123456;', $css);
+    $this->assertStringContainsString('--pb-tx-h: #abcdef;', $css);
+    $this->assertStringNotContainsString('rgba(', $css);
+  }
+
 }

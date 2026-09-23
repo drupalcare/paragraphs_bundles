@@ -9,8 +9,14 @@
  * |---------------------------------|-------------------------|--------------|
  * | pb_display_* (list)             | `.pb-ui-inner`     | entity field values |
  * | pb_display_border_color         | `.pb-ui-inner`     | dynamic CSS (`--pb-br`) |
- * | pb_display_bg/text/link*        | `.pb-overlay__container`| inline `--pb-*` on overlay |
- * | pb_display_bg/text (title mode) | `.pb-overlay__title`    | inline `--pb-*` on title |
+ * | pb_display_bg/text/link*        | paragraph wrapper       | generated CSS file |
+ *
+ * THE MODE NO LONGER CHANGES WHERE THE COLOURS GO. `--pb-bg` / `--pb-tx` and
+ * their hover variants are defined once on the wrapper and inherited; the
+ * stylesheet already selects the right element per mode
+ * (`:not(.pb-image-overlay--title) .pb-overlay__container` versus
+ * `.pb-image-overlay--title … :hover .pb-overlay__title`). The PHP that used
+ * to route one inline string to one element or the other is gone.
  * | pb_display_image_overlay        | outer wrapper class     | `pb-image-overlay--{key}` |
  * | pb_display_border_radius        | `.pb-overlay__container`| class on overlay |
  * | pb_display_padding              | `.pb-overlay__title`    | class via title_extra_classes |
@@ -62,7 +68,16 @@
       {{ content.pb_content_image }}
     </div>
 
-    <div class="{{ pb_overlay_class }}"{% if pb_overlay_container_style %} style="{{ pb_overlay_container_style }}"{% endif %}>
+    {#
+      NO INLINE STYLE HERE. The overlay colours now come from this paragraph's
+      generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+      `image_overlay_bundle`, which defines `--pb-bg`/`--pb-tx` and their hover
+      variants on the paragraph wrapper. The existing rules in
+      paragraph-bundle-image-overlay.css already select the right element per
+      overlay mode, and custom properties inherit, so nothing here needs to
+      know which mode is active.
+    #}
+    <div class="{{ pb_overlay_class }}">
       {% if pb_link %}
         <a href="{{ pb_link }}" class="pb-ui-row pb-ui-link"{% if pb_link_title %} title="{{ pb_link_title }}"{% endif %}>
       {% endif %}
@@ -73,7 +88,6 @@
             paragraph: paragraph,
             content: content,
             title_extra_classes: _overlay_title_extra,
-            title_style: pb_overlay_title_style|default(''),
           }, false) }}
         {% endif %}
       </div>

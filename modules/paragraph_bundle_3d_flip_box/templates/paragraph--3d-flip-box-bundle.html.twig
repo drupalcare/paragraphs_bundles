@@ -10,7 +10,7 @@
  * | pb_display_* (list)             | `.pb-ui-inner`           | entity field values |
  * | pb_display_bg/text/border/link* | `.pb-ui-inner`           | dynamic CSS |
  * | pb_display_flip_xy              | `.pb-3d-flip-box__scene` | class on scene |
- * | pb_display_3d_height            | `.pb-3d-flip-box__scene` | inline `height` (px) |
+ * | pb_display_3d_height            | `.pb-3d-flip-box__scene` | generated CSS file (px) |
  *
  * Dynamic CSS selector: `#pb-3d-flip-box-{id} > .pb-ui-inner`
  *
@@ -27,7 +27,6 @@
 {% set paragraph_id = pb_paragraph_id %}
 {% set classes_inner = ['pb-ui-inner']|merge(pb_display_classes)|join(' ') %}
 {% set pb_flip_xy = paragraph|pb_field_value('pb_display_flip_xy') %}
-{% set pb_box_height = paragraph|pb_field_value('pb_display_3d_height') %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
 
 {% set classes = [
@@ -49,7 +48,14 @@
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       {% endif %}
 
-      <div class="pb-3d-flip-box__scene{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}"{% if pb_box_height %} style="height: {{ pb_box_height }}px"{% endif %}>
+      {#
+        NO INLINE STYLE HERE. The scene height now comes from this paragraph's
+        generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+        `3d_flip_box_bundle`. A `style="…"` attribute cannot be permitted by a
+        Content Security Policy except via `'unsafe-inline'`, and unlike a
+        `<style>` element it cannot carry a nonce.
+      #}
+      <div class="pb-3d-flip-box__scene{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}">
         <div class="pb-3d-flip-box__inner" id="{{ paragraph_id }}-faces">
           <div class="pb-3d-flip-box__front">{{ content.pb_content_3d_box_front }}</div>
           <div class="pb-3d-flip-box__back{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}">{{ content.pb_content_3d_box_back }}</div>

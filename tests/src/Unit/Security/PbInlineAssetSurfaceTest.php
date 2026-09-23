@@ -52,14 +52,46 @@ final class PbInlineAssetSurfaceTest extends TestCase {
    * A site enforcing CSP needs `style-src-attr 'unsafe-inline'` for these.
    * A nonce cannot help: nonces authorise <style> ELEMENTS, never attributes.
    *
+   * SHRINKING, NOT GROWING — the log of what has left this list:
+   * - 2026-09-20, `3d_flip_box_bundle`: the scene height moved into the
+   *   generated per-paragraph CSS via PbDynamicUserVarBuilder::USER_STYLE_SCOPES.
+   *   Same field (`pb_display_3d_height`), same `px` transform, same rendered
+   *   result; only the transport changed. The `{% if %}` guard the template
+   *   carried is not lost — build() skips a rule whose value resolves empty.
+   *   Covered by PbDynamicUserVarBuilderTest::testFlipBoxHeightOnScene and
+   *   ::testFlipBoxWithoutHeightEmitsNoCss, because this test proves only that
+   *   the attribute is gone, never that the value still arrives.
+   * - 2026-09-20, `parallax_section_bundle`: all three moved — the section
+   *   height onto `> .pb-parallax-section__inner`, and the background image
+   *   plus the three animation custom properties onto ` .pb-parallax__bg`,
+   *   matching the elements the template used so the cascade is unchanged.
+   *   Every piece of wiring already existed and had never been connected: the
+   *   `parallax_section_height` and `seconds` transforms and the
+   *   `parallax_not_legacy` guard were all written for this bundle and left
+   *   unreferenced. ⚠ That guard had a bug — it read `!== 'legacy'`, which is
+   *   TRUE for an unset field, and every parallax section on the test site has
+   *   it unset. Covered by PbDynamicUserVarBuilderTest's five parallax tests,
+   *   including the unset-scroll case specifically.
+   *
+   * - 2026-09-20, `image_overlay_bundle` AND `templates/pb-content-title`:
+   *   both in one change, because the title template's `title_style` was fed
+   *   only by the overlay. The four colour custom properties now land on the
+   *   paragraph wrapper via PbDynamicUserVarBuilder, and the existing
+   *   stylesheet rules — `:not(.pb-image-overlay--title) .pb-overlay__container`
+   *   and `.pb-image-overlay--title … :hover .pb-overlay__title` — pick them
+   *   up by inheritance. That removed the PHP mode-routing entirely:
+   *   `preprocessImageOverlayInlineColors()` and `OVERLAY_INLINE_COLOR_KEYS`
+   *   are gone.
+   *
+   * 🚨 **AN EMPTY LIST HERE DOES NOT MEAN PB EMITS NO INLINE STYLES.** This
+   * test scans TWIG ONLY. `ColorSwatchFormatter.php` emits four inline styles
+   * from PHP render arrays (`'style' => '…'` in `#attributes`) and no guard
+   * covers them. Extend this test to PHP before treating an empty allowlist as
+   * a clean bill of health.
+   *
    * @var array<string, int>
    */
-  private const ALLOWED_INLINE_STYLE = [
-    'modules/paragraph_bundle_3d_flip_box/templates/paragraph--3d-flip-box-bundle.html.twig' => 1,
-    'modules/paragraph_bundle_image_overlay/templates/paragraph--image-overlay-bundle.html.twig' => 1,
-    'modules/paragraph_bundle_parallax/templates/paragraph--parallax-section-bundle.html.twig' => 3,
-    'templates/pb-content-title.html.twig' => 1,
-  ];
+  private const ALLOWED_INLINE_STYLE = [];
 
   /**
    * Extensions that can carry markup or emit it.
@@ -104,6 +136,71 @@ final class PbInlineAssetSurfaceTest extends TestCase {
       "This project must emit no inline JavaScript, so that a site can run a\n"
       . "strict script-src without 'unsafe-inline'. Found:\n - "
       . implode("\n - ", $findings),
+    );
+  }
+
+  /**
+   * PHP files that build inline `style` attributes, and how many.
+   *
+   * SEPARATE FROM THE TWIG LIST ON PURPOSE. The two scans look for different
+   * syntax — `style="` in markup versus `'style' => '…'` in a render array —
+   * carry different false-positive risks, and fail for different reasons. One
+   * merged assertion would leave a future reader unable to tell which kind of
+   * leak had appeared.
+   *
+   * 🚨 THIS LIST EXISTS BECAUSE THE TWIG SCAN ALONE WAS NOT ENOUGH. Until
+   * 2026-09-21 this test scanned Twig only, so these four were invisible while
+   * the Twig allowlist read "empty" — which looked like a clean bill of health
+   * the project had not earned.
+   *
+   * `ColorSwatchFormatter` is unlike the template cases: three of its four are
+   * entirely static and belong in a stylesheet, but the fourth carries an
+   * arbitrary user-chosen hex, and a field formatter has no per-entity
+   * generated CSS file to put it in. Awaiting the maintainer's decision —
+   * split, delete (it is assigned to zero displays and two sibling formatters
+   * cover the same field type), or keep and document.
+   *
+   * @var array<string, int>
+   */
+  private const ALLOWED_INLINE_STYLE_PHP = [
+    'src/Plugin/Field/FieldFormatter/ColorSwatchFormatter.php' => 4,
+  ];
+
+  /**
+   * Inline style attributes built in PHP stay on the PHP allowlist.
+   *
+   * The regex was red-proofed against this project before being trusted:
+   * `'style' =>` matches exactly the four render-array attributes and none of
+   * the near misses — `$form['choices']['style']` is bracket access and
+   * `$form_state->getValue('style')` is a method argument, neither of which is
+   * array-key syntax. The double-quoted spelling is matched too, although
+   * nothing uses it today: a guard that only catches the spelling already in
+   * the codebase is half a guard.
+   */
+  public function testInlineStylePhpAttributesStayOnTheAllowlist(): void {
+    $found = [];
+
+    foreach ($this->sourceFiles(['php', 'module', 'inc', 'theme']) as $relative => $source) {
+      $count = preg_match_all('/[\'"]style[\'"]\s*=>/', $source);
+
+      if ($count > 0) {
+        $found[$relative] = $count;
+      }
+    }
+
+    ksort($found);
+    $expected = self::ALLOWED_INLINE_STYLE_PHP;
+    ksort($expected);
+
+    self::assertSame(
+      $expected,
+      $found,
+      "The set of PHP files building inline style attributes changed.\n"
+      . "A render array writing `'style' => '…'` into `#attributes` produces\n"
+      . "exactly the same attribute a template would, and a CSP-enforcing site\n"
+      . "must allow it through style-src-attr — which cannot be narrowed by a\n"
+      . "nonce. Move the value into a stylesheet, or into the entity's\n"
+      . 'generated CSS, and update ALLOWED_INLINE_STYLE_PHP here if you cannot.',
     );
   }
 

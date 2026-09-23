@@ -177,6 +177,137 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
         ],
       ],
     ],
+    // MOVED OUT OF THE TEMPLATE FOR CSP, 2026-09-20. The scene height was the
+    // one value this bundle still wrote as `style="height: Npx"`, and an inline
+    // style attribute cannot be permitted by a Content Security Policy except
+    // through `'unsafe-inline'` — it cannot carry a nonce the way a `<style>`
+    // element can. Same field, same `px` transform, same rendered result; only
+    // the transport changes, from the tag to the per-entity stylesheet.
+    //
+    // The template guarded this with `{% if pb_box_height %}`. That guard is
+    // not lost: build() skips any rule whose resolved value is empty, so an
+    // unset height emits no declaration rather than `height: px`.
+    '3d_flip_box_bundle' => [
+      [
+        // Two levels in from the wrapper: `.pb-ui-inner > .pb-content__full >
+        // .pb-3d-flip-box__scene`, so a descendant combinator, not a child.
+        'relative' => ' .pb-3d-flip-box__scene',
+        'rules' => [
+          [
+            'property' => 'height',
+            'field' => 'pb_display_3d_height',
+            'transform' => 'px',
+          ],
+        ],
+      ],
+    ],
+    // MOVED OUT OF THE TEMPLATE FOR CSP, 2026-09-20 — three inline style
+    // attributes, the largest single group in the module. Every piece of this
+    // wiring already existed and had simply never been connected: the
+    // `parallax_section_height` transform, the `seconds` transform and the
+    // `parallax_not_legacy` guard were all written for this bundle and left
+    // unreferenced.
+    //
+    // THE SELECTORS MATCH THE ELEMENTS THE TEMPLATE USED, deliberately, so the
+    // cascade is unchanged rather than merely equivalent: `--section-height` is
+    // read by `.pb-parallax-section > div { min-height: var(--section-height,
+    // 400px) }`, and the animation properties by `.parallax-js
+    // .pb-parallax__bg`.
+    'parallax_section_bundle' => [
+      [
+        'relative' => ' > .pb-parallax-section__inner',
+        'rules' => [
+          [
+            'property' => '--section-height',
+            'transform' => 'parallax_section_height',
+          ],
+        ],
+      ],
+      [
+        // Matches both branches of the template: the bg element carries
+        // `image-url-empty` as well when no image is set, and that class is a
+        // state the CSS styles differently, not a styling detail.
+        'relative' => ' .pb-parallax__bg',
+        'rules' => [
+          [
+            'property' => 'background-image',
+            'field' => 'pb_content_image',
+            'transform' => 'image_url',
+          ],
+          // JS MODE ONLY. The rules reading these three sit behind
+          // `.parallax-js`, so emitting them for a legacy section would put
+          // dead declarations in the file.
+          [
+            'property' => '--animation-speed',
+            'field' => 'pb_display_para_bg_anim_speed',
+            'transform' => 'seconds',
+            'when' => 'parallax_not_legacy',
+          ],
+          [
+            'property' => '--animation-easing',
+            'field' => 'pb_display_para_anim_easing',
+            'transform' => 'underscore_dash',
+            'when' => 'parallax_not_legacy',
+          ],
+          [
+            'property' => '--background-position',
+            'field' => 'pb_display_parallax_bg_position',
+            'transform' => 'string',
+            'when' => 'parallax_not_legacy',
+          ],
+        ],
+      ],
+    ],
+    // MOVED OUT OF THE TEMPLATES FOR CSP, 2026-09-20 — two inline attributes
+    // in one change, because `pb-content-title.html.twig`'s `title_style` is
+    // fed only by this bundle.
+    //
+    // `'relative' => ''` PUTS THE VARIABLES ON THE WRAPPER, and that is what
+    // makes the old routing unnecessary. PbPreprocessHook used to send the same
+    // string to the container OR the title depending on
+    // `pb_display_image_overlay`. The static stylesheet already does that
+    // routing itself: `:not(.pb-image-overlay--title) .pb-overlay__container`
+    // reads `--pb-bg`, and `.pb-image-overlay--title … :hover
+    // .pb-overlay__title` reads it in title mode. Custom properties inherit, so
+    // defining them once on the wrapper lets each existing rule pick them up
+    // exactly as before — no mode branch in PHP at all.
+    //
+    // ⚠ DELIBERATELY NOT `.pb-overlay__container`: PbDynamicCssBuilderTest
+    // asserts that selector never appears in this bundle's generated CSS.
+    //
+    // The four spellings reproduce collectColorVariables() byte for byte —
+    // `overlay_rgba` and buildDeclaration() compose an identical sprintf over
+    // the same normaliser, and `color` matches its non-background branch
+    // (hex passes through, a raw triplet becomes `rgb(...)`). Opacity applies
+    // to `pb_display_bg` only, which is why the hover background does not use
+    // the overlay transform.
+    'image_overlay_bundle' => [
+      [
+        'relative' => '',
+        'rules' => [
+          [
+            'property' => '--pb-bg',
+            'fields' => ['pb_display_bg', 'pb_display_bg_opacity'],
+            'transform' => 'overlay_rgba',
+          ],
+          [
+            'property' => '--pb-bg-h',
+            'field' => 'pb_display_bg_hover',
+            'transform' => 'color',
+          ],
+          [
+            'property' => '--pb-tx',
+            'field' => 'pb_display_text',
+            'transform' => 'color',
+          ],
+          [
+            'property' => '--pb-tx-h',
+            'field' => 'pb_display_text_hover',
+            'transform' => 'color',
+          ],
+        ],
+      ],
+    ],
     'icon_bundle' => [
       [
         'relative' => ' .icon-wrapper',
@@ -264,7 +395,21 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
       return TRUE;
     }
     return match ($when) {
-      'parallax_not_legacy' => $this->fieldStringValue($paragraph, 'pb_display_parallax_scroll') !== 'legacy',
+      // AN UNSET FIELD MEANS LEGACY, and that is not a nicety. The template
+      // reads this as `pb_field_value('pb_display_parallax_scroll', 'legacy')`,
+      // so an empty value has always selected the legacy (CSS-only) effect,
+      // for which the animation custom properties are NOT emitted.
+      //
+      // A bare `!== 'legacy'` treats '' as "not legacy" and emits them.
+      // Measured 2026-09-20: all six parallax sections on sts.local have this
+      // field unset, so that spelling would have moved every one of them onto
+      // the animated branch and given them three custom properties they have
+      // never had — a silent behaviour change, on content nobody touched.
+      'parallax_not_legacy' => !in_array(
+        $this->fieldStringValue($paragraph, 'pb_display_parallax_scroll'),
+        ['', 'legacy'],
+        TRUE,
+      ),
       default => TRUE,
     };
   }

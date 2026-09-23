@@ -27,22 +27,8 @@ use Psr\Log\LoggerInterface;
  *     fields, in the bundle's declared field order.
  *   - `pb_dynamic_library`: library id when a dynamic CSS file exists,
  *     otherwise NULL (Twig must not attach a missing library).
- *   - `pb_overlay_container_style` / `pb_overlay_title_style`: image overlay
- *     bg/text custom properties on the overlay DOM node (inline), not dynamic.
  */
 final class PbPreprocessHook {
-
-  /**
-   * Display colour keys for image overlay inline `--pb-*` on one element.
-   *
-   * @var list<string>
-   */
-  private const array OVERLAY_INLINE_COLOR_KEYS = [
-    'pb-bg',
-    'pb-bg-h',
-    'pb-tx',
-    'pb-tx-h',
-  ];
 
   /**
    * Paragraph bundles owned by Paragraphs Bundles (cached per request).
@@ -87,7 +73,6 @@ final class PbPreprocessHook {
 
     $slug = $this->slugger->slugify($paragraph->bundle());
     $id = (int) $paragraph->id();
-    $bundle = $paragraph->bundle();
 
     // The DOM id and the generated CSS scope come from one function, so a
     // template can never carry an id the stylesheet does not target.
@@ -97,10 +82,6 @@ final class PbPreprocessHook {
     // copy of the field list; the list is a DOM contract and now has one home.
     $variables['pb_display_classes'] = $this->displayClasses->innerClasses($paragraph);
     $this->attachDynamicCss($variables, $paragraph, $slug, $id);
-
-    if ($bundle === 'image_overlay_bundle') {
-      $this->preprocessImageOverlayInlineColors($variables, $paragraph);
-    }
   }
 
   /**
@@ -316,46 +297,6 @@ final class PbPreprocessHook {
     }
     $attributes['class'] = $normalized;
     $variables['attributes'] = $attributes;
-  }
-
-  /**
-   * Exposes overlay bg/text as inline custom properties on one DOM node.
-   *
-   * Border/link colours stay on `.pb-ui-inner` via dynamic CSS. Overlay
-   * surface colours belong on `.pb-overlay__container` or the title element
-   * — a single `style=""` line, no extra dynamic rule block required.
-   *
-   * @param array<string, mixed> $variables
-   *   Paragraph preprocess variables.
-   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   Image overlay paragraph.
-   */
-  private function preprocessImageOverlayInlineColors(
-    array &$variables,
-    ParagraphInterface $paragraph,
-  ): void {
-    $style = $this->dynamicCss->buildInlineCustomPropertiesStyle(
-      $paragraph,
-      self::OVERLAY_INLINE_COLOR_KEYS,
-    );
-    if ($style === '') {
-      return;
-    }
-
-    $overlayMode = '';
-    if ($paragraph->hasField('pb_display_image_overlay')
-      && !$paragraph->get('pb_display_image_overlay')->isEmpty()) {
-      $stored = $paragraph->get('pb_display_image_overlay')->first()?->getValue();
-      $raw = is_array($stored) ? ($stored['value'] ?? '') : '';
-      $overlayMode = is_string($raw) ? trim($raw) : '';
-    }
-
-    if ($overlayMode === 'title') {
-      $variables['pb_overlay_title_style'] = $style;
-      return;
-    }
-
-    $variables['pb_overlay_container_style'] = $style;
   }
 
 }

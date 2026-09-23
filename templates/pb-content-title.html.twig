@@ -11,8 +11,14 @@
  * - content: The paragraph render array (must include pb_content_title).
  * - title_extra_classes: Optional extra classes (space-separated)
  *   appended to the title.
- * - title_style: Optional inline style attribute value (no HTML
- *   escaping of quotes needed).
+ *
+ * THERE IS NO `title_style`, DELIBERATELY. Its only caller was the image
+ * overlay, whose colours now reach this element through the paragraph's
+ * generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+ * `image_overlay_bundle`. A style ATTRIBUTE cannot be permitted by a Content
+ * Security Policy except through 'unsafe-inline'; unlike a <style> element it
+ * cannot carry a nonce. Do not reintroduce one here — put the value in the
+ * generated CSS instead.
  */
 #}
 {% set _tags = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div'] %}
@@ -37,6 +43,5 @@
 
 {% set _base = 'pb-content__title pb-content__title--align-' ~ _align %}
 {% set _extra = title_extra_classes|default('')|trim %}
-{% set _style = title_style|default('')|trim %}
 
-<{{ _tag }} class="{{ _base }}{{ _extra ? ' ' ~ _extra : '' }}"{% if _style %} style="{{ _style }}"{% endif %}>{{ content.pb_content_title }}</{{ _tag }}>
+<{{ _tag }} class="{{ _base }}{{ _extra ? ' ' ~ _extra : '' }}">{{ content.pb_content_title }}</{{ _tag }}>
