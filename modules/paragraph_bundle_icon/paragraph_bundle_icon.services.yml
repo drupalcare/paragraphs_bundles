@@ -45,8 +45,6 @@ services:
 
   Drupal\paragraph_bundle_icon\Hook\PbiEntityHook: {}
 
-  Drupal\paragraph_bundle_icon\Hook\PbiPreprocessIconHook: {}
-
   Drupal\paragraph_bundle_icon\Hook\PbiThemeHook: {}
 
   Drupal\paragraph_bundle_icon\Hook\PbiHelpHook:

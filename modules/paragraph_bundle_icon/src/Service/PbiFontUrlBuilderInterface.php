@@ -41,20 +41,6 @@ interface PbiFontUrlBuilderInterface {
   public const string AXES = 'opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
 
   /**
-   * Hosts this URL depends on, for `#attached['csp']`.
-   *
-   * The stylesheet comes from fonts.googleapis.com and the font file it
-   * references comes from fonts.gstatic.com, so a site running a strict policy
-   * needs both. Declaring them per render element means the Content-Security-
-   * Policy module picks them up automatically and the site owner configures
-   * nothing.
-   */
-  public const array CSP_SOURCES = [
-    'style-src' => ['https://fonts.googleapis.com'],
-    'font-src' => ['https://fonts.gstatic.com'],
-  ];
-
-  /**
    * Build the stylesheet URL for one style and one set of icons.
    *
    * @param string $style

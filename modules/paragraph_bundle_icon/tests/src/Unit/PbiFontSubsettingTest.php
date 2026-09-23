@@ -155,20 +155,4 @@ final class PbiFontSubsettingTest extends TestCase {
     self::assertFalse($registry->isValid('thisdoesnotexist'));
   }
 
-  /**
-   * The CSP sources cover both hosts a subsetted request touches.
-   *
-   * The stylesheet is fetched from fonts.googleapis.com and the font file it
-   * references from fonts.gstatic.com. Declaring both per render element lets
-   * the Content-Security-Policy module allow them automatically, so a site
-   * running a strict policy needs no configuration. Miss one and the icons
-   * vanish on exactly the sites that care most.
-   */
-  public function testCspSourcesCoverBothHosts(): void {
-    $sources = PbiFontUrlBuilderInterface::CSP_SOURCES;
-
-    self::assertSame(['https://fonts.googleapis.com'], $sources['style-src']);
-    self::assertSame(['https://fonts.gstatic.com'], $sources['font-src']);
-  }
-
 }

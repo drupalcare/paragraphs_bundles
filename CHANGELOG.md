@@ -60,10 +60,9 @@ smaller.** The bundled font is no longer requested at all.
   paints the fallback face while loading, and for a ligature icon font that
   paints the ligature TEXT — an icon set to `home` briefly showed the word
   "home".
-- **Strict CSP is handled with no configuration.** The stylesheet host is picked
-  up automatically from the library definition by the Content-Security-Policy
-  module; the font host is declared per element via `#attached['csp']`. Neither
-  adds a dependency — both degrade to nothing when `csp` is absent.
+- **Sites enforcing a content policy** need `https://fonts.googleapis.com` and
+  `https://fonts.gstatic.com` allowed for the stylesheet and the font file. This
+  module emits no policy of its own.
 - The template, `paragraph_bundle_icon.libraries.yml` and every
   `attach_library()` call are unchanged; the swap happens in
   `hook_library_info_alter()`.

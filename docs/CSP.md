@@ -323,8 +323,21 @@ replaced.
   module asserts against it.
 - **Do not hash the per-paragraph style attributes.** The header grows with
   content and still needs `'unsafe-hashes'`.
-- **Do not add `csp` as a dependency.** Every integration above is optional and
-  should degrade to nothing when the module is absent.
+- 🚨 **Write NOTHING csp-specific into this project.** The old rule here said an
+  integration "should degrade to nothing when the module is absent". That is
+  FALSE and it took alaahaddad.com down on 2026-09-23 — 500 on every page,
+  14 occurrences, from one unconditional `#attached['csp']` in
+  `paragraph_bundle_icon`. Core's `HtmlResponseAttachmentsProcessor` throws
+  `LogicException` for any `#attached` key outside its allow-list, and `csp` is
+  only tolerated because the csp module decorates that processor to strip it.
+  No csp module, no stripping, fatal page.
+
+  Maintainer, the same day: *"I dont want anything to mention or wait on csp, it
+  work with it if it is there, if not I don't care."* So the rule is not "guard
+  it" — it is **do not write it at all**. A library's external URL is picked up
+  by csp automatically when that module is present, which is all this project
+  needs. Anything a strict site must allow by hand belongs in that module's
+  README, not in code.
 
 ---
 
