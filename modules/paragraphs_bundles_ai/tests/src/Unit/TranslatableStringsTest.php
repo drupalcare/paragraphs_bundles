@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles_ai\Unit;
 
-use Drupal\Tests\UnitTestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Every sentence a person reads is translatable, and the model's stays English.
@@ -26,8 +26,18 @@ use Drupal\Tests\UnitTestCase;
  *
  * This is a Unit test on purpose: it reads files and needs no database, so it
  * runs anywhere, including where the kernel suite cannot.
+ *
+ * ⚠ IT EXTENDS PHPUnit's TestCase, NOT Drupal's UnitTestCase, and that is not a
+ * style preference. This project's `phpunit.xml.dist` bootstraps
+ * `tests/bootstrap.php`, which supplies Composer autoload plus lightweight
+ * interface stubs — no Drupal kernel and no `Drupal\Tests\UnitTestCase`. That
+ * class was unreachable here, and because the suite sweeps in
+ * `modules/*_/tests/src/Unit`, one unloadable file made `phpunit -c
+ * phpunit.xml.dist` exit 255 at suite-build time, taking every other Unit test
+ * with it. Nothing here needs UnitTestCase: every assertion is static and both
+ * helpers walk the filesystem.
  */
-final class TranslatableStringsTest extends UnitTestCase {
+final class TranslatableStringsTest extends TestCase {
 
   /**
    * Sinks whose contents are read by a person.
