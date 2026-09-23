@@ -29,7 +29,7 @@ it has a prerequisite (your site must already be on the last 1.x release).
 Three things do change for site builders, all detailed below: **structural CSS
 class names were renamed**, **outer element ids were standardised** (both in
 `docs/CSS-CLASS-MIGRATION.md`, which lists all 304 class renames, the 69 frozen
-tokens that did not change, and the full id table), and three things v1 bundled
+tokens that did not change, and the full id table), and two things v1 bundled
 are no longer in the package (see **Removed**).
 
 ### Security

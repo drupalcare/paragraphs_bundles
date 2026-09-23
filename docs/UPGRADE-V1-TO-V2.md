@@ -51,14 +51,21 @@ drush php:eval "print \Drupal::keyValue('system.schema')->get('paragraphs_bundle
   back.
 - **9005 or higher** — you are already on v2.
 
-### 3. The Material Symbols font is no longer bundled
+### 3. The Material Symbols fonts still ship — nothing to do
 
-If you use `paragraph_bundle_icon` with Material Symbols icons, v2 does **not**
-ship the font (it is Apache-2.0, which is incompatible with this project's
-GPL-2.0-or-later). Icons will render as their ligature name in plain text — a
-`home` icon shows the word "home" — until your site supplies the font.
-`modules/paragraph_bundle_icon/README.md` gives both ways to do that. Sites
-using the image-icon field instead are unaffected.
+If you use `paragraph_bundle_icon` with Material Symbols icons, they keep
+working across the upgrade. The three `.woff2` files ship inside the module, in
+`modules/paragraph_bundle_icon/fonts/`, exactly as they did in 1.x.
+
+An earlier 2.0.x-dev build removed them and required every site to supply the
+font itself. That was reverted before release, because it silently turned every
+icon into its ligature name in plain text — a paragraph set to `home` rendered
+the word "home" — with no update path and nothing logged.
+
+The fonts are Apache-2.0, which is compatible with this project's
+GPL-2.0-**or-later** through the "or later" clause. If you would rather serve
+your own copy, `modules/paragraph_bundle_icon/README.md` shows how to override
+the family from your theme.
 
 ---
 

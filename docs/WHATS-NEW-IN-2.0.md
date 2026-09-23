@@ -85,11 +85,8 @@ auto-dismissed with no way to stop it, eight animations ignored
 `prefers-reduced-motion`, and `aria-hidden` was emitted as escaped text in five
 layout templates. All fixed and covered by tests.
 
-### Three things are no longer in the package
+### Two things are no longer in the package
 
-- **The Material Symbols font files** (11 MB). They are Apache-2.0 and do not
-  belong in a GPL project's git repository. Icon bundles now load the font the
-  normal way.
 - **28 vendored `LICENSE` files.**
 - **`.pb-u-animate--fading`** — the one infinitely-looping animation, referenced
   nowhere.
