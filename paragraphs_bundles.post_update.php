@@ -11,6 +11,7 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\Core\Cache\Cache;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
+use Drupal\paragraphs\ParagraphsTypeInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
 
 /**
@@ -275,6 +276,13 @@ function _paragraphs_bundles_describe_sections(): string {
   $kept = 0;
 
   foreach ($files as $file) {
+    // RecursiveIteratorIterator is not typed, so $file arrives as mixed and
+    // every method call on it is unchecked. The guard costs nothing and keeps
+    // a surprise entry from fataling an update hook that runs on every site.
+    if (!$file instanceof SplFileInfo) {
+      continue;
+    }
+
     $name = $file->getFilename();
 
     if (!str_starts_with($name, 'paragraphs.paragraphs_type.') || !str_ends_with($name, '.yml')) {
@@ -308,7 +316,11 @@ function _paragraphs_bundles_describe_sections(): string {
 
     $type = $storage->load($id);
 
-    if ($type === NULL) {
+    // load() is typed EntityInterface|NULL, and getDescription()/set() belong
+    // to ParagraphsTypeInterface. Narrowing rather than casting: if this ever
+    // loaded something else, calling those would be a fatal inside an update
+    // hook — the worst place to discover a wrong assumption.
+    if (!$type instanceof ParagraphsTypeInterface) {
       continue;
     }
 

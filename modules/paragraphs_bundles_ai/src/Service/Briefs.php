@@ -142,8 +142,14 @@ final class Briefs implements BriefsInterface {
    * @param array<string, mixed> $brief
    *   The brief as config has it.
    *
-   * @return array{category: string, good_for: string, practices: string, prompt: string}
-   *   The brief, complete.
+   * @return array{category: string, good_for: string, practices: string, prompts: list<array{name: string, text: string}>}
+   *   The brief, complete. `prompts` is a LIST, never a single string: the file
+   *   accepts both `prompt:` and `prompts:` and prompts() collapses them into
+   *   one shape so no caller has to ask which the maintainer used. This
+   *   docblock said `prompt: string` and was the only place still describing
+   *   the pre-collapse shape — BriefsInterface already declared the list, so
+   *   the mismatch surfaced as three PHPStan errors that were all this one
+   *   line.
    */
   private function shape(array $brief): array {
     return [
