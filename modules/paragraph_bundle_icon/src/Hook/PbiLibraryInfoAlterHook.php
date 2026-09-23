@@ -13,9 +13,29 @@ use Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface;
  *
  * WHAT THIS CHANGES, in one number. `css/material-symbols-outlined.css`
  * declares an `@font-face` for a bundled 3,411,436-byte file carrying all
- * 4,284 icons. This rewrites that one asset to a Google Fonts URL naming only
- * the icons this site actually uses — measured on the maintainer's site, the
- * two Outlined icons stored there return 3,156 bytes.
+ * 4,284 icons. This ADDS a Google Fonts stylesheet naming only the icons this
+ * site actually uses — measured on the maintainer's site, the two Outlined
+ * icons stored there return 3,156 bytes.
+ *
+ * THE BUNDLED STYLESHEET STAYS, AND KEEPING IT COSTS NOTHING. An earlier
+ * version of this hook `unset()` the local path, on the assumption that two
+ * `@font-face` rules for one family would make the browser download both
+ * fonts. MEASURED IN CHROME 2026-09-23, AND THAT ASSUMPTION IS FALSE. The
+ * browser requests only the LAST declared face, and requests an earlier one
+ * ONLY when the last one fails:
+ *
+ * - Two valid faces, 3.41 MB declared then 4.64 MB: ONE network request, for
+ *   the second. The first is never fetched; its status stays `unloaded`.
+ * - A valid face then a 404: the 404 is attempted first and goes to `error`,
+ *   and the browser THEN fetches the earlier face and paints with it.
+ *
+ * So appending the subset keeps the 374x saving on the happy path AND restores
+ * a working fallback for sites that cannot reach Google. Removing the local
+ * key also removed the class rules that share that file — the
+ * `.material-symbols-*` block here carries `!important` and Google's
+ * stylesheet does not — so the old swap silently changed the cascade too.
+ *
+ * ⚠ Measured in Chrome only. Other engines are unverified.
  *
  * WHY AN ALTER AND NOT A NEW LIBRARY. The template attaches
  * `paragraph_bundle_icon/paragraph-bundle-icon-{style}` and the `.yml` declares
@@ -47,6 +67,10 @@ use Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface;
  * That is what separates this from the change reverted in 4ea0ce5, which
  * removed the fonts outright and turned every icon into its ligature name in
  * plain text on upgrade.
+ *
+ * ORDER IS LOAD-BEARING. The subset only wins the family while it renders
+ * AFTER the bundled `@font-face`, so it is appended carrying a weight one
+ * above the local file's rather than left to the stability of core's sort.
  */
 final class PbiLibraryInfoAlterHook {
 
@@ -113,8 +137,8 @@ final class PbiLibraryInfoAlterHook {
     $needle = 'material-symbols-' . $style . '.css';
 
     // `css` is keyed by CSS group (`theme`, `component`, `base`, …), and each
-    // group maps a file PATH to its options array. Swapping the source means
-    // replacing the key, not assigning to one.
+    // group maps a file PATH to its options array — so a source is a KEY, and
+    // adding one means adding a key rather than assigning to one.
     // Mutate the local, typed copy and write it back once. Writing through
     // `$libraries[$key]['css'][$group][$path]` reaches offsets on a `mixed`
     // intermediate, which is unchecked at every level.
@@ -130,9 +154,17 @@ final class PbiLibraryInfoAlterHook {
           continue;
         }
 
-        unset($groups[$group][$path]);
-
+        // The local key is KEPT deliberately — see the class docblock. It is
+        // the fallback when Google is unreachable, and it carries the
+        // `.material-symbols-*` class rules, which Google's stylesheet does
+        // not replace like for like.
         $options = is_array($options) ? $options : [];
+
+        // Render the subset after the bundled `@font-face`, so it is the last
+        // declared face for the family and therefore the one fetched.
+        $weight = $options['weight'] ?? 0;
+        $options['weight'] = is_int($weight) || is_float($weight) ? $weight + 1 : 1;
+
         // Without this the parser treats the URL as a file path relative to
         // the module and the stylesheet 404s. See LibraryDiscoveryParser:168.
         $options['type'] = 'external';

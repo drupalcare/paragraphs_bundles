@@ -119,46 +119,67 @@ final class PbiLibraryInfoAlterTest extends TestCase {
     $theme = $libraries['paragraph-bundle-icon-outlined']['css']['theme'];
     $keys = array_keys($theme);
 
-    self::assertCount(1, $keys, 'The stylesheet was added alongside the old one instead of replacing it.');
+    self::assertCount(2, $keys, 'Expected the bundled stylesheet AND the subset.');
 
+    // The subset must be LAST. The browser fetches only the last declared
+    // face for a family, so a subset ordered first would be the one skipped
+    // and the 3.4 MB bundled font would load in its place.
     // array_keys() is list<int|string>; the cast keeps static analysis honest
     // without weakening the assertion — a numeric key here would still fail.
-    $source = (string) $keys[0];
+    $source = (string) $keys[1];
 
+    self::assertSame(self::LOCAL_CSS, (string) $keys[0], 'The bundled stylesheet must stay, and stay first.');
     self::assertStringStartsWith('https://fonts.googleapis.com/css2?', $source);
     self::assertStringContainsString('icon_names=grain,star', $source);
-    self::assertSame('external', $theme[$keys[0]]['type']);
+    self::assertSame('external', $theme[$keys[1]]['type']);
   }
 
   /**
-   * The local path is GONE, not merely shadowed by a second entry.
+   * The local stylesheet SURVIVES — as the fallback, and as the class rules.
    *
-   * Leaving it behind would load both the subset and the 3.4 MB bundled font,
-   * which is worse than doing nothing at all.
+   * 🚨 THIS ASSERTION IS THE REVERSE OF THE ONE IT REPLACES, AND THE OLD ONE
+   * WAS WRONG ON A MEASUREMENT NOBODY EVER TOOK. It removed the local key,
+   * reasoning that "leaving it behind would load both the subset and the
+   * 3.4 MB bundled font". Measured in Chrome 2026-09-23 with cache-busted
+   * URLs and the requests read off the network, that is false: two valid
+   * `@font-face` rules for one family produce exactly ONE request, for the
+   * LAST declared, and the first is never fetched. When the last one 404s,
+   * the browser THEN fetches the earlier one and paints with it.
+   *
+   * So the removal bought no bytes and cost two things — the offline
+   * fallback, and the `.material-symbols-*` class rules that share the file,
+   * which carry `!important` where Google's stylesheet does not.
    */
-  public function testTheLocalStylesheetKeyIsRemoved(): void {
+  public function testTheLocalStylesheetSurvivesAsTheFallback(): void {
     $libraries = $this->yamlShapedLibraries();
     $this->hook(['outlined' => ['star']])
       ->libraryInfoAlter($libraries, 'paragraph_bundle_icon');
 
-    self::assertArrayNotHasKey(
+    self::assertArrayHasKey(
       self::LOCAL_CSS,
       $libraries['paragraph-bundle-icon-outlined']['css']['theme'],
     );
   }
 
   /**
-   * Existing options on the stylesheet survive the swap.
+   * Options carry over, and the subset outweighs the file it falls back to.
+   *
+   * The weight is not cosmetic. The subset wins the family only while it
+   * renders AFTER the bundled `@font-face`; equal weights would leave that to
+   * the stability of core's sort, which is not a guarantee.
    */
-  public function testStylesheetOptionsAreCarriedOver(): void {
+  public function testTheSubsetCarriesOptionsAndOutweighsTheLocalFile(): void {
     $libraries = $this->yamlShapedLibraries();
     $this->hook(['outlined' => ['star']])
       ->libraryInfoAlter($libraries, 'paragraph_bundle_icon');
 
     $theme = $libraries['paragraph-bundle-icon-outlined']['css']['theme'];
-    $options = reset($theme);
+    self::assertSame(200, $theme[self::LOCAL_CSS]['weight'], 'The bundled file lost its weight.');
 
-    self::assertSame(200, $options['weight'], 'The weight was dropped, so cascade order changed.');
+    $keys = array_keys($theme);
+    $subset = $theme[$keys[1]];
+
+    self::assertSame(201, $subset['weight'], 'The subset must render after the file it falls back to.');
   }
 
   /**

@@ -24,11 +24,15 @@ Optical Size) still work, and icon names remain free text.
 The subset URL is rebuilt whenever an icon paragraph is added, changed or
 deleted. Nothing to configure, and no change to any template or library name.
 
-**The three `.woff2` files still ship, in `fonts/`, and are the fallback.** The
-local `@font-face` in `css/material-symbols-{outlined,rounded,sharp}.css` is
-left in place for any style with no icons in use, and for any site whose icon
-names cannot be validated. Sites with no outbound access to Google keep working
-by overriding the family from a theme — see the override note below.
+**The three `.woff2` files still ship, in `fonts/`, and are a real fallback.**
+The local `@font-face` in `css/material-symbols-{outlined,rounded,sharp}.css`
+is never removed — the subset stylesheet is added *after* it. Measured in
+Chrome on 2026-09-23, with cache-busted URLs and the requests read off the
+network: two `@font-face` rules for one family cost **one** request, for the
+last one declared, and the browser fetches the earlier rule only when the last
+one fails. So a site that can reach `fonts.googleapis.com` never downloads the
+bundled font, and a site that cannot paints from it automatically. (Measured
+in Chrome only; other engines are unverified.)
 
 ⚠ **Names are validated against `data/material-symbols-names.txt`**, the 4,284
 names Google publishes. A name Google does not recognise is dropped silently by

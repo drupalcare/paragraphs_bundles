@@ -47,9 +47,13 @@ smaller.** The bundled font is no longer requested at all.
 - **Nothing changes for authors.** All four variable axes — Fill, Weight, Grade
   and Optical Size — still work; the computed `font-variation-settings` on the
   glyph is unchanged. Icon names are still free text.
-- **The bundled fonts still ship, and are still used as the fallback.** A style
-  with no icons in use keeps its local `@font-face` untouched, and so does a
-  site whose icon names cannot be validated. Removing the fonts is what broke
+- **The bundled fonts still ship, and are a real fallback.** The local
+  `@font-face` is never removed; the subset is added after it. Measured in
+  Chrome 2026-09-23 with cache-busted URLs and the requests read off the
+  network: two `@font-face` rules for one family cost **one** request, for the
+  last declared, and the browser fetches the earlier rule only when the last
+  one fails. So the saving above is unaffected, and a site that cannot reach
+  Google paints from the bundled file. Removing the fonts is what broke
   upgrades once before; they stay.
 - **Icon names are validated** against the 4,284 names Google publishes, shipped
   as `modules/paragraph_bundle_icon/data/material-symbols-names.txt`. This
@@ -67,8 +71,10 @@ smaller.** The bundled font is no longer requested at all.
   `attach_library()` call are unchanged; the swap happens in
   `hook_library_info_alter()`.
 
-⚠ **Sites without outbound access to fonts.googleapis.com** will find icon pages
-have no icon font. The bundled files remain on disk; see the sub-module README.
+⚠ **Sites without outbound access to fonts.googleapis.com** fall back to the
+bundled font automatically: the browser fetches the local `@font-face` once the
+Google one fails. Measured in Chrome only; other engines are unverified. See the
+sub-module README.
 
 ### Security
 Editor-supplied display values reach the page through two unescaped sinks: the
