@@ -1,0 +1,26 @@
+{
+    "name": "drupal/paragraphs_bundles_apex",
+    "description": "Optional bridge: renders Paragraphs Bundles media through APEX layout-aware responsive images.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Alaa Haddad (alaahaddad.com)",
+            "homepage": "https://www.drupal.org/u/flashwebcenter",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://drupal.org/project/paragraphs_bundles_apex",
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/apex": "*",
+        "drupal/paragraphs_bundles": "*"
+    },
+    "support": {
+        "issues": "https://drupal.org/project/issues/paragraphs_bundles_apex",
+        "source": "https://git.drupalcode.org/project/paragraphs_bundles_apex"
+    }
+}

@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for Paragraphs Bundles APEX.
+ *
+ * 🚨 WHY THIS FILE EXISTS AT ALL: `config/optional` IS NOT A BACKFILL.
+ * Drupal imports config/optional only when THIS module is installed and its
+ * dependencies are already satisfied at that moment. A site that enables
+ * `apex_responsive_image` AFTER this module gets nothing, silently -- the
+ * view modes never appear in the Manage Display select and the site owner is
+ * left looking for a feature the module claims to ship. That failure mode has
+ * bitten this project before, which is why the check below is explicit rather
+ * than trusted to the config system.
+ */
+
+declare(strict_types=1);
+
+use Drupal\Core\Config\FileStorage;
+
+/**
+ * Implements hook_install().
+ */
+function paragraphs_bundles_apex_install(bool $is_syncing): void {
+  // During a config sync the incoming configuration is authoritative; creating
+  // entities here would fight it.
+  if ($is_syncing) {
+    return;
+  }
+  paragraphs_bundles_apex_ensure_displays();
+}
+
+/**
+ * Creates any of this module's optional config that is not present yet.
+ *
+ * Safe to call repeatedly: anything that already exists is left exactly as it
+ * is, so a site that has customised one of these view modes never has its
+ * choice overwritten.
+ *
+ * @return list<string>
+ *   Config names genuinely created by this call, empty when nothing was
+ *   missing. The caller reports this to the site operator, so it must never
+ *   include a name that was already present.
+ */
+function paragraphs_bundles_apex_ensure_displays(): array {
+  $path = \Drupal::service('extension.list.module')
+    ->getPath('paragraphs_bundles_apex') . '/config/optional';
+  $source = new FileStorage($path);
+
+  // What is missing BEFORE, so the caller can report what it actually did.
+  // installOptionalConfig() returns nothing and skips silently, so asking it
+  // afterwards is the only honest way to know.
+  $missing = [];
+  foreach ($source->listAll() as $name) {
+    if (\Drupal::config($name)->isNew()) {
+      $missing[] = $name;
+    }
+  }
+  if ($missing === []) {
+    return [];
+  }
+
+  // ⚠ NO DEPENDENCY FILTER. The second argument of installOptionalConfig() is
+  // a filter meaning "install optional config that DEPENDS ON this", not "this
+  // config". An earlier version of this function passed ['config' => $name]
+  // per file, which asks for anything depending on that file -- nothing -- so
+  // the backfill would have created exactly zero and reported success. That is
+  // the same silent-nothing this hook exists to prevent.
+  /** @var \Drupal\Core\Config\ConfigInstallerInterface $installer */
+  $installer = \Drupal::service('config.installer');
+  $installer->installOptionalConfig($source);
+
+  // Report only what genuinely arrived.
+  $created = [];
+  foreach ($missing as $name) {
+    if (!\Drupal::config($name)->isNew()) {
+      $created[] = $name;
+    }
+  }
+  return $created;
+}
+
+/**
+ * Backfills the APEX media view modes for sites that enabled APEX later.
+ */
+function paragraphs_bundles_apex_update_10001(): string {
+  $created = paragraphs_bundles_apex_ensure_displays();
+  return $created === []
+    ? 'All APEX media view modes were already present; nothing created.'
+    : 'Created: ' . implode(', ', $created);
+}

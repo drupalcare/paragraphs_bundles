@@ -1,0 +1,13 @@
+services:
+  # ---------------------------------------------------------------------------
+  # OOP Hook class — Drupal 11.1+ pattern. The FQCN is the service ID because
+  # the OOP-hooks dispatcher resolves hook classes through the ClassResolver.
+  #
+  # The help hook delegates to Paragraphs Bundles' shared README renderer rather
+  # than formatting anything itself: that service is the single owner of
+  # hook_help() across the parent module and all 26 bundle sub-modules, and a
+  # second implementation here would be a second owner for one job.
+  # ---------------------------------------------------------------------------
+  Drupal\paragraphs_bundles_apex\Hook\PbApexHelpHook:
+    arguments:
+      - '@paragraphs_bundles.readme_help_renderer'

@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.pb_apex_narrow
+label: 'PB Media APEX Narrow (4:3)'
+description: null
+targetEntityType: media
+cache: true

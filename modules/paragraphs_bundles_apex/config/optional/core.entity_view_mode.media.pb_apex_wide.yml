@@ -1,0 +1,10 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - media
+id: media.pb_apex_wide
+label: 'PB Media APEX Wide (16:9)'
+description: null
+targetEntityType: media
+cache: true

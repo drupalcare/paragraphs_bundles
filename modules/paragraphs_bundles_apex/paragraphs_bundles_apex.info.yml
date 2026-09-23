@@ -1,0 +1,20 @@
+name: 'Paragraphs Bundles APEX'
+type: module
+description: 'Optional bridge: renders Paragraphs Bundles media through APEX layout-aware responsive images. Adds view modes; changes nothing until a site selects one.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
+lifecycle: stable
+dependencies:
+  - apex:apex_responsive_image
+  - paragraphs_bundles:paragraphs_bundles
+  - paragraphs_bundles:paragraph_bundle_image
+  - drupal:media
+# NOT drupal:responsive_image, and that is deliberate. Measured 2026-09-23:
+# APEX's three modes map plain `image_style` entities (5 derivatives plus a
+# fallback each) and reference a `responsive_image_style` entity ZERO times —
+# computing `sizes` from the slot width is the whole point of its approach, so
+# it never uses core's breakpoint-mapped responsive images. The shipped config
+# here depends only on `apex_responsive_image` and `media`, and
+# `apex_responsive_image` itself requires `drupal:image`. Declaring
+# `responsive_image` would force every installing site to enable a core module
+# this bridge never touches.
