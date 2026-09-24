@@ -139,6 +139,54 @@ final class PbiFontSubsettingTest extends TestCase {
   }
 
   /**
+   * A list right up to the cap still asks Google for a subset.
+   *
+   * The control for the test below. Without it, a builder that returned ''
+   * for every long-ish list would pass the over-cap assertion and quietly
+   * disable subsetting on any site with a few hundred icons.
+   */
+  public function testNamesUpToTheCapStillRequestTheSubset(): void {
+    // 372 names of 10 bytes, comma-separated: 372 * 11 - 1 = 4,091 bytes.
+    $names = array_fill(0, 372, 'abcdefghij');
+    $url = (new PbiFontUrlBuilder())->buildUrl('outlined', $names);
+
+    self::assertStringContainsString('icon_names=', $url);
+  }
+
+  /**
+   * Past the cap, no stylesheet is attached at all.
+   *
+   * 🚨 THIS IS NOT GUARDING AN HTTP ERROR. Measured against the live API on
+   * 2026-09-23: past 4,096 bytes of `icon_names` Google returns **HTTP 200**
+   * and silently stops subsetting, serving the complete 4,001,724-byte font —
+   * heavier than the 3,411,436-byte file this module bundles. Nothing in the
+   * browser, the logs or the response status says anything is wrong; the page
+   * is simply bigger than if the feature had never run.
+   *
+   * So the builder declines, and the bundled `@font-face` renders every icon.
+   * Truncating the list instead would LOSE icons: the external face would
+   * still win the family and would simply lack the glyphs that were cut.
+   */
+  public function testNamesOverTheCapRequestNothing(): void {
+    // 373 names of 10 bytes: 373 * 11 - 1 = 4,102 bytes, over the 4,096 cap.
+    $names = array_fill(0, 373, 'abcdefghij');
+
+    self::assertSame('', (new PbiFontUrlBuilder())->buildUrl('outlined', $names));
+  }
+
+  /**
+   * The cap is the measured one, not a comfortable round number.
+   *
+   * Pins the constant to the bisection that produced it: 4,092 bytes of names
+   * subsets, 4,114 does not, so 4,096 is the only boundary consistent with
+   * both. If someone raises this "to fit more icons", the page silently gets
+   * a 4 MB font and this test is the only thing that will say so.
+   */
+  public function testTheCapMatchesWhatWasMeasured(): void {
+    self::assertSame(4096, PbiFontUrlBuilderInterface::MAX_ICON_NAMES_BYTES);
+  }
+
+  /**
    * The list that actually ships is present, large, and contains real icons.
    *
    * Guards the data file rather than the logic: an empty or truncated list

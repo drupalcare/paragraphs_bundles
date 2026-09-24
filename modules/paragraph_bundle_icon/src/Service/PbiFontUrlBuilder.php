@@ -49,11 +49,28 @@ final class PbiFontUrlBuilder implements PbiFontUrlBuilderInterface {
     // the fallback paints the LIGATURE TEXT — a paragraph set to `home`
     // flashes the word "home". That is a brief version of the exact failure
     // that forced the revert in 4ea0ce5, so it is worth the short blank.
+    $iconNames = implode(',', $names);
+
+    // 🚨 TOO MANY ICONS DOES NOT FAIL LOUDLY, WHICH IS WHY THIS GUARD EXISTS.
+    // Measured 2026-09-23: past MAX_ICON_NAMES_BYTES Google returns HTTP 200
+    // and silently stops subsetting, serving the complete 4,001,724-byte font
+    // — heavier than the 3,411,436-byte file bundled with this module. The
+    // page looks perfect and is bigger than if this feature did nothing.
+    //
+    // Returning '' means "attach no subset", so the bundled @font-face is the
+    // only face and renders every icon. Two reasons that beats truncating the
+    // list: it is lighter than what Google would have served, and truncation
+    // would LOSE icons — the external face still wins the family and would
+    // simply lack the glyphs that were cut, with nothing to fall back to.
+    if (strlen($iconNames) > self::MAX_ICON_NAMES_BYTES) {
+      return '';
+    }
+
     $query = sprintf(
       'family=%s:%s&icon_names=%s&display=block',
       str_replace('%20', '+', rawurlencode($family)),
       self::AXES,
-      implode(',', $names),
+      $iconNames,
     );
 
     return self::ENDPOINT . '?' . $query;

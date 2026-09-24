@@ -41,6 +41,35 @@ name is unrecognised would fall back to the complete 344 KB font. Google adds
 icons over time, so a name newer than that file will not be recognised until the
 list is refreshed.
 
+## Sites using a very large number of distinct icons
+
+**Above roughly 300 distinct icons in one style, this module stops asking Google
+and uses the bundled font instead.** That is deliberate, and the reason is not
+an error page.
+
+Measured against the live API on 2026-09-23, by bisection:
+
+| `icon_names` bytes | What Google returns |
+|---|---|
+| up to 4,092 | a real subset — 200 icons came back as 174,604 bytes |
+| 4,114 and up | **HTTP 200, and the complete font: 4,001,724 bytes** |
+| about 4,400+ | HTTP 400, an HTML error page instead of CSS |
+
+The middle row is the dangerous one. Google does not fail — it silently stops
+subsetting and serves a font *heavier than the 3,411,436-byte file this module
+bundles*, so the page would be larger than if the feature had never run, with
+nothing in the status code, the CSS or the browser to say so.
+
+So `PbiFontUrlBuilder` caps `icon_names` at **4,096 bytes** and returns no URL
+above that, leaving the bundled `@font-face` to render every icon. The cap is a
+byte length rather than an icon count because names are not a fixed width.
+
+**It is not truncated to fit, on purpose.** Trimming the list would still load
+the Google stylesheet, which wins the family and would simply lack the glyphs
+that were cut — the icons past the cut would vanish with no fallback. Declining
+the whole request keeps every icon, and costs less than what Google would have
+sent.
+
 2.0.0 briefly removed these files and required every site to supply the font
 itself. That was a mistake and it was reverted: upgrading from 1.x silently
 turned every icon into its ligature name in plain text — a paragraph set to

@@ -13,13 +13,19 @@ namespace Drupal\paragraph_bundle_icon\Service;
  * 4,900 bytes with all four variable axes intact — measured 2026-09-22 against
  * the live API, and matching Google's own published figure.
  *
- * THE THREE WAYS THIS GOES WRONG, all measured, all handled here:
+ * THE FOUR WAYS THIS GOES WRONG, all measured, all handled here:
  *
  * - `&icon_names=` with an empty value returns **HTTP 400** and an HTML error
  *   page, not CSS.
  * - Omitting `icon_names` entirely returns the **complete 344,712-byte** font.
  * - A name Google does not recognise is dropped silently, so the icon just
  *   does not appear.
+ * - 🚨 **Past 4,096 bytes of `icon_names`, Google does not fail. It returns
+ *   HTTP 200 and SILENTLY STOPS SUBSETTING**, serving the complete font —
+ *   4,001,724 bytes, measured 2026-09-23, which is *heavier* than the
+ *   3,411,436-byte file this module bundles. Every signal says success while
+ *   the page gets bigger than shipping nothing at all. Bisected to the byte:
+ *   4,092 still subsets, 4,114 does not. Past ~4,400 it finally 400s.
  *
  * So the contract is: hand this builder names that are already validated, and
  * when nothing valid survives it returns an empty string meaning *attach no
@@ -39,6 +45,21 @@ interface PbiFontUrlBuilderInterface {
    * on the maintainer's own site use non-default axis values.
    */
   public const string AXES = 'opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
+
+  /**
+   * Largest `icon_names` value Google will actually subset, in bytes.
+   *
+   * Not a guess and not a round number chosen for comfort: measured against
+   * the live API on 2026-09-23 by bisection. 4,092 bytes of names returns a
+   * genuine subset via `/l/font?kit=`; 4,114 bytes returns HTTP 200 and the
+   * complete font from `/s/materialsymbolsoutlined/`. 4,096 is the only
+   * boundary consistent with both readings.
+   *
+   * Enforced as a BYTE length rather than an icon count, because icon names
+   * are not a fixed width — `go` and `sentiment_very_dissatisfied` differ by
+   * an order of magnitude, so a cap in icons is a cap that moves.
+   */
+  public const int MAX_ICON_NAMES_BYTES = 4096;
 
   /**
    * Build the stylesheet URL for one style and one set of icons.

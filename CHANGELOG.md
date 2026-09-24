@@ -118,6 +118,17 @@ smaller.** The bundled font is no longer requested at all.
 - **The "nothing changed, do not rebuild" branch now has a test.** It never had
   one: every existing assertion checked that something *does* invalidate, so
   the early return could have been deleted with the suite staying green.
+- **A site with very many distinct icons no longer gets a 4 MB font.**
+  Measured against the live API 2026-09-23 by bisection: `icon_names` up to
+  4,092 bytes returns a real subset, but at 4,114 bytes Google returns
+  **HTTP 200 and the complete 4,001,724-byte font** — heavier than the
+  3,411,436-byte file this module bundles — and only around 4,400 bytes does it
+  finally return 400. The middle case is silent: the status code, the CSS and
+  the browser all look correct while the page is larger than if subsetting had
+  never run. `buildUrl()` now caps `icon_names` at 4,096 bytes and attaches no
+  subset above it, so the bundled font renders every icon. The list is *not*
+  truncated to fit: the Google stylesheet would still win the family and would
+  simply lack the glyphs that were cut, losing those icons with no fallback.
 
 ⚠ **Sites without outbound access to fonts.googleapis.com** fall back to the
 bundled font automatically: the browser fetches the local `@font-face` once the
