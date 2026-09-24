@@ -19,6 +19,43 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   site. Installs only when `ai_agents` is present.
 - `composer.json` suggests `drupal/ai`, naming the sub-module that needs it.
 
+### Added — APEX responsive images (optional)
+
+- **`paragraphs_bundles_apex`** — optional bridge that renders a PB media image
+  through APEX's layout-aware responsive image formatter, which sizes pictures
+  from the width of the box they land in rather than from viewport breakpoints.
+  It adds three media view modes — `pb_apex_wide`, `pb_apex_narrow` and
+  `pb_apex_card` — and changes nothing until a site selects one.
+  Requires `drupal/apex`; the parent module does not.
+- **A missing APEX mode is now reported, instead of silently blanking the
+  image.** `ApexResponsiveImageFormatter` returns an empty render array for a
+  responsive mode it cannot load — no error, no log entry, the picture simply
+  disappears — and those modes are config entities APEX ships a delete form for.
+  A `runtime_requirements` hook now names each affected display and the missing
+  mode on the status report. Drupal's config dependency system cannot cover
+  this: measured 2026-09-23, a hand-added `dependencies.config` entry is dropped
+  by `EntityDisplayBase::calculateDependencies()` on the very next save, because
+  the formatter declares no dependency on the mode it names.
+- **Removed a `hook_update_N` that could never run.** It shipped in the module's
+  first release to backfill config, but core records a new module's schema
+  version as the highest available update number at install time
+  (`ModuleInstaller.php:407-421`), so `drush updatedb` skipped it for every site,
+  forever. Measured on a real install: recorded version 10001, only available
+  update 10001. The README told people to run it, and no longer does. The
+  idempotent backfill `hook_install()` performs is unchanged.
+- **Dropped `search_api_excerpt` from three shipped view displays.** A
+  site-export leak: that pseudo-field exists only when `search_api` is
+  installed, and this bridge neither depends on nor uses it.
+- **Corrected a false performance claim in the README.** It said PB's
+  `pb_media_responsive_wide` sets `image_loading: eager`, and built its
+  "eager/lazy decision moves" section on that. Measured against both the
+  shipped config and a running site: **every** PB media display carrying the
+  setting is `lazy`, that one included. The real difference is that PB's
+  displays expose `image_loading` and the APEX formatter exposes none — it is
+  always lazy, with LCP promotion left to `apex_performance`. A drift test now
+  pins the config and the sentence together, because nothing in the repository
+  could previously have gone red for it.
+
 
 A ground-up rewrite of the suite for Drupal 11.3+ / 12, shipped as a **drop-in
 upgrade from 1.x**: no content or field changes are required, and every v1

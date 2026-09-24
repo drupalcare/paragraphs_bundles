@@ -25,11 +25,18 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * Kernel test runs neither hook_install() nor the optional-config import, so
  * asserting "the module is enabled, therefore the view modes exist" would
  * assert nothing at all. That is why this class calls
- * paragraphs_bundles_apex_ensure_displays() explicitly: it is the one function
- * BOTH real paths go through -- hook_install() on a fresh install, and
- * paragraphs_bundles_apex_update_10001() on a site that enabled APEX later.
- * Testing it directly tests both, and testing it in Kernel is what makes the
+ * paragraphs_bundles_apex_ensure_displays() explicitly: it is the function the
+ * real install path goes through, and testing it in Kernel is what makes the
  * strict config-schema checking below free.
+ *
+ * ⚠ THIS CLASS USED TO TEST AN UPDATE HOOK THAT COULD NEVER RUN. It asserted
+ * on paragraphs_bundles_apex_update_10001(), which was deleted 2026-09-23:
+ * core records a new module's schema version as the highest available update
+ * number at install time (ModuleInstaller.php:407-421), so a hook_update_N
+ * shipped in a first release is marked applied before anyone can run it --
+ * measured on sts.local as recorded version 10001, only available update
+ * 10001. The honesty contract that test covered is still covered, by
+ * ::testSecondRunIsIdempotentAndOverwritesNothing below.
  *
  * 🚨 THE DEFECT THIS WAS WRITTEN AGAINST, AND IT SHIPPED ONCE.
  * ensure_displays() originally called installOptionalConfig($source, ['config'
@@ -259,35 +266,6 @@ final class ParagraphsBundlesApexDisplayInstallTest extends KernelTestBase {
       'apex_card',
       $reloadedComponent['settings']['apex_responsive_image_mode'],
       "The site operator's customisation was overwritten by a re-run.",
-    );
-  }
-
-  /**
-   * The update hook reports what it did, and never claims work it skipped.
-   *
-   * The message is asserted because it is the ONLY signal a site operator gets
-   * from `drush updatedb`. The shipped defect returned the "already present"
-   * message while having created nothing, which is indistinguishable from
-   * success to the person running it.
-   */
-  public function testTheUpdateHookReportsHonestly(): void {
-    $onFreshSite = \paragraphs_bundles_apex_update_10001();
-    $this->assertStringContainsString(
-      'Created:',
-      $onFreshSite,
-      'The update hook did not report creating anything on a site that had none of its config.',
-    );
-
-    $onCompleteSite = \paragraphs_bundles_apex_update_10001();
-    $this->assertStringContainsString(
-      'already present',
-      $onCompleteSite,
-      'The update hook did not report that there was nothing to do.',
-    );
-    $this->assertStringNotContainsString(
-      'Created:',
-      $onCompleteSite,
-      'The update hook claimed to create config on a site that already had all of it.',
     );
   }
 

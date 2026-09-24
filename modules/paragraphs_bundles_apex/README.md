@@ -93,26 +93,64 @@ breakpoint. PB's wide styles are not — they run 1.50, 2.07, 2.88, 3.37, 2.80,
 2.83 across the six. Switching a hero is a visible design change, not just a
 file-size one.
 
-**2. The eager/lazy decision moves.** PB's `pb_media_responsive_wide` sets
-`image_loading: eager`. The APEX formatter has no loading setting — it ships
-`loading="lazy"` and relies on `apex_performance` to promote the LCP image and
-emit the preload. `sizes="auto"` is only valid on a lazy image, which is the
-trade: lazy images get exact browser-measured sizing, while a promoted LCP
-image falls through to the computed value.
+**2. You lose the loading control — but the default does not change.** An
+earlier version of this file claimed `pb_media_responsive_wide` loads its image
+eagerly. **That was false.** Measured 2026-09-23 against both
+the shipped config and a real site: every one of PB's media displays that
+carries the setting ships `attribute: lazy`, `pb_media_responsive_wide`
+included.
+
+What actually changes is who decides. PB's displays **expose** `image_loading`,
+so a site builder can switch one to `eager` on the Manage Display form. The
+APEX formatter exposes no loading setting at all: it always emits
+`loading="lazy"` and leaves LCP promotion to `apex_performance`, which unsets
+that attribute and adds the preload. `sizes="auto"` is only valid on a lazy
+image, which is the trade — lazy images get exact browser-measured sizing,
+while a promoted LCP image falls through to the computed value.
 
 Source images should be at least 1920px wide. `apex_ri_hero_xl` is 1920 and
 will upscale anything narrower.
 
-## Installing it after APEX
+## If the view modes are missing
 
-`config/optional` is imported only when this module is installed **and** its
-dependencies are already met. A site that enables `apex_responsive_image`
-afterwards would otherwise get nothing and no error. Run the update hook, which
-creates only what is missing and never overwrites a customised view mode:
+`apex_responsive_image` is a **hard** dependency, so Drupal always enables it
+first — this module cannot be installed "before APEX", and `config/optional`
+always has what it needs at import time.
+
+If the three view modes are missing anyway (a partial import, or someone deleted
+them), reinstalling the module recreates them:
 
 ```bash
-drush updatedb
+drush pm:uninstall paragraphs_bundles_apex -y && drush en paragraphs_bundles_apex -y
 ```
+
+⚠ That discards any customisation you made to those three displays. The backfill
+`hook_install()` runs is idempotent and never overwrites an existing display, so
+it is safe on its own; it is the uninstall that removes them.
+
+⚠ **There is deliberately no update hook for this, and an earlier version of this
+README was wrong to tell you to run one.** A `hook_update_N` shipped in a module's
+first release can never run: core records a new module's schema version as the
+highest available update number at install time
+(`ModuleInstaller.php:407-421`), so `drush updatedb` skips it for every site,
+forever. Measured on a real install: recorded version 10001, only available
+update 10001.
+
+## If an APEX mode is deleted
+
+The three shipped displays each name an APEX responsive mode — `apex_hero`,
+`apex_content`, `apex_card`. Those are **config entities**, and APEX ships a
+delete form for them, so an administrator can remove one.
+
+`ApexResponsiveImageFormatter::viewElements()` returns an **empty render array**
+when the mode it is given does not load, so the image simply disappears: no
+error, no log entry, nothing in the markup. Drupal's config dependency system
+does not catch it either — the formatter does not declare the mode entity it
+depends on, so nothing links the display to the mode.
+
+This module therefore reports it on the status report at
+`/admin/reports/status`, naming each display and the mode it cannot find.
+Restore the mode, or point the display at one that exists.
 
 ## Demo QA
 

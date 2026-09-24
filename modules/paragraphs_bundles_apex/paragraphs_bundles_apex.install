@@ -4,14 +4,26 @@
  * @file
  * Install hooks for Paragraphs Bundles APEX.
  *
- * 🚨 WHY THIS FILE EXISTS AT ALL: `config/optional` IS NOT A BACKFILL.
- * Drupal imports config/optional only when THIS module is installed and its
- * dependencies are already satisfied at that moment. A site that enables
- * `apex_responsive_image` AFTER this module gets nothing, silently -- the
- * view modes never appear in the Manage Display select and the site owner is
- * left looking for a feature the module claims to ship. That failure mode has
- * bitten this project before, which is why the check below is explicit rather
- * than trusted to the config system.
+ * 🚨 WHY THE BACKFILL EXISTS: `config/optional` IS NOT GUARANTEED.
+ * Drupal imports config/optional only when THIS module is installed and the
+ * dependencies of each FILE are satisfied at that moment. These files depend
+ * on field configs owned by `paragraph_bundle_image`, so a partial import
+ * leaves the view modes absent with no error at all. hook_install() therefore
+ * calls an idempotent backfill rather than trusting the import.
+ *
+ * ⚠ THERE IS NO UPDATE HOOK, AND THAT IS DELIBERATE. This file used to ship
+ * `paragraphs_bundles_apex_update_10001()` for "a site that enabled APEX
+ * later", and the README told people to run `drush updatedb` for it.
+ * MEASURED 2026-09-23 on sts.local: recorded schema version 10001, only
+ * available update 10001 -- so it could never run, for anybody. Core sets a
+ * NEW module's schema version to the HIGHEST available update number at
+ * install time (ModuleInstaller.php:407-421), so a hook_update_N shipped in a
+ * module's first release is marked applied before anyone could run it.
+ *
+ * ⚠ AND THE SCENARIO IT DESCRIBED CANNOT OCCUR. `apex:apex_responsive_image`
+ * is a hard dependency in the .info.yml, so Drupal will not install this
+ * module before APEX. A future release may add update_10002 and it will run
+ * normally; the dead first-release hook is what was removed.
  */
 
 declare(strict_types=1);
@@ -78,14 +90,4 @@ function paragraphs_bundles_apex_ensure_displays(): array {
     }
   }
   return $created;
-}
-
-/**
- * Backfills the APEX media view modes for sites that enabled APEX later.
- */
-function paragraphs_bundles_apex_update_10001(): string {
-  $created = paragraphs_bundles_apex_ensure_displays();
-  return $created === []
-    ? 'All APEX media view modes were already present; nothing created.'
-    : 'Created: ' . implode(', ', $created);
 }

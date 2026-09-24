@@ -11,3 +11,15 @@ services:
   Drupal\paragraphs_bundles_apex\Hook\PbApexHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'
+
+  # ---------------------------------------------------------------------------
+  # Reports on the status report when a shipped display names an APEX
+  # responsive mode that no longer exists. The APEX formatter renders NOTHING
+  # for a mode it cannot load — no error, no log — and Drupal's config
+  # dependency system does not catch it, because the formatter never declares
+  # the mode entity it depends on. See the class docblock for the measurement.
+  # ---------------------------------------------------------------------------
+  Drupal\paragraphs_bundles_apex\Hook\PbApexRequirementsHook:
+    arguments:
+      - '@entity_type.manager'
+      - '@string_translation'
