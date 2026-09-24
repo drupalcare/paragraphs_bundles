@@ -340,12 +340,19 @@ final class SectionComposer implements SectionComposerInterface {
 
       // 🚨 THE SCALAR GUARD MOVED ABOVE THE ALLOWED-VALUES CHECK, AND THAT IS A
       // FIX RATHER THAN A TIDY. $values is array<string, mixed> — it carries
-      // whatever a model answered — so $value can be an array. The
-      // allowed-values branch below casts it with `(string) $value`, and
-      // casting an array to string is a FATAL. The guard that exists to catch
-      // exactly that case was ten lines further down, so it could only run on
-      // values that had already survived the cast. It was written; it was just
-      // in the wrong order.
+      // whatever a model answered — so $value can be an array or an object,
+      // and the allowed-values branch below casts it with `(string) $value`.
+      // The guard that exists to catch exactly that case was ten lines further
+      // down, so it could only run on values that had already survived the
+      // cast. It was written; it was just in the wrong order.
+      //
+      // ⚠ CORRECTED 2026-09-24, and the correction is the point. This comment
+      // first called that cast "a FATAL" for an array. Measured on PHP 8.5.10:
+      // it is not. An array casts to the literal string "Array" with nothing
+      // but a warning, and only an object without __toString() throws. So the
+      // array arm is the QUIETER one and the worse one — "Array" is written
+      // into somebody's section as though it were the copy they asked for.
+      // is_scalar() is FALSE for both, so one guard still catches both.
       if (!is_scalar($value)) {
         $problems[] = $this->t('The value for @field must be text or a number.', ['@field' => $name]);
 

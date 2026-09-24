@@ -18,13 +18,28 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   without an agent, a FunctionCall plugin is unreachable by anything on the
   site. Installs only when `ai_agents` is present.
 - `composer.json` suggests `drupal/ai`, naming the sub-module that needs it.
-- **Fixed a fatal in `SectionComposer`: a non-scalar value reached a string
-  cast.** The values being written carry whatever the model answered, so a
-  field value can be an array — and the allowed-values check cast it with
-  `(string) $value`, which is a fatal on an array. The `is_scalar()` guard
-  written to catch exactly that sat ten lines further down, *after* the use, so
-  it only ever ran on values that had already survived the cast. The guard is
-  now first. Found by PHPStan at `level: max`, not by a test.
+- **Fixed in `SectionComposer` and `SectionEditor`: a non-scalar value reached a
+  string cast.** The values being written carry whatever the model answered, so
+  a field value can be an array or an object, and the allowed-values check cast
+  it with `(string) $value`. The `is_scalar()` guard written to catch exactly
+  that sat ten lines further down, *after* the use, so it only ever ran on
+  values that had already survived the cast. The guard is now first in both.
+  Found by PHPStan at `level: max`, not by a test.
+
+  ⚠ **Corrected 2026-09-24:** this entry first described that cast as "a fatal
+  on an array". Measured on PHP 8.5.10, it is not. An array casts to the literal
+  string `"Array"` with only a warning, and just an object without `__toString()`
+  throws. **The array arm is the quieter one and the worse one** — `"Array"` is
+  saved into a section, and a new revision written, as though it were the copy
+  that was asked for. `is_scalar()` is false for both, so one guard covers both.
+
+- **`SectionEditor` has tests** — `SectionEditorTest`, 7 cases. It had none of
+  any kind while being the one service that rewrites a paragraph somebody is
+  looking at, which is why the defect above survived there after being fixed in
+  its sibling. The array case is red-proofed: removing the guard turns the suite
+  red with one failure, one error and PHP's own "Array to string conversion"
+  warning. It also covers the cross-page check that stops a submitted paragraph
+  id reaching a section on somebody else's page.
 
 ### Removed — the Colour Swatch formatter
 

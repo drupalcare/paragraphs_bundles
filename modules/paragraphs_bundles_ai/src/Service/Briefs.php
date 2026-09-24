@@ -165,10 +165,12 @@ final class Briefs implements BriefsInterface {
    *
    * A brief arrives as `array<string, mixed>` because it comes from config, so
    * every read is `mixed`. A bare `(string)` cast on that is fine until the day
-   * a maintainer writes a list where a sentence was expected: casting an array
-   * to string is a fatal, and casting an object without __toString() is too.
-   * Anything that is not scalar becomes '' here, which is the same answer a
-   * missing key already gives.
+   * a maintainer writes a list where a sentence was expected. Measured on PHP
+   * 8.5.10, 2026-09-24: an array casts to the literal string "Array" with
+   * nothing but a warning, and only an object without __toString() throws. The
+   * quiet arm is the dangerous one here — "Array" would be shown to somebody
+   * as the advice for building a section. Anything that is not scalar becomes
+   * '' instead, which is the same answer a missing key already gives.
    *
    * @param mixed $value
    *   The raw config value.

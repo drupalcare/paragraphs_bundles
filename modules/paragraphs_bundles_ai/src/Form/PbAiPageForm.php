@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Form;
 
+use Drupal\Component\Render\MarkupInterface;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\RedirectCommand;
@@ -144,8 +145,11 @@ final class PbAiPageForm extends FormBase {
     $form_state->set('pb_ai_node', (int) $node->id());
     $form_state->set('pb_ai_fields', $fields);
 
-    $form['#attributes']['class'][] = 'pb-ai-bar';
-    $form['#attached']['library'][] = 'paragraphs_bundles_ai/bar';
+    // WHOLE-ARRAY ASSIGNMENT, NOT `[] =`. $form is `array<string, mixed>`, so
+    // appending through an offset reads an untyped value first. Nothing sets
+    // either key on the root form before buildForm() runs, so there is nothing
+    // here to preserve. The attachments are gathered below and assigned once.
+    $form['#attributes'] = ['class' => ['pb-ai-bar']];
 
     // ONE LIST PER FIELD, PLUS THEIR UNION. Which bundles a field accepts is a
     // property of that field: with a body that takes anything and a footer
@@ -244,14 +248,16 @@ final class PbAiPageForm extends FormBase {
       }
     }
 
-    $form['#attached']['drupalSettings']['pbAi']['nests'] = $nests;
-    $form['#attached']['drupalSettings']['pbAi']['byHand'] = $byHand;
+    $pbAi = [
+      'nests' => $nests,
+      'byHand' => $byHand,
+    ];
     // WHAT TO TYPE, per section. The dropdown names a section and then offers
     // one empty box; somebody who has never opened that bundle's edit form has
     // no way of knowing a hero has a body AND a link title. Built on the
     // server from the real fields, so it cannot drift from what the section
     // actually holds.
-    $form['#attached']['drupalSettings']['pbAi']['hints'] = $this->hints->forBundles(
+    $pbAi['hints'] = $this->hints->forBundles(
       array_map(strval(...), array_keys($addable)),
     );
 
@@ -271,13 +277,18 @@ final class PbAiPageForm extends FormBase {
     // have none on purpose: block, block content, node reference, views,
     // webform and contact form. The maintainer's words: "Ai can not creat
     // them, you must reference created content from the system in a field".
-    $form['#attached']['drupalSettings']['pbAi']['briefs'] = $briefs;
+    $pbAi['briefs'] = $briefs;
     // Which bundles each field will actually take, so the script can narrow
     // the Add list when the person changes where it is going.
-    $form['#attached']['drupalSettings']['pbAi']['allowed'] = array_map(
+    $pbAi['allowed'] = array_map(
       static fn(array $list): array => array_keys($list),
       $perField,
     );
+
+    $form['#attached'] = [
+      'library' => ['paragraphs_bundles_ai/bar'],
+      'drupalSettings' => ['pbAi' => $pbAi],
+    ];
 
     // ROW ONE: what this is, and the switch for the brief panel.
     //
@@ -494,11 +505,11 @@ final class PbAiPageForm extends FormBase {
    */
   public function draft(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
-    $nodeId = (int) $form_state->get('pb_ai_node');
-    $fields = (array) $form_state->get('pb_ai_fields');
-    $bundle = trim((string) $form_state->getValue('section'));
-    $words = trim((string) $form_state->getValue('words'));
-    $count = (int) $form_state->getValue('count');
+    $nodeId = self::asInt($form_state->get('pb_ai_node'));
+    $fields = self::asStringMap($form_state->get('pb_ai_fields'));
+    $bundle = self::asString($form_state->getValue('section'));
+    $words = self::asString($form_state->getValue('words'));
+    $count = self::asInt($form_state->getValue('count'));
 
     // The field is a submitted value now, so it is looked up in the map the
     // form stored rather than used as given. A name that is not in that map
@@ -536,7 +547,7 @@ final class PbAiPageForm extends FormBase {
       if (!isset($allowed[$bundle])) {
         return $this->say($response, 'error', [
           $this->t('The "@field" field does not take that kind of section.', [
-            '@field' => (string) ($fields[$field] ?? $field),
+            '@field' => $fields[$field] ?? $field,
           ]),
         ]);
       }
@@ -552,7 +563,7 @@ final class PbAiPageForm extends FormBase {
     // written: a section without a border simply does not get one, and a key a
     // site has renamed is dropped instead of saved and silently ignored.
     $styling = [];
-    $style = (string) $form_state->getValue('style');
+    $style = self::asString($form_state->getValue('style'));
     $profile = $style === '' ? NULL : $this->profiler->profile($bundle);
 
     if ($profile !== NULL) {
@@ -590,12 +601,18 @@ final class PbAiPageForm extends FormBase {
     // the producers, which is exactly what this module now does, would have
     // demoted every warning to a status message in every other language,
     // silently, with no test going red. CreationResult carries the severity.
+    // NOT `(string) $warning`. These are TranslatableMarkup, whose __toString()
+    // returns markup that is already safe; handing the messenger a plain string
+    // invites it to be escaped a second time, so a placeholder would render as
+    // its own entities. Markup is passed through as markup, and the cast is
+    // reached only by a note that was a plain string to begin with, where it
+    // does nothing.
     foreach ($result->warnings as $warning) {
-      $this->messenger()->addWarning($warning);
+      $this->messenger()->addWarning($warning instanceof MarkupInterface ? $warning : (string) $warning);
     }
 
     foreach ($result->notes as $note) {
-      $this->messenger()->addStatus($note);
+      $this->messenger()->addStatus($note instanceof MarkupInterface ? $note : (string) $note);
     }
 
     // Back to the page, so the section is seen rather than described. The
@@ -623,9 +640,9 @@ final class PbAiPageForm extends FormBase {
    */
   public function change(array &$form, FormStateInterface $form_state): AjaxResponse {
     $response = new AjaxResponse();
-    $nodeId = (int) $form_state->get('pb_ai_node');
-    $paragraphId = (int) $form_state->getValue('existing');
-    $words = trim((string) $form_state->getValue('words'));
+    $nodeId = self::asInt($form_state->get('pb_ai_node'));
+    $paragraphId = self::asInt($form_state->getValue('existing'));
+    $words = self::asString($form_state->getValue('words'));
 
     if ($paragraphId === 0) {
       return $this->say($response, 'error', [$this->t('Choose which section to change.')]);
@@ -634,8 +651,8 @@ final class PbAiPageForm extends FormBase {
     // WHICH FIELD, ANSWERED BY THE SECTION rather than asked of the person.
     // The id went into this map when the form was built, so it cannot name a
     // field this page does not have — or one it was never offered from.
-    $sectionFields = (array) $form_state->get('pb_ai_section_fields');
-    $field = (string) ($sectionFields[$paragraphId] ?? '');
+    $sectionFields = self::asStringMap($form_state->get('pb_ai_section_fields'));
+    $field = $sectionFields[$paragraphId] ?? '';
 
     if ($field === '') {
       return $this->say($response, 'error', [
@@ -699,7 +716,7 @@ final class PbAiPageForm extends FormBase {
    *
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   The form state.
-   * @param array<string, string> $fields
+   * @param array<int|string, string> $fields
    *   The allow-list the form stored.
    *
    * @return string
@@ -714,7 +731,7 @@ final class PbAiPageForm extends FormBase {
       return (string) array_key_first($fields);
     }
 
-    $chosen = trim((string) $form_state->getValue('target_field'));
+    $chosen = self::asString($form_state->getValue('target_field'));
 
     return isset($fields[$chosen]) ? $chosen : '';
   }
@@ -784,7 +801,81 @@ final class PbAiPageForm extends FormBase {
   }
 
   /**
+   * A submitted or stored value as trimmed text.
+   *
+   * FORM STATE IS `mixed`, AND CASTING IT BLIND IS THE BUG, not the type
+   * complaint that reveals it. A posted value can be an array whatever the
+   * form declared it to be, and `(string)` on one yields the literal string
+   * "Array" with nothing but a warning — measured on PHP 8.5.10 — while an
+   * object without __toString() throws outright. Every read of a submitted
+   * value goes through here, because the quiet arm is the dangerous one.
+   *
+   * This is the idiom the module already uses — see Briefs::text() and
+   * BundleProfiler — kept identical rather than reinvented, so there is one
+   * way of reading an untrusted value in this codebase and not two.
+   *
+   * @param mixed $value
+   *   The value as form state returned it.
+   *
+   * @return string
+   *   The text, or an empty string when it was never text.
+   */
+  private static function asString(mixed $value): string {
+    return is_scalar($value) ? trim((string) $value) : '';
+  }
+
+  /**
+   * A submitted or stored value as a whole number.
+   *
+   * @param mixed $value
+   *   The value as form state returned it.
+   *
+   * @return int
+   *   The number, or zero when it was not one. Zero is already the "nothing
+   *   was chosen" case at every call site, so it needs no separate signal.
+   */
+  private static function asInt(mixed $value): int {
+    return is_numeric($value) ? (int) $value : 0;
+  }
+
+  /**
+   * A stored map with nothing in it but strings.
+   *
+   * The two maps this form keeps in form state — field name => label, and
+   * section id => field name — are both built by buildForm() and read back by
+   * a callback. They are the allow-lists the security model rests on, so they
+   * are re-shaped on the way out rather than trusted to still be what they
+   * were: anything that is not a scalar is dropped instead of cast.
+   *
+   * @param mixed $value
+   *   The value as form state returned it.
+   *
+   * @return array<int|string, string>
+   *   The map, or an empty array when there was none.
+   */
+  private static function asStringMap(mixed $value): array {
+    if (!is_array($value)) {
+      return [];
+    }
+
+    $map = [];
+
+    foreach ($value as $key => $item) {
+      if (is_scalar($item)) {
+        $map[$key] = (string) $item;
+      }
+    }
+
+    return $map;
+  }
+
+  /**
    * {@inheritdoc}
+   *
+   * @param array<string, mixed> $form
+   *   The form.
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
+   *   The form state.
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     // Everything happens in the AJAX callback. A non-AJAX submit reloads the

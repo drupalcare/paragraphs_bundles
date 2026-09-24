@@ -130,6 +130,30 @@ final class SectionEditor implements SectionEditorInterface {
         continue;
       }
 
+      // THE SCALAR GUARD SITS ABOVE THE ALLOWED-VALUES CHECK, and that order
+      // is the whole point. $values arrives from the model, so a field's value
+      // can be an array or an object, and the cast below fails DIFFERENTLY for
+      // each — measured on PHP 8.5.10, 2026-09-24:
+      //
+      //   (string) ['a', 'b']     warning only, and the literal string "Array"
+      //   (string) new stdClass   Error, "could not be converted to string"
+      //
+      // An object therefore takes the page down, and the array case is the
+      // quieter one and the worse one: nothing is thrown, and the word "Array"
+      // is written into somebody's section as though it were the copy they
+      // asked for. is_scalar() is FALSE for both, so one guard catches both —
+      // but only from above the cast, which is where it now sits.
+      //
+      // The identical defect was fixed in SectionComposer on 2026-09-24. It
+      // survived here because this class had no test of any kind.
+      if (!is_scalar($value)) {
+        $problems[] = $this->t('The "@field" field was given a @type rather than words.', [
+          '@field' => $fact->label,
+          '@type' => gettype($value),
+        ]);
+        continue;
+      }
+
       if ($fact->allowedValues !== [] && !in_array((string) $value, $fact->allowedValues, TRUE)) {
         $problems[] = $this->t('@field only accepts: @values.', [
           '@field' => $name,
@@ -144,7 +168,8 @@ final class SectionEditor implements SectionEditorInterface {
       // That made $before permanently unequal to any clean $after, so the
       // "nothing actually changed" branch below could never be reached and a
       // no-op rewrite still wrote two new revisions.
-      $before = trim((string) ($paragraph->get($name)->value ?? ''));
+      $current = $paragraph->get($name)->value;
+      $before = trim(is_scalar($current) ? (string) $current : '');
       $after = trim((string) $value);
 
       if ($after === '' || $after === $before) {
@@ -183,7 +208,7 @@ final class SectionEditor implements SectionEditorInterface {
     $paragraph->setNewRevision(TRUE);
     $paragraph->save();
 
-    $items = $node->get($field)->getValue();
+    $items = $this->itemsOf($node, $field);
     $items[$delta] = [
       'target_id' => $paragraph->id(),
       'target_revision_id' => $paragraph->getRevisionId(),
@@ -233,7 +258,8 @@ final class SectionEditor implements SectionEditorInterface {
       // text format id, and these lines are read to the model as what the
       // section currently says. "basic_html" is not part of anybody's copy,
       // and a model shown it may well write it back.
-      $value = trim((string) ($paragraph->get($name)->value ?? ''));
+      $current = $paragraph->get($name)->value;
+      $value = trim(is_scalar($current) ? (string) $current : '');
 
       if ($value !== '') {
         $out[$name] = $value;
@@ -257,13 +283,36 @@ final class SectionEditor implements SectionEditorInterface {
    *   The delta, or NULL when the section is not among this page's own items.
    */
   private function deltaOf(NodeInterface $node, string $field, int $paragraphId): ?int {
-    foreach ($node->get($field)->getValue() as $delta => $item) {
-      if ((int) ($item['target_id'] ?? 0) === $paragraphId) {
+    foreach ($this->itemsOf($node, $field) as $delta => $item) {
+      $target = is_array($item) ? ($item['target_id'] ?? 0) : 0;
+
+      if (is_numeric($target) && (int) $target === $paragraphId) {
         return (int) $delta;
       }
     }
 
     return NULL;
+  }
+
+  /**
+   * The field's raw items, as an array whatever the typed-data layer returns.
+   *
+   * `TypedDataInterface::getValue()` is declared `mixed`, so every caller has
+   * to guard or cast. One guard in one place, rather than the same cast
+   * written at each call site where the two can drift apart.
+   *
+   * @param \Drupal\node\NodeInterface $node
+   *   The page.
+   * @param string $field
+   *   The paragraph field.
+   *
+   * @return array<int|string, mixed>
+   *   The items, or an empty array when the field holds nothing readable.
+   */
+  private function itemsOf(NodeInterface $node, string $field): array {
+    $items = $node->get($field)->getValue();
+
+    return is_array($items) ? $items : [];
   }
 
 }
