@@ -143,7 +143,15 @@ final class SectionWriterTest extends KernelTestBase {
     $result = $this->writer->write('simple_page', 'field_sections', 'slideshow_bundle', 1, '   ');
 
     self::assertFalse($result->created);
-    self::assertStringContainsString('title is required', $result->refusals[0]);
+    // (string) BECAUSE A REFUSAL IS TranslatableMarkup, NOT A STRING, AND THAT
+    // IS DELIBERATE. The translation pass turned every user-facing sentence in
+    // this module into t(), refusals included, and
+    // assertStringContainsString() throws a TypeError on a non-string haystack.
+    // These assertions have been erroring ever since, unnoticed: this project's
+    // phpunit.xml.dist sweeps Unit directories only, so nobody had run the
+    // Kernel suite since that pass. The cast keeps the assertion honest without
+    // asking the production code to stop being translatable.
+    self::assertStringContainsString('title is required', (string) $result->refusals[0]);
     self::assertSame($before, $this->nodeCount(), 'A refusal must write nothing.');
   }
 
@@ -221,7 +229,7 @@ final class SectionWriterTest extends KernelTestBase {
     $result = $this->writer->write(NULL, NULL, 'slideshow_bundle', 1, '', (int) $node->id());
 
     self::assertFalse($result->created, 'A card-only field must refuse a slideshow.');
-    self::assertStringContainsString('does not accept "slideshow_bundle"', $result->refusals[0]);
+    self::assertStringContainsString('does not accept "slideshow_bundle"', (string) $result->refusals[0]);
     self::assertCount(0, $this->reload((int) $node->id())->get('field_card_strip')->getValue());
     self::assertSame($before, $this->paragraphCount(), 'A refusal must leave no orphan paragraphs.');
   }
@@ -243,7 +251,7 @@ final class SectionWriterTest extends KernelTestBase {
     $result = $this->writer->write(NULL, NULL, 'slideshow_bundle', 2, '', (int) $node->id());
 
     self::assertFalse($result->created, 'A field of 2 holding 1 cannot take 2 more.');
-    self::assertStringContainsString('room for 1 more', $result->refusals[0]);
+    self::assertStringContainsString('room for 1 more', (string) $result->refusals[0]);
     self::assertCount(1, $this->reload((int) $node->id())->get('field_two_max')->getValue());
     self::assertSame($paragraphsBefore, $this->paragraphCount(), 'No orphans from a refusal.');
   }
@@ -285,7 +293,7 @@ final class SectionWriterTest extends KernelTestBase {
     $result = $this->writer->write(NULL, NULL, 'slideshow_bundle', 1, '', 4242);
 
     self::assertFalse($result->created);
-    self::assertStringContainsString('no node 4242', $result->refusals[0]);
+    self::assertStringContainsString('no node 4242', (string) $result->refusals[0]);
   }
 
   /**
@@ -315,7 +323,7 @@ final class SectionWriterTest extends KernelTestBase {
     $result = $writer->write(NULL, NULL, 'slideshow_bundle', 1, '', (int) $node->id());
 
     self::assertFalse($result->created);
-    self::assertStringContainsString('do not have permission', $result->refusals[0]);
+    self::assertStringContainsString('do not have permission', (string) $result->refusals[0]);
     self::assertCount(1, $this->reload((int) $node->id())->get('field_sections')->getValue());
   }
 

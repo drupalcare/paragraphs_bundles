@@ -227,7 +227,15 @@ final class FieldDrafterTest extends KernelTestBase {
     $result = $this->drafter->fit('slideshow_bundle', 'pb_weight', 'Spring');
 
     self::assertFalse($result->usable);
-    self::assertStringContainsString('is a integer field', $result->refusals[0]);
+    // (string) BECAUSE A REFUSAL IS TranslatableMarkup, NOT A STRING, AND THAT
+    // IS DELIBERATE. The translation pass turned every user-facing sentence in
+    // this module into t(), refusals included. assertStringContainsString()
+    // requires a string haystack and throws a TypeError on anything else, so
+    // these assertions have been erroring ever since — unnoticed, because this
+    // project's phpunit.xml.dist sweeps Unit directories only and nobody had
+    // run the Kernel suite since. Casting here keeps the assertion honest
+    // without asking the production code to stop being translatable.
+    self::assertStringContainsString('is a integer field', (string) $result->refusals[0]);
   }
 
   /**
@@ -237,8 +245,8 @@ final class FieldDrafterTest extends KernelTestBase {
     $result = $this->drafter->fit('slideshow_bundle', 'pb_nope', 'Spring');
 
     self::assertFalse($result->usable);
-    self::assertStringContainsString('no text field "pb_nope"', $result->refusals[0]);
-    self::assertStringContainsString('pb_headline', $result->refusals[0]);
+    self::assertStringContainsString('no text field "pb_nope"', (string) $result->refusals[0]);
+    self::assertStringContainsString('pb_headline', (string) $result->refusals[0]);
   }
 
   /**
@@ -248,7 +256,7 @@ final class FieldDrafterTest extends KernelTestBase {
     $result = $this->drafter->fit('slideshow_bundle', 'pb_headline', "   \n  ");
 
     self::assertFalse($result->usable);
-    self::assertStringContainsString('nothing to fit', $result->refusals[0]);
+    self::assertStringContainsString('nothing to fit', (string) $result->refusals[0]);
   }
 
   /**
@@ -258,7 +266,7 @@ final class FieldDrafterTest extends KernelTestBase {
     $result = $this->drafter->fit('no_such_bundle', 'pb_headline', 'Spring');
 
     self::assertFalse($result->usable);
-    self::assertStringContainsString('no paragraph type "no_such_bundle"', $result->refusals[0]);
+    self::assertStringContainsString('no paragraph type "no_such_bundle"', (string) $result->refusals[0]);
   }
 
   /**

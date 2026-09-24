@@ -121,12 +121,19 @@ parameters:
     # be made against an item that has none.
     #
     # NOT rewritten as ->get('format')->getValue(), which would be tidier and
-    # is behaviour-equivalent given that guard. Every test covering this service
-    # is a KERNEL test, and this project's phpunit.xml.dist sweeps Unit only, so
-    # Kernel runs on CI and never here. A change to the one method whose whole
-    # job is "do not silently drop the text format" is not one to make on a
-    # machine that cannot execute its tests. Revisit when the Kernel suite can
-    # be run locally.
+    # is behaviour-equivalent given that guard. The magic property is the whole
+    # reason for this entry and it stands on its own.
+    #
+    # ⚠ AN EARLIER VERSION OF THIS COMMENT GAVE A SECOND REASON THAT WAS FALSE:
+    # that the Kernel tests covering this service "cannot be run on this
+    # machine". They can. phpunit.xml.dist sweeps Unit directories only — that
+    # part is true — but the Kernel suite runs perfectly well against SQLite
+    # with core's own bootstrap, needing no database credential:
+    #   cd web/core && SIMPLETEST_DB="sqlite://localhost/<path>.sqlite" \
+    #     vendor/bin/phpunit --bootstrap tests/bootstrap.php <test-dir>
+    # Measured 2026-09-24: 66 tests, 1001 assertions, 0 failures. "The project's
+    # suite does not sweep them" and "they cannot be run" are different claims,
+    # and the false one was used here to justify suppressing instead of fixing.
     #
     # ⚠ MATCHED BY IDENTIFIER, NOT BY MESSAGE, AND THAT IS THE SECOND ATTEMPT.
     # The first version of this entry pinned the message text, which named
@@ -161,13 +168,14 @@ parameters:
     # message, and the getText() call is guarded by method_exists(), so a
     # provider that cannot answer produces a sentence rather than a fatal.
     #
-    # ⚠ NOT "fixed" by adding narrowing guards, deliberately. Every test that
-    # covers this service is a KERNEL test, and phpunit.xml.dist sweeps Unit
-    # only — so the AI module's suite runs on CI and never on this machine.
-    # Rewriting the one method that talks to the model, on a machine that
-    # cannot execute a single test of it, is how a typing tidy becomes an
-    # outage. Revisit together with the mixed-strictness backlog in
-    # PbAiPageForm when the Kernel suite can be run locally.
+    # The absent package is the whole reason for this entry: no amount of
+    # narrowing makes a class that is not installed resolvable.
+    #
+    # ⚠ AN EARLIER VERSION OF THIS COMMENT ALSO CLAIMED THE KERNEL TESTS
+    # "CANNOT BE RUN ON THIS MACHINE". That was false — see the note on the
+    # TextFormats entry above for the SQLite invocation that runs them, and the
+    # measurement that proves it. The claim was written after the opposite had
+    # already been demonstrated in the same session.
     - message: '#^Call to an undefined method object\:\:chat\(\)\.$#'
       path: modules/paragraphs_bundles_ai/src/Service/SectionDrafter.php
       count: 1
