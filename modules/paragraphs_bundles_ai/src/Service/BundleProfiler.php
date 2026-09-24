@@ -8,6 +8,7 @@ use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\paragraphs\ParagraphsTypeInterface;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
 use Drupal\paragraphs_bundles_ai\Model\FieldFact;
 
@@ -79,7 +80,15 @@ final class BundleProfiler implements BundleProfilerInterface {
 
     $type = $this->entityTypeManager->getStorage('paragraphs_type')->load($bundle);
 
-    if ($type === NULL) {
+    // instanceof, not `=== NULL`. load() is typed ?EntityInterface, and
+    // getDescription() further down is declared on ParagraphsTypeInterface,
+    // not on EntityInterface — so the old check satisfied the analyser about
+    // NULL while telling it nothing about the type, leaving a call to a method
+    // the declared type does not have. Narrowing here fixes that and is
+    // stricter for free: a storage handing back something that is not a
+    // paragraphs type is refused, rather than fataling on the first method it
+    // turns out not to implement.
+    if (!$type instanceof ParagraphsTypeInterface) {
       return NULL;
     }
 

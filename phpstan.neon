@@ -94,9 +94,17 @@ parameters:
         - src/Utility/PbRenderArray.php
         - src/Plugin/Field/FieldWidget
         - modules/paragraph_bundle_image_grid/src/Hook/PbigPreprocessSectionHook.php
-        # ConfigFormBase::submitForm() takes `array &$form`. Same situation as
-        # the three above: core is the other side of the reference.
-        - modules/paragraphs_bundles_ai/src/Form/PbAiSettingsForm.php
+        # A fourth path here named
+        # modules/paragraphs_bundles_ai/src/Form/PbAiSettingsForm.php. That file
+        # was deleted when the AI module was stripped back to the bar, so the
+        # entry could never match anything — on this machine or on CI — and
+        # PHPStan reported it as an unmatched pattern. Removed 2026-09-23.
+        #
+        # The other three stay even though this run also reports the group as
+        # unmatched: that is PHPStan 1.x at level 9 on this machine, and the
+        # drupal.org job is 2.x at level 10 analysing `.`. A local "not matched"
+        # is evidence about the local runner, not about the gate — see the note
+        # at the top of this file.
     # `Drupal\apex\…` is a genuinely optional integration: the APEX theme is a
     # `suggest`, never a `require`, and paragraph_bundle_content degrades to the
     # neutral layout when it is absent (see PbcRegionMap::layoutLibraryName()).
@@ -105,3 +113,75 @@ parameters:
     # null-checks it.
     - identifier: class.notFound
       path: modules/paragraph_bundle_content/src/Service/Theme/PbcThemeFamilyResolver.php
+    # `format` is a magic property on a formatted field item — TextItem and
+    # friends expose it through the item's property definitions, not as a
+    # declared PHP property, so the analyser sees only TypedDataInterface. The
+    # line is guarded: carriesFormat() has already asked the field definition
+    # whether a `format` property exists before this runs, so the access cannot
+    # be made against an item that has none.
+    #
+    # NOT rewritten as ->get('format')->getValue(), which would be tidier and
+    # is behaviour-equivalent given that guard. Every test covering this service
+    # is a KERNEL test, and this project's phpunit.xml.dist sweeps Unit only, so
+    # Kernel runs on CI and never here. A change to the one method whose whole
+    # job is "do not silently drop the text format" is not one to make on a
+    # machine that cannot execute its tests. Revisit when the Kernel suite can
+    # be run locally.
+    #
+    # ⚠ MATCHED BY IDENTIFIER, NOT BY MESSAGE, AND THAT IS THE SECOND ATTEMPT.
+    # The first version of this entry pinned the message text, which named
+    # TypedDataInterface::$format. Adding the generic to the $items docblock in
+    # the same change made first() return FieldItemInterface instead, the
+    # message changed with it, and the pattern stopped matching — so the run
+    # reported BOTH the unsuppressed error and "ignored pattern was not
+    # matched". A message regex encodes the analyser's inferred type, which is
+    # exactly the thing a type fix moves.
+    - identifier: property.notFound
+      path: modules/paragraphs_bundles_ai/src/Service/TextFormats.php
+      count: 1
+    # `$entity` is the computed property EntityReferenceItem exposes for the
+    # referenced entity. It is real at runtime and absent from
+    # FieldItemInterface, so the analyser cannot see it — the same limitation as
+    # `format` above, not a defect in either file. Both call sites already check
+    # what comes back with `instanceof ParagraphInterface` before using it, so
+    # a field that does not carry an entity is refused rather than fataled on.
+    - identifier: property.notFound
+      paths:
+        - modules/paragraphs_bundles_ai/src/Service/SectionCatalog.php
+        - modules/paragraphs_bundles_ai/src/Service/SectionEditor.php
+    # SAME CAUSE AS THE excludePaths ENTRIES FOR AiFunctionCall AND Tool ABOVE:
+    # drupal/ai is a dependency of the paragraphs_bundles_ai SUBMODULE and is
+    # deliberately not required by this project, so it is absent whenever
+    # paragraphs_bundles is built from its own composer.json — which is what
+    # drupal.org CI does. The provider manager is a generic plugin manager
+    # typed `object`, and the chat response class cannot be named here without
+    # naming a package that is not installed.
+    #
+    # Both lines are already inside a try/catch that relays the provider's own
+    # message, and the getText() call is guarded by method_exists(), so a
+    # provider that cannot answer produces a sentence rather than a fatal.
+    #
+    # ⚠ NOT "fixed" by adding narrowing guards, deliberately. Every test that
+    # covers this service is a KERNEL test, and phpunit.xml.dist sweeps Unit
+    # only — so the AI module's suite runs on CI and never on this machine.
+    # Rewriting the one method that talks to the model, on a machine that
+    # cannot execute a single test of it, is how a typing tidy becomes an
+    # outage. Revisit together with the mixed-strictness backlog in
+    # PbAiPageForm when the Kernel suite can be run locally.
+    - message: '#^Call to an undefined method object\:\:chat\(\)\.$#'
+      path: modules/paragraphs_bundles_ai/src/Service/SectionDrafter.php
+      count: 1
+    - message: '#^Cannot call method getText\(\) on class-string\|object\.$#'
+      path: modules/paragraphs_bundles_ai/src/Service/SectionDrafter.php
+      count: 1
+    # `filter_default_format()` is deprecated in 11.4 and removed in 13.0, and
+    # it is called ON PURPOSE. This module declares ^11.3, where the supported
+    # replacement — FilterFormatRepositoryInterface — does not exist yet. The
+    # call sits behind a function_exists() guard and a null-object check, and
+    # the constructor takes the repository as a nullable argument so 11.4+ never
+    # reaches it. Deleting the call would break the older major the info.yml
+    # still promises; the code comment says to remove it the day that floor
+    # rises to ^11.4, and this entry goes with it.
+    - message: '#^Call to deprecated function filter_default_format\(\)#'
+      path: modules/paragraphs_bundles_ai/src/Service/TextFormats.php
+      count: 1

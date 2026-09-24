@@ -18,6 +18,13 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   without an agent, a FunctionCall plugin is unreachable by anything on the
   site. Installs only when `ai_agents` is present.
 - `composer.json` suggests `drupal/ai`, naming the sub-module that needs it.
+- **Fixed a fatal in `SectionComposer`: a non-scalar value reached a string
+  cast.** The values being written carry whatever the model answered, so a
+  field value can be an array — and the allowed-values check cast it with
+  `(string) $value`, which is a fatal on an array. The `is_scalar()` guard
+  written to catch exactly that sat ten lines further down, *after* the use, so
+  it only ever ran on values that had already survived the cast. The guard is
+  now first. Found by PHPStan at `level: max`, not by a test.
 
 ### Added — APEX responsive images (optional)
 

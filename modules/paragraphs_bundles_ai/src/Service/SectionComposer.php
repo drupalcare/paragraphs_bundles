@@ -338,18 +338,29 @@ final class SectionComposer implements SectionComposerInterface {
         continue;
       }
 
-      if ($fact->allowedValues !== [] && !in_array((string) $value, $fact->allowedValues, TRUE)) {
-        $problems[] = $this->t('The field @field only accepts: @values. It was given "@given".', [
-          '@field' => $name,
-          '@values' => implode(', ', $fact->allowedValues),
-          '@given' => is_scalar($value) ? (string) $value : gettype($value),
-        ]);
+      // 🚨 THE SCALAR GUARD MOVED ABOVE THE ALLOWED-VALUES CHECK, AND THAT IS A
+      // FIX RATHER THAN A TIDY. $values is array<string, mixed> — it carries
+      // whatever a model answered — so $value can be an array. The
+      // allowed-values branch below casts it with `(string) $value`, and
+      // casting an array to string is a FATAL. The guard that exists to catch
+      // exactly that case was ten lines further down, so it could only run on
+      // values that had already survived the cast. It was written; it was just
+      // in the wrong order.
+      if (!is_scalar($value)) {
+        $problems[] = $this->t('The value for @field must be text or a number.', ['@field' => $name]);
 
         continue;
       }
 
-      if (!is_scalar($value)) {
-        $problems[] = $this->t('The value for @field must be text or a number.', ['@field' => $name]);
+      if ($fact->allowedValues !== [] && !in_array((string) $value, $fact->allowedValues, TRUE)) {
+        $problems[] = $this->t('The field @field only accepts: @values. It was given "@given".', [
+          '@field' => $name,
+          '@values' => implode(', ', $fact->allowedValues),
+          // Scalar by the guard above, so the gettype() arm is unreachable
+          // today. Kept: it costs nothing and keeps the sentence true if the
+          // ordering is ever disturbed again.
+          '@given' => is_scalar($value) ? (string) $value : gettype($value),
+        ]);
 
         continue;
       }

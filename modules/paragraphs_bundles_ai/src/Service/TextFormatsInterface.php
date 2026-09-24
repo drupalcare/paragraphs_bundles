@@ -23,7 +23,7 @@ interface TextFormatsInterface {
   /**
    * The value to write into this field for this text.
    *
-   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    *   The field being written to, as it currently stands. Its existing format
    *   is preserved when it has one.
    * @param string $text

@@ -6,6 +6,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
 use Drupal\filter\FilterFormatRepositoryInterface;
 
 /**
@@ -50,6 +51,19 @@ final class TextFormats implements TextFormatsInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * The generic is restated here rather than left to {@inheritdoc}: PHPStan
+   * reported the missing type parameter against this file AND the interface
+   * separately, so inheriting it was not enough to satisfy the analyser.
+   *
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
+   *   The field being written to, as it currently stands.
+   * @param string $text
+   *   The words.
+   *
+   * @return array<string, string>|string
+   *   An item array carrying the format, or the plain string when the field
+   *   has no format to carry.
    */
   public function valueFor(FieldItemListInterface $items, string $text): array|string {
     if (!$this->carriesFormat($items)) {
@@ -73,18 +87,27 @@ final class TextFormats implements TextFormatsInterface {
    * add a formatted field type this module has never heard of, and a hard-coded
    * list would silently mishandle it.
    *
-   * @param \Drupal\Core\Field\FieldItemListInterface $items
+   * @param \Drupal\Core\Field\FieldItemListInterface<\Drupal\Core\Field\FieldItemInterface> $items
    *   The field.
    *
    * @return bool
    *   TRUE when its items carry a format.
    */
   private function carriesFormat(FieldItemListInterface $items): bool {
-    $properties = $items->getFieldDefinition()
-      ->getItemDefinition()
-      ->getPropertyDefinitions();
+    $definition = $items->getFieldDefinition()->getItemDefinition();
 
-    return array_key_exists('format', $properties);
+    // getPropertyDefinitions() lives on ComplexDataDefinitionInterface, but
+    // getItemDefinition() is typed to return the plainer DataDefinitionInterface.
+    // Every field item definition in core is complex, so this guard has never
+    // fired — and "has never fired" is not "cannot fire". A field type handing
+    // back a simple definition would fatal here on a page being edited, rather
+    // than answering the question actually being asked, which is only ever
+    // "does this field carry a format?".
+    if (!$definition instanceof ComplexDataDefinitionInterface) {
+      return FALSE;
+    }
+
+    return array_key_exists('format', $definition->getPropertyDefinitions());
   }
 
   /**

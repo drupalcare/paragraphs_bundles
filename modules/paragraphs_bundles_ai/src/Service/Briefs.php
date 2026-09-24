@@ -153,11 +153,31 @@ final class Briefs implements BriefsInterface {
    */
   private function shape(array $brief): array {
     return [
-      'category' => trim((string) ($brief['category'] ?? '')),
-      'good_for' => trim((string) ($brief['good_for'] ?? '')),
-      'practices' => trim((string) ($brief['practices'] ?? '')),
+      'category' => self::text($brief['category'] ?? NULL),
+      'good_for' => self::text($brief['good_for'] ?? NULL),
+      'practices' => self::text($brief['practices'] ?? NULL),
       'prompts' => $this->prompts($brief),
     ];
+  }
+
+  /**
+   * One config value as trimmed text, whatever the YAML made of it.
+   *
+   * A brief arrives as `array<string, mixed>` because it comes from config, so
+   * every read is `mixed`. A bare `(string)` cast on that is fine until the day
+   * a maintainer writes a list where a sentence was expected: casting an array
+   * to string is a fatal, and casting an object without __toString() is too.
+   * Anything that is not scalar becomes '' here, which is the same answer a
+   * missing key already gives.
+   *
+   * @param mixed $value
+   *   The raw config value.
+   *
+   * @return string
+   *   Trimmed text, or '' when there is nothing usable.
+   */
+  private static function text(mixed $value): string {
+    return is_scalar($value) ? trim((string) $value) : '';
   }
 
   /**
@@ -185,7 +205,7 @@ final class Briefs implements BriefsInterface {
   private function prompts(array $brief): array {
     $out = [];
 
-    $single = trim((string) ($brief['prompt'] ?? ''));
+    $single = self::text($brief['prompt'] ?? NULL);
 
     if ($single !== '') {
       $out[] = ['name' => '', 'text' => $single];

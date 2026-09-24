@@ -67,9 +67,22 @@ final class PbAiPageHook {
     // The cacheability is attached whether it shows or not: a page that hides
     // the assistant because of who is looking must not be reused for someone
     // else.
-    $build['#cache']['contexts'][] = 'user.permissions';
-    $build['#cache']['contexts'][] = 'user.node_grants:update';
-    $build['#cache']['tags'][] = 'config:ai.settings';
+    // Read, narrow, write back. $build is array<string, mixed>, so
+    // $build['#cache'] is mixed and appending straight into it indexes a value
+    // of unknown type. That is harmless while every caller is core passing a
+    // well-formed render array, and a fatal the day one is not — and this hook
+    // runs on every full node view on the site.
+    $cache = is_array($build['#cache'] ?? NULL) ? $build['#cache'] : [];
+    $contexts = is_array($cache['contexts'] ?? NULL) ? $cache['contexts'] : [];
+    $tags = is_array($cache['tags'] ?? NULL) ? $cache['tags'] : [];
+
+    $contexts[] = 'user.permissions';
+    $contexts[] = 'user.node_grants:update';
+    $tags[] = 'config:ai.settings';
+
+    $cache['contexts'] = $contexts;
+    $cache['tags'] = $tags;
+    $build['#cache'] = $cache;
 
     if (!$decision->show) {
       return;

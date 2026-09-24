@@ -76,7 +76,14 @@ final class SectionEditor implements SectionEditorInterface {
       ]);
     }
 
-    $paragraph = $node->get($field)->get($delta)->entity;
+    // get($delta) is typed ?FieldItemInterface. $delta comes from deltaOf(),
+    // which only ever returns a delta it has just seen in getValue(), so NULL
+    // is unreachable in practice — but the type permits it, and reading
+    // ->entity on NULL would be a fatal on a page somebody is editing. The
+    // refusal below already says the right thing for a section that will not
+    // load, so routing this case into it costs nothing.
+    $item = $node->get($field)->get($delta);
+    $paragraph = $item?->entity;
 
     if (!$paragraph instanceof ParagraphInterface) {
       return EditOutcome::refused([$this->t('That section could not be loaded.')]);

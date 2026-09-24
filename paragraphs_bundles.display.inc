@@ -691,7 +691,15 @@ function paragraphs_bundles_pb_nest_display_field_groups(
     $display_group_ids[] = $group_id;
   }
 
-  foreach (array_keys($field_groups) as $group_id) {
+  foreach (array_keys($field_groups) as $key) {
+    // array_keys() returns int|string, because PHP silently casts a
+    // numeric-looking array key to int. These group names are always strings
+    // in practice, but str_starts_with() would be handed an int the day one is
+    // not. Cast once, so the three uses below all agree — casting only at the
+    // str_starts_with() call would leave the strict in_array() comparing a
+    // different type than the one just tested.
+    $group_id = (string) $key;
+
     if (!str_starts_with($group_id, 'group_pb_display_')) {
       continue;
     }

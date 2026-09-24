@@ -201,10 +201,16 @@ final class SectionDrafter implements SectionDrafterInterface {
    * @param string $modelId
    *   Model id.
    *
-   * @return array<string, mixed>|string|\Stringable
+   * @return array<string, mixed>|\Stringable
    *   The decoded answer, or a sentence explaining why there is none.
+   *
+   *   `string` was in this union and never returned: every non-array path here
+   *   goes through $this->t(), which is TranslatableMarkup. Leaving it in
+   *   invited the mistake this project has already made once — a caller
+   *   testing the refusal with is_string(), which silently stopped matching
+   *   the day the refusal became translatable. Callers check !is_array().
    */
-  private function ask(ChatInput $input, string $providerId, string $modelId): array|string|\Stringable {
+  private function ask(ChatInput $input, string $providerId, string $modelId): array|\Stringable {
     try {
       $provider = $this->providerManager->createInstance($providerId);
       $output = $provider->chat($input, $modelId, ['paragraphs_bundles_ai']);
@@ -255,10 +261,11 @@ final class SectionDrafter implements SectionDrafterInterface {
    * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
    *   The parent.
    *
-   * @return \Stringable|string
-   *   A complete sentence.
+   * @return \Stringable
+   *   A complete sentence. Always TranslatableMarkup — every branch returns
+   *   $this->t() — so `string` was in this union without ever being produced.
    */
-  private function whyNoChildren(BundleProfile $profile): \Stringable|string {
+  private function whyNoChildren(BundleProfile $profile): \Stringable {
     $fields = array_keys($profile->childFields);
 
     if (count($fields) > 1) {
