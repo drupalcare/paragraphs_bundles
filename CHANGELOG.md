@@ -107,6 +107,17 @@ smaller.** The bundled font is no longer requested at all.
 - The template, `paragraph_bundle_icon.libraries.yml` and every
   `attach_library()` call are unchanged; the swap happens in
   `hook_library_info_alter()`.
+- **`$entity->getOriginal()` replaces the magic `$entity->original`**, which is
+  deprecated in Drupal 11.2 and **removed in 12.0**
+  (`EntityBase::__get()`). The old form was worse than a notice here: written
+  as `$entity->original ?? NULL` it fired `__isset()` *and* `__get()`, so it
+  raised the deprecation twice — and on Drupal 12 it would not fatal, it would
+  quietly return NULL, making the "has the icon actually changed?" comparison
+  never match and rebuilding the whole library registry on every icon save.
+  A silent performance regression rather than a visible break.
+- **The "nothing changed, do not rebuild" branch now has a test.** It never had
+  one: every existing assertion checked that something *does* invalidate, so
+  the early return could have been deleted with the suite staying green.
 
 ⚠ **Sites without outbound access to fonts.googleapis.com** fall back to the
 bundled font automatically: the browser fetches the local `@font-face` once the

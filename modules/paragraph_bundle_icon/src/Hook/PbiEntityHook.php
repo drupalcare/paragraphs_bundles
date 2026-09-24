@@ -55,7 +55,15 @@ final class PbiEntityHook {
       return;
     }
 
-    $original = $entity->original ?? NULL;
+    // `$entity->getOriginal()`, never `$entity->original`. The magic property
+    // is deprecated in 11.2 and REMOVED in 12.0 (EntityBase::__get(), :720).
+    // The old form was worse than a deprecation notice here: `?? NULL` fires
+    // __isset() as well as __get(), so it raised the notice twice, and on
+    // Drupal 12 it would not fatal — it would quietly return NULL, the
+    // comparison below would never match, and every icon save would rebuild
+    // the whole library registry. A silent performance regression is exactly
+    // the kind of D12 break that ships unnoticed.
+    $original = $entity->getOriginal();
     if ($original instanceof ParagraphInterface
       && $this->fieldValue($entity, self::NAME_FIELD) === $this->fieldValue($original, self::NAME_FIELD)
       && $this->fieldValue($entity, self::STYLE_FIELD) === $this->fieldValue($original, self::STYLE_FIELD)) {

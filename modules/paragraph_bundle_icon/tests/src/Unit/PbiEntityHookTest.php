@@ -7,6 +7,8 @@ namespace Drupal\Tests\paragraph_bundle_icon\Unit;
 use Drupal\Core\Cache\CacheTagsInvalidatorInterface;
 use Drupal\Core\DependencyInjection\ContainerBuilder;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Field\FieldItemInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\paragraph_bundle_icon\Hook\PbiEntityHook;
 use Drupal\paragraphs\ParagraphInterface;
 use PHPUnit\Framework\Attributes\Group;
@@ -30,10 +32,27 @@ use PHPUnit\Framework\TestCase;
  * this feature whose job is cache correctness with no harness, which seemed the
  * worse trade. Flagged rather than slipped in.
  *
+ * 🚨 THE "UNCHANGED" BRANCH WAS UNTESTED UNTIL 2026-09-23, AND IT IS THE WHOLE
+ * POINT OF THE COMPARISON. Every test here asserted that something DOES
+ * invalidate; nothing asserted that re-saving an icon whose name and style are
+ * unchanged does NOT. So the early-return could have been deleted outright and
+ * the suite would have stayed green while every content edit rebuilt the
+ * library registry. ::testUnchangedIconDoesNotInvalidate closes that.
+ *
  * @group paragraphs_bundles
  */
 #[Group('paragraphs_bundles')]
 final class PbiEntityHookTest extends TestCase {
+
+  /**
+   * The icon name field the hook compares.
+   */
+  private const NAME_FIELD = 'pb_content_gms_icon_name';
+
+  /**
+   * The style field the hook compares.
+   */
+  private const STYLE_FIELD = 'pb_content_gms_style';
 
   /**
    * The invalidator the hook reaches through \Drupal.
@@ -65,6 +84,42 @@ final class PbiEntityHookTest extends TestCase {
     $paragraph = $this->createMock(ParagraphInterface::class);
     $paragraph->method('bundle')->willReturn($bundle);
     $paragraph->method('hasField')->willReturn(FALSE);
+
+    return $paragraph;
+  }
+
+  /**
+   * An icon paragraph carrying a readable name and style.
+   *
+   * @param string $name
+   *   Icon name.
+   * @param string $style
+   *   Icon style.
+   * @param \Drupal\paragraphs\ParagraphInterface|null $original
+   *   What getOriginal() should return, or NULL for none.
+   *
+   * @return \Drupal\paragraphs\ParagraphInterface
+   *   Mock paragraph.
+   */
+  private function icon(string $name, string $style, ?ParagraphInterface $original = NULL): ParagraphInterface {
+    $paragraph = $this->createMock(ParagraphInterface::class);
+    $paragraph->method('bundle')->willReturn('icon_bundle');
+    $paragraph->method('hasField')->willReturn(TRUE);
+    $paragraph->method('getOriginal')->willReturn($original);
+    $paragraph->method('get')->willReturnCallback(
+      function (string $field) use ($name, $style): FieldItemListInterface {
+        $value = $field === self::NAME_FIELD ? $name : ($field === self::STYLE_FIELD ? $style : '');
+
+        $item = $this->createMock(FieldItemInterface::class);
+        $item->method('getString')->willReturn($value);
+
+        $list = $this->createMock(FieldItemListInterface::class);
+        $list->method('isEmpty')->willReturn($value === '');
+        $list->method('first')->willReturn($item);
+
+        return $list;
+      },
+    );
 
     return $paragraph;
   }
@@ -135,7 +190,7 @@ final class PbiEntityHookTest extends TestCase {
   /**
    * Updating an icon with no pre-save state still rebuilds.
    *
-   * `$entity->original` is absent on a fresh mock, and the hook cannot compare
+   * `getOriginal()` returns NULL on a fresh mock, and the hook cannot compare
    * against nothing — so it must fail SAFE and invalidate. Rebuilding once too
    * often costs a library-cache build; skipping one costs a missing icon.
    */
@@ -145,6 +200,57 @@ final class PbiEntityHookTest extends TestCase {
       ->with(['library_info']);
 
     (new PbiEntityHook())->paragraphUpdate($this->paragraph('icon_bundle'));
+  }
+
+  /**
+   * Re-saving an icon whose name and style are unchanged rebuilds NOTHING.
+   *
+   * 🚨 THE BRANCH THIS COVERS HAD NO TEST AT ALL. Deleting the early return
+   * would have left every assertion in this class green while turning every
+   * edit of an icon paragraph — a colour tweak, a title change — into a full
+   * library-registry rebuild.
+   */
+  public function testUnchangedIconDoesNotInvalidate(): void {
+    $this->invalidator->expects($this->never())->method('invalidateTags');
+
+    $original = $this->icon('star', 'outlined');
+    $entity = $this->icon('star', 'outlined', $original);
+
+    (new PbiEntityHook())->paragraphUpdate($entity);
+  }
+
+  /**
+   * Changing the icon NAME rebuilds the subset.
+   *
+   * The control for the test above: without this, an implementation that never
+   * invalidated on update would pass it.
+   */
+  public function testChangingTheIconNameInvalidates(): void {
+    $this->invalidator->expects($this->once())
+      ->method('invalidateTags')
+      ->with(['library_info']);
+
+    $original = $this->icon('star', 'outlined');
+    $entity = $this->icon('rocket_launch', 'outlined', $original);
+
+    (new PbiEntityHook())->paragraphUpdate($entity);
+  }
+
+  /**
+   * Changing the STYLE rebuilds the subset too.
+   *
+   * A style change asks Google for a different font family, so the same glyph
+   * name still needs a new request.
+   */
+  public function testChangingTheIconStyleInvalidates(): void {
+    $this->invalidator->expects($this->once())
+      ->method('invalidateTags')
+      ->with(['library_info']);
+
+    $original = $this->icon('star', 'outlined');
+    $entity = $this->icon('star', 'sharp', $original);
+
+    (new PbiEntityHook())->paragraphUpdate($entity);
   }
 
 }
