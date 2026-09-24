@@ -276,27 +276,6 @@ final class PbDynamicCssBuilder implements PbDynamicCssBuilderInterface {
   }
 
   /**
-   * {@inheritdoc}
-   */
-  public function buildInlineCustomPropertiesStyle(
-    ParagraphInterface $paragraph,
-    array $include,
-  ): string {
-    $variables = $this->collectColorVariables($paragraph);
-    if ($variables === []) {
-      return '';
-    }
-    $declarations = [];
-    foreach ($include as $key) {
-      if (!is_string($key) || !isset($variables[$key])) {
-        continue;
-      }
-      $declarations[] = rtrim($variables[$key], ';');
-    }
-    return implode('; ', $declarations);
-  }
-
-  /**
    * Collects `--pb-*` declarations from display colour fields.
    *
    * @return array<string, string>

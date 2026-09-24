@@ -83,11 +83,13 @@ final class PbInlineAssetSurfaceTest extends TestCase {
    *   `preprocessImageOverlayInlineColors()` and `OVERLAY_INLINE_COLOR_KEYS`
    *   are gone.
    *
-   * 🚨 **AN EMPTY LIST HERE DOES NOT MEAN PB EMITS NO INLINE STYLES.** This
-   * test scans TWIG ONLY. `ColorSwatchFormatter.php` emits four inline styles
-   * from PHP render arrays (`'style' => '…'` in `#attributes`) and no guard
-   * covers them. Extend this test to PHP before treating an empty allowlist as
-   * a clean bill of health.
+   * ⚠ **THIS LIST IS TWIG ONLY, SO AN EMPTY LIST HERE IS HALF THE ANSWER.**
+   * A PHP render array emits exactly the same attribute via `'style' => '…'`
+   * in `#attributes`, and this scan cannot see it. That gap was real until
+   * 2026-09-21, when the Twig allowlist read "empty" while four PHP-built
+   * attributes went unguarded. It is now covered separately by
+   * ::testInlineStylePhpAttributesStayOnTheAllowlist, which keeps its own
+   * allowlist. Read both before treating either as a clean bill of health.
    *
    * @var array<string, int>
    */
@@ -149,22 +151,25 @@ final class PbInlineAssetSurfaceTest extends TestCase {
    * leak had appeared.
    *
    * 🚨 THIS LIST EXISTS BECAUSE THE TWIG SCAN ALONE WAS NOT ENOUGH. Until
-   * 2026-09-21 this test scanned Twig only, so these four were invisible while
-   * the Twig allowlist read "empty" — which looked like a clean bill of health
-   * the project had not earned.
+   * 2026-09-21 this test scanned Twig only, so PHP-built style attributes were
+   * invisible while the Twig allowlist read "empty" — which looked like a clean
+   * bill of health the project had not earned.
    *
-   * `ColorSwatchFormatter` is unlike the template cases: three of its four are
-   * entirely static and belong in a stylesheet, but the fourth carries an
-   * arbitrary user-chosen hex, and a field formatter has no per-entity
-   * generated CSS file to put it in. Awaiting the maintainer's decision —
-   * split, delete (it is assigned to zero displays and two sibling formatters
-   * cover the same field type), or keep and document.
+   * SHRINKING, NOT GROWING — the log of what has left this list:
+   * - 2026-09-24, `ColorSwatchFormatter` (4): the plugin was DELETED on the
+   *   maintainer's decision rather than rewritten. Three of its four styles
+   *   were entirely static and belonged in a stylesheet, but the fourth
+   *   carried an arbitrary user-chosen hex — and a field formatter, unlike a
+   *   paragraph, has no per-entity generated CSS file to put it in. Splitting
+   *   would have left this list permanently at one rather than zero. It was
+   *   assigned to ZERO displays, had no test and no docs, and the same field
+   *   type still ships ColorTextFormatterHEX and ColorTextFormatterRGB, both
+   *   free of inline styles. Deleting it cost a visual nicety nothing used,
+   *   and is what makes this list empty.
    *
    * @var array<string, int>
    */
-  private const ALLOWED_INLINE_STYLE_PHP = [
-    'src/Plugin/Field/FieldFormatter/ColorSwatchFormatter.php' => 4,
-  ];
+  private const ALLOWED_INLINE_STYLE_PHP = [];
 
   /**
    * Inline style attributes built in PHP stay on the PHP allowlist.

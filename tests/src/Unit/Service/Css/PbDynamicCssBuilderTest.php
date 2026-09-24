@@ -151,23 +151,6 @@ final class PbDynamicCssBuilderTest extends TestCase {
   }
 
   /**
-   * The inline custom-properties style lists only the requested vars.
-   */
-  public function testImageOverlayInlineStyle(): void {
-    $paragraph = $this->mockParagraph('image_overlay_bundle', 23, [
-      'pb_display_bg' => '0,0,0',
-      'pb_display_bg_opacity' => '80',
-      'pb_display_text' => '#ffffff',
-    ]);
-    $style = $this->builder->buildInlineCustomPropertiesStyle(
-      $paragraph,
-      ['pb-bg', 'pb-tx'],
-    );
-    $this->assertStringContainsString('--pb-bg: rgba(0,0,0, 0.80);', $style);
-    $this->assertStringContainsString('--pb-tx: #ffffff', $style);
-  }
-
-  /**
    * The image background bundle omits inner background vars.
    */
   public function testImageBackgroundExcludesInnerBgVars(): void {
@@ -358,28 +341,6 @@ final class PbDynamicCssBuilderTest extends TestCase {
     $this->assertSame(1, substr_count($css, '}'));
     $this->assertStringNotContainsString('<', $css);
     $this->assertStringNotContainsString('alert(1)', $css);
-  }
-
-  /**
-   * The inline custom-properties style omits rejected values.
-   *
-   * This path bypasses the stylesheet entirely and lands in a `style`
-   * attribute, where Twig's HTML autoescape does not stop `(`, `)`, `;` or
-   * `:` — so it needs the same fail-closed guarantee as the file emitter.
-   */
-  public function testInlineStyleOmitsRejectedColour(): void {
-    $paragraph = $this->mockParagraph('image_overlay_bundle', 23, [
-      'pb_display_bg' => '#000; } </style><script>alert(1)</script>',
-      'pb_display_bg_opacity' => '80',
-      'pb_display_text' => '#ffffff',
-    ]);
-    $style = $this->builder->buildInlineCustomPropertiesStyle(
-      $paragraph,
-      ['pb-bg', 'pb-tx'],
-    );
-    $this->assertStringNotContainsString('--pb-bg', $style);
-    $this->assertStringNotContainsString('<', $style);
-    $this->assertStringContainsString('--pb-tx: #ffffff', $style);
   }
 
   /**

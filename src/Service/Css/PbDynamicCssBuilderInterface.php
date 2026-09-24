@@ -47,24 +47,4 @@ interface PbDynamicCssBuilderInterface {
    */
   public function buildForNode(NodeInterface $node): string;
 
-  /**
-   * Build inline `style=""` custom properties for simple single-element scopes.
-   *
-   * Used when one DOM node can carry `--pb-*` directly (e.g. image overlay
-   * container) instead of a per-paragraph dynamic CSS rule block.
-   *
-   * @param \Drupal\paragraphs\ParagraphInterface $paragraph
-   *   The paragraph entity.
-   * @param list<string> $include
-   *   Custom-property short names to emit (`pb-bg`, `pb-tx`, …).
-   *
-   * @return string
-   *   Semicolon-separated declarations without a trailing semicolon, or
-   *   empty when none of the included keys have field values.
-   */
-  public function buildInlineCustomPropertiesStyle(
-    ParagraphInterface $paragraph,
-    array $include,
-  ): string;
-
 }

@@ -23,12 +23,14 @@ field.value.paragraphs_bundles_range:
       type: integer
       label: 'Value'
 
-# Formatter settings. Only color_swatch_formatter declares defaultSettings();
-# the other three formatters and both widgets have none, so they need no entry.
-field.formatter.settings.color_swatch_formatter:
-  type: mapping
-  label: 'Colour swatch formatter settings'
-  mapping:
-    show_label:
-      type: boolean
-      label: 'Show the colour value next to the swatch'
+# No formatter or widget in this project declares defaultSettings() any more,
+# so none needs a `field.formatter.settings.*` entry here.
+#
+# `color_swatch_formatter` was the only one that did. It was REMOVED 2026-09-24
+# on the maintainer's decision, together with the four inline `style`
+# attributes it emitted from PHP render arrays — three entirely static, one
+# carrying an arbitrary user-chosen hex that a field formatter has nowhere to
+# put, since unlike a paragraph it has no per-entity generated CSS file. It was
+# assigned to zero displays and the same field type still ships
+# ColorTextFormatterHEX and ColorTextFormatterRGB, neither of which inlines
+# anything. See PbInlineAssetSurfaceTest for the guard that now reads empty.

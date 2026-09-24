@@ -341,11 +341,14 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
   /**
    * Image overlay colours land on the WRAPPER, for the CSS to inherit.
    *
-   * The strings asserted here are the ones the removed inline path produced —
-   * PbDynamicCssBuilderTest::testImageOverlayInlineStyle pinned exactly
-   * `--pb-bg: rgba(0,0,0, 0.80);` and `--pb-tx: #ffffff`. `overlay_rgba` and
-   * buildDeclaration() compose an identical sprintf over the same normaliser,
-   * so this is a transport change, not a colour change. A raw triplet passes
+   * The strings asserted here are the ones the removed inline path produced.
+   * `PbDynamicCssBuilderTest::testImageOverlayInlineStyle` pinned exactly
+   * `--pb-bg: rgba(0,0,0, 0.80);` and `--pb-tx: #ffffff` until 2026-09-24,
+   * when it was deleted together with `buildInlineCustomPropertiesStyle()`
+   * itself — so THIS test is now the only place those exact strings are
+   * pinned. `overlay_rgba` and buildDeclaration() compose an identical
+   * sprintf over the same normaliser, so this is a transport change, not a
+   * colour change. A raw triplet passes
    * through `normaliseToRgbTriplet` untouched, which is why the spacing here
    * differs from the hex-sourced `rgba(250, 253, 255, 0.36)` elsewhere.
    */

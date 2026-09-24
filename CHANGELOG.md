@@ -26,6 +26,32 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   it only ever ran on values that had already survived the cast. The guard is
   now first. Found by PHPStan at `level: max`, not by a test.
 
+### Removed — the Colour Swatch formatter
+
+- **`color_swatch_formatter` is gone**, and with it the last inline `style`
+  attributes Paragraphs Bundles emitted. It built four of them from PHP render
+  arrays: three entirely static, and one carrying an arbitrary user-chosen hex.
+  A field formatter has no per-entity generated CSS file to move that hex into —
+  unlike a paragraph — so splitting it would have left PB permanently one short
+  of zero inline styles.
+
+  It was assigned to **no displays**, had no test and no documentation, and the
+  `paragraphs_bundles_rgb` field type still ships **`color_text_formatter_hex`**
+  and **`color_text_formatter_rgb`**, neither of which inlines anything. If you
+  were using the swatch, switch the display to one of those.
+
+  `paragraphs_bundles.info.yml` advertises *"per-paragraph dynamic CSS files (no
+  inline styles)"*. That sentence is now true: verified under an enforced
+  `style-src: self` policy with a known-positive probe, PB contributes **zero**
+  markup style attributes to a page rendering every bundle with every field
+  filled.
+
+- **`PbDynamicCssBuilder::buildInlineCustomPropertiesStyle()` removed** — the
+  one API in this project whose job was manufacturing inline style strings. Its
+  last caller went in 2026-09-20 when the image-overlay colours moved into the
+  generated stylesheet. Removed while 2.x is unreleased, when an interface
+  change is still free.
+
 ### Added — APEX responsive images (optional)
 
 - **`paragraphs_bundles_apex`** — optional bridge that renders a PB media image
