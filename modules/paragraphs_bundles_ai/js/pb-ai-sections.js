@@ -276,8 +276,13 @@
 
   Drupal.behaviors.pbAiSections = {
     attach(context) {
-      const sections = once('pb-ai-section', SECTIONS, context).filter((el) =>
-        SECTION_ID.test(el.id),
+      // TOP-LEVEL ONLY. A slide, a column's Simple and a tab's body carry the
+      // same class and the same kind of id, so without this a child's hover
+      // fired last and its id replaced the parent's. The note now shows exactly
+      // the ids the "Or edit a section" list offers: the page's own sections.
+      const sections = once('pb-ai-section', SECTIONS, context).filter(
+        (el) =>
+          SECTION_ID.test(el.id) && !el.parentElement?.closest(SECTIONS),
       );
 
       if (!sections.length) {

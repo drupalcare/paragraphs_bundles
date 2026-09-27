@@ -215,13 +215,18 @@ final class DefaultImage implements DefaultImageInterface {
     imagefill($text, 0, 0, (int) imagecolorallocate($text, 217, 221, 227));
     imagestring($text, $font, 0, 0, $label, (int) imagecolorallocate($text, 55, 65, 81));
 
-    // Large enough to read at a glance, never wider than the picture.
-    $scale = max(1, (int) floor(min($width * 0.6 / $textWidth, $height * 0.25 / $textHeight)));
+    // AT THE BOTTOM, NOT THE MIDDLE. A hero, an overlay and a parallax put
+    // their own heading in the middle of the picture; numbers there fought it
+    // and neither could be read (seen on sts.local, 2026-09-27). Bottom CENTRE
+    // rather than a corner: a responsive crop trims the sides, and cut the
+    // corner numbers in half on the same page.
+    $scale = max(1, (int) floor(min($width * 0.3 / $textWidth, $height * 0.1 / $textHeight)));
+    $margin = max(8, intdiv(min($width, $height), 30));
     imagecopyresized(
       $image,
       $text,
-      intdiv($width - $textWidth * $scale, 2),
-      intdiv($height - $textHeight * $scale, 2),
+      max(0, intdiv($width - $textWidth * $scale, 2)),
+      max(0, $height - $textHeight * $scale - $margin),
       0,
       0,
       $textWidth * $scale,

@@ -63,6 +63,7 @@ services:
     class: Drupal\paragraphs_bundles_ai\Service\TextFormats
     arguments:
       - '@current_user'
+      - '@entity_type.manager'
       - '@?Drupal\filter\FilterFormatRepositoryInterface'
 
   Drupal\paragraphs_bundles_ai\Service\TextFormatsInterface: '@paragraphs_bundles_ai.text_formats'

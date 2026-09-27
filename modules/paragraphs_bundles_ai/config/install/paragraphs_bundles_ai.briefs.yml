@@ -153,8 +153,9 @@ briefs:
         titled with the plant's name in two or three words.
       text: |
         Write a carousel of six items with what customers say about our roses.
-        Heading "What our customers say" as an h2, centred. Each item is a
-        Simple of two lines, and every one about the same length.
+        Heading "What our customers say" as an h2, centred. Each item is a card
+        text: the customer's first name and town as its title, and their words
+        in one or two lines as its body, every one about the same length.
     practices: |
       Best practices for creating professional content:
       Carousel items accept any paragraph bundle, best with image, card text or simple.
@@ -258,10 +259,13 @@ briefs:
     good_for: 'A card that turns over — the question in front, the answer behind.'
     features:
       pb_display_flip_xy: flip_x
+      pb_display_3d_height: '250'
     prompt: |
       Write a flip box for our planting service. Heading "Planting service"
-      as an h3, centred. The front is a Simple asking one short question, "Too
-      busy to plant?". The back is a Simple answering it in two lines.
+      as an h3, centred. The front is a Simple titled "Too busy to plant?" as
+      an h3, with one line saying we can help. The back is a Simple titled "We
+      plant it for you" as an h3, with two lines on what a visit costs and
+      what we bring.
     practices: |
       Best practices for creating professional content:
       3D Flip card is good with image or text small cards
@@ -482,6 +486,7 @@ briefs:
       pb_display_image_sizing: cover
       pb_display_image_repetition: no_repeat
       pb_display_image_alignment: center_center
+      pb_display_image_min_height: '400'
     prompt: |
       Write an image background band inviting visitors to our open weekend.
       Inside it, a Simple with the heading "Open weekend" as an h2, centred,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Service;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\TypedData\ComplexDataDefinitionInterface;
@@ -23,6 +25,14 @@ use Drupal\filter\FilterFormatRepositoryInterface;
  * `filter.settings.fallback_format`, normally `plain_text`, so the markup the
  * person wrote is escaped and shown as source.
  *
+ * LINE BREAKS ARE KEPT, SINCE 2026-09-27. The model writes plain text, and
+ * `basic_html` — the usual default — has no `filter_autop`, so "three short
+ * lines" rendered as one run-on line (measured on sts.local). Where the format
+ * will not turn newlines into markup itself, the text is escaped and wrapped:
+ * a blank line starts a paragraph, a single newline is a line break. A format
+ * that escapes or auto-paragraphs is handed the text untouched, because it
+ * already does exactly that.
+ *
  * THE EXISTING FORMAT WINS, ALWAYS. Rewording a section must not silently
  * promote it from Restricted HTML to Full HTML, nor demote it: the format was
  * a decision somebody made about that field, and rewriting the words is not a
@@ -38,6 +48,9 @@ final class TextFormats implements TextFormatsInterface {
    *   Whose default format applies to a value that has none yet. Asking the
    *   user rather than the site is what keeps this from handing someone a
    *   format they are not permitted to use.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface|null $entityTypeManager
+   *   Loads the chosen format, to ask whether it keeps line breaks itself.
+   *   NULL leaves the text as it was written.
    * @param \Drupal\filter\FilterFormatRepositoryInterface|null $formatRepository
    *   NULL on Drupal 11.3, where this service does not exist yet, and on any
    *   site without filter.module — which this module does not depend on. The
@@ -46,6 +59,7 @@ final class TextFormats implements TextFormatsInterface {
    */
   public function __construct(
     private readonly AccountInterface $currentUser,
+    private readonly ?EntityTypeManagerInterface $entityTypeManager = NULL,
     private readonly ?FilterFormatRepositoryInterface $formatRepository = NULL,
   ) {}
 
@@ -77,7 +91,65 @@ final class TextFormats implements TextFormatsInterface {
 
     // No format available at all: write the plain string rather than an item
     // with a NULL format. Both render the same, and one of them is honest.
-    return $format === NULL ? $text : ['value' => $text, 'format' => $format];
+    if ($format === NULL) {
+      return $text;
+    }
+
+    return ['value' => $this->keepsBreaks($format) ? $text : self::toMarkup($text), 'format' => $format];
+  }
+
+  /**
+   * Whether a format already turns newlines into markup, or shows text as is.
+   *
+   * @param string $format
+   *   Text format id.
+   *
+   * @return bool
+   *   TRUE when the text can be stored exactly as written.
+   */
+  private function keepsBreaks(string $format): bool {
+    if ($this->entityTypeManager === NULL || !$this->entityTypeManager->hasDefinition('filter_format')) {
+      return TRUE;
+    }
+
+    $entity = $this->entityTypeManager->getStorage('filter_format')->load($format);
+
+    if ($entity === NULL) {
+      return TRUE;
+    }
+
+    // The stored configuration, not the plugin collection: it answers "is it
+    // switched on" without instantiating every filter the format carries.
+    $filters = $entity->get('filters');
+
+    foreach (['filter_autop', 'filter_html_escape'] as $id) {
+      if (is_array($filters) && is_array($filters[$id] ?? NULL) && !empty($filters[$id]['status'])) {
+        return TRUE;
+      }
+    }
+
+    return FALSE;
+  }
+
+  /**
+   * Plain text as HTML: escaped, blank lines as paragraphs, newlines as breaks.
+   *
+   * @param string $text
+   *   Plain text as the model wrote it.
+   *
+   * @return string
+   *   Markup safe for any HTML format.
+   */
+  private static function toMarkup(string $text): string {
+    $paragraphs = preg_split('/\R\s*\R/', trim(str_replace("\r\n", "\n", $text))) ?: [];
+    $out = [];
+
+    foreach ($paragraphs as $paragraph) {
+      $lines = array_map(static fn(string $line): string => Html::escape(trim($line)), preg_split('/\R/', $paragraph) ?: []);
+      $out[] = '<p>' . implode("<br>\n", array_filter($lines, static fn(string $line): bool => $line !== '')) . '</p>';
+    }
+
+    return implode("\n", $out);
   }
 
   /**

@@ -122,11 +122,61 @@ final class TextFormatsTest extends KernelTestBase {
       $this->formats->valueFor($paragraph->get('body_text'), 'Rewritten words.'),
     );
 
-    self::assertSame('Rewritten words.', $paragraph->get('body_text')->value);
+    // `tight` has no filter that keeps line breaks, so the words arrive as a
+    // paragraph (see testLineBreaksSurviveFormatWithoutAutop()).
+    self::assertSame('<p>Rewritten words.</p>', $paragraph->get('body_text')->value);
     self::assertSame(
       'tight',
       $paragraph->get('body_text')->format,
       'The format a person chose must survive a rewording of the words.',
+    );
+  }
+
+  /**
+   * Written lines stay lines where the format would run them together.
+   *
+   * Measured 2026-09-27 on sts.local: `basic_html` has no `filter_autop`, so
+   * "three short lines" from the model rendered as one line. Text is escaped
+   * too: a model's angle brackets are words, not markup.
+   */
+  public function testLineBreaksSurviveFormatWithoutAutop(): void {
+    $paragraph = Paragraph::create([
+      'type' => 'worded',
+      'body_text' => ['value' => 'old', 'format' => 'tight'],
+    ]);
+
+    $value = $this->formats->valueFor(
+      $paragraph->get('body_text'),
+      "Tuesday to Sunday.\n9am to 4pm.\n\nClosed <b>Mondays</b>.",
+    );
+
+    self::assertSame(
+      [
+        'value' => "<p>Tuesday to Sunday.<br>\n9am to 4pm.</p>\n<p>Closed &lt;b&gt;Mondays&lt;/b&gt;.</p>",
+        'format' => 'tight',
+      ],
+      $value,
+    );
+  }
+
+  /**
+   * A format that already turns newlines into markup gets the text as written.
+   */
+  public function testFormatThatKeepsBreaksGetsTextUntouched(): void {
+    $autop = FilterFormat::create([
+      'format' => 'autop_text',
+      'name' => 'Autop',
+      'filters' => ['filter_autop' => ['status' => TRUE]],
+    ]);
+    $autop->save();
+    $paragraph = Paragraph::create([
+      'type' => 'worded',
+      'body_text' => ['value' => 'old', 'format' => 'autop_text'],
+    ]);
+
+    self::assertSame(
+      ['value' => "One.\nTwo.", 'format' => 'autop_text'],
+      $this->formats->valueFor($paragraph->get('body_text'), "One.\nTwo."),
     );
   }
 

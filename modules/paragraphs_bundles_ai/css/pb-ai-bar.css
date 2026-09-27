@@ -398,6 +398,24 @@
   align-items: center;
 }
 
+/* ONE ROW: Add · Edit · Prompts · Best practices side by side — the
+   maintainer, 2026-09-27. The theme reached in and broke it, measured on
+   sts.local: Solo's `.form-type-checkbox { width: 100% }` put each switch on
+   its own full-width line, and `div.form-actions { justify-content: center }`
+   with automatic side margins pushed the two buttons 488px apart. Two classes
+   here, so these beat the theme's one-class and element-plus-class rules. */
+.pb-ai-bar .pb-ai-bar__row--actions {
+  justify-content: flex-start;
+}
+
+.pb-ai-bar__row--actions > .pb-ai-bar__switch {
+  width: auto;
+}
+
+.pb-ai-bar__row--actions > .form-submit {
+  margin: 0;
+}
+
 /**
  * THE BEST-PRACTICE BRIEF.
  *

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\Tests\paragraphs_bundles_ai\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
+use Drupal\paragraphs\Entity\Paragraph;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -170,6 +171,64 @@ final class PbAiPromptVariantsTest extends WebDriverTestBase {
     $this->assertJsCondition(
       "document.querySelectorAll('.pb-ai-brief__prompt-name').length === 0",
     );
+  }
+
+  /**
+   * Hovering a section inside a section shows the OUTER section's id only.
+   *
+   * Maintainer, 2026-09-27: "when we hover we should get the first id of the
+   * parent only". A slide, a column's Simple and a tab's body carry the same
+   * class and the same kind of id as the page's own sections, so every one got
+   * its own hover, and moving onto a child replaced the parent's id with the
+   * child's. The note now shows exactly what "Or edit a section" offers.
+   */
+  public function testHoverShowsTheOuterSectionOnly(): void {
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+
+    if ($nodeType === NULL || $fieldName === NULL) {
+      $this->fail('No node type with a paragraph reference field was found.');
+    }
+
+    $this->drupalLogin($this->drupalCreateUser([
+      'access content',
+      'use paragraphs bundles ai assistant',
+      'create ' . $nodeType . ' content',
+      'edit any ' . $nodeType . ' content',
+    ]));
+
+    $inner = Paragraph::create(['type' => 'simple_bundle', 'pb_content_body' => 'Plant before the frost.']);
+    $inner->save();
+    $slide = Paragraph::create([
+      'type' => 'slideshow_section_bundle',
+      'pb_content_slideshow_title' => 'Tulips',
+      'pb_content_slideshow_body' => [$inner],
+    ]);
+    $slide->save();
+    $show = Paragraph::create(['type' => 'slideshow_bundle', 'pb_content_slideshow_section' => [$slide]]);
+    $show->save();
+    $node = $this->drupalCreateNode(['type' => $nodeType, $fieldName => [$show]]);
+
+    $this->drupalGet($node->toUrl());
+    $this->assertSession()->waitForElement('css', '.pb-ai-note');
+
+    $shown = $this->getSession()->evaluateScript(<<<'JS'
+      (() => {
+        const note = document.querySelector('.pb-ai-note');
+        const all = [...document.querySelectorAll('.paragraphs-bundles[id^="pb-"]')];
+        const top = all.filter((el) => !el.parentElement.closest('.paragraphs-bundles[id^="pb-"]'));
+        const parent = top[0];
+        const child = parent.querySelector('.paragraphs-bundles[id^="pb-"]');
+        parent.dispatchEvent(new MouseEvent('mouseenter'));
+        const onParent = note.textContent;
+        child.dispatchEvent(new MouseEvent('mouseenter'));
+        return [parent.id, child ? child.id : '', onParent, note.textContent];
+      })()
+    JS);
+
+    [$parentId, $childId, $onParent, $onChild] = $shown;
+    self::assertNotSame('', $childId, 'The fixture has a section inside a section.');
+    self::assertSame($parentId, $onParent);
+    self::assertSame($parentId, $onChild, 'Hovering the child still shows the outer section.');
   }
 
   /**
