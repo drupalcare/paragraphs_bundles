@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_car_perspective
+    - field.field.paragraph.3d_carousel_bundle.pb_display_3d_car_style
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_caro_breakpoints
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
@@ -157,6 +158,7 @@ third_party_settings:
         required_fields: true
     group_pb_display_extra:
       children:
+        - pb_display_3d_car_style
         - pb_display_3d_play_stop
         - pb_display_3d_caro_breakpoints
         - pb_display_width
@@ -235,6 +237,12 @@ content:
     settings:
       size: 60
       placeholder: ''
+    third_party_settings: {  }
+  pb_display_3d_car_style:
+    type: options_select
+    weight: 19
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_display_3d_caro_breakpoints:
     type: options_select

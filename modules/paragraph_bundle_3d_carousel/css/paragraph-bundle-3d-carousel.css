@@ -41,13 +41,15 @@
   perspective: 40rem;
 }
 
+/* `transition: transform 1s` used to sit here and is now in …-ring.css: the
+   ring is the only geometry that transforms this element. Everything left is
+   true of both. */
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring {
   width: 100%;
   height: 100%;
   margin-block: 0;
   margin-inline: auto;
   transform-style: preserve-3d;
-  transition: transform 1s;
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring > .pb-3d-carousel__slide {
@@ -336,13 +338,17 @@
   transform: translateX(-4px);
 }
 
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-hidden,
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-hidden {
-  visibility: hidden;
-  transform: translateX(-20px);
-  pointer-events: none;
-  opacity: 0;
-}
+/* The `.pb-is-hidden` arrow rules MOVED to `…-3d-carousel-ring.css` on
+   2026-09-24. They were not deleted, and the class is still applied.
+
+   ⚠ CORRECTED 2026-09-25 after an independent review. This comment used to
+   read "Nothing adds that class any more: both styles loop … and the JS that
+   used to add it is gone." Every clause of that was false. It described an
+   intermediate version in which BOTH geometries wrapped; the ring was then
+   deliberately returned to ping-pong, so it still has a first and last slide,
+   and `js/paragraph-bundle-3d-carousel.js` still toggles the class in
+   `updateNavVisibility()`. The rules live in the ring stylesheet because they are true of
+   the ring and false of a fan, which is the whole point of the split. */
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-slideshow__number {
   padding-block: var(--pb-px3);
@@ -502,18 +508,30 @@
 }
 
 /* ==========================================================================
-   Interaction States
-   ========================================================================== */
+   Interaction states — MOVED OUT, not deleted
+   ==========================================================================
 
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide:hover * {
-  cursor: default;
-  pointer-events: none;
-}
+   The pointer-events pair now lives in …-ring.css. It says "only the slide
+   facing the viewer accepts a pointer", which is true of a drum and false of
+   a fan, so it must not load for a coverflow. It used to sit here and be
+   undone by a later coverflow rule; two rules fighting is how the resulting
+   bug — visible cards that silently could not be clicked — was missed.
 
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide.pb-is-active:hover a {
-  cursor: pointer;
-  pointer-events: initial;
-}
+   THE RULE THIS ESTABLISHES: the base layer describes the WIDGET and never a
+   geometry. Anything about how cards are ARRANGED belongs in a style file;
+   anything about how the widget is SIZED or how its controls behave stays
+   here. */
+
+/* ==========================================================================
+   Coverflow — MOVED OUT to …-coverflow.css
+   ==========================================================================
+
+   Three of the rules that used to sit here were DELETED rather than moved,
+   because they existed only to undo ring assumptions this file no longer
+   makes: the `pointer-events` restore (the ring's version is now in
+   …-ring.css and a coverflow never loads it), `transform-style: preserve-3d`
+   on the ring (already declared above for both), and a reduced-motion rule
+   for the slides (already covered by the block at the end of this file). */
 
 /* ==========================================================================
    Button SVG Styles

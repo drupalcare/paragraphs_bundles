@@ -27,6 +27,27 @@ See the parent playbook for required attributes per pattern.
 - **Twig:** `templates/paragraph--3d-carousel-bundle.html.twig`
 - **JavaScript:** `js/paragraph-bundle-3d-carousel.js`
 
+## Two geometries
+
+The editor picks **Carousel style** under Display → Additional:
+
+- **Rotating ring** (default) — the drum. It stops at the first and last
+  slide, and the arrow for the end it has reached is hidden
+  (`pb-is-hidden`, `tabindex="-1"`).
+- **Coverflow** — a fan of cards. It wraps, so both arrows always show.
+
+Both share one script, so the ARIA, keyboard, autoplay and `inert` behaviour
+below is identical for each. Only the geometry differs.
+
+- **Ring:** only the active slide is exposed; the others are `inert` and
+  `aria-hidden`. At either end focus moves to the arrow that still works.
+- **Coverflow:** every card painted on screen stays exposed; only cards
+  clipped out of the box are `inert`. Both arrows always stay in tab order.
+
+Checked in Chrome on 2026-09-25: arrow buttons, arrow keys, focus at the ends,
+the slide counter, and `prefers-reduced-motion` (no animation runs). ⚠ Not
+yet checked with a real screen reader.
+
 ## Keyboard
 
 - Arrow keys for slide navigation

@@ -1,0 +1,56 @@
+/**
+ * @file
+ * Paragraphs Bundle 3D Carousel — the COVERFLOW geometry only.
+ *
+ * Loaded only when the Carousel style field is "coverflow".
+ *
+ * 📐 THIS FILE IS DELIBERATELY SMALL, and that is the design rather than an
+ * omission. A coverflow's entire appearance — where each card sits, how far it
+ * is pushed back, how much it is turned and how much it is scaled — is written
+ * by the script as CSSOM transforms, computed from the slide's REAL measured
+ * width.
+ *
+ * 🚨 IT SETS NO WIDTH AND NO HEIGHT, EVER. Earlier versions put `width: 34%`
+ * (and before that 55%) on the slide and that is what broke the widget: it
+ * overrode `calc(100% - var(--pb-px24))` and stepped outside the sizing system
+ * the module already has —
+ *
+ *   width  : `pb_display_width` -> `pb-u-mw--N` on the inner, each carrying a
+ *            max-width AND its matching `perspective` (300 -> 22rem … 900 ->
+ *            34rem, 100 -> 40rem), so the 3D depth is tuned to the width;
+ *   height : `--hN` in the base file, `--shN` inside whichever single
+ *            breakpoint stylesheet the editor selected.
+ *
+ * Override either and the carousel stops following the editor's own settings
+ * and stops responding at the breakpoint. Shrinking is done by transform, so
+ * the layout box stays whatever those settings made it.
+ *
+ * ⚠ Several rules that used to live here have been DELETED rather than moved.
+ * They existed only to undo ring assumptions in the base stylesheet, and the
+ * base no longer makes them:
+ *   - the `pointer-events` restore: the ring's version now lives in
+ *     `…-ring.css` and a coverflow never loads it;
+ *   - `transform-style: preserve-3d` on the ring: already in the base;
+ *   - a reduced-motion rule for the slides: already covered by the base.
+ *
+ * Filename:     paragraph-bundle-3d-carousel-coverflow.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+/* ==========================================================================
+   Card transform origin
+   ========================================================================== */
+
+/* Cards turn and scale about their own centre, which is what the script's
+   maths assumes: a card at slot N is placed at N x step from the middle and
+   rotated in place.
+ *
+ * This restates the CSS default on purpose. It is not decoration — a theme
+ * setting `transform-origin` on slides would skew the whole fan, and the
+ * failure would look like a maths bug in the script rather than a cascade
+ * collision. Declaring it here makes the script's assumption explicit and
+ * defends it. */
+.paragraphs-bundles.pb-3d-carousel--coverflow .pb-3d-carousel__ring > .pb-3d-carousel__slide {
+  transform-origin: center center;
+}

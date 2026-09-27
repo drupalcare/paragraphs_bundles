@@ -9,7 +9,7 @@
  * |--------------------------------------|----------------------|--------------|
  * | pb_display_* (list)                  | `.pb-ui-inner`  | entity field values |
  * | pb_display_bg/text/border/link*      | `.pb-ui-inner`  | dynamic CSS |
- * | pb_display_3d_car_perspective        | `.pb-ui-inner`  | inline `perspective` (px) |
+ * | pb_display_3d_car_perspective        | `.pb-ui-inner`  | dynamic CSS |
  * | pb_display_3d_caro_breakpoints       | outer wrapper        | breakpoint library |
  * | pb_content_3dcar_lheight/sheight     | outer wrapper class  | entity field values |
  * | pb_display_3d_play_stop              | `data-rotation-delay`| entity integer value |
@@ -49,6 +49,42 @@
 {% set pb_lheight_raw = paragraph|pb_field_value('pb_content_3dcar_lheight') %}
 {% set pb_sheight_raw = paragraph|pb_field_value('pb_content_3dcar_sheight') %}
 
+{# WHICH GEOMETRY, defaulting to the ring.
+
+   THE DEFAULT IS LOAD-BEARING, not tidiness. A field default only applies when
+   an entity is CREATED, so every carousel that existed before update 9003 ran
+   holds an empty value — measured on sts.local 2026-09-24, all five of them.
+   Without `'ring'` here those carousels would render with no style at all. -#}
+{% set pb_car_style = paragraph|pb_field_value('pb_display_3d_car_style', 'ring') -%}
+
+{# ONE STYLE LIBRARY, NEVER BOTH. The shared library above carries the base
+   stylesheet and the script; this adds only the rules true of the chosen
+   geometry. A ring page therefore never downloads the fan's rules, and a
+   coverflow never downloads the ring's pointer-events rule — which is the one
+   that used to make its visible cards silently unclickable.
+
+   The value is bounded to `ring` or `coverflow` by the field's allowed values
+   and by the default above, but it is checked rather than trusted: a stray
+   value would otherwise ask Drupal for a library that does not exist. -#}
+{% if pb_car_style in ['ring', 'coverflow'] -%}
+  {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ pb_car_style) -}}
+{% endif -%}
+
+{# ONLY the coverflow class is ever emitted -- there is deliberately no
+   "--ring" class. The ring is the default and its markup must stay byte
+   identical, because thirteen demo sites compare published pages byte for
+   byte and any added attribute would show as a diff on every one of them.
+
+   THIS NOTE LIVES HERE, NOT BETWEEN THE ARRAY ITEMS BELOW. A Twig comment
+   placed inside a set expression is not a comment at all: the lexer is in
+   expression mode there, so it keeps reading and fails on the first character
+   it cannot parse. Measured 2026-09-24 -- writing one inside this very array
+   took the page to HTTP 500 with a Twig SyntaxError naming an unexpected
+   character. Keep explanations outside the brackets.
+
+   Every tag added for the geometry ends in `-` so it emits no whitespace:
+   without it these lines printed blank lines on every ring, and the ring's
+   markup must stay byte identical. -#}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
@@ -60,6 +96,7 @@
   paragraph_id,
   pb_lheight_raw ? 'pb-3d-carousel--h' ~ pb_lheight_raw,
   pb_sheight_raw ? 'pb-3d-carousel--sh' ~ pb_sheight_raw,
+  pb_car_style == 'coverflow' ? 'pb-3d-carousel--coverflow',
 ] %}
 
 {% set carousel_id = 'pb-3d-carousel__ring-' ~ paragraph.id.value %}
@@ -75,7 +112,8 @@
          role="group"
          aria-roledescription="carousel"
          aria-labelledby="pb-3d-carousel__index-{{ paragraph.id.value }}"
-         data-rotation-delay="{{ pb_play_stop }}">
+         data-rotation-delay="{{ pb_play_stop }}"{% if pb_car_style == 'coverflow' %}
+         data-pb-style="coverflow"{% endif %}>
 
       {% for key, item in valid_slides %}
         <div id="pb-3d-carousel__slide-{{ paragraph.id.value }}-{{ loop.index }}"

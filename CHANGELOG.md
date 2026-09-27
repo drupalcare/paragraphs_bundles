@@ -5,6 +5,23 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [2.0.0] — 2026-07-06
 
+### Added — 3D carousel: a coverflow geometry
+
+- **New field `pb_display_3d_car_style`** ("Carousel style", Display →
+  Additional): **Rotating ring** (default) or **Coverflow**. Update **9003**
+  adds it to existing sites and writes `ring` onto existing carousels. The
+  field is optional; carousels with no value render as the ring, as before.
+- **The ring's markup is unchanged.** The style stylesheets load as two
+  separate libraries, so a ring page never downloads the coverflow rules.
+- In a coverflow, the card that wraps from one end to the other fades out,
+  moves while invisible and fades back in, instead of sliding across the fan.
+
+### Fixed — 3D carousel: keyboard focus at the ends of a ring
+
+- Reaching the first or last slide with the keyboard hid the arrow that had
+  focus, dropping the user to the top of the page. Focus now moves to the
+  opposite arrow. This was inherited from 1.x.
+
 ### Added — AI (optional)
 
 - **`paragraphs_bundles_ai`** — optional AI sub-module. Three tools:

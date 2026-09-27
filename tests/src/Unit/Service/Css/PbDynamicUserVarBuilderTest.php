@@ -9,6 +9,7 @@ use Drupal\paragraphs_bundles\Service\Css\PbDynamicUserVarBuilder;
 use Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface;
 use Drupal\Tests\paragraphs_bundles\Unit\PbParagraphMockTrait;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 
@@ -174,12 +175,52 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
     ]);
     $css = $this->builder->build($paragraph, '#pb-grid-99');
 
-    // Only the single rule block's own braces may appear — the value's braces
-    // are stripped, so no injected rule survives.
+    // ⚠ THIS EXPECTATION GOT STRONGER, 2026-09-24, AND THE OLD ONE IS WHY.
+    // It used to assert `substr_count($css, '{') === 1`: the hostile value was
+    // EMITTED and merely sanitised, so exactly one rule block survived with the
+    // braces stripped out of the value. `gap` is a `px` transform, and
+    // ::withUnit() now rejects anything that is not a length, so the
+    // declaration is never produced, the block has nothing to hold, and the
+    // count is 0. Zero rule blocks is strictly safer than one scrubbed one.
+    //
+    // 📐 The test changed; the behaviour it guards did not get weaker. Assert
+    // the strongest available property — nothing at all is emitted — because
+    // this paragraph sets no other display field.
+    $this->assertSame('', $css);
+
+    // Kept from the sanitisation-only era deliberately. They are trivially
+    // true while the value is rejected upstream, and they are what goes red
+    // first if that guard is ever removed and emission resumes.
+    $this->assertStringNotContainsString('body{', $css);
+    $this->assertStringNotContainsString('display:none', $css);
+    $this->assertStringNotContainsString('<', $css);
+    $this->assertStringNotContainsString('>', $css);
+    $this->assertSame(substr_count($css, '{'), substr_count($css, '}'));
+  }
+
+  /**
+   * The sanitizer still guards transforms whose values are not numbers.
+   *
+   * 🚨 WITHOUT THIS, REJECTING BAD LENGTHS WOULD SILENTLY RETIRE THE SANITIZER
+   * FROM THE SUITE. ::testMaliciousValueCannotBreakOutOfDeclaration() was the
+   * only exercise of ::sanitizeCssValue() on a real build, and it now stops at
+   * the length guard — a value that is numeric can never carry a brace, so no
+   * remaining length case can reach the sanitizer at all.
+   *
+   * `background-attachment` uses the `string` transform, which has no shape to
+   * check against and therefore still relies entirely on sanitisation. That is
+   * the path this pins.
+   */
+  public function testSanitizerStillGuardsNonNumericTransforms(): void {
+    $paragraph = $this->mockParagraph('image_background_bundle', 77, [
+      'pb_display_background_attachment' => 'fixed} body{display:none} /*<script>*/',
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-image-background-77');
+
+    $this->assertStringContainsString('background-attachment:', $css);
     $this->assertSame(1, substr_count($css, '{'));
     $this->assertSame(1, substr_count($css, '}'));
     $this->assertStringNotContainsString('body{', $css);
-    $this->assertStringNotContainsString('display:none}', $css);
     $this->assertStringNotContainsString('<', $css);
     $this->assertStringNotContainsString('>', $css);
   }
@@ -197,6 +238,87 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
       $css,
     );
     $this->assertStringContainsString('perspective: 900px;', $css);
+  }
+
+  /**
+   * A length is emitted only when the stored value really is a length.
+   *
+   * 🚨 THE DEFECT THIS PINS, MEASURED ON sts.local 2026-09-24. Paragraphs 335
+   * and 416 held the literal text `PB fixture pb_display_3d_car_perspective`
+   * in `pb_display_3d_car_perspective`, and it reached a served stylesheet as
+   * `perspective: PB fixture pb_display_3d_car_perspectivepx;`. Browsers drop
+   * the declaration — confirmed in a real CSS engine, where it parses to an
+   * empty rule — so nothing rendered wrong and nothing could escape the block.
+   * Emitting it was still wrong, and the field is a plain `varchar(255)`: the
+   * only length field in the module that is not an integer storage, which is
+   * exactly how prose got in.
+   *
+   * ⚠ The `900px` case is a SEPARATE latent bug this guard also closes. The
+   * field's own description invites it — "modify this value in pixels" — and
+   * ::withUnit() used to append a second unit, emitting `900pxpx`.
+   *
+   * @param string $stored
+   *   The value held in the perspective field.
+   * @param string $expected
+   *   The declaration that must appear, or '' when nothing may be emitted.
+   * @param string $why
+   *   What the case is about, shown on failure.
+   */
+  #[DataProvider('lengthGuardProvider')]
+  public function testLengthValuesAreShapeCheckedBeforeEmission(
+    string $stored,
+    string $expected,
+    string $why,
+  ): void {
+    $paragraph = $this->mockParagraph('3d_carousel_bundle', 31, [
+      'pb_display_3d_car_perspective' => $stored,
+    ]);
+    $css = $this->builder->build($paragraph, '#pb-3d-carousel-31');
+
+    if ($expected === '') {
+      $this->assertSame('', $css, $why);
+      return;
+    }
+    $this->assertStringContainsString($expected, $css, $why);
+  }
+
+  /**
+   * Values an editor or an API write can put in a length field.
+   *
+   * @return array<string, array{string, string, string}>
+   *   Case name => [stored value, expected declaration, failure message].
+   */
+  public static function lengthGuardProvider(): array {
+    return [
+      'bare number' => [
+        '900', 'perspective: 900px;',
+        'The ordinary case must still be emitted.',
+      ],
+      'decimal' => [
+        '12.5', 'perspective: 12.5px;',
+        'A fractional length is valid CSS and must survive.',
+      ],
+      'unit typed by hand' => [
+        '900px', 'perspective: 900px;',
+        'The field description invites "px"; it must not become 900pxpx.',
+      ],
+      'unit with a space' => [
+        '900 px', 'perspective: 900px;',
+        'Spacing before the unit must normalise, not reject.',
+      ],
+      'the fixture prose found on sts.local' => [
+        'PB fixture pb_display_3d_car_perspective', '',
+        'Prose in a length field must emit no declaration at all.',
+      ],
+      'wrong unit for this transform' => [
+        '900rem', '',
+        'A unit the transform does not own is not silently re-suffixed.',
+      ],
+      'empty' => [
+        '', '',
+        'An unset field emits nothing, as it always has.',
+      ],
+    ];
   }
 
   /**

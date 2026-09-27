@@ -1,3 +1,23 @@
+# THREE LAYERS, LOADED DELIBERATELY.
+#
+#   …-3d-carousel            shared: the base stylesheet and the whole script
+#   …-3d-carousel-ring       rules true only of the rotating drum
+#   …-3d-carousel-coverflow  rules true only of the fan
+#   …-3d-carousel-pb__NNN    the height breakpoint the editor chose
+#
+# The template attaches the shared library plus exactly ONE style library, so a
+# ring page never downloads fan rules and a coverflow never downloads the ring's
+# pointer-events rule — which is what used to make its visible cards unclickable.
+#
+# ⚠ WEIGHTS ARE LOAD-BEARING: base 201 < style 202 < breakpoint 203. The
+# breakpoint files carry the `--shN` short heights and must win over the base
+# `--hN` heights, so they stay last. They moved from 202 to 203 when the style
+# layer was added.
+#
+# The JavaScript is NOT split. Its two geometries share one closure — the cells,
+# the current index, autoplay, input handling and teardown are all common — so
+# separating them would duplicate most of the file or require a plugin seam for
+# no gain.
 paragraph-bundle-3d-carousel:
   css:
     theme:
@@ -8,27 +28,41 @@ paragraph-bundle-3d-carousel:
     - core/drupal
     - core/once
 
+paragraph-bundle-3d-carousel-ring:
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-ring.css: { weight: 202 }
+  dependencies:
+    - paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel
+
+paragraph-bundle-3d-carousel-coverflow:
+  css:
+    theme:
+      css/paragraph-bundle-3d-carousel-coverflow.css: { weight: 202 }
+  dependencies:
+    - paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel
+
 paragraph-bundle-3d-carousel-pb__576:
   css:
     theme:
-      css/paragraph-bundle-3d-carousel-pb-576.css: { weight: 202 }
+      css/paragraph-bundle-3d-carousel-pb-576.css: { weight: 203 }
 
 paragraph-bundle-3d-carousel-pb__768:
   css:
     theme:
-      css/paragraph-bundle-3d-carousel-pb-768.css: { weight: 202 }
+      css/paragraph-bundle-3d-carousel-pb-768.css: { weight: 203 }
 
 paragraph-bundle-3d-carousel-pb__992:
   css:
     theme:
-      css/paragraph-bundle-3d-carousel-pb-992.css: { weight: 202 }
+      css/paragraph-bundle-3d-carousel-pb-992.css: { weight: 203 }
 
 paragraph-bundle-3d-carousel-pb__1200:
   css:
     theme:
-      css/paragraph-bundle-3d-carousel-pb-1200.css: { weight: 202 }
+      css/paragraph-bundle-3d-carousel-pb-1200.css: { weight: 203 }
 
 paragraph-bundle-3d-carousel-pb__1400:
   css:
     theme:
-      css/paragraph-bundle-3d-carousel-pb-1400.css: { weight: 202 }
+      css/paragraph-bundle-3d-carousel-pb-1400.css: { weight: 203 }

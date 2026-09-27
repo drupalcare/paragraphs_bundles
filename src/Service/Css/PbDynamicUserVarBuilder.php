@@ -611,7 +611,18 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
    *   Escaped URL.
    */
   private function escapeUrl(string $url): string {
-    return str_replace("'", "\\'", $url);
+    // ⚠ BACKSLASH FIRST, OR THE ESCAPES ESCAPE EACH OTHER. Escaping only the
+    // quote left a URL ending in a backslash emitting `url('foo\')`, where
+    // that trailing backslash escapes the closing quote and the value runs on
+    // into the rest of the declaration.
+    //
+    // Reachability is low — Drupal sanitises uploaded filenames, and this is
+    // fed by an entity reference rather than free text — and the blast radius
+    // was already capped, because ::sanitizeCssValue() strips `;`, `{` and `}`
+    // afterwards: one rule block could be corrupted, no new one opened. Fixed
+    // anyway; a capped hole is still a hole.
+    // Found by independent review, 2026-09-25.
+    return str_replace(['\\', "'"], ['\\\\', "\\'"], $url);
   }
 
   /**
@@ -627,7 +638,43 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
    */
   private function withUnit(string $value, string $unit): string {
     $value = trim($value);
-    return $value === '' ? '' : $value . $unit;
+    if ($value === '') {
+      return '';
+    }
+
+    // The ordinary case, and what every integer and decimal storage yields.
+    if (is_numeric($value)) {
+      return $value . $unit;
+    }
+
+    // ⚠ THE UNIT TYPED BY HAND, WHICH THE UI ASKS FOR. The Perspective
+    // field's own description says "modify this value in pixels", so an
+    // editor reasonably types `1600px` — and without this branch the line
+    // above appended a second unit and emitted `perspective: 1600pxpx`,
+    // which the browser drops silently. The number is re-emitted with a
+    // single unit rather than passed through, so spacing cannot vary.
+    if (preg_match('/^(-?\d+(?:\.\d+)?)\s*' . preg_quote($unit, '/') . '$/i', $value, $matches) === 1) {
+      return $matches[1] . $unit;
+    }
+
+    // 🚨 EVERYTHING ELSE IS NOT A LENGTH, AND IS DROPPED. This is the shape
+    // check for lengths that `isSafeColorValue()` has always been for
+    // colours, and it exists for the same stated reason: a widget's
+    // `#element_validate` only runs for form submissions, while config
+    // import, migration, REST/JSON:API and direct API writes all bypass it.
+    //
+    // Measured on sts.local 2026-09-24: paragraphs 335 and 416 held the
+    // literal text `PB fixture pb_display_3d_car_perspective` in a `string`
+    // field, and it reached a served stylesheet as
+    // `perspective: PB fixture pb_display_3d_car_perspectivepx;`. Browsers
+    // discard the declaration — verified in a real CSS engine, where it
+    // parses to an empty rule — so nothing rendered wrong and nothing could
+    // escape the block. Emitting it at all was still wrong.
+    //
+    // Negative numbers are deliberately still allowed: `--pb-col-sticky-top`
+    // is a legitimate negative offset. Strictly-positive fields use
+    // ::withUnitGtZero() instead.
+    return '';
   }
 
   /**

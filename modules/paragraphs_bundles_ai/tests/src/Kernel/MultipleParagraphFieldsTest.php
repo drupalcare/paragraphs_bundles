@@ -250,6 +250,7 @@ final class MultipleParagraphFieldsTest extends KernelTestBase {
 
       $display->setComponent($name, [
         'type' => 'entity_reference_revisions_entity_view',
+        'label' => 'hidden',
         'settings' => ['view_mode' => 'default'],
       ]);
     }

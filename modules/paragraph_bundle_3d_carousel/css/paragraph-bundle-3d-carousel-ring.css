@@ -1,0 +1,65 @@
+/**
+ * @file
+ * Paragraphs Bundle 3D Carousel — the ROTATING RING geometry only.
+ *
+ * Loaded only when the Carousel style field is "ring". A coverflow never
+ * downloads it, which is the point: these rules are TRUE OF THE RING AND
+ * FALSE OF A FAN, and they used to live in the base stylesheet where they
+ * applied to both and had to be overridden.
+ *
+ * 🚨 THE BUG THIS SPLIT EXISTS TO PREVENT. The pointer-events pair below is
+ * correct for a drum, where exactly one slide faces the viewer and the rest
+ * are edge-on: killing clicks on them stops a user hitting an invisible link.
+ * In a coverflow the flanking cards are deliberately visible, so the same rule
+ * made visible cards silently unclickable — found in review, not in testing.
+ * The fix at the time was another rule of higher specificity undoing this one.
+ * Two rules fighting is how it was missed once and would be missed again.
+ *
+ * Filename:     paragraph-bundle-3d-carousel-ring.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+/* ==========================================================================
+   Ring rotation
+   ========================================================================== */
+
+/* The ring ITSELF is what moves in this geometry: the cells are fixed to the
+   drum and the drum turns. A coverflow never transforms the ring — the script
+   clears it — so this transition belongs here and nowhere else. */
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring {
+  transition: transform 1s;
+}
+
+/* ==========================================================================
+   Interaction states
+   ========================================================================== */
+
+/* Only the slide facing the viewer is readable, so nothing else accepts a
+   pointer. Without this, a user can click a link on a slide that is edge-on
+   and effectively invisible. */
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide:hover * {
+  cursor: default;
+  pointer-events: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__slide.pb-is-active:hover a {
+  cursor: pointer;
+  pointer-events: initial;
+}
+
+/* ==========================================================================
+   Arrow hiding at the ends
+   ========================================================================== */
+
+/* The ring ping-pongs, so it HAS ends: at the first slide there is nothing
+   before it and at the last nothing after, and the arrow is hidden to say so.
+   A coverflow wraps and never runs out, which is why these rules live here and
+   not in the base — a fan must never hide a control that still does something. */
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-hidden,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-hidden {
+  visibility: hidden;
+  transform: translateX(-20px);
+  pointer-events: none;
+  opacity: 0;
+}

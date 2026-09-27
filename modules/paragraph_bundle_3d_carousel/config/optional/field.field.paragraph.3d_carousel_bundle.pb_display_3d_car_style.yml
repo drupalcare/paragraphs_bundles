@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3d_car_style
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+  module:
+    - options
+id: paragraph.3d_carousel_bundle.pb_display_3d_car_style
+field_name: pb_display_3d_car_style
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: 'Carousel style'
+description: 'How the slides are arranged in 3D. Rotating ring spins a drum and shows one slide at a time. Coverflow fans the cards across an arc with the current one in the middle, so several are visible at once.'
+required: false
+translatable: false
+default_value:
+  -
+    value: ring
+default_value_callback: ''
+settings: {  }
+field_type: list_string

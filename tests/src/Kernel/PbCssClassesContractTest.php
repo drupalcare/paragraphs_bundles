@@ -340,6 +340,13 @@ final class PbCssClassesContractTest extends KernelTestBase {
       if (str_ends_with($bundle, '_section_bundle')) {
         continue;
       }
+      // paragraphs_bundles_ai's plain-image fallback holds ONE image field and
+      // nothing else, by the maintainer's design (2026-09-17): no title, no
+      // display fields. It is inserted into other bundles' image slots, so it
+      // is styled through its parent like a section child.
+      if ($bundle === 'ai_image_bundle') {
+        continue;
+      }
       $found[$bundle] = Yaml::decode((string) file_get_contents($file->getPathname())) ?? [];
     }
     ksort($found);
