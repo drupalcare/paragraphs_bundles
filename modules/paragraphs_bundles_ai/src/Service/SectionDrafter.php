@@ -11,6 +11,7 @@ use Drupal\ai\Dto\StructuredOutputSchema;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
+use Drupal\paragraphs_bundles_ai\Model\ChildSlot;
 use Drupal\paragraphs_bundles_ai\Model\DraftedSection;
 
 /**
@@ -51,11 +52,14 @@ final class SectionDrafter implements SectionDrafterInterface {
    * @param \Drupal\Component\Plugin\PluginManagerInterface $providerManager
    *   Builds the provider. Typed through the core interface because drupal/ai
    *   is absent whenever this project is built from its own composer.json.
+   * @param \Drupal\paragraphs_bundles_ai\Service\ChildSlotsInterface $slots
+   *   Says what goes inside a section, slot by slot.
    */
   public function __construct(
     private readonly BundleProfilerInterface $profiler,
     private readonly ConfigFactoryInterface $configFactory,
     private readonly PluginManagerInterface $providerManager,
+    private readonly ChildSlotsInterface $slots,
   ) {}
 
   /**
@@ -84,18 +88,19 @@ final class SectionDrafter implements SectionDrafterInterface {
       ]);
     }
 
-    $childBundle = $children > 0 ? $profile->soleChildBundle() : NULL;
+    $plan = $this->plan($profile, $children);
 
     // ASKED FOR CHILDREN THAT CANNOT BE WRITTEN — say so, rather than build
     // the section without them and report success. Measured 2026-09-17: this
     // was silent on 12 of the 18 nesting bundles PB ships, so "Two columns,
     // how many: 3" produced an empty section, badged New, with notes that
-    // never mentioned the three missing cards.
-    if ($children > 0 && $childBundle === NULL) {
+    // never mentioned the three missing cards. Since 2026-09-27 the briefs'
+    // nesting list answers most of those; this is what is left.
+    if ($children > 0 && $plan === []) {
       return DraftedSection::refused([$this->whyNoChildren($profile)]);
     }
 
-    $schema = $this->schemaFor($profile, $childBundle, $children);
+    $schema = $this->schemaFor($profile, $plan);
 
     if ($schema === []) {
       return DraftedSection::refused([
@@ -104,7 +109,7 @@ final class SectionDrafter implements SectionDrafterInterface {
     }
 
     $input = new ChatInput([new ChatMessage('user', $words)]);
-    $input->setSystemPrompt($this->systemPrompt($profile, $childBundle, $children));
+    $input->setSystemPrompt($this->systemPrompt($profile, $plan));
     $input->setChatStructuredJsonSchema(new StructuredOutputSchema(
       name: 'pb_section',
       description: sprintf('Content for one %s section.', $profile->label),
@@ -120,7 +125,7 @@ final class SectionDrafter implements SectionDrafterInterface {
 
     return DraftedSection::of(
       $this->pickValues($profile, $answer),
-      $this->pickChildren($answer, $childBundle),
+      $this->pickChildren($answer, $plan),
       $modelId,
     );
   }
@@ -286,40 +291,119 @@ final class SectionDrafter implements SectionDrafterInterface {
   }
 
   /**
-   * Builds the JSON schema for a bundle's fillable fields.
+   * How many sections go in which slot.
+   *
+   * ONE SLOT: "How many" is the count, and 0 means none were asked for.
+   * SEVERAL SLOTS — two columns, a flip box's two faces, a modal's body and
+   * footer: one in each, whatever the count says. A count cannot say which
+   * column, and a column left empty still takes its width.
+   *
+   * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
+   *   The parent.
+   * @param int $children
+   *   The count the person gave.
+   *
+   * @return array<string, array{slot: \Drupal\paragraphs_bundles_ai\Model\ChildSlot, count: int}>
+   *   Field machine name => the slot and how many to write in it.
+   */
+  private function plan(BundleProfile $profile, int $children): array {
+    $slots = $this->slots->slotsFor($profile->bundle);
+
+    if (count($slots) === 1) {
+      return $children > 0 ? [$slots[0]->field => ['slot' => $slots[0], 'count' => $children]] : [];
+    }
+
+    $plan = [];
+
+    foreach ($slots as $slot) {
+      $plan[$slot->field] = ['slot' => $slot, 'count' => 1];
+    }
+
+    return $plan;
+  }
+
+  /**
+   * Builds the JSON schema for a bundle's fillable fields and its children.
    *
    * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
    *   The bundle.
-   * @param string|null $childBundle
-   *   The child bundle to draft too, or NULL.
-   * @param int $children
-   *   How many children to ask for.
+   * @param array<string, array{slot: \Drupal\paragraphs_bundles_ai\Model\ChildSlot, count: int}> $plan
+   *   What goes in which slot.
    *
    * @return array<string, mixed>
-   *   A JSON schema, or an empty array when the bundle holds no text.
+   *   A JSON schema, or an empty array when there is nothing to write.
    */
-  private function schemaFor(BundleProfile $profile, ?string $childBundle, int $children): array {
+  private function schemaFor(BundleProfile $profile, array $plan): array {
     $properties = $this->propertiesFor($profile);
+    $slotProperties = [];
 
-    if ($properties === [] && $childBundle === NULL) {
-      return [];
+    foreach ($plan as $field => $entry) {
+      $slotProperties[$field] = [
+        'type' => 'array',
+        'description' => sprintf('Exactly %d section(s) for "%s", in order.', $entry['count'], $field),
+        'maxItems' => $entry['count'],
+        'items' => $this->itemSchema($entry['slot'], TRUE),
+      ];
     }
 
-    if ($childBundle !== NULL && $children > 0) {
-      $childProfile = $this->profiler->profile($childBundle);
-      $childProperties = $childProfile === NULL ? [] : $this->propertiesFor($childProfile);
+    if ($slotProperties !== []) {
+      $properties['children'] = ['type' => 'object', 'properties' => $slotProperties];
+    }
 
-      if ($childProperties !== []) {
-        $properties['children'] = [
+    return $properties === [] ? [] : ['type' => 'object', 'properties' => $properties];
+  }
+
+  /**
+   * The schema for one section inside a slot.
+   *
+   * THE FIELDS OF EVERY ALLOWED BUNDLE, SIDE BY SIDE. JSON schema cannot say
+   * "these fields when bundle is X" in a way every provider honours, so the
+   * model gets them all and pickChild() keeps only the chosen bundle's.
+   *
+   * @param \Drupal\paragraphs_bundles_ai\Model\ChildSlot $slot
+   *   The slot.
+   * @param bool $withInner
+   *   Whether this section's own slots are asked for too. TRUE only one level
+   *   down: a slide holds a Simple, and the Simple holds nothing.
+   *
+   * @return array<string, mixed>
+   *   A JSON schema object.
+   */
+  private function itemSchema(ChildSlot $slot, bool $withInner): array {
+    $properties = [
+      'bundle' => [
+        'type' => 'string',
+        'enum' => $slot->bundles,
+        'description' => sprintf('Which section this is. Use "%s" unless the person asked for one of the others.', $slot->default()),
+      ],
+    ];
+    $inner = [];
+
+    foreach ($slot->bundles as $bundle) {
+      $profile = $this->profiler->profile($bundle);
+
+      if ($profile === NULL) {
+        continue;
+      }
+
+      $properties += $this->propertiesFor($profile);
+
+      if (!$withInner) {
+        continue;
+      }
+
+      foreach ($this->slots->slotsFor($bundle) as $innerSlot) {
+        $inner[$innerSlot->field] ??= [
           'type' => 'array',
-          'description' => sprintf('Exactly %d child section(s), in order.', $children),
-          'maxItems' => $children,
-          'items' => [
-            'type' => 'object',
-            'properties' => $childProperties,
-          ],
+          'description' => sprintf('Exactly 1 section for "%s".', $innerSlot->field),
+          'maxItems' => 1,
+          'items' => $this->itemSchema($innerSlot, FALSE),
         ];
       }
+    }
+
+    if ($inner !== []) {
+      $properties['children'] = ['type' => 'object', 'properties' => $inner];
     }
 
     return ['type' => 'object', 'properties' => $properties];
@@ -375,15 +459,13 @@ final class SectionDrafter implements SectionDrafterInterface {
    *
    * @param \Drupal\paragraphs_bundles_ai\Model\BundleProfile $profile
    *   The bundle.
-   * @param string|null $childBundle
-   *   The child bundle, when children are wanted.
-   * @param int $children
-   *   How many children.
+   * @param array<string, array{slot: \Drupal\paragraphs_bundles_ai\Model\ChildSlot, count: int}> $plan
+   *   What goes in which slot.
    *
    * @return string
    *   The prompt.
    */
-  private function systemPrompt(BundleProfile $profile, ?string $childBundle, int $children): string {
+  private function systemPrompt(BundleProfile $profile, array $plan): string {
     $lines = [
       sprintf('You are writing the content of one "%s" section on a Drupal site.', $profile->label),
     ];
@@ -400,25 +482,67 @@ final class SectionDrafter implements SectionDrafterInterface {
     $lines[] = 'Write plain text. No HTML, no Markdown, no quotation marks around the whole value.';
     $lines[] = 'Keep to any character limit in the schema: the field will not hold more.';
 
-    if ($childBundle !== NULL && $children > 0) {
-      $childProfile = $this->profiler->profile($childBundle);
-      $childLabel = $childProfile === NULL ? $childBundle : $childProfile->label;
+    if ($plan !== []) {
+      $lines[] = 'Also write the sections that go inside it, in "children", keyed by the field each group belongs in. Put the kind of each section in its "bundle".';
+      $described = [];
 
-      $lines[] = sprintf(
-        'Also write %d "%s" child section(s) in "children", in the order they should appear.',
-        $children,
-        $childLabel,
-      );
+      foreach ($plan as $field => $entry) {
+        $slot = $entry['slot'];
+        $lines[] = sprintf(
+          '- "%s": %d section(s). Use %s unless the person asks for %s.',
+          $field,
+          $entry['count'],
+          $this->named($slot->default()),
+          count($slot->bundles) > 1
+            ? implode(' or ', array_map($this->named(...), array_slice($slot->bundles, 1)))
+            : 'nothing else',
+        );
 
-      // And what a child IS, for the same reason as the parent.
-      if ($childProfile !== NULL && $childProfile->description !== '') {
-        $lines[] = sprintf('Each "%s" is: %s', $childLabel, $childProfile->description);
+        foreach ($slot->bundles as $bundle) {
+          foreach ($this->slots->slotsFor($bundle) as $innerSlot) {
+            $lines[] = sprintf(
+              '  Each %s also holds 1 section in its own "children"."%s": %s by default%s.',
+              $this->named($bundle),
+              $innerSlot->field,
+              $this->named($innerSlot->default()),
+              count($innerSlot->bundles) > 1
+                ? ', or ' . implode(' or ', array_map($this->named(...), array_slice($innerSlot->bundles, 1))) . ' if asked'
+                : '',
+            );
+          }
+
+          $described[$bundle] = TRUE;
+        }
       }
 
-      $lines[] = 'Write real content for each child, not a description of what the section looks like.';
+      // What each kind IS, for the same reason as the parent.
+      foreach (array_keys($described) as $bundle) {
+        $childProfile = $this->profiler->profile((string) $bundle);
+
+        if ($childProfile !== NULL && $childProfile->description !== '') {
+          $lines[] = sprintf('A %s is: %s', $this->named((string) $bundle), $childProfile->description);
+        }
+      }
+
+      $lines[] = 'Write real content for each section, not a description of what the section looks like.';
     }
 
     return implode("\n", $lines);
+  }
+
+  /**
+   * A bundle as the model sees it: machine name, then label.
+   *
+   * @param string $bundle
+   *   Paragraph bundle machine name.
+   *
+   * @return string
+   *   For example `"simple_bundle" (Simple)`.
+   */
+  private function named(string $bundle): string {
+    $profile = $this->profiler->profile($bundle);
+
+    return $profile === NULL ? sprintf('"%s"', $bundle) : sprintf('"%s" (%s)', $bundle, $profile->label);
   }
 
   /**
@@ -459,42 +583,107 @@ final class SectionDrafter implements SectionDrafterInterface {
   }
 
   /**
-   * The child sections in the answer, as the composer expects them.
+   * The child sections in the answer, keyed by slot, as the composer takes them.
    *
    * @param array<string, mixed> $decoded
    *   The model's answer.
-   * @param string|null $childBundle
-   *   The bundle every child must be.
+   * @param array<string, array{slot: \Drupal\paragraphs_bundles_ai\Model\ChildSlot, count: int}> $plan
+   *   What was asked for, slot by slot.
    *
-   * @return list<array<string, mixed>>
-   *   Children for the composer.
+   * @return array<string, list<array<string, mixed>>>
+   *   Field machine name => children for the composer.
    */
-  private function pickChildren(array $decoded, ?string $childBundle): array {
-    if ($childBundle === NULL || !isset($decoded['children']) || !is_array($decoded['children'])) {
+  private function pickChildren(array $decoded, array $plan): array {
+    $raw = $decoded['children'] ?? NULL;
+
+    if ($plan === [] || !is_array($raw)) {
       return [];
+    }
+
+    // A bare list for a section with one slot: the model skipped the key, and
+    // there is only one place it can have meant.
+    if (array_is_list($raw) && count($plan) === 1) {
+      $raw = [(string) array_key_first($plan) => $raw];
     }
 
     $out = [];
 
-    foreach ($decoded['children'] as $child) {
-      if (!is_array($child)) {
+    foreach ($plan as $field => $entry) {
+      $list = $raw[$field] ?? NULL;
+
+      if (!is_array($list)) {
         continue;
       }
 
-      $values = [];
+      // Never more than was asked for: a model that writes seven slides when
+      // the person said five has not been given the page.
+      foreach (array_slice(array_values($list), 0, $entry['count']) as $item) {
+        $child = $this->pickChild($item, $entry['slot'], TRUE);
 
-      foreach ($child as $name => $value) {
-        if (is_scalar($value) && trim((string) $value) !== '') {
-          $values[(string) $name] = trim((string) $value);
+        if ($child !== NULL) {
+          $out[$field][] = $child;
         }
       }
-
-      // The bundle is ours, not the model's: it is the only bundle this
-      // parent's child field accepts.
-      $out[] = ['bundle' => $childBundle, 'values' => $values];
     }
 
     return $out;
+  }
+
+  /**
+   * One child from the answer, held to its slot.
+   *
+   * THE BUNDLE IS CHECKED, NOT TRUSTED. One outside the slot's list becomes
+   * the slot's default rather than a refusal: the person still gets the
+   * section, in the kind this site said belongs there.
+   *
+   * @param mixed $item
+   *   One element of the model's list.
+   * @param \Drupal\paragraphs_bundles_ai\Model\ChildSlot $slot
+   *   The slot it goes in.
+   * @param bool $withInner
+   *   Whether its own children are kept. One level only.
+   *
+   * @return array<string, mixed>|null
+   *   ['bundle' => string, 'values' => array, 'children' => array?], or NULL.
+   */
+  private function pickChild(mixed $item, ChildSlot $slot, bool $withInner): ?array {
+    if (!is_array($item)) {
+      return NULL;
+    }
+
+    $bundle = is_string($item['bundle'] ?? NULL) && $slot->allows($item['bundle'])
+      ? $item['bundle']
+      : $slot->default();
+    $profile = $this->profiler->profile($bundle);
+
+    if ($profile === NULL) {
+      return NULL;
+    }
+
+    $child = ['bundle' => $bundle, 'values' => $this->pickValues($profile, $item)];
+    $innerRaw = $item['children'] ?? NULL;
+
+    if (!$withInner || !is_array($innerRaw)) {
+      return $child;
+    }
+
+    foreach ($this->slots->slotsFor($bundle) as $innerSlot) {
+      $list = $innerRaw[$innerSlot->field] ?? NULL;
+
+      if (!is_array($list)) {
+        continue;
+      }
+
+      foreach (array_slice(array_values($list), 0, 1) as $innerItem) {
+        $grandchild = $this->pickChild($innerItem, $innerSlot, FALSE);
+
+        if ($grandchild !== NULL) {
+          $child['children'][$innerSlot->field][] = $grandchild;
+        }
+      }
+    }
+
+    return $child;
   }
 
 }

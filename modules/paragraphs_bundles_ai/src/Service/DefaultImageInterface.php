@@ -41,31 +41,40 @@ interface DefaultImageInterface {
    * @param \Drupal\paragraphs_bundles_ai\Model\FieldFact $fact
    *   The field to fill. Both shapes PB uses are handled: a plain `image`
    *   field, and an `entity_reference` to a media item.
+   * @param array{0: int, 1: int}|null $shape
+   *   The size the field is shown at, from PictureShapes. The placeholder is
+   *   drawn at that size with the size written on it, so the person can see
+   *   what to replace it with. NULL means any shape: the shipped picture.
    *
    * @return array<string, mixed>|null
    *   The field value, or NULL when no picture could be supplied — a site
    *   without Media for a media field, or any failure to write the file.
    */
-  public function valueFor(FieldFact $fact): ?array;
+  public function valueFor(FieldFact $fact, ?array $shape = NULL): ?array;
 
   /**
-   * The managed file for the shipped picture, creating it on first use.
+   * The managed file for a placeholder, creating it on first use.
+   *
+   * @param array{0: int, 1: int}|null $shape
+   *   Width and height to draw it at, or NULL for the shipped picture.
    *
    * @return int|null
    *   The file entity id, or NULL when the file could not be written.
    */
-  public function fileId(): ?int;
+  public function fileId(?array $shape = NULL): ?int;
 
   /**
    * A media item of one type holding the shipped picture.
    *
    * @param string $mediaBundle
    *   The media type the field accepts, such as `pb_media_image`.
+   * @param array{0: int, 1: int}|null $shape
+   *   Width and height to draw it at, or NULL for the shipped picture.
    *
    * @return int|null
    *   The media entity id, or NULL when Media is not installed, the type does
    *   not exist, or its source field could not be determined.
    */
-  public function mediaId(string $mediaBundle): ?int;
+  public function mediaId(string $mediaBundle, ?array $shape = NULL): ?int;
 
 }

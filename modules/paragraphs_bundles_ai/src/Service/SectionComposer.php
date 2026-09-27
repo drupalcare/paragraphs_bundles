@@ -48,6 +48,9 @@ final class SectionComposer implements SectionComposerInterface {
    *   Gives a formatted field a format instead of leaving it NULL.
    * @param \Drupal\paragraphs_bundles_ai\Service\DefaultImageInterface $images
    *   Supplies a picture for a required image field, which no model can fill.
+   * @param \Drupal\paragraphs_bundles_ai\Service\PictureShapesInterface $shapes
+   *   Says what size each picture field is shown at, so the placeholder and
+   *   the note can say what to replace it with.
    */
   public function __construct(
     private readonly BundleProfilerInterface $profiler,
@@ -55,6 +58,7 @@ final class SectionComposer implements SectionComposerInterface {
     private readonly SectionWriterInterface $writer,
     private readonly TextFormatsInterface $formats,
     private readonly DefaultImageInterface $images,
+    private readonly PictureShapesInterface $shapes,
   ) {}
 
   /**
@@ -131,6 +135,29 @@ final class SectionComposer implements SectionComposerInterface {
         foreach ($filled as $name => $label) {
           $pictures[$name] = $label;
         }
+
+        // A slide's Image or Hero is where most pictures actually are.
+        // Guarded rather than `?? []`: this loop writes back by reference, and
+        // a reference into a temporary array would drop every picture it set.
+        if (!isset($plan['children'])) {
+          continue;
+        }
+
+        foreach ($plan['children'] as &$innerPlans) {
+          foreach ($innerPlans as &$innerPlan) {
+            $innerProfile = $innerPlan['bundle'] === '' ? NULL : $this->profiler->profile($innerPlan['bundle']);
+
+            if ($innerProfile === NULL) {
+              continue;
+            }
+
+            foreach ($this->fillPictures($innerProfile, $innerPlan['values']) as $name => $label) {
+              $pictures[$name] = $label;
+            }
+          }
+        }
+
+        unset($innerPlans, $innerPlan);
       }
     }
 
@@ -184,6 +211,12 @@ final class SectionComposer implements SectionComposerInterface {
 
     foreach ($plansBySlot as $plans) {
       $childCount += count($plans);
+
+      foreach ($plans as $plan) {
+        foreach ($plan['children'] ?? [] as $innerPlans) {
+          $childCount += count($innerPlans);
+        }
+      }
     }
 
     if ($childCount > 0) {
@@ -200,11 +233,8 @@ final class SectionComposer implements SectionComposerInterface {
     // only success would leave somebody looking at an empty space wondering
     // what went wrong. Saying it here costs one sentence and saves that.
     if ($pictures !== []) {
-      $notes[] = $this->t('No picture can be written, so the placeholder that ships with this module was put in @fields. Open the section and replace it with your own.', [
-        '@fields' => implode(' and ', array_map(
-          static fn(string $label): string => '"' . $label . '"',
-          array_values($pictures),
-        )),
+      $notes[] = $this->t('No picture can be written, so a placeholder was put in @fields, drawn at the size each one is shown. Open the section and replace each with your own picture, at least that size.', [
+        '@fields' => implode(', ', array_unique(array_values($pictures))),
       ]);
     }
 
@@ -262,7 +292,8 @@ final class SectionComposer implements SectionComposerInterface {
    *   Checked values, added to in place.
    *
    * @return array<string, string>
-   *   Field machine name => label, for each field that received a picture.
+   *   Field machine name => label and size, for each field that received a
+   *   picture: `"Image" (1700 x 600)`, or `"Image" (any size)`.
    */
   private function fillPictures(BundleProfile $profile, array &$values): array {
     $filled = [];
@@ -272,7 +303,8 @@ final class SectionComposer implements SectionComposerInterface {
         continue;
       }
 
-      $value = $this->images->valueFor($fact);
+      $shape = $this->shapes->shapeFor($profile->bundle, $name);
+      $value = $this->images->valueFor($fact, $shape);
 
       // NULL is a real answer: no Media module, no image media type, or the
       // file could not be written. The section is still created, and the
@@ -282,7 +314,13 @@ final class SectionComposer implements SectionComposerInterface {
       }
 
       $values[$name] = $value;
-      $filled[$name] = $fact->label;
+      $filled[$name] = $shape === NULL
+        ? (string) $this->t('"@label" (any size)', ['@label' => $fact->label])
+        : (string) $this->t('"@label" (@width x @height)', [
+          '@label' => $fact->label,
+          '@width' => $shape[0],
+          '@height' => $shape[1],
+        ]);
     }
 
     return $filled;
@@ -473,8 +511,11 @@ final class SectionComposer implements SectionComposerInterface {
    *   Refusals, appended to.
    * @param list<string|\Stringable> $notes
    *   Notes, appended to.
+   * @param bool $allowInner
+   *   Whether a child may carry sections of its own. TRUE for the parent's
+   *   children, FALSE one level down.
    *
-   * @return array<string, list<array{bundle: string, values: array<string, mixed>}>>
+   * @return array<string, list<array{bundle: string, values: array<string, mixed>, children?: array<string, list<array{bundle: string, values: array<string, mixed>}>>}>>
    *   Field machine name => the checked children for that field.
    */
   private function planSlots(
@@ -483,6 +524,7 @@ final class SectionComposer implements SectionComposerInterface {
     ?string $childField,
     array &$problems,
     array &$notes,
+    bool $allowInner = TRUE,
   ): array {
     if ($children === []) {
       return [];
@@ -508,7 +550,7 @@ final class SectionComposer implements SectionComposerInterface {
           continue;
         }
 
-        $plans[] = $this->planChild($profile, $target, $child, $index, $problems, $notes);
+        $plans[] = $this->planChild($profile, $target, $child, $index, $problems, $notes, $allowInner);
       }
 
       return [$target => $plans];
@@ -539,7 +581,7 @@ final class SectionComposer implements SectionComposerInterface {
 
         // Numbered across every slot, so "Child 3" is the third one asked for
         // rather than the third in whichever column it happened to land in.
-        $out[$slot][] = $this->planChild($profile, $slot, $child, $position, $problems, $notes);
+        $out[$slot][] = $this->planChild($profile, $slot, $child, $position, $problems, $notes, $allowInner);
         $position++;
       }
     }
@@ -562,8 +604,10 @@ final class SectionComposer implements SectionComposerInterface {
    *   Refusals, appended to.
    * @param list<string|\Stringable> $notes
    *   Notes, appended to.
+   * @param bool $allowInner
+   *   Whether this child may carry sections of its own.
    *
-   * @return array{bundle: string, values: array<string, mixed>}
+   * @return array{bundle: string, values: array<string, mixed>, children?: array<string, list<array{bundle: string, values: array<string, mixed>}>>}
    *   What to create.
    */
   private function planChild(
@@ -573,6 +617,7 @@ final class SectionComposer implements SectionComposerInterface {
     int $index,
     array &$problems,
     array &$notes,
+    bool $allowInner = TRUE,
   ): array {
     $position = $index + 1;
     $bundle = isset($child['bundle']) && is_string($child['bundle']) ? trim($child['bundle']) : '';
@@ -623,7 +668,39 @@ final class SectionComposer implements SectionComposerInterface {
       ]);
     }
 
-    return ['bundle' => $bundle, 'values' => $checked];
+    $plan = ['bundle' => $bundle, 'values' => $checked];
+    $inner = isset($child['children']) && is_array($child['children']) ? $child['children'] : [];
+
+    if ($inner === []) {
+      return $plan;
+    }
+
+    // ONE LEVEL, and no further. A slide holds a Simple; a Simple inside a
+    // slide inside a slideshow holding more sections is the "one container
+    // deep" rule in PB-NESTING-GUIDE.md broken, so it is refused, not built.
+    if (!$allowInner) {
+      $problems[] = $this->t('Child @position holds sections of its own, but it is already inside another section. Only one level inside a section is built.', [
+        '@position' => $position,
+      ]);
+
+      return $plan;
+    }
+
+    $innerProblems = [];
+    $bySlot = $this->planSlots($profile, $inner, NULL, $innerProblems, $notes, FALSE);
+
+    foreach ($innerProblems as $problem) {
+      $problems[] = $this->t('Child @position: @problem', [
+        '@position' => $position,
+        '@problem' => $problem,
+      ]);
+    }
+
+    if ($bySlot !== []) {
+      $plan['children'] = $bySlot;
+    }
+
+    return $plan;
   }
 
   /**
@@ -635,9 +712,9 @@ final class SectionComposer implements SectionComposerInterface {
    *   Parent bundle.
    * @param array<string, mixed> $values
    *   Checked parent values.
-   * @param array<string, list<array{bundle: string, values: array<string, mixed>}>> $bySlot
-   *   Checked children, keyed by the field each group belongs in. Empty when
-   *   the section holds nothing.
+   * @param array<string, list<array{bundle: string, values: array<string, mixed>, children?: array<string, list<array{bundle: string, values: array<string, mixed>}>>}>> $bySlot
+   *   Checked children, keyed by the field each group belongs in, each with
+   *   its own children one level down. Empty when the section holds nothing.
    *
    * @return array{target_id: int|string|null, target_revision_id: int|string|null}
    *   The reference value for the host field.
@@ -658,6 +735,28 @@ final class SectionComposer implements SectionComposerInterface {
         }
 
         $paragraph = $this->make($child['bundle'], $child['values']);
+
+        foreach ($child['children'] ?? [] as $innerSlot => $innerChildren) {
+          $innerItems = [];
+
+          foreach ($innerChildren as $innerChild) {
+            if ($innerChild['bundle'] === '') {
+              continue;
+            }
+
+            $innerParagraph = $this->make($innerChild['bundle'], $innerChild['values']);
+            $innerParagraph->save();
+            $innerItems[] = [
+              'target_id' => $innerParagraph->id(),
+              'target_revision_id' => $innerParagraph->getRevisionId(),
+            ];
+          }
+
+          if ($innerItems !== []) {
+            $paragraph->set($innerSlot, $innerItems);
+          }
+        }
+
         $paragraph->save();
         $items[] = [
           'target_id' => $paragraph->id(),

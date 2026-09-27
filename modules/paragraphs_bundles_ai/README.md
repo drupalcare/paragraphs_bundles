@@ -16,9 +16,9 @@ remembered in your browser.
    installed. A slideshow, a tabs section and a card section are all in it;
    the individual slides, tab panels and card panels are not, because those
    belong inside a section rather than on a page.
-2. **Say how many go inside it** — this only appears for sections whose
-   children can actually be written. See *Children* below; it is fewer than the
-   sections that hold children.
+2. **Say how many go inside it** — this appears for sections with ONE place
+   for children: slides, rows, tabs, carousel items. Sections with several
+   places — columns, a flip box's two faces — get one in each. See *Children*.
 3. **Say what it should say** — *"our autumn range, warm and short"*.
 4. **Pick a style**, if you want one.
 5. **Choose where it goes**, if the content type has more than one paragraph
@@ -65,14 +65,26 @@ repeated in the hint; they have their own notice beside the dropdown.
 
 ### Children
 
-A section's children are written only when the section names exactly **one**
-kind of child. Measured on a stock install: **18** sections hold children, and
-**6** of those qualify — accordion, image grid, link, parallax, slideshow, tabs.
+Since 2026-09-27 the assistant writes what goes INSIDE a section, not just its
+heading. Before that, a slideshow came back with slide titles and nothing in the
+slides, and two columns, a carousel or a grid came back with a heading and
+nothing else.
 
-For the rest the assistant says why rather than creating an empty parent: a
-two-column section has a left and a right, so "put three cards in it" has not
-said where; and a field that accepts *any* section means the site never said
-what belongs inside one.
+**What goes in each place comes from two sources, in this order:**
+
+1. The field itself, when it names one kind — a slideshow's slides, a lightbox's
+   pictures, a card column's card image or card text.
+2. The `nesting:` list in `config/install/paragraphs_bundles_ai.briefs.yml`, for
+   a place that accepts any section. Its FIRST entry is used unless the prompt
+   asks for another from the same list — *"each slide holds a Hero"*. Nothing
+   outside the list is ever built.
+
+A place that accepts anything and has no `nesting:` entry is left empty, and the
+assistant says why rather than guessing.
+
+**How many.** One place: the "How many" box. Several places: one in each.
+**How deep.** One level inside: a slide holds a Simple, and that Simple holds
+nothing. A deeper request is refused, not built.
 
 ### Pictures are supplied, not invented
 
@@ -88,14 +100,31 @@ An **optional** picture field is left alone — a stand-in nobody asked for is
 litter.
 
 It is copied into your files once and reused, so a page of twelve sections adds
-**one** picture to your media library, not twelve. Where the Media module is
-installed it becomes a media item of the type that field accepts; where it is
-not, `ai_image_bundle` covers the same ground with a plain image field.
+**one** picture to your media library, not twelve. It becomes a media item of the
+type that field accepts. (Paragraphs Bundles requires the Media module, so every
+PB picture field is a media field; `ai_image_bundle` is a plain image field for
+sections you build yourself without media.)
+
+**The placeholder shows the size to replace it with.** Since 2026-09-27 a slot
+whose image style crops to a fixed size gets a grey placeholder drawn at that
+size with the numbers on it — `1700 x 600` for a hero, `900 x 540` for a card
+image, `1700 x 1700` for a narrow image — and the note names each one. The size
+is READ from the field's view mode and image style, so a site that restyles gets
+its own numbers. A slot with no fixed crop gets the picture above.
 
 Measured on a stock install: **5** of the 33 sections offered needed only a
 picture — hero, image, image narrow, image overlay, image wide — and all five
 are now filled for you, along with **3** inner section bundles (card image,
 image grid, parallax).
+
+### Features are switched on, and named
+
+A new section is created with its features on — a slideshow's arrows, dots and
+timing, a carousel's looping — and the page then says which, and that each can be
+changed or turned off in the section's Display tab. Otherwise nobody learns what
+a section can do. The list is the `features:` block of each brief, written by a
+person; `FeaturesContractTest` fails if one names a field or value that does not
+exist. It never includes a colour.
 
 ### Sections that still need you to finish them
 

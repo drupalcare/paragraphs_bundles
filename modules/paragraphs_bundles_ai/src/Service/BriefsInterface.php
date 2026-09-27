@@ -118,4 +118,21 @@ interface BriefsInterface {
    */
   public function nestingFor(string $bundle): array;
 
+  /**
+   * The display features a section is created with, as written in the briefs.
+   *
+   * Maintainer, 2026-09-27: *"we must produce the slide show with feature
+   * enabled as a default ... if you dont show the user the capablities of
+   * each bundle they will never know."* The list is also what the person is
+   * told was switched on. Returned exactly as written; SectionFeatures holds
+   * each value to the real field before anything is saved.
+   *
+   * @param string $bundle
+   *   Paragraph bundle machine name.
+   *
+   * @return array<string, string>
+   *   Display field machine name => value, in the briefs' order.
+   */
+  public function featuresFor(string $bundle): array;
+
 }

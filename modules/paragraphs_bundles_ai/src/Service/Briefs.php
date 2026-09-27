@@ -120,6 +120,28 @@ final class Briefs implements BriefsInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function featuresFor(string $bundle): array {
+    $brief = $this->all()[trim($bundle)] ?? NULL;
+    $features = is_array($brief) ? ($brief['features'] ?? NULL) : NULL;
+
+    if (!is_array($features)) {
+      return [];
+    }
+
+    $out = [];
+
+    foreach ($features as $field => $value) {
+      if (is_scalar($value)) {
+        $out[(string) $field] = (string) $value;
+      }
+    }
+
+    return $out;
+  }
+
+  /**
    * Every brief, as config has them.
    *
    * @return array<string, mixed>

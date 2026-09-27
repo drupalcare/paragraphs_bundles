@@ -118,6 +118,15 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\DefaultImageInterface: '@paragraphs_bundles_ai.default_image'
 
+  # What size each picture field is shown at, read from its formatter, view
+  # mode and image style — never a hand-written list.
+  paragraphs_bundles_ai.picture_shapes:
+    class: Drupal\paragraphs_bundles_ai\Service\PictureShapes
+    arguments:
+      - '@entity_type.manager'
+
+  Drupal\paragraphs_bundles_ai\Service\PictureShapesInterface: '@paragraphs_bundles_ai.picture_shapes'
+
   # Creates a section WITH its content and its children. It writes nothing
   # itself: every value is checked against the real fields first, and then the
   # section writer attaches it, so the three rules about publishing, revisions
@@ -132,6 +141,7 @@ services:
       - '@paragraphs_bundles_ai.section_writer'
       - '@paragraphs_bundles_ai.text_formats'
       - '@paragraphs_bundles_ai.default_image'
+      - '@paragraphs_bundles_ai.picture_shapes'
 
   Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface: '@paragraphs_bundles_ai.section_composer'
 
@@ -159,6 +169,28 @@ services:
 
   Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface: '@paragraphs_bundles_ai.section_catalog'
 
+  # What goes inside a section, slot by slot: the field's own restriction, then
+  # the briefs' nesting list. Asked by the form ("How many") and the drafter.
+  paragraphs_bundles_ai.child_slots:
+    class: Drupal\paragraphs_bundles_ai\Service\ChildSlots
+    arguments:
+      - '@paragraphs_bundles_ai.bundle_profiler'
+      - '@paragraphs_bundles_ai.briefs'
+
+  Drupal\paragraphs_bundles_ai\Service\ChildSlotsInterface: '@paragraphs_bundles_ai.child_slots'
+
+  # The display features a new section is switched on with, from the briefs,
+  # held to the real fields; and the sentence that tells the person so.
+  paragraphs_bundles_ai.section_features:
+    class: Drupal\paragraphs_bundles_ai\Service\SectionFeatures
+    calls:
+      - [setStringTranslation, ['@string_translation']]
+    arguments:
+      - '@paragraphs_bundles_ai.briefs'
+      - '@entity_field.manager'
+
+  Drupal\paragraphs_bundles_ai\Service\SectionFeaturesInterface: '@paragraphs_bundles_ai.section_features'
+
   # Asks the model for the words, inside a JSON schema built from the bundle's
   # own fields. It never chooses a section or a page: both come from the person.
   paragraphs_bundles_ai.section_drafter:
@@ -169,6 +201,7 @@ services:
       - '@paragraphs_bundles_ai.bundle_profiler'
       - '@config.factory'
       - '@ai.provider'
+      - '@paragraphs_bundles_ai.child_slots'
 
   Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface: '@paragraphs_bundles_ai.section_drafter'
 

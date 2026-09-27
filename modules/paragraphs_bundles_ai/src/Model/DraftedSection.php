@@ -21,8 +21,9 @@ final readonly class DraftedSection {
    *   Whether there is anything worth writing.
    * @param array<string, mixed> $values
    *   Field machine name => proposed value, for the section itself.
-   * @param list<array<string, mixed>> $children
-   *   Child sections, each ['bundle' => string, 'values' => array].
+   * @param array<string, list<array<string, mixed>>> $children
+   *   Child sections keyed by the field they go in, each ['bundle' => string,
+   *   'values' => array] and, one level down, its own 'children' the same way.
    * @param list<string|\Stringable> $refusals
    *   Why there is no draft. Empty when $usable is TRUE.
    * @param string $model
@@ -41,8 +42,8 @@ final readonly class DraftedSection {
    *
    * @param array<string, mixed> $values
    *   Proposed values.
-   * @param list<array<string, mixed>> $children
-   *   Proposed children.
+   * @param array<string, list<array<string, mixed>>> $children
+   *   Proposed children, keyed by the field they go in.
    * @param string $model
    *   The model that answered.
    *

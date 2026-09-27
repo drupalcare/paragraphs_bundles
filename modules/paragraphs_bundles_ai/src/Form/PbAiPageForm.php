@@ -19,7 +19,9 @@ use Drupal\paragraphs_bundles_ai\Service\BundleProfilerInterface;
 use Drupal\paragraphs_bundles_ai\Service\PromptHintsInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface;
+use Drupal\paragraphs_bundles_ai\Service\ChildSlotsInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface;
+use Drupal\paragraphs_bundles_ai\Service\SectionFeaturesInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface;
 use Drupal\paragraphs_bundles_ai\Service\StylePresetsInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -46,6 +48,16 @@ final class PbAiPageForm extends FormBase {
    * Asks the model for the words.
    */
   protected SectionDrafterInterface $drafter;
+
+  /**
+   * Says which sections a count applies to.
+   */
+  protected ChildSlotsInterface $childSlots;
+
+  /**
+   * The features a new section is switched on with.
+   */
+  protected SectionFeaturesInterface $features;
 
   /**
    * Writes the section.
@@ -97,6 +109,8 @@ final class PbAiPageForm extends FormBase {
     $form = new static();
     $form->catalog = $container->get(SectionCatalogInterface::class);
     $form->drafter = $container->get(SectionDrafterInterface::class);
+    $form->childSlots = $container->get(ChildSlotsInterface::class);
+    $form->features = $container->get(SectionFeaturesInterface::class);
     $form->composer = $container->get(SectionComposerInterface::class);
     $form->editor = $container->get(SectionEditorInterface::class);
     $form->entityTypeManager = $container->get('entity_type.manager');
@@ -228,7 +242,10 @@ final class PbAiPageForm extends FormBase {
       // asked the first while the drafter answered the second — so on 12 of
       // the 18 nesting bundles the count field appeared and the children were
       // silently dropped. One question, one owner, asked in both places.
-      $nests[$bundle] = $profile !== NULL && $profile->canDraftChildren();
+      // Since 2026-09-27 that owner is ChildSlots, which also reads the
+      // briefs' nesting list — so a carousel counts, and two columns (one
+      // section per column, whatever the count) does not.
+      $nests[$bundle] = $this->childSlots->countable((string) $bundle);
 
       // Said BEFORE the button is pressed, not only afterwards. Choosing
       // "Views" and only then learning it needs a view is a worse moment to
@@ -564,10 +581,16 @@ final class PbAiPageForm extends FormBase {
     // site has renamed is dropped instead of saved and silently ignored.
     $styling = [];
     $style = self::asString($form_state->getValue('style'));
-    $profile = $style === '' ? NULL : $this->profiler->profile($bundle);
+    $profile = $this->profiler->profile($bundle);
 
-    if ($profile !== NULL) {
-      $styling = $this->presets->valuesFor($style, $profile);
+    // FEATURES FIRST, the chosen look on top. Both are values a person set
+    // once and checked; a look that names the same field is the more specific
+    // choice, made for this page.
+    $features = $profile === NULL ? [] : $this->features->valuesFor($profile);
+    $styling = $features;
+
+    if ($profile !== NULL && $style !== '') {
+      $styling = $this->presets->valuesFor($style, $profile) + $styling;
     }
 
     // The composer re-checks every value against the real fields, so a model
@@ -613,6 +636,22 @@ final class PbAiPageForm extends FormBase {
 
     foreach ($result->notes as $note) {
       $this->messenger()->addStatus($note instanceof MarkupInterface ? $note : (string) $note);
+    }
+
+    // WHAT IT CAN DO, said once it exists. Only the features actually written
+    // are named: where a chosen look set the same field to something else, the
+    // look's value is what is on the page, and the feature was not applied.
+    $applied = array_filter(
+      $features,
+      static fn(bool|int|string $value, string $name): bool => ($styling[$name] ?? NULL) === $value,
+      ARRAY_FILTER_USE_BOTH,
+    );
+    $switchedOn = $profile === NULL ? [] : $this->features->describe($profile, $applied);
+
+    if ($switchedOn !== []) {
+      $this->messenger()->addStatus($this->t('Switched on for this section: @features. Change or turn any of them off in its Display tab.', [
+        '@features' => implode('; ', $switchedOn),
+      ]));
     }
 
     // Back to the page, so the section is seen rather than described. The

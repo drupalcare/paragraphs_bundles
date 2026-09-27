@@ -52,6 +52,17 @@ paragraphs_bundles_ai.briefs:
             sequence:
               type: text
               label: 'Example prompt'
+          # FEATURES SWITCHED ON BY DEFAULT, then named in the note — the
+          # maintainer, 2026-09-27: "if you dont show the user the capablities
+          # of each bundle they will never know". Display field => value, set
+          # by a person once, never chosen by the model. Strings, because a
+          # list key, a boolean and a number all arrive through a form as one.
+          features:
+            type: sequence
+            label: 'Features switched on, by display field'
+            sequence:
+              type: string
+              label: 'Value'
 
     # WHAT GOES INSIDE AN OPEN SLOT, and it is a SEPARATE key from `briefs` on
     # purpose. Three of these slots belong to the inner section bundles — the

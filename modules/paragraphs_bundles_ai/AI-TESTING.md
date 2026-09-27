@@ -189,6 +189,12 @@ and green.
 
 ### The placeholder picture, end to end on a real site
 
+> **Superseded in part, 2026-09-27.** The record below is the run of 2026-09-17
+> and is kept as it happened. Since then a slot with a fixed crop gets a
+> placeholder drawn at that size (for example `pb-ai-placeholder-1700x600.png`),
+> and the note reads *"…a placeholder was put in "Image" (1700 x 600), drawn at
+> the size each one is shown…"*. See `DefaultImageTest` and the README.
+
 Not a test double: composed a `hero_bundle` on sts.local, which has a required
 `pb_content_image`.
 

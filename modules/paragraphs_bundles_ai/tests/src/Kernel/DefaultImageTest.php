@@ -4,13 +4,19 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles_ai\Kernel;
 
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
+use Drupal\Core\Entity\Entity\EntityViewMode;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
 use Drupal\KernelTests\KernelTestBase;
+use Drupal\media\Entity\Media;
 use Drupal\media\Entity\MediaType;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\paragraphs_bundles_ai\Service\BundleProfilerInterface;
 use Drupal\paragraphs_bundles_ai\Service\DefaultImageInterface;
+use Drupal\paragraphs_bundles_ai\Service\PictureShapesInterface;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -199,6 +205,93 @@ final class DefaultImageTest extends KernelTestBase {
     self::assertNotNull($fact);
     self::assertFalse($fact->isPicture());
     self::assertNull($this->images->valueFor($fact), 'A title is not a picture.');
+  }
+
+  /**
+   * The shape is READ from how the field renders, never written down.
+   *
+   * Maintainer, 2026-09-27: the placeholder must say what size it is. PB's
+   * real crops are not the 16:9 or 4:3 anyone would guess, so the number has
+   * to come from the site: paragraph display, then the media view mode it
+   * asks for, then that mode's image style.
+   */
+  public function testShapeIsReadThroughTheMediaViewMode(): void {
+    // addImageEffect() returns the effect's uuid, not the style: no chaining.
+    $crop = ImageStyle::create(['name' => 'card_crop', 'label' => 'Card crop']);
+    $crop->addImageEffect([
+      'id' => 'image_scale_and_crop',
+      'weight' => 0,
+      'data' => ['width' => 900, 'height' => 540, 'anchor' => 'center-center'],
+    ]);
+    $crop->save();
+    $scale = ImageStyle::create(['name' => 'scale_only', 'label' => 'Scale only']);
+    $scale->addImageEffect([
+      'id' => 'image_scale',
+      'weight' => 0,
+      'data' => ['width' => 600, 'height' => NULL, 'upscale' => FALSE],
+    ]);
+    $scale->save();
+
+    EntityViewMode::create([
+      'id' => 'media.pb_media_card',
+      'label' => 'Card',
+      'targetEntityType' => 'media',
+    ])->save();
+    $source = (string) MediaType::load('pb_media_image')?->getSource()->getConfiguration()['source_field'];
+    $display = static fn(string $type, string $bundle, string $mode = 'default'): EntityViewDisplay => EntityViewDisplay::create([
+      'targetEntityType' => $type,
+      'bundle' => $bundle,
+      'mode' => $mode,
+      'status' => TRUE,
+    ]);
+    $display('media', 'pb_media_image', 'pb_media_card')
+      ->setComponent($source, ['type' => 'image', 'settings' => ['image_style' => 'card_crop']])
+      ->save();
+    $display('paragraph', 'hero_bundle')
+      ->setComponent('pb_content_image', [
+        'type' => 'entity_reference_entity_view',
+        'settings' => ['view_mode' => 'pb_media_card'],
+      ])
+      ->save();
+    $display('paragraph', 'ai_image_bundle')
+      ->setComponent('pb_content_ai_image', ['type' => 'image', 'settings' => ['image_style' => 'scale_only']])
+      ->save();
+
+    $shapes = $this->container->get(PictureShapesInterface::class);
+
+    self::assertSame([900, 540], $shapes->shapeFor('hero_bundle', 'pb_content_image'));
+    // A scale keeps the picture's own proportions: any shape will do.
+    self::assertNull($shapes->shapeFor('ai_image_bundle', 'pb_content_ai_image'));
+    // Not on any display: nothing to read, and nothing is guessed.
+    self::assertNull($shapes->shapeFor('simple_bundle', 'pb_content_title'));
+  }
+
+  /**
+   * The placeholder is drawn at the shape, once, apart from the shipped one.
+   */
+  public function testPlaceholderIsDrawnAtTheShapeItIsShownAt(): void {
+    if (!function_exists('imagecreatetruecolor')) {
+      self::markTestSkipped('GD is not available, so the shipped picture is used instead.');
+    }
+
+    $fact = $this->profiler->profile('hero_bundle')?->field('pb_content_image');
+    self::assertNotNull($fact);
+
+    $value = $this->images->valueFor($fact, [900, 540]);
+    self::assertNotNull($value);
+    $media = Media::load((int) $value['target_id']);
+    self::assertNotNull($media);
+    $file = File::load((int) $media->getSource()->getSourceFieldValue($media));
+    self::assertNotNull($file);
+    self::assertSame('public://pb-ai/pb-ai-placeholder-900x540.png', $file->getFileUri());
+
+    $size = getimagesize((string) $file->getFileUri());
+    self::assertIsArray($size);
+    self::assertSame([900, 540], [$size[0], $size[1]], 'Drawn at exactly the size it is shown at.');
+
+    // Reused, not redrawn; and not the shipped picture, which any-size gets.
+    self::assertSame($value, $this->images->valueFor($fact, [900, 540]));
+    self::assertNotSame($value, $this->images->valueFor($fact));
   }
 
   /**

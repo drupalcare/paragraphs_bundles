@@ -28,6 +28,13 @@ use Drupal\paragraphs_bundles_ai\Model\FieldFact;
  * own reference to a shared file, which is how Drupal media works everywhere
  * else.
  *
+ * ONE PER SHAPE, SINCE 2026-09-27. A slot with a fixed crop gets a grey
+ * placeholder drawn at that crop with the size written across it — the
+ * maintainer: *"the place holder yes can show image with numbers"*. Numbers
+ * need no translation; the words go in the composer's note. Each size is its
+ * own file and its own media item, reused the same way. A slot with no fixed
+ * shape, or a PHP without GD, gets the shipped picture as before.
+ *
  * IT REFUSES RATHER THAN GUESSES. Media not installed, the media type missing,
  * its source field unreadable, the file unwritable: each returns NULL, and the
  * composer turns that into a sentence telling the person to add a picture
@@ -93,13 +100,13 @@ final class DefaultImage implements DefaultImageInterface {
   /**
    * {@inheritdoc}
    */
-  public function valueFor(FieldFact $fact): ?array {
+  public function valueFor(FieldFact $fact, ?array $shape = NULL): ?array {
     if (!$fact->isPicture()) {
       return NULL;
     }
 
     if ($fact->type === 'image') {
-      $fileId = $this->fileId();
+      $fileId = $this->fileId($shape);
 
       return $fileId === NULL ? NULL : ['target_id' => $fileId, 'alt' => $this->alt()];
     }
@@ -110,7 +117,7 @@ final class DefaultImage implements DefaultImageInterface {
       return NULL;
     }
 
-    $mediaId = $this->mediaId($bundle);
+    $mediaId = $this->mediaId($bundle, $shape);
 
     return $mediaId === NULL ? NULL : ['target_id' => $mediaId];
   }
@@ -118,13 +125,24 @@ final class DefaultImage implements DefaultImageInterface {
   /**
    * {@inheritdoc}
    */
-  public function fileId(): ?int {
+  public function fileId(?array $shape = NULL): ?int {
     if ($this->fileRepository === NULL) {
       return NULL;
     }
 
+    $drawn = NULL;
+    $destination = self::DESTINATION;
+
+    if ($shape !== NULL) {
+      $drawn = $this->draw($shape[0], $shape[1]);
+
+      if ($drawn !== NULL) {
+        $destination = sprintf('public://pb-ai/pb-ai-placeholder-%dx%d.png', $shape[0], $shape[1]);
+      }
+    }
+
     $storage = $this->entityTypeManager->getStorage('file');
-    $existing = $storage->loadByProperties(['uri' => self::DESTINATION]);
+    $existing = $storage->loadByProperties(['uri' => $destination]);
 
     if ($existing !== []) {
       $file = reset($existing);
@@ -132,33 +150,97 @@ final class DefaultImage implements DefaultImageInterface {
       return (int) $file->id();
     }
 
-    $source = $this->moduleList->getPath('paragraphs_bundles_ai') . '/' . self::SHIPPED;
-
-    if (!is_file($source)) {
-      return NULL;
+    if ($drawn === NULL) {
+      $source = $this->moduleList->getPath('paragraphs_bundles_ai') . '/' . self::SHIPPED;
+      $data = is_file($source) ? file_get_contents($source) : FALSE;
     }
-
-    $data = file_get_contents($source);
+    else {
+      $data = $drawn;
+    }
 
     if ($data === FALSE) {
       return NULL;
     }
 
-    $directory = dirname(self::DESTINATION);
+    $directory = dirname($destination);
 
     if (!$this->fileSystem->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
       return NULL;
     }
 
-    $file = $this->fileRepository->writeData($data, self::DESTINATION, FileExists::Replace);
+    $file = $this->fileRepository->writeData($data, $destination, FileExists::Replace);
 
     return (int) $file->id();
   }
 
   /**
+   * A grey placeholder at one size, with the size written across it.
+   *
+   * GD's built-in font is drawn small and scaled up pixel for pixel, so the
+   * numbers stay sharp at any size and no font file ships with the module.
+   * `x`, not a multiplication sign: the built-in font's character set is not
+   * something to rely on for anything past ASCII.
+   *
+   * @param int $width
+   *   Width in pixels.
+   * @param int $height
+   *   Height in pixels.
+   *
+   * @return string|null
+   *   PNG bytes, or NULL when GD is not available or the size is not sane.
+   */
+  private function draw(int $width, int $height): ?string {
+    if (!function_exists('imagecreatetruecolor') || $width < 16 || $height < 16 || $width > 4000 || $height > 4000) {
+      return NULL;
+    }
+
+    $label = sprintf('%d x %d', $width, $height);
+    $font = 5;
+    $textWidth = imagefontwidth($font) * strlen($label);
+    $textHeight = imagefontheight($font);
+    $image = imagecreatetruecolor($width, $height);
+    $text = imagecreatetruecolor($textWidth, $textHeight);
+
+    if ($image === FALSE || $text === FALSE) {
+      return NULL;
+    }
+
+    $background = (int) imagecolorallocate($image, 217, 221, 227);
+    $line = (int) imagecolorallocate($image, 160, 168, 180);
+    imagefill($image, 0, 0, $background);
+    imagerectangle($image, 0, 0, $width - 1, $height - 1, $line);
+    imageline($image, 0, 0, $width - 1, $height - 1, $line);
+    imageline($image, 0, $height - 1, $width - 1, 0, $line);
+
+    imagefill($text, 0, 0, (int) imagecolorallocate($text, 217, 221, 227));
+    imagestring($text, $font, 0, 0, $label, (int) imagecolorallocate($text, 55, 65, 81));
+
+    // Large enough to read at a glance, never wider than the picture.
+    $scale = max(1, (int) floor(min($width * 0.6 / $textWidth, $height * 0.25 / $textHeight)));
+    imagecopyresized(
+      $image,
+      $text,
+      intdiv($width - $textWidth * $scale, 2),
+      intdiv($height - $textHeight * $scale, 2),
+      0,
+      0,
+      $textWidth * $scale,
+      $textHeight * $scale,
+      $textWidth,
+      $textHeight,
+    );
+
+    ob_start();
+    imagepng($image);
+    $bytes = ob_get_clean();
+
+    return is_string($bytes) && $bytes !== '' ? $bytes : NULL;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function mediaId(string $mediaBundle): ?int {
+  public function mediaId(string $mediaBundle, ?array $shape = NULL): ?int {
     if (!$this->entityTypeManager->hasDefinition('media')) {
       return NULL;
     }
@@ -169,7 +251,7 @@ final class DefaultImage implements DefaultImageInterface {
       return NULL;
     }
 
-    $fileId = $this->fileId();
+    $fileId = $this->fileId($shape);
 
     if ($fileId === NULL) {
       return NULL;
