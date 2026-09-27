@@ -7,6 +7,10 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Sql\DefaultTableMapping;
+use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
+use Drupal\field\Entity\FieldConfig;
+
 /**
  * Adds the CSS Classes field to the bundles this module owns.
  *
@@ -25,4 +29,64 @@ function paragraph_bundle_layout_update_9001(): string {
   return $done === []
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}
+
+/**
+ * Corrects the three-columns default layout to a key the field offers.
+ *
+ * The field shipped `l4-l4-l4` as its default while its options are
+ * `l4_l4_l4` and friends. The template turns underscores into hyphens, so the
+ * page always looked right; but a section created without the form — by the
+ * AI assistant, or an import — stored a value the field does not offer, and
+ * its edit form then showed no layout chosen. Found 2026-09-27;
+ * PbListDefaultsContractTest now fails on any list default like it.
+ *
+ * Only the exact broken default is replaced, so a site that chose another is
+ * left alone. Stored values are rewritten in place: the rendered class is the
+ * same before and after.
+ */
+function paragraph_bundle_layout_update_9002(): string {
+  $field = FieldConfig::loadByName('paragraph', 'three_columns_bundle', 'pb_display_three_columns');
+
+  if (!$field instanceof FieldConfig) {
+    return (string) t('No three columns layout field on this site; nothing to do.');
+  }
+
+  $default = $field->getDefaultValueLiteral()[0]['value'] ?? NULL;
+  $fixedDefault = $default === 'l4-l4-l4';
+
+  if ($fixedDefault) {
+    $field->setDefaultValue([['value' => 'l4_l4_l4']])->save();
+  }
+
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $mapping = $storage instanceof SqlEntityStorageInterface ? $storage->getTableMapping() : NULL;
+  $rows = 0;
+
+  // Stored values live in SQL on every site PB supports; anything else has no
+  // tables to correct, and its default is already fixed above.
+  $tables = $mapping instanceof DefaultTableMapping ? [
+    $mapping->getDedicatedDataTableName($field->getFieldStorageDefinition()),
+    $mapping->getDedicatedRevisionTableName($field->getFieldStorageDefinition()),
+  ] : [];
+  $column = $mapping instanceof DefaultTableMapping ? $mapping->getFieldColumnName($field->getFieldStorageDefinition(), 'value') : '';
+  $database = \Drupal::database();
+
+  foreach ($tables as $table) {
+    if ($database->schema()->tableExists($table)) {
+      $rows += (int) $database->update($table)
+        ->fields([$column => 'l4_l4_l4'])
+        ->condition($column, 'l4-l4-l4')
+        ->execute();
+    }
+  }
+
+  if ($rows > 0) {
+    $storage->resetCache();
+  }
+
+  return (string) t('Three columns default layout: @default. Stored layouts corrected: @rows row(s).', [
+    '@default' => $fixedDefault ? t('corrected to l4_l4_l4') : t('already valid'),
+    '@rows' => $rows,
+  ]);
 }

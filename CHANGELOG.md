@@ -16,6 +16,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - In a coverflow, the card that wraps from one end to the other fades out,
   moves while invisible and fades back in, instead of sliding across the fan.
 
+### Fixed — Three columns: a default layout the field does not offer
+
+- `pb_display_three_columns` shipped the default `l4-l4-l4`; its options are
+  `l4_l4_l4` and friends. Pages rendered correctly (the template turns `_` into
+  `-`), but a section created without the form stored a value the field does
+  not offer, and its edit form showed no layout chosen. Fixed in the shipped
+  config; `paragraph_bundle_layout_update_9002` corrects the default and every
+  stored value (25 sections on the test site). `PbListDefaultsContractTest`
+  now fails on any list field whose shipped default is not one of its keys.
+
 ### Fixed — 3D carousel: keyboard focus at the ends of a ring
 
 - Reaching the first or last slide with the keyboard hid the arrow that had
