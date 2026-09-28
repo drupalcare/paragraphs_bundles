@@ -358,6 +358,8 @@ final class PbAiPageForm extends FormBase {
       '#default_value' => 0,
       '#min' => 0,
       '#max' => 12,
+      // A hint rather than a description line: the bar is kept to one row.
+      '#attributes' => ['title' => $this->t('0 uses the number in your words, or 3 when they give none.')],
       // Hidden until a section that nests is chosen; the script does the rest,
       // and a browser without it sees the field rather than nothing.
       '#wrapper_attributes' => ['class' => ['pb-ai-bar__count']],

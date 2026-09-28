@@ -227,6 +227,56 @@ final class ChildSlotsTest extends KernelTestBase {
   }
 
   /**
+   * How many at 0 asks for the number the words give, as REQUIRED.
+   *
+   * Measured 2026-09-28: at 0 the model was asked for no children at all, and
+   * where they were only capped (maxItems) it left the list out.
+   */
+  public function testHowManyAtZeroTakesTheWordsAndRequiresThem(): void {
+    $this->drafter(['pb_content_slideshow_title' => 'x'])
+      ->draft('slideshow_bundle', 'Write a slideshow of five slides, heading as an h2.', 0);
+
+    $schema = $this->sent?->getChatStructuredJsonSchema()['schema'] ?? [];
+    $slides = $schema['properties']['children']['properties']['pb_content_slideshow_section'] ?? [];
+    self::assertSame(5, $slides['minItems'] ?? NULL, 'The number in the words, not the "2" in h2.');
+    self::assertSame(5, $slides['maxItems'] ?? NULL);
+    self::assertSame(['children'], $schema['required'] ?? NULL);
+    self::assertSame(['pb_content_slideshow_section'], $schema['properties']['children']['required'] ?? NULL);
+
+    $this->drafter(['pb_content_slideshow_title' => 'x'])->draft('slideshow_bundle', 'A slideshow about roses.', 0);
+    $schema = $this->sent?->getChatStructuredJsonSchema()['schema'] ?? [];
+    self::assertSame(3, $schema['properties']['children']['properties']['pb_content_slideshow_section']['minItems'] ?? NULL, 'No number in the words: a sensible few.');
+  }
+
+  /**
+   * Children written under the slot's own name, with no "children" wrapper.
+   *
+   * The shape a live model returned on 2026-09-28 for a 3D carousel: all
+   * seven items at the top of the answer, every one of them dropped.
+   */
+  public function testSlotNamedAtTheTopIsStillRead(): void {
+    $draft = $this->drafter([
+      'pb_content_slideshow_section' => [
+        [
+          'pb_content_slideshow_title' => 'Tulips',
+          'pb_content_slideshow_body' => [
+            ['bundle' => 'simple_bundle', 'pb_content_body' => 'Plant them before the frost.'],
+          ],
+        ],
+        ['pb_content_slideshow_title' => 'Garlic'],
+      ],
+    ])->draft('slideshow_bundle', 'Two slides about autumn planting.', 2);
+
+    self::assertTrue($draft->usable, implode(' | ', array_map('strval', $draft->refusals)));
+    $slides = $draft->children['pb_content_slideshow_section'] ?? [];
+    self::assertCount(2, $slides);
+    self::assertSame(
+      [['bundle' => 'simple_bundle', 'values' => ['pb_content_body' => 'Plant them before the frost.']]],
+      $slides[0]['children']['pb_content_slideshow_body'] ?? NULL,
+    );
+  }
+
+  /**
    * The composer builds the slide AND the section inside it, and no deeper.
    */
   public function testComposerBuildsOneLevelInsideAndRefusesTwo(): void {

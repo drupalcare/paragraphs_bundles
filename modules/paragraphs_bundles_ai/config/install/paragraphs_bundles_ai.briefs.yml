@@ -62,7 +62,7 @@ briefs:
       pb_display_accor_show_expand: '1'
       pb_display_accor_animated: pb__animate_opacity
     prompts:
-      text: |
+      text: >-
         Write an accordion of five questions about caring for new roses.
         Heading "Rose care questions" as an h2, centred. Each row is a short
         question, with a Simple inside answering it in two lines. Keep the
@@ -89,16 +89,16 @@ briefs:
       pb_display_slide_animated_slides: pb__animate_opacity
       pb_display_bottom_navigation: dot
     prompts:
-      text: |
+      text: >-
         Write a slideshow of four slides about our autumn planting range.
         Heading "Plant now, enjoy it in spring" as an h2, centred. Name each
         slide after one plant, with a Simple inside saying in one line why it
         is worth planting now. Keep the slide titles the same length.
-      images: |
+      images: >-
         Write a slideshow of five slides for our display gardens. Heading
         "The gardens in September" as an h2, centred. Each slide holds an
         Image, titled with what it shows in two or three words.
-      hero: |
+      hero: >-
         Write a slideshow of three slides for the top of the home page.
         Heading "Autumn at the nursery" as an h2, centred. Each slide holds a
         Hero with one line of body and a two-word link title.
@@ -121,7 +121,7 @@ briefs:
     features:
       pb_display_tab_animated_tabs: pb__animate_opacity
     prompts:
-      text: |
+      text: >-
         Write tabs for our rose buying guide, four tabs: Climbing, Shrub,
         Standard and Patio. Heading "Which rose is right for you?" as an h2,
         centred. Each tab holds a Simple of three lines on where that rose grows
@@ -147,11 +147,11 @@ briefs:
       pb_display_activate_looping: '1'
       pb_display_carousel_play_stop: '5000'
     prompts:
-      images: |
+      images: >-
         Write a carousel of eight items for the plants in stock this week.
         Heading "In stock this week" as an h2, centred. Each item is an Image,
         titled with the plant's name in two or three words.
-      text: |
+      text: >-
         Write a carousel of six items with what customers say about our roses.
         Heading "What our customers say" as an h2, centred. Each item is a card
         text: the customer's first name and town as its title, and their words
@@ -177,10 +177,10 @@ briefs:
       pb_display_3d_car_style: ring
       pb_display_3d_play_stop: '5000'
     prompts:
-      images: |
+      images: >-
         Write a 3D carousel of seven items showing our rose varieties. Each
         item is an Image, titled with the variety's name in two or three words.
-      text: |
+      text: >-
         Write a 3D carousel of seven items, each a Simple giving one reason to
         plant bare-root roses in a single short line. Keep all seven the same
         length.
@@ -199,7 +199,7 @@ briefs:
   image_grid_bundle:
     category: 'Interactive sections'
     good_for: 'A gallery — pictures that open full size in a lightbox when clicked.'
-    prompt: |
+    prompt: >-
       Write a gallery of nine pictures from the rose garden in June.
       Heading "The rose garden in June" as an h2, centred. Title each picture
       with what it shows in two or three words.
@@ -217,7 +217,7 @@ briefs:
   parallax_bundle:
     category: 'Interactive sections'
     good_for: 'A band of the page where the background drifts slower than the words as you scroll.'
-    prompt: |
+    prompt: >-
       Write a parallax of two sections for the home page. Heading "Grown
       here, planted by you" as an h2, centred. Each section says in two short
       lines how our plants are raised, one about the nursery beds and one about
@@ -237,7 +237,7 @@ briefs:
     good_for: 'Content that opens in a dialog over the page — terms, a form, a larger picture.'
     features:
       pb_display_animated_modal: pb__animate_opacity
-    prompt: |
+    prompt: >-
       Write a modal for our delivery terms. The button says "Delivery
       terms" and the modal title is "How delivery works". The body is a Simple
       of four short lines on delivery days and charges. The footer holds one
@@ -260,7 +260,7 @@ briefs:
     features:
       pb_display_flip_xy: flip_x
       pb_display_3d_height: '250'
-    prompt: |
+    prompt: >-
       Write a flip box for our planting service. Heading "Planting service"
       as an h3, centred. The front is a Simple titled "Too busy to plant?" as
       an h3, with one line saying we can help. The back is a Simple titled "We
@@ -282,7 +282,7 @@ briefs:
     good_for: 'A picture with words over it that arrive on hover — the same idea as the flip box, different motion.'
     features:
       pb_display_image_overlay: fade
-    prompt: |
+    prompt: >-
       Write an image overlay for our rose catalogue. Title "Browse the
       catalogue" as an h3, centred, and a two-word link title.
     practices: |
@@ -299,7 +299,7 @@ briefs:
   one_column_bundle:
     category: 'Layout and structure'
     good_for: 'A wrapper — put any section inside it to give it its own width, background or spacing.'
-    prompt: |
+    prompt: >-
       Write a one column section welcoming visitors to the nursery. Heading
       "Welcome to the nursery" as an h2, centred. Inside it, a Simple of three
       lines on who we are and what we grow.
@@ -316,7 +316,7 @@ briefs:
     features:
       pb_display_two_columns: l6_l6
       pb_display_2c_anim: slide
-    prompt: |
+    prompt: >-
       Write two columns comparing bare-root and potted roses. Heading
       "Bare-root or potted?" as an h2, centred. A Simple in each column, three
       lines each, kept the same length so neither side leaves a gap.
@@ -337,7 +337,7 @@ briefs:
     features:
       pb_display_three_columns: l4_l4_l4
       pb_display_3c_anim: slide
-    prompt: |
+    prompt: >-
       Write three columns for our three services: planting, pruning and
       garden design. Heading "What we do" as an h2, centred. A Simple in each
       column, a one-word title and two lines, kept the same length so no column
@@ -359,7 +359,7 @@ briefs:
     good_for: 'Two cards side by side — each one a picture or a piece of text.'
     features:
       pb_display_card_layout_two: l6_l6
-    prompt: |
+    prompt: >-
       Write two cards introducing our shop. Heading "Visit the shop" as an
       h2, centred. The left card is a card image titled "Our shop"; the right
       card is a card text with a two-word title and two lines on opening hours.
@@ -378,7 +378,7 @@ briefs:
     good_for: 'Three cards side by side — the classic feature or service row.'
     features:
       pb_display_card_layout_three: l4_l4_l4
-    prompt: |
+    prompt: >-
       Write three card texts for our planting guides: roses, bulbs and
       hedges. Heading "Planting guides" as an h2, centred. Each card has a
       two-word title and two lines, all three the same length.
@@ -397,15 +397,15 @@ briefs:
     features:
       pb_display_grid_columns: '3'
     prompts:
-      icons: |
+      icons: >-
         Write a grid of six icons on why people buy from us. Heading "Why
         choose us" as an h2, centred. Each item is an Icon: a Material Symbols
         name that fits, the rounded style, a two-word title and one line of body.
-      cards: |
+      cards: >-
         Write a grid of six card texts, one for each month from April to
         September, saying what to plant. Heading "What to plant when" as an h2,
         centred. Each card has the month as its title and two lines of body.
-      images: |
+      images: >-
         Write a grid of six images from our display gardens. Heading "Our
         display gardens" as an h2, centred. Each item is an Image, titled with
         the garden's name in two or three words.
@@ -425,7 +425,7 @@ briefs:
   simple_bundle:
     category: 'Text'
     good_for: 'A heading and some text. The plainest section there is, and the one to reach for first.'
-    prompt: |
+    prompt: >-
       Write a simple section about our autumn opening hours. Heading "Autumn
       opening hours" as an h2, left aligned. Three short lines: the days, the
       times, and the date we close for winter.
@@ -443,7 +443,7 @@ briefs:
     features:
       pb_display_alert_state: info
       pb_display_show_close_button: '1'
-    prompt: |
+    prompt: >-
       Write an alert that the shop closes early this Sunday. Heading "Early
       closing" as an h3. Inside it, a Simple of one line saying we close at
       2pm.
@@ -463,7 +463,7 @@ briefs:
     good_for: 'The top of a landing page — one heading, one line, one link, over a picture.'
     features:
       pb_display_hero: pb__ds_middle
-    prompt: |
+    prompt: >-
       Write a hero for the top of the home page. Heading "Autumn planting
       starts now" as an h2, centred. One line of body on bare-root roses
       arriving this week, and a two-word link title.
@@ -487,7 +487,7 @@ briefs:
       pb_display_image_repetition: no_repeat
       pb_display_image_alignment: center_center
       pb_display_image_min_height: '400'
-    prompt: |
+    prompt: >-
       Write an image background band inviting visitors to our open weekend.
       Inside it, a Simple with the heading "Open weekend" as an h2, centred,
       and three short lines on the dates, the tours and free parking.
@@ -509,7 +509,7 @@ briefs:
   image_bundle:
     category: 'Images, icons and links'
     good_for: 'One picture, with a caption if you want it.'
-    prompt: |
+    prompt: >-
       Write an image of our greenhouse. Title "Inside the greenhouse" as an
       h3, centred, and a two-word link title.
     practices: |
@@ -523,7 +523,7 @@ briefs:
   image_wide_bundle:
     category: 'Images, icons and links'
     good_for: 'A picture that runs the full width of the page — a band between two sections.'
-    prompt: |
+    prompt: >-
       Write a wide image of the rose field in full bloom. Title "The rose
       field in July" as an h3, centred.
     practices: |
@@ -537,7 +537,7 @@ briefs:
   image_narrow_bundle:
     category: 'Images, icons and links'
     good_for: 'A picture kept narrower than the page, centred — inside an article.'
-    prompt: |
+    prompt: >-
       Write a narrow image of our head gardener at work. Title "Meet our
       head gardener" as an h3, centred.
     practices: |
@@ -561,7 +561,7 @@ briefs:
   icon_bundle:
     category: 'Images, icons and links'
     good_for: 'An icon with a short label — a row of features, benefits or steps.'
-    prompt: |
+    prompt: >-
       Write an icon for free local delivery. Material Symbols name
       "local_shipping", rounded style, title "Free delivery" and one line of
       body saying within ten miles.
@@ -579,7 +579,7 @@ briefs:
   link_bundle:
     category: 'Images, icons and links'
     good_for: 'A set of links or buttons grouped together — a call to action, or a short menu.'
-    prompt: |
+    prompt: >-
       Write a link section of three buttons: "Shop roses", "Book planting"
       and "Contact us". Heading "Get started" as an h2, centred.
     practices: |

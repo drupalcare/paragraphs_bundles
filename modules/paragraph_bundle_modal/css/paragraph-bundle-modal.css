@@ -91,6 +91,15 @@
   margin-inline: auto !important;
 }
 
+/* THE OPENER LOOKS LIKE A BUTTON — maintainer, 2026-09-28. The base
+   `.pb-ui-btn` has no border and inherits the background, so on a plain page
+   "Delivery terms" read as a line of text nobody would think to click. The
+   border takes the section's own text colour, so every style preset keeps it. */
+.paragraphs-bundles.pb-modal .pb-modal__button > .pb-ui-btn {
+  border: var(--pb-px1) solid currentColor;
+  border-radius: var(--pb-px4);
+}
+
 html.pb-u-modal-open {
   overflow: hidden;
 }

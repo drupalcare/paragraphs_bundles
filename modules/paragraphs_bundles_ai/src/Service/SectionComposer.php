@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles_ai\Service;
 
+use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
@@ -167,12 +168,26 @@ final class SectionComposer implements SectionComposerInterface {
 
     $parentValues += $styling;
 
+    // BUILT WHOLE, CHECKED WHOLE, THEN SAVED — maintainer, 2026-09-28: a
+    // section that cannot be saved again "will not save and they will think
+    // the bundle is broken". Measured the same day: 22 sections written by
+    // this tool failed the edit form's validation (empty required slots, links
+    // with no address). Nothing is written now unless the whole section — and
+    // every section inside it — passes the same validation the edit form runs.
+    $noAddress = [];
+    $section = $this->assemble($bundle, $parentValues, $plansBySlot, $noAddress);
+    $unsaveable = $this->violations($section);
+
+    if ($unsaveable !== []) {
+      return CreationResult::refused($unsaveable);
+    }
+
     $result = $this->writer->attach(
       $contentType,
       $field,
       $bundle,
       1,
-      fn(): array => [$this->build($bundle, $parentValues, $plansBySlot)],
+      fn(): array => [$this->save($section)],
       $title,
       $nodeId,
       FALSE,
@@ -236,6 +251,17 @@ final class SectionComposer implements SectionComposerInterface {
       $notes[] = $this->t('No picture can be written, so a placeholder was put in @fields, drawn at the size each one is shown. Open the section and replace each with your own picture, at least that size.', [
         '@fields' => implode(', ', array_unique(array_values($pictures))),
       ]);
+    }
+
+    // OPTION 1 FOR LINKS — maintainer, 2026-09-28. A web address cannot be
+    // written, so each required link is saved as "no link" (valid, and it
+    // renders as its text) and the person is told to add the address.
+    if ($noAddress !== []) {
+      $notes[] = $this->formatPlural(
+        count($noAddress),
+        'No web address can be written, so 1 link was saved without one and shows as plain text. Open the section and add its address.',
+        'No web address can be written, so @count links were saved without one and show as plain text. Open the section and add an address to each.',
+      );
     }
 
     $byHand = [];
@@ -704,9 +730,11 @@ final class SectionComposer implements SectionComposerInterface {
   }
 
   /**
-   * Builds the parent and its children, saving as it goes.
+   * Builds the parent and its children, one level down, WITHOUT saving.
    *
-   * Called by SectionWriter only after every precondition has passed.
+   * The children are set as entity objects; entity_reference_revisions saves
+   * a new referenced entity when its host is saved, so one save of the parent
+   * writes the whole section — and nothing is written before it is checked.
    *
    * @param string $bundle
    *   Parent bundle.
@@ -715,12 +743,14 @@ final class SectionComposer implements SectionComposerInterface {
    * @param array<string, list<array{bundle: string, values: array<string, mixed>, children?: array<string, list<array{bundle: string, values: array<string, mixed>}>>}>> $bySlot
    *   Checked children, keyed by the field each group belongs in, each with
    *   its own children one level down. Empty when the section holds nothing.
+   * @param list<string> $noAddress
+   *   Collects the labels of required links saved without an address.
    *
-   * @return array{target_id: int|string|null, target_revision_id: int|string|null}
-   *   The reference value for the host field.
+   * @return \Drupal\paragraphs\Entity\Paragraph
+   *   The unsaved section.
    */
-  private function build(string $bundle, array $values, array $bySlot): array {
-    $parent = $this->make($bundle, $values);
+  private function assemble(string $bundle, array $values, array $bySlot, array &$noAddress): Paragraph {
+    $parent = $this->make($bundle, $values, $noAddress);
 
     // ONE FIELD AT A TIME. A flat list arrives here as a single-entry map, so
     // there is one path underneath rather than two that can drift apart.
@@ -734,22 +764,15 @@ final class SectionComposer implements SectionComposerInterface {
           continue;
         }
 
-        $paragraph = $this->make($child['bundle'], $child['values']);
+        $paragraph = $this->make($child['bundle'], $child['values'], $noAddress);
 
         foreach ($child['children'] ?? [] as $innerSlot => $innerChildren) {
           $innerItems = [];
 
           foreach ($innerChildren as $innerChild) {
-            if ($innerChild['bundle'] === '') {
-              continue;
+            if ($innerChild['bundle'] !== '') {
+              $innerItems[] = $this->make($innerChild['bundle'], $innerChild['values'], $noAddress);
             }
-
-            $innerParagraph = $this->make($innerChild['bundle'], $innerChild['values']);
-            $innerParagraph->save();
-            $innerItems[] = [
-              'target_id' => $innerParagraph->id(),
-              'target_revision_id' => $innerParagraph->getRevisionId(),
-            ];
           }
 
           if ($innerItems !== []) {
@@ -757,11 +780,7 @@ final class SectionComposer implements SectionComposerInterface {
           }
         }
 
-        $paragraph->save();
-        $items[] = [
-          'target_id' => $paragraph->id(),
-          'target_revision_id' => $paragraph->getRevisionId(),
-        ];
+        $items[] = $paragraph;
       }
 
       if ($items !== []) {
@@ -769,11 +788,76 @@ final class SectionComposer implements SectionComposerInterface {
       }
     }
 
-    $parent->save();
+    return $parent;
+  }
+
+  /**
+   * What would stop this section being saved again from the edit form.
+   *
+   * The section and every section inside it are validated as the edit form
+   * validates them. A required slot left empty, or any other constraint, is a
+   * refusal here rather than a page that later refuses to save.
+   *
+   * @param \Drupal\paragraphs\Entity\Paragraph $paragraph
+   *   The unsaved section, or one inside it.
+   *
+   * @return list<string>
+   *   Plain sentences, or an empty list when it can be saved.
+   */
+  private function violations(Paragraph $paragraph): array {
+    $out = [];
+    $section = (string) $paragraph->getParagraphType()->label();
+
+    foreach ($paragraph->validate() as $violation) {
+      $name = explode('.', $violation->getPropertyPath())[0];
+      $definition = $paragraph->hasField($name) ? $paragraph->getFieldDefinition($name) : NULL;
+      $label = $definition === NULL ? $name : (string) $definition->getLabel();
+
+      // The common case said plainly: a place that must hold at least one
+      // section was left empty by the model.
+      $out[] = $definition?->getType() === 'entity_reference_revisions' && $paragraph->get($name)->isEmpty()
+        ? (string) $this->t('"@section" needs at least one "@field" inside it, and none was written, so nothing was added. Try again, or say how many.', [
+          '@section' => $section,
+          '@field' => $label,
+        ])
+        : (string) $this->t('"@section" was not added, because it could not be saved: "@field" — @problem', [
+          '@section' => $section,
+          '@field' => $label,
+          '@problem' => strip_tags((string) $violation->getMessage()),
+        ]);
+    }
+
+    // referencedEntities() includes the unsaved children assemble() set.
+    foreach ($paragraph->getFields() as $items) {
+      if (!$items instanceof EntityReferenceFieldItemListInterface || $items->getFieldDefinition()->getType() !== 'entity_reference_revisions') {
+        continue;
+      }
+
+      foreach ($items->referencedEntities() as $child) {
+        if ($child instanceof Paragraph) {
+          $out = array_merge($out, $this->violations($child));
+        }
+      }
+    }
+
+    return array_values(array_unique($out));
+  }
+
+  /**
+   * Saves the checked section; its children are saved with it.
+   *
+   * @param \Drupal\paragraphs\Entity\Paragraph $section
+   *   The section assemble() built and violations() passed.
+   *
+   * @return array{target_id: int|string|null, target_revision_id: int|string|null}
+   *   The reference value for the host field.
+   */
+  private function save(Paragraph $section): array {
+    $section->save();
 
     return [
-      'target_id' => $parent->id(),
-      'target_revision_id' => $parent->getRevisionId(),
+      'target_id' => $section->id(),
+      'target_revision_id' => $section->getRevisionId(),
     ];
   }
 
@@ -789,11 +873,13 @@ final class SectionComposer implements SectionComposerInterface {
    *   Paragraph bundle.
    * @param array<string, mixed> $values
    *   Checked values.
+   * @param list<string> $noAddress
+   *   Collects the labels of required links saved without an address.
    *
    * @return \Drupal\paragraphs\Entity\Paragraph
    *   The unsaved paragraph.
    */
-  private function make(string $bundle, array $values): Paragraph {
+  private function make(string $bundle, array $values, array &$noAddress = []): Paragraph {
     $paragraph = Paragraph::create(['type' => $bundle]);
 
     foreach ($values as $name => $value) {
@@ -808,6 +894,16 @@ final class SectionComposer implements SectionComposerInterface {
       $paragraph->set($name, is_string($value)
         ? $this->formats->valueFor($paragraph->get($name), $value)
         : $value);
+    }
+
+    // A REQUIRED LINK the model could not address. "route:<nolink>" is a
+    // valid value for a link field that takes internal links, renders as its
+    // text, and lets the section be saved again from the edit form.
+    foreach ($paragraph->getFieldDefinitions() as $name => $definition) {
+      if ($definition->getType() === 'link' && $definition->isRequired() && $paragraph->get($name)->isEmpty()) {
+        $paragraph->set($name, ['uri' => 'route:<nolink>']);
+        $noAddress[] = (string) $definition->getLabel();
+      }
     }
 
     return $paragraph;

@@ -223,6 +223,7 @@
  */
 .pb-ai-highlight {
   all: initial;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   position: fixed;
   z-index: 0;
   /* REQUIRED, because `all: initial` resets box-sizing to content-box. The
@@ -294,6 +295,7 @@
  */
 .pb-ai-toggle {
   all: initial;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   position: absolute;
   /* Centred on the bar's top border. The BAR owns the position, so the button
      cannot drift out of step with it — there is no second place to keep
@@ -339,6 +341,7 @@
  */
 .pb-ai-toggle__icon {
   all: initial;
+  font-family: inherit;
   display: flex;
   color: inherit;
 }
@@ -430,6 +433,7 @@
  */
 .pb-ai-brief {
   all: initial;
+  font-family: inherit;
   position: fixed;
   z-index: 502;
   top: 0;
@@ -483,6 +487,7 @@
    About text wraps to a second line. */
 .pb-ai-brief__meta {
   all: initial;
+  font-family: inherit;
   display: flex;
   gap: 0.75rem;
   align-items: flex-start;
@@ -525,6 +530,7 @@
 
 .pb-ai-brief__close {
   all: initial;
+  font-family: inherit;
   box-sizing: border-box;
   display: flex;
   flex: 0 0 auto;
@@ -591,6 +597,7 @@
    has — about 60% of it sat empty while these were one narrow column. */
 .pb-ai-brief__list {
   all: initial;
+  font-family: inherit;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0 1.5rem;
@@ -627,6 +634,7 @@
    empty box and a placeholder that only names fields. */
 .pb-ai-brief__prompts {
   all: initial;
+  font-family: inherit;
   display: block;
   margin-top: 0.6rem;
 }
@@ -638,6 +646,7 @@
    of its own. */
 .pb-ai-brief__variants {
   all: initial;
+  font-family: inherit;
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
@@ -676,6 +685,7 @@
 
 .pb-ai-brief__prompt-holder {
   all: initial;
+  font-family: inherit;
   display: block;
 }
 
@@ -694,6 +704,7 @@
    columns follow the writing direction, so RTL needs no rule. */
 .pb-ai-brief__prompt {
   all: initial;
+  font-family: inherit;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 0.3rem 0.75rem;

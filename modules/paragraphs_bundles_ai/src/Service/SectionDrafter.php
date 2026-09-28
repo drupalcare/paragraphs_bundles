@@ -43,6 +43,29 @@ final class SectionDrafter implements SectionDrafterInterface {
   use StringTranslationTrait;
 
   /**
+   * How many children when neither "How many" nor the words give a number.
+   */
+  private const DEFAULT_COUNT = 3;
+
+  /**
+   * Number words the form's "How many" may be read from.
+   */
+  private const NUMBER_WORDS = [
+    'one' => 1,
+    'two' => 2,
+    'three' => 3,
+    'four' => 4,
+    'five' => 5,
+    'six' => 6,
+    'seven' => 7,
+    'eight' => 8,
+    'nine' => 9,
+    'ten' => 10,
+    'eleven' => 11,
+    'twelve' => 12,
+  ];
+
+  /**
    * Constructs the drafter.
    *
    * @param \Drupal\paragraphs_bundles_ai\Service\BundleProfilerInterface $profiler
@@ -86,6 +109,14 @@ final class SectionDrafter implements SectionDrafterInterface {
       return DraftedSection::refused([
         $this->t('No default AI provider is set for chat. Choose one at Configuration › AI › Settings.'),
       ]);
+    }
+
+    // "HOW MANY" LEFT AT 0 — like VVJ, maintainer 2026-09-28. Measured the day
+    // before: 0 asked the model for no children at all, and 15 of 28 sections
+    // came back as a heading with nothing inside. Now 0 means the number the
+    // words give ("five questions"), else a sensible few.
+    if ($children === 0 && $this->slots->countable($bundle)) {
+      $children = self::numberIn($words) ?: self::DEFAULT_COUNT;
     }
 
     $plan = $this->plan($profile, $children);
@@ -341,16 +372,30 @@ final class SectionDrafter implements SectionDrafterInterface {
       $slotProperties[$field] = [
         'type' => 'array',
         'description' => sprintf('Exactly %d section(s) for "%s", in order.', $entry['count'], $field),
+        // REQUIRED, not only capped: with maxItems alone the model left the
+        // list out (Modal, Two columns, 2026-09-28), and an empty required
+        // slot is a section that cannot be saved again.
+        'minItems' => $entry['count'],
         'maxItems' => $entry['count'],
         'items' => $this->itemSchema($entry['slot'], TRUE),
       ];
     }
 
     if ($slotProperties !== []) {
-      $properties['children'] = ['type' => 'object', 'properties' => $slotProperties];
+      $properties['children'] = [
+        'type' => 'object',
+        'properties' => $slotProperties,
+        'required' => array_keys($slotProperties),
+      ];
     }
 
-    return $properties === [] ? [] : ['type' => 'object', 'properties' => $properties];
+    if ($properties === []) {
+      return [];
+    }
+
+    return $slotProperties === []
+      ? ['type' => 'object', 'properties' => $properties]
+      : ['type' => 'object', 'properties' => $properties, 'required' => ['children']];
   }
 
   /**
@@ -396,6 +441,7 @@ final class SectionDrafter implements SectionDrafterInterface {
         $inner[$innerSlot->field] ??= [
           'type' => 'array',
           'description' => sprintf('Exactly 1 section for "%s".', $innerSlot->field),
+          'minItems' => 1,
           'maxItems' => 1,
           'items' => $this->itemSchema($innerSlot, FALSE),
         ];
@@ -403,7 +449,7 @@ final class SectionDrafter implements SectionDrafterInterface {
     }
 
     if ($inner !== []) {
-      $properties['children'] = ['type' => 'object', 'properties' => $inner];
+      $properties['children'] = ['type' => 'object', 'properties' => $inner, 'required' => array_keys($inner)];
     }
 
     return ['type' => 'object', 'properties' => $properties];
@@ -594,9 +640,13 @@ final class SectionDrafter implements SectionDrafterInterface {
    *   Field machine name => children for the composer.
    */
   private function pickChildren(array $decoded, array $plan): array {
-    $raw = $decoded['children'] ?? NULL;
+    if ($plan === []) {
+      return [];
+    }
 
-    if ($plan === [] || !is_array($raw)) {
+    $raw = $this->slotLists($decoded, array_keys($plan));
+
+    if ($raw === []) {
       return [];
     }
 
@@ -661,13 +711,16 @@ final class SectionDrafter implements SectionDrafterInterface {
     }
 
     $child = ['bundle' => $bundle, 'values' => $this->pickValues($profile, $item)];
-    $innerRaw = $item['children'] ?? NULL;
+    $innerSlots = $this->slots->slotsFor($bundle);
+    $innerRaw = $withInner
+      ? $this->slotLists($item, array_map(static fn($s): string => $s->field, $innerSlots))
+      : [];
 
-    if (!$withInner || !is_array($innerRaw)) {
+    if ($innerRaw === []) {
       return $child;
     }
 
-    foreach ($this->slots->slotsFor($bundle) as $innerSlot) {
+    foreach ($innerSlots as $innerSlot) {
       $list = $innerRaw[$innerSlot->field] ?? NULL;
 
       if (!is_array($list)) {
@@ -684,6 +737,56 @@ final class SectionDrafter implements SectionDrafterInterface {
     }
 
     return $child;
+  }
+
+  /**
+   * The children in an answer, wherever the model put them.
+   *
+   * MEASURED 2026-09-28 on a live run: asked for seven 3D carousel items, the
+   * model returned all seven under "pb_content_3d_car_body" at the TOP of its
+   * answer, with no "children" wrapper — and every one was dropped, leaving an
+   * empty carousel. The slot names are this section's own field names, so a
+   * key that matches one can only mean that slot.
+   *
+   * @param array<mixed> $container
+   *   The answer, or one item of it.
+   * @param list<string> $fields
+   *   The slot fields that may hold children here.
+   *
+   * @return array<mixed>
+   *   The "children" object when the model used it, otherwise the slot keys
+   *   found at the top level. Empty when there are none.
+   */
+  private function slotLists(array $container, array $fields): array {
+    if (is_array($container['children'] ?? NULL)) {
+      return $container['children'];
+    }
+
+    return array_intersect_key($container, array_flip($fields));
+  }
+
+  /**
+   * The first count the words state, as "How many" would have held it.
+   *
+   * "Write an accordion of five questions" gives 5. Whole words only, so the
+   * "2" in "h2" is not a count. Capped at the form's own maximum, 12.
+   *
+   * @param string $words
+   *   What the person asked for.
+   *
+   * @return int
+   *   1 to 12, or 0 when the words state no count.
+   */
+  public static function numberIn(string $words): int {
+    $pattern = '/\\b(\\d{1,2}|' . implode('|', array_keys(self::NUMBER_WORDS)) . ')\\b/i';
+
+    if (!preg_match($pattern, $words, $match)) {
+      return 0;
+    }
+
+    $n = ctype_digit($match[1]) ? (int) $match[1] : self::NUMBER_WORDS[strtolower($match[1])];
+
+    return max(0, min(12, $n));
   }
 
 }
