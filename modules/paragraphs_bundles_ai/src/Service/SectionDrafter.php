@@ -7,6 +7,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 use Drupal\Component\Plugin\PluginManagerInterface;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
 use Drupal\ai\Dto\StructuredOutputSchema;
 use Drupal\ai\OperationType\Chat\ChatInput;
 use Drupal\ai\OperationType\Chat\ChatMessage;
@@ -254,10 +255,7 @@ final class SectionDrafter implements SectionDrafterInterface {
       $text = method_exists($answer, 'getText') ? (string) $answer->getText() : '';
     }
     catch (\Throwable $error) {
-      // The provider's own message is relayed rather than replaced: "model not
-      // found" and "rate limited" need different actions from the person, and
-      // one generic sentence hides which one happened.
-      return $this->t('The AI provider could not answer: @error', ['@error' => $error->getMessage()]);
+      return $this->providerFailure($error);
     }
 
     $decoded = json_decode($text, TRUE);
@@ -787,6 +785,34 @@ final class SectionDrafter implements SectionDrafterInterface {
     $n = ctype_digit($match[1]) ? (int) $match[1] : self::NUMBER_WORDS[strtolower($match[1])];
 
     return max(0, min(12, $n));
+  }
+
+  /**
+   * What to tell the person when the provider did not answer.
+   *
+   * A timeout gets its own sentence. Measured 2026-09-28: a 3D carousel of
+   * seven items took longer than the site's 60-second limit twice, and the
+   * person saw raw cURL text with nothing saying where the limit lives.
+   *
+   * @param \Throwable $error
+   *   What the provider threw.
+   *
+   * @return \Drupal\Core\StringTranslation\TranslatableMarkup
+   *   One plain sentence.
+   */
+  private function providerFailure(\Throwable $error): TranslatableMarkup {
+    if (preg_match('/cURL error 28|timed out/i', $error->getMessage())) {
+      $set = $this->configFactory->get('ai.settings')->get('request_timeout');
+      $limit = is_numeric($set) && (int) $set > 0 ? (int) $set : 60;
+
+      return $this->t('The AI took longer than this site allows (@seconds seconds) and the answer was lost. Ask for fewer items, or raise "Request timeout" at Configuration › AI › Settings, under Advanced.', [
+        '@seconds' => $limit,
+      ]);
+    }
+
+    // The provider's own message is relayed rather than replaced: "model not
+    // found" and "rate limited" need different actions from the person.
+    return $this->t('The AI provider could not answer: @error', ['@error' => $error->getMessage()]);
   }
 
 }

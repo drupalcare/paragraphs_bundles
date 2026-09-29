@@ -249,6 +249,21 @@ final class ChildSlotsTest extends KernelTestBase {
   }
 
   /**
+   * A timeout says what happened and where the limit is, not raw cURL text.
+   *
+   * Measured 2026-09-28: a 3D carousel of seven items timed out twice.
+   */
+  public function testTimeoutSaysWhereTheLimitIs(): void {
+    $draft = $this->drafter(['throw' => 'cURL error 28: Operation timed out after 60001 milliseconds'])
+      ->draft('slideshow_bundle', 'Three slides about roses.', 3);
+
+    self::assertFalse($draft->usable);
+    $said = implode(' ', array_map('strval', $draft->refusals));
+    self::assertStringContainsString('took longer than this site allows (60 seconds)', $said);
+    self::assertStringNotContainsString('cURL', $said);
+  }
+
+  /**
    * Children written under the slot's own name, with no "children" wrapper.
    *
    * The shape a live model returned on 2026-09-28 for a 3D carousel: all
@@ -341,6 +356,12 @@ final class ChildSlotsTest extends KernelTestBase {
        */
       public function chat(ChatInput $input, string $model, array $tags): object {
         $this->test->record($input);
+
+        // A test can make the provider fail the way a real one does.
+        if (is_string($this->answer['throw'] ?? NULL)) {
+          throw new \RuntimeException($this->answer['throw']);
+        }
+
         $message = new ChatMessage('assistant', (string) json_encode($this->answer));
 
         return new class($message) {
