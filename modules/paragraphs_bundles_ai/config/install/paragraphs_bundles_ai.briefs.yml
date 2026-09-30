@@ -90,18 +90,17 @@ briefs:
       pb_display_bottom_navigation: dot
     prompts:
       text: >-
-        Write a slideshow of four slides about our autumn planting range.
-        Heading "Plant now, enjoy it in spring" as an h2, centred. Name each
-        slide after one plant, with a Simple inside saying in one line why it
-        is worth planting now. Keep the slide titles the same length.
+        Write a slideshow of four slides on our autumn planting range. Heading "Plant now, enjoy it
+        in spring" as an h2, centred. Each slide holds a Simple: one plant as an h3 title, centred,
+        and one line on why to plant it now. Leave the slide titles empty.
       images: >-
         Write a slideshow of five slides for our display gardens. Heading
         "The gardens in September" as an h2, centred. Each slide holds an
         Image, titled with what it shows in two or three words.
       hero: >-
-        Write a slideshow of three slides for the top of the home page.
-        Heading "Autumn at the nursery" as an h2, centred. Each slide holds a
-        Hero with one line of body and a two-word link title.
+        Write a slideshow of three slides for the top of the home page. Heading "Autumn at the
+        nursery" as an h2, centred. Each slide holds a Hero with a short heading, one line of body
+        and no link. Leave the slide titles empty.
     practices: |
       Best practices for creating professional content:
       Each slide has its own section, each section accpt paragrpah bundle.
@@ -464,9 +463,9 @@ briefs:
     features:
       pb_display_hero: pb__ds_middle
     prompt: >-
-      Write a hero for the top of the home page. Heading "Autumn planting
-      starts now" as an h2, centred. One line of body on bare-root roses
-      arriving this week, and a two-word link title.
+      Write a hero for the top of the home page. Heading "Autumn planting starts now" as an h2,
+      centred. One line of body on bare-root roses arriving this week. No link: leave the link title
+      empty, the link is added later with its address.
     practices: |
       Best practices for creating professional content:
       Body and image are both required, a hero with no picture is just text.
