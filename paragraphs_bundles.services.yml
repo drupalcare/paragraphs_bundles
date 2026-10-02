@@ -175,6 +175,41 @@ services:
   Drupal\paragraphs_bundles\Hook\PbCssAlterHook:
     autowire: true
 
+  # Paragraphs List: back to the list after saving a paragraph from it.
+  Drupal\paragraphs_bundles\Hook\PbParagraphEditHook:
+    arguments:
+      - '@current_route_match'
+
+  # ---------------------------------------------------------------------------
+  # Paragraphs List index — derived table (pid -> root entity, depth, label).
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.list_indexer:
+    class: Drupal\paragraphs_bundles\Service\ListIndex\ListIndexer
+    arguments:
+      - '@database'
+      - '@entity_type.manager'
+      - '@entity_field.manager'
+      - '@theme.manager'
+      - '@theme.initialization'
+      - '@config.factory'
+      - '@logger.channel.paragraphs_bundles'
+
+  Drupal\paragraphs_bundles\Service\ListIndex\ListIndexerInterface:
+    alias: paragraphs_bundles.list_indexer
+
+  paragraphs_bundles.list_index_query:
+    class: Drupal\paragraphs_bundles\Service\ListIndex\ListIndexQuery
+    arguments:
+      - '@database'
+      - '@cache.default'
+
+  Drupal\paragraphs_bundles\Hook\PbListIndexHook:
+    arguments:
+      - '@paragraphs_bundles.list_indexer'
+      - '@queue'
+      - '@state'
+      - '@logger.channel.paragraphs_bundles'
+
   # Attaches the CSS-classes validator to every bundle carrying that field.
   Drupal\paragraphs_bundles\Hook\PbCssClassesFieldHook:
     autowire: true

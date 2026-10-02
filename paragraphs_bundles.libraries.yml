@@ -65,3 +65,18 @@ opacity-range:
   dependencies:
     - core/drupal
     - core/once
+
+# Paragraphs List — layout CSS (no colour, so the admin theme decides how it
+# looks), the Delete Selected confirm and the Columns control. Attached by
+# ParagraphsListForm. Behaviors rather than inline handlers, so it works under
+# a CSP that forbids inline scripts.
+paragraphs-list:
+  css:
+    layout:
+      css/paragraphs-bundles-paragraphs-list.css: {}
+  js:
+    js/paragraphs-bundles-paragraphs-list.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupal.announce
+    - core/once

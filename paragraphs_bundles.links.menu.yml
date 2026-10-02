@@ -1,0 +1,20 @@
+# The Paragraphs List, under Content.
+paragraphs_bundles.paragraphs_list:
+  title: 'Paragraphs List'
+  description: 'View a list of paragraphs'
+  parent: system.admin_content
+  route_name: paragraphs_bundles.paragraphs_list
+  menu_name: admin
+  weight: 0
+
+# Drupal 11+ left sidebar (the `navigation` module). Its Content section
+# renders a separate menu named `content`, not the `admin` menu's Content
+# branch, so links registered only under system.admin_content are invisible
+# there. This mirrors the admin link into the `content` menu — a duplicate
+# registration, not a move.
+paragraphs_bundles.navigation.paragraphs_list:
+  title: 'Paragraphs List'
+  description: 'View a list of paragraphs'
+  route_name: paragraphs_bundles.paragraphs_list
+  menu_name: content
+  weight: 20

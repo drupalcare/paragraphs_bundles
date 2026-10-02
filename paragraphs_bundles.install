@@ -130,15 +130,120 @@ function paragraphs_bundles_pb_css_classes_wire_bundle(string $module_name, stri
 }
 
 /**
+ * Implements hook_install().
+ *
+ * A site that already has paragraphs gets its Paragraphs List index filled by
+ * a chunked queue on cron, not by one long install request.
+ */
+function paragraphs_bundles_install(): void {
+  if (\Drupal::database()->schema()->tableExists('paragraphs_bundles_list_index')) {
+    \Drupal::queue('paragraphs_bundles_list_index_rebuild')->createItem(['after' => 0]);
+  }
+}
+
+/**
  * Implements hook_uninstall().
  *
  * Wipe the public://paragraphs_bundles/ directory so reinstalls start
  * clean.
  */
 function paragraphs_bundles_uninstall(): void {
+  // The Paragraphs List index table is dropped with the module (hook_schema);
+  // its rebuild queue is not, so empty it here.
+  \Drupal::queue('paragraphs_bundles_list_index_rebuild')->deleteQueue();
   /** @var \Drupal\paragraphs_bundles\Service\Css\PbCssFileManagerInterface $files */
   $files = \Drupal::service(PbCssFileManagerInterface::class);
   $files->deleteAll();
+}
+
+/**
+ * Implements hook_schema().
+ *
+ * The Paragraphs List index: one row per paragraph, DERIVED from the
+ * paragraphs' own parent_type / parent_id columns and never edited by hand.
+ * It exists so the list page can answer every query from an index and touch
+ * one page of rows, however many paragraphs the site holds. No node titles are
+ * stored here (node_field_data owns them); `label` is a derived copy of
+ * Paragraph::label(), kept so the page can search and sort it.
+ *
+ * @return array<string, array<string, mixed>>
+ *   The table definitions.
+ */
+function paragraphs_bundles_schema(): array {
+  $schema['paragraphs_bundles_list_index'] = [
+    'description' => 'Derived Paragraphs List index: one row per paragraph.',
+    'fields' => [
+      'pid' => [
+        'description' => 'The paragraph id.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ],
+      'bundle' => [
+        'description' => 'The paragraph type.',
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'root_type' => [
+        'description' => 'Entity type at the top of the chain; empty when orphaned.',
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'root_id' => [
+        'description' => 'Id of the root entity; 0 when orphaned. Not NULL so keyset paging can compare it.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'depth' => [
+        'description' => 'Nesting depth: 1 is a direct child of the root; 0 when orphaned.',
+        'type' => 'int',
+        'size' => 'tiny',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'langcode' => [
+        'description' => 'The paragraph default language.',
+        'type' => 'varchar_ascii',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'label' => [
+        'description' => 'Derived copy of Paragraph::label(), first 191 characters.',
+        'type' => 'varchar',
+        // 191, not 255: Drupal's MySQL driver prefixes any longer index at 191
+        // characters, and a prefix index cannot serve ORDER BY, so a longer
+        // column would make sorting by label a full scan with a filesort.
+        'length' => 191,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'root_title' => [
+        'description' => 'Derived copy of the root entity label() in its default translation, first 191 characters; empty when orphaned.',
+        'type' => 'varchar',
+        // 191 for the same reason as label: a longer column gets a prefix index
+        // that cannot serve ORDER BY.
+        'length' => 191,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+    ],
+    'primary key' => ['pid'],
+    'indexes' => [
+      'bundle_pid' => ['bundle', 'pid'],
+      'root_pid' => ['root_type', 'root_id', 'pid'],
+      'label_pid' => ['label', 'pid'],
+      'root_title_pid' => ['root_title', 'pid'],
+    ],
+  ];
+  return $schema;
 }
 
 /**
@@ -1204,4 +1309,48 @@ function paragraphs_bundles_update_9009(): string {
   return $done === []
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}
+
+/**
+ * Creates the Paragraphs List index table; a post-update fills it.
+ */
+function paragraphs_bundles_update_9010(): string {
+  $database_schema = \Drupal::database()->schema();
+  if ($database_schema->tableExists('paragraphs_bundles_list_index')) {
+    return (string) t('The Paragraphs List index table already exists.');
+  }
+  $definition = paragraphs_bundles_schema();
+  $database_schema->createTable('paragraphs_bundles_list_index', $definition['paragraphs_bundles_list_index']);
+  return (string) t('Created the Paragraphs List index table; the post-update fills it.');
+}
+
+/**
+ * Adds the root_title column and its index to the Paragraphs List index.
+ */
+function paragraphs_bundles_update_9011(): string {
+  $database_schema = \Drupal::database()->schema();
+  $table = 'paragraphs_bundles_list_index';
+  if (!$database_schema->tableExists($table)) {
+    // Update 9010 has not made the table yet; it will make it complete.
+    return (string) t('The Paragraphs List index table does not exist yet; nothing to add.');
+  }
+  // One source of truth: the column and index specs come from hook_schema().
+  $definition = paragraphs_bundles_schema()[$table];
+  $fields = $definition['fields'];
+  $indexes = $definition['indexes'];
+  if (!is_array($fields) || !is_array($indexes) || !is_array($fields['root_title'] ?? NULL) || !is_array($indexes['root_title_pid'] ?? NULL)) {
+    throw new \LogicException('paragraphs_bundles_schema() lacks the root_title definition.');
+  }
+  $done = [];
+  if (!$database_schema->fieldExists($table, 'root_title')) {
+    $database_schema->addField($table, 'root_title', $fields['root_title']);
+    $done[] = 'column';
+  }
+  if (!$database_schema->indexExists($table, 'root_title_pid')) {
+    $database_schema->addIndex($table, 'root_title_pid', $indexes['root_title_pid'], $definition);
+    $done[] = 'index';
+  }
+  return $done === []
+    ? (string) t('The root_title column and index already exist.')
+    : (string) t('Added the root_title @what; a post-update fills it.', ['@what' => implode(' and ', $done)]);
 }

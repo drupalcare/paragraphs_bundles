@@ -5,6 +5,42 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [2.0.0] — 2026-07-06
 
+### Added — the Paragraphs List, moved here from PB Import and rebuilt
+
+- **`/admin/content/paragraphs/paragraphs-list`** now ships in this module, at
+  the same address and under Content (admin menu and the sidebar's `content`
+  menu). PB Import no longer ships it. Its edit form at
+  `/admin/content/paragraph/{paragraph}/edit` returns to the list after saving.
+  The delete confirmation is a behavior, not an inline `onclick`, so it works
+  under a CSP that forbids inline scripts. The form id is now
+  `paragraphs_bundles_paragraphs_list_form`.
+- **New columns and tools:** PID (was "ID"), NID and a linked Content title;
+  sort by PID, Type, NID, Content title and Label; search by content title
+  ("starts with", or the slower "contains") and by label ("contains"); a row of
+  checkboxes above the table hides and shows Type, NID, Content title, Label and
+  Parent (JavaScript, remembered in the browser); Previous / Next paging instead
+  of page numbers, bookmarkable. Layout-only CSS: no colours, so the admin theme
+  decides how it looks.
+- **Its own permission, `access paragraphs list`** (restricted: the list shows
+  unpublished paragraphs too). It replaces `administer site configuration` for
+  the list and the undefined `administer paragraphs` for edit. Edit and delete
+  also need entity update access, which Paragraphs answers from the host content
+  (a paragraph nothing uses is editable with the permission alone). A row you may
+  not update has no usable select box and no Edit link, and Delete Selected
+  re-checks every id on the server and says how many it skipped. **The
+  post-update `grant_paragraphs_list_permission` gives the permission to every
+  role that has `administer site configuration`.**
+- **Built for large sites:** a derived table, `paragraphs_bundles_list_index`
+  (type, root entity, depth, a copy of the Label and of the root's title),
+  answers every query; it is rebuilt from the paragraphs' own parent columns on
+  save and delete, never edited by hand. The count is cached; paging is by
+  keyset. An index failure is logged and queues a rebuild, and never blocks a
+  save. **`drush updb` creates the table (9010), adds the title column to a
+  table made without it (9011), and post-updates fill it, 500 paragraphs a
+  step.** Drush: `paragraphs-bundles:list-index:rebuild` (chunked, resumable) and
+  `paragraphs-bundles:list-index:verify` (`--all` for everything; exits non-zero
+  on drift). See `docs/PARAGRAPHS-LIST-INDEX.md`.
+
 ### Added — 3D carousel: a coverflow geometry
 
 - **New field `pb_display_3d_car_style`** ("Carousel style", Display →

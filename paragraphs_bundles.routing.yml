@@ -1,0 +1,39 @@
+# The Paragraphs List, moved here from pb_import. Paths and titles are unchanged
+# so bookmarks keep working. Access: the list needs `access paragraphs list`;
+# edit and delete also need entity update access (Paragraphs' own handler asks
+# the host entity, and allows a paragraph that has no host).
+paragraphs_bundles.paragraphs_list:
+  path: '/admin/content/paragraphs/paragraphs-list'
+  defaults:
+    _form: '\Drupal\paragraphs_bundles\Form\ParagraphsListForm'
+    _title: 'Paragraphs List'
+  requirements:
+    _permission: 'access paragraphs list'
+
+paragraphs_bundles.paragraph_edit:
+  path: '/admin/content/paragraph/{paragraph}/edit'
+  defaults:
+    _entity_form: 'paragraph.default'
+    _title: 'Edit Paragraph'
+  requirements:
+    _permission: 'access paragraphs list'
+    _entity_access: 'paragraph.update'
+  options:
+    parameters:
+      paragraph:
+        type: entity:paragraph
+
+# Nothing links here; it renders the same list and is kept only so an existing
+# bookmark keeps answering.
+paragraphs_bundles.paragraphs_delete:
+  path: '/admin/content/paragraphs/delete/{paragraph}'
+  defaults:
+    _form: '\Drupal\paragraphs_bundles\Form\ParagraphsListForm'
+    _title: 'Delete Paragraph'
+  requirements:
+    _permission: 'access paragraphs list'
+    _entity_access: 'paragraph.delete'
+  options:
+    parameters:
+      paragraph:
+        type: entity:paragraph

@@ -1,0 +1,4 @@
+access paragraphs list:
+  title: 'Access the Paragraphs List'
+  description: 'Shows every paragraph on the site, including unpublished ones, and lets the user edit or delete those whose host content they may edit. Paragraphs nothing uses are editable with this permission alone.'
+  restrict access: true

@@ -1,0 +1,140 @@
+/**
+ * @file
+ * Paragraphs List: layout only.
+ *
+ * Layout v2: row 1 is the summary (left) and the always-visible Columns
+ * checkboxes (right); row 2 is the filters, bottom-aligned, then the table.
+ *
+ * Two rules, kept apart on purpose:
+ *  - LAYOUT (display, grid/flex, gap, alignment, sizing, overflow, margins and
+ *    padding used for layout) is written with ordinary class specificity,
+ *    scoped under .pb-paragraphs-list, so no admin theme can break it. A
+ *    zero-specificity :where() rule lost to Claro and left the Columns control
+ *    at the wrong edge.
+ *  - LOOKS (colour, background, border colour, font, shadow, radius) are
+ *    absent, so the admin theme (Claro, Gin, any other) owns how it looks.
+ * No !important. Logical properties throughout.
+ */
+
+/* ROW 1: the summary on the left, the Columns checkboxes on the right. It
+   wraps, so on a narrow screen the checkboxes stack under the summary, both at
+   the start edge. */
+.pb-paragraphs-list .pb-paragraphs-list__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  margin-block: 0.75rem;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__bar > * {
+  margin-block: 0;
+  min-inline-size: 0;
+  max-inline-size: 100%;
+}
+
+/* The Columns fieldset: theme fieldset margins and widths neutralised, layout
+   only; its border, padding and legend styling stay the theme's. */
+.pb-paragraphs-list .pb-paragraphs-list__columns {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 1rem;
+  inline-size: auto;
+  margin: 0;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__columns > label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0;
+  inline-size: auto;
+  white-space: nowrap;
+}
+
+/* ROW 2: the filters in one flex row, bottom-aligned, wrapping in order. */
+.pb-paragraphs-list .pb-paragraphs-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  align-items: flex-end;
+  margin-block: 0.75rem 1rem;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__filters > * {
+  flex: 1 1 12rem;
+  min-inline-size: 0;
+  margin-block: 0;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__filters .form-item {
+  margin-block: 0;
+  inline-size: auto;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__filters :is(input, select) {
+  inline-size: 100%;
+  max-inline-size: 100%;
+  box-sizing: border-box;
+}
+
+/* Filter and Reset share the row, bottom-aligned with the inputs. */
+.pb-paragraphs-list .pb-paragraphs-list__filters > .pb-paragraphs-list__filter-actions {
+  display: flex;
+  flex: 0 0 auto;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: flex-end;
+  margin-block: 0;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__filter-actions .button {
+  inline-size: auto;
+  max-inline-size: 100%;
+  margin: 0;
+}
+
+/* The table sits in a region that scrolls sideways instead of breaking out. */
+.pb-paragraphs-list .pb-paragraphs-list__scroll {
+  max-inline-size: 100%;
+  overflow-x: auto;
+}
+
+.pb-paragraphs-list .pb-paragraphs-list__table {
+  inline-size: 100%;
+}
+
+/* Long labels wrap instead of stretching the table. */
+.pb-paragraphs-list .pb-col--label {
+  min-inline-size: 12rem;
+  overflow-wrap: anywhere;
+}
+
+.pb-paragraphs-list .pb-col--node_title,
+.pb-paragraphs-list .pb-col--parent {
+  min-inline-size: 8rem;
+  overflow-wrap: anywhere;
+}
+
+.pb-paragraphs-list .pb-col--id,
+.pb-paragraphs-list .pb-col--nid {
+  white-space: nowrap;
+}
+
+/* Previous / Next. */
+.pb-paragraphs-list .pb-paragraphs-list__pager {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin: 1rem 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* A hidden column stays hidden whatever the theme says. */
+.pb-paragraphs-list .pb-col[hidden] {
+  display: none;
+}

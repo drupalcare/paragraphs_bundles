@@ -75,6 +75,12 @@ parameters:
     - message: '#^Function paragraphs_bundles_post_update_regenerate_dynamic_css\(\) has parameter \$sandbox with no value type specified in iterable type array\.$#'
       path: paragraphs_bundles.post_update.php
       count: 1
+    - message: '#^Function paragraphs_bundles_post_update_build_list_index\(\) has parameter \$sandbox with no value type specified in iterable type array\.$#'
+      path: paragraphs_bundles.post_update.php
+      count: 1
+    - message: '#^Function paragraphs_bundles_post_update_refill_list_index_root_title\(\) has parameter \$sandbox with no value type specified in iterable type array\.$#'
+      path: paragraphs_bundles.post_update.php
+      count: 1
     # `parameterByRef.type` cannot be resolved from this side. It fires where a
     # by-reference `array<string, mixed>` of ours meets a core signature that
     # types the same parameter as a bare `array` — `NestedArray::getValue()` /

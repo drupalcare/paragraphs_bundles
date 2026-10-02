@@ -132,6 +132,36 @@ Notes:
 - Section bundles (the children inside accordions, tabs, slideshows and
   the like) do not have the box. Style them through their parent.
 
+## The Paragraphs List
+
+Every paragraph on the site, in one table, at **Content → Paragraphs List**
+(`/admin/content/paragraphs/paragraphs-list`). It was part of PB Import and
+lives here now, at the same address.
+
+- **Permission:** `access paragraphs list` (restricted: it shows unpublished
+  paragraphs too). Edit and delete also need permission to edit the content the
+  paragraph sits in; a row you may not change has no usable select box or Edit
+  link. Paragraphs nothing uses are editable with the list permission alone.
+- **Columns:** PID, Type, NID, Content title (linked), Label, Parent, Edit. The
+  checkboxes above the table hide and show Type, NID, Content title, Label and
+  Parent; your choice is remembered in the browser (needs JavaScript).
+- **Sort** by PID, Type, NID, Content title or Label. **Filter** by type.
+  **Search** by content title ("starts with" is fast, "contains" is slower) and
+  by label ("contains", slower).
+- **Previous / Next**, 50 per page; no page numbers, so a position far into a
+  big site costs the same as the first page. **Delete Selected** asks first and
+  re-checks each paragraph's access on the server.
+- **On a large site:** the list reads a derived index table, not the paragraph
+  tables. `drush updb` builds it; keep it true with the two commands below. The
+  two "contains" searches scan the index and get slower as the site grows.
+
+```
+drush paragraphs-bundles:list-index:verify --all   # exits non-zero on any drift
+drush paragraphs-bundles:list-index:rebuild        # chunked, resumable
+```
+
+Design and details: [docs/PARAGRAPHS-LIST-INDEX.md](docs/PARAGRAPHS-LIST-INDEX.md).
+
 ## Upgrading from 1.x
 
 v2 is a **drop-in upgrade**: same field machine names, same stored

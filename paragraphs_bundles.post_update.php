@@ -13,6 +13,8 @@ use Drupal\node\NodeInterface;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs\ParagraphsTypeInterface;
 use Drupal\paragraphs_bundles\Service\Css\PbDynamicCssBuilder;
+use Drupal\paragraphs_bundles\Service\ListIndex\ListIndexerInterface;
+use Drupal\user\Entity\Role;
 
 /**
  * Regenerates every per-paragraph and pb_content dynamic CSS file.
@@ -338,4 +340,104 @@ function _paragraphs_bundles_describe_sections(): string {
     '@filled' => $filled,
     '@kept' => $kept,
   ]);
+}
+
+/**
+ * Fills the Paragraphs List index, 500 paragraphs per step.
+ */
+function paragraphs_bundles_post_update_build_list_index(array &$sandbox): string {
+  // One line above on purpose: `drush updatedb:status` renders the docblock in
+  // a narrow column. update_9010 created the table; this fills it. Each step
+  // rebuilds the next 500 paragraphs by id, so it is resumable and never holds
+  // one long request however many paragraphs the site has. Re-running it only
+  // rewrites rows from the paragraphs, so it is safe to repeat. It queues a
+  // second, label-complete pass (see the comment where it does).
+  $indexer = \Drupal::service(ListIndexerInterface::class);
+  if (!isset($sandbox['after'])) {
+    $sandbox['after'] = 0;
+    $sandbox['done'] = 0;
+    // A plain count on the base table, not an entity query (no access check is
+    // needed for index maintenance).
+    $count = \Drupal::database()->select('paragraphs_item', 'p')->countQuery()->execute()?->fetchField();
+    $sandbox['total'] = is_numeric($count) ? (int) $count : 0;
+  }
+  $last = $indexer->rebuildChunk((int) $sandbox['after'], 500);
+  if ($last === NULL) {
+    $sandbox['#finished'] = 1;
+    // Database updates run under a maintenance theme that cannot render the
+    // paragraph summary an orphan's label contains, so orphan labels come out
+    // short here. Queue one clean pass under a normal theme (cron, or
+    // `drush paragraphs-bundles:list-index:rebuild` right away).
+    $queue = \Drupal::queue('paragraphs_bundles_list_index_rebuild');
+    if ($queue->numberOfItems() === 0) {
+      $queue->createItem(['after' => 0]);
+    }
+    return (string) t('Indexed @count paragraphs for the Paragraphs List. Orphan labels are completed by the queued rebuild on the next cron run, or at once with: drush paragraphs-bundles:list-index:rebuild', ['@count' => $sandbox['done']]);
+  }
+  $sandbox['after'] = $last;
+  $sandbox['done'] += 500;
+  $sandbox['#finished'] = $sandbox['total'] > 0 ? min(0.99, $sandbox['done'] / $sandbox['total']) : 0.99;
+  return (string) t('Indexed up to paragraph @id.', ['@id' => $last]);
+}
+
+/**
+ * Grants "access paragraphs list" to every role that has "administer site configuration".
+ */
+function paragraphs_bundles_post_update_grant_paragraphs_list_permission(): string {
+  // The list used to need "administer site configuration"; it now has its own
+  // permission, so the roles that could open it keep being able to. Admin
+  // roles already have everything. Safe to run twice.
+  $granted = [];
+  foreach (Role::loadMultiple() as $role) {
+    if ($role->isAdmin() || !$role->hasPermission('administer site configuration') || $role->hasPermission('access paragraphs list')) {
+      continue;
+    }
+    $role->grantPermission('access paragraphs list')->save();
+    $granted[] = (string) $role->id();
+  }
+  return $granted === []
+    ? (string) t('No role needed the Paragraphs List permission.')
+    : (string) t('Granted "access paragraphs list" to: @roles.', ['@roles' => implode(', ', $granted)]);
+}
+
+/**
+ * Fills the Paragraphs List index root_title column where it is still empty.
+ */
+function paragraphs_bundles_post_update_refill_list_index_root_title(array &$sandbox): string {
+  // One-line docblock on purpose (see build_list_index). Rows of a rooted
+  // paragraph with an empty root_title are the ones update 9011 just added the
+  // column to; rewriting a row only re-derives it, so this is safe to repeat,
+  // and it does nothing when nothing needs filling (a fresh table is complete).
+  $indexer = \Drupal::service(ListIndexerInterface::class);
+  if (!isset($sandbox['after'])) {
+    $needs = \Drupal::database()->select('paragraphs_bundles_list_index', 'i')
+      ->fields('i', ['pid'])
+      ->condition('i.root_type', '', '<>')
+      ->condition('i.root_title', '')
+      ->range(0, 1)
+      ->execute()
+      ?->fetchField();
+    if ($needs === FALSE || $needs === NULL) {
+      $sandbox['#finished'] = 1;
+      return (string) t('No Paragraphs List row needed a root title.');
+    }
+    $sandbox['after'] = 0;
+    $sandbox['done'] = 0;
+  }
+  $last = $indexer->rebuildChunk((int) $sandbox['after'], 500);
+  if ($last === NULL) {
+    $sandbox['#finished'] = 1;
+    // Database updates cannot render an orphan's summary (see build_list_index),
+    // and this pass rewrote every row: queue one clean pass for those labels.
+    $queue = \Drupal::queue('paragraphs_bundles_list_index_rebuild');
+    if ($queue->numberOfItems() === 0) {
+      $queue->createItem(['after' => 0]);
+    }
+    return (string) t('Filled the root title of the Paragraphs List index; orphan labels are completed by the queued rebuild (cron, or drush paragraphs-bundles:list-index:rebuild).');
+  }
+  $sandbox['after'] = $last;
+  $sandbox['done'] += 500;
+  // The total is unknown cheaply; creep towards 1 without reaching it.
+  $sandbox['#finished'] = 1 - 1 / (1 + $sandbox['done'] / 500);
+  return (string) t('Filled up to paragraph @id.', ['@id' => $last]);
 }
