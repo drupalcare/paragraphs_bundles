@@ -114,32 +114,24 @@ final class ListIndexQuery {
       $cursor = $this->decodeCursor($criteria['after'], $columns);
     }
 
-    $query = $this->baseQuery($criteria);
-    $query->fields('i');
-
-    // Ascending order reads "greater than the cursor"; descending, "less
-    // than". Paging backwards flips both, and the rows are flipped back.
-    $ascending = ($criteria['dir'] === 'asc') !== $backwards;
-    if ($cursor !== NULL) {
-      $query->condition($this->keysetCondition($query, $columns, $cursor, $ascending ? '>' : '<'));
+    if ($criteria['sort'] === 'node_title') {
+      $rows = $this->titleSortedRows($criteria, $cursor, $backwards);
     }
-    foreach ($columns as $column) {
-      $query->orderBy($column, $ascending ? 'ASC' : 'DESC');
-    }
-    $query->range(0, self::PAGE_SIZE + 1);
+    else {
+      $query = $this->baseQuery($criteria);
+      $query->fields('i');
 
-    $rows = [];
-    foreach (self::fetchRows($query) as $record) {
-      $rows[] = [
-        'pid' => self::toInt($record['pid'] ?? 0),
-        'bundle' => self::toString($record['bundle'] ?? ''),
-        'root_type' => self::toString($record['root_type'] ?? ''),
-        'root_id' => self::toInt($record['root_id'] ?? 0),
-        'depth' => self::toInt($record['depth'] ?? 0),
-        'langcode' => self::toString($record['langcode'] ?? ''),
-        'label' => self::toString($record['label'] ?? ''),
-        'root_title' => self::toString($record['root_title'] ?? ''),
-      ];
+      // Ascending order reads "greater than the cursor"; descending, "less
+      // than". Paging backwards flips both, and the rows are flipped back.
+      $ascending = ($criteria['dir'] === 'asc') !== $backwards;
+      if ($cursor !== NULL) {
+        $query->condition($this->keysetCondition($query, $columns, $cursor, $ascending ? '>' : '<'));
+      }
+      foreach ($columns as $column) {
+        $query->orderBy($column, $ascending ? 'ASC' : 'DESC');
+      }
+      $query->range(0, self::PAGE_SIZE + 1);
+      $rows = self::typedRows($query);
     }
     $overflow = count($rows) > self::PAGE_SIZE;
     $rows = array_slice($rows, 0, self::PAGE_SIZE);
@@ -160,6 +152,80 @@ final class ListIndexQuery {
       'next' => $has_next && $rows !== [] ? $this->encodeCursor($rows[count($rows) - 1], $columns) : NULL,
       'prev' => $has_prev && $rows !== [] ? $this->encodeCursor($rows[0], $columns) : NULL,
     ];
+  }
+
+  /**
+   * Reads one page-plus-one of rows sorted by Content title, orphans last.
+   *
+   * Orphans have an empty root_title, which would sort first ascending. They
+   * must come last in BOTH directions, and a mixed-direction ORDER BY cannot
+   * use one index, so the order is two index-served segments read in turn: the
+   * titled rows (a range on (root_title, pid)) and then the untitled ones (the
+   * same index, root_title = '', ordered by pid). A cursor says which segment
+   * it is in (an empty title is the untitled one); a page that runs out of one
+   * segment is filled from the next, so Next and Previous cross the boundary
+   * with no duplicate and no gap.
+   *
+   * @param array{type: string, title: string, title_mode: string, label: string, sort: string, dir: string, after: string, before: string} $criteria
+   *   Normalised criteria.
+   * @param list<int|string>|null $cursor
+   *   The decoded cursor, or NULL for the first page.
+   * @param bool $backwards
+   *   Whether to read the rows before the cursor.
+   *
+   * @return list<array{pid: int, bundle: string, root_type: string, root_id: int, depth: int, langcode: string, label: string, root_title: string}>
+   *   Up to PAGE_SIZE + 1 rows, in display order.
+   */
+  private function titleSortedRows(array $criteria, ?array $cursor, bool $backwards): array {
+    $ascending = ($criteria['dir'] === 'asc') !== $backwards;
+    $start = ($cursor !== NULL && $cursor[0] === '') ? 1 : 0;
+    // Segment 0 is the titled rows, 1 the untitled; forward reads 0 then 1.
+    $order = $backwards ? range($start, 0) : range($start, 1);
+
+    $rows = [];
+    foreach ($order as $position => $segment) {
+      $remaining = self::PAGE_SIZE + 1 - count($rows);
+      if ($remaining <= 0) {
+        break;
+      }
+      $query = $this->baseQuery($criteria);
+      $query->fields('i');
+      $query->condition('i.root_title', '', $segment === 0 ? '<>' : '=');
+      $columns = $segment === 0 ? ['i.root_title', 'i.pid'] : ['i.pid'];
+      if ($position === 0 && $cursor !== NULL) {
+        $values = $segment === 0 ? $cursor : [$cursor[1]];
+        $query->condition($this->keysetCondition($query, $columns, $values, $ascending ? '>' : '<'));
+      }
+      foreach ($columns as $column) {
+        $query->orderBy($column, $ascending ? 'ASC' : 'DESC');
+      }
+      $query->range(0, $remaining);
+      $rows = array_merge($rows, self::typedRows($query));
+    }
+    return $rows;
+  }
+
+  /**
+   * Runs a query on the index and returns its rows with their types fixed.
+   *
+   * @return list<array{pid: int, bundle: string, root_type: string, root_id: int, depth: int, langcode: string, label: string, root_title: string}>
+   *   The rows.
+   */
+  private static function typedRows(SelectInterface $query): array {
+    $rows = [];
+    foreach (self::fetchRows($query) as $record) {
+      $rows[] = [
+        'pid' => self::toInt($record['pid'] ?? 0),
+        'bundle' => self::toString($record['bundle'] ?? ''),
+        'root_type' => self::toString($record['root_type'] ?? ''),
+        'root_id' => self::toInt($record['root_id'] ?? 0),
+        'depth' => self::toInt($record['depth'] ?? 0),
+        'langcode' => self::toString($record['langcode'] ?? ''),
+        'label' => self::toString($record['label'] ?? ''),
+        'root_title' => self::toString($record['root_title'] ?? ''),
+      ];
+    }
+    return $rows;
   }
 
   /**

@@ -246,16 +246,17 @@ final class ParagraphsListIndexTest extends BrowserTestBase {
 
     $this->drupalGet(self::LIST_PATH, ['query' => ['sort' => 'node_title', 'dir' => 'asc']]);
     $this->assertSame(
-      ['—', 'Alpha page', 'Bravo page', 'The Alpha story'],
+      ['Alpha page', 'Bravo page', 'The Alpha story', '—'],
       $this->column('node_title'),
-      'The orphan (no title) first, then the titles in order.'
+      'The titles in order, the orphan (no title) last.'
     );
     $this->assertSession()->elementExists('css', 'th[aria-sort="ascending"] a[href*="sort=node_title"]');
 
     $this->drupalGet(self::LIST_PATH, ['query' => ['sort' => 'node_title', 'dir' => 'desc']]);
     $this->assertSame(
       ['The Alpha story', 'Bravo page', 'Alpha page', '—'],
-      $this->column('node_title')
+      $this->column('node_title'),
+      'Descending: the titles in reverse, the orphan still last.'
     );
   }
 
@@ -272,7 +273,7 @@ final class ParagraphsListIndexTest extends BrowserTestBase {
 
     foreach (['asc', 'desc'] as $dir) {
       $expected = array_map('intval', $database->query(
-        'SELECT pid FROM {paragraphs_bundles_list_index} ORDER BY root_title ' . strtoupper($dir) . ', pid ' . strtoupper($dir)
+        "SELECT pid FROM {paragraphs_bundles_list_index} ORDER BY (root_title = '') ASC, root_title " . strtoupper($dir) . ', pid ' . strtoupper($dir)
       )->fetchCol());
       $this->drupalGet(self::LIST_PATH, ['query' => ['sort' => 'node_title', 'dir' => $dir]]);
       $seen = array_map('intval', $this->column('id'));
@@ -281,6 +282,74 @@ final class ParagraphsListIndexTest extends BrowserTestBase {
       $this->assertSame(array_slice($expected, 0, 100), $seen, "Two pages in $dir order match the index order.");
       $this->clickLink('Previous');
       $this->assertSame(array_slice($expected, 0, 50), array_map('intval', $this->column('id')), 'Previous returns to page one.');
+    }
+  }
+
+  /**
+   * Walks every page of a Content title sort and returns the pids in order.
+   *
+   * @return list<int>
+   *   The pids as the pages showed them, Next after Next.
+   */
+  private function walkTitleSortPages(string $dir): array {
+    $this->drupalGet(self::LIST_PATH, ['query' => ['sort' => 'node_title', 'dir' => $dir]]);
+    $seen = array_map('intval', $this->column('id'));
+    $pages = 1;
+    while ($this->getSession()->getPage()->findLink('Next') !== NULL) {
+      $this->clickLink('Next');
+      $seen = array_merge($seen, array_map('intval', $this->column('id')));
+      $this->assertLessThan(10, ++$pages);
+    }
+    return $seen;
+  }
+
+  /**
+   * Orphans come last under Content title, in both directions, across pages.
+   *
+   * 50 titled rows and 20 orphans: the first page ends exactly at the boundary,
+   * so Next must start in the orphans with no gap and no duplicate.
+   */
+  public function testOrphansComeLastAcrossBoundaryAtPageEnd(): void {
+    $this->threeNodes();
+    for ($i = 0; $i < 47; $i++) {
+      $this->saveNode('Bulk ' . $i, [Paragraph::create(['type' => 'leaf'])]);
+    }
+    $orphans = $this->orphans('container', 20);
+    $database = $this->container->get('database');
+
+    foreach (['asc', 'desc'] as $dir) {
+      $expected = array_map('intval', $database->query(
+        "SELECT pid FROM {paragraphs_bundles_list_index} ORDER BY (root_title = '') ASC, root_title " . strtoupper($dir) . ', pid ' . strtoupper($dir)
+      )->fetchCol());
+      $seen = $this->walkTitleSortPages($dir);
+      $this->assertSame($expected, $seen, "Every row once, in order, $dir.");
+      $this->assertSame(array_slice($seen, -20), $dir === 'asc' ? $orphans : array_reverse($orphans), 'The orphans are the last 20 rows.');
+      $this->assertSame(count($seen), count(array_unique($seen)));
+    }
+  }
+
+  /**
+   * The boundary in the middle of a page, and Previous back across it.
+   */
+  public function testOrphansComeLastWhenTheBoundaryIsMidPage(): void {
+    $this->threeNodes();
+    for ($i = 0; $i < 37; $i++) {
+      $this->saveNode('Bulk ' . $i, [Paragraph::create(['type' => 'leaf'])]);
+    }
+    $this->orphans('container', 30);
+    $database = $this->container->get('database');
+
+    foreach (['asc', 'desc'] as $dir) {
+      $expected = array_map('intval', $database->query(
+        "SELECT pid FROM {paragraphs_bundles_list_index} ORDER BY (root_title = '') ASC, root_title " . strtoupper($dir) . ', pid ' . strtoupper($dir)
+      )->fetchCol());
+      $this->drupalGet(self::LIST_PATH, ['query' => ['sort' => 'node_title', 'dir' => $dir]]);
+      $page1 = array_map('intval', $this->column('id'));
+      $this->assertSame(array_slice($expected, 0, 50), $page1, '40 titled rows and 10 orphans on the first page.');
+      $this->clickLink('Next');
+      $this->assertSame(array_slice($expected, 50), array_map('intval', $this->column('id')), 'The rest, orphans only.');
+      $this->clickLink('Previous');
+      $this->assertSame($page1, array_map('intval', $this->column('id')), 'Previous crosses back over the boundary to the same rows.');
     }
   }
 

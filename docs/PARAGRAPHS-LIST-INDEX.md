@@ -11,7 +11,8 @@ site; the "contains" searches below are the named exceptions.)
   to the node), **Label**, **Parent**, **Edit**. PID, the select box and Edit are
   always shown; the other five can be hidden with the checkboxes above the table
   (JavaScript; the choice is remembered in the browser).
-- **Sort** by PID, Type, NID, Content title and Label.
+- **Sort** by PID, Type, NID, Content title and Label. Under Content title,
+  paragraphs nothing uses (no title) always come last, in both directions.
 - **Filter** by type; **search** by content title ("starts with", or "contains",
   slower) and by label ("contains", slower).
 - **Previous / Next** paging (keyset), 50 per page, in the address so a

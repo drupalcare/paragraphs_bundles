@@ -484,6 +484,39 @@ final class ListIndexTest extends KernelTestBase {
   }
 
   /**
+   * The dynamic-CSS post-update walks paragraph ids by a plain primary-key range.
+   *
+   * It used an entity query (JOIN + GROUP BY), which on a big site scans every
+   * row after the cursor on every batch. Same rule as the index backfill.
+   */
+  public function testDynamicCssPostUpdateIdWalkIsPlainPrimaryKeyRange(): void {
+    $module_path = $this->container->get('extension.list.module')->getPath('paragraphs_bundles');
+    require_once $this->root . '/' . $module_path . '/paragraphs_bundles.post_update.php';
+    $this->saveNode('Styled', [$this->buildChain()]);
+
+    Database::startLog('pb_css_walk');
+    $sandbox = [];
+    paragraphs_bundles_post_update_regenerate_dynamic_css($sandbox);
+    $log = Database::getLog('pb_css_walk');
+
+    $walks = [];
+    foreach ($log as $entry) {
+      $sql = (string) $entry['query'];
+      if (stripos($sql, 'select') === 0 && stripos($sql, 'paragraphs_item') !== FALSE && stripos($sql, 'LIMIT') !== FALSE) {
+        $walks[] = $sql;
+      }
+    }
+    $this->assertNotSame([], $walks, 'The id-walk query was captured.');
+    foreach ($walks as $sql) {
+      $this->assertStringNotContainsStringIgnoringCase('GROUP BY', $sql, $sql);
+      $this->assertStringNotContainsStringIgnoringCase('JOIN', $sql, $sql);
+      $this->assertStringNotContainsStringIgnoringCase('paragraphs_item_field_data', $sql, $sql);
+    }
+    $this->assertSame('paragraph', $sandbox['phase'], 'Behaviour unchanged: the first batch stays in the paragraph phase.');
+    $this->assertGreaterThan(0, $sandbox['progress']);
+  }
+
+  /**
    * Verify catches a planted mismatch and an extra row.
    */
   public function testVerifyCatchesPlantedMismatches(): void {

@@ -100,12 +100,17 @@ function paragraphs_bundles_post_update_regenerate_dynamic_css(array &$sandbox):
   $batch_size = 50;
 
   if ($phase === 'paragraph') {
-    $query = $paragraphStorage->getQuery()
-      ->accessCheck(FALSE)
-      ->condition('id', $last_id, '>')
-      ->sort('id')
-      ->range(0, $batch_size);
-    $ids = $query->execute();
+    // A plain primary-key range on the base table, not an entity query: the
+    // entity query joins the data table and groups, which makes MySQL scan
+    // every row after the cursor on every batch (quadratic on a big site).
+    // Internal maintenance, so no access check is lost.
+    $ids = array_map('intval', \Drupal::database()->select('paragraphs_item', 'p')
+      ->fields('p', ['id'])
+      ->condition('p.id', $last_id, '>')
+      ->orderBy('p.id')
+      ->range(0, $batch_size)
+      ->execute()
+      ?->fetchCol() ?? []);
 
     if (!$ids) {
       // Paragraphs done; hand the cursor to the node phase.
@@ -149,13 +154,15 @@ function paragraphs_bundles_post_update_regenerate_dynamic_css(array &$sandbox):
     }
   }
   elseif ($phase === 'node') {
-    $ids = $nodeStorage->getQuery()
-      ->accessCheck(FALSE)
-      ->condition('type', 'pb_content')
-      ->condition('nid', $last_id, '>')
-      ->sort('nid')
+    // Same reasoning: the node base table carries `type`, so this is one table.
+    $ids = array_map('intval', \Drupal::database()->select('node', 'n')
+      ->fields('n', ['nid'])
+      ->condition('n.type', 'pb_content')
+      ->condition('n.nid', $last_id, '>')
+      ->orderBy('n.nid')
       ->range(0, $batch_size)
-      ->execute();
+      ->execute()
+      ?->fetchCol() ?? []);
 
     if (!$ids) {
       $phase = 'done';
