@@ -11,7 +11,8 @@
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-.page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
+/* .contextual: core's contextual-links wrapper must keep its own size. */
+.page-node-type-pb-content .node--view-mode-full > .node__content > *:not(.paragraphs-bundles, .contextual),
 .page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-width-own) {
   width: 100%;
   max-width: var(--pb-content-width);

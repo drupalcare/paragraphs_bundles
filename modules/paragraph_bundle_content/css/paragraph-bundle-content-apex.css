@@ -20,16 +20,18 @@
 
 .page-node-type-pb-content {
   :is(
-    /* Blocks, titles, and nav inside the content slot */
+    /* Blocks, titles, and nav inside the content slot. Core's contextual-links
+       wrapper (div.contextual) is a direct child of every <nav> block: sized
+       here it spread over the menu and swallowed its clicks when logged in. */
     .apex-main__slot-inner--content :is(
-      .region > nav > *,
+      .region > nav > :not(.contextual),
       .pb-slideshow__title,
       .pb-content__title,
       .region > .apex-block:not(.block-system-main-block)
     ),
 
     /* Non-paragraph fields in the full node view */
-    .node--view-mode-full > .node__content > *:not(.paragraphs-bundles),
+    .node--view-mode-full > .node__content > *:not(.paragraphs-bundles, .contextual),
 
     /* Bundle content wrappers, except ones that must span full width */
     .node--view-mode-full .pb-content__full:not(

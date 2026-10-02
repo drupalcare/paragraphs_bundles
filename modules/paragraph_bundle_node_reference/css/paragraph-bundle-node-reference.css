@@ -19,8 +19,10 @@
   position: relative;
 }
 
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow > *,
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel > * {
+/* Not core's contextual-links wrapper: it is a direct child of a node shown
+   in these view modes, and zeroing its spacing moves the pencil button. */
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow > :not(.contextual),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel > :not(.contextual) {
   margin: 0 !important;
   padding: 0 !important;
 }
