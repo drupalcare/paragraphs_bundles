@@ -9,6 +9,7 @@ use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\paragraphs_bundles_ai\Service\PromptHintsInterface;
+use Drupal\Tests\paragraphs_bundles_ai\Traits\AiCoreSupportTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -37,6 +38,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 final class PromptHintsTest extends KernelTestBase {
+
+  use AiCoreSupportTrait;
 
   /**
    * {@inheritdoc}
@@ -75,6 +78,7 @@ final class PromptHintsTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    $this->skipUnlessCoreSupportsAi();
     parent::setUp();
     $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');

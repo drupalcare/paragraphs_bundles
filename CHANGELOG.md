@@ -52,6 +52,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - In a coverflow, the card that wraps from one end to the other fades out,
   moves while invisible and fades back in, instead of sliding across the fan.
 
+### Fixed — Drupal 12: renaming a paragraphs field or type did not refresh the Paragraphs List index
+
+- The list index rebuild is queued from `field_config_update` and
+  `paragraphs_type_update` by comparing the entity with its original. Both hooks
+  read the magic `->original` property, which Drupal 12 removed, so on Drupal 12
+  the comparison saw nothing and the rebuild was never queued. They now call
+  `getOriginal()` (available since Drupal 11.2). No change on Drupal 11.
+
 ### Fixed — Three columns: a default layout the field does not offer
 
 - `pb_display_three_columns` shipped the default `l4-l4-l4`; its options are

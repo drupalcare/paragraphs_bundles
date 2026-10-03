@@ -54,14 +54,14 @@ final class ParagraphsListConfirmJavascriptTest extends WebDriverTestBase {
     $button->click();
     $this->assertSame(
       'Are you sure you want to delete the selected paragraphs?',
-      $session->getDriver()->getWebDriverSession()->getAlert_text(),
+      $session->getDriver()->getWebDriverSession()->alert()->getText(),
     );
-    $session->getDriver()->getWebDriverSession()->dismiss_alert();
+    $session->getDriver()->getWebDriverSession()->alert()->dismiss();
     $this->assertNotNull($storage->loadUnchanged($id), 'Cancel deleted nothing.');
     $this->assertSession()->pageTextNotContains('Deleted 1 paragraph(s).');
 
     $page->findButton('Delete Selected')->click();
-    $session->getDriver()->getWebDriverSession()->accept_alert();
+    $session->getDriver()->getWebDriverSession()->alert()->accept();
     $this->assertSession()->waitForText('Deleted 1 paragraph(s).');
     $this->assertNull($storage->loadUnchanged($id), 'OK deleted the row.');
   }

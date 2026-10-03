@@ -97,7 +97,10 @@ final class PbListIndexHook {
       || $field->getFieldStorageDefinition()->getSetting('target_type') !== 'paragraph') {
       return;
     }
-    $original = $field->original ?? NULL;
+    // getOriginal(), never ->original: the magic property is deprecated in
+    // 11.2 and REMOVED in 12.0, where `->original ?? NULL` quietly yields NULL
+    // and this hook would never queue the rebuild.
+    $original = $field->getOriginal();
     if (!$original instanceof FieldConfigInterface || $original->getLabel() === $field->getLabel()) {
       return;
     }
@@ -111,7 +114,8 @@ final class PbListIndexHook {
    */
   #[Hook('paragraphs_type_update')]
   public function paragraphsTypeUpdate(EntityInterface $type): void {
-    $original = $type->original ?? NULL;
+    // getOriginal(): see fieldConfigUpdate().
+    $original = $type->getOriginal();
     if ($original instanceof EntityInterface && $original->label() !== $type->label()) {
       $this->queueRebuild();
     }

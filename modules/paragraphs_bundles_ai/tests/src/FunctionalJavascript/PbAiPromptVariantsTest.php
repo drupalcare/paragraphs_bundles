@@ -6,6 +6,7 @@ namespace Drupal\Tests\paragraphs_bundles_ai\FunctionalJavascript;
 
 use Drupal\FunctionalJavascriptTests\WebDriverTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\paragraphs_bundles_ai\Traits\AiCoreSupportTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
@@ -37,6 +38,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[RunTestsInSeparateProcesses]
 final class PbAiPromptVariantsTest extends WebDriverTestBase {
 
+  use AiCoreSupportTrait;
+
   /**
    * {@inheritdoc}
    */
@@ -60,6 +63,7 @@ final class PbAiPromptVariantsTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    $this->skipUnlessCoreSupportsAi();
     parent::setUp();
 
     // THE ONLY THING THE ASSISTANT NEEDS FROM drupal/ai TO RENDER. decide()

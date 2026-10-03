@@ -8,6 +8,7 @@ use Drupal\Component\Serialization\Yaml;
 use Drupal\Component\Utility\Html;
 use Drupal\KernelTests\KernelTestBase;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Tests\paragraphs_bundles\Traits\ModuleFilesTrait;
 use Drupal\Tests\paragraphs_bundles\Traits\PbOptionalBundleModulesTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -28,6 +29,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 final class PbCssClassesContractTest extends KernelTestBase {
+
+  use ModuleFilesTrait;
 
   use PbOptionalBundleModulesTrait;
 
@@ -327,7 +330,7 @@ final class PbCssClassesContractTest extends KernelTestBase {
   private function shippedDisplayFiles(string $prefix): array {
     $root = dirname(__DIR__, 3);
     $found = [];
-    $rii = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($root));
+    $rii = $this->moduleFiles($root);
     foreach ($rii as $file) {
       if (!$file->isFile()) {
         continue;

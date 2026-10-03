@@ -21,7 +21,9 @@
         "drupal/field_group": "^3.4 || ^4"
     },
     "require-dev": {
+        "drupal/ai": "^1.2",
         "drupal/contact_formatter": "^2.0",
+        "drupal/key": "^1.18",
         "drupal/link_attributes": "^2.1",
         "drupal/viewsreference": "^2.0@beta",
         "drupal/webform": "^6.2"

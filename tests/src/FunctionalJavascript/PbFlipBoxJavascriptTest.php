@@ -152,6 +152,24 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
     // the thing worth holding, and PbFlipBoxAriaTest holds it on the markup.
     $toggle = $this->getSession()->getPage()->find('css', '.pb-3d-flip-box__toggle');
     $this->assertNotNull($toggle, 'The flip control is on the page.');
+
+    // Settle the page BEFORE the pointer click. drupal.org's phpunit job failed
+    // here with `ElementClickIntercepted ... not clickable at point (990, 8).
+    // Other element would receive the click: <html>`, i.e. the control was not
+    // under the point WebDriver had computed for it. MOST LIKELY the page was
+    // still moving: the two flips above leave the inner's transform transition
+    // and the icon's rotation running, and the control sits inside a
+    // 3D-transformed scene. Scroll it to the middle of the viewport ourselves
+    // rather than leaving that to WebDriver (the CI point is 8px from the top
+    // edge) and wait until nothing is animating. NOT reproduced locally on
+    // Chrome 154 at 1024x768, so this is a measured-cause-unknown hardening:
+    // it stays "needs CI" until the job on drupal.org turns green.
+    $this->getSession()->executeScript(
+      "document.querySelector('.pb-3d-flip-box__toggle').scrollIntoView({block: 'center', behavior: 'instant'});",
+    );
+    $this->assertJsCondition(
+      "document.getAnimations().every(function (a) { return a.playState !== 'running'; })",
+    );
     $toggle->click();
     $this->assertJsCondition(
       "document.querySelector('.pb-3d-flip-box__toggle').getAttribute('aria-expanded') === 'true'",

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles\Unit;
 
+use Drupal\Tests\paragraphs_bundles\Traits\ModuleFilesTrait;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Yaml\Yaml;
@@ -37,6 +38,8 @@ use Symfony\Component\Yaml\Yaml;
 #[CoversNothing]
 final class PbBundleDescriptionContractTest extends TestCase {
 
+  use ModuleFilesTrait;
+
   /**
    * Bundles allowed to ship without a sentence, each with a reason.
    *
@@ -64,9 +67,7 @@ final class PbBundleDescriptionContractTest extends TestCase {
   private function shippedBundles(): array {
     $root = $this->moduleRoot();
 
-    $files = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS),
-    );
+    $files = $this->moduleFiles($root);
 
     $found = [];
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles\Unit;
 
+use Drupal\Tests\paragraphs_bundles\Traits\ModuleFilesTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
@@ -42,6 +43,8 @@ use PHPUnit\Framework\TestCase;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 class PbCssDuplicateSelectorContractTest extends TestCase {
+
+  use ModuleFilesTrait;
 
   /**
    * Duplicates that already existed when this contract was written.
@@ -86,9 +89,7 @@ class PbCssDuplicateSelectorContractTest extends TestCase {
   private function files(array $extensions): array {
     $root = $this->root();
     $out = [];
-    $it = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
-    );
+    $it = $this->moduleFiles($root);
     foreach ($it as $file) {
       if (!$file->isFile()) {
         continue;

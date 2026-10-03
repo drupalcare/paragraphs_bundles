@@ -47,22 +47,13 @@ parameters:
     # job is 2.x.
     - tests
     - modules/*/tests/*
-    # The AI tool plugins extend `Drupal\ai\Base\FunctionCallBase` and carry
-    # `Drupal\ai\Attribute\FunctionCall`. drupal/ai is a dependency of the
-    # paragraphs_bundles_ai SUBMODULE and is deliberately not required by this
-    # project, so it is absent whenever paragraphs_bundles is built from its own
-    # composer.json — which is what drupal.org CI does. That one unresolvable
-    # base class produced 32 of the 35 findings in the phpstan job on
-    # 2026-09-04, across attribute.notFound, class.notFound and method.notFound,
-    # and buried the three that were real.
-    #
-    # Same reasoning as src/Drush above. The classes are thin: every decision
-    # they make lives in the analysed, unit-tested services (TargetResolver,
-    # SectionWriter, FieldDrafter, ChatSurface).
-    - modules/paragraphs_bundles_ai/src/Plugin/AiFunctionCall
-    # SafeContextTrait reads a FunctionCallBase context and is meaningless
-    # without it, for the same reason.
-    - modules/paragraphs_bundles_ai/src/Tool
+    # (Two entries that were here, modules/paragraphs_bundles_ai/src/Plugin/
+    # AiFunctionCall and modules/paragraphs_bundles_ai/src/Tool, named
+    # directories that no longer exist - the AI module was stripped back to a
+    # page form and services, and its FunctionCallBase tool plugins went with
+    # it. PHPStan 2.x fails a run whose excludePaths entry matches nothing, so
+    # a dead entry is a red job, not clutter. The remaining ai-package gaps are
+    # handled by the targeted ignoreErrors entries below.)
   treatPhpDocTypesAsCertain: false
   ignoreErrors:
     # The batched post_update cannot carry a `@param array<string, mixed>`

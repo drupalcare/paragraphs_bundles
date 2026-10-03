@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles_apex\Kernel;
 
+use PHPUnit\Framework\Exception;
 use Drupal\field\Entity\FieldConfig;
 use Drupal\field\Entity\FieldStorageConfig;
 use Drupal\KernelTests\KernelTestBase;
@@ -123,7 +124,21 @@ final class ParagraphsBundlesApexDisplayInstallTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
-    parent::setUp();
+    // The APEX bundle is not a drupal.org project this module can name in
+    // require-dev, so on drupal.org CI `apex` is simply not on disk and
+    // KernelTestBase throws "Unavailable module: 'apex'" from setUp(). That says
+    // nothing about this module, and a skip is the honest result: the bridge
+    // can only be proven on a site that has APEX. ONLY that exact refusal is
+    // turned into a skip — any other failure in setUp() still fails the test.
+    try {
+      parent::setUp();
+    }
+    catch (Exception $e) {
+      if (str_contains($e->getMessage(), "Unavailable module: 'apex")) {
+        $this->markTestSkipped('The APEX modules are not available on this site.');
+      }
+      throw $e;
+    }
 
     $this->installEntitySchema('user');
     $this->installEntitySchema('file');

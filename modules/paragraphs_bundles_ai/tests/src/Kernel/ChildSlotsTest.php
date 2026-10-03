@@ -17,6 +17,7 @@ use Drupal\paragraphs\Entity\ParagraphsType;
 use Drupal\paragraphs_bundles_ai\Service\ChildSlotsInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionDrafter;
+use Drupal\Tests\paragraphs_bundles_ai\Traits\AiCoreSupportTrait;
 use Drupal\Tests\user\Traits\UserCreationTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
@@ -38,6 +39,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 final class ChildSlotsTest extends KernelTestBase {
+  use AiCoreSupportTrait;
 
   use UserCreationTrait;
 
@@ -69,6 +71,7 @@ final class ChildSlotsTest extends KernelTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    $this->skipUnlessCoreSupportsAi();
     parent::setUp();
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
