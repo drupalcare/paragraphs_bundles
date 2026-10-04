@@ -196,24 +196,27 @@ final class PbBundledFontDocsTest extends TestCase {
     }
 
     $lines = explode("\n", (string) file_get_contents($path));
+    $offending = [];
 
     foreach ($lines as $number => $line) {
       if (str_starts_with(trim($line), '#') || !str_contains($line, 'export-ignore')) {
         continue;
       }
 
-      self::assertStringNotContainsString(
-        'font',
-        strtolower($line),
-        sprintf(
-          '.gitattributes:%d export-ignores a font path, so `git archive` '
-          . 'would build a release tarball without the Material Symbols '
-          . 'fonts while every git checkout still has them: %s',
-          $number + 1,
-          trim($line),
-        ),
-      );
+      if (str_contains(strtolower($line), 'font')) {
+        $offending[] = sprintf('.gitattributes:%d  %s', $number + 1, trim($line));
+      }
     }
+
+    // Asserted unconditionally: a clean file is the passing case, and a test
+    // that only asserts inside the loop performs no assertion when it is clean.
+    self::assertSame(
+      [],
+      $offending,
+      '.gitattributes export-ignores a font path, so `git archive` would build '
+      . 'a release tarball without the Material Symbols fonts while every git '
+      . 'checkout still has them.',
+    );
   }
 
   /**
