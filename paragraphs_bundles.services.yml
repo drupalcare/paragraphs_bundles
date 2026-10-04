@@ -209,6 +209,10 @@ services:
       - '@queue'
       - '@state'
       - '@logger.channel.paragraphs_bundles'
+    tags:
+      # Queues a rebuild owed by a failed index write after the save's
+      # transaction has ended (see PbListIndexHook::destruct()).
+      - { name: needs_destruction }
 
   # Attaches the CSS-classes validator to every bundle carrying that field.
   Drupal\paragraphs_bundles\Hook\PbCssClassesFieldHook:

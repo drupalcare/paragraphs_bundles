@@ -153,22 +153,37 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
     $toggle = $this->getSession()->getPage()->find('css', '.pb-3d-flip-box__toggle');
     $this->assertNotNull($toggle, 'The flip control is on the page.');
 
-    // Settle the page BEFORE the pointer click. drupal.org's phpunit job failed
-    // here with `ElementClickIntercepted ... not clickable at point (990, 8).
-    // Other element would receive the click: <html>`, i.e. the control was not
-    // under the point WebDriver had computed for it. MOST LIKELY the page was
-    // still moving: the two flips above leave the inner's transform transition
-    // and the icon's rotation running, and the control sits inside a
-    // 3D-transformed scene. Scroll it to the middle of the viewport ourselves
-    // rather than leaving that to WebDriver (the CI point is 8px from the top
-    // edge) and wait until nothing is animating. NOT reproduced locally on
-    // Chrome 154 at 1024x768, so this is a measured-cause-unknown hardening:
-    // it stays "needs CI" until the job on drupal.org turns green.
+    // The pointer click needs a scene that has a height. The faces are
+    // absolutely positioned, so the scene's only height is the generated
+    // per-paragraph stylesheet (`pb_display_3d_height`, 350px by default), and
+    // the scene clips with `overflow: hidden`. With no height the control is
+    // clipped away entirely, and WebDriver reports exactly what drupal.org's
+    // phpunit job reported: `ElementClickIntercepted ... not clickable at
+    // point (990, 8). Other element would receive the click: <html>` - that is
+    // the top edge of a zero-height scene 8px (body margin) from the viewport
+    // top, 990px across a 1024px window. MEASURED, not guessed: Chrome
+    // headless-shell 127 + chromedriver 127 at 1024x768 reproduced that exact
+    // message by emptying the height, and passes with the default height.
+    // So wait for the geometry the click depends on, and assert the control is
+    // what is under its own centre, instead of letting WebDriver guess.
+    $this->assertJsCondition(
+      "document.querySelector('.pb-3d-flip-box__scene').getBoundingClientRect().height > 0",
+      10000,
+      'The flip box scene has no height: its generated stylesheet (pb_display_3d_height) did not apply, so the control is clipped and cannot be clicked.',
+    );
     $this->getSession()->executeScript(
       "document.querySelector('.pb-3d-flip-box__toggle').scrollIntoView({block: 'center', behavior: 'instant'});",
     );
+    // The two flips above leave the inner's transform transition and the
+    // icon's rotation running; let them finish so the point WebDriver
+    // computes is the point the control occupies when the click lands.
     $this->assertJsCondition(
       "document.getAnimations().every(function (a) { return a.playState !== 'running'; })",
+    );
+    $this->assertJsCondition(
+      "(function () { var t = document.querySelector('.pb-3d-flip-box__toggle'), r = t.getBoundingClientRect(); return document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2) === t; })()",
+      10000,
+      'The flip control is not the element at its own centre point.',
     );
     $toggle->click();
     $this->assertJsCondition(

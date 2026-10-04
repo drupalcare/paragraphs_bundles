@@ -219,13 +219,20 @@ final class TextFormatsTest extends KernelTestBase {
 
     self::assertNotNull($format, 'A created section must not be left with a NULL format.');
 
-    // Through the repository, not filter_default_format(): the deprecated
-    // function is what this service exists to stop calling, and a test that
-    // called it would reintroduce the deprecation it is meant to prove gone.
-    $expected = $this->container
-      ->get(FilterFormatRepositoryInterface::class)
-      ->getDefaultFormat($this->container->get('current_user'))
-      ->id();
+    // Through the repository where it exists (Drupal 11.4+), not
+    // filter_default_format(): the deprecated function is what the service
+    // stops calling there. On 11.3 the repository service does not exist, and
+    // the function is the only way to ask, so the test asks it there.
+    if ($this->container->has(FilterFormatRepositoryInterface::class)) {
+      $expected = $this->container
+        ->get(FilterFormatRepositoryInterface::class)
+        ->getDefaultFormat($this->container->get('current_user'))
+        ->id();
+    }
+    else {
+      // phpcs:ignore Drupal.Semantics.FunctionD8Deprecated.DeprecatedFunctionUsed
+      $expected = filter_default_format($this->container->get('current_user'));
+    }
 
     self::assertSame(
       $expected,

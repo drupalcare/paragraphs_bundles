@@ -60,6 +60,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   the comparison saw nothing and the rebuild was never queued. They now call
   `getOriginal()` (available since Drupal 11.2). No change on Drupal 11.
 
+### Fixed — a failed list-index write could still break the editor's save on MySQL
+
+- When an index write failed during a content save, the failure path queued a
+  rebuild inside the save's transaction. On a site whose `queue` table did not
+  exist yet, creating it is DDL, which MySQL/MariaDB commit implicitly; Drupal
+  11.4 then threw `TransactionOutOfOrderException` and the save failed. The
+  failure path now only logs and sets a State flag; the rebuild is queued at
+  kernel termination (`PbListIndexHook` is a `needs_destruction` service), after
+  the transaction. Run `drush cr` after updating (service tag added).
+
 ### Fixed — Three columns: a default layout the field does not offer
 
 - `pb_display_three_columns` shipped the default `l4-l4-l4`; its options are

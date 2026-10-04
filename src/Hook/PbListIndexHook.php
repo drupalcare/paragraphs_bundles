@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles\Hook;
 
+use Drupal\Core\DestructableInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Hook\Attribute\Hook;
@@ -21,7 +22,7 @@ use Psr\Log\LoggerInterface;
  * entity_reference_revisions has given a new host's children their parent id,
  * so a brand-new node's tree is indexed with the real nid.
  */
-final class PbListIndexHook {
+final class PbListIndexHook implements DestructableInterface {
 
   /**
    * The queue that rebuilds the whole index in chunks.
@@ -32,6 +33,14 @@ final class PbListIndexHook {
    * State key: a rebuild was asked for while one was already running.
    */
   public const DIRTY_STATE = 'paragraphs_bundles.list_index_dirty';
+
+  /**
+   * State key: an index write failed and a rebuild is owed.
+   *
+   * Set inside the entity save's transaction (State is a key_value write and
+   * never runs DDL); acted on in destruct(), after the transaction has ended.
+   */
+  public const REBUILD_NEEDED_STATE = 'paragraphs_bundles.list_index_rebuild_needed';
 
   public function __construct(
     private readonly ListIndexerInterface $indexer,
@@ -142,6 +151,26 @@ final class PbListIndexHook {
   }
 
   /**
+   * {@inheritdoc}
+   *
+   * Runs at kernel termination, outside any entity save transaction, so the
+   * queue may create its table. A flag left by an earlier request whose
+   * terminate never ran is picked up by the next request that saves content.
+   */
+  public function destruct(): void {
+    try {
+      if (!$this->state->get(self::REBUILD_NEEDED_STATE, FALSE)) {
+        return;
+      }
+      $this->queueRebuild();
+      $this->state->delete(self::REBUILD_NEEDED_STATE);
+    }
+    catch (\Throwable $e) {
+      $this->logger->error('Paragraphs List index: could not queue a rebuild: @message', ['@message' => $e->getMessage()]);
+    }
+  }
+
+  /**
    * Reindexes a saved paragraph, or the tree beneath a saved host.
    */
   private function reindex(EntityInterface $entity): void {
@@ -163,7 +192,7 @@ final class PbListIndexHook {
    *
    * The index is derived and repairable; these hooks run inside the entity
    * save's transaction, so an exception here would roll back the editor's
-   * content. Log it and queue a rebuild instead.
+   * content. Log it and flag a rebuild instead.
    */
   private function failed(EntityInterface $entity, \Throwable $e): void {
     $this->logger->error('Paragraphs List index update failed for @type @id: @message', [
@@ -171,11 +200,15 @@ final class PbListIndexHook {
       '@id' => $entity->id(),
       '@message' => $e->getMessage(),
     ]);
+    // Never touch the queue here: DatabaseQueue creates its table lazily, and
+    // that DDL implicitly commits on MySQL/MariaDB, which voids this save's
+    // transaction (TransactionOutOfOrderException on core 11.4+). Only record
+    // the debt; destruct() pays it once the transaction is over.
     try {
-      $this->queueRebuild();
+      $this->state->set(self::REBUILD_NEEDED_STATE, TRUE);
     }
-    catch (\Throwable $queue_error) {
-      $this->logger->error('Paragraphs List index: could not queue a rebuild: @message', ['@message' => $queue_error->getMessage()]);
+    catch (\Throwable $state_error) {
+      $this->logger->error('Paragraphs List index: could not record that a rebuild is needed: @message', ['@message' => $state_error->getMessage()]);
     }
   }
 

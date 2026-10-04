@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraphs_bundles\Unit;
 
+use Drupal\Tests\paragraphs_bundles\Traits\ModuleFilesTrait;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
@@ -30,6 +31,8 @@ use PHPUnit\Framework\TestCase;
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
 class PbWidthContractTest extends TestCase {
+
+  use ModuleFilesTrait;
 
   /**
    * Templates allowed to emit `pb-width-own`, and why each one may.
@@ -83,10 +86,10 @@ class PbWidthContractTest extends TestCase {
   private function files(array $extensions): array {
     $root = $this->root();
     $out = [];
-    $it = new \RecursiveIteratorIterator(
-      new \RecursiveDirectoryIterator($root, \FilesystemIterator::SKIP_DOTS)
-    );
-    foreach ($it as $file) {
+    // Not a bare RecursiveDirectoryIterator: on drupal.org CI the "module root"
+    // is the whole site checkout, and scanning it reported contrib modules'
+    // own stylesheets (ai's mdxeditor bundle) as defects of this module.
+    foreach ($this->moduleFiles($root) as $file) {
       if (!$file->isFile()) {
         continue;
       }

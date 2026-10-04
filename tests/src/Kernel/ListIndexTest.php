@@ -351,8 +351,16 @@ final class ListIndexTest extends KernelTestBase {
     $failures = array_filter($logger->messages, static fn(string $m): bool => str_contains($m, 'Paragraphs List index update failed for'));
     $this->assertNotSame([], $failures, 'The failure was logged with the entity type and id.');
     $this->assertStringContainsString('node ' . $node->id(), implode("\n", $failures));
+    // Inside the save only the debt is recorded (no queue access, which could
+    // create the queue table, a DDL statement that voids the transaction on
+    // MySQL/MariaDB). This test deliberately does not pre-create that table.
+    $state = $this->container->get('state');
+    $this->assertTrue($state->get(PbListIndexHook::REBUILD_NEEDED_STATE, FALSE), 'The rebuild was flagged.');
+    // Kernel termination: the rebuild is queued, outside any transaction.
+    $this->container->get(PbListIndexHook::class)->destruct();
     $queue = $this->container->get('queue')->get(PbListIndexHook::REBUILD_QUEUE);
-    $this->assertSame(1, $queue->numberOfItems(), 'A rebuild was queued.');
+    $this->assertSame(1, $queue->numberOfItems(), 'A rebuild was queued after the save.');
+    $this->assertFalse($state->get(PbListIndexHook::REBUILD_NEEDED_STATE, FALSE), 'The flag was cleared once queued.');
 
     // Deleting survives it too.
     $node->delete();
