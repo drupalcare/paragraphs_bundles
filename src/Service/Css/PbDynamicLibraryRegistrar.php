@@ -27,7 +27,7 @@ final class PbDynamicLibraryRegistrar implements PbDynamicLibraryRegistrarInterf
     if (!$this->files->exists($slug, $paragraphId)) {
       return NULL;
     }
-    return $this->definition($this->files->fileUrl($slug, $paragraphId));
+    return $this->definition($this->files->fileUri($slug, $paragraphId));
   }
 
   /**
@@ -36,8 +36,8 @@ final class PbDynamicLibraryRegistrar implements PbDynamicLibraryRegistrarInterf
   public function buildLibraries(): array {
     $libraries = [];
     foreach ($this->files->listAll() as $entry) {
-      $url = $this->files->fileUrl($entry['slug'], $entry['id']);
-      $libraries[$this->libraryName($entry['slug'], $entry['id'])] = $this->definition($url);
+      $uri = $this->files->fileUri($entry['slug'], $entry['id']);
+      $libraries[$this->libraryName($entry['slug'], $entry['id'])] = $this->definition($uri);
     }
     return $libraries;
   }
@@ -45,8 +45,18 @@ final class PbDynamicLibraryRegistrar implements PbDynamicLibraryRegistrarInterf
   /**
    * Build a single Drupal library definition.
    *
-   * @param string $url
-   *   Web-relative URL produced by {@see PbCssFileManagerInterface::fileUrl}.
+   * @param string $uri
+   *   Stream-wrapper URI produced by
+   *   {@see PbCssFileManagerInterface::fileUri}.
+   *
+   *   It must be the `public://` URI and NOT the URL: the library parser
+   *   treats a key starting with `/` as docroot-relative and strips the
+   *   slash without removing the site's base path, so on a site installed
+   *   in a subdirectory (drupal.org's CI serves `/subdirectory`) the URL
+   *   `/subdirectory/sites/x/files/...` became the unreachable
+   *   `/subdirectory/subdirectory/sites/x/files/...` and the stylesheet
+   *   never applied. A stream-wrapper URI is turned into the right URL by
+   *   the asset renderer at output time.
    *
    * @return array{
    *   header: bool,
@@ -54,12 +64,12 @@ final class PbDynamicLibraryRegistrar implements PbDynamicLibraryRegistrarInterf
    *   }
    *   Drupal library definition.
    */
-  private function definition(string $url): array {
+  private function definition(string $uri): array {
     return [
       'header' => FALSE,
       'css' => [
         'theme' => [
-          $url => [
+          $uri => [
             'weight' => self::ASSET_WEIGHT,
             'minified' => TRUE,
           ],

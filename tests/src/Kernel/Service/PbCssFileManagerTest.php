@@ -109,6 +109,31 @@ final class PbCssFileManagerTest extends KernelTestBase {
   }
 
   /**
+   * The dynamic library points at the public:// URI, never at a URL.
+   *
+   * The library parser strips the leading slash of a `/…` key without
+   * removing the base path, so a URL key breaks on a site served from a
+   * subdirectory (drupal.org's CI serves `/subdirectory`): the generated
+   * stylesheet 404ed and the flip-box scene had no height. A stream-wrapper
+   * URI is resolved to the right URL by the asset renderer instead. The
+   * kernel base path is `/`, so the URL form would resolve to a bare
+   * docroot path here — the assertion is on the URI shape, which is what
+   * differs.
+   */
+  public function testDynamicLibraryUsesStreamWrapperUri(): void {
+    $this->assertTrue($this->fileManager->write('simple', 42, '.pb-x{color:red}'));
+    $library = $this->container->get('library.discovery')
+      ->getLibraryByName('paragraphs_bundles', 'dynamic--simple-42');
+    $this->assertIsArray($library, 'The per-paragraph library is registered.');
+    $this->assertCount(1, $library['css']);
+    $this->assertSame(
+      $this->fileManager->fileUri('simple', 42),
+      $library['css'][0]['data'],
+    );
+    $this->assertStringStartsWith('public://paragraphs_bundles/', $library['css'][0]['data']);
+  }
+
+  /**
    * Changed content moves the hashed filename and prunes the old one.
    */
   public function testRewriteMovesHashAndPrunesOld(): void {

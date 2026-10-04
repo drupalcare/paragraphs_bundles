@@ -52,6 +52,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - In a coverflow, the card that wraps from one end to the other fades out,
   moves while invisible and fades back in, instead of sliding across the fan.
 
+### Fixed — per-paragraph generated CSS did not load on a site installed in a subdirectory
+
+- The library registered for each generated stylesheet used the file's URL
+  (`/subdir/sites/…/files/paragraphs_bundles/pb-….css`). Core's library parser
+  strips the leading slash of such a key without removing the base path, so on
+  a site served from a subdirectory the browser asked for
+  `/subdir/subdir/sites/…` and got a 404: every paragraph styled by generated
+  CSS (the flip box's scene height, colours, spacing) rendered unstyled. It now
+  registers the `public://` URI, which the asset renderer turns into the right
+  URL. No change on a site at the web root. Rebuild caches after updating
+  (`drush cr`) so the library definitions are rebuilt.
+
 ### Fixed — Drupal 12: renaming a paragraphs field or type did not refresh the Paragraphs List index
 
 - The list index rebuild is queued from `field_config_update` and
