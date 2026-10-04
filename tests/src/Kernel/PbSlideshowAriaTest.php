@@ -87,6 +87,21 @@ final class PbSlideshowAriaTest extends KernelTestBase {
   }
 
   /**
+   * Every bottom-navigation value, without the expected-buttons flag.
+   *
+   * Derived from bottomNavProvider() so the two lists cannot drift apart.
+   *
+   * @return array<string, array{string|null}>
+   *   Field value (NULL = unset).
+   */
+  public static function bottomNavValueProvider(): array {
+    return array_map(
+      static fn (array $case): array => [$case[0]],
+      self::bottomNavProvider(),
+    );
+  }
+
+  /**
    * The tab pattern is gone: no configuration may emit tab roles.
    *
    * The slideshow uses the ARIA APG basic carousel pattern. The tabbed variant
@@ -161,7 +176,7 @@ final class PbSlideshowAriaTest extends KernelTestBase {
    * @param string|null $bottomNav
    *   Bottom-navigation field value, or NULL to leave it unset.
    */
-  #[DataProvider('bottomNavProvider')]
+  #[DataProvider('bottomNavValueProvider')]
   public function testNoDanglingAriaLabelledby(?string $bottomNav): void {
     $html = $this->renderSlideshow($bottomNav, 2);
 

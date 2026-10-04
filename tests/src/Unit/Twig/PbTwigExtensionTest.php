@@ -28,7 +28,7 @@ final class PbTwigExtensionTest extends TestCase {
   private PbTwigExtension $extension;
 
   /**
-   * Image field URL resolver mock.
+   * Image field URL resolver stub.
    */
   private PbImageFieldUrlResolverInterface $imageFieldUrls;
 
@@ -37,7 +37,7 @@ final class PbTwigExtensionTest extends TestCase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->imageFieldUrls = $this->createMock(PbImageFieldUrlResolverInterface::class);
+    $this->imageFieldUrls = $this->createStub(PbImageFieldUrlResolverInterface::class);
     // The normalizer and class resolver are the real thing, not mocks:
     // `pb_css_value` and `pb_class` exist to apply shared logic, so stubbing
     // them would assert only that a delegation happened and prove nothing
@@ -103,14 +103,22 @@ final class PbTwigExtensionTest extends TestCase {
    * Image field URL delegates to the resolver service.
    */
   public function testImageFieldUrl(): void {
-    $entity = $this->createMock(FieldableEntityInterface::class);
-    $this->imageFieldUrls->expects($this->once())
+    $entity = $this->createStub(FieldableEntityInterface::class);
+    // This is the one test that sets an expectation, so it needs a real mock;
+    // the setUp() resolver is a stub for every test that only needs a double.
+    $resolver = $this->createMock(PbImageFieldUrlResolverInterface::class);
+    $resolver->expects($this->once())
       ->method('absoluteUrl')
       ->with($entity, 'pb_display_background_image')
       ->willReturn('https://example.test/bg.jpg');
+    $extension = new PbTwigExtension(
+      $resolver,
+      new PbColorNormalizer(),
+      new PbDisplayClassResolver(),
+    );
     $this->assertSame(
       'https://example.test/bg.jpg',
-      $this->extension->imageFieldUrl($entity, 'pb_display_background_image'),
+      $extension->imageFieldUrl($entity, 'pb_display_background_image'),
     );
   }
 
@@ -222,13 +230,13 @@ final class PbTwigExtensionTest extends TestCase {
     // under PHPUnit 11.5 / PHP 8.4. The service reads $items->value through the
     // interface's magic __get(), so stub that instead of a real property (which
     // the stubbed __set() would swallow).
-    $items = $this->createMock(FieldItemListInterface::class);
+    $items = $this->createStub(FieldItemListInterface::class);
     $items->method('isEmpty')->willReturn(FALSE);
     $items->method('__get')->willReturnCallback(
       static fn (string $name): mixed => $name === 'value' ? $value : NULL,
     );
 
-    $entity = $this->createMock(FieldableEntityInterface::class);
+    $entity = $this->createStub(FieldableEntityInterface::class);
     $entity->method('hasField')->willReturn(TRUE);
     $entity->method('get')->willReturn($items);
     return $entity;

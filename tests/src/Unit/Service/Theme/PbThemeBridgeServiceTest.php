@@ -31,7 +31,7 @@ final class PbThemeBridgeServiceTest extends TestCase {
   #[DataProvider('themeChainProvider')]
   public function testResolveBridge(array $chain, string $expectedBridge): void {
     $activeTheme = $this->createActiveTheme($chain);
-    $themeManager = $this->createMock(ThemeManagerInterface::class);
+    $themeManager = $this->createStub(ThemeManagerInterface::class);
     $themeManager->method('getActiveTheme')->willReturn($activeTheme);
 
     $service = new PbThemeBridgeService($themeManager);
@@ -71,11 +71,11 @@ final class PbThemeBridgeServiceTest extends TestCase {
     $active = array_shift($chain);
     $bases = [];
     foreach ($chain as $name) {
-      $extension = $this->createMock(Extension::class);
+      $extension = $this->createStub(Extension::class);
       $bases[$name] = $extension;
     }
 
-    $theme = $this->createMock(ActiveTheme::class);
+    $theme = $this->createStub(ActiveTheme::class);
     $theme->method('getName')->willReturn($active);
     $theme->method('getBaseThemeExtensions')->willReturn($bases);
     return $theme;

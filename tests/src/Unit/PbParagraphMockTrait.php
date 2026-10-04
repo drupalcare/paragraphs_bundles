@@ -32,7 +32,7 @@ trait PbParagraphMockTrait {
    *   Configured mock.
    */
   protected function mockParagraph(string $bundle, int $id, array $fields = []): ParagraphInterface {
-    $paragraph = $this->createMock(ParagraphInterface::class);
+    $paragraph = $this->createStub(ParagraphInterface::class);
     $paragraph->method('bundle')->willReturn($bundle);
     $paragraph->method('id')->willReturn($id);
     $paragraph->method('hasField')->willReturnCallback(
@@ -40,12 +40,12 @@ trait PbParagraphMockTrait {
     );
     $paragraph->method('get')->willReturnCallback(
       function (string $name) use ($fields): FieldItemListInterface {
-        $list = $this->createMock(FieldItemListInterface::class);
+        $list = $this->createStub(FieldItemListInterface::class);
         if (!array_key_exists($name, $fields)) {
           $list->method('isEmpty')->willReturn(TRUE);
           return $list;
         }
-        $item = $this->createMock(FieldItemInterface::class);
+        $item = $this->createStub(FieldItemInterface::class);
         $item->method('getValue')->willReturn(['value' => $fields[$name]]);
         $list->method('isEmpty')->willReturn(FALSE);
         $list->method('first')->willReturn($item);
@@ -73,7 +73,7 @@ trait PbParagraphMockTrait {
    *   Configured mock.
    */
   protected function mockNode(string $bundle, int $id, array $fields = []): NodeInterface {
-    $node = $this->createMock(NodeInterface::class);
+    $node = $this->createStub(NodeInterface::class);
     $node->method('bundle')->willReturn($bundle);
     $node->method('id')->willReturn($id);
     $node->method('hasField')->willReturnCallback(
@@ -81,12 +81,12 @@ trait PbParagraphMockTrait {
     );
     $node->method('get')->willReturnCallback(
       function (string $name) use ($fields): FieldItemListInterface {
-        $list = $this->createMock(FieldItemListInterface::class);
+        $list = $this->createStub(FieldItemListInterface::class);
         if (!array_key_exists($name, $fields)) {
           $list->method('isEmpty')->willReturn(TRUE);
           return $list;
         }
-        $item = $this->createMock(FieldItemInterface::class);
+        $item = $this->createStub(FieldItemInterface::class);
         $item->method('getValue')->willReturn(['value' => $fields[$name]]);
         $list->method('isEmpty')->willReturn(FALSE);
         $list->method('first')->willReturn($item);

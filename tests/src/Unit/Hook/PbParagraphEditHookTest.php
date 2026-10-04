@@ -23,7 +23,7 @@ final class PbParagraphEditHookTest extends UnitTestCase {
    * Builds the hook with a route match answering the given route name.
    */
   private function hook(?string $routeName): PbParagraphEditHook {
-    $routeMatch = $this->createMock(RouteMatchInterface::class);
+    $routeMatch = $this->createStub(RouteMatchInterface::class);
     $routeMatch->method('getRouteName')->willReturn($routeName);
     return new PbParagraphEditHook($routeMatch);
   }
@@ -36,7 +36,7 @@ final class PbParagraphEditHookTest extends UnitTestCase {
    */
   private function alter(PbParagraphEditHook $hook): array {
     $form = ['actions' => ['submit' => ['#submit' => ['::submitForm']]]];
-    $form_state = $this->createMock(FormStateInterface::class);
+    $form_state = $this->createStub(FormStateInterface::class);
     $hook->formParagraphFormAlter($form, $form_state, 'paragraph_form');
     return $form['actions']['submit']['#submit'];
   }

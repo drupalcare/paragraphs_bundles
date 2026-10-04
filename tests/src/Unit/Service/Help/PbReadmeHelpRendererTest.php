@@ -153,20 +153,20 @@ final class PbReadmeHelpRendererTest extends TestCase {
    *   Renderer under test.
    */
   private function createRenderer(bool $markdownEnabled, ?object $filter = NULL): PbReadmeHelpRenderer {
-    $moduleList = $this->createMock(ModuleExtensionList::class);
+    $moduleList = $this->createStub(ModuleExtensionList::class);
     $moduleList->method('getPath')->willReturn($this->moduleDir);
 
-    $moduleHandler = $this->createMock(ModuleHandlerInterface::class);
+    $moduleHandler = $this->createStub(ModuleHandlerInterface::class);
     $moduleHandler->method('moduleExists')->willReturnCallback(
       static fn (string $module): bool => $module === 'markdown' && $markdownEnabled,
     );
 
-    $config = $this->createMock(ImmutableConfig::class);
+    $config = $this->createStub(ImmutableConfig::class);
     $config->method('getRawData')->willReturn([]);
-    $configFactory = $this->createMock(ConfigFactoryInterface::class);
+    $configFactory = $this->createStub(ConfigFactoryInterface::class);
     $configFactory->method('get')->willReturn($config);
 
-    $filterManager = $this->createMock(FilterPluginManager::class);
+    $filterManager = $this->createStub(FilterPluginManager::class);
     if ($filter !== NULL) {
       $filterManager->method('createInstance')->willReturn($filter);
     }

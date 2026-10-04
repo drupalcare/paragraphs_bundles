@@ -22,8 +22,8 @@ final class ListIndexQueryTest extends TestCase {
    */
   private function service(): ListIndexQuery {
     return new ListIndexQuery(
-      $this->createMock(Connection::class),
-      $this->createMock(CacheBackendInterface::class),
+      $this->createStub(Connection::class),
+      $this->createStub(CacheBackendInterface::class),
     );
   }
 

@@ -32,7 +32,7 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $images = $this->createMock(PbImageFieldUrlResolverInterface::class);
+    $images = $this->createStub(PbImageFieldUrlResolverInterface::class);
     $this->builder = new PbDynamicUserVarBuilder(new PbColorNormalizer(), $images);
   }
 

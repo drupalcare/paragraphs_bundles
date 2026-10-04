@@ -47,7 +47,7 @@ final class PbDisplayRealignTest extends TestCase {
    *   The double.
    */
   private function display(array &$data): EntityDisplayInterface {
-    $display = $this->createMock(EntityDisplayInterface::class);
+    $display = $this->createStub(EntityDisplayInterface::class);
     $display->method('get')->willReturnCallback(
       static fn(string $key): mixed => $data[$key] ?? NULL,
     );
