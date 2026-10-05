@@ -71,7 +71,7 @@ trait PbOptionalBundleModulesTrait {
     // write DID fail the test — the mechanism contradicted its own intent.
     //
     // It went unnoticed because on a site that has all four contrib modules
-    // nothing is skipped and nothing is written. Measured on d12a.local
+    // nothing is skipped and nothing is written. Measured on a Drupal 12 test site
     // 2026-09-04: `webform` declares ^10.3 || ^11.0 and `contact_formatter`
     // ^8 .. ^11, so neither installs on Drupal 12 — and both render tests
     // errored there with the skip message as the exception text, on a site

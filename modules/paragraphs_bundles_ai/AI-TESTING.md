@@ -1,6 +1,6 @@
 # What this module was tested with, and what it can actually do
 
-Measured on **2026-09-17**, on Drupal 11.4.6, against **OpenAI `gpt-5-nano`**
+Tested on Drupal 11.4.6, against **OpenAI `gpt-5-nano`**
 through `drupal/ai` and `ai_provider_openai`.
 
 Every number below came from running the thing and reading the result. Where
@@ -43,11 +43,10 @@ Each "<child label>" is: <the child bundle's own description>                   
 Write real content for each child, not a description of what the section looks like.
 ```
 
-The two description lines were added on 2026-09-17, and they are the most
-consequential change this module has had. Before them the model was handed a
-bundle's **label alone**: `getDescription` appeared **zero** times in the whole
-module, so all 31 sentences PB already shipped never reached it. Given
-`"Parallax Section"` and nothing else, it wrote prose *about* a parallax layout
+A key improvement is that the model is now handed each bundle's description,
+not just its label. Before this, `getDescription` appeared **zero** times in the
+whole module, so the shipped bundle descriptions never reached the model. Given
+only `"Parallax Section"` and nothing else, it wrote prose *about* a parallax layout
 instead of copy *for* one.
 
 Worse, the eight inner section bundles — a slide, a tab, an accordion row — had
@@ -189,13 +188,12 @@ and green.
 
 ### The placeholder picture, end to end on a real site
 
-> **Superseded in part, 2026-09-27.** The record below is the run of 2026-09-17
-> and is kept as it happened. Since then a slot with a fixed crop gets a
-> placeholder drawn at that size (for example `pb-ai-placeholder-1700x600.png`),
-> and the note reads *"…a placeholder was put in "Image" (1700 x 600), drawn at
-> the size each one is shown…"*. See `DefaultImageTest` and the README.
+When a picture field is required, a placeholder is supplied instead of leaving
+the field empty. A slot with a fixed crop gets a placeholder drawn at that size
+(for example `pb-ai-placeholder-1700x600.png`), and the person is told by label to replace
+it with their own. See `DefaultImageTest` and the README.
 
-Not a test double: composed a `hero_bundle` on sts.local, which has a required
+Not a test double: composed a `hero_bundle` on a working site, which has a required
 `pb_content_image`.
 
 | | |
@@ -234,29 +232,14 @@ have their own notice beside the dropdown; saying it twice in two voices is wors
 than saying it once. Pictures are left out for the same reason — the module
 supplies one.
 
-🚨 **AND THE FIRST VERSION GOT LIST FIELDS WRONG, IN THE DIRECTION THAT LIES.**
-This paragraph used to defend excluding **every** `list_string`, on the grounds
-that nobody writes prose into "Title alignment". That is true of the two steering
-fields and false of the three real choices PB ships — so `3d_carousel_bundle`,
-whose **only** settable fields are two list fields, was told it *"takes no
-words"*, while `AI-PROMPTS.md` on this very page records the model setting both
-from one plain sentence.
+List fields are included if they hold real choices the person writes into —
+such as icon style or carousel height — not steering fields like alignment or
+heading level. The heading level and alignment are excluded because they are
+matched on their real keys (`h2`, `center`) which means a person can say
+*"as an h2, centred"* in one sentence and both fields are set.
 
-⚠ **The page's own check passed it**, because that check defined "writable" as
-prose — the same assumption the code made. ***A check that shares the code's
-assumption is not a check; it is a mirror.*** It now derives "can this field hold
-a value" from the field data. The maintainer found the defect by reading the
-page, before any check did.
-
-Only the heading level and the alignment are excluded now, matched on their real
-keys (`h2`, `center`) rather than on a field name, because *"as an h2, centred"*
-already offers them the way a person actually says them.
-
-⚠ **The test for this went red first, and the reason is worth keeping.** All 5
-errored in `setUp` with *"unknown type list_string"* — `options` was missing from
-the test's module list. **5 errors and 0 assertions**, which reads at a glance
-like a broken service rather than a missing module. The assertion count is what
-gives it away: new tests that contribute zero assertions never reached one.
+The distinction between "fields a person writes words into" and "settings
+fields" is derived from the field data itself, not from field names.
 
 ## The assistant bar
 

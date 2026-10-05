@@ -49,7 +49,7 @@ disagree with what the section actually holds:
 | 3D carousel | Say the Large Screen Height and the Small Screen Height. |
 | AI image | AI Image takes no words — add it, then fill it in yourself. |
 
-Measured across the 33 sections offered: **every one gets a hint, none is empty,
+Across the 33 sections offered: **every one gets a hint, none is empty,
 and the longest is 91 characters.**
 
 A section is only told it "takes no words" when there is genuinely nothing to
@@ -65,10 +65,7 @@ repeated in the hint; they have their own notice beside the dropdown.
 
 ### Children
 
-Since 2026-09-27 the assistant writes what goes INSIDE a section, not just its
-heading. Before that, a slideshow came back with slide titles and nothing in the
-slides, and two columns, a carousel or a grid came back with a heading and
-nothing else.
+The assistant writes what goes inside a section, not just its heading.
 
 **What goes in each place comes from two sources, in this order:**
 
@@ -88,10 +85,9 @@ nothing. A deeper request is refused, not built.
 
 ### Pictures are supplied, not invented
 
-A model can write a hero's words; it cannot choose its picture. Until
-2026-09-17 it did not try and said nothing about it, so a hero arrived with real
-copy and an empty — *required* — image field. A hero without a picture is not a
-hero.
+A model can write a hero's words; it cannot choose its picture. Required image
+fields are filled with a placeholder, so a hero arrives with real copy and a picture
+ready to replace.
 
 So the module ships one: `images/pb-ai-placeholder.png`, drawn rather than
 downloaded, so no third-party licence travels with it. Any **required** picture
@@ -105,17 +101,16 @@ type that field accepts. (Paragraphs Bundles requires the Media module, so every
 PB picture field is a media field; `ai_image_bundle` is a plain image field for
 sections you build yourself without media.)
 
-**The placeholder shows the size to replace it with.** Since 2026-09-27 a slot
-whose image style crops to a fixed size gets a grey placeholder drawn at that
-size with the numbers on it — `1700 x 600` for a hero, `900 x 540` for a card
-image, `1700 x 1700` for a narrow image — and the note names each one. The size
-is READ from the field's view mode and image style, so a site that restyles gets
-its own numbers. A slot with no fixed crop gets the picture above.
+**The placeholder shows the size to replace it with.** A slot whose image style
+crops to a fixed size gets a grey placeholder drawn at that size with the numbers
+on it — `1700 x 600` for a hero, `900 x 540` for a card image, `1700 x 1700` for
+a narrow image — and the note names each one. The size is read from the field's
+view mode and image style, so a site that restyles gets its own numbers. A slot
+with no fixed crop gets the standard placeholder.
 
-Measured on a stock install: **5** of the 33 sections offered needed only a
-picture — hero, image, image narrow, image overlay, image wide — and all five
-are now filled for you, along with **3** inner section bundles (card image,
-image grid, parallax).
+**5** of the 33 sections offered require only a picture — hero, image, image narrow,
+image overlay, image wide — and all five are filled for you, along with **3** inner
+section bundles (card image, image grid, parallax).
 
 ### Features are switched on, and named
 

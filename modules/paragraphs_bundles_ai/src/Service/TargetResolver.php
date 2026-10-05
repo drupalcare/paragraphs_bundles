@@ -245,7 +245,7 @@ final class TargetResolver implements TargetResolverInterface {
    * THE EMPTY-MEANS-ALL TRAP. Drupal stores "any bundle is allowed" as an
    * EMPTY `target_bundles`, not as a list of every bundle. A naive
    * `in_array($bundle, $target_bundles)` therefore rejects everything on a
-   * field that actually accepts everything — and measured on sts.local
+   * field that actually accepts everything — and measured on a test site
    * 2026-09-04, all three paragraph fields on that site are exactly that case,
    * so the naive version would have failed on every real input while passing a
    * fixture that set the list explicitly.

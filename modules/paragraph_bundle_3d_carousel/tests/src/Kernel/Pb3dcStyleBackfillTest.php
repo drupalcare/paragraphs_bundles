@@ -32,7 +32,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  *   $paragraph->save();
  *
  * A paragraph is OWNED BY ITS PARENT'S FIELD. Saving one standalone rewrites
- * its parent. Measured on sts.local 2026-09-24, that left a node holding ONE
+ * its parent. Measured on a test site 2026-09-24, that left a node holding ONE
  * of its THREE carousels: the other two still existed as entities but were
  * dropped out of the field, and a third paragraph came back carrying a value
  * it had never been given. Inside `drush updatedb` that is silent, permanent
@@ -179,8 +179,8 @@ final class Pb3dcStyleBackfillTest extends KernelTestBase {
    *
    * ⚠ IT DOES NOT CATCH THE CONTENT LOSS IT WAS WRITTEN FOR. Red-proofed by
    * reinstating the `$paragraph->save()` backfill: this test stayed GREEN
-   * (recorded in .claude/tasks/3d-carousel-coverflow-PROPOSAL.md §7). The
-   * loss seen on sts.local has not been reproduced here; the untested
+   * (recorded in the coverflow design proposal). The
+   * loss seen on a test site has not been reproduced here; the untested
    * difference is that the live paragraphs had several revisions each and
    * these have one. It proves the parent keeps its children on the path it
    * runs, and nothing about the destructive version.
@@ -262,7 +262,7 @@ final class Pb3dcStyleBackfillTest extends KernelTestBase {
    * 🚨 THE CONTENT-LOSS GUARD: the backfill writes to NOTHING but its own field.
    *
    * The destructive version called `$paragraph->save()`, and the mechanism of
-   * the loss it caused on sts.local was never isolated. So this does not try
+   * the loss it caused on a test site was never isolated. So this does not try
    * to reproduce that mechanism. It proves the stronger property that makes
    * any such mechanism impossible: every table except the style field's own
    * data and revision tables is BYTE-IDENTICAL after the backfill — node

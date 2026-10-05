@@ -357,7 +357,7 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 }
 
 /* Description sits under a full-width input, so let it use the width. Claro
-   emits `.form-item__description`, not `.description` - measured on sts.local,
+   emits `.form-item__description`, not `.description` - measured on a test site,
    where the first version of this rule matched nothing. Both are listed so a
    non-Claro admin theme is covered too. */
 .pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes .form-item__description,

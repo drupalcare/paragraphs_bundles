@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  *
  * Maintainer, 2026-09-28: "if we dont do that and creat then the user come
  * and edit and try to save, it will not save and they will think the bundle is
- * broken, please you must validate this". Measured the same day on sts.local:
+ * broken, please you must validate this". Measured the same day on a test site:
  * 22 sections written by the tool failed the edit form's validation — required
  * slots left empty and link items with no address.
  *

@@ -401,7 +401,7 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
       // for which the animation custom properties are NOT emitted.
       //
       // A bare `!== 'legacy'` treats '' as "not legacy" and emits them.
-      // Measured 2026-09-20: all six parallax sections on sts.local have this
+      // Measured 2026-09-20: all six parallax sections on a test site have this
       // field unset, so that spelling would have moved every one of them onto
       // the animated branch and given them three custom properties they have
       // never had — a silent behaviour change, on content nobody touched.
@@ -663,7 +663,7 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
     // `#element_validate` only runs for form submissions, while config
     // import, migration, REST/JSON:API and direct API writes all bypass it.
     //
-    // Measured on sts.local 2026-09-24: paragraphs 335 and 416 held the
+    // Measured on a test site 2026-09-24: paragraphs 335 and 416 held the
     // literal text `PB fixture pb_display_3d_car_perspective` in a `string`
     // field, and it reached a served stylesheet as
     // `perspective: PB fixture pb_display_3d_car_perspectivepx;`. Browsers

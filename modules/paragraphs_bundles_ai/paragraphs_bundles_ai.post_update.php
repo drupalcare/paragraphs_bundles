@@ -11,7 +11,7 @@
  * nothing, reports no error, and simply behaves as though the feature does not
  * exist.
  *
- * Measured on sts.local, 2026-09-19, which is how this was found: the briefs
+ * Measured on a test site, 2026-09-19, which is how this was found: the briefs
  * panel showed the paragraphs type description instead of the brief, and
  * `\Drupal::config('paragraphs_bundles_ai.briefs')->isNew()` was TRUE while the
  * file sat correctly on disk. The maintainer saw it as a bug in the panel. The

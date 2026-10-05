@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  * any of the eight editor colour fields that is set takes over, PER FIELD,
  * for that paragraph and everything inside it.
  *
- * WHY THIS EXISTS. Two defects were measured on 2026-09-12, on solo.local
+ * WHY THIS EXISTS. Two defects were measured on 2026-09-12, on a test site
  * node 317 under apex_theme, and neither made anything go red:
  *
  * 1. Every bridge mapped its tokens with a bare `:where(.paragraphs-bundles)`,

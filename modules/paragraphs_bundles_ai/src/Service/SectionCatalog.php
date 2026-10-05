@@ -142,7 +142,7 @@ final class SectionCatalog implements SectionCatalogInterface {
    * "any bundle is allowed" as an EMPTY `target_bundles`, never as a list of
    * everything. Reading it as "nothing allowed" empties the dropdown on the
    * most permissive fields there are — which is every paragraph field on
-   * sts.local.
+   * a test site.
    *
    * @param \Drupal\Core\Field\FieldDefinitionInterface $definition
    *   The field.

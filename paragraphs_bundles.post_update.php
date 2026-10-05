@@ -244,7 +244,7 @@ function paragraphs_bundles_post_update_section_bundle_descriptions(): string {
   // WHY A SECOND HOOK THAT RUNS THE SAME CODE. A post_update is recorded by
   // NAME once it has run, and never runs again. Every site that updated
   // between 2026-09-16 and today has `bundle_descriptions` in its
-  // `existing_updates` — measured on sts.local — and at that moment the eight
+  // `existing_updates` — measured on a test site — and at that moment the eight
   // section bundles shipped `description: ''`, so the hook skipped them and
   // will never look again. Filling the yml alone would reach nobody but a
   // fresh install. A new name is the only thing that re-opens the question.
@@ -261,7 +261,7 @@ function _paragraphs_bundles_describe_sections(): string {
   // WHY AN UPDATE HOOK AT ALL. The sentences ship in config/optional, and
   // config/optional is installed ONCE — when the module that provides it is
   // installed. Config added to a module that is already installed never
-  // arrives on its own. Measured on sts.local 2026-09-15 on a different
+  // arrives on its own. Measured on a test site 2026-09-15 on a different
   // change: the files were right, the site had none of them, and there was
   // nothing pending to explain it. So every site that already has these
   // bundles needs this, and a fresh install ignores it.

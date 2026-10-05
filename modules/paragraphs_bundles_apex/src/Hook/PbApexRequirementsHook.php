@@ -34,7 +34,7 @@ use Drupal\Core\StringTranslation\TranslationInterface;
  * ⚠ WHY THIS IS NOT FIXED IN THE SHIPPED YAML, WHICH WAS THE OBVIOUS IDEA.
  * The natural fix is to add the mode to each display's `dependencies.config`,
  * so Drupal's own dependency machinery reacts when it is deleted. MEASURED on
- * sts.local 2026-09-23 and it does not work: `ConfigEntityBase::preSave()`
+ * a test site 2026-09-23 and it does not work: `ConfigEntityBase::preSave()`
  * calls `calculateDependencies()`, and `EntityDisplayBase::calculateDependencies()`
  * (core, lines 278-305) REBUILDS the array from the bundle, the field configs
  * and the view mode, plus whatever each formatter plugin declares. A

@@ -11,7 +11,7 @@ use Drupal\paragraphs_bundles_ai\Model\ChildSlot;
  *
  * WHY THIS EXISTS. The `nesting` list in the briefs was written on 2026-09-19
  * to say what belongs in a slot that accepts any section, and nothing read it:
- * `Briefs::nestingFor()` had no caller. Measured 2026-09-27 on sts.local, the
+ * `Briefs::nestingFor()` had no caller. Measured 2026-09-27 on a test site, the
  * model was given only the slide TITLE for a slideshow and only the heading
  * for two columns, a carousel or a grid, so both shipped example prompts
  * described content the tool dropped.

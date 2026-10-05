@@ -211,7 +211,7 @@ final class TargetResolverTest extends KernelTestBase {
    *
    * Drupal stores "any bundle allowed" as an EMPTY target_bundles, not as a
    * list of every bundle. A naive in_array() check rejects everything on a
-   * field that accepts everything, and measured on sts.local 2026-09-04 every
+   * field that accepts everything, and measured on a test site 2026-09-04 every
    * paragraph field on that site is exactly this case — so the naive version
    * would have failed on every real input while passing a fixture that set the
    * list explicitly. This is that fixture, deliberately left empty.

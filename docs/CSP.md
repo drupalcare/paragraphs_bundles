@@ -21,7 +21,7 @@ answering it as the code changes — is what makes the work travel.
 
 ## The rig
 
-`apexpkg.local`, rebuilt from scratch for this:
+a test site rebuilt from scratch for this:
 
 | | |
 |---|---|

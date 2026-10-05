@@ -18,7 +18,7 @@ use Drupal\paragraphs_bundles_ai\Model\FieldFact;
  * WHERE THE CONTENT / DISPLAY SPLIT COMES FROM, AND WHY NOT FROM THE FILES.
  * The obvious source is the module's own shipped
  * `core.entity_form_display.paragraph.*.default.yml`. This class reads the
- * INSTALLED form display instead, for a reason measured on sts.local on
+ * INSTALLED form display instead, for a reason measured on a test site on
  * 2026-09-15: the site's installed 3d_carousel display has two fields in no
  * group at all, while the shipped file groups both, and there is no pending
  * update to reconcile them. A site builder may also regroup fields entirely,

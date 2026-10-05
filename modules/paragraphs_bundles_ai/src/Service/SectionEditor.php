@@ -164,7 +164,7 @@ final class SectionEditor implements SectionEditorInterface {
 
       // ->value, NOT getString(). On a formatted field getString() joins every
       // non-computed property with ", ", so a text_long came back as
-      // "Our autumn range, basic_html" — measured on sts.local 2026-09-17.
+      // "Our autumn range, basic_html" — measured on a test site 2026-09-17.
       // That made $before permanently unequal to any clean $after, so the
       // "nothing actually changed" branch below could never be reached and a
       // no-op rewrite still wrote two new revisions.

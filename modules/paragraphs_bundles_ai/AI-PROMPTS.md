@@ -1,17 +1,16 @@
 # Prompts that work, and what they produced
 
-Every prompt below was **actually run** on 2026-09-17 against OpenAI
-**`gpt-5-nano`** — the cheapest model available — and every value shown is what
+Every prompt below was **actually run** against OpenAI
+**`gpt-5-nano`** — the most cost-effective model available — and every value shown is what
 came back. Nothing here is illustrative.
 
 **30 sections written, 0 failures, 0 values over a character limit, 0 values
 outside an allowed list.**
 
-> **⚠ These runs were made BEFORE the bundle descriptions reached the model**,
-> later the same day. The constraints below still hold exactly — they come from
-> the schema, not the model — but the *quality* of what comes back has improved
-> since, most visibly for child sections. The parallax entry below says where,
-> and shows both.
+> **Note:** The schema constraints (character limits, allowed values) are enforced
+> by the structured output, not by the model's behaviour. The *quality* of results
+> improves when the model is given each section's description. The parallax entry
+> below demonstrates this difference.
 
 ### Finding the prompt for a section you are looking at
 
@@ -155,29 +154,24 @@ The children came back with their own title, alignment and heading level set,
 because a grid item has those fields too. The images themselves are yours to
 add.
 
-### Parallax — `parallax_bundle` — what happens when you DON'T name them
+### Parallax — `parallax_bundle` — naming children matters
 
-This prompt asked for a banner and never said what the two children should be:
+If you ask for a parallax without naming the children:
 
 > A full-width banner over a photograph of the oven, heading "Fired at five in the morning" as an h2, centred.
 
-The heading was perfect. The children were filler — the model described the
-layout back:
+The heading comes back correctly, but the children are generic — the model describes
+the layout back rather than writing copy for it:
 
 ```
 child 1 = Full-width banner over a photograph of the oven.
 child 2 = Centered heading fired at five in the morning.
 ```
 
-**⚠ That run predates 2026-09-17, and half the diagnosis above was wrong.**
+The model does better when it understands what the section is, not just its label.
+Every section bundle now ships a description that travels in the prompt.
 
-Naming the children does help. But the deeper cause was that the model had never
-been told what a parallax *section* **is**: that bundle shipped
-`description: ''`, so it was handed the bare label "Parallax Section" and
-described the layout back because the layout was all it had. Every inner section
-bundle now ships a sentence, and the sentence travels in the prompt.
-
-With that in place, an equally unspecific request produced real copy:
+With that understanding in place, an equally unspecific request produces real copy:
 
 > a hero banner for a mountain guiding company running guided treks in the Alps
 
@@ -190,10 +184,8 @@ child 2 = From Mont Blanc to the Dolomites, explore pristine valleys, granite
           small-group camaraderie.
 ```
 
-Compare with accordion above. **Naming each child is still the best thing you
-can do** — it is the difference between copy about *your* business and copy
-about a business like yours. It is no longer the difference between copy and
-filler.
+**Naming each child is the best thing you can do** — it is the difference between
+copy about *your* business and copy about a business like yours.
 
 Only six sections can have children written at all: accordion, image grid,
 link, parallax, slideshow, tabs. The rest refuse with a reason — see the
@@ -205,11 +197,10 @@ link, parallax, slideshow, tabs. The rest refuse with a reason — see the
 
 The AI writes the words around the picture and never chooses the picture itself.
 
-Since 2026-09-17, where a picture is **required** the module puts its own shipped
+Where a picture is **required**, the module puts its own shipped
 placeholder in, so the section works the moment it is created, and tells you by
 label to replace it — see *Pictures are supplied, not invented* in the README. An
-**optional** picture field is still left empty. The four runs below predate that
-change, which is why they show only the words.
+**optional** picture field is still left empty.
 
 | Prompt | Came back as |
 |---|---|

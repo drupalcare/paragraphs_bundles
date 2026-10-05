@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  * display's `dependencies.config` looks correct and silently reverts:
  * `EntityDisplayBase::calculateDependencies()` rebuilds that array on every
  * save, and APEX's formatter declares no dependency of its own. Measured on
- * sts.local 2026-09-23 -- present before save(), gone after. That is why the
+ * a test site 2026-09-23 -- present before save(), gone after. That is why the
  * guard is a runtime check and not three YAML edits.
  *
  * WHY A UNIT TEST. This project's phpunit.xml.dist sweeps Unit directories

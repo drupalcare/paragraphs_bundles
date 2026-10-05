@@ -115,7 +115,7 @@ function paragraph_bundle_3d_carousel_update_9002(): string {
  * already has the field from a fresh install of the same code.
  *
  * WHY THE FIELD IS OPTIONAL (the shipped YAML says `required: false`). The
- * backfill below cannot reach every revision: measured on sts.local
+ * backfill below cannot reach every revision: measured on a test site
  * 2026-09-25, 31 of 49 carousel revisions held no value, and reverting to one
  * of them failed validation with "This value should not be null" while the
  * field was required. Nothing needs the requirement either, because an absent
@@ -191,7 +191,7 @@ function paragraph_bundle_3d_carousel_update_9003(): string {
  *
  * 🚨 WHY IT WRITES TO STORAGE INSTEAD OF SAVING ENTITIES.
  *
- * WHAT WAS MEASURED on sts.local, 2026-09-24: the first version of this
+ * WHAT WAS MEASURED on a test site, 2026-09-24: the first version of this
  * backfill loaded each paragraph, set the value and called `save()` on it.
  * During that run node 93 went from THREE carousels to ONE — the other two
  * still existed as entities but were no longer referenced by the field — and a
@@ -419,7 +419,7 @@ function paragraph_bundle_3d_carousel_backfill_style(): int {
       // CURRENT revision. So an entity can be selected while its revision rows
       // already carry real, differing values.
       //
-      // MEASURED on sts.local 2026-09-24, paragraph 492: revision 2665 held
+      // MEASURED on a test site 2026-09-24, paragraph 492: revision 2665 held
       // 'coverflow' and 2669 held 'ring'. An earlier version of this loop
       // merged 'ring' across every revision and turned 2665 into 'ring',
       // silently destroying edit history. That version had been written to fix

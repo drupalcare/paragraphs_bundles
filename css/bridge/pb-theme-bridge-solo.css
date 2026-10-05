@@ -38,7 +38,7 @@
  *
  * paragraphs-bundles-custom.css deliberately does NOT force inheritance on
  * `p`, on the reasoning that it "has NO UA colour override and inherits
- * naturally". Measured 2026-09-12 on solo.local node 317 with Solo active:
+ * naturally". Measured 2026-09-12 on a test site node 317 with Solo active:
  * that is false here too. Solo repaints, at (0,0,0):
  *
  *   :where(.page-wrapper) :where(img, code, pre, kbd, samp, p, hr, ul, ol,

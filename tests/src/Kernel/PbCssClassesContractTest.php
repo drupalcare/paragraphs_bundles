@@ -162,7 +162,7 @@ final class PbCssClassesContractTest extends KernelTestBase {
    * image_background - have form displays whose other config dependencies are
    * not all met in this harness, so `installOptionalConfig()` skips them and
    * the entity does not exist here at all. It does on a real site (checked
-   * against sts.local). Asserting on the installed entity would therefore
+   * against a test site). Asserting on the installed entity would therefore
    * report a defect that is an artefact of the test environment, and - worse -
    * would pass silently on those four if the component were ever dropped from
    * the file.

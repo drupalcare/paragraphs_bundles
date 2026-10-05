@@ -243,7 +243,7 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
   /**
    * A length is emitted only when the stored value really is a length.
    *
-   * 🚨 THE DEFECT THIS PINS, MEASURED ON sts.local 2026-09-24. Paragraphs 335
+   * 🚨 THE DEFECT THIS PINS, MEASURED ON a test site 2026-09-24. Paragraphs 335
    * and 416 held the literal text `PB fixture pb_display_3d_car_perspective`
    * in `pb_display_3d_car_perspective`, and it reached a served stylesheet as
    * `perspective: PB fixture pb_display_3d_car_perspectivepx;`. Browsers drop
@@ -306,7 +306,7 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
         '900 px', 'perspective: 900px;',
         'Spacing before the unit must normalise, not reject.',
       ],
-      'the fixture prose found on sts.local' => [
+      'the fixture prose found on a test site' => [
         'PB fixture pb_display_3d_car_perspective', '',
         'Prose in a length field must emit no declaration at all.',
       ],
@@ -364,7 +364,7 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
    *
    * `.pb-parallax-section > div` declares
    * `min-height: var(--section-height, 400px)`. THE FALLBACK IS THE HAZARD:
-   * every stored height on sts.local is 400, so a rule that silently emitted
+   * every stored height on a test site is 400, so a rule that silently emitted
    * nothing would still render a 400px section and look perfectly correct.
    * Asserting the declaration is the only honest check.
    */
@@ -402,7 +402,7 @@ final class PbDynamicUserVarBuilderTest extends TestCase {
    * the field as `pb_field_value('pb_display_parallax_scroll', 'legacy')`, so
    * an unset value has always selected the legacy effect. The `when` guard
    * originally spelled this `!== 'legacy'`, which is TRUE for an empty field —
-   * and all six parallax sections on sts.local have it unset, so every one of
+   * and all six parallax sections on a test site have it unset, so every one of
    * them would have silently gained three custom properties it never had.
    */
   public function testParallaxUnsetScrollEmitsNoAnimationVars(): void {

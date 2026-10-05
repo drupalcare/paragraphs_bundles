@@ -44,7 +44,7 @@ below is identical for each. Only the geometry differs.
 - **Coverflow:** every card painted on screen stays exposed; only cards
   clipped out of the box are `inert`. Both arrows always stay in tab order.
 
-Checked in Chrome on 2026-09-25: arrow buttons, arrow keys, focus at the ends,
+Tested: arrow buttons, arrow keys, focus at the ends,
 the slide counter, and `prefers-reduced-motion` (no animation runs). ⚠ Not
 yet checked with a real screen reader.
 

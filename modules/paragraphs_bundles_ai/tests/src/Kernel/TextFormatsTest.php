@@ -20,7 +20,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * A rewrite keeps the format it was authored in.
  *
- * THE DEFECT THIS EXISTS TO CATCH, measured on sts.local 2026-09-17 against a
+ * THE DEFECT THIS EXISTS TO CATCH, measured on a test site 2026-09-17 against a
  * real stored value before anything was changed:
  *
  *   as stored             format: 'basic_html'
@@ -138,7 +138,7 @@ final class TextFormatsTest extends KernelTestBase {
   /**
    * Written lines stay lines where the format would run them together.
    *
-   * Measured 2026-09-27 on sts.local: `basic_html` has no `filter_autop`, so
+   * Measured 2026-09-27 on a test site: `basic_html` has no `filter_autop`, so
    * "three short lines" from the model rendered as one line. Text is escaped
    * too: a model's angle brackets are words, not markup.
    */

@@ -112,7 +112,7 @@ final class PbDomIdGrammarTest extends TestCase {
     // module is normally INSTALLED under a `web/` docroot, so the string test
     // failed for anyone running this suite from inside a site rather than
     // from a bare checkout. It passed on drupal.org CI only because the repo
-    // sits at the root there. Measured 2026-09-14 on sts.local, where every
+    // sits at the root there. Measured 2026-09-14 on a test site, where every
     // scanned path legitimately contains '/web/'.
     $root = self::root();
     foreach ([...self::shippedFiles('twig'), ...self::shippedFiles('css')] as $path) {

@@ -25,7 +25,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Covers what goes inside a section: slots, the drafter's ask, the build.
  *
- * WHY THIS EXISTS. Measured 2026-09-27 on sts.local: the briefs' `nesting`
+ * WHY THIS EXISTS. Measured 2026-09-27 on a test site: the briefs' `nesting`
  * list had no reader, so for a slideshow the model was asked only for each
  * slide's TITLE, and for two columns, a carousel or a grid only for the
  * heading — asking for children there was refused outright. Both example

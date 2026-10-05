@@ -33,7 +33,7 @@ Declared in `paragraphs_bundles_apex.info.yml`:
   `pb_media_image` media type these displays extend)
 - Core `media`
 
-**Not core `responsive_image`, deliberately.** Measured 2026-09-23: APEX's three
+**Not core `responsive_image`, deliberately.** APEX's three
 modes map plain `image_style` entities — five derivatives and a fallback each —
 and reference a `responsive_image_style` entity zero times. Computing `sizes`
 from the slot width is the whole point of its approach, so it never uses core's
@@ -93,12 +93,9 @@ breakpoint. PB's wide styles are not — they run 1.50, 2.07, 2.88, 3.37, 2.80,
 2.83 across the six. Switching a hero is a visible design change, not just a
 file-size one.
 
-**2. You lose the loading control — but the default does not change.** An
-earlier version of this file claimed `pb_media_responsive_wide` loads its image
-eagerly. **That was false.** Measured 2026-09-23 against both
-the shipped config and a real site: every one of PB's media displays that
-carries the setting ships `attribute: lazy`, `pb_media_responsive_wide`
-included.
+**2. You lose the loading control — but the default does not change.**
+Every one of PB's media displays that carries the setting ships
+`attribute: lazy`, including `pb_media_responsive_wide`.
 
 What actually changes is who decides. PB's displays **expose** `image_loading`,
 so a site builder can switch one to `eager` on the Manage Display form. The

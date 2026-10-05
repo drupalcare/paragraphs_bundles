@@ -42,7 +42,7 @@ interface BundleProfilerInterface {
    * THE RULE IS COMPUTED, NOT NAMED. A bundle is a CHILD when some other
    * bundle's field names it explicitly — which is a fact in config, not a
    * guess from the `_section_` naming convention. Measured 2026-09-16 on
-   * sts.local: 8 of the 40 installed bundles are named that way, leaving 32
+   * a test site: 8 of the 40 installed bundles are named that way, leaving 32
    * parents, and every one of the 8 is a `*_section_bundle`. The two agree
    * today; when they disagree, config is right and the name is decoration.
    *

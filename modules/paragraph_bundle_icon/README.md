@@ -16,7 +16,7 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 
 **By default a page downloads only the icons your site actually uses.** The
 module collects every Material Symbols name in use, per style, and points the
-stylesheet at a Google Fonts subset naming exactly those icons. Measured on a
+stylesheet at a Google Fonts subset naming exactly those icons. On a
 page with one outlined icon: **9,118 bytes, against 3,411,436 for the bundled
 Outlined font — 374x smaller.** All four variable axes (Fill, Weight, Grade,
 Optical Size) still work, and icon names remain free text.
@@ -26,13 +26,12 @@ deleted. Nothing to configure, and no change to any template or library name.
 
 **The three `.woff2` files still ship, in `fonts/`, and are a real fallback.**
 The local `@font-face` in `css/material-symbols-{outlined,rounded,sharp}.css`
-is never removed — the subset stylesheet is added *after* it. Measured in
-Chrome on 2026-09-23, with cache-busted URLs and the requests read off the
-network: two `@font-face` rules for one family cost **one** request, for the
+is never removed — the subset stylesheet is added *after* it. In Chrome,
+two `@font-face` rules for one family result in one request for the
 last one declared, and the browser fetches the earlier rule only when the last
 one fails. So a site that can reach `fonts.googleapis.com` never downloads the
-bundled font, and a site that cannot paints from it automatically. (Measured
-in Chrome only; other engines are unverified.)
+bundled font, and a site that cannot renders from it automatically. (Tested
+in Chrome; other engines are unverified.)
 
 ⚠ **Names are validated against `data/material-symbols-names.txt`**, the 4,284
 names Google publishes. A name Google does not recognise is dropped silently by
@@ -45,9 +44,7 @@ list is refreshed.
 
 **Above roughly 300 distinct icons in one style, this module stops asking Google
 and uses the bundled font instead.** That is deliberate, and the reason is not
-an error page.
-
-Measured against the live API on 2026-09-23, by bisection:
+an error page. Testing the live API by request size shows:
 
 | `icon_names` bytes | What Google returns |
 |---|---|

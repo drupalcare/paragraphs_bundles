@@ -217,7 +217,7 @@ final class DefaultImage implements DefaultImageInterface {
 
     // AT THE BOTTOM, NOT THE MIDDLE. A hero, an overlay and a parallax put
     // their own heading in the middle of the picture; numbers there fought it
-    // and neither could be read (seen on sts.local, 2026-09-27). Bottom CENTRE
+    // and neither could be read (seen on a test site, 2026-09-27). Bottom CENTRE
     // rather than a corner: a responsive crop trims the sides, and cut the
     // corner numbers in half on the same page.
     $scale = max(1, (int) floor(min($width * 0.3 / $textWidth, $height * 0.1 / $textHeight)));

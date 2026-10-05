@@ -14,7 +14,7 @@
  * ⚠ THERE IS NO UPDATE HOOK, AND THAT IS DELIBERATE. This file used to ship
  * `paragraphs_bundles_apex_update_10001()` for "a site that enabled APEX
  * later", and the README told people to run `drush updatedb` for it.
- * MEASURED 2026-09-23 on sts.local: recorded schema version 10001, only
+ * MEASURED 2026-09-23 on a test site: recorded schema version 10001, only
  * available update 10001 -- so it could never run, for anybody. Core sets a
  * NEW module's schema version to the HIGHEST available update number at
  * install time (ModuleInstaller.php:407-421), so a hook_update_N shipped in a

@@ -10,7 +10,7 @@ use Drupal\paragraphs_bundles_ai\Model\FieldFact;
  * Supplies the picture the module ships, for a field nobody has filled.
  *
  * WHY THIS EXISTS AT ALL. A model can write the words of a hero and cannot
- * write its picture: an image is chosen, not composed. Measured on sts.local
+ * write its picture: an image is chosen, not composed. Measured on a test site
  * 2026-09-17, eight of PB's bundles have a REQUIRED image — hero, image,
  * image_narrow, image_overlay, image_wide, and the card, image-grid and
  * parallax section bundles — so the assistant produced a hero with real

@@ -82,7 +82,7 @@
    does not inherit, so it fell back to its initial value `content-box` on every
    button and link in the module.
 
-   Measured on sts.local 2026-09-10, accordion node: with `all` last, ALL 12 PB
+   Measured on a test site 2026-09-10, accordion node: with `all` last, ALL 12 PB
    buttons/links on the page computed to content-box, so `width: 100%` became the
    CONTENT width and the 24px inline padding was ADDED on top. The accordion
    button then overhung its `overflow: hidden` parent by exactly 24px and clipped

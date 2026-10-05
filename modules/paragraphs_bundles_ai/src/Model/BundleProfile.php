@@ -82,7 +82,7 @@ final readonly class BundleProfile {
    * guessed one would produce a section that saves cleanly and shows nothing.
    *
    * So the section is still created — the words are worth having — and this is
-   * what the person is told to finish. Measured on sts.local: 4 of the 32
+   * what the person is told to finish. Measured on a test site: 4 of the 32
    * sections have exactly one such field, and icon_bundle has six.
    *
    * @return array<string, \Drupal\paragraphs_bundles_ai\Model\FieldFact>

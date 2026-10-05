@@ -35,7 +35,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
  * core records a new module's schema version as the highest available update
  * number at install time (ModuleInstaller.php:407-421), so a hook_update_N
  * shipped in a first release is marked applied before anyone can run it --
- * measured on sts.local as recorded version 10001, only available update
+ * measured on a test site as recorded version 10001, only available update
  * 10001. The honesty contract that test covered is still covered, by
  * ::testSecondRunIsIdempotentAndOverwritesNothing below.
  *

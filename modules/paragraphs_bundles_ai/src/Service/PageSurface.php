@@ -17,7 +17,7 @@ use Drupal\paragraphs_bundles_ai\Model\PageDecision;
  * FIVE CONDITIONS, AND THE FOURTH IS THE ONE THAT LOOKS EASY.
  *
  * "Only where the paragraph field is displayed" reads like a check for a view
- * display named `full`. Measured on sts.local 2026-09-16: NOT ONE node type
+ * display named `full`. Measured on a test site 2026-09-16: NOT ONE node type
  * there has an enabled `full` display — `pb_content` ships one with
  * `status: false`, and the others have none at all, so every page renders
  * through `default` with `full` as its mode. A check for a display called

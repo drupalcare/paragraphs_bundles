@@ -389,7 +389,7 @@
 /* ROW FOUR: Add · Edit · Prompts · Best practices, in source order.
    A PLAIN FLEX ROW AND NOTHING ELSE, which is the whole RTL story. Flexbox
    lays a row out along the writing direction, so an RTL language reverses this
-   for free and needs no rule of its own. Measured 2026-09-20 on sts.local:
+   for free and needs no rule of its own. Measured 2026-09-20 on a test site:
    setting dir="rtl" moved the first button from x=432 to x=1169 and every
    element in the bar reported computed direction `rtl` — including the ones
    carrying `all: initial`, which does NOT sever direction inheritance. No
@@ -403,7 +403,7 @@
 
 /* ONE ROW: Add · Edit · Prompts · Best practices side by side — the
    maintainer, 2026-09-27. The theme reached in and broke it, measured on
-   sts.local: Solo's `.form-type-checkbox { width: 100% }` put each switch on
+   a test site: Solo's `.form-type-checkbox { width: 100% }` put each switch on
    its own full-width line, and `div.form-actions { justify-content: center }`
    with automatic side margins pushed the two buttons 488px apart. Two classes
    here, so these beat the theme's one-class and element-plus-class rules. */

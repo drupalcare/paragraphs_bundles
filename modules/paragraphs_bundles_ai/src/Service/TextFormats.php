@@ -14,7 +14,7 @@ use Drupal\filter\FilterFormatRepositoryInterface;
 /**
  * Default text formats helper.
  *
- * MEASURED, NOT REASONED. On sts.local, 2026-09-17, against a real stored
+ * MEASURED, NOT REASONED. On a test site, 2026-09-17, against a real stored
  * `pb_content_body`:
  *
  *   as stored           format: 'basic_html'
@@ -27,7 +27,7 @@ use Drupal\filter\FilterFormatRepositoryInterface;
  *
  * LINE BREAKS ARE KEPT, SINCE 2026-09-27. The model writes plain text, and
  * `basic_html` — the usual default — has no `filter_autop`, so "three short
- * lines" rendered as one run-on line (measured on sts.local). Where the format
+ * lines" rendered as one run-on line (measured on a test site). Where the format
  * will not turn newlines into markup itself, the text is escaped and wrapped:
  * a blank line starts a paragraph, a single newline is a line break. A format
  * that escapes or auto-paragraphs is handed the text untouched, because it

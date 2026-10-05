@@ -97,7 +97,7 @@ final class Pb3dcLibraryHookTest extends TestCase {
       ],
       // 🚨 THE v1 UPGRADE CASE, and the reason this file exists. A field
       // default applies only when an entity is CREATED, so every carousel
-      // predating the field holds no value at all. Measured on sts.local:
+      // predating the field holds no value at all. Measured on a test site:
       // all five existing carousels were empty before the backfill ran.
       'empty field (content predating the field)' => [
         NULL, 'ring',

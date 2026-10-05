@@ -24,7 +24,7 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * The module supplies a picture for the fields no model can fill.
  *
- * WHAT THIS IS GUARDING, AND WHY IT IS NOT A NICETY. Measured on sts.local
+ * WHAT THIS IS GUARDING, AND WHY IT IS NOT A NICETY. Measured on a test site
  * 2026-09-17: a real draft of a parallax produced two children with genuine
  * marketing copy in `pb_content_body` and nothing in `pb_content_image`, which
  * is REQUIRED — and `refusals` came back empty, so the person was told

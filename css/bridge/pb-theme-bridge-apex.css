@@ -26,7 +26,7 @@
  * save it: on the nested element there is no competing rule at all, so the
  * bridge is unopposed and (0,0,0) wins by default.
  *
- * Measured 2026-09-12 on solo.local node 317 under apex_theme: with the bare
+ * Measured 2026-09-12 on a test site node 317 under apex_theme: with the bare
  * selector, 39 nested paragraphs had `--pb-tx` reset from their ancestor's
  * editor value to `--r-text`. Proven causal by deleting the rule from the
  * live CSSOM and re-reading - the child went from `rgb(85,84,96)` back to
