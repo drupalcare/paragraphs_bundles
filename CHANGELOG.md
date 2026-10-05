@@ -3,7 +3,7 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [2.0.0] — 2026-07-06
+## [2.0.0] — 2026-10-05
 
 ### Added — the Paragraphs List, moved here from PB Import and rebuilt
 
