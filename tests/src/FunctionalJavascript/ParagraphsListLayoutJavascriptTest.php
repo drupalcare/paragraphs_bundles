@@ -11,7 +11,13 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 
 /**
- * The Paragraphs List layout holds under Claro: measured geometry, not markup.
+ * The Paragraphs List layout holds under the admin theme: measured geometry.
+ *
+ * Runs under the core admin theme of the running Drupal: `default_admin` from
+ * 11.4.0 (where it first ships) and `claro` before it. Claro was removed from
+ * core in 12.0.0-beta1 and Default Admin does not exist in 11.3, so naming
+ * either one alone breaks the test on part of the supported ^11.3 || ^12
+ * range. Default Admin is Claro's successor, so the intent is unchanged.
  */
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
@@ -33,6 +39,10 @@ final class ParagraphsListLayoutJavascriptTest extends WebDriverTestBase {
    * {@inheritdoc}
    */
   protected function setUp(): void {
+    // Read by parent::setUp(), so it must be chosen first. See class docblock.
+    if (version_compare(\Drupal::VERSION, '11.4.0', '>=')) {
+      $this->defaultTheme = 'default_admin';
+    }
     parent::setUp();
     ParagraphsType::create(['id' => 'test_a', 'label' => 'Type A'])->save();
     Paragraph::create(['type' => 'test_a'])->save();

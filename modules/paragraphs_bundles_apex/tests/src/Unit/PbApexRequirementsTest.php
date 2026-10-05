@@ -83,6 +83,16 @@ final class PbApexRequirementsTest extends TestCase {
         return new PluralTranslatableMarkup($count, $singular, $plural, $args, $options, $this);
       }
 
+      /**
+       * {@inheritdoc}
+       *
+       * Added to TranslationInterface in Drupal 12.0.0-beta1; an extra method
+       * on this anonymous class is harmless on older cores.
+       */
+      public function selectPluralForm(int|float $count, string $string, ?string $langcode = NULL): string {
+        return $string;
+      }
+
     };
   }
 
