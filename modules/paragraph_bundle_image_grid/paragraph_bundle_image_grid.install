@@ -26,3 +26,18 @@ function paragraph_bundle_image_grid_update_9001(): string {
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }
+
+/**
+ * Gives the two lightbox sections the names v2 ships.
+ *
+ * Version 1 called them Image Grid and Image Grid Section; version 2 calls
+ * them Lightbox Gallery and Lightbox Image, which says what they do. A site
+ * that renamed either one itself keeps its own name.
+ */
+function paragraph_bundle_image_grid_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  return paragraphs_bundles_pb_adopt_shipped_properties([
+    'paragraphs.paragraphs_type.image_grid_bundle' => 'Image Grid',
+    'paragraphs.paragraphs_type.image_grid_section_bundle' => 'Image Grid Section',
+  ], 'label');
+}

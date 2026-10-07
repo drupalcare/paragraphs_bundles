@@ -50,6 +50,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/paragraphs_bundles.display.inc';
 
+use Drupal\Core\Config\Entity\ConfigEntityInterface;
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
@@ -586,6 +587,70 @@ function paragraphs_bundles_pb_read_optional_config(string $config_name): ?array
   );
   $record = $storage->read($config_name);
   return is_array($record) ? paragraphs_bundles_pb_array_prop($record) : NULL;
+}
+
+/**
+ * Gives an upgraded site a shipped value it still has an older copy of.
+ *
+ * Config in config/optional reaches a site once, when the module is
+ * installed, so a label or help text improved in a later release never
+ * arrives on a site that already has it. This copies the shipped value, read
+ * from the module's own file so the words live in one place, but only while
+ * the site still holds exactly what the older release shipped: a value the
+ * site changed itself is its own and is kept.
+ *
+ * @param string $config_name
+ *   Config entity name without .yml (e.g. field.field.paragraph.x.y).
+ * @param string $property
+ *   Top-level property to adopt, such as `label` or `description`.
+ * @param string $previous
+ *   The value the older release shipped.
+ *
+ * @return string
+ *   `updated`, `current` (already the shipped value), `kept` (the site's own
+ *   value), or `absent` (not on this site, or nothing shipped).
+ */
+function paragraphs_bundles_pb_adopt_shipped_property(string $config_name, string $property, string $previous): string {
+  $shipped = paragraphs_bundles_pb_read_optional_config($config_name)[$property] ?? NULL;
+  $entity = \Drupal::service('config.manager')->loadConfigEntityByName($config_name);
+  if (!is_string($shipped) || !$entity instanceof ConfigEntityInterface) {
+    return 'absent';
+  }
+  $current = $entity->get($property);
+  $current = is_string($current) ? $current : '';
+  if ($current === $shipped) {
+    return 'current';
+  }
+  if ($current !== $previous) {
+    return 'kept';
+  }
+  $entity->set($property, $shipped)->save();
+  return 'updated';
+}
+
+/**
+ * Adopts shipped values for several config entities and reports the result.
+ *
+ * @param array<string, string> $config_names
+ *   Previous shipped value, keyed by config entity name.
+ * @param string $property
+ *   Top-level property to adopt, such as `label` or `description`.
+ *
+ * @return string
+ *   One sentence: how many were updated and how many kept the site's own.
+ */
+function paragraphs_bundles_pb_adopt_shipped_properties(array $config_names, string $property): string {
+  $counts = ['updated' => 0, 'current' => 0, 'kept' => 0, 'absent' => 0];
+  foreach ($config_names as $config_name => $previous) {
+    $counts[paragraphs_bundles_pb_adopt_shipped_property($config_name, $property, $previous)]++;
+  }
+  return (string) t('@property: @updated updated to the shipped text, @current already current, @kept kept with this site\'s own text, @absent not on this site.', [
+    '@property' => $property,
+    '@updated' => $counts['updated'],
+    '@current' => $counts['current'],
+    '@kept' => $counts['kept'],
+    '@absent' => $counts['absent'],
+  ]);
 }
 
 /**
@@ -1353,4 +1418,21 @@ function paragraphs_bundles_update_9011(): string {
   return $done === []
     ? (string) t('The root_title column and index already exist.')
     : (string) t('Added the root_title @what; a post-update fills it.', ['@what' => implode(' and ', $done)]);
+}
+
+/**
+ * Gives five Simple section style fields the help text v2 ships.
+ *
+ * Border, border radius, margin, padding and shadow shipped with no
+ * description in v1; v2 says what they are for. A description the site wrote
+ * itself is kept.
+ */
+function paragraphs_bundles_update_9012(): string {
+  return paragraphs_bundles_pb_adopt_shipped_properties([
+    'field.field.paragraph.simple_bundle.pb_display_border' => '',
+    'field.field.paragraph.simple_bundle.pb_display_border_radius' => '',
+    'field.field.paragraph.simple_bundle.pb_display_margin' => '',
+    'field.field.paragraph.simple_bundle.pb_display_padding' => '',
+    'field.field.paragraph.simple_bundle.pb_display_shadow' => '',
+  ], 'description');
 }

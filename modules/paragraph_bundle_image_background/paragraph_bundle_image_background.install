@@ -65,3 +65,16 @@ function paragraph_bundle_image_background_update_9002(): string {
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }
+
+/**
+ * Gives the padding field the help text v2 ships.
+ *
+ * It shipped with no description in v1. A description the site wrote itself
+ * is kept.
+ */
+function paragraph_bundle_image_background_update_9003(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  return paragraphs_bundles_pb_adopt_shipped_properties([
+    'field.field.paragraph.image_background_bundle.pb_display_padding' => '',
+  ], 'description');
+}

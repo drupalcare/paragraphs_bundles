@@ -38,17 +38,27 @@ of the release package; these tables are the shipped record.
 
 | | Count |
 |---|------:|
-| Structural class renames (v1 → v2) | **185** |
+| Structural class renames (v1 → v2) | **199** |
 | Manual-only renames (below) | **119** |
 | Frozen tokens (unchanged) | **69** |
 
-That is 304 rows and **299 distinct renames** — a few names appear in both a
-per-bundle table and a thematic one.
+That is 318 rows and **313 distinct v1 names** — a few names appear in both a
+per-bundle table and a thematic one. One of them, `hide-{delay}`, was removed
+rather than renamed.
 
-Every v2 name in the tables below was checked against the shipped source on
-2026-08-04: **all 299 exist**. Every frozen token was checked the same way, and
+Every v2 name in the first edition of these tables was checked against the
+shipped source on 2026-08-04: **all 299 existed then**. Every frozen token was checked the same way, and
 the ones that turned out to be renamed classes rather than stored values were
 moved into the rename tables where they belong.
+
+Fourteen rows were added for 2.0.1 (2026-10-07): the column toggle icons, the
+alert close hook and two 3D carousel classes. They were found by comparing
+every page of a v1 site with the same pages after upgrading, completed from
+the v1 source, and their v2 names were checked against the shipped source the
+same day: 313 names in all, one of them removed. The column toggle icon classes
+are written by the SVG files under `paragraph_bundle_layout/svg/`, which
+`pb-col-toggle-icons.html.twig` includes, so search those as well as the
+templates.
 
 ### What changed
 
@@ -284,6 +294,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | `pb__alert-countdown-unit` | `pb-alert__countdown-unit` |
 | `pb__alert-top` | `pb-alert--top` |
 | `pb__alert__inner` | `pb-ui-inner` |
+| `js-pb-close-alert` | `pb-alert__close` — v2's script uses this class too |
 
 ### Card
 
@@ -325,6 +336,8 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 | v1 class | v2 class |
 |----------|----------|
+| `hide-{delay}` | removed — the pause button renders only when autoplay is on; the delay is on `data-rotation-delay` |
+| `item-{id}-{n}` | `pb-3d-carousel__slide` — the slide id is now `#pb-3d-carousel__slide-{id}-{n}` |
 | `pb__3d-back` | `pb-3d-flip-box__back` (3D flip box) |
 | `pb__3d-carousel` | `pb-3d-carousel` |
 | `pb__3d-caro-100` | `pb-3d-carousel--h100` |
@@ -414,8 +427,19 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | `pb-col-icon-pos-edge_top` | `pb-layout-col__icon-pos--edge-top` |
 | `pb-col-icon-pos-inside_center` | `pb-layout-col__icon-pos--inside-center` |
 | `pb-col-toggle` | `pb-layout-col__toggle` |
+| `pb-col-toggle__icon` | `pb-layout-col__toggle-icon` |
 | `pb-col-toggle__icon--angle` | `pb-layout-col__toggle-icon--angle` |
+| `pb-col-toggle__icon--angle-collapse` | `pb-layout-col__toggle-icon--angle-collapse` |
+| `pb-col-toggle__icon--angle-expand` | `pb-layout-col__toggle-icon--angle-expand` |
 | `pb-col-toggle__icon--caret` | `pb-layout-col__toggle-icon--caret` |
+| `pb-col-toggle__icon--caret-left` | `pb-layout-col__toggle-icon--caret-left` |
+| `pb-col-toggle__icon--caret-right` | `pb-layout-col__toggle-icon--caret-right` |
+| `pb-col-toggle__icon--chevron` | `pb-layout-col__toggle-icon--chevron` |
+| `pb-col-toggle__icon--chevron-left` | `pb-layout-col__toggle-icon--chevron-left` |
+| `pb-col-toggle__icon--chevron-right` | `pb-layout-col__toggle-icon--chevron-right` |
+| `pb-col-toggle__icon--minus` | `pb-layout-col__toggle-icon--minus` |
+| `pb-col-toggle__icon--plus` | `pb-layout-col__toggle-icon--plus` |
+| `pb-col-toggle__icon--plus-minus` | `pb-layout-col__toggle-icon--plus-minus` |
 | `pb-col-toggle__state` | `pb-layout-col__toggle-state` |
 | `pb-col-toggle__state--collapsed` | `pb-layout-col__toggle-state--collapsed` |
 | `pb-col-toggle__state--expanded` | `pb-layout-col__toggle-state--expanded` |

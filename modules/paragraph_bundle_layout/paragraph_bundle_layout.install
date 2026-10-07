@@ -90,3 +90,178 @@ function paragraph_bundle_layout_update_9002(): string {
     '@rows' => $rows,
   ]);
 }
+
+/**
+ * Fills the toggle animation effect on column sections that have none.
+ *
+ * Issue #3629036: release 1.0.17 made the effect a required field, and a field
+ * default reaches only sections created afterwards, so older two and three
+ * columns sections would not save. `slide` is written, the effect an empty
+ * value already renders as, so no page changes. Every revision is filled, in
+ * batches, and only missing rows are added. After the patch by shank115.
+ *
+ * @param array<string, mixed> $sandbox
+ *   Batch state, kept between passes.
+ */
+function paragraph_bundle_layout_update_9003(array &$sandbox): string {
+  // WHY ROWS AND NOT ENTITY SAVES. An entity save per section runs every
+  // presave hook across sites with up to a million paragraphs, and cannot
+  // reach old revisions at all. Restoring an old revision would bring the
+  // required-field error straight back, so the revision table is filled too.
+  // A value somebody chose already has a row and is never touched, and a
+  // second run finds nothing missing. PbAnimBackfillUpdateTest holds this.
+  $value = 'slide';
+  $storage = \Drupal::entityTypeManager()->getStorage('paragraph');
+  $mapping = $storage instanceof SqlEntityStorageInterface ? $storage->getTableMapping() : NULL;
+  $entityType = $storage->getEntityType();
+  $baseTable = $entityType->getBaseTable();
+  $dataTable = $entityType->getDataTable();
+  $revisionDataTable = $entityType->getRevisionDataTable();
+
+  // Every site PB supports keeps paragraphs in SQL with revisions and
+  // translations; anything else has no field tables to fill.
+  if (!$mapping instanceof DefaultTableMapping || !$baseTable || !$dataTable || !$revisionDataTable) {
+    $sandbox['#finished'] = 1;
+    return (string) t('Paragraphs are not stored in SQL tables; nothing to do.');
+  }
+
+  $database = \Drupal::database();
+
+  if (!isset($sandbox['targets'])) {
+    $sandbox['targets'] = [];
+    $sandbox['skipped'] = [];
+    foreach (['two_columns_bundle' => 'pb_display_2c_anim', 'three_columns_bundle' => 'pb_display_3c_anim'] as $bundle => $fieldName) {
+      $field = FieldConfig::loadByName('paragraph', $bundle, $fieldName);
+      if (!$field instanceof FieldConfig) {
+        continue;
+      }
+      $fieldStorage = $field->getFieldStorageDefinition();
+      // A site that removed `slide` from the options gets nothing written:
+      // a value the field does not offer would be its own broken edit form.
+      if (!array_key_exists($value, (array) $fieldStorage->getSetting('allowed_values'))) {
+        $sandbox['skipped'][] = $bundle;
+        continue;
+      }
+      $sandbox['targets'][$bundle] = [
+        'column' => $mapping->getFieldColumnName($fieldStorage, 'value'),
+        // The data table holds one row per entity, the revision table one
+        // per revision; each is matched on the key its primary key uses.
+        'tables' => [
+          $mapping->getDedicatedDataTableName($fieldStorage) => [$dataTable, FALSE],
+          $mapping->getDedicatedRevisionTableName($fieldStorage) => [$revisionDataTable, TRUE],
+        ],
+        // Core stores an untranslatable field once, in the default language.
+        'translatable' => $field->isTranslatable(),
+        'rows' => 0,
+      ];
+    }
+    $sandbox['last_id'] = 0;
+    $sandbox['done'] = 0;
+    $count = $sandbox['targets'] === [] ? 0 : $database->select($baseTable, 'e')
+      ->condition('e.type', array_keys($sandbox['targets']), 'IN')
+      ->countQuery()->execute()?->fetchField();
+    $sandbox['total'] = is_numeric($count) ? (int) $count : 0;
+  }
+
+  // The sandbox is untyped between passes; these name what this hook put in.
+  /** @var array<string, array{column: string, tables: array<string, array{0: string, 1: bool}>, translatable: bool, rows: int}> $targets */
+  $targets = $sandbox['targets'];
+  /** @var list<string> $skipped */
+  $skipped = $sandbox['skipped'];
+  /** @var int $first */
+  $first = $sandbox['last_id'];
+  /** @var int $done */
+  $done = $sandbox['done'];
+  /** @var int $total */
+  $total = $sandbox['total'];
+  $batchSize = is_int($sandbox['batch_size'] ?? NULL) ? $sandbox['batch_size'] : 500;
+
+  $ids = $total === 0 ? [] : $database->select($baseTable, 'e')
+    ->fields('e', ['id'])
+    ->condition('e.type', array_keys($targets), 'IN')
+    ->condition('e.id', $first, '>')
+    ->orderBy('e.id')
+    ->range(0, $batchSize)
+    ->execute()?->fetchCol() ?? [];
+
+  if ($ids !== []) {
+    // Ordered by id, so the last id read is the highest.
+    $lastRead = end($ids);
+    $last = is_numeric($lastRead) ? (int) $lastRead : $first;
+
+    foreach ($targets as $bundle => $target) {
+      foreach ($target['tables'] as $table => [$sourceTable, $perRevision]) {
+        if (!$database->schema()->tableExists($table)) {
+          continue;
+        }
+        // The base table is the only one that knows every revision's bundle.
+        $missing = $database->select($sourceTable, 's');
+        $missing->innerJoin($baseTable, 'e', 'e.id = s.id');
+        $join = 'f.entity_id = s.id AND f.langcode = s.langcode AND f.deleted = 0';
+        if ($perRevision) {
+          $join .= ' AND f.revision_id = s.revision_id';
+        }
+        if (!$target['translatable']) {
+          $missing->condition('s.default_langcode', 1);
+        }
+        $missing->leftJoin($table, 'f', $join);
+        $missing->fields('s', ['id', 'revision_id', 'langcode'])
+          ->condition('e.type', $bundle)
+          ->condition('s.id', $first, '>')
+          ->condition('s.id', $last, '<=')
+          ->isNull('f.entity_id');
+        $rows = $missing->execute()?->fetchAll() ?? [];
+        if ($rows === []) {
+          continue;
+        }
+        // A section with thousands of revisions would make one statement
+        // larger than MySQL's max_allowed_packet; 1000 rows each stays small.
+        foreach (array_chunk($rows, 1000) as $chunk) {
+          $insert = $database->insert($table)
+            ->fields(['bundle', 'deleted', 'entity_id', 'revision_id', 'langcode', 'delta', $target['column']]);
+          foreach ($chunk as $row) {
+            $insert->values([$bundle, 0, $row->id, $row->revision_id, $row->langcode, 0, $value]);
+          }
+          $insert->execute();
+        }
+        $targets[$bundle]['rows'] += count($rows);
+      }
+    }
+
+    // Paragraphs are cached with their field values; drop the stale copies.
+    $storage->resetCache($ids);
+    $sandbox['last_id'] = $last;
+    $done += count($ids);
+  }
+
+  $sandbox['targets'] = $targets;
+  $sandbox['done'] = $done;
+  $finished = $ids === [] || count($ids) < $batchSize || $total === 0;
+  $sandbox['#finished'] = $finished ? 1 : min(0.99, $done / $total);
+
+  if (!$finished) {
+    return (string) t('Toggle animation effect: @done of @total column sections checked.', [
+      '@done' => $done,
+      '@total' => $total,
+    ]);
+  }
+
+  $report = [];
+  foreach ($targets as $bundle => $target) {
+    $report[] = (string) t('@bundle: @rows row(s) set to @value.', [
+      '@bundle' => $bundle,
+      '@rows' => $target['rows'],
+      '@value' => $value,
+    ]);
+  }
+  foreach ($skipped as $bundle) {
+    $report[] = (string) t('@bundle: skipped, its toggle animation field does not offer @value.', [
+      '@bundle' => $bundle,
+      '@value' => $value,
+    ]);
+  }
+
+  return $report === []
+    ? (string) t('No column section on this site has a toggle animation field; nothing to do.')
+    : (string) t('Toggle animation effect filled where empty. @list', ['@list' => implode(' ', $report)]);
+}

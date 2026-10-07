@@ -3,6 +3,36 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.1] — 2026-10-07
+
+Run `drush updatedb` after updating.
+
+### Fixed
+
+- **#3629036: two- and three-column sections created before 1.0.17 can be
+  edited and saved again.** 1.0.17 made "Toggle animation effect" required
+  without filling it on existing sections, so editing those pages failed with
+  "Toggle animation effect field is required". Update
+  `paragraph_bundle_layout_update_9003` fills the missing value with "slide"
+  (how those sections already rendered, so no page changes) on the current
+  version and every revision, in batches, and never touches a value already
+  set. Thanks shank115 for the first patch on the issue.
+- **3D carousel CSS class.** 2.0.0 emitted `paragraph--type--_d-carousel-bundle`
+  instead of the 1.x `paragraph--type--3d-carousel-bundle`. Both are emitted
+  now, so themes written for either release keep matching.
+- **Upgraded sites get the 2.x names "Lightbox Gallery" and "Lightbox Image"**
+  for the image grid sections (update `paragraph_bundle_image_grid_update_9002`),
+  and the help text of the Simple section's border, border radius, margin,
+  padding and shadow fields and Image Background's padding field (updates
+  `paragraphs_bundles_update_9012`, `paragraph_bundle_image_background_update_9003`).
+  A label or help text the site changed itself is kept. Config translations
+  keep their 1.x text; translators update those by hand.
+
+### Documentation
+
+- `docs/CSS-CLASS-MIGRATION.md` lists 14 more 1.x classes the 2.0.0 edition
+  missed, including `js-pb-close-alert` and the column toggle icon classes.
+
 ## [2.0.0] — 2026-10-05
 
 ### Added — the Paragraphs List, moved here from PB Import and rebuilt

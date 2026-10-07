@@ -85,10 +85,15 @@
    Every tag added for the geometry ends in `-` so it emits no whitespace:
    without it these lines printed blank lines on every ring, and the ring's
    markup must stay byte identical. -#}
+{#- The type class is LITERAL, as it was in 1.x. `paragraph.bundle|clean_class`
+   turns the leading digit of 3d_carousel_bundle into "_" and emitted
+   paragraph--type--_d-carousel-bundle in 2.0.0. Both are kept, so a theme
+   written against either release keeps working. -#}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
   'pb-3d-carousel',
+  'paragraph--type--3d-carousel-bundle',
   'paragraph--type--' ~ paragraph.bundle|clean_class,
   view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
   not paragraph.isPublished() ? 'paragraph--unpublished',
