@@ -53,16 +53,16 @@
       <div class="pb-image-grid__wrapper" aria-label="{{ 'Image Grid'|t }}">
         <div id="{{ lightbox_id }}" class="pb-grid__lightbox" aria-hidden="true" inert role="dialog" aria-labelledby="{{ lightbox_heading_id }}" tabindex="-1">
           <h2 id="{{ lightbox_heading_id }}" class="visually-hidden">{{ 'Image Grid Lightbox'|t }}</h2>
-          <button type="button" class="pb-grid__close" aria-label="{{ 'Close Grid'|t }}"><span class="visually-hidden">{{ 'Close Grid'|t }}</span>
+          <button type="button" class="pb-grid__close control-btn" aria-label="{{ 'Close Grid'|t }}"><span class="visually-hidden">{{ 'Close Grid'|t }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"/></svg>
           </button>
           <div class="pb-grid__lightbox-content">
             {# Content injected by JS. #}
           </div>
-          <button type="button" class="pb-modal__prev" aria-label="{{ 'Previous'|t }}"><span class="visually-hidden">{{ 'Previous'|t }}</span>
+          <button type="button" class="pb-modal__prev control-btn" aria-label="{{ 'Previous'|t }}"><span class="visually-hidden">{{ 'Previous'|t }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M640-80 240-480l400-400 71 71-329 329 329 329-71 71Z"/></svg>
           </button>
-          <button type="button" class="pb-modal__next" aria-label="{{ 'Next'|t }}"><span class="visually-hidden">{{ 'Next'|t }}</span>
+          <button type="button" class="pb-modal__next control-btn" aria-label="{{ 'Next'|t }}"><span class="visually-hidden">{{ 'Next'|t }}</span>
             <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="m321-80-71-71 329-329-329-329 71-71 400 400L321-80Z"/></svg>
           </button>
         </div>

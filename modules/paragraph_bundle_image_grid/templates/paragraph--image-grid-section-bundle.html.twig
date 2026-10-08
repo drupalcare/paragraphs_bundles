@@ -47,7 +47,7 @@
 
     {% if pb_link and pb_image %}
       <div id="{{ item_id }}" class="pb-image__wrapper pb-image-grid">
-        <button type="button" class="pb-grid__expand" aria-expanded="false" aria-label="{{ 'Expand image grid'|t }}"><span class="visually-hidden">{{ 'Expand image grid'|t }}</span>
+        <button type="button" class="pb-grid__expand control-btn" aria-expanded="false" aria-label="{{ 'Expand image grid'|t }}"><span class="visually-hidden">{{ 'Expand image grid'|t }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
         </button>
         <a href="{{ pb_link }}" class="pb-ui-link"{% if pb_link_title %} title="{{ pb_link_title }}"{% endif %}>
@@ -61,7 +61,7 @@
       </div>
     {% else %}
       <div id="{{ item_id }}" class="pb-image__wrapper pb-image-grid not-clickable">
-        <button type="button" class="pb-grid__expand" aria-expanded="false" aria-label="{{ 'Expand image grid'|t }}"><span class="visually-hidden">{{ 'Expand image grid'|t }}</span>
+        <button type="button" class="pb-grid__expand control-btn" aria-expanded="false" aria-label="{{ 'Expand image grid'|t }}"><span class="visually-hidden">{{ 'Expand image grid'|t }}</span>
           <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M120-120v-320h80v184l504-504H520v-80h320v320h-80v-184L256-200h184v80H120Z"/></svg>
         </button>
         {{ pb_image }}

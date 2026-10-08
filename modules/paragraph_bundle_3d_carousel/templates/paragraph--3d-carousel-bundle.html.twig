@@ -136,7 +136,7 @@
 
     <div id="{{ co_id }}" class="pb-3d-carousel__options" aria-label="{{ 'Carousel Controls'|t }}">
       <div class="pb-ui-row pb-3d-carousel__options-inner">
-        <button id="pb-3d-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+        <button id="pb-3d-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-prev.svg') }}</span>
         </button>
@@ -145,7 +145,7 @@
         {% if pb_play_stop > 0 %}
           <button id="pb-3d-carousel__play-pause-{{ paragraph.id.value }}"
                   type="button"
-                  class="pb-ui-btn pb-nav__pause"
+                  class="pb-ui-btn pb-nav__pause control-btn"
                   aria-controls="{{ carousel_id }}"
                   aria-label="{{ 'Pause slideshow'|t }}"
                   aria-pressed="true">
@@ -155,7 +155,7 @@
           </button>
         {% endif %}
 
-        <button id="pb-3d-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+        <button id="pb-3d-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
           <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-next.svg') }}</span>
         </button>

@@ -126,7 +126,7 @@
       {% if total_slides > 1 and (pb_show_dots or pb_play_stop > 0) %}
         <div class="pb-carousel__bottom-bar">
           {% if pb_play_stop > 0 %}
-            <button id="pb-carousel__play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}" aria-pressed="true">
+            <button id="pb-carousel__play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}" aria-pressed="true">
               <span class="visually-hidden">{{ 'Play or pause the carousel'|t }}</span>
               <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_carousel/svg/svg-pause.svg') }}</span>
               <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_carousel/svg/svg-play.svg') }}</span>
@@ -144,12 +144,12 @@
       {% set pb_show_arrows = pb_navigation in ['arrows', 'both'] %}
       {% if total_slides > 1 and pb_show_arrows %}
         <div class="pb-carousel__options-bar" aria-label="{{ 'Carousel Controls'|t }}">
-          <button id="pb-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
+          <button id="pb-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-prev.svg') }}
           </button>
 
-          <button id="pb-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
+          <button id="pb-carousel__next-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__next control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Next Slide'|t }}">
             <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-next.svg') }}
           </button>

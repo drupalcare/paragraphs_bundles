@@ -123,7 +123,7 @@
             {% if show_play_button %}
               <button id="pb-slideshow__play-pause-{{ paragraph.id.value }}" type="button"
                       aria-label="{{ 'Pause slideshow'|t }}"
-                      class="pb-ui-btn pb-nav__play pb-is-playing"
+                      class="pb-ui-btn pb-nav__play pb-is-playing control-btn"
                       aria-live="polite">
                 <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
                 <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_slideshow/svg/svg-play.svg') }}</span>
@@ -138,7 +138,7 @@
                           aria-label="{{ 'Slide '|t ~ (key + 1) }}"
                           aria-current="{{ key == 0 ? 'true' : 'false' }}"
                           aria-controls="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}"
-                          class="pb-ui-btn pb-slideshow__nav-btn{{ key == 0 ? ' pb-is-active' : '' }}">
+                          class="pb-ui-btn pb-slideshow__nav-btn control-btn{{ key == 0 ? ' pb-is-active' : '' }}">
                     <span>{{ key + 1 }}</span>
                   </button>
                 {% endif %}
@@ -149,11 +149,11 @@
 
         {% if pb_prev_next %}
           <div id="pb-slideshow__arrows-{{ paragraph.id.value }}" class="pb-ui-bar pb-slideshow__arrows pb-nav__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
-            <button class="pb-nav__prev pb-ui-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
+            <button class="pb-nav__prev pb-ui-btn control-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
               <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
               <span>{{ include('@paragraph_bundle_slideshow/svg/svg-prev.svg') }}</span>
             </button>
-            <button class="pb-nav__next pb-ui-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Next Slide'|t }}">
+            <button class="pb-nav__next pb-ui-btn control-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Next Slide'|t }}">
               <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
               <span>{{ include('@paragraph_bundle_slideshow/svg/svg-next.svg') }}</span>
             </button>

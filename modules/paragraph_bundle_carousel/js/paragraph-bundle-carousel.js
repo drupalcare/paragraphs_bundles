@@ -572,7 +572,7 @@
 
     for (let i = 0; i < totalPages; i++) {
       const dot = document.createElement('button');
-      dot.className = PB_CAROUSEL__DOT;
+      dot.className = `${PB_CAROUSEL__DOT} control-btn`;
       dot.setAttribute(
         'aria-label',
         Drupal.t('Go to slide group @n', { '@n': i + 1 }),
