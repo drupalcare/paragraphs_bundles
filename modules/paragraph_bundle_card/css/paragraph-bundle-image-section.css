@@ -66,7 +66,6 @@
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner > .pb-card__image:hover .field--name-pb-content-title {
   z-index: 1001;
-  color: var(--pb-tx-h, var(--pb-tx));
 }
 
 .paragraphs-bundles.pb-card.pb-card-image-section .pb-card-image-section__inner .pb-image__wrapper {

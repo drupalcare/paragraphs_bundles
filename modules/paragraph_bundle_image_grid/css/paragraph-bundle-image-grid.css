@@ -83,7 +83,6 @@
 
 .paragraphs-bundles.pb-image-grid-section .pb-image-grid:hover .field--name-pb-content-title {
   z-index: 1001;
-  color: var(--pb-tx-h, var(--pb-tx));
 }
 
 .paragraphs-bundles.pb-image-grid .pb-image-grid__wrapper {

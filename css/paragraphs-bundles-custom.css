@@ -72,15 +72,25 @@
  * static CSS. `--pb-bg` / `--pb-bg-h` exist only when the editor
  * sets background fields - never from the theme bridge.
  * ================================================================= */
-.paragraphs-bundles .field,
-.paragraphs-bundles > .pb-ui-inner {
-  color: var(--pb-tx);
+/* The text colour itself is set on `.paragraphs-bundles > .pb-ui-inner` in
+ * "Layout primitives" below - one block per selector in this file. */
+.paragraphs-bundles > .pb-ui-inner:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
+  border-color: var(--pb-br-h, var(--pb-br));
+}
+
+/*
+ * Fields INHERIT the text colour; they never paint it. Painting each field
+ * separately (as this rule once did) meant hovering a paragraph recoloured
+ * only the field under the pointer, never the paragraph's text as a whole.
+ * Enforced by tests/src/Unit/PbCssColourInheritanceContractTest.php.
+ */
+.paragraphs-bundles .field {
+  color: inherit;
   border-color: var(--pb-br);
 }
 
-.paragraphs-bundles .field:hover,
-.paragraphs-bundles > .pb-ui-inner:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
+.paragraphs-bundles .field:hover {
   border-color: var(--pb-br-h, var(--pb-br));
 }
 
@@ -122,6 +132,18 @@
 
 .paragraphs-bundles .pb-ui-inner :where(a):hover {
   color: var(--pb-lk-h, var(--pb-tx-h, var(--pb-lk, var(--pb-tx))));
+}
+
+/*
+ * `.pb-ui-link` wraps a WHOLE block - a card, an image, a hero box - to make
+ * it clickable. It is the block, not a link inside text, so it inherits the
+ * paragraph's text colour like everything else in it (no inline link loses
+ * its colour cue). Without this, the fields it wraps inherit link blue.
+ * Measured 2026-10-08: 213 elements across 18 demo pages, captions included.
+ */
+.paragraphs-bundles .pb-ui-link,
+.paragraphs-bundles .pb-ui-link:hover {
+  color: inherit;
 }
 
 /* ===================================================================
@@ -171,6 +193,8 @@ body .page-wrapper li {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  color: var(--pb-tx);
+  border-color: var(--pb-br);
 }
 
 .paragraphs-bundles h1,

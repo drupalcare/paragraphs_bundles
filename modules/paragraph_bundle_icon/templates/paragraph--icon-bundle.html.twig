@@ -59,7 +59,7 @@
       {% if content.pb_content_image_icon|render %}
         <div class="pb-icon__header">
           {% if icon_link %}
-            <a href="{{ icon_link }}"{% if pb_title %} title="{{ pb_title }}"{% endif %}>
+            <a href="{{ icon_link }}" class="pb-ui-link"{% if pb_title %} title="{{ pb_title }}"{% endif %}>
           {% endif %}
           {% if pb_title %}
             {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
@@ -72,7 +72,7 @@
       {% else %}
         <div class="pb-icon__header">
           {% if icon_link %}
-            <a href="{{ icon_link }}"{% if pb_title %} title="{{ pb_title }}"{% endif %}>
+            <a href="{{ icon_link }}" class="pb-ui-link"{% if pb_title %} title="{{ pb_title }}"{% endif %}>
           {% endif %}
           {% if pb_title %}
             {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}

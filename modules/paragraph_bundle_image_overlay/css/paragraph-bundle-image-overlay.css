@@ -10,7 +10,6 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com.
  */
 .paragraphs-bundles.pb-image-overlay * {
-  color: var(--pb-tx) !important;
   border-color: var(--pb-br) !important;
 }
 

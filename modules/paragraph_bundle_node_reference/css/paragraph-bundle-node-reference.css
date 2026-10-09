@@ -66,7 +66,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  color: var(--pb-tx, inherit);
+  color: inherit;
 }
 
 @media (min-width: 60rem) {
@@ -83,21 +83,41 @@
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
-/* Body links keep their own colour: excluding only headings would repaint every
-   inline link inside a teaser, which is WAI failure F73 when colour is the sole
-   distinguishing cue. */
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only *:not(.contextual-links a, a) {
+/*
+ * TEXT COLOUR IS SET ONCE, ON THE REFERENCED NODE, and everything inside
+ * inherits it - so hovering it recolours all of its text together.
+ *
+ * The referenced node renders through the THEME's templates, and themes
+ * colour elements inside it directly (Solo paints p, h1-h3 and li; APEX
+ * paints p, span, div). The rule below therefore resets every element to
+ * `inherit` - restoring the chain from this container, never painting a
+ * value of its own. Same selectors and specificity as the rule it replaces,
+ * which painted `var(--pb-tx)` onto each element instead.
+ *
+ * Body links keep their own colour: repainting every inline link inside a
+ * teaser is WAI failure F73 when colour is the sole distinguishing cue.
+ * A link that WRAPS a title is the title, so it inherits like the title.
+ */
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow {
   color: var(--pb-tx, inherit);
 }
 
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text:hover *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow:hover *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel:hover *:not(.contextual-links a, a),
-.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only:hover *:not(.contextual-links a, a) {
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text:hover,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel:hover,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow:hover {
   color: var(--pb-tx-h, var(--pb-tx));
+}
+
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .field--name-pb-content-nf-title-only *:not(.contextual-links a, a),
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-teaser-text :is(h1, h2, h3, h4, h5, h6, header) a,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-3d-carousel :is(h1, h2, h3, h4, h5, h6, header) a,
+.paragraphs-bundles.pb-node-reference .node--view-mode-pb-slideshow :is(h1, h2, h3, h4, h5, h6, header) a {
+  color: inherit;
 }
 
 .paragraphs-bundles.pb-node-reference .pb-content__full {

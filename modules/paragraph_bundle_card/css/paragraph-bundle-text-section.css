@@ -11,13 +11,11 @@
 
 .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div,
 .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div {
-  color: var(--pb-tx);
   background-color: var(--pb-bg);
 }
 
 .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div:hover,
 .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
@@ -38,7 +36,6 @@
 
 @media print {
   .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div:hover {
-    color: var(--pb-tx);
     background-color: var(--pb-bg);
   }
 }

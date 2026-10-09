@@ -3,6 +3,31 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Fixed
+
+- **Hovering a section now recolours all of its text.** The editor's text
+  hover colour was set on the section, but titles, paragraphs and fields
+  painted their own colour, so they ignored it: hovering a hero box turned the
+  box to the hover colour while every line stayed as it was. Text colour is
+  now set once on the section and everything inside inherits it - core
+  `.field`, and the hero, node reference, modal, image overlay, card and image
+  grid bundles.
+- **Links inside a modal's text keep their link colour.** The modal repainted
+  every element, links included, in the text colour, so links were
+  distinguishable by underline alone.
+- **Captions and titles inside a clickable card, image or icon stay in the
+  text colour.** A link that wraps a whole block (`.pb-ui-link`) now inherits
+  the section's colour instead of the theme's link colour. The icon bundle's
+  links carry that class now too.
+
+### Added
+
+- `PbCssColourInheritanceContractTest`: fails if any stylesheet paints text
+  colour from a `--pb-*` token onto `*`, a text element or a field wrapper
+  instead of the section that owns it. `color: inherit` resets stay allowed.
+
 ## [2.0.1] — 2026-10-07
 
 Run `drush updatedb` after updating.

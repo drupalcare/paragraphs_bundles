@@ -37,31 +37,38 @@
   border-color: var(--pb-br-h, var(--pb-br));
 }
 
-.paragraphs-bundles.pb-hero .pb-hero__text-inner h2 {
-  transition: color 0.2s ease-out;
-  color: var(--pb-tx);
-}
-
-.paragraphs-bundles.pb-hero .pb-hero__text-inner h2:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
-.paragraphs-bundles.pb-hero .pb-hero__text-inner p {
-  transition: color 0.2s ease-out;
-  color: var(--pb-tx, inherit);
-}
-
-.paragraphs-bundles.pb-hero .pb-hero__text-inner p:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
+/*
+ * TEXT COLOUR IS SET ONCE, ON THE BOX, and everything inside inherits it, so
+ * hovering the box recolours all of its text. Dynamic CSS sets `--pb-tx` and
+ * `--pb-tx-h` on this node; these rules are the fallback when it does not.
+ *
+ * Painting each child instead (the former h2 and p rules) severed that.
+ * Measured 2026-10-08 on a Solo site: on hover the box computed the editor's
+ * hover colour #ffd166 while every visible line stayed #ffffff.
+ */
 .paragraphs-bundles.pb-hero .pb-hero__text-inner {
-  transition: background-color 0.2s ease-out;
+  transition:
+    background-color 0.2s ease-out,
+    color 0.2s ease-out;
+  color: var(--pb-tx);
   background-color: var(--pb-bg);
 }
 
 .paragraphs-bundles.pb-hero .pb-hero__text-inner:hover {
+  color: var(--pb-tx-h, var(--pb-tx));
   background-color: var(--pb-bg-h, var(--pb-bg));
+}
+
+/*
+ * Restore inheritance on what something else paints inside the box: core's
+ * `.paragraphs-bundles .field`, theme element colours (the hero has no
+ * `.pb-ui-inner`, so the bridges' own resets never reach it), and the link
+ * that wraps the whole box. That link is the entire box, so no inline link
+ * loses its colour cue; links inside the body text are not matched and keep
+ * theirs.
+ */
+.paragraphs-bundles.pb-hero .pb-hero__text-inner :is(.pb-ui-link, .field, h1, h2, h3, h4, h5, h6, p, li, span, div) {
+  color: inherit;
 }
 
 /* ==========================================================================
@@ -153,9 +160,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .paragraphs-bundles.pb-hero .pb-hero__text-inner,
-  .paragraphs-bundles.pb-hero .pb-hero__text-inner *,
-  .paragraphs-bundles.pb-hero .pb-hero__text-inner h2,
-  .paragraphs-bundles.pb-hero .pb-hero__text-inner p {
+  .paragraphs-bundles.pb-hero .pb-hero__text-inner * {
     transition: none;
   }
 }

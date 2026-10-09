@@ -11,14 +11,6 @@
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
 
-.paragraphs-bundles.pb-modal * {
-  color: var(--pb-tx);
-}
-
-.paragraphs-bundles.pb-modal *:hover {
-  color: var(--pb-tx-h, var(--pb-tx));
-}
-
 .paragraphs-bundles.pb-modal > .pb-modal__dialog {
   position: fixed;
   z-index: 10000 !important;
