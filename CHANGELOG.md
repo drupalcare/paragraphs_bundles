@@ -3,7 +3,7 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
-## [Unreleased]
+## [2.0.3] — 2026-10-09
 
 ### Fixed
 
