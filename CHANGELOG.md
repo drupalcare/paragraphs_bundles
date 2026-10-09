@@ -28,6 +28,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   colour from a `--pb-*` token onto `*`, a text element or a field wrapper
   instead of the section that owns it. `color: inherit` resets stay allowed.
 
+## [2.0.2] — 2026-10-07
+
+### Added
+
+- **`control-btn` class on PB's control buttons**, so a theme that styles
+  every `<button>` can leave navigation and media controls alone by excluding
+  `.control-btn`. On 25 buttons: carousel, 3D carousel and slideshow controls,
+  the 3D flip box toggle, image grid lightbox controls, alert countdown
+  pause and close, the column toggles and the modal close button. Not on
+  buttons whose look is the design (accordion, tabs, the modal open button).
+  The class is added; no existing class, style or behaviour changes.
+  `PbControlButtonClassContractTest` checks every shipped button.
+
 ## [2.0.1] — 2026-10-07
 
 Run `drush updatedb` after updating.
@@ -155,17 +168,17 @@ Run `drush updatedb` after updating.
 
 ### Added — AI (optional)
 
-- **`paragraphs_bundles_ai`** — optional AI sub-module. Three tools:
-  `pb_resolve_target` (checks whether sections can be added and returns the
-  exact question to ask when they cannot), `pb_draft_field_text` (reports a
-  section's real fields and character limits before any text is written), and
-  `pb_create_sections` (creates them). Pages are created **unpublished** or
-  added as a **new revision**; nothing is ever published for you.
+- **`paragraphs_bundles_ai`** — optional AI sub-module. A bar at the foot of
+  a page you can edit: choose a section, say how many items go inside it, say
+  what it should say, pick a style, and it writes the section into the page.
+  The page is saved as a **new revision**; nothing is published for you.
   Requires `drupal/ai`; the parent module does not.
-- **`ai_agents.ai_agent.paragraphs_bundles_agent`** in `config/optional/` —
-  without an agent, a FunctionCall plugin is unreachable by anything on the
-  site. Installs only when `ai_agents` is present.
 - `composer.json` suggests `drupal/ai`, naming the sub-module that needs it.
+
+  ⚠ **Corrected 2026-10-09:** this entry first listed three AI agent tools
+  (`pb_resolve_target`, `pb_draft_field_text`, `pb_create_sections`) and an
+  `ai_agents` agent config. Those were removed before 2.0.0 was released and
+  never shipped; the bar above is what 2.0.0 contains.
 - **Fixed in `SectionComposer` and `SectionEditor`: a non-scalar value reached a
   string cast.** The values being written carry whatever the model answered, so
   a field value can be an array or an object, and the allowed-values check cast
