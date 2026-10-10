@@ -3,6 +3,31 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [2.0.4] — 2026-10-10
+
+No change to how any page renders. Stylesheet housekeeping and CI coverage.
+
+### Changed
+
+- **Stylelint now checks all 74 stylesheets, and all 74 pass.** CI was
+  linting `css/*.css` only - 6 of 74 files - because the job shell has no
+  globstar, so `**` matched one level. The bundle and sub-module stylesheets
+  are now listed explicitly. The 113 errors this exposed were fixed: property
+  order and layout, `rgb()` notation, quote style in the icon font CSS, and
+  duplicate selectors in the hero and flip box bundles merged into one block
+  each. In the AI bar stylesheet `all: initial` stays the first declaration
+  of each rule, where it must be.
+- **3D carousel: the control-button selector is defined once.** The prev,
+  next and pause buttons were styled by two blocks with the same selector (a
+  reset, then the styling). They are now one block, reset first. Measured on
+  a 3D carousel at rest, hover and keyboard focus: all 1421 computed values
+  read back identical, and the screenshots are byte-identical.
+  `PbCssDuplicateSelectorContractTest` now allows no duplicate selector at
+  all.
+  ⚠ One cascade difference remains, and nothing in PB triggers it: a theme or
+  module that adds the utility class `pb-u-hide-0` to a 3D carousel control
+  button will now hide that button.
+
 ## [2.0.3] — 2026-10-09
 
 ### Fixed

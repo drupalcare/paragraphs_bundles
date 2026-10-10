@@ -59,10 +59,7 @@ class PbCssDuplicateSelectorContractTest extends TestCase {
    *
    * @var array<string, string>
    */
-  private const array KNOWN_DUPLICATES = [
-    'modules/paragraph_bundle_3d_carousel/css/paragraph-bundle-3d-carousel.css|.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn'
-    => 'pre-existing at the time this contract was added; the later block wins and the visual result has not been reviewed',
-  ];
+  private const array KNOWN_DUPLICATES = [];
 
   /**
    * Returns the module root.

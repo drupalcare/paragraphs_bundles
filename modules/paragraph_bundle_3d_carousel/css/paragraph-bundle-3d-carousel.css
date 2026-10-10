@@ -204,6 +204,17 @@
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
   all: unset;
+  display: flex;
+  visibility: visible;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+  border: none;
+  font-weight: normal;
+  padding-block: var(--pb-px3);
+  padding-inline: var(--pb-px12);
 }
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options {
@@ -274,21 +285,6 @@
   display: none;
   text-align: center;
   font-weight: normal;
-}
-
-/* stylelint-disable-next-line no-duplicate-selectors -- known duplicate, listed in PbCssDuplicateSelectorContractTest::KNOWN_DUPLICATES; merging it changes the cascade and needs a visual review. */
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
-  display: flex;
-  visibility: visible;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease-in-out;
-  opacity: 1;
-  border: none;
-  font-weight: normal;
-  padding-block: var(--pb-px3);
-  padding-inline: var(--pb-px12);
 }
 
 /* Button focus state for accessibility */
