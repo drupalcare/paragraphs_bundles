@@ -276,6 +276,7 @@
   font-weight: normal;
 }
 
+/* stylelint-disable-next-line no-duplicate-selectors -- known duplicate, listed in PbCssDuplicateSelectorContractTest::KNOWN_DUPLICATES; merging it changes the cascade and needs a visual review. */
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn {
   display: flex;
   visibility: visible;

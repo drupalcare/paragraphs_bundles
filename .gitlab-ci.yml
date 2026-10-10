@@ -29,6 +29,11 @@ variables:
   # list of things nobody may ever correct. Turn this back on together with a
   # `.cspell-project-words.txt`, the way cloudflare_purge does it.
   SKIP_CSPELL: '1'
+  # LINT EVERY STYLESHEET, NOT ONE FOLDER DEEP. The template runs stylelint on
+  # an unquoted `./**/*.css`, and the job's shell has no globstar, so `**` acts
+  # as `*`: it reached css/*.css only - 6 of 74 files (measured 2026-10-09).
+  # These fixed-depth patterns are expanded by the same shell into real paths.
+  _STYLELINT_EXTRA: 'css/*/*.css modules/*/css/*.css'
   # Pin the axe-core release used for accessibility assertions. Bump
   # deliberately — a new minor can introduce new rules and turn a green
   # pipeline red.

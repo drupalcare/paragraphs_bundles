@@ -23,10 +23,10 @@
   left: 0;
   padding: 0.75rem clamp(0.75rem, 4vw, 2rem);
   padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
-  background: #15191a;
-  color: #eef2ec;
-  box-shadow: 0 -2px 12px rgb(0 0 0 / 25%);
   transition: transform 300ms ease;
+  color: #eef2ec;
+  background: #15191a;
+  box-shadow: 0 -2px 12px rgb(0, 0, 0, 0.25);
 }
 
 /* NO `overflow` DECLARATION HERE, deliberately. The toggle is positioned above
@@ -104,20 +104,20 @@
 .pb-ai-bar label {
   display: block;
   margin-bottom: 0.2rem;
-  font-size: 0.78rem;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #a8b3ad;
+  font-size: 0.78rem;
 }
 
 .pb-ai-bar select,
 .pb-ai-bar textarea,
 .pb-ai-bar input[type="number"] {
   padding: 0.4rem 0.5rem;
+  color: inherit;
   border: 1px solid #3b4541;
   border-radius: 4px;
   background: #1e2422;
-  color: inherit;
   font: inherit;
 }
 
@@ -137,9 +137,9 @@
 
 .pb-ai-bar .form-actions {
   display: flex;
-  gap: 0.5rem;
-  margin: 0;
   flex: 0 0 auto;
+  margin: 0;
+  gap: 0.5rem;
 }
 
 .pb-ai-bar__status {
@@ -186,16 +186,9 @@
   position: fixed;
   z-index: 1;
   padding: 0.2rem 0.45rem;
-  border-radius: 4px;
-  background: #15191a;
-  color: #f4f7f3;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  line-height: 1.5;
-  letter-spacing: 0.02em;
-  white-space: nowrap;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 30%);
-  opacity: 0;
+  transition:
+    opacity 120ms ease,
+    transform 120ms ease;
   /* Starts 6px high and slides DOWN onto the section's top-left corner. The
      script positions this element; nothing else may add a transform to it.
      A SECOND `.pb-ai-note` BLOCK ONCE SAT LOWER IN THIS FILE carrying
@@ -203,15 +196,24 @@
      was lifted by its own full height on top of the position the script had
      already set, which is exactly the "too far from the top" this fixes. */
   transform: translateY(-6px);
-  transition: opacity 120ms ease, transform 120ms ease;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  color: #f4f7f3;
+  border-radius: 4px;
+  background: #15191a;
+  box-shadow: 0 2px 8px rgb(0, 0, 0, 0.3);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.5;
 }
 
 /* No arrow: the tooltip sits ON the section's corner, so there is nothing for
    it to point at. */
 
 .pb-ai-note:not([hidden]) {
-  opacity: 1;
   transform: translateY(0);
+  opacity: 1;
 }
 
 /**
@@ -223,7 +225,6 @@
  */
 .pb-ai-highlight {
   all: initial;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   position: fixed;
   z-index: 0;
   /* REQUIRED, because `all: initial` resets box-sizing to content-box. The
@@ -231,10 +232,16 @@
      2px border is added on top and the outline sits 4px too big on both
      axes — visibly off against a section edge. */
   box-sizing: border-box;
+  pointer-events: none;
   border: 2px dashed #2f6fed;
   border-radius: 3px;
-  background: rgb(47 111 237 / 6%);
-  pointer-events: none;
+  background: rgb(47, 111, 237, 0.06);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 /* The badge sits ON the section too, same corner, same reasoning as the
@@ -249,27 +256,27 @@
 
 .pb-ai-undo {
   padding: 0.12rem 0.5rem;
-  border-radius: 999px;
-  background: rgb(21 25 26 / 92%);
-  color: #eef2ec;
-  font-size: 0.7rem;
   text-decoration: underline;
   pointer-events: auto;
+  color: #eef2ec;
+  border-radius: 999px;
+  background: rgb(21, 25, 26, 0.92);
+  font-size: 0.7rem;
 }
 
 .pb-ai-badge {
   padding: 0.12rem 0.5rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  pointer-events: auto;
+  color: #fff;
   border: 0;
   border-radius: 999px;
   background: #0e5e54;
-  color: #fff;
   font: inherit;
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  cursor: pointer;
-  pointer-events: auto;
 }
 
 /**
@@ -295,13 +302,15 @@
  */
 .pb-ai-toggle {
   all: initial;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   position: absolute;
   /* Centred on the bar's top border. The BAR owns the position, so the button
      cannot drift out of step with it — there is no second place to keep
      updated, and nothing to recompute on resize. */
   bottom: 100%;
   left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   /* REQUIRED, because `all: initial` resets box-sizing to content-box — the
      same trap documented on the highlight above. */
   box-sizing: border-box;
@@ -310,15 +319,18 @@
      bottom corners stay square so the flat edge sits flush on the border. */
   width: 3.5rem;
   height: 1.75rem;
-  border-radius: 1.75rem 1.75rem 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #0e5e54;
-  color: #f4f7f3;
   cursor: pointer;
-  box-shadow: 0 -2px 8px rgb(0 0 0 / 25%);
   transform: translateX(-50%);
+  color: #f4f7f3;
+  border-radius: 1.75rem 1.75rem 0 0;
+  background: #0e5e54;
+  box-shadow: 0 -2px 8px rgb(0, 0, 0, 0.25);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
 }
 
 .pb-ai-toggle:hover {
@@ -341,16 +353,16 @@
  */
 .pb-ai-toggle__icon {
   all: initial;
-  font-family: inherit;
   display: flex;
   color: inherit;
+  font-family: inherit;
 }
 
 .pb-ai-toggle__icon svg {
   display: block;
   width: 16px;
   height: 16px;
-  fill: currentcolor;
+  fill: currentColor;
 }
 
 /**
@@ -374,8 +386,8 @@
    labels the select rows use. */
 .pb-ai-bar__switch label {
   margin: 0;
-  text-transform: none;
   letter-spacing: 0;
+  text-transform: none;
   font-size: 0.75rem;
 }
 
@@ -433,7 +445,6 @@
  */
 .pb-ai-brief {
   all: initial;
-  font-family: inherit;
   position: fixed;
   z-index: 502;
   top: 0;
@@ -443,9 +454,10 @@
   justify-content: center;
   padding: clamp(0.5rem, 2vw, 1rem);
   padding-top: calc(clamp(0.5rem, 2vw, 1rem) + env(safe-area-inset-top, 0px));
-  pointer-events: none;
-  transform: translateY(-100%);
   transition: transform 300ms ease;
+  transform: translateY(-100%);
+  pointer-events: none;
+  font-family: inherit;
 }
 
 .pb-ai-brief--open {
@@ -454,6 +466,8 @@
 
 .pb-ai-brief__card {
   all: initial;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   width: 100%;
   max-width: 72rem;
@@ -463,19 +477,22 @@
      scroll". The BODY still scrolls as a safety net for the longest brief
      (Carousel, 13 lines) and for a short viewport. */
   max-height: min(62vh, 28rem);
-  display: flex;
-  flex-direction: column;
   padding: 0.85rem 1rem;
+  pointer-events: auto;
+  color: #14201d;
   border: 1px solid #cfe0db;
   border-left: 4px solid #0e5e54;
   border-radius: 10px;
   background: #f7fbfa;
-  color: #14201d;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  box-shadow: 0 10px 30px rgb(12, 32, 28, 0.22);
+  font-family:
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    sans-serif;
   font-size: 12px;
   line-height: 1.55;
-  box-shadow: 0 10px 30px rgb(12 32 28 / 22%);
-  pointer-events: auto;
 }
 
 /* ROW ONE: category, name and what the section is for, on one line, with the
@@ -487,12 +504,12 @@
    About text wraps to a second line. */
 .pb-ai-brief__meta {
   all: initial;
-  font-family: inherit;
   display: flex;
-  gap: 0.75rem;
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 0.45rem;
+  font-family: inherit;
+  gap: 0.75rem;
 }
 
 /* SELECTED THROUGH __body, like everything else here that is a <p>:
@@ -530,22 +547,22 @@
 
 .pb-ai-brief__close {
   all: initial;
-  font-family: inherit;
-  box-sizing: border-box;
   display: flex;
   flex: 0 0 auto;
-  width: 1.5rem;
-  height: 1.5rem;
   align-items: center;
   justify-content: center;
-  border-radius: 999px;
-  color: #486258;
+  box-sizing: border-box;
+  width: 1.5rem;
+  height: 1.5rem;
   cursor: pointer;
+  color: #486258;
+  border-radius: 999px;
+  font-family: inherit;
 }
 
 .pb-ai-brief__close:hover {
-  background: #e2efec;
   color: #0e5e54;
+  background: #e2efec;
 }
 
 .pb-ai-brief__close:focus-visible {
@@ -557,7 +574,7 @@
   display: block;
   width: 14px;
   height: 14px;
-  fill: currentcolor;
+  fill: currentColor;
 }
 
 .pb-ai-brief__body {
@@ -597,13 +614,13 @@
    has — about 60% of it sat empty while these were one narrow column. */
 .pb-ai-brief__list {
   all: initial;
-  font-family: inherit;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 1.5rem;
   margin: 0;
   padding: 0;
   list-style: none;
+  font-family: inherit;
+  gap: 0 1.5rem;
 }
 
 /* `minmax(0, 1fr)` above, not `1fr`: a grid track's default minimum is
@@ -614,19 +631,19 @@
   display: block;
   margin: 0 0 0.22rem;
   padding-left: 0.85rem;
+  text-indent: -0.85rem;
   color: #14201d;
   font-family: inherit;
   font-size: 12px;
   line-height: 1.5;
-  text-indent: -0.85rem;
 }
 
 /* The bullet is drawn, not inherited: `all: initial` strips the list marker
    along with everything else, which is the price of not being reachable by the
    host theme. The hanging indent keeps a wrapped line clear of it. */
 .pb-ai-brief__list li::before {
-  content: "•";
   margin-right: 0.35rem;
+  content: "•";
   color: #0e5e54;
 }
 
@@ -634,9 +651,9 @@
    empty box and a placeholder that only names fields. */
 .pb-ai-brief__prompts {
   all: initial;
-  font-family: inherit;
   display: block;
   margin-top: 0.6rem;
+  font-family: inherit;
 }
 
 /* THE VARIANT SWITCHES. Only built when a bundle has more than one example —
@@ -646,36 +663,36 @@
    of its own. */
 .pb-ai-brief__variants {
   all: initial;
-  font-family: inherit;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
   margin-top: 0.5rem;
   padding-top: 0.5rem;
   border-top: 1px solid var(--pb-ai-rule, #d8e4e0);
+  font-family: inherit;
+  gap: 0.35rem;
 }
 
 .pb-ai-brief__variant {
   all: initial;
   box-sizing: border-box;
   padding: 0.15rem 0.55rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #486258;
   border: 1px solid #cfe0db;
   border-radius: 999px;
   background: #eef4f2;
-  color: #486258;
-  cursor: pointer;
   font-family: inherit;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.04em;
   line-height: 1.6;
-  text-transform: uppercase;
 }
 
 .pb-ai-brief__variant[aria-pressed="true"] {
+  color: #f2fbf8;
   border-color: #0e5e54;
   background: #0e5e54;
-  color: #f2fbf8;
 }
 
 .pb-ai-brief__variant:focus-visible {
@@ -685,8 +702,8 @@
 
 .pb-ai-brief__prompt-holder {
   all: initial;
-  font-family: inherit;
   display: block;
+  font-family: inherit;
 }
 
 /* The strip already draws the rule that separates the prompts from the
@@ -704,14 +721,14 @@
    columns follow the writing direction, so RTL needs no rule. */
 .pb-ai-brief__prompt {
   all: initial;
-  font-family: inherit;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 0.3rem 0.75rem;
   align-items: center;
   margin-top: 0.5rem;
   padding-top: 0.5rem;
   border-top: 1px solid var(--pb-ai-rule, #d8e4e0);
+  font-family: inherit;
+  gap: 0.3rem 0.75rem;
 }
 
 /* SELECTED THROUGH __body, like every other <p> and <pre> in this card:
@@ -720,52 +737,52 @@
 .pb-ai-brief__body .pb-ai-brief__prompt-name {
   all: initial;
   display: block;
+  grid-row: 1;
   /* Row one, first column — the button takes the second. */
   grid-column: 1;
-  grid-row: 1;
   margin: 0;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: #0e5e54;
   font-family: inherit;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.04em;
   line-height: 1.5;
-  text-transform: uppercase;
 }
 
 .pb-ai-brief__body .pb-ai-brief__prompt-text {
   all: initial;
   display: block;
+  grid-row: 2;
   /* Row two, spanning both columns — under the name AND the button. The grid
      gap supplies the spacing the old bottom margin used to. */
   grid-column: 1 / -1;
-  grid-row: 2;
   margin: 0;
   padding: 0.5rem 0.6rem;
-  border-radius: 6px;
-  background: #eef4f2;
-  color: #14201d;
-  font-family: ui-monospace, "SF Mono", Menlo, monospace;
-  font-size: 11px;
-  line-height: 1.55;
   /* The prompt is a paragraph a person will edit, not code: it wraps rather
      than scrolling sideways inside a card that is already height-capped. */
   white-space: pre-wrap;
+  color: #14201d;
+  border-radius: 6px;
+  background: #eef4f2;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  line-height: 1.55;
   overflow-wrap: break-word;
 }
 
 .pb-ai-brief__use {
   all: initial;
   display: inline-block;
+  grid-row: 1;
   /* Row one, second column — beside the name, not under the prompt. */
   grid-column: 2;
-  grid-row: 1;
   justify-self: end;
   padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  color: #0e5e54;
   border: 1px solid #0e5e54;
   border-radius: 999px;
-  color: #0e5e54;
-  cursor: pointer;
   font-family: inherit;
   font-size: 11px;
   font-weight: 600;
@@ -773,8 +790,8 @@
 }
 
 .pb-ai-brief__use:hover {
-  background: #0e5e54;
   color: #f2fbf8;
+  background: #0e5e54;
 }
 
 .pb-ai-brief__use:focus-visible {
@@ -820,8 +837,8 @@
 @media (prefers-reduced-motion: reduce) {
   .pb-ai-note,
   .pb-ai-note:not([hidden]) {
-    transform: translateY(0);
     transition: opacity 120ms ease;
+    transform: translateY(0);
   }
 
   .pb-ai,

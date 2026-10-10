@@ -53,8 +53,8 @@
  * one keeps its controls hard against the end edge exactly as before.
  */
 .paragraphs-bundles.pb-alert .pb-alert--top.pb--has-state {
-  justify-content: space-between;
   flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
@@ -222,11 +222,7 @@
  * bundle because that is where the margin lives; it changes nothing else
  * inside that bundle, and nothing at all in any later one.
  */
-.paragraphs-bundles.pb-alert
-  > .pb-ui-inner
-  > .pb-alert__content
-  > .paragraph:first-of-type
-  :where(p, h1, h2, h3, h4, h5, h6, ul, ol, dl, blockquote):first-child {
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert__content > .paragraph:first-of-type :where(p, h1, h2, h3, h4, h5, h6, ul, ol, dl, blockquote):first-child {
   margin-block-start: 0;
 }
 
@@ -261,10 +257,10 @@
 }
 
 .paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
-  color: var(--pb-alert-state-color);
   display: inline-flex;
-  align-items: center;
   flex: 0 0 auto;
+  align-items: center;
+  color: var(--pb-alert-state-color);
 }
 
 .paragraphs-bundles.pb-alert[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon svg {

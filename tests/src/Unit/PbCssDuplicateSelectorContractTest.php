@@ -62,12 +62,6 @@ class PbCssDuplicateSelectorContractTest extends TestCase {
   private const array KNOWN_DUPLICATES = [
     'modules/paragraph_bundle_3d_carousel/css/paragraph-bundle-3d-carousel.css|.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-ui-btn'
     => 'pre-existing at the time this contract was added; the later block wins and the visual result has not been reviewed',
-    'modules/paragraph_bundle_3d_flip_box/css/paragraph-bundle-3d-flip-box.css|.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__toggle-icon'
-    => 'pre-existing; the two blocks sit six lines apart and may well be an accidental paste',
-    'modules/paragraph_bundle_hero/css/paragraph-bundle-hero.css|.paragraphs-bundles.pb-hero .pb-hero__text-inner'
-    => 'pre-existing; hero has two of these and its cascade should be read as a whole before either is touched',
-    'modules/paragraph_bundle_hero/css/paragraph-bundle-hero.css|.paragraphs-bundles.pb-hero .pb-hero__text-inner > .pb-ui-link'
-    => 'pre-existing; see the entry above, same file and same review',
   ];
 
   /**
