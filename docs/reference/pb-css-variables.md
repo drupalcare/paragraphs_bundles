@@ -1,7 +1,7 @@
-# Paragraph Bundles — CSS custom properties reference
+# Paragraph Bundles: CSS custom properties reference
 
 **Module:** `paragraphs_bundles` (v2)  
-**Two-layer model:** summarised in the next section.
+**Two-layer model:** summarized in the next section.
 
 ---
 
@@ -9,7 +9,7 @@
 
 | Layer | Location | User values? |
 |-------|----------|--------------|
-| **Static library** | `modules/paragraph_bundle_*/css/*.css` | Never — layout +
+| **Static library** | `modules/paragraph_bundle_*/css/*.css` | Never: layout +
 `var(--pb-*)` consumption only |
 | **Dynamic library** | `public://paragraphs_bundles/pb-{slug}-{id}.css` | Only
 place for editor field values |
@@ -19,16 +19,16 @@ not custom properties.
 
 ---
 
-## Colour variables (all bundles with Display colours)
+## Color variables (all bundles with Display colors)
 
 Emitted by `PbDynamicCssBuilder` on the bundle inner scope (or split scopes for
 hero, modal, card-image, etc.).
 
 | Variable | Field | Notes |
 |----------|-------|-------|
-| `--pb-bg` | `pb_display_bg` | **Editor only** — not theme-bridged. Target
+| `--pb-bg` | `pb_display_bg` | **Editor only**: not theme-bridged. Target
 varies by bundle (see builder scopes). |
-| `--pb-bg-h` | `pb_display_bg_hover` | **Editor only** — not theme-bridged. |
+| `--pb-bg-h` | `pb_display_bg_hover` | **Editor only**: not theme-bridged. |
 | `--pb-br` | `pb_display_border_color` | |
 | `--pb-br-h` | `pb_display_border_hover` | |
 | `--pb-tx` | `pb_display_text` | |
@@ -40,7 +40,7 @@ varies by bundle (see builder scopes). |
 
 **image_background:** `pb_display_bg` does **not** become `--pb-bg` on inner.
 It is emitted by `PbDynamicUserVarBuilder` as a plain `background-color:
-rgba(...)` declaration on `.img-color-overlay` — a real property, not a custom
+rgba(...)` declaration on `.img-color-overlay`, a real property, not a custom
 property, so there is no variable to override or theme-bridge here.
 
 ---
@@ -53,7 +53,7 @@ Emitted by `PbDynamicUserVarBuilder` when the editor filled the source field.
 bundles emit a `--pb-*` variable here; every other row below writes the
 property directly onto the target element, which is the same property v1 wrote
 into a `style=""` attribute on the same element. There is nothing to `var()`
-against and nothing for a theme bridge to map — to change one of these, target
+against and nothing for a theme bridge to map. To change one of these, target
 the element in your own CSS with equal-or-higher specificity.
 
 Scopes are relative to the outer `#pb-{slug}-{id}` id. The single source of
@@ -130,7 +130,7 @@ Same |
 | *(none via builder)* | `pb_display_3d_height` | Inline `height` on
 `.pb-3d-flip-box__scene` in Twig |
 
-### parallax_section_bundle — written by Twig, not by the builder
+### parallax_section_bundle: written by Twig, not by the builder
 
 This bundle is the one exception to the two-layer model: it keeps v1's inline
 `style` attributes, written by

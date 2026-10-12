@@ -2,9 +2,9 @@
 
 Two paragraph types:
 
-- `link_bundle` — container with title and nested link sections (dedicated
+- `link_bundle`: container with title and nested link sections (dedicated
   `paragraph--link-bundle.html.twig` + dynamic CSS).
-- `link_section_bundle` — single title + URL link (minimal Twig).
+- `link_section_bundle`: single title + URL link (minimal Twig).
 
 ## Dependencies
 

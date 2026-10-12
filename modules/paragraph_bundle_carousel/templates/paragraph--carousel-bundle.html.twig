@@ -68,8 +68,8 @@
       {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
     {% endif %}
 
-    {# L3 behavior host — JS once() target #}
-    {# Deliberately NOT `pb-width-own` -- same finding as the slideshow. The
+    {# L3 behavior host: JS once() target #}
+    {# Deliberately NOT `pb-width-own`. The same finding as the slideshow. The
        carousel inherited an exclusion from the old structural list, so the node
        width never clamped it and it rendered full-bleed on every pb_content
        node. The JS measures slide widths from this element at runtime, so it
@@ -82,7 +82,7 @@
              aria-roledescription="carousel"
              {# Was `aria-labelledby="index-{id}"` in v1 and every v2 release
                 candidate, but this template has never rendered an element with
-                that id — only the 3D carousel does. A dangling `aria-labelledby`
+                that id. Only the 3D carousel does. A dangling `aria-labelledby`
                 leaves the carousel with no accessible name at all, so name it
                 directly. #}
              aria-label="{{ 'Image Carousel'|t }}"

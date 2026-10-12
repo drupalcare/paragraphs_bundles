@@ -1,6 +1,6 @@
 # Paragraph Bundle 3D Flip Box
 
-`3d_flip_box_bundle` paragraph type — CSS 3D flip animation with nested front
+`3d_flip_box_bundle` paragraph type: CSS 3D flip animation with nested front
 and back paragraph regions.
 
 ## Dependencies
@@ -32,10 +32,10 @@ drush cr
 2. Set flip axis (X/Y) and box height (px).
 3. Set Display colors; confirm dynamic CSS on `#pb-3d-flip-box-{id} >
    .pb-ui-inner`.
-4. Hover the box — confirm 3D flip animation.
+4. Hover the box: confirm 3D flip animation.
 
 ## v2 notes
 
-- Dynamic CSS on inner for Display colours; flip axis class and inline height
+- Dynamic CSS on inner for Display colors; flip axis class and inline height
   px on `.pb-3d-flip-box__scene` in Twig.
 - Title block weights 1–3 on Content tab.

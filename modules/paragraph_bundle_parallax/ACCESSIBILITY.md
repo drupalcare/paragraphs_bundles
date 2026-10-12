@@ -1,4 +1,4 @@
-# Parallax bundle — accessibility (WCAG / ARIA)
+# Parallax bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-parallax`
 > **Status:** pending

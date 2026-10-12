@@ -7,10 +7,10 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 
 - `paragraphs_bundles` (parent)
 - Core `image`, `link`, `options`, `text`
-- The Material Symbols web fonts — **bundled with this module**, nothing to
+- The Material Symbols web fonts are **bundled with this module**, so nothing to
   install
 - Outbound access to `fonts.googleapis.com` and `fonts.gstatic.com` for the
-  default font path — see below; the bundled files cover sites without it
+  default font path. See below. The bundled files cover sites without it
 
 ## How the icon font loads
 
@@ -18,7 +18,7 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 module collects every Material Symbols name in use, per style, and points the
 stylesheet at a Google Fonts subset naming exactly those icons. On a
 page with one outlined icon: **9,118 bytes, against 3,411,436 for the bundled
-Outlined font — 374x smaller.** All four variable axes (Fill, Weight, Grade,
+Outlined font: 374x smaller.** All four variable axes (Fill, Weight, Grade,
 Optical Size) still work, and icon names remain free text.
 
 The subset URL is rebuilt whenever an icon paragraph is added, changed or
@@ -26,7 +26,7 @@ deleted. Nothing to configure, and no change to any template or library name.
 
 **The three `.woff2` files still ship, in `fonts/`, and are a real fallback.**
 The local `@font-face` in `css/material-symbols-{outlined,rounded,sharp}.css`
-is never removed — the subset stylesheet is added *after* it. In Chrome,
+is never removed. The subset stylesheet is added *after* it. In Chrome,
 two `@font-face` rules for one family result in one request for the
 last one declared, and the browser fetches the earlier rule only when the last
 one fails. So a site that can reach `fonts.googleapis.com` never downloads the
@@ -34,10 +34,10 @@ bundled font, and a site that cannot renders from it automatically. (Tested
 in Chrome; other engines are unverified.)
 
 ⚠ **Names are validated against `data/material-symbols-names.txt`**, the 4,284
-names Google publishes. A name Google does not recognise is dropped silently by
+names Google publishes. A name Google does not recognize is dropped silently by
 their API, so an unvalidated typo would simply not render; a request where every
-name is unrecognised would fall back to the complete 344 KB font. Google adds
-icons over time, so a name newer than that file will not be recognised until the
+name is unrecognized would fall back to the complete 344 KB font. Google adds
+icons over time, so a name newer than that file will not be recognized until the
 list is refreshed.
 
 ## Sites using a very large number of distinct icons
@@ -48,11 +48,11 @@ an error page. Testing the live API by request size shows:
 
 | `icon_names` bytes | What Google returns |
 |---|---|
-| up to 4,092 | a real subset — 200 icons came back as 174,604 bytes |
+| up to 4,092 | a real subset: 200 icons came back as 174,604 bytes |
 | 4,114 and up | **HTTP 200, and the complete font: 4,001,724 bytes** |
 | about 4,400+ | HTTP 400, an HTML error page instead of CSS |
 
-The middle row is the dangerous one. Google does not fail — it silently stops
+The middle row is the dangerous one. Google does not fail. It silently stops
 subsetting and serves a font *heavier than the 3,411,436-byte file this module
 bundles*, so the page would be larger than if the feature had never run, with
 nothing in the status code, the CSS or the browser to say so.
@@ -63,24 +63,24 @@ byte length rather than an icon count because names are not a fixed width.
 
 **It is not truncated to fit, on purpose.** Trimming the list would still load
 the Google stylesheet, which wins the family and would simply lack the glyphs
-that were cut — the icons past the cut would vanish with no fallback. Declining
+that were cut. The icons past the cut would vanish with no fallback. Declining
 the whole request keeps every icon, and costs less than what Google would have
 sent.
 
 2.0.0 briefly removed these files and required every site to supply the font
 itself. That was a mistake and it was reverted: upgrading from 1.x silently
-turned every icon into its ligature name in plain text — a paragraph set to
-`home` rendered the word "home" — with no update path and no error anywhere.
+turned every icon into its ligature name in plain text. A paragraph set to
+`home` rendered the word "home", with no update path and no error anywhere.
 Breaking working sites on upgrade is a worse outcome than the repository being
 11 MB larger.
 
-The fonts are Google's Material Symbols, licensed Apache-2.0 — see
+The fonts are Google's Material Symbols, licensed Apache-2.0. See
 `fonts/LICENSE-Material-Symbols.txt`. Apache-2.0 permits redistribution with
 attribution, and is compatible with this project's GPL-2.0-**or-later** via the
 "or later" clause (Apache-2.0 is GPLv3-compatible).
 
 If you would rather not serve the bundled binaries, you can still override the
-family from your theme — declare the same family names
+family from your theme. Declare the same family names
 (`Material Symbols Outlined`, `Material Symbols Rounded`,
 `Material Symbols Sharp`) against your own woff2 or the Google Fonts
 stylesheet, and your declaration wins by cascade order.

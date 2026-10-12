@@ -13,11 +13,11 @@
  *   appended to the title.
  *
  * THERE IS NO `title_style`, DELIBERATELY. Its only caller was the image
- * overlay, whose colours now reach this element through the paragraph's
- * generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+ * overlay, whose colors now reach this element through the paragraph's
+ * generated stylesheet: see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
  * `image_overlay_bundle`. A style ATTRIBUTE cannot be permitted by a Content
  * Security Policy except through 'unsafe-inline'; unlike a <style> element it
- * cannot carry a nonce. Do not reintroduce one here — put the value in the
+ * cannot carry a nonce. Do not reintroduce one here. Put the value in the
  * generated CSS instead.
  */
 #}

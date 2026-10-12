@@ -1,4 +1,4 @@
-# Paragraphs Bundles — developer guide
+# Paragraphs Bundles: developer guide
 
 Extension points, services, hooks, and how to add a new bundle
 sub-module.
@@ -36,7 +36,7 @@ Inject interfaces from `paragraphs_bundles.services.yml`:
 | `paragraphs_bundles.css.dynamic_builder` | `PbDynamicCssBuilderInterface` |
 Paragraph entity → scoped CSS string |
 | `paragraphs_bundles.css.user_var_builder` | `PbDynamicUserVarBuilderInterface`
-| Non-colour display fields → `--pb-*` declarations |
+| Non-color display fields → `--pb-*` declarations |
 | `paragraphs_bundles.css.color_normalizer` | `PbColorNormalizerInterface` |
 Hex/RGB normalization for dynamic CSS |
 | `paragraphs_bundles.css.file_manager` | `PbCssFileManagerInterface` |
@@ -55,7 +55,7 @@ paragraph |
 inject `PbDynamicCssBuilderInterface` and call `build($paragraph)` without
 writing files.
 
-Do not use `\Drupal::service()` in new code — constructor injection
+Do not use `\Drupal::service()` in new code. Constructor injection
 only.
 
 ---
@@ -157,7 +157,7 @@ and `paragraphs:paragraphs`.
 ### 2. Reuse parent display fields
 
 Prefer existing `field.field.paragraph.*` instances from the parent
-`config/optional/` for standard colours and spacing. Add new
+`config/optional/` for standard colors and spacing. Add new
 `field.storage.paragraph.*` only for bundle-specific content or display.
 
 Wire the Display tab using the same Field Group nesting as
@@ -176,12 +176,12 @@ Naming reference (ships): `docs/PB-V2-BUNDLE-VOCABULARY.md`,
 ### 4. CSS
 
 - Scope rules under `.pb-example` (or bundle root).
-- Use design tokens and `--pb-*` vars — no hardcoded colours.
+- Use design tokens and `--pb-*` vars, not hardcoded colors.
 - Include all four resilience media queries:
   `prefers-reduced-motion`, `prefers-contrast: high`,
   `forced-colors: active`, `print`.
 
-Dynamic colours from the Display tab need **no extra PHP** — parent
+Dynamic colors from the Display tab need **no extra PHP**; parent
 `PbEntityHook` already writes CSS for shared `pb_display_*` fields.
 
 ### 5. JavaScript (if interactive)
@@ -201,7 +201,7 @@ drush pb:verify-form-displays
 drush pb:regenerate-css
 ```
 
-Add Kernel/Functional tests under `tests/src/` (Workstream 1 — parent
+Add Kernel/Functional tests under `tests/src/` (Workstream 1: parent
 test namespace in root `composer.json` psr-4).
 
 ---
@@ -220,7 +220,7 @@ Defined in `src/Drush/Commands/PbCommands.php`:
 
 ## Testing
 
-Run the unit suite from the module directory — the config path is relative to
+Run the unit suite from the module directory. The config path is relative to
 wherever you invoke it, and `phpunit` must be the one from your project's
 `vendor/bin` so Composer's autoloader is already loaded:
 
@@ -234,14 +234,14 @@ cd <drupal-root>/modules/custom/paragraphs_bundles
 | `vendor/bin/phpunit -c phpunit.xml.dist` | Unit tests (mocks, no kernel) |
 | Drupal core PHPUnit + DB | Kernel / Functional / FunctionalJavascript |
 
-Unit tests use `tests/bootstrap.php` and `tests/stubs/` — Paragraphs
+Unit tests use `tests/bootstrap.php` and `tests/stubs/`. Paragraphs
 need not be installed for unit runs. Kernel tests require
 `drupal/paragraphs` and core's test bootstrap (see checklist Workstream
 1).
 
 `tests/bootstrap.php` locates Composer's autoloader rather than assuming a
 fixed depth, so the suite works whether the module sits in `modules/contrib`,
-`modules/custom`, or — as during development — is a **symlink** into the
+`modules/custom`, or, as during development, is a **symlink** into the
 docroot, and whether `vendor/` lives at the project root or inside the
 docroot. If it cannot find one, set `PB_COMPOSER_AUTOLOAD` to the absolute path
 of your `vendor/autoload.php`.
@@ -261,7 +261,7 @@ of your `vendor/autoload.php`.
 
 ## Related reading
 
-- **`docs/CONFIGURATION.md`** — editor/site-builder configuration
-- **`docs/reference/pb-css-variables.md`** — `--pb-*` tokens
-- **`docs/CSS-CLASS-MIGRATION.md`** — v1 → v2 class renames
-- **`docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md`** — a11y checklist
+- **`docs/CONFIGURATION.md`**: editor/site-builder configuration
+- **`docs/reference/pb-css-variables.md`**: `--pb-*` tokens
+- **`docs/CSS-CLASS-MIGRATION.md`**: v1 → v2 class renames
+- **`docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md`**: a11y checklist

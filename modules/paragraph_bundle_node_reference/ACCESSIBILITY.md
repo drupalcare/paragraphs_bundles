@@ -1,4 +1,4 @@
-# Node Reference bundle — accessibility (WCAG / ARIA)
+# Node Reference bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-node-reference`  
 > **Status:** implemented (maintainer browser QA pending)

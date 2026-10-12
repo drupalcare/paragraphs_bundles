@@ -7,6 +7,6 @@ Source: https://fonts.google.com/icons
 Redistributed here under Apache-2.0, which permits redistribution with
 attribution. This notice provides that attribution.
 
-Apache-2.0 is compatible with this project's GPL-2.0-or-later licence through
+Apache-2.0 is compatible with this project's GPL-2.0-or-later license through
 the "or later" clause: Apache-2.0 is compatible with GPLv3. These are data
 files consumed by the browser, not code linked into Drupal.

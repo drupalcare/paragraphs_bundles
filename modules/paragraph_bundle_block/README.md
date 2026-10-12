@@ -7,7 +7,7 @@ Bundles](https://www.drupal.org/project/paragraphs_bundles).
 
 Embed a Drupal block inside a paragraph with Display tab styling.
 
-Uses the parent `paragraph--default.html.twig` template (Track A — no custom
+Uses the parent `paragraph--default.html.twig` template (Track A: no custom
 Twig).
 
 ## Requirements

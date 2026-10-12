@@ -1,4 +1,4 @@
-# Alert bundle — accessibility (WCAG / ARIA)
+# Alert bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-alert`  
 > **Status:** implemented  

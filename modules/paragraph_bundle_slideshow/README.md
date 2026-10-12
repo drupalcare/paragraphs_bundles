@@ -2,9 +2,9 @@
 
 Two paragraph types:
 
-- `slideshow_bundle` — wrapper with title, nested slide sections, arrows, dots,
+- `slideshow_bundle`: wrapper with title, nested slide sections, arrows, dots,
   and autoplay interval
-- `slideshow_section_bundle` — single slide (body nested paragraphs + optional
+- `slideshow_section_bundle`: single slide (body nested paragraphs + optional
   slide title); rendered by the parent template
 
 ## Dependencies

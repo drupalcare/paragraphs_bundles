@@ -1,4 +1,4 @@
-# Layout bundle — accessibility (WCAG / ARIA)
+# Layout bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-layout`  
 > **Status:** partial  

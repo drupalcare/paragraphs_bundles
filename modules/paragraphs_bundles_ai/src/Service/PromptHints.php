@@ -17,7 +17,7 @@ use Drupal\paragraphs_bundles_ai\Model\FieldFact;
  * not get that clause.
  *
  * THE HEADING CLAUSE CARRIES THE HABIT THAT MATTERS MOST. Measured across 29
- * bundles with a title, saying *"as an h2, centred"* in the same sentence set
+ * bundles with a title, saying *"as an h2, centered"* in the same sentence set
  * the heading level and the alignment correctly every time, because those are
  * real list fields and the model is handed their real keys. That is the single
  * most useful thing a person can be taught here, and a placeholder is where
@@ -80,7 +80,7 @@ final class PromptHints implements PromptHintsInterface {
     if ($profile->titleField !== NULL) {
       // FOUR WHOLE SENTENCES RATHER THAN A STEM PLUS TWO SUFFIXES, and that is
       // the translation fix rather than a style preference. The old version
-      // built this by appending ' as an h2' and ', centred' to a stem, so a
+      // built this by appending ' as an h2' and ', centered' to a stem, so a
       // translator was handed three fragments and no way to reorder them —
       // and in a language that puts the qualifier first, no correct answer
       // exists. Each combination is now one string a translator can rewrite
@@ -92,13 +92,13 @@ final class PromptHints implements PromptHintsInterface {
       // to say "as an h2" on a section with no heading-level field would be
       // advice that silently does nothing.
       if ($h2 && $centred) {
-        $clauses[] = (string) $this->t('Heading "…" as an h2, centred');
+        $clauses[] = (string) $this->t('Heading "…" as an h2, centered');
       }
       elseif ($h2) {
         $clauses[] = (string) $this->t('Heading "…" as an h2');
       }
       elseif ($centred) {
-        $clauses[] = (string) $this->t('Heading "…", centred');
+        $clauses[] = (string) $this->t('Heading "…", centered');
       }
       else {
         $clauses[] = (string) $this->t('Heading "…"');
@@ -189,7 +189,7 @@ final class PromptHints implements PromptHintsInterface {
   /**
    * Whether a list field is one the heading clause already covers.
    *
-   * The heading level and the alignment are offered as *"as an h2, centred"*,
+   * The heading level and the alignment are offered as *"as an h2, centered"*,
    * which is how a person actually says them. Naming them again as fields
    * would say the same thing twice, in worse words.
    *

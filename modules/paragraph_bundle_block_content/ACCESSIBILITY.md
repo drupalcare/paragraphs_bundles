@@ -1,6 +1,6 @@
-# Block Content bundle — accessibility (WCAG / ARIA)
+# Block Content bundle: accessibility (WCAG / ARIA)
 
-> **Track A:** no bundle-private L0 class — uses parent `paragraph--default`.  
+> **Track A:** no bundle-private L0 class. It uses parent `paragraph--default`.  
 > **Status:** implemented (maintainer browser QA pending)  
 > **Parent playbook:**
 [`PB-V2-ACCESSIBILITY-PLAYBOOK.md`](../../docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md)

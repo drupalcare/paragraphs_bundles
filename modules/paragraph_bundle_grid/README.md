@@ -1,6 +1,6 @@
 # Paragraph Bundle Grid
 
-`grid_bundle` paragraph type — responsive CSS grid with 1–12 columns,
+`grid_bundle` paragraph type: responsive CSS grid with 1–12 columns,
 configurable
 gap, breakpoint-specific column rules, and nested body paragraphs.
 
@@ -31,7 +31,7 @@ drush cr
 
 1. Add a Grid paragraph with several nested body items.
 2. Set column count, gap (px), and breakpoint library.
-3. Resize viewport — confirm column count changes at the chosen breakpoint
+3. Resize viewport: confirm column count changes at the chosen breakpoint
    (`pb__576`, `pb__768`, `pb__992`, `pb__1200`, `pb__1400`).
 4. Set Display colors; confirm dynamic CSS on `#pb-grid-{id} > .pb-ui-inner`.
 5. Set grid gap (px); confirm `#pb-grid-{id} .pb-grid__wrapper { gap: … }` in

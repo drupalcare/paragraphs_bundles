@@ -1,6 +1,6 @@
 # Paragraphs Bundles
 
-Ready-made Paragraph types for Drupal 11.3+ / 12 — layout, media,
+Ready-made Paragraph types for Drupal 11.3+ / 12: layout, media,
 carousels, accordions, and more. Theme-agnostic, jQuery-free, with
 per-paragraph dynamic CSS (no inline styles on the page).
 
@@ -27,13 +27,13 @@ drush en paragraph_bundle_layout paragraph_bundle_card \
 drush cr
 ```
 
-Optional: install the demo recipe when available — see
+Optional: install the demo recipe when available. See
 `recipes/paragraphs_bundles_demo` (Workstream 2).
 
 ## Configuration
 
 Editors configure each paragraph on the **Content** tab (body fields)
-and **Display** tab (colours, spacing, borders, bundle-specific
+and **Display** tab (colors, spacing, borders, bundle-specific
 options). Site builders can use the optional **pb_content** content
 type (`paragraph_bundle_content`) for a dedicated landing-page width.
 
@@ -85,7 +85,7 @@ standard site.
 
 When an editor saves a paragraph, Paragraphs Bundles writes a small CSS
 file under `public://paragraphs_bundles/` and attaches it as a library.
-No cache clear is required for colour or spacing changes.
+No cache clear is required for color or spacing changes.
 
 Maintenance commands:
 
@@ -127,7 +127,7 @@ Notes:
   Tailwind's arbitrary-*variant* syntax (`[&>*]:mt-0`); arbitrary *values*
   like `w-[calc(100%-2rem)]` are fine.
 - Classes are never rewritten to make them valid. A refused token is reported
-  so you can fix it, rather than quietly turned into something you did not
+  so you can fix it, rather than turned into something you did not
   type.
 - Section bundles (the children inside accordions, tabs, slideshows and
   the like) do not have the box. Style them through their parent.
@@ -182,7 +182,7 @@ front-end preview.
 
 | Guide | Purpose |
 |-------|---------|
-| `docs/WHATS-NEW-IN-2.0.md` | **Start here if you are on 1.x** — what changed, and why |
+| `docs/WHATS-NEW-IN-2.0.md` | **Start here if you are on 1.x**: what changed, and why |
 | `docs/CONFIGURATION.md` | Display tab, theme bridge, dynamic CSS |
 | `docs/DEVELOPING.md` | Services, hooks, adding a new bundle |
 | `docs/UPGRADE-V1-TO-V2.md` | v1 → v2 upgrade |

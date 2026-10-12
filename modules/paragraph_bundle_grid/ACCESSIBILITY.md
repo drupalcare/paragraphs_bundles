@@ -1,4 +1,4 @@
-# Grid bundle — accessibility (WCAG / ARIA)
+# Grid bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-grid`  
 > **Status:** pending  

@@ -1,6 +1,6 @@
 # Paragraph Bundle Image Grid
 
-`image_grid_bundle` + `image_grid_section_bundle` — responsive CSS grid with
+`image_grid_bundle` + `image_grid_section_bundle`: responsive CSS grid with
 nested image cells, optional links/titles, and a lightbox gallery.
 
 ## Dependencies
@@ -32,7 +32,7 @@ drush cr
 1. Add an Image Grid paragraph with several nested section items.
 2. Set grid min cell width and gap; confirm layout on the wrapper.
 3. Set Display colors on wrapper and section cells; confirm dynamic CSS.
-4. Click expand on a cell — lightbox opens with full-size image URL.
+4. Click expand on a cell. Lightbox opens with full-size image URL.
 5. Set title/tag/alignment on wrapper and section cells.
 
 ## v2 notes

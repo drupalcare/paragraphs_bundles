@@ -1,4 +1,4 @@
-# Image bundle — accessibility (WCAG / ARIA)
+# Image bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-image`, `pb-image-wide`, `pb-image-narrow`  
 > **Status:** Phase B scoped (static markup)  

@@ -1,4 +1,4 @@
-# PB Content (node) bundle — accessibility (WCAG / ARIA)
+# PB Content (node) bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-content`  
 > **Status:** implemented (maintainer browser QA pending)

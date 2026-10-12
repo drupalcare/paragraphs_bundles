@@ -1,4 +1,4 @@
-# Accordion bundle — accessibility (WCAG / ARIA)
+# Accordion bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-accordion`  
 > **Status:** implemented  

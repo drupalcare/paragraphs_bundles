@@ -1,4 +1,4 @@
-# Image Background bundle — accessibility (WCAG / ARIA)
+# Image Background bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-image-background`  
 > **Status:** pending  
@@ -12,7 +12,7 @@
 
 Semantic HTML, heading order, sufficient color contrast, and keyboard-accessible
 links/controls in nested foreground content. JS only swaps decorative background
-images at a breakpoint — no custom widget roles.
+images at a breakpoint. No custom widget roles.
 
 ## ARIA roles and attributes
 

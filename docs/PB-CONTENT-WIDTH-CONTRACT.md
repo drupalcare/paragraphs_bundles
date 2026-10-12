@@ -1,4 +1,4 @@
-# pb_content — The Width Contract
+# pb_content: The Width Contract
 
 > Three width sources compete on a `pb_content` node and two of them have to
 > lose. This is how that is arranged, which elements are exempt and why, and how
@@ -10,8 +10,8 @@
 
 ## 1 · Why pb_content exists
 
-A landing page is simple: add bundles and each one honours its own max-width.
-`pb_content` is different **on purpose** — it exists to build a page that
+A landing page is simple: add bundles and each one honors its own max-width.
+`pb_content` is different **on purpose**. It exists to build a page that
 ignores the theme's site width and lets the editor choose the width per node.
 To do that it has to defeat two widths that would otherwise apply.
 
@@ -19,9 +19,9 @@ To do that it has to defeat two widths that would otherwise apply.
 
 | | Layer | Verdict | Enforced by |
 |---|---|---|---|
-| 1 | **Site width** — the theme's global setting | must lose | `.page-node-type-pb-content … .pb-content__full:not(.pb-width-own) { max-width: var(--pb-content-width) }`, once per theme variant |
-| 2 | **Bundle max-width** — the per-bundle field | must lose, except for owners | **one** rule blanks the token: `[class*="pb-u-mw--"]:not(.pb-width-own) { --pb-width: none }` |
-| 3 | **Node width** — chosen per node | **wins** | `pb_display_content_width` → body class `pb-nmw-*` (`PbcHtmlHook`) → `--pb-content-width` |
+| 1 | **Site width**: the theme's global setting | must lose | `.page-node-type-pb-content … .pb-content__full:not(.pb-width-own) { max-width: var(--pb-content-width) }`, once per theme variant |
+| 2 | **Bundle max-width**: the per-bundle field | must lose, except for owners | **one** rule blanks the token: `[class*="pb-u-mw--"]:not(.pb-width-own) { --pb-width: none }` |
+| 3 | **Node width**: chosen per node | **wins** | `pb_display_content_width` → body class `pb-nmw-*` (`PbcHtmlHook`) → `--pb-content-width` |
 
 ### Node width values
 
@@ -36,7 +36,7 @@ To do that it has to defeat two widths that would otherwise apply.
 | `pb__nmw_2560` | `pb-nmw-2560` | `160rem` |
 | `pb__nmw_100` | `pb-nmw-100` | `100%` |
 
-## 3 · `pb-width-own` — the only exemption
+## 3 · `pb-width-own`: the only exemption
 
 An element carrying **`pb-width-own`** alongside `pb-content__full` keeps its
 own width: the node width does not clamp it, and its bundle max-width is not
@@ -52,7 +52,7 @@ class:
 
 ⚠ **`pb-width-own` is a modifier, never a standalone class.** On an element
 without `pb-content__full` it is inert, and the element silently takes the node
-width — the opposite of what marking it was meant to achieve.
+width. The opposite of what marking it was meant to achieve.
 
 ### Two of the four inherited exemptions were wrong
 
@@ -61,14 +61,14 @@ of it was incorrect and had been since it was written**:
 
 | Old exclusion | Verdict |
 |---|---|
-| `.pb-slideshow__wrap-inner > .pb-content__full` | ❌ **wrong** — the slideshow rendered full-bleed on every pb_content node. Now follows the node width. |
-| `.pb-carousel__viewport.pb-content__full` | ❌ **wrong** — same fault. Now follows the node width. |
+| `.pb-slideshow__wrap-inner > .pb-content__full` | ❌ **wrong**. The slideshow rendered full-bleed on every pb_content node. Now follows the node width. |
+| `.pb-carousel__viewport.pb-content__full` | ❌ **wrong**: same fault. Now follows the node width. |
 | `.pb-3d-carousel__inner.pb-content__full` | ✅ correct |
 | `.pb-modal__content .pb-content__full` | ✅ correct |
 
 📐 **That is the argument for the class contract in one line.** As four
 structural selectors duplicated across four stylesheets, nobody could see them
-as a list to review, and two were quietly wrong for the life of the design. As
+as a list to review, and two were silently wrong for the life of the design. As
 two template classes with the reason written next to each, they are reviewable.
 
 ## 4 · Full-bleed backgrounds
@@ -105,7 +105,7 @@ Any consumer of `var(--pb-width)`, in any stylesheet, present or future,
 resolves to `none` without knowing this rule exists. **Parallax was fixed
 without its stylesheet being touched.**
 
-## 6 · Measured behaviour
+## 6 · Measured behavior
 
 Two pages, every bundle, every field filled, bundle max-width **900** on both.
 The only difference is that the pb_content page also carries a node width.
@@ -138,10 +138,10 @@ and every ordinary bundle render **800** (the node's).
 2. an approved owner emits `pb-width-own` on an element that does not also
    carry `pb-content__full`;
 3. any retired structural exclusion reappears in a stylesheet;
-4. `all:` is declared after other declarations in a rule — see below.
+4. `all:` is declared after other declarations in a rule. See below.
 
 All four were **red-proofed**: each was deliberately broken and observed to
-fail, then restored. That exercise immediately earned itself — assertion 2
+fail, then restored. That exercise immediately earned its place: assertion 2
 originally checked only that both class names appeared *somewhere in the file*,
 and stayed green when the modal was broken. It now checks the class context
 around each occurrence.
@@ -158,7 +158,7 @@ it; only `!important` ones survive, which is what disguises it both times:
 | `paragraphs-bundles-base.css` | `box-sizing: border-box` on every button and link | accordion's `+` icon clipped in half |
 | `paragraph-bundle-slideshow.css` | `position: absolute` (and six more) | arrows fell from mid-slide to the bottom |
 
-**`all: unset` belongs first** — it strips the UA styling *before* our own
+**`all: unset` belongs first**. It strips the UA styling *before* our own
 declarations, not after.
 
 ## 8 · Reproducing the measurement

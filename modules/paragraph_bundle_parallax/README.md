@@ -2,8 +2,8 @@
 
 Two paragraph types:
 
-- `parallax_bundle` — wrapper with optional title and nested section items
-- `parallax_section_bundle` — image background, body text, legacy CSS or JS
+- `parallax_bundle`: wrapper with optional title and nested section items
+- `parallax_section_bundle`: image background, body text, legacy CSS or JS
   parallax scroll effects, breakpoint CSS libraries
 
 ## Dependencies

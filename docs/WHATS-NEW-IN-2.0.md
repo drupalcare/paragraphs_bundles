@@ -4,7 +4,7 @@
 wants to know why v2 looks the way it does.
 
 **In one line:** every bundle keeps its content, its fields and its rendered
-structure — what changed is the CSS class names, how editor colours reach the
+structure. What changed is the CSS class names, how editor colors reach the
 page, and the Drupal versions supported.
 
 - **Requires** Drupal `^11.3 || ^12` and PHP 8.3+.
@@ -23,7 +23,7 @@ v1 worked, but four things could not be fixed inside it.
 predates the attribute-based plugin and hook APIs. Supporting both meant a
 rewrite of the plumbing, not a patch.
 
-**2. Editor-supplied colours reached the page unescaped.** v1 wrote colour
+**2. Editor-supplied colors reached the page unescaped.** v1 wrote color
 values straight into a `style="--pb-bg:rgba(…)"` attribute. Twig's HTML
 autoescaping does **not** neutralise `(`, `)`, `;` or `:` inside a style
 attribute, so a crafted value could break out of the declaration. v2 validates
@@ -31,7 +31,7 @@ at the field layer and again at every point where CSS is written.
 
 **3. Class names were unpredictable.** v1 shipped names like `pb__accor-wrap`,
 `pb__nf`, `pb__caro-item` and `paragraph__inner`. You could not derive a class
-from the bundle name — you had to look it up. For a module whose whole purpose
+from the bundle name. You had to look it up. For a module whose whole purpose
 is letting a themer restyle paragraphs, that is the wrong end of the trade.
 
 **4. The same code was copied 27 times.** Every bundle sub-module carried its
@@ -63,15 +63,15 @@ checked against the shipped source on 2026-08-04.
 
 > **If your theme overrides PB classes, this is the one thing you must do
 > before upgrading:** work through the migration map and update your selectors.
-> Nothing warns you at runtime — a stale selector simply stops matching.
+> Nothing warns you at runtime. A stale selector simply stops matching.
 
-### Editor colours are now real stylesheets, not inline styles
+### Editor colors are now real stylesheets, not inline styles
 
 v1 put `style="--pb-bg:…"` on the wrapper. v2 writes one small CSS file per
 paragraph under `public://paragraphs_bundles/` and attaches it as a library.
 
 Why it is better: it works under a Content-Security-Policy that forbids inline
-styles, it is cacheable, and element-id specificity means an editor's colour
+styles, it is cacheable, and element-id specificity means an editor's color
 wins without `!important`.
 
 The custom property names (`--pb-bg`, `--pb-tx`, `--pb-lk`, …) are unchanged,
@@ -79,7 +79,7 @@ so any CSS you wrote against those still works.
 
 ### Accessibility fixes
 
-Real defects, not audit theatre: the slideshow hijacked the Space key and
+Real defects, not audit theater: the slideshow hijacked the Space key and
 autoplayed with no pause control (WCAG 2.1.1 and 2.2.2), the alert bundle
 auto-dismissed with no way to stop it, eight animations ignored
 `prefers-reduced-motion`, and `aria-hidden` was emitted as escaped text in five
@@ -88,7 +88,7 @@ layout templates. All fixed and covered by tests.
 ### Two things are no longer in the package
 
 - **28 vendored `LICENSE` files.**
-- **`.pb-u-animate--fading`** — the one infinitely-looping animation, referenced
+- **`.pb-u-animate--fading`**: the one infinitely-looping animation, referenced
   nowhere.
 
 ---
@@ -114,7 +114,7 @@ The same reasoning covers the other frozen tokens:
 | Frozen | Why |
 |---|---|
 | Field machine names (`pb_content_*`, `pb_display_*`) | Renaming a field is a content migration |
-| Stored display values (`pb__round_large`, …) | Same — they are data, not markup |
+| Stored display values (`pb__round_large`, …) | Same: they are data, not markup |
 | CSS custom properties (`--pb-bg`, …) | Your CSS depends on them |
 | Breakpoint tokens (`pb__576` … `pb__1400`) | They double as asset library names other modules can depend on |
 | Admin form group names (`pb__tab-display`, …) | They live in your form-display config and style the edit form only |
@@ -135,7 +135,7 @@ Three, and only three.
 29 of the 30 bundles that had a v1 id therefore changed.
 
 v1 had thirty different id patterns, and most were abbreviations rather than
-the bundle's name — `#pb__nf-42` for a node reference, `#pb__accor-wrap-42`
+the bundle's name: `#pb__nf-42` for a node reference, `#pb__accor-wrap-42`
 for an accordion, `#pb__slide-wrap-42` for a slideshow. Two different bundles
 (parallax and parallax section) even shared a prefix, so the id did not
 identify what it was on. There was no rule you could apply; you had to look
@@ -152,13 +152,13 @@ each one up.
 
 **Why this one was not frozen with the rest.** Two of the thirty ids had
 already changed before 2.0.0 while the documentation still promised they had
-not — so the guarantee was worth less than it appeared. And an id is markup,
+not, so the guarantee was worth less than it appeared. And an id is markup,
 not data: correcting it costs a find-and-replace in your own CSS, while
 correcting it after a stable 2.0.0 would be a breaking change in a stable
 series. A major release is the only honest place to do it.
 
 Your per-paragraph CSS files carry the id as their scope selector, so they have
-to be rewritten too — and the upgrade does that for you: `drush updb` finishes
+to be rewritten too, and the upgrade does that for you: `drush updb` finishes
 by regenerating every one of them. The exception is a site coming from a
 `2.0.x-dev` snapshot rather than from 1.x, where that step has already been
 recorded as run; there, rebuild them once with
@@ -169,7 +169,7 @@ What needs action from you is CSS or JS **you** wrote that names a PB id.
 
 **3. You must be on the latest 1.x before upgrading.** v2 declares
 `hook_update_last_removed() = 9004`. A site below that schema is refused with
-"requires an intermediate version" — deliberately, because v1's `9001`–`9004`
+"requires an intermediate version". Deliberately, because v1's `9001`–`9004`
 were removed in v2 and a site below 9004 cannot reach a consistent state.
 
 ---
@@ -178,13 +178,13 @@ were removed in v2 and a site below 9004 cannot reach a consistent state.
 
 | Hook | What it does |
 |---|---|
-| `9005` | Shared field storages (title tag/alignment, link colours), title help text |
+| `9005` | Shared field storages (title tag/alignment, link colors), title help text |
 | `9006` | Wires the shared fields on every bundle, nests the Display tab, hides `pb_display_*` on view displays |
 | `9007` | Repairs v1 config that does not match v2's tightened config schema |
 | `9008` | Realigns form and view display layout with what a fresh install ships |
 | `post_update` | Regenerates every per-paragraph CSS file |
 
-Both paths — a fresh install and a real v1 upgrade — are tested end to end
+Both paths, a fresh install and a real v1 upgrade, are tested end to end
 against a database that started life on v1. Afterwards, an upgraded site and a
 freshly installed one differ on **four** config objects, three of which are
 site settings rather than module config.
@@ -195,7 +195,7 @@ site settings rather than module config.
 
 | Document | For |
 |---|---|
-| [`UPGRADE-V1-TO-V2.md`](UPGRADE-V1-TO-V2.md) | The upgrade procedure — read before upgrading |
+| [`UPGRADE-V1-TO-V2.md`](UPGRADE-V1-TO-V2.md) | The upgrade procedure: read before upgrading |
 | [`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) | Every v1 → v2 class, and every frozen token |
 | [`PB-V2-CLASS-NAMING-SPEC.md`](PB-V2-CLASS-NAMING-SPEC.md) | The naming grammar, for writing new CSS |
 | [`../CHANGELOG.md`](../CHANGELOG.md) | The complete change list |

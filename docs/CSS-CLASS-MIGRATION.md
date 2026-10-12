@@ -1,4 +1,4 @@
-# CSS class migration — paragraphs_bundles v1 → v2
+# CSS class migration: paragraphs_bundles v1 → v2
 
 **Ship with v2.** This is the authoritative reference for every
 **structural** CSS class rename between v1 contrib and v2. Sub-themes
@@ -42,7 +42,7 @@ of the release package; these tables are the shipped record.
 | Manual-only renames (below) | **119** |
 | Frozen tokens (unchanged) | **69** |
 
-That is 318 rows and **313 distinct v1 names** — a few names appear in both a
+That is 318 rows and **313 distinct v1 names**. A few names appear in both a
 per-bundle table and a thematic one. One of them, `hide-{delay}`, was removed
 rather than renamed.
 
@@ -90,8 +90,8 @@ the last `pb__` names that were ordinary classes rather than stored values:
 | `pb__simple__inner` | `pb-simple__inner` |
 | `pb__default__inner` | `pb-default__inner` |
 
-They carry no stored-value, config or asset-library coupling — which is why
-they could be renamed when the rest of the `pb__` family could not — and their
+They carry no stored-value, config or asset-library coupling, which is why
+they could be renamed when the rest of the `pb__` family could not, and their
 old names broke the grammar twice over: a double underscore straight after the
 prefix, and a second one before the element. `pb-simple__inner` is a plain BEM
 element of the `pb-simple` block, like every other inner wrapper in the module.
@@ -105,7 +105,7 @@ Frozen tokens are output verbatim from Display tab field values. See
 
 **This is the one section that is not about classes, and the one most likely
 to affect a site that has never touched a PB class.** If your CSS targets a
-single paragraph by id — `#pb__accor-wrap-42 { … }` — read this table.
+single paragraph by id, as in `#pb__accor-wrap-42 { … }`. Read this table.
 
 ### The rule v2 follows
 
@@ -136,7 +136,7 @@ no rule to state, so nothing could be derived and nothing could be checked.
 Freezing them was considered and rejected for three reasons:
 
 1. **The freeze was already broken.** `parallax_bundle` and
-   `3d_carousel_bundle` had changed id before 2.0.0 — and the migration doc
+   `3d_carousel_bundle` had changed id before 2.0.0, and the migration doc
    still said ids were unchanged. A promise that is already false for two
    bundles is not protecting anyone; it is hiding a breakage.
 2. **`parallax_bundle` and `parallax_section_bundle` shared one prefix**, so
@@ -151,11 +151,11 @@ what to change.
 
 ### Your per-paragraph CSS files are rewritten by the upgrade
 
-Each paragraph's editor colours live in a generated stylesheet under
+Each paragraph's editor colors live in a generated stylesheet under
 `public://paragraphs_bundles/`, and that file **contains the id as its scope
 selector**. A file written by v1 says `#pb__hero-9 > .pb-ui-inner`, so until it
-is rewritten it no longer matches the `pb-hero-9` the page now renders — the
-paragraph would render with its colours silently missing.
+is rewritten it no longer matches the `pb-hero-9` the page now renders. The
+paragraph would render with its colors silently missing.
 
 The v1 → v2 upgrade handles this: `drush updb` ends with
 `paragraphs_bundles_post_update_regenerate_dynamic_css`, which rewrites every
@@ -294,7 +294,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | `pb__alert-countdown-unit` | `pb-alert__countdown-unit` |
 | `pb__alert-top` | `pb-alert--top` |
 | `pb__alert__inner` | `pb-ui-inner` |
-| `js-pb-close-alert` | `pb-alert__close` — v2's script uses this class too |
+| `js-pb-close-alert` | `pb-alert__close` (v2's script uses this class too) |
 
 ### Card
 
@@ -336,8 +336,8 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 | v1 class | v2 class |
 |----------|----------|
-| `hide-{delay}` | removed — the pause button renders only when autoplay is on; the delay is on `data-rotation-delay` |
-| `item-{id}-{n}` | `pb-3d-carousel__slide` — the slide id is now `#pb-3d-carousel__slide-{id}-{n}` |
+| `hide-{delay}` | removed. The pause button renders only when autoplay is on; the delay is on `data-rotation-delay` |
+| `item-{id}-{n}` | `pb-3d-carousel__slide`. The slide id is now `#pb-3d-carousel__slide-{id}-{n}` |
 | `pb__3d-back` | `pb-3d-flip-box__back` (3D flip box) |
 | `pb__3d-carousel` | `pb-3d-carousel` |
 | `pb__3d-caro-100` | `pb-3d-carousel--h100` |
@@ -464,7 +464,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | `pb-modal-title` | `pb-modal__title` |
 | `pb__modal-next` | `pb-modal__next` |
 | `pb__modal-prev` | `pb-modal__prev` |
-| `pb__modal-wrapper` | `pb-modal__wrapper-{id}` — now an **id**, not a class |
+| `pb__modal-wrapper` | `pb-modal__wrapper-{id}`, now an **id**, not a class |
 | `pb__modal__inner` | `pb-modal__inner` |
 
 ### Parallax
@@ -546,7 +546,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 ## Manual-only renames (not in bulk-apply script)
 
-Update sub-theme / custom CSS overrides **by hand** for these — do NOT
+Update sub-theme / custom CSS overrides **by hand** for these. Do NOT
 run them through `migrate-class-names.sh`. Two reasons:
 
 - **State / flags / utilities** tokens collide with `:active`,
@@ -555,7 +555,7 @@ run them through `migrate-class-names.sh`. Two reasons:
   field values**. v1 rendered the stored value *as* the class; v2 keeps
   the stored value byte-for-byte and renders a modern class via the
   `pb_class` filter. So the **stored value never changes** (never touch
-  content or config `allowed_values`) — only your CSS selector does. The
+  content or config `allowed_values`). Only your CSS selector does. The
   bulk script also rewrites `.yml`, which would corrupt those stored
   values, so these are manual-only.
 
@@ -717,10 +717,10 @@ l8-l2-l2` |
 
 ---
 
-## Display field classes — stored values (never change)
+## Display field classes: stored values (never change)
 
 These **`pb__*`** tokens are **list field storage values**. The stored
-value is frozen — never edit it, in content or config `allowed_values`.
+value is frozen. Never edit it, in content or config `allowed_values`.
 In v2 the template renders a modern BEM class from the value via the
 `pb_class` filter, so your CSS overrides target the new class: see
 *Value-driven utility classes* above for the value → rendered-class map.

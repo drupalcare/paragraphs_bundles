@@ -49,7 +49,7 @@
 ] %}
 
 {# USWDS alert semantics. The icon is aria-hidden, so the state is ALSO given
-   as text for assistive technology - colour and an icon alone would carry the
+   as text for assistive technology - color and an icon alone would carry the
    meaning, which fails WCAG 1.4.1. USWDS says the same in its own guidance:
    "Start the alert's text with a word describing the alert type."
 
@@ -81,9 +81,9 @@
 
     {# WCAG 2.2.1 Timing Adjustable: whenever the countdown can run there must be
        a control that turns it off, and it is gated on the countdown ITSELF, not
-       on pb_show_countdown_label. The label is cosmetic — the timer runs
-       whenever the dismissal type is `countdown` and the seconds are above zero
-       — so gating the control on the label would leave every label-off alert
+       on pb_show_countdown_label. The label is cosmetic. The timer runs
+       whenever the dismissal type is `countdown` and the seconds are above zero,
+       so gating the control on the label would leave every label-off alert
        removing its own content on a limit the user cannot stop. #}
     {% set pb_countdown_runs = pb_dismissal_type == 'countdown' and pb_countdown_seconds > 0 %}
 
@@ -91,7 +91,7 @@
       <div class="pb-alert--top {{ pb_close_button ? 'pb--has-close' : 'pb--no-close' }}{{ pb_alert_state ? ' pb--has-state' : '' }}">
       {% if pb_alert_state %}
         {# Google Material Symbols (Apache 2.0), outlined 24px, fetched from
-           google/material-design-icons. fill="currentColor" takes the colour from
+           google/material-design-icons. fill="currentColor" takes the color from
            the state class in CSS, so it stays meaningful even when an editor
            overrides the background to something unrelated. #}
         <div class="pb-alert__state-icon" aria-hidden="true">
@@ -130,7 +130,7 @@
         {% if pb_close_button %}
           {# No aria-expanded: dismissal is one-way. The button lives inside the
              container that closeAlert() marks `inert`, so it can neither be
-             focused nor clicked once closed — a disclosure state here described
+             focused nor clicked once closed. A disclosure state here described
              an affordance that cannot exist (WCAG 4.1.2). #}
           <button aria-label="{{ 'Close alert'|t }}"
                   aria-controls="{{ paragraph_id }}"

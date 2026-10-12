@@ -1,4 +1,4 @@
-# Link bundle — accessibility (WCAG / ARIA)
+# Link bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-link`, `pb-link-section`  
 > **Status:** Phase B scoped (markup only)  

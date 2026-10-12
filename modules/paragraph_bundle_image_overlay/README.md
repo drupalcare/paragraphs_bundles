@@ -1,6 +1,6 @@
 # Paragraph Bundle Image Overlay
 
-`image_overlay_bundle` paragraph type — responsive image with configurable hover
+`image_overlay_bundle` paragraph type: responsive image with configurable hover
 overlay effects (fade, zoom, slide directions, title bar).
 
 ## Dependencies

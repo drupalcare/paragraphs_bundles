@@ -31,11 +31,11 @@
 
 {% set paragraph_id = pb_paragraph_id %}
 {% set modal_wrapper_id = 'pb-modal__wrapper-' ~ paragraph.id.value %}
-{# `pb-width-own` -- this element OWNS its width: the node width does not clamp
+{# `pb-width-own`: this element OWNS its width: the node width does not clamp
    it and its bundle max-width is not blanked.
 
    A modal is an OVERLAY. It is lifted out of the page's content column, so the
-   node's content width has no authority over it -- the paragraph's own
+   node's content width has no authority over it. The paragraph's own
    max-width does. Maintainer's call, 2026-09-12.
 
    Checked against the other three inherited owners: the slideshow and the plain

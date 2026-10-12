@@ -1,4 +1,4 @@
-# 3D Flip Box bundle — accessibility (WCAG / ARIA)
+# 3D Flip Box bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-3d-flip-box`  
 > **Status:** implemented (maintainer browser QA pending)
@@ -15,7 +15,7 @@ sits in the top-right corner of the scene and stays visible, so the box shows
 that it turns. Hovering the box, and moving focus into the presented face,
 still flip it as before.
 
-The control's icon — a card with an arrow turning over it — rotates 180° to
+The control's icon (a card with an arrow turning over it) rotates 180° to
 show which face is up, driven by `pb-is-showing-back` on the scene. That class
 tracks the PRESENTED FACE, not the button: `pb-is-flipped` tracks the button
 alone (it is what the sticky transform keys off), so using it for the icon left
@@ -38,7 +38,7 @@ and links on the hidden face stay in the tab order while invisible.
   `<button>`, so both keys work without a key handler.
 - Only the presented face is reachable. Tabbing past the control moves into
   that face's links and buttons; the face turned away is `inert`.
-- The control's state is sticky — an explicit flip is not undone by the
+- The control's state is sticky. An explicit flip is not undone by the
   pointer leaving the box.
 
 ## Screen reader

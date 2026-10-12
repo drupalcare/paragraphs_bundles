@@ -1,4 +1,4 @@
-# Tabs bundle — accessibility (WCAG / ARIA)
+# Tabs bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-tabs`  
 > **Status:** implemented  

@@ -2,10 +2,10 @@
 
 Three paragraph types for column layouts:
 
-- `one_column_bundle` — single content column
-- `two_columns_bundle` — left/right columns with optional sticky, toggle, and
+- `one_column_bundle`: single content column
+- `two_columns_bundle`: left/right columns with optional sticky, toggle, and
   breakpoint layout CSS
-- `three_columns_bundle` — left/middle/right columns with the same interactive
+- `three_columns_bundle`: left/middle/right columns with the same interactive
   features
 
 ## Dependencies

@@ -1,4 +1,4 @@
-# 3D Carousel bundle — accessibility (WCAG / ARIA)
+# 3D Carousel bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-3d-carousel`  
 > **Status:** implemented (maintainer browser QA pending)  
@@ -31,12 +31,12 @@ See the parent playbook for required attributes per pattern.
 
 The editor picks **Carousel style** under Display → Additional:
 
-- **Rotating ring** (default) — the drum. It stops at the first and last
+- **Rotating ring** (default): the drum. It stops at the first and last
   slide, and the arrow for the end it has reached is hidden
   (`pb-is-hidden`, `tabindex="-1"`).
-- **Coverflow** — a fan of cards. It wraps, so both arrows always show.
+- **Coverflow**: a fan of cards. It wraps, so both arrows always show.
 
-Both share one script, so the ARIA, keyboard, autoplay and `inert` behaviour
+Both share one script, so the ARIA, keyboard, autoplay and `inert` behavior
 below is identical for each. Only the geometry differs.
 
 - **Ring:** only the active slide is exposed; the others are `inert` and

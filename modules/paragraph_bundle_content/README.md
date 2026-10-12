@@ -17,7 +17,7 @@ minutes features like Slideshow, Accordions, Hero Banner, Image Overlay,
 Parallax, 3D Carousels, Modals, Tabs (Horizontal or Vertical), 3D Flip Box,
 One Column Layout, Two Columns Layout and Three Columns Layout.
 
-Bundle Types: for each bundle type I created a demo, feel free to check it.
+Bundle Types: for each bundle type I created a demo you can check.
 
 W3CSS Paragraphs 3D Carousel Bundle (Images)
 W3CSS Paragraphs 3D Carousel Bundle (Text)

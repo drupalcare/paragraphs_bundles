@@ -23,7 +23,7 @@ drush sql:dump --gzip --result-file=../backup-before-pb-v2.sql
 tar czf ../backup-before-pb-v2-files.tar.gz web/sites/default/files
 ```
 
-Put the site in maintenance mode for the duration — `drush updb` leaves config
+Put the site in maintenance mode for the duration. `drush updb` leaves config
 partially migrated if it is interrupted, and editors saving paragraphs during
 the run can write against half-updated displays:
 
@@ -46,12 +46,12 @@ Check first:
 drush php:eval "print \Drupal::keyValue('system.schema')->get('paragraphs_bundles');"
 ```
 
-- **9004** — you are ready.
-- **Lower** — update to the newest 1.x release, run `drush updb`, then come
+- **9004**: you are ready.
+- **Lower**: update to the newest 1.x release, run `drush updb`, then come
   back.
-- **9005 or higher** — you are already on v2.
+- **9005 or higher**: you are already on v2.
 
-### 3. The Material Symbols fonts still ship — nothing to do
+### 3. The Material Symbols fonts still ship: nothing to do
 
 If you use `paragraph_bundle_icon` with Material Symbols icons, they keep
 working across the upgrade. The three `.woff2` files ship inside the module, in
@@ -59,8 +59,8 @@ working across the upgrade. The three `.woff2` files ship inside the module, in
 
 An earlier 2.0.x-dev build removed them and required every site to supply the
 font itself. That was reverted before release, because it silently turned every
-icon into its ligature name in plain text — a paragraph set to `home` rendered
-the word "home" — with no update path and nothing logged.
+icon into its ligature name in plain text. A paragraph set to `home` rendered
+the word "home", with no update path and nothing logged.
 
 The fonts are Apache-2.0, which is compatible with this project's
 GPL-2.0-**or-later** through the "or later" clause. If you would rather serve
@@ -105,7 +105,7 @@ Running `drush cr` before `drush updb` (step 2 above) avoids most of them.
 ### If an update fails part-way
 
 Restore the backup. Do not re-run `drush updb` against a half-migrated
-database and do not hand-edit `system.schema` to skip a hook — the hooks are
+database and do not hand-edit `system.schema` to skip a hook. The hooks are
 idempotent and safe to repeat, but only from a consistent starting point.
 
 ```bash
@@ -120,16 +120,16 @@ Then report the failure with the output of `drush updb` before retrying.
 
 ## What happens to existing sites
 
-| Area | v1 behaviour | v2 upgrade |
+| Area | v1 behavior | v2 upgrade |
 |------|--------------|------------|
 | Paragraph content | Inline `style="--pb-*"` on inner wrapper | Unchanged in the database; a post-update writes per-paragraph CSS files |
 | Field machine names | `pb_content_*`, `pb_display_*` | **Unchanged** |
-| CSS class names / DOM ids | 30 bespoke id patterns, legacy `pb__` classes | Ids standardised to `pb-{slug}-{id}`; structural classes renamed — see `CSS-CLASS-MIGRATION.md` |
+| CSS class names / DOM ids | 30 bespoke id patterns, legacy `pb__` classes | Ids standardized to `pb-{slug}-{id}`; structural classes renamed; see `CSS-CLASS-MIGRATION.md` |
 | Title tag / alignment | Missing on some bundles | `9006` imports instances and wires the Content tab |
-| Link colour fields | Did not exist | `9006` creates instances and wires the Display tab |
+| Link color fields | Did not exist | `9006` creates instances and wires the Display tab |
 | Display tab layout | Flat list / legacy group names | `9006` nests into Colors / Border / Spacing / Size |
 | Manage display (`pb_display_*`) | Often visible formatters | `9006` hides all of them on view displays |
-| Edit-form field order | Whatever v1 left, plus what `9006` computed | `9008` puts it back to the order a fresh v2 install ships — see below |
+| Edit-form field order | Whatever v1 left, plus what `9006` computed | `9008` puts it back to the order a fresh v2 install ships (see below) |
 | Sub-theme CSS reading `--pb-*` | From the inline style | From the per-paragraph CSS file, same variable names |
 
 Existing paragraph **values** are preserved. Editors see the new fields and the
@@ -144,10 +144,10 @@ order, then every sub-module hook, then post-updates last.
 
 | Hook | Purpose |
 |------|---------|
-| **`9005`** | Shared field storages (title tag/alignment, link colours) plus title help text and optional flags |
+| **`9005`** | Shared field storages (title tag/alignment, link colors) plus title help text and optional flags |
 | **`9006`** | Wire all shared v2 fields on **every** PB bundle, nest the Display tab, hide `pb_display_*` on view displays |
 | **`9007`** | Repair v1 config that does not match v2's tightened config schema (node type `help`, a stray form-display `label`, range defaults stored as strings, null `target_bundles_drag_drop`) |
-| **`9008`** | Realign form and view display layout with the config a fresh install imports — see below |
+| **`9008`** | Realign form and view display layout with the config a fresh install imports (see below) |
 | `paragraph_bundle_content_update_9001` | Surgical `pb_content` form-display merge, preserving site-added fields |
 | `paragraph_bundle_image_background_update_9001` | Bundle-specific display wiring |
 | `paragraph_bundle_3d_carousel_update_9001` | Bundle-specific display wiring |
@@ -164,30 +164,30 @@ as already-invoked, so new sites never run it.
 
 Every hook is **idempotent** and safe to run again.
 
-### `9006` — the catch-all
+### `9006`: the catch-all
 
 Discovers every paragraph bundle that ships `pb_display_bg`, then for each
 calls `paragraphs_bundles_pb_wire_shared_fields_for_bundle()`:
 
-1. Ensures shared field **storages** exist (title tag/alignment, link colours).
+1. Ensures shared field **storages** exist (title tag/alignment, link colors).
 2. Imports field **instances** from optional YAML when the owning sub-module
    ships them; otherwise creates link field instances programmatically.
 3. Normalizes legacy v1 field_group names (`group_tab_*`, `group_tabs_wrapper`,
    `group_content`, `group_display`).
 4. Wires title fields onto the **Content** tab (when `pb_content_title` exists).
-5. Wires link colour widgets into **Display → Colors**.
-6. Sets Colors widget **weights** (opacity 16, bg 17, …) — field_group sorts by
+5. Wires link color widgets into **Display → Colors**.
+6. Sets Colors widget **weights** (opacity 16, bg 17, …). field_group sorts by
    weight, not by children order.
 7. Nests Display tab fields into collapsible sections.
 8. Sorts Additional display fields by widget type.
 9. Hides all **`pb_display_*`** fields on paragraph **Manage display**.
 
-### `9008` — same version, same edit forms
+### `9008`: same version, same edit forms
 
 `9006` wires the shared fields onto displays that already exist, so it has to
 work out weights from what it finds. A fresh install imports them from
 `config/optional` instead. The two therefore disagreed, and on most bundles by
-enough to change the **order fields appear in** on the paragraph edit form — on
+enough to change the **order fields appear in** on the paragraph edit form, on
 `icon_bundle`, two content fields ended up scattered among the display fields.
 One module version, two different admin UIs depending on how the site got here.
 
@@ -197,7 +197,7 @@ layout and re-applies it:
 - component **weights**, for fields this module ships;
 - **field group weights and child order**;
 - stale entries left in a display's `hidden` list for a field that is also in
-  `content` — a contradiction `9006` could leave behind and that nothing else
+  `content`: a contradiction `9006` could leave behind and that nothing else
   repairs.
 
 It is deliberately conservative about everything else. A field **your site
@@ -225,17 +225,17 @@ If your sub-theme overrides PB Twig templates:
 
 1. Copy the v2 template from the module.
 2. Re-apply your overrides.
-3. Remove any dependency on inline `style="--pb-*"` — v2 attaches a
+3. Remove any dependency on inline `style="--pb-*"`; v2 attaches a
    per-paragraph library instead.
 
 CSS custom property names are unchanged, but **structural class names and
 outer element ids were both renamed** in v2. If your theme targets PB classes
-or ids, work through [`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md) — it
+or ids, work through [`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md). It
 lists all 299 class renames, the 69 frozen tokens that did not change, and the
 full id table.
 
 **Element ids changed for 29 of the 30 bundles that had one in v1.** v2 emits
-one derivable form everywhere — `#pb-{bundle-slug}-{paragraph id}` — replacing
+one derivable form everywhere: `#pb-{bundle-slug}-{paragraph id}`, replacing
 30 bespoke v1 patterns, most of them abbreviations (`pb__nf-`,
 `pb__accor-wrap-`, `pb__slide-wrap-`). CSS or JS naming an old id stops
 applying; nothing else is affected, and no stored data changes.
@@ -249,7 +249,7 @@ applying; nothing else is affected, and no stored data changes.
 | 3D carousel | `#pb__caro-wrap-{id}` | `#pb-3d-carousel-{id}` |
 | … 25 more | | [full table](CSS-CLASS-MIGRATION.md#outer-element-ids-v1--v2) |
 
-Only `card_text_section_bundle` keeps its v1 id — it was already `pb-`.
+Only `card_text_section_bundle` keeps its v1 id. It was already `pb-`.
 
 ---
 

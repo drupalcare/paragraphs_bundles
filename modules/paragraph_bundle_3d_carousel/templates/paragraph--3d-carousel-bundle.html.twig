@@ -32,7 +32,7 @@
 {% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{# `pb-width-own` -- this element OWNS its width: the node width does not clamp
+{# `pb-width-own`: this element OWNS its width: the node width does not clamp
    it and its bundle max-width is not blanked.
 
    Load-bearing here, not cosmetic. The slide transforms and the `perspective`
@@ -53,14 +53,14 @@
 
    THE DEFAULT IS LOAD-BEARING, not tidiness. A field default only applies when
    an entity is CREATED, so every carousel that existed before update 9003 ran
-   holds an empty value — measured on a test site 2026-09-24, all five of them.
+   holds an empty value. Measured on a test site 2026-09-24, all five of them.
    Without `'ring'` here those carousels would render with no style at all. -#}
 {% set pb_car_style = paragraph|pb_field_value('pb_display_3d_car_style', 'ring') -%}
 
 {# ONE STYLE LIBRARY, NEVER BOTH. The shared library above carries the base
    stylesheet and the script; this adds only the rules true of the chosen
    geometry. A ring page therefore never downloads the fan's rules, and a
-   coverflow never downloads the ring's pointer-events rule — which is the one
+   coverflow never downloads the ring's pointer-events rule, which is the one
    that used to make its visible cards silently unclickable.
 
    The value is bounded to `ring` or `coverflow` by the field's allowed values
@@ -70,7 +70,7 @@
   {{ attach_library('paragraph_bundle_3d_carousel/paragraph-bundle-3d-carousel-' ~ pb_car_style) -}}
 {% endif -%}
 
-{# ONLY the coverflow class is ever emitted -- there is deliberately no
+{# ONLY the coverflow class is ever emitted. There is deliberately no
    "--ring" class. The ring is the default and its markup must stay byte
    identical, because thirteen demo sites compare published pages byte for
    byte and any added attribute would show as a diff on every one of them.
@@ -78,7 +78,7 @@
    THIS NOTE LIVES HERE, NOT BETWEEN THE ARRAY ITEMS BELOW. A Twig comment
    placed inside a set expression is not a comment at all: the lexer is in
    expression mode there, so it keeps reading and fails on the first character
-   it cannot parse. Measured 2026-09-24 -- writing one inside this very array
+   it cannot parse. Measured 2026-09-24. Writing one inside this very array
    took the page to HTTP 500 with a Twig SyntaxError naming an unexpected
    character. Keep explanations outside the brackets.
 

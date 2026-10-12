@@ -1,6 +1,6 @@
 # Paragraph Bundle 3D Carousel
 
-`3d_carousel_bundle` paragraph type — CSS 3D carousel with nested slide
+`3d_carousel_bundle` paragraph type: CSS 3D carousel with nested slide
 paragraphs, prev/next controls, optional autoplay, and responsive breakpoint
 CSS libraries.
 
@@ -29,7 +29,7 @@ drush pb:regenerate-css
 
 ## v2 notes
 
-- No `pb_content_title` — wire/verify scripts SKIP (expected).
+- No `pb_content_title`: wire/verify scripts SKIP (expected).
 - Dynamic CSS on inner (`pb-ui-inner` / `pb-3d-carousel__inner`); perspective on
   inner (editor px value).
 - Outer id `pb-3d-carousel-{id}`; ring id `pb-3d-carousel-ring-{id}`.

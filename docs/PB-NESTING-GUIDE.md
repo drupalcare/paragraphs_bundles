@@ -1,7 +1,7 @@
-# Paragraphs Bundles — Nesting Guide
+# Paragraphs Bundles: Nesting Guide
 
 > What may go inside what, and why. Every rule here is derived from what the
-> bundles **actually do** — the CSS and JavaScript each one ships — not from
+> bundles **actually do**: the CSS and JavaScript each one ships, not from
 > preference. Measured 2026-09-11 against Drupal 11.4.6 with Solo.
 
 **The short version.** Put leaf bundles inside container bundles, one level
@@ -26,7 +26,7 @@ in where it can sit, or in what it can hold.
 
 ## 2 · The six rules
 
-### Rule 1 — Leaves go anywhere ✅
+### Rule 1: Leaves go anywhere ✅
 
 Thirteen bundles have **no child slot at all**. They cannot create a nesting
 problem, so they are the right default for the inside of any container.
@@ -39,31 +39,31 @@ problem, so they are the right default for the inside of any container.
 > own paragraph types alongside them; those are outside this contract and are
 > not counted.
 
-### Rule 2 — Perspective never nests in perspective 🚫
+### Rule 2: Perspective never nests in perspective 🚫
 
 Never put **`parallax`**, **`3d_carousel`** or **`3d_flip_box`** inside one
 another. Each establishes its own 3D rendering context and the inner one is
 flattened. This is the single most common mistake and the most visible.
 
-### Rule 3 — Nothing that autoplays goes somewhere hidden 🚫
+### Rule 3: Nothing that autoplays goes somewhere hidden 🚫
 
 No **`carousel`**, **`slideshow`** or **`3d_carousel`** inside a **`modal`**, a
 closed **`accordion`** pane, or an inactive **`tab`**. Put them at the top level
 where they can be seen.
 
-### Rule 4 — Parallax needs the real viewport 🚫
+### Rule 4: Parallax needs the real viewport 🚫
 
 `parallax` reads scroll position, so it must be **top level** or inside a plain
-container (`one_column`, `grid`, columns). Never inside anything transformed — a
+container (`one_column`, `grid`, columns). Never inside anything transformed. A
 carousel, a slideshow, a flip box, or another parallax.
 
-### Rule 5 — Backgrounds do not stack 🚫
+### Rule 5: Backgrounds do not stack 🚫
 
 An `image_background` is a backdrop for content, not a container for another
 backdrop. No `image_background` inside `image_background`, and no `parallax`
 inside one.
 
-### Rule 6 — One container deep ⚠
+### Rule 6: One container deep ⚠
 
 Columns inside columns compound clipping and padding. **One** level of layout
 nesting is predictable; a second stops being worth the trouble.
@@ -94,7 +94,7 @@ nesting that renders wrong. This table is what stops it.
 
 ### Fixed-shape children
 
-These exist only inside one parent and are chosen for you — you never place them
+These exist only inside one parent and are chosen for you. You never place them
 freely.
 
 | Child | Belongs to |

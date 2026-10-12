@@ -1,4 +1,4 @@
-# Image Overlay bundle — accessibility (WCAG / ARIA)
+# Image Overlay bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-image-overlay`  
 > **Status:** Phase B scoped (static markup + CSS transitions)  

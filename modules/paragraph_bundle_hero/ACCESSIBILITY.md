@@ -1,4 +1,4 @@
-# Hero bundle — accessibility (WCAG / ARIA)
+# Hero bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-hero`  
 > **Status:** pending  

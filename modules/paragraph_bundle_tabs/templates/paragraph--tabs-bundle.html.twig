@@ -56,7 +56,7 @@
 
       {# Named for the element it sits on; `pb-tabs-{id}` is the outer id. #}
       {% set tab_id = 'pb-tabs__tabset-' ~ paragraph.id.value %}
-      {# L3 behavior host — JS once() target #}
+      {# L3 behavior host: JS once() target #}
       <div id="{{ tab_id }}" class="pb-tabs__tabset pb-ui-row {{ tabset_layout }}">
 
         <div class="pb-ui-bar pb-tabs__tablist" role="tablist" aria-label="{{ 'Tab List'|t }}">

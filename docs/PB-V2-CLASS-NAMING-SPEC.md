@@ -1,4 +1,4 @@
-# PB v2 — CSS class naming spec
+# PB v2: CSS class naming spec
 
 > **Per-bundle L3/L4:**
 [`PB-V2-BUNDLE-VOCABULARY.md`](PB-V2-BUNDLE-VOCABULARY.md)  
@@ -19,12 +19,12 @@ release package.
 
 ## 1. Design goals
 
-1. **Global uniqueness** — no token can collide with themes, core, or contrib.
-2. **Predictability** — given a bundle machine name, any developer can derive
+1. **Global uniqueness**: no token can collide with themes, core, or contrib.
+2. **Predictability**: given a bundle machine name, any developer can derive
    class names without reading 150 legacy rows.
-3. **Separation of concerns** — editor config tokens ≠ structural markup.
-4. **One bulk migration** — v1 → v2 rename map is output of the rule engine.
-5. **Collision-safe by construction** — every class uses the `pb-` / `pb__`
+3. **Separation of concerns**: editor config tokens ≠ structural markup.
+4. **One bulk migration**: v1 → v2 rename map is output of the rule engine.
+5. **Collision-safe by construction**: every class uses the `pb-` / `pb__`
    namespace; generic UI words (`active`, `open`, `visible`, …) are never bare.
 
 ---
@@ -36,38 +36,38 @@ release package.
 | **L0 Global** | `paragraphs-bundles` | Twig (every paragraph root) | Scope
 root shared by all bundles |
 | **L1 Identity** | `#pb-{slug}-{id}` | Preprocess | Dynamic CSS anchor (id,
-not class) — see §3.10 |
+not class). See §3.10 |
 | **L2 Config** | `pb__{token}` | List field `allowed_values` or Twig prefix +
 field | `pb__pmw_500`, `pb__992` |
 | **L3 Private** | `pb-{bundle-slug}` | Twig (**paragraph root only**) | `pb-
-accordion`, `pb-tabs` — bundle type marker |
+accordion`, `pb-tabs`: bundle type marker |
 | **L3 Component** | `pb-{bundle}__{element}` | Templates, CSS, JS | `pb-
 accordion__pane`, `pb-accordion__sections` |
 
-**L3 behavior host** uses **descriptive role names** per bundle — see
+**L3 behavior host** uses **descriptive role names** per bundle. See
 [`PB-V2-BUNDLE-VOCABULARY.md`](PB-V2-BUNDLE-VOCABULARY.md).
 
 **Never mix layers.** Config tokens (`pb__*`) are not BEM blocks. The
 **private**
-class (`pb-{slug}`) must appear **once** on the paragraph root — not on inner
+class (`pb-{slug}`) must appear **once** on the paragraph root, not on inner
 widgets. Inner structure uses `pb-{slug}__*` elements.
 
-### What is frozen (L2 — config)
+### What is frozen (L2: config)
 
 Config tokens stay `pb__*` until a future **field decoupling** project
 (`PbDisplayClassMapper`). See constraints doc for breakpoint/library coupling.
 
-### What Stage 3 migrates (L3 — component)
+### What Stage 3 migrates (L3: component)
 
 Hardcoded structural classes in front-end Twig, CSS, and JS → `pb-*` grammar
 below.
 
 ---
 
-## 3. L3 grammar — `pb-` namespace
+## 3. L3 grammar: `pb-` namespace
 
 **`pb-`** = paragraphs bundles structural prefix. Required for all L3 classes.
-(L2 config keeps **`pb__`** double-underscore — different layer, no collision.)
+(L2 config keeps **`pb__`** double-underscore. It is a different layer, no collision.)
 
 ### 3.1 Bundle private class (paragraph root)
 
@@ -75,7 +75,7 @@ below.
 pb-{bundle-slug}
 ```
 
-On the **paragraph root only** — the private bundle-type marker paired with
+On the **paragraph root only**: the private bundle-type marker paired with
 global `paragraphs-bundles`. CSS and JS must scope through
 `.paragraphs-bundles.pb-{slug}`, never `closest('.paragraphs-bundles')` alone.
 
@@ -121,7 +121,7 @@ Examples: `pb-accordion__pane`, `pb-carousel__dot`, `pb-slideshow__nav`.
 ```
 
 Examples: `pb-modal__dialog--open`, `pb-alert--top` (block modifier when
-the whole block variant is meant — prefer element modifier when possible).
+the whole block variant is meant; prefer element modifier when possible).
 
 ### 3.4 Cross-bundle state (JS toggles)
 
@@ -157,7 +157,7 @@ Examples: `pb-has-arrows`, `pb-has-sticky-col`, `pb-no-arrows`,
 pb-ui-{part}
 ```
 
-Shared buttons, links, rows, bars, inner colour shell — not owned by one
+Shared buttons, links, rows, bars, inner color shell, not owned by one
 bundle block.
 
 | Legacy | Target |
@@ -205,7 +205,7 @@ pb-nav__{control}
 
 Examples: `pb-nav__prev`, `pb-nav__next`, `pb-nav__play`, `pb-nav__pause`.
 
-### 3.10 DOM ids (L1) — kebab, never abbreviated
+### 3.10 DOM ids (L1): kebab, never abbreviated
 
 Ids use the **same grammar as classes**, plus the paragraph entity id. There
 is no second convention to remember.
@@ -240,7 +240,7 @@ makes the id ours.
 block*. A bundle's outer id is the block itself, so it never contains `__`;
 an id on a node inside that bundle names the element it sits on and therefore
 does. Never use `__` as a separator before the numeric id, and never use it as
-a general word separator — that is what `-` is for.
+a general word separator. That is what `-` is for.
 
 **One source of truth.** `PbDynamicCssBuilder::outerElementId()` builds the
 outer id, and both writers call it: `PbPreprocessHook` (which sets the DOM
@@ -256,7 +256,7 @@ accordion's outer id, so the section host inside it is
 
 ---
 
-## 3.11 Changing a name — nothing may be left behind
+## 3.11 Changing a name: nothing may be left behind
 
 A class or id name is a contract shared by **five** surfaces. Renaming one
 without the others is the single most common way to ship a dead selector, and
@@ -266,7 +266,7 @@ rename anything, the same commit updates all of these:
 | # | Surface | What to check |
 |---|---|---|
 | 1 | **Twig** | The name where it is written, plus every `{% set %}` that composes it and every docblock line quoting it |
-| 2 | **CSS** | Every file in `css/` and `modules/*/css/`, including breakpoint variants — a selector nobody updates silently stops matching |
+| 2 | **CSS** | Every file in `css/` and `modules/*/css/`, including breakpoint variants. A selector nobody updates silently stops matching |
 | 3 | **JS** | `querySelector`/`getElementById`/`closest`/`classList` and any template literal that builds the name from a fragment |
 | 4 | **Tests** | Unit expectations, Kernel render assertions, FunctionalJavascript selectors |
 | 5 | **Docs** | The bundle `README.md` (it becomes the module's help page), plus `CSS-CLASS-MIGRATION.md`, this spec, and `CHANGELOG.md` |
@@ -283,7 +283,7 @@ grep -rn 'OLD-NAME' --include='*.twig' --include='*.css' --include='*.js' \
 vendor/bin/phpunit --filter 'PbDynamicCssBuilderTest|PbBundleRenderKernelTest'
 ```
 
-A rename that only a v1 → v2 migration table still mentions is correct — those
+A rename that only a v1 → v2 migration table still mentions is correct. Those
 tables are supposed to name the old token. A rename that a **CSS selector, JS
 lookup, or README** still mentions is a defect.
 
@@ -338,7 +338,7 @@ accordion { overflow: hidden; }` |
 ### 4.3 Why not only `.paragraphs-bundles .pb-*`?
 
 L0 alone matches **any** paragraph with class `paragraphs-bundles`. A carousel
-on the same page also has L0 — bundle-specific rules without `pb-{slug}` on the
+on the same page also has L0: bundle-specific rules without `pb-{slug}` on the
 root can hit the wrong paragraph.
 
 `:has(.pb-accordion)` is fragile (DOM depth) and still weaker than
@@ -356,7 +356,7 @@ on the page are not affected.
 **Full step-by-step:** `PB-V2-PHASE-B-SCOPING-PLAYBOOK.md` (accordion =
 reference).
 
-1. Add `pb-{slug}` to root `classes` in Twig (**once** — not on inner widgets).
+1. Add `pb-{slug}` to root `classes` in Twig (**once**, not on inner widgets).
 2. Give the behavior host a **descriptive role** from
    [`PB-V2-BUNDLE-VOCABULARY.md`](PB-V2-BUNDLE-VOCABULARY.md)
    (e.g. `pb-accordion__sections`, `pb-tabs__tabset`).
@@ -372,9 +372,9 @@ reference).
 
 | Class | Role | JS usage |
 |-------|------|----------|
-| `paragraphs-bundles` | **Global** — every bundle root | Never use alone in
+| `paragraphs-bundles` | **Global**: every bundle root | Never use alone in
 `closest()` for bundle logic |
-| `pb-{slug}` | **Private** — one bundle type on paragraph root | Pair with
+| `pb-{slug}` | **Private**: one bundle type on paragraph root | Pair with
 global: `.paragraphs-bundles.pb-accordion` |
 | `pb-{slug}__*` | Component elements | `once()` targets, `querySelector` within
 widget |
@@ -456,7 +456,7 @@ behavior must also meet the module's JavaScript rules:
 
 **PB namespace:** `pb-paragraph-bundle-{slug}-*` once IDs (not `apex-`).
 
-**Playbook:** `PB-V2-JS-HYGIENE-PLAYBOOK.md` — apply per bundle with Phase B.
+**Playbook:** `PB-V2-JS-HYGIENE-PLAYBOOK.md`. Apply per bundle with Phase B.
 
 ---
 
@@ -484,7 +484,7 @@ Full table: generated `docs/PB-V2-BEM-VOCABULARY.md`.
 
 1. Derive **bundle slug** from machine name (§3.1).
 2. Root template: always `paragraphs-bundles` + `paragraph--type--*`.
-3. Structural classes: only `pb-{slug}__*` — never bare semantic words.
+3. Structural classes: only `pb-{slug}__*`. Never bare semantic words.
 4. Display tab list fields: store `pb__*` tokens in field storage (L2) until
    mapper exists; do not invent new `pb__` tokens for pure markup.
 5. Run `generate-pb-class-renames.py --check` after inventory update.

@@ -1,4 +1,4 @@
-# Icon bundle — accessibility (WCAG / ARIA)
+# Icon bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-icon`  
 > **Status:** Phase B scoped (font-load reveal JS)

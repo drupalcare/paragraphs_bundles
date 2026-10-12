@@ -303,7 +303,7 @@
 .pb-ai-toggle {
   all: initial;
   position: absolute;
-  /* Centred on the bar's top border. The BAR owns the position, so the button
+  /* Centered on the bar's top border. The BAR owns the position, so the button
      cannot drift out of step with it — there is no second place to keep
      updated, and nothing to recompute on resize. */
   bottom: 100%;

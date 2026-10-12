@@ -54,7 +54,7 @@
       {# Named for the element it sits on. `pb-accordion-{id}` is now the
          outer id from preprocess, so this must not reuse it. #}
       {% set acc_id = 'pb-accordion__sections-' ~ paragraph.id.value %}
-      {# L3 behavior host — JS once() target #}
+      {# L3 behavior host: JS once() target #}
       <div id="{{ acc_id }}" class="pb-accordion__sections pb-ui-row">
 
         {% if pb_title %}

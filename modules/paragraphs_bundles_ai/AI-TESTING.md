@@ -4,7 +4,7 @@ Tested on Drupal 11.4.6, against **OpenAI `gpt-5-nano`**
 through `drupal/ai` and `ai_provider_openai`.
 
 Every number below came from running the thing and reading the result. Where
-something has **not** been tested, it says so — that list is at the end, and it
+something has **not** been tested, it says so. That list is at the end, and it
 is not short.
 
 ---
@@ -22,11 +22,11 @@ definitions:
 - every property name is a real field machine name on that bundle;
 - a list field becomes an `enum` of its real allowed values;
 - a character limit becomes a `maxLength`;
-- a field that holds a reference, an image or a colour never reaches the schema.
+- a field that holds a reference, an image or a color never reaches the schema.
 
 `strict` is deliberately **FALSE**. A provider's strict mode requires every
 property to be required, which would force the model to invent a value for
-every field on the section — including ones nobody mentioned. A half-filled
+every field on the section, including ones nobody mentioned. A half-filled
 section is the honest outcome of "add a hero saying we deliver on Tuesdays".
 
 ### The system prompt sent when adding a section
@@ -49,7 +49,7 @@ whole module, so the shipped bundle descriptions never reached the model. Given
 only `"Parallax Section"` and nothing else, it wrote prose *about* a parallax layout
 instead of copy *for* one.
 
-Worse, the eight inner section bundles — a slide, a tab, an accordion row — had
+Worse, the eight inner section bundles (a slide, a tab, an accordion row) had
 shipped `description: ''` **on purpose**, recorded in an update hook: a slide is
 never chosen from a list, so a site builder needs no sentence for it. True of the
 person, and false of the model, which is the half that has to write the slide.
@@ -83,16 +83,16 @@ Write plain text, within any character limit in the schema. No HTML, no Markdown
 | Parent bundles offered in the Add list | **33** |
 | Of those, bundles that hold other sections | **18** |
 | Bundles whose children can be **drafted** | **6** |
-| Bundles that needed only a picture — now supplied automatically | **5** |
-| Inner section bundles that need a picture — also supplied | **3** |
+| Bundles that needed only a picture, now supplied automatically | **5** |
+| Inner section bundles that need a picture, also supplied | **3** |
 | Bundles that still need a human to finish them | **6** |
 | Bundles carrying a description the model is given | **40 of 41** |
 
-**33, where this file previously said 32**: `ai_image_bundle` is new — the
+**33, where this file previously said 32**: `ai_image_bundle` is new. The
 media-less fallback. The one bundle without a description is `pb_target_bundle`,
 which belongs to `pb_import`, not to this project.
 
-The gap between 18 and 6 is a real limit, not an oversight — see
+The gap between 18 and 6 is a real limit, not an oversight. See
 *Children* below.
 
 ---
@@ -112,7 +112,7 @@ One call per bundle. Prompt used throughout:
 | Value outside a list field's allowed values | **0** |
 | Asked for children and got none | **0** |
 | Children nested | **12** |
-| Bodies saved with a text format | **3** — none NULL |
+| Bodies saved with a text format | **3**, none NULL |
 
 The two refusals are `image_background_bundle` and `pb_target_bundle`. Both
 genuinely have no text fields, so there is nothing for a model to write, and
@@ -130,7 +130,7 @@ Three further calls, on a real page:
 | Prompt | Result |
 |---|---|
 | `A short welcome for a small bakery in Bristol. Warm, two sentences.` | 156 characters written into `pb_content_body` |
-| `Three-season bread range: winter rye, spring sourdough.` (2 children) | title within its real 255 limit, **2 slides drafted** — "winter rye", "spring sourdough" |
+| `Three-season bread range: winter rye, spring sourdough.` (2 children) | title within its real 255 limit, **2 slides drafted**: "winter rye", "spring sourdough" |
 | `Make it one sentence, and mention we open at six.` | section reworded, previous revision kept |
 
 The body kept `format: basic_html` on **both** the create and the edit. A text
@@ -147,7 +147,7 @@ For the other 12 the assistant **refuses with a reason** instead of creating an
 empty parent:
 
 - more than one field holds sections (a two-column bundle has a left and a
-  right) — so "put three cards in it" has not said where;
+  right), so "put three cards in it" has not said where;
 - the single child field accepts *any* bundle, which Drupal stores as an empty
   list, so the site has never said what belongs inside one.
 
@@ -161,11 +161,11 @@ A content type with two paragraph fields was created, exercised and removed.
 
 - both fields are offered, with their human labels;
 - a **Where** dropdown appears only when there is more than one;
-- the Add list is per field — a field restricted to one bundle offers one, an
-  unrestricted field offers all **32** — and the two lists genuinely differ;
+- the Add list is per field: a field restricted to one bundle offers one, an
+  unrestricted field offers all **32**, and the two lists genuinely differ;
 - the Edit list spans both fields and names the field each section lives in;
 - a submitted field name that was never offered is **refused**;
-- a bundle the chosen field rejects is **refused** — with a control proving the
+- a bundle the chosen field rejects is **refused**, with a control proving the
   same bundle is accepted by the other field, so the refusal is about the field
   and not the bundle.
 
@@ -182,7 +182,7 @@ The unit suite went red on the way to this number, and the failure was real:
 `PbModuleDependencyTest` reported that `paragraphs_bundles_ai.info.yml` did not
 declare `image`, `file` and `paragraphs`, all three named by the
 `ai_image_bundle` config added a day earlier. Drupal skips optional config whose
-dependencies are unmet **silently**, and `drush en` still reports success — so
+dependencies are unmet **silently**, and `drush en` still reports success, so
 that bundle would have installed with no field and nothing to say why. Declared,
 and green.
 
@@ -201,17 +201,17 @@ Not a test double: composed a `hero_bundle` on a working site, which has a requi
 | Result | node 40, paragraph 317 |
 | `pb_content_image` | → media 1 (`pb_media_image`), "Placeholder picture" |
 | File | `public://pb-ai/pb-ai-placeholder.png`, 26,730 bytes, present on disk |
-| Media items created | **1** — reused, not one per section |
+| Media items created | **1**, reused, not one per section |
 | What the person is told | *"No picture can be written, so the placeholder that ships with this module was put in "Image". Open the section and replace it with your own."* |
 
-The old note — *"this section still needs you to choose "Image""* — is correctly
+The old note: *"this section still needs you to choose "Image""* is correctly
 **gone**, rather than being printed alongside a field that is now filled.
 
 ### The placeholder changes with the section
 
 The Add dropdown names a section and then offers one empty box. Nothing in it
 said that a hero has a body **and** a link title, or that an accordion wants its
-rows named — so a person who had never opened that bundle's edit form was
+rows named, so a person who had never opened that bundle's edit form was
 guessing.
 
 Measured across the **33** parent sections offered: every one produces a hint,
@@ -219,24 +219,24 @@ Measured across the **33** parent sections offered: every one produces a hint,
 
 | Section | Hint produced |
 |---|---|
-| `hero_bundle` | Heading "…" as an h2, centred, then the Body and the Image Link Title. |
-| `accordion_bundle` | Heading "…" as an h2, centred, then say what goes in each Accordion Section. |
-| `modal_bundle` | Heading "…" as an h2, centred, then the Modal Button and the Modal Title. |
-| `icon_bundle` | Heading "…" as an h2, centred, then the Body, the Icon Name and the Material Symbols Style. |
+| `hero_bundle` | Heading "…" as an h2, centered, then the Body and the Image Link Title. |
+| `accordion_bundle` | Heading "…" as an h2, centered, then say what goes in each Accordion Section. |
+| `modal_bundle` | Heading "…" as an h2, centered, then the Modal Button and the Modal Title. |
+| `icon_bundle` | Heading "…" as an h2, centered, then the Body, the Icon Name and the Material Symbols Style. |
 | `3d_carousel_bundle` | Say the Large Screen Height and the Small Screen Height. |
-| `views_bundle` | Heading "…" as an h2, centred. |
-| `ai_image_bundle` | AI Image takes no words — add it, then fill it in yourself. |
+| `views_bundle` | Heading "…" as an h2, centered. |
+| `ai_image_bundle` | AI Image takes no words. Add it, then fill it in yourself. |
 
 **Fields needing a person are not repeated** in the hint, because they already
 have their own notice beside the dropdown; saying it twice in two voices is worse
-than saying it once. Pictures are left out for the same reason — the module
+than saying it once. Pictures are left out for the same reason. The module
 supplies one.
 
 List fields are included if they hold real choices the person writes into —
-such as icon style or carousel height — not steering fields like alignment or
+such as icon style or carousel height, not steering fields like alignment or
 heading level. The heading level and alignment are excluded because they are
 matched on their real keys (`h2`, `center`) which means a person can say
-*"as an h2, centred"* in one sentence and both fields are set.
+*"as an h2, centered"* in one sentence and both fields are set.
 
 The distinction between "fields a person writes words into" and "settings
 fields" is derived from the field data itself, not from field names.
@@ -254,8 +254,8 @@ library attached.
 
 Read this part before believing anything above is complete.
 
-- **No browser has ever loaded this interface.** Every visual claim — the
-  slide, the hover, the tooltip position, the highlight, the half circle — is
+- **No browser has ever loaded this interface.** Every visual claim: the
+  slide, the hover, the tooltip position, the highlight, the half circle is
   verified as markup and CSS, not as pixels. The DevTools console has never
   been read.
 - **The AJAX path has never been exercised through a browser.** The *Add* and
@@ -266,7 +266,7 @@ Read this part before believing anything above is complete.
 - **One prompt style.** Short, plain, English, benign. No adversarial prompts,
   no other languages, no long or ambiguous requests.
 - **No cost or latency measurements.**
-- **Two kernel test files were never written** — `SectionComposer` and
+- **Two kernel test files were never written**: `SectionComposer` and
   `PageSurface` have no dedicated tests, because a local security tool refused
   to write those two files and the refusal was reported rather than worked
   around.
@@ -278,6 +278,6 @@ Read this part before believing anything above is complete.
 
 The measurements above were taken with throwaway scripts run through
 `drush php:script`, not with anything shipped in this module. On a multi-site
-install, pass `--uri` explicitly — without it drush answers from
+install, pass `--uri` explicitly. Without it drush answers from
 `sites/default`, which may be a different site with a different database, and
 every answer will look confident and be wrong.

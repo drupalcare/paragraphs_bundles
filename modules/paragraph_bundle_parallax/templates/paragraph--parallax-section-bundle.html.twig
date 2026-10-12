@@ -6,7 +6,7 @@
  * Outer wrapper (`#pb-parallax-{id}`): scroll mode, breakpoint, data attrs.
  * Inner (`.pb-ui-inner`): section height + parallax effect class.
  * Background (`.pb-parallax__bg`): image URL + JS animation custom properties.
- * Text layer (`.pb-parallax__text`): display list classes; colour vars via
+ * Text layer (`.pb-parallax__text`): display list classes; color vars via
  * dynamic CSS on `#pb-parallax-{id} .pb-parallax__text`.
  *
  * Nested inside `parallax_bundle` via `pb_content_parallax_section`.
@@ -63,7 +63,7 @@
    rendering the field and stripping tags. The rendered-output route depended
    on the `pb_media_parallax` view mode keeping the `image_url` formatter (it
    is editable optional config), and it yielded a raw editor-supplied filename
-   that was then interpolated into a `style` attribute — where Twig's HTML
+   that was then interpolated into a `style` attribute, where Twig's HTML
    autoescape offers no protection, because `(`, `)` and `;` are not escaped.
    `pb_image_field_url` returns a generated, path-encoded URL. #}
 {% set pb_image_url = paragraph|pb_image_field_url('pb_content_image') %}
@@ -73,14 +73,14 @@
 
     {#
       NO INLINE STYLES HERE. The background image and the animation custom
-      properties now come from this paragraph's generated stylesheet — see
+      properties now come from this paragraph's generated stylesheet: see
       PbDynamicUserVarBuilder::USER_STYLE_SCOPES, `parallax_section_bundle`.
       A style ATTRIBUTE cannot be permitted by a Content Security Policy
       except through `'unsafe-inline'`; unlike a `<style>` element it cannot
       carry a nonce.
 
       THE BRANCH STAYS. `image-url-empty` is a state the stylesheet renders
-      differently (it centres a message at full viewport height), so it is
+      differently (it centers a message at full viewport height), so it is
       markup, not styling.
     #}
     {% if pb_image_url %}

@@ -1,4 +1,4 @@
-# Image Grid bundle — accessibility (WCAG / ARIA)
+# Image Grid bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-image-grid`  
 > **Status:** pending  

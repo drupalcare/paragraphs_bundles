@@ -2,9 +2,9 @@
 
 Three paragraph types for placing a media image in content:
 
-- `image_bundle` — image at its original size
-- `image_narrow_bundle` — responsive image constrained to the narrow set
-- `image_wide_bundle` — responsive image across the wide set
+- `image_bundle`: image at its original size
+- `image_narrow_bundle`: responsive image constrained to the narrow set
+- `image_wide_bundle`: responsive image across the wide set
 
 The module also provides the media type every other bundle references for
 images, so it is a dependency of `paragraph_bundle_card`,
@@ -61,7 +61,7 @@ drush pb:regenerate-css
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
-- The three bundles have distinct ids — `pb-image-{id}`, `pb-image-narrow-{id}`,
-  `pb-image-wide-{id}` — so their dynamic CSS never collides.
+- The three bundles have distinct ids: `pb-image-{id}`, `pb-image-narrow-{id}`,
+  `pb-image-wide-{id}`, so their dynamic CSS never collides.
 - This module ships no CSS of its own; layout comes from the parent's base
   stylesheet.

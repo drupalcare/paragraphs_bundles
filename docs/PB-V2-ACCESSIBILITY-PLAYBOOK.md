@@ -1,4 +1,4 @@
-# PB v2 — Accessibility playbook (WCAG / ARIA)
+# PB v2: Accessibility playbook (WCAG / ARIA)
 
 > **Authority:** [WCAG 2.2](https://www.w3.org/TR/WCAG22/) and the
 > [ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/)  
@@ -27,7 +27,7 @@ or visible text) |
 | Motion | Respect `prefers-reduced-motion`; do not require animation to operate
 |
 | Color | WCAG 2.2 AA contrast; do not convey information by color alone |
-| Detach | `once.remove` + `AbortController` on `detach(..., 'unload')` — no
+| Detach | `once.remove` + `AbortController` on `detach(..., 'unload')`, no
 leaked traps or listeners |
 | HTML in Twig | Translatable strings via `\|t`; decorative glyphs `aria-
 hidden="true"` |
@@ -67,7 +67,7 @@ containing dialog) |
 
 | Concern | Requirement |
 |---------|-------------|
-| Trigger | `<button type="button">` — not `<div onclick>` |
+| Trigger | `<button type="button">`, not `<div onclick>` |
 | State | `aria-expanded`, `aria-controls` |
 | Panel | `id` on panel matches `aria-controls` |
 
@@ -75,7 +75,7 @@ containing dialog) |
 
 | Concern | Requirement |
 |---------|-------------|
-| Region | Labelled carousel/slideshow region |
+| Region | Labeled carousel/slideshow region |
 | Controls | Prev/next, play/pause when autoplay exists |
 | Inactive slides | `inert` or removed from tab order |
 | Motion | Pause or disable autoplay under `prefers-reduced-motion` |
@@ -100,7 +100,7 @@ containing dialog) |
 
 ## JavaScript checklist (interactive bundles)
 
-1. `once()` on the **component host** (dialog, tabset, carousel stage — not
+1. `once()` on the **component host** (dialog, tabset, carousel stage, not
    always L0 root).
 2. `AbortController` per instance; abort session listeners on close.
 3. Focus trap filters **visible** focusables only (`hidden`, `aria-hidden`,
@@ -121,7 +121,7 @@ Use for every interactive bundle before marking **implemented** in the registry:
 3. Tab trap: cannot reach background while modal/dialog open.
 4. Escape closes (when pattern requires it).
 5. Focus returns to trigger after close.
-6. Ajax: re-render paragraph — behavior still works once; no duplicate traps.
+6. Ajax: re-render paragraph: behavior still works once; no duplicate traps.
 7. Zoom 200%: controls remain usable.
 8. Forced-colors / high-contrast: focus ring visible.
 
@@ -130,7 +130,7 @@ Use for every interactive bundle before marking **implemented** in the registry:
 ## Status
 
 Each bundle's own `ACCESSIBILITY.md` carries its status in the header block —
-`pending`, `implemented` or `n/a` — alongside the private class it owns. Those
+`pending`, `implemented` or `n/a`, alongside the private class it owns. Those
 files are the record; read the bundle's file for its current state.
 
 | Status | Meaning |

@@ -1,4 +1,4 @@
-# Modal bundle — accessibility (WCAG / ARIA)
+# Modal bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-modal`  
 > **Status:** implemented  

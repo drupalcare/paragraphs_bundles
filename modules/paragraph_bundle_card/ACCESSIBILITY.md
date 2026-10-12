@@ -1,4 +1,4 @@
-# Card bundle — accessibility (WCAG / ARIA)
+# Card bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-card`
 > **Status:** pending

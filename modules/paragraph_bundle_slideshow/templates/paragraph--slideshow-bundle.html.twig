@@ -29,7 +29,7 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{# Not `pb-slideshow-{id}` — that is now the outer id from preprocess. This
+{# Not `pb-slideshow-{id}`. That is now the outer id from preprocess. This
    names the stage the way its siblings below are named. #}
 {% set slide_id = 'pb-slideshow__stage-' ~ paragraph.id.value %}
 {% set classes_inner = ['pb-ui-inner', 'pb-slideshow__wrap-inner']|merge(pb_display_classes)|join(' ') %}
@@ -81,7 +81,7 @@
 
          The tabbed variant was tried and dropped. It requires a `tablist`
          whose children are all `tab`s, and this nav also holds the play/pause
-         button that WCAG 2.2.2 requires whenever autoplay can run — so with
+         button that WCAG 2.2.2 requires whenever autoplay can run, so with
          both dots and autoplay the play button was a non-tab child of a
          tablist. Getting it out meant either wrapping the dots in an inner
          tablist (which breaks the fourteen
@@ -94,7 +94,7 @@
          values. #}
       {% set show_navigation_buttons = pb_bottom_nav in ['dot', 'nav', 'dot_play', 'nav_play'] %}
 
-      {# L3 behavior host — JS once() target #}
+      {# L3 behavior host: JS once() target #}
       <div id="{{ slide_id }}" class="pb-slideshow__stage{{ pb_bottom_nav ? ' pb-slideshow__nav--' ~ pb_bottom_nav|replace({_: '-'}) }}{{ pb_slide_time == 0 ? ' pb-u-zero' : ' pb-u-not-zero' }}" data-slide-time="{{ pb_slide_time }}">
         <div id="pb-slideshow__slides-{{ paragraph.id.value }}" class="pb-slideshow__slides">
           {% for key, item in content.pb_content_slideshow_section %}

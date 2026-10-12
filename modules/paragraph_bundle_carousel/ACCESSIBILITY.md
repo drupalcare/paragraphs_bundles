@@ -1,4 +1,4 @@
-# Carousel bundle — accessibility (WCAG / ARIA)
+# Carousel bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-carousel`  
 > **Status:** implemented  

@@ -1,6 +1,6 @@
 # Paragraph Bundle Carousel
 
-`carousel_bundle` paragraph type — horizontal, vertical, or hybrid carousel with
+`carousel_bundle` paragraph type: horizontal, vertical, or hybrid carousel with
 nested slide items, arrows/dots navigation, autoplay timing, and breakpoint CSS.
 
 ## Dependencies

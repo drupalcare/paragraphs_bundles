@@ -1,4 +1,4 @@
-# Slideshow bundle — accessibility (WCAG / ARIA)
+# Slideshow bundle: accessibility (WCAG / ARIA)
 
 > **Private class:** `pb-slideshow`  
 > **Status:** implemented  

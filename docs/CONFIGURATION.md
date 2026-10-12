@@ -1,4 +1,4 @@
-# Paragraphs Bundles — configuration guide
+# Paragraphs Bundles: configuration guide
 
 How editors and site builders configure paragraphs, theme integration,
 and the dynamic CSS pipeline.
@@ -11,19 +11,19 @@ Every bundle uses a consistent form layout:
 
 | Tab | Purpose |
 |-----|---------|
-| **Content** | Body fields (`pb_content_*`) — titles, text, images, nested
+| **Content** | Body fields (`pb_content_*`): titles, text, images, nested
 paragraphs, embeds |
-| **Display** | Presentation (`pb_display_*`) — colours, borders, spacing,
+| **Display** | Presentation (`pb_display_*`): colors, borders, spacing,
 width, bundle-specific toggles |
 
 The **Display** tab is grouped with Field Group:
 
-1. **Colors** — background, text, border, link colours (+ hover fields
+1. **Colors**: background, text, border, link colors (+ hover fields
    where the bundle supports them)
-2. **Border & radius** — border width, radius, shadow
-3. **Spacing** — margin and padding (dimension widgets)
-4. **Size & effects** — max width, opacity, bundle-specific size fields
-5. **Additional** (optional) — bundle-only display fields
+2. **Border & radius**: border width, radius, shadow
+3. **Spacing**: margin and padding (dimension widgets)
+4. **Size & effects**: max width, opacity, bundle-specific size fields
+5. **Additional** (optional): bundle-only display fields
 
 Reference layout:
 `config/optional/core.entity_form_display.paragraph.simple_bundle.default.yml`.
@@ -34,7 +34,7 @@ After changing optional config in a sub-module, run:
 drush pb:verify-form-displays
 ```
 
-This checks that every bundle with display colours still nests fields
+This checks that every bundle with display colors still nests fields
 into the expected groups.
 
 ---
@@ -48,7 +48,7 @@ need.
 
 **Important:** stored list values (e.g. `pb__nmw_1024` for max width)
 are part of the v1 contract. Do not change `allowed_values` in
-`field.storage.*.yml` on an existing site — the BEM/CSS layer depends
+`field.storage.*.yml` on an existing site. The BEM/CSS layer depends
 on those tokens.
 
 On the **view** display, all `pb_display_*` formatters are hidden.
@@ -96,7 +96,7 @@ get dynamic CSS files (same pipeline, node slug `pb-content`).
 ## Theme bridge
 
 Paragraphs Bundles uses **`--pb-*`** custom properties for
-editor-driven colours. Host themes (Solo, APEX) use **`--r-*`** region
+editor-driven colors. Host themes (Solo, APEX) use **`--r-*`** region
 variables. The **theme bridge** maps empty editor tokens to theme
 defaults without either side overwriting the other.
 
@@ -105,10 +105,10 @@ defaults without either side overwriting the other.
 | Solo | `theme-bridge-solo` | `--pb-tx` → `--r-tx`, `--pb-br` → `--r-br` |
 | APEX | `theme-bridge-apex` | `--pb-tx` → `--r-text`, `--pb-br` → `--r-border`
 |
-| Other | `theme-bridge-neutral` | System colour keywords as fallbacks |
+| Other | `theme-bridge-neutral` | System color keywords as fallbacks |
 
 `PbThemeBridgeService` picks the bridge from the active theme and its
-base themes. **Background and hover tokens are never bridged** — they
+base themes. **Background and hover tokens are never bridged.** They
 apply only when the editor sets them.
 
 Details: **`docs/PB-V2-THEME-BRIDGE.md`**. Variable list:
@@ -136,7 +136,7 @@ Allowed values map to body classes (`pb-nmw-1024`, etc.) and set
 themes.
 
 **Excluded from the clamp** (stay full-bleed): carousel viewport,
-3D carousel inner, slideshow wrap inner, modal inner content — see
+3D carousel inner, slideshow wrap inner, modal inner content. See
 `paragraph-bundle-content-width.css`.
 
 Nested `.pb-content__full` inside another content region resets width to
@@ -154,7 +154,7 @@ Each `paragraph_bundle_*` sub-module ships `config/optional/`:
 
 Optional config imports when dependencies are met (parent module +
 paragraphs enabled). You do not need to copy YAML manually unless you
-maintain **custom** display overrides — merge carefully and re-run
+maintain **custom** display overrides: merge carefully and re-run
 `drush pb:verify-form-displays`.
 
 ---
@@ -163,13 +163,13 @@ maintain **custom** display overrides — merge carefully and re-run
 
 Interactive bundles (carousel, tabs, accordion, modal, lightbox, etc.)
 ship keyboard support and `prefers-reduced-motion` handling in CSS.
-Verify behaviour per bundle using
+Verify behavior per bundle using
 **`docs/PB-V2-ACCESSIBILITY-PLAYBOOK.md`**.
 
 ---
 
 ## Related reading
 
-- **`docs/DEVELOPING.md`** — extend services, add bundles, OOP hooks
-- **`docs/UPGRADE-V1-TO-V2.md`** — upgrade from v1
-- **`README.md`** — install and bundle families overview
+- **`docs/DEVELOPING.md`**: extend services, add bundles, OOP hooks
+- **`docs/UPGRADE-V1-TO-V2.md`**: upgrade from v1
+- **`README.md`**: install and bundle families overview

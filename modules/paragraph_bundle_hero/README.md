@@ -2,7 +2,7 @@
 
 One paragraph type:
 
-- `hero_bundle` — full-width background image with a positioned text overlay
+- `hero_bundle`: full-width background image with a positioned text overlay
   (title, body, and an optional wrapper link)
 
 The image is a required reference to a `pb_media_image` item, rendered in the
@@ -16,13 +16,13 @@ and defaults to `pb__ds_middle`. The nine positions are:
 | Value | Position |
 |---|---|
 | `pb__ds_top_left` | top left |
-| `pb__ds_top_middle` | top centre |
+| `pb__ds_top_middle` | top center |
 | `pb__ds_top_right` | top right |
 | `pb__ds_left` | middle left |
-| `pb__ds_middle` | centre (default) |
+| `pb__ds_middle` | center (default) |
 | `pb__ds_right` | middle right |
 | `pb__ds_bottom_left` | bottom left |
-| `pb__ds_bottom_middle` | bottom centre |
+| `pb__ds_bottom_middle` | bottom center |
 | `pb__ds_bottom_right` | bottom right |
 
 ## Dependencies
@@ -57,5 +57,5 @@ drush pb:regenerate-css
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
 - The dynamic CSS target is the text overlay, not the outer wrapper, so
-  background colour tints the overlay above the image.
+  background color tints the overlay above the image.
 - Layout CSS ships in `paragraph_bundle_hero/paragraph-bundle-hero`.

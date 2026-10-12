@@ -64,7 +64,7 @@ briefs:
     prompts:
       text: >-
         Write an accordion of five questions about caring for new roses.
-        Heading "Rose care questions" as an h2, centred. Each row is a short
+        Heading "Rose care questions" as an h2, centered. Each row is a short
         question, with a Simple inside answering it in two lines. Keep the
         questions about the same length.
     practices: |
@@ -91,15 +91,15 @@ briefs:
     prompts:
       text: >-
         Write a slideshow of four slides on our autumn planting range. Heading "Plant now, enjoy it
-        in spring" as an h2, centred. Each slide holds a Simple: one plant as an h3 title, centred,
+        in spring" as an h2, centered. Each slide holds a Simple: one plant as an h3 title, centered,
         and one line on why to plant it now. Leave the slide titles empty.
       images: >-
         Write a slideshow of five slides for our display gardens. Heading
-        "The gardens in September" as an h2, centred. Each slide holds an
+        "The gardens in September" as an h2, centered. Each slide holds an
         Image, titled with what it shows in two or three words.
       hero: >-
         Write a slideshow of three slides for the top of the home page. Heading "Autumn at the
-        nursery" as an h2, centred. Each slide holds a Hero with a short heading, one line of body
+        nursery" as an h2, centered. Each slide holds a Hero with a short heading, one line of body
         and no link. Leave the slide titles empty.
     practices: |
       Best practices for creating professional content:
@@ -123,7 +123,7 @@ briefs:
       text: >-
         Write tabs for our rose buying guide, four tabs: Climbing, Shrub,
         Standard and Patio. Heading "Which rose is right for you?" as an h2,
-        centred. Each tab holds a Simple of three lines on where that rose grows
+        centered. Each tab holds a Simple of three lines on where that rose grows
         best. Keep every tab name to one word.
     practices: |
       Best practices for creating professional content:
@@ -148,11 +148,11 @@ briefs:
     prompts:
       images: >-
         Write a carousel of eight items for the plants in stock this week.
-        Heading "In stock this week" as an h2, centred. Each item is an Image,
+        Heading "In stock this week" as an h2, centered. Each item is an Image,
         titled with the plant's name in two or three words.
       text: >-
         Write a carousel of six items with what customers say about our roses.
-        Heading "What our customers say" as an h2, centred. Each item is a card
+        Heading "What our customers say" as an h2, centered. Each item is a card
         text: the customer's first name and town as its title, and their words
         in one or two lines as its body, every one about the same length.
     practices: |
@@ -200,7 +200,7 @@ briefs:
     good_for: 'A gallery — pictures that open full size in a lightbox when clicked.'
     prompt: >-
       Write a gallery of nine pictures from the rose garden in June.
-      Heading "The rose garden in June" as an h2, centred. Title each picture
+      Heading "The rose garden in June" as an h2, centered. Title each picture
       with what it shows in two or three words.
     practices: |
       Best practices for creating professional content:
@@ -218,7 +218,7 @@ briefs:
     good_for: 'A band of the page where the background drifts slower than the words as you scroll.'
     prompt: >-
       Write a parallax of two sections for the home page. Heading "Grown
-      here, planted by you" as an h2, centred. Each section says in two short
+      here, planted by you" as an h2, centered. Each section says in two short
       lines how our plants are raised, one about the nursery beds and one about
       the greenhouse.
     practices: |
@@ -261,7 +261,7 @@ briefs:
       pb_display_3d_height: '250'
     prompt: >-
       Write a flip box for our planting service. Heading "Planting service"
-      as an h3, centred. The front is a Simple titled "Too busy to plant?" as
+      as an h3, centered. The front is a Simple titled "Too busy to plant?" as
       an h3, with one line saying we can help. The back is a Simple titled "We
       plant it for you" as an h3, with two lines on what a visit costs and
       what we bring.
@@ -283,7 +283,7 @@ briefs:
       pb_display_image_overlay: fade
     prompt: >-
       Write an image overlay for our rose catalogue. Title "Browse the
-      catalogue" as an h3, centred, and a two-word link title.
+      catalogue" as an h3, centered, and a two-word link title.
     practices: |
       Best practices for creating professional content:
       Picture should be quiet where the words land, a busy picture makes them unreadable.
@@ -300,7 +300,7 @@ briefs:
     good_for: 'A wrapper — put any section inside it to give it its own width, background or spacing.'
     prompt: >-
       Write a one column section welcoming visitors to the nursery. Heading
-      "Welcome to the nursery" as an h2, centred. Inside it, a Simple of three
+      "Welcome to the nursery" as an h2, centered. Inside it, a Simple of three
       lines on who we are and what we grow.
     practices: |
       Best practices for creating professional content:
@@ -317,7 +317,7 @@ briefs:
       pb_display_2c_anim: slide
     prompt: >-
       Write two columns comparing bare-root and potted roses. Heading
-      "Bare-root or potted?" as an h2, centred. A Simple in each column, three
+      "Bare-root or potted?" as an h2, centered. A Simple in each column, three
       lines each, kept the same length so neither side leaves a gap.
     practices: |
       Best practices for creating professional content:
@@ -338,7 +338,7 @@ briefs:
       pb_display_3c_anim: slide
     prompt: >-
       Write three columns for our three services: planting, pruning and
-      garden design. Heading "What we do" as an h2, centred. A Simple in each
+      garden design. Heading "What we do" as an h2, centered. A Simple in each
       column, a one-word title and two lines, kept the same length so no column
       leaves a gap.
     practices: |
@@ -360,7 +360,7 @@ briefs:
       pb_display_card_layout_two: l6_l6
     prompt: >-
       Write two cards introducing our shop. Heading "Visit the shop" as an
-      h2, centred. The left card is a card image titled "Our shop"; the right
+      h2, centered. The left card is a card image titled "Our shop"; the right
       card is a card text with a two-word title and two lines on opening hours.
     practices: |
       Best practices for creating professional content:
@@ -379,7 +379,7 @@ briefs:
       pb_display_card_layout_three: l4_l4_l4
     prompt: >-
       Write three card texts for our planting guides: roses, bulbs and
-      hedges. Heading "Planting guides" as an h2, centred. Each card has a
+      hedges. Heading "Planting guides" as an h2, centered. Each card has a
       two-word title and two lines, all three the same length.
     practices: |
       Best practices for creating professional content:
@@ -398,15 +398,15 @@ briefs:
     prompts:
       icons: >-
         Write a grid of six icons on why people buy from us. Heading "Why
-        choose us" as an h2, centred. Each item is an Icon: a Material Symbols
+        choose us" as an h2, centered. Each item is an Icon: a Material Symbols
         name that fits, the rounded style, a two-word title and one line of body.
       cards: >-
         Write a grid of six card texts, one for each month from April to
         September, saying what to plant. Heading "What to plant when" as an h2,
-        centred. Each card has the month as its title and two lines of body.
+        centered. Each card has the month as its title and two lines of body.
       images: >-
         Write a grid of six images from our display gardens. Heading "Our
-        display gardens" as an h2, centred. Each item is an Image, titled with
+        display gardens" as an h2, centered. Each item is an Image, titled with
         the garden's name in two or three words.
     practices: |
       Best practices for creating professional content:
@@ -464,7 +464,7 @@ briefs:
       pb_display_hero: pb__ds_middle
     prompt: >-
       Write a hero for the top of the home page. Heading "Autumn planting starts now" as an h2,
-      centred. One line of body on bare-root roses arriving this week. No link: leave the link title
+      centered. One line of body on bare-root roses arriving this week. No link: leave the link title
       empty, the link is added later with its address.
     practices: |
       Best practices for creating professional content:
@@ -488,7 +488,7 @@ briefs:
       pb_display_image_min_height: '400'
     prompt: >-
       Write an image background band inviting visitors to our open weekend.
-      Inside it, a Simple with the heading "Open weekend" as an h2, centred,
+      Inside it, a Simple with the heading "Open weekend" as an h2, centered,
       and three short lines on the dates, the tours and free parking.
     practices: |
       Best practices for creating professional content:
@@ -510,7 +510,7 @@ briefs:
     good_for: 'One picture, with a caption if you want it.'
     prompt: >-
       Write an image of our greenhouse. Title "Inside the greenhouse" as an
-      h3, centred, and a two-word link title.
+      h3, centered, and a two-word link title.
     practices: |
       Best practices for creating professional content:
       Picture comes from the media library, so it can be reused and restyled in one place.
@@ -524,7 +524,7 @@ briefs:
     good_for: 'A picture that runs the full width of the page — a band between two sections.'
     prompt: >-
       Write a wide image of the rose field in full bloom. Title "The rose
-      field in July" as an h3, centred.
+      field in July" as an h3, centered.
     practices: |
       Best practices for creating professional content:
       Use a wide picture, at least 1600 across, or it stretches and softens.
@@ -535,10 +535,10 @@ briefs:
 
   image_narrow_bundle:
     category: 'Images, icons and links'
-    good_for: 'A picture kept narrower than the page, centred — inside an article.'
+    good_for: 'A picture kept narrower than the page, centered — inside an article.'
     prompt: >-
       Write a narrow image of our head gardener at work. Title "Meet our
-      head gardener" as an h3, centred.
+      head gardener" as an h3, centered.
     practices: |
       Best practices for creating professional content:
       Good for portraits, screenshots and diagrams, where full width would be too much.
@@ -580,7 +580,7 @@ briefs:
     good_for: 'A set of links or buttons grouped together — a call to action, or a short menu.'
     prompt: >-
       Write a link section of three buttons: "Shop roses", "Book planting"
-      and "Contact us". Heading "Get started" as an h2, centred.
+      and "Contact us". Heading "Get started" as an h2, centered.
     practices: |
       Best practices for creating professional content:
       Each link has its own section: the words a visitor clicks, and where it goes.

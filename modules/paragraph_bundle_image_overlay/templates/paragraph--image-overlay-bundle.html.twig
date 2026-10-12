@@ -11,7 +11,7 @@
  * | pb_display_border_color         | `.pb-ui-inner`     | dynamic CSS (`--pb-br`) |
  * | pb_display_bg/text/link*        | paragraph wrapper       | generated CSS file |
  *
- * THE MODE NO LONGER CHANGES WHERE THE COLOURS GO. `--pb-bg` / `--pb-tx` and
+ * THE MODE NO LONGER CHANGES WHERE THE COLORS GO. `--pb-bg` / `--pb-tx` and
  * their hover variants are defined once on the wrapper and inherited; the
  * stylesheet already selects the right element per mode
  * (`:not(.pb-image-overlay--title) .pb-overlay__container` versus
@@ -69,8 +69,8 @@
     </div>
 
     {#
-      NO INLINE STYLE HERE. The overlay colours now come from this paragraph's
-      generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+      NO INLINE STYLE HERE. The overlay colors now come from this paragraph's
+      generated stylesheet: see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
       `image_overlay_bundle`, which defines `--pb-bg`/`--pb-tx` and their hover
       variants on the paragraph wrapper. The existing rules in
       paragraph-bundle-image-overlay.css already select the right element per

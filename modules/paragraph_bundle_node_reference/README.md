@@ -1,6 +1,6 @@
 # Paragraph Bundle Node Reference
 
-`node_reference_bundle` paragraph type — references `pb_node_reference` nodes
+`node_reference_bundle` paragraph type: references `pb_node_reference` nodes
 and renders them by view mode (title only, teaser text, slideshow, or 3D
 carousel).
 

@@ -21,7 +21,7 @@ three view modes to a select list. Existing sites keep the PB defaults.
   | PB Media APEX Narrow | `apex_content` | 4:3 |
   | PB Media APEX Card | `apex_card` | 3:2 |
 
-This module ships no image styles of its own — APEX owns those.
+This module ships no image styles of its own. APEX owns those.
 
 ## Dependencies
 
@@ -34,7 +34,7 @@ Declared in `paragraphs_bundles_apex.info.yml`:
 - Core `media`
 
 **Not core `responsive_image`, deliberately.** APEX's three
-modes map plain `image_style` entities — five derivatives and a fallback each —
+modes map plain `image_style` entities, five derivatives and a fallback each:
 and reference a `responsive_image_style` entity zero times. Computing `sizes`
 from the slot width is the whole point of its approach, so it never uses core's
 breakpoint-mapped responsive images. Declaring that dependency would force every
@@ -76,8 +76,8 @@ maps six screen widths to six fixed image styles. That is correct only when the
 image fills the screen. A 300px image in a sidebar on a 1920px monitor gets a
 1920px-class file.
 
-APEX computes the **actual slot width** — site width minus padding, minus
-container gaps, times the slot's grid fraction — and puts that in `sizes`. Its
+APEX computes the **actual slot width**: site width minus padding, minus
+container gaps, times the slot's grid fraction, and puts that in `sizes`. Its
 own measurement, on a real site: 16 images spanning 290px to 1393px all carried
 one identical `sizes` string, 12 downloaded the wrong derivative, and 2060 KB
 was fetched where 1238 KB was correct.
@@ -86,14 +86,14 @@ The emitted attribute leads with `auto`, so browsers that support it measure
 the rendered box exactly. The computed value is the fallback for those that do
 not.
 
-## ⚠ Two behavioural differences to know before switching
+## ⚠ Two behavioral differences to know before switching
 
 **1. The crop shape changes.** APEX's modes are a strict ratio at every
-breakpoint. PB's wide styles are not — they run 1.50, 2.07, 2.88, 3.37, 2.80,
+breakpoint. PB's wide styles are not. They run 1.50, 2.07, 2.88, 3.37, 2.80,
 2.83 across the six. Switching a hero is a visible design change, not just a
 file-size one.
 
-**2. You lose the loading control — but the default does not change.**
+**2. You lose the loading control, but the default does not change.**
 Every one of PB's media displays that carries the setting ships
 `attribute: lazy`, including `pb_media_responsive_wide`.
 
@@ -102,7 +102,7 @@ so a site builder can switch one to `eager` on the Manage Display form. The
 APEX formatter exposes no loading setting at all: it always emits
 `loading="lazy"` and leaves LCP promotion to `apex_performance`, which unsets
 that attribute and adds the preload. `sizes="auto"` is only valid on a lazy
-image, which is the trade — lazy images get exact browser-measured sizing,
+image, which is the trade. Lazy images get exact browser-measured sizing,
 while a promoted LCP image falls through to the computed value.
 
 Source images should be at least 1920px wide. `apex_ri_hero_xl` is 1920 and
@@ -111,7 +111,7 @@ will upscale anything narrower.
 ## If the view modes are missing
 
 `apex_responsive_image` is a **hard** dependency, so Drupal always enables it
-first — this module cannot be installed "before APEX", and `config/optional`
+first. This module cannot be installed "before APEX", and `config/optional`
 always has what it needs at import time.
 
 If the three view modes are missing anyway (a partial import, or someone deleted
@@ -121,7 +121,7 @@ them), reinstalling the module recreates them:
 drush pm:uninstall paragraphs_bundles_apex -y && drush en paragraphs_bundles_apex -y
 ```
 
-⚠ That discards any customisation you made to those three displays. The backfill
+⚠ That discards any customization you made to those three displays. The backfill
 `hook_install()` runs is idempotent and never overwrites an existing display, so
 it is safe on its own; it is the uninstall that removes them.
 
@@ -135,14 +135,14 @@ update 10001.
 
 ## If an APEX mode is deleted
 
-The three shipped displays each name an APEX responsive mode — `apex_hero`,
+The three shipped displays each name an APEX responsive mode: `apex_hero`,
 `apex_content`, `apex_card`. Those are **config entities**, and APEX ships a
 delete form for them, so an administrator can remove one.
 
 `ApexResponsiveImageFormatter::viewElements()` returns an **empty render array**
 when the mode it is given does not load, so the image simply disappears: no
 error, no log entry, nothing in the markup. Drupal's config dependency system
-does not catch it either — the formatter does not declare the mode entity it
+does not catch it either. The formatter does not declare the mode entity it
 depends on, so nothing links the display to the mode.
 
 This module therefore reports it on the status report at

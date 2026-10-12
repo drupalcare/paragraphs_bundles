@@ -1,4 +1,4 @@
-# Paragraphs Bundles — brief for `paragraphs_bundles_ai`
+# Paragraphs Bundles: brief for `paragraphs_bundles_ai`
 
 Written 2026-09-03, before any code, because nobody starts work unbriefed.
 This document and the agent description below are the two things that must
@@ -14,7 +14,7 @@ Read this with [PB-V2-BUNDLE-VOCABULARY.md](PB-V2-BUNDLE-VOCABULARY.md) and
 `paragraphs_bundles` works exactly as it does today with none of this
 installed. `paragraphs_bundles_ai` is an **optional** sub-module: enable it,
 and only if the site also has `drupal/ai` configured with a provider, an
-assistant appears on node add and edit forms as a small chat bar — hidden until
+assistant appears on node add and edit forms as a small chat bar, hidden until
 you click it, gone when you dismiss it.
 
 **Turning it on**
@@ -22,7 +22,7 @@ you click it, gone when you dismiss it.
 1. `composer require drupal/ai` and enable `ai`, plus `ai_assistant_api`,
    **`ai_agents`** and `ai_chatbot` for the chat surface.
 2. Configure an AI provider and give it an API key (see the `ai` module's own
-   documentation — this module never asks for or stores a key).
+   documentation). This module never asks for or stores a key.
 3. Enable `paragraphs_bundles_ai`.
 4. Create an **agent** with the three `pb_content:*` tools enabled, then an
    **assistant** whose *AI Agent* is that agent, with *Use function calling* on.
@@ -35,7 +35,7 @@ was not cosmetic.** Measured 2026-09-04: `ai_assistant_api` builds an
 assistant's tool list from `actions_enabled`, which holds *AiAssistantAction*
 plugins. The tools in this module are *FunctionCall* plugins, and
 `AssistantMessageBuilder::getFunctionCalls()` never looks at those. An
-assistant without an agent therefore reaches none of them — the chat bar
+assistant without an agent therefore reaches none of them. The chat bar
 appears, converses, and cannot do anything the brief promises. The agent is the
 only bridge, and a setup guide that omits it produces a feature that looks
 installed and does nothing.
@@ -52,7 +52,7 @@ slideshows it says so and lists what it does accept. If you have not said which
 content type, it names the ones that have paragraph fields. It asks once, for
 everything it is missing, rather than one question at a time.
 
-When it has enough, it creates the sections and tells you what it did — and
+When it has enough, it creates the sections and tells you what it did, and
 what it left blank. On an existing page it writes **a new revision** and gives
 you the revision id, so any change is one click away from being undone.
 
@@ -71,9 +71,9 @@ editor create and fill paragraph sections by describing what they want, using
 
 | | Tool | Writes? |
 |---|---|---|
-| B3 | `resolve_target` — negotiate a target, or return the question that blocks it | never |
-| B4 | `create_sections` — create the paragraphs, re-checking every precondition itself | yes |
-| B6 | `draft_field_text` — return drafted text for a field | never |
+| B3 | `resolve_target`: negotiate a target, or return the question that blocks it | never |
+| B4 | `create_sections`: create the paragraphs, re-checking every precondition itself | yes |
+| B6 | `draft_field_text`: return drafted text for a field | never |
 | B7 | Chat surface on node add/edit forms | — |
 
 **May create or edit:** files under `modules/paragraphs_bundles_ai/` and this
@@ -81,7 +81,7 @@ brief. Nothing else.
 
 **Must NOT touch**, and this is not negotiable:
 
-- Any other file in `paragraphs_bundles` — the parent module, the other 26
+- Any other file in `paragraphs_bundles`: the parent module, the other 26
   bundle sub-modules, `phpstan.neon`, `phpcs.xml.dist`, `.gitlab-ci.yml`.
 - Any other project. `utilikit`, `vvj_core` and the ten VVJ formats are
   separate drupal.org projects and **must keep working with no knowledge of
@@ -109,11 +109,11 @@ theirs alone.
 
 **Measure with the project's own config, never an ad-hoc one.** This is the
 most expensive lesson of the session that produced this brief. Twice, an
-ad-hoc analyser config produced confident nonsense: 32 phantom Drupal 12
+ad-hoc analyzer config produced confident nonsense: 32 phantom Drupal 12
 failures in this very module (the real number was 1) and 1200 phantom PHPCS
 errors (the real number was 0). Run `phpstan.neon` and `phpcs.xml.dist` as they
 are. If a measurement needs a different config, that fact is itself a finding
-to report, not a licence to substitute one.
+to report, not a license to substitute one.
 
 **A clean local run is evidence about this machine, not about the gate.**
 `phpstan.neon` in this repo says so: drupal.org CI passes `.` on the command
@@ -127,7 +127,7 @@ fact is worse than an admitted gap, because it stops anyone else looking.
 test fail, restore it byte-identical, and say so. A test that passes both with
 and without the code it covers is measuring nothing.
 
-**Read the console on every browser check, and report it — including
+**Read the console on every browser check, and report it, including
 "console clean".** Call the tool once before loading the page: capture starts
 when the tool is first called, so a page loaded earlier reports an empty
 console that has simply not been recorded. Prove capture is live before
@@ -136,7 +136,7 @@ trusting a filtered empty result.
 **Verify with the project's own tests, not by reasoning about the code.** In
 this codebase specifically: Drupal 12 requires `#[RunTestsInSeparateProcesses]`
 on kernel test classes, and PHPUnit 12 ignores the `@dataProvider` docblock in
-favour of the attribute. Both were invisible until the suites actually ran.
+favor of the attribute. Both were invisible until the suites actually ran.
 
 ---
 
@@ -146,7 +146,7 @@ A working submodule, committed but **not pushed**, with:
 
 - **`paragraphs_bundles_ai.info.yml`** depending on `paragraphs_bundles` and
   `ai:ai`. Hard dependencies are correct here because the submodule is itself
-  optional — that is the whole trick, and it is verified working in
+  optional. That is the whole trick, and it is verified working in
   `apex_ai_bridge`.
 - **Tools** declaring `module_dependencies` so they are not discovered without
   their parent.
@@ -165,7 +165,7 @@ have been exercised on `sts.local` against a real provider.
 
 ---
 
-## 4 · Refusal conditions — stop and ask, do not guess
+## 4 · Refusal conditions: stop and ask, do not guess
 
 - **The work needs a file outside `modules/paragraphs_bundles_ai/`.** Write the
   change into a handover note instead and ask.
@@ -175,14 +175,14 @@ have been exercised on `sts.local` against a real provider.
 - **The design starts to want the AI to write configuration.** It must not, in
   any of the three projects. Report the blocking setting, name where it lives,
   stop.
-- **A decision would change what the module advertises** — a
+- **A decision would change what the module advertises**: a
   `core_version_requirement`, a dependency, a public API. That is the owner's
   call, as narrowing `utilikit` to `^11.2 || ^12` was.
 - **A test fails for a reason not understood.** A green suite reached by
   changing the test is worse than a red one.
 - **The requested nesting is on the forbidden list.** Refuse and say which rule
   it breaks, rather than creating it and letting the page look wrong. See
-  below — this is a refusal condition, not a preference.
+  below. This is a refusal condition, not a preference.
 
 ### 4a · Nesting is a hard constraint, not a style choice
 
@@ -193,12 +193,12 @@ the bundle rather than to taste:
 
 1. **Leaves go anywhere.** Thirteen bundles have no child slot; they are always
    a safe choice and should be the default. The count is of bundles this module
-   ships -- a site's own paragraph types are outside this contract.
-2. **Perspective never nests in perspective** — `parallax`, `3d_carousel`,
+   ships. A site's own paragraph types are outside this contract.
+2. **Perspective never nests in perspective**: `parallax`, `3d_carousel`,
    `3d_flip_box` flatten each other.
-3. **Nothing that autoplays goes somewhere hidden** — no carousel, slideshow or
+3. **Nothing that autoplays goes somewhere hidden**: no carousel, slideshow or
    3D carousel inside a modal, a closed accordion pane or an inactive tab.
-4. **Parallax needs the real viewport** — never inside a transformed ancestor.
+4. **Parallax needs the real viewport**: never inside a transformed ancestor.
 5. **Backgrounds do not stack.**
 6. **One container deep.**
 
@@ -213,21 +213,21 @@ a generated page has to expect that: see
 
 ⚠ **Do not set a bundle max-width expecting it to show on a `pb_content` node.**
 The node's own width wins there, and the bundle value is deliberately blanked.
-Only two elements are exempt -- the 3D carousel's inner box and the modal -- and
+Only two elements are exempt: the 3D carousel's inner box and the modal, and
 that exemption is a template decision, not something content can request.
 
 ---
 
-## 5 · The preconditions — this list *is* the feature
+## 5 · The preconditions: this list *is* the feature
 
 `resolve_target` returns either a resolved target or **every** unmet
 precondition at once, so the bot asks one combined question rather than
 interrogating turn by turn:
 
-1. A content type was named, and it exists — *"landing" is not a content type;
+1. A content type was named, and it exists: *"landing" is not a content type;
    did you mean Landing page?*
 2. It has at least one paragraph reference field.
-3. If it has more than one, which — listed by name.
+3. If it has more than one, which: listed by name.
 4. **That field allows the requested bundle.** Paragraph fields carry
    allowed-bundle restrictions and this is the check people forget.
 5. Cardinality permits the number of items asked for.
@@ -241,7 +241,7 @@ the safety model, not belt-and-braces.
 **Rules the tools enforce, not the prompt.** A system prompt saying "ask which
 field if there is more than one" fails intermittently; a tool that cannot
 proceed, and whose refusal names the missing information, forces the
-conversation. It is also what makes the behaviour testable — you cannot
+conversation. It is also what makes the behavior testable. You cannot
 unit-test "the bot felt smart", but you can test thirty refusals.
 
 **Editing existing content always writes a new revision** and reports the
@@ -254,14 +254,14 @@ silently inventing headings nobody asked for.
 
 ---
 
-## 6 · How this will be verified — and it will be
+## 6 · How this will be verified, and it will be
 
 1. **Kernel tests**, one per precondition, asserting the exact sentence.
 2. **A mutation probe** on `create_sections`' independent re-validation: remove
    it, prove a test fails, restore byte-identical.
 3. **`phpstan.neon` at level max** and `phpcs.xml.dist`, both as they ship.
 4. **A live run on `sts.local`** against the configured OpenAI provider,
-   exercising all three tools, with node counts read before and after — a tool
+   exercising all three tools, with node counts read before and after. A tool
    that reports success while creating nothing is this codebase's signature
    defect.
 5. **A browser check** of the chat surface on a node form, console read and
@@ -280,7 +280,7 @@ Nothing is "done" on the strength of reasoning about the code.
 `apex_ai_bridge` as the reference implementation, and shell access to
 `sts.local` via the drush invocation in §1.
 
-**The priors it is given, in full, every time** — these are not to be inferred
+**The priors it is given, in full, every time**: these are not to be inferred
 from the code:
 
 - **Better safe than sorry.** Aggressive on architecture, conservative on
@@ -290,12 +290,12 @@ from the code:
   fact IS the bug. Enforce it with a test, because an unenforced rule decays
   into a suggestion.
 - **Build once and done.** No shortcuts, no "we will fix it in v2".
-- **Understand before you change.** Never accept a change — mine or an agent's
-  — without understanding why the code is the way it is. A plausible fix to
+- **Understand before you change.** Never accept a change, mine or an agent's,
+  without understanding why the code is the way it is. A plausible fix to
   code you do not understand turns a design into a regression.
 - **Measure, do not assume.** Report what was measured and how. Say plainly
   when a number is a guess. A red result from your own tooling is as likely to
-  be a bad measurement as a bad module — check the tool before blaming the
+  be a bad measurement as a bad module. Check the tool before blaming the
   work.
 - **No leftovers.** A rule without a harness, a decision that lives only in a
   conversation, a pattern discussed but not written down: each one costs the

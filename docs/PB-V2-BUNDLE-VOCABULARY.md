@@ -1,13 +1,13 @@
-# PB v2 — per-bundle L3/L4 vocabulary (approved)
+# PB v2: per-bundle L3/L4 vocabulary (approved)
 
-**Status:** Approved for implementation — apply during Phase B ports and
+**Status:** Approved for implementation. Apply during Phase B ports and
 accordion
 rename.  
 **Rules:** [`PB-V2-CLASS-NAMING-SPEC.md`](PB-V2-CLASS-NAMING-SPEC.md)
 
 L3 names are **descriptive roles** (what the node does in the UI). L4 names
 match
-DOM/ARIA where practical. All tokens are prefixed and scoped — safe on any
+DOM/ARIA where practical. All tokens are prefixed and scoped, so safe on any
 Drupal
 page.
 
@@ -86,7 +86,7 @@ hybrid-carousel` | Orientation on L0 | was `*-carousel` |
 `active`) |
 | L4 | `pb-slideshow__slide-inner` | Slide content wrapper | |
 | L4 | `pb-slideshow__title` | Slide caption | |
-| L4 | `pb-slideshow__nav` | Bottom controls / dots row | `role="group"` — it
+| L4 | `pb-slideshow__nav` | Bottom controls / dots row | `role="group"`: it
 also holds the play/pause control, so it is not a `tablist` |
 | L4 | `pb-slideshow__nav-btn` | Nav dot/button | plain button, carries
 `aria-controls` + `aria-current` |
@@ -145,7 +145,7 @@ bundle-modal-dialog`) |
 |-------|-------|------|-------|
 | L0 | `paragraphs-bundles` `pb-alert` | Paragraph root | `pb--has-close` / `pb
 --no-close` |
-| L2 | `pb-content__full` `pb-alert__content` | Content | no L3 — static +
+| L2 | `pb-content__full` `pb-alert__content` | Content | no L3, static +
 dismiss JS |
 | L4 | `pb-alert__countdown` | Countdown display | |
 | L4 | `pb-alert__close` | Dismiss button | |
@@ -202,7 +202,7 @@ from `is-sticky` / `is-collapsed` |
 
 | Layer | Class | Role | Notes |
 |-------|-------|------|-------|
-| L0 | `paragraphs-bundles` `pb-parallax` | Parent paragraph | passthrough — no
+| L0 | `paragraphs-bundles` `pb-parallax` | Parent paragraph | passthrough, no
 L3 on parent |
 | L0 | `paragraphs-bundles` `pb-parallax-section` | Section paragraph |
 scroll/effect data attrs on root |
@@ -263,13 +263,13 @@ layouts excluded).
 **Not the same as shadow tokens:** `pb__card_2` and `pb__card_4` are frozen
 `pb_display_shadow` display modifiers (global `pb__` prefix). They are unrelated
 to
-the card bundle `pb-card` L0 class — never merge them in CSS selectors.
+the card bundle `pb-card` L0 class. Never merge them in CSS selectors.
 
 | Node reference | per slug | — | `pb-content__full` |
 | Default / simple | — | — | nested field output only |
 
 **Track A batch (no custom Twig):** `block_bundle`, `block_content_bundle`,
-`contact_form_bundle`, `views_bundle`, `webform_bundle` — all use parent
+`contact_form_bundle`, `views_bundle`, `webform_bundle`. All use parent
 `paragraph--default.html.twig`; Phase B is satisfied by the parent template
 (`pb-ui-inner`, dynamic CSS, `pb-content__full`). No bundle-private L0 class.
 
@@ -293,12 +293,12 @@ slideshow, 3d |
 
 ## Implementation order
 
-1. ~~**Accordion**~~ — `pb-accordion__sections` done.
-2. ~~**Tabs**~~ — `pb-tabs__tabset` + L4 renames done.
-3. ~~**Slideshow**~~ — `pb-slideshow__stage` + `pb-is-active` done.
-4. ~~**Carousel**~~ — `pb-carousel__viewport` + slide states done.
-5. ~~**Modal**~~ — `pb-modal__dialog` + L0 `pb-modal` done.
-6. **Parallax** — fix bare `visible` → `pb-is-visible`.
+1. ~~**Accordion**~~: `pb-accordion__sections` done.
+2. ~~**Tabs**~~: `pb-tabs__tabset` + L4 renames done.
+3. ~~**Slideshow**~~: `pb-slideshow__stage` + `pb-is-active` done.
+4. ~~**Carousel**~~: `pb-carousel__viewport` + slide states done.
+5. ~~**Modal**~~: `pb-modal__dialog` + L0 `pb-modal` done.
+6. **Parallax**: fix bare `visible` → `pb-is-visible`.
 
 ---
 

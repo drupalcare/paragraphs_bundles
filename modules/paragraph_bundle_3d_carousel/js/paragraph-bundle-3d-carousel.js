@@ -315,10 +315,10 @@
          *
          * The maintainer, having looked at it: "it must load on the center".
          *
-         * So the group is centred on ITS OWN midpoint rather than on the
+         * So the group is centered on ITS OWN midpoint rather than on the
          * current card. At slide 1 the run is clamped at the start, and the
          * room that would have been wasted on the empty left is handed to the
-         * right instead, which keeps the arrangement centred and full at the
+         * right instead, which keeps the arrangement centered and full at the
          * first slide, in the middle and at the last alike.
          *
          * NOTHING HERE IS A SETTING. How many cards fit comes from the box
@@ -328,7 +328,7 @@
          *
          * @return {{cardWidth: number, step: number, lo: number, hi: number, centre: number}}
          *   Card width and step in px, the first and last card shown, and the
-         *   index the group is centred on.
+         *   index the group is centered on.
          */
         const getCoverflowLayout = () => {
           // THE SLIDE'S REAL WIDTH, whatever the editor's width setting and
@@ -397,7 +397,7 @@
           (((currentIndex + slot) % cellCount) + cellCount) % cellCount;
 
         /**
-         * Lays the cards on an open arc, centred in the box.
+         * Lays the cards on an open arc, centered in the box.
          *
          * Depth, tilt and scale come from the distance to the CURRENT card, so
          * that one reads as the front of the stack. The horizontal position
@@ -626,7 +626,7 @@
             applyCoverflow();
 
             // SEVERAL CARDS ARE READABLE AT ONCE, so `inert` follows what is
-            // actually on screen rather than what is centred. A coverflow
+            // actually on screen rather than what is centered. A coverflow
             // whose flanking cards were inert would look right and be
             // unusable.
             //

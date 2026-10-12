@@ -54,7 +54,7 @@ final class PromptHintsTest extends KernelTestBase {
     'filter',
     // REQUIRED, AND THIS IS THE FIRST TEST IN THE MODULE TO NEED IT. `options`
     // provides `list_string`, which is what the steering fields are — and what
-    // this service reads to decide whether to say "as an h2, centred". Without
+    // this service reads to decide whether to say "as an h2, centered". Without
     // it every test here dies in setUp with "unknown type list_string": 5
     // errors and 0 assertions, which reads like a broken service rather than a
     // missing module.
@@ -125,7 +125,7 @@ final class PromptHintsTest extends KernelTestBase {
     $hint = $this->hints->forBundle('hero_bundle');
 
     self::assertStringContainsString('as an h2', $hint, 'The heading-level habit is the single most useful thing to teach here.');
-    self::assertStringContainsString('centred', $hint);
+    self::assertStringContainsString('centered', $hint);
     self::assertStringContainsString('the Body', $hint);
     self::assertStringContainsString('the Image Link Title', $hint, 'A hero has two prose fields and nothing else says so.');
     self::assertStringEndsWith('.', $hint);
@@ -191,7 +191,7 @@ final class PromptHintsTest extends KernelTestBase {
    *
    * They are real list fields, so a naive "name every choice" rule would add
    * "the Title tag and the Title alignment" to almost every sentence — saying
-   * the same thing as "as an h2, centred", in worse words.
+   * the same thing as "as an h2, centered", in worse words.
    */
   public function testTheSteeringListsAreNotNamedAsChoices(): void {
     $hint = $this->hints->forBundle('hero_bundle');

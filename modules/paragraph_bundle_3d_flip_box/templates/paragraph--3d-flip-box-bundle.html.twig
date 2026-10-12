@@ -50,7 +50,7 @@
 
       {#
         NO INLINE STYLE HERE. The scene height now comes from this paragraph's
-        generated stylesheet — see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
+        generated stylesheet: see PbDynamicUserVarBuilder::USER_STYLE_SCOPES,
         `3d_flip_box_bundle`. A `style="…"` attribute cannot be permitted by a
         Content Security Policy except via `'unsafe-inline'`, and unlike a
         `<style>` element it cannot carry a nonce.
@@ -61,27 +61,27 @@
           <div class="pb-3d-flip-box__back{{ pb_flip_xy ? ' pb-3d-flip-box--' ~ pb_flip_xy|replace({_: '-'}) }}">{{ content.pb_content_3d_box_back }}</div>
         </div>
         {#
-          Hidden until the behaviour attaches: without the script the button
+          Hidden until the behavior attaches: without the script the button
           has nothing to toggle, and a control that does nothing is worse than
           no control. The faces are left operable for that no-JS case, exactly
-          as they were before — the script is what makes the face-down one
+          as they were before. The script is what makes the face-down one
           inert.
         #}
         <button type="button" class="pb-3d-flip-box__toggle control-btn" aria-expanded="false" aria-controls="{{ paragraph_id }}-faces" hidden>
           {#
-            A card with an arrow turning over it — "show me the other side".
+            A card with an arrow turning over it: "show me the other side".
 
             The previous glyph was two panels either side of a dashed mirror
             axis. That is the icon design tools use for "flip horizontal", i.e.
             MIRROR THIS OBJECT, which is not what this control does; and at the
             24px it renders at, the dashed axis (3px dashes, 2.5px gaps) aliased
-            into a smudge while the solid left panel read as an off-centre blob.
+            into a smudge while the solid left panel read as an off-center blob.
             Three ink weights in 24px was more than the size could carry.
 
             This one has a single stroke weight and no sub-pixel detail, and it
             is ASYMMETRIC on purpose: the state rotation below turns it 180deg,
             which is only visible if the glyph has a top and a bottom. Still
-            drawn from primitives, so the bundle carries no third-party licence.
+            drawn from primitives, so the bundle carries no third-party license.
           #}
           <svg class="pb-3d-flip-box__toggle-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false">
             <rect x="4.4" y="8.6" width="15.2" height="11" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.8"/>
@@ -90,9 +90,9 @@
           </svg>
           {#
             The label is the SPOKEN state, and it has to change with the face on
-            show — including when a pointer is what changed it. `aria-expanded`
+            show, including when a pointer is what changed it. `aria-expanded`
             alone says open/closed, which does not describe a card that has two
-            equal sides. The behaviour swaps between these two strings; both are
+            equal sides. The behavior swaps between these two strings; both are
             translated here rather than built in JS so they stay extractable.
           #}
           <span class="visually-hidden" data-pb-label-front="{{ pb_title ? 'Show the back of @title'|t({'@title': pb_title}) : 'Show the back'|t }}" data-pb-label-back="{{ pb_title ? 'Show the front of @title'|t({'@title': pb_title}) : 'Show the front'|t }}">{{ pb_title ? 'Show the back of @title'|t({'@title': pb_title}) : 'Show the back'|t }}</span>

@@ -2,8 +2,8 @@
 
 Four paragraph types:
 
-- `card_two_columns_bundle` / `card_three_columns_bundle` — column layouts
-- `card_text_section_bundle` / `card_image_section_bundle` — nested sections
+- `card_two_columns_bundle` / `card_three_columns_bundle`: column layouts
+- `card_text_section_bundle` / `card_image_section_bundle`: nested sections
 
 ## Dependencies
 
@@ -34,5 +34,5 @@ drush pb:regenerate-css
 ## v2 notes
 
 - Display colors use per-paragraph dynamic CSS, not inline `--pb-*`.
-- Card image section splits border colours (inner) from overlay bg/text
+- Card image section splits border colors (inner) from overlay bg/text
   (`.pb-card__image-title`) via `PbDynamicCssBuilder::SPLIT_COLOR_SCOPES`.
