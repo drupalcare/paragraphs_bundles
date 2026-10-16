@@ -135,32 +135,6 @@
         };
 
         /**
-         * Adjusts slides container height to match the active slide.
-         */
-        const adjustHeight = () => {
-          const currentSlide = slides[slideIndex - 1];
-          if (!currentSlide) {
-            return;
-          }
-          const computedStyle = window.getComputedStyle(slidesContainer);
-          const contentHeight = currentSlide.offsetHeight;
-          const paddingTop = Number.parseFloat(computedStyle.paddingTop) || 0;
-          const paddingBottom =
-            Number.parseFloat(computedStyle.paddingBottom) || 0;
-          const borderTop =
-            Number.parseFloat(computedStyle.borderTopWidth) || 0;
-          const borderBottom =
-            Number.parseFloat(computedStyle.borderBottomWidth) || 0;
-          const totalHeight =
-            contentHeight +
-            paddingTop +
-            paddingBottom +
-            borderTop +
-            borderBottom;
-          slidesContainer.style.height = `${totalHeight}px`;
-        };
-
-        /**
          * Announces the current slide to screen readers.
          */
         const announceSlide = () => {
@@ -213,11 +187,14 @@
 
         /**
          * Updates slide visibility and accessibility state.
+         *
+         * Visibility itself is CSS: every slide shares one grid cell, so the
+         * slides container is always as tall as the tallest slide and the page
+         * below never moves; `pb-is-active` decides which slide is visible.
          */
         const updateSlideVisibility = () => {
           slides.forEach((slide, index) => {
             const isActive = index + 1 === slideIndex;
-            slide.style.display = isActive ? 'block' : 'none';
             slide.setAttribute('aria-hidden', String(!isActive));
             slide.toggleAttribute('inert', !isActive);
             slide.classList.toggle(PB_IS_ACTIVE, isActive);
@@ -231,7 +208,6 @@
           });
           updateDots();
           announceSlide();
-          adjustHeight();
         };
 
         /**
@@ -428,10 +404,7 @@
         intersectionObserver.observe(stage);
 
         const debouncedHandleVisibility = debounce(handleVisibility, 200);
-        const debouncedResize = debounce(() => {
-          adjustHeight();
-          handleVisibility();
-        }, 200);
+        const debouncedResize = debounce(handleVisibility, 200);
 
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
         nextButton?.addEventListener('click', nextSlide, { signal });

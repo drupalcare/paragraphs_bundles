@@ -29,6 +29,33 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   wrapped each accordion section's button in 1.0.0 to 1.0.3 and was dropped
   in 1.0.4; it is not the "toggle all" row (`pb__ex-button`).
 
+### Fixed
+
+- **Slideshow: changing slides no longer moves the page.** The slides
+  container used to resize to each slide (the script measured the active
+  slide and wrote its height inline, with a height transition), so content
+  below jumped on every slide change. All slides now share one grid cell, so
+  the slideshow is as tall as its tallest slide; shorter slides fill that
+  height with their content centered. The script no longer writes `display`
+  or `height` inline. Inactive slides keep `aria-hidden` and `inert` and are
+  hidden with `visibility`, so they stay out of the accessibility tree and
+  focus order. Works before the script runs (the template marks the first
+  slide active), and print still shows every slide.
+- **Slideshow: slides crossfade instead of flashing.** The incoming slide
+  fades in while the outgoing one fades out (0.6s), so no empty frame shows
+  between slides. Off under `prefers-reduced-motion`. The slide animation
+  option (top, bottom, left, right, zoom, opacity) still plays each time a
+  slide becomes active. `PbSlideshowJavascriptTest` now checks that the
+  height does not change between slides of different heights.
+- **Vertical carousel: paging no longer moves the page.** In vertical mode
+  (and hybrid on small screens) the frame was resized to the current page on
+  every page change, so items of different heights moved the content below on
+  each step and on every autoplay tick. The frame now takes the height of the
+  tallest page and is recalculated only when the layout changes (resize,
+  images loading), not when paging. Shorter pages show the next items faded,
+  as the carousel already does at its edges. Horizontal carousels are
+  unchanged. New `PbCarouselJavascriptTest::testVerticalCarouselKeepsOneHeight`.
+
 ## [2.0.4] — 2026-10-10
 
 No change to how any page renders. Stylesheet housekeeping and CI coverage.

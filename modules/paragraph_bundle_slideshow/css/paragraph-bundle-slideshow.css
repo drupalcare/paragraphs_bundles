@@ -15,17 +15,62 @@
    Base Slideshow Structure
    ========================================================================== */
 
+/* Every slide shares one grid cell, so the slides container is always as tall
+ * as the tallest slide: changing slides never moves the page below (no layout
+ * shift). Inactive slides stay in the layout but are hidden with `visibility`,
+ * which also removes them from the accessibility tree and focus order; the
+ * script keeps `aria-hidden` and `inert` on them as well. The template marks
+ * the first slide `pb-is-active`, so this works before (or without) the
+ * script. */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides {
+  display: grid;
   overflow: hidden;
-  transition: all 0.5s ease-in-out;
 }
 
+/* Crossfade: the incoming slide fades in on top (fast start) while the
+ * outgoing one fades out (slow start), so the two overlap and no empty frame
+ * shows between slides. Both fade, so slides with a transparent background
+ * never show two slides' content at full strength at once. `visibility`
+ * switches only after the fade, taking the slide out of the accessibility
+ * tree and focus order (the script also sets `inert` and `aria-hidden`). */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  grid-area: 1 / 1;
+  min-width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s ease-in, visibility 0s linear 0.6s;
 }
 
-.paragraphs-bundles.pb-slideshow .pb-slideshow__slides > div:first-of-type {
-  display: block;
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide.pb-is-active {
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s ease-out, visibility 0s linear 0s;
+}
+
+/* Shorter slides fill the full height (backgrounds reach the edges) with their
+ * content centered vertically. */
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slide > .pb-slideshow__slide-inner {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slide-inner > :not(.pb-slideshow__title) {
+  flex: 1 1 auto;
+}
+
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slide-inner > .paragraphs-bundles > .pb-ui-inner {
+  justify-content: center;
+}
+
+/* The slide animation option (`pb-u-animate--*` on the slide inner) replays
+ * each time a slide becomes active: it is switched off while the slide is
+ * inactive, and switching it back on restarts it. */
+.paragraphs-bundles.pb-slideshow .pb-slideshow__slide:not(.pb-is-active) > .pb-slideshow__slide-inner {
+  animation: none;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage {
@@ -432,6 +477,7 @@
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide,
   .paragraphs-bundles.pb-slideshow .pb-slideshow__slides,
   .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button,
   .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows button svg,
@@ -474,8 +520,14 @@
 }
 
 @media print {
-  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
+  /* Print every slide, one after another. */
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides {
     display: block;
+  }
+
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
+    opacity: 1;
+    visibility: visible;
   }
 
   .paragraphs-bundles.pb-slideshow .pb-slideshow__nav {

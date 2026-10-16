@@ -56,8 +56,11 @@ final class PbSlideshowJavascriptTest extends WebDriverTestBase {
       ->grantPermission('access content')
       ->save();
 
+    // The second slide is much taller than the first, so the height check
+    // below would catch a container that resizes to the active slide.
     $sections = [];
-    foreach (['Slide one', 'Slide two', 'Slide three'] as $label) {
+    // The title field holds 255 characters; 234 wraps over several lines.
+    foreach (['Slide one', str_repeat('Slide two is much taller. ', 9), 'Slide three'] as $label) {
       $section = Paragraph::create([
         'type' => 'slideshow_section_bundle',
         'pb_content_slideshow_title' => $label,
@@ -101,6 +104,22 @@ final class PbSlideshowJavascriptTest extends WebDriverTestBase {
       "!document.querySelectorAll('.pb-slideshow__slide')[1].classList.contains('pb-is-active')",
     );
 
+    // Inactive slides are hidden but keep their place in the layout, and the
+    // script writes no inline display or height.
+    $this->assertJsCondition(
+      "getComputedStyle(document.querySelectorAll('.pb-slideshow__slide')[1]).visibility === 'hidden'",
+    );
+    $this->assertJsCondition(
+      "getComputedStyle(document.querySelectorAll('.pb-slideshow__slide')[0]).visibility === 'visible'",
+    );
+    $this->assertJsCondition(
+      "document.querySelector('.pb-slideshow__slides').style.height === ''",
+    );
+    $this->assertJsCondition(
+      "[...document.querySelectorAll('.pb-slideshow__slide')].every((s) => s.style.display === '')",
+    );
+    $heightBefore = $this->getSession()->evaluateScript("return document.querySelector('.pb-slideshow__slides').offsetHeight;");
+
     // Clicking Next advances the active slide to the second.
     $this->getSession()->getPage()->find('css', '.pb-nav__next')->click();
     $this->assertJsCondition(
@@ -112,6 +131,9 @@ final class PbSlideshowJavascriptTest extends WebDriverTestBase {
     $this->assertJsCondition(
       "!document.querySelectorAll('.pb-slideshow__slide')[0].classList.contains('pb-is-active')",
     );
+
+    // Changing slides does not change the slideshow height (no layout shift).
+    $this->assertSame($heightBefore, $this->getSession()->evaluateScript("return document.querySelector('.pb-slideshow__slides').offsetHeight;"));
 
     // Clicking Previous returns the active slide to the first.
     $this->getSession()->getPage()->find('css', '.pb-nav__prev')->click();

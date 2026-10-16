@@ -268,13 +268,21 @@
 
     const visibleItems = getVisibleItems(state);
     const gap = state.config.gap || 0;
-    const totalGap = (itemsVisible - 1) * gap;
 
     if (state.config.orientation === 'vertical') {
-      const totalHeight = visibleItems.reduce((sum, item) => {
-        return sum + getItemSize(item, true);
-      }, 0);
-      state.wrapper.style.maxHeight = `${totalHeight + totalGap}px`;
+      // The frame is as tall as the tallest page, not the current one, so
+      // paging (including autoplay) never resizes the carousel and the
+      // content below it stays put. Shorter pages show the next items faded.
+      const items = Array.from(state.items);
+      let tallestPage = 0;
+      for (let start = 0; start < items.length; start += itemsVisible) {
+        const page = items.slice(start, start + itemsVisible);
+        const pageHeight =
+          page.reduce((sum, item) => sum + getItemSize(item, true), 0) +
+          (page.length - 1) * gap;
+        tallestPage = Math.max(tallestPage, pageHeight);
+      }
+      state.wrapper.style.maxHeight = `${tallestPage}px`;
       state.wrapper.style.height = '';
       state.wrapper.style.maxWidth = '';
       state.centerOffset = 0;

@@ -202,6 +202,70 @@ final class PbCarouselJavascriptTest extends WebDriverTestBase {
   }
 
   /**
+   * A vertical carousel keeps one height while paging (no layout shift).
+   *
+   * The frame used to resize to the current page, so items of different
+   * heights moved the content below on every page (and on every autoplay
+   * tick). It now takes the height of the tallest page.
+   */
+  public function testVerticalCarouselKeepsOneHeight(): void {
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+
+    // The middle slide is much taller: its title wraps over several lines.
+    $slides = [];
+    foreach (['Slide one', str_repeat('Slide two is much taller. ', 9), 'Slide three'] as $label) {
+      $slide = Paragraph::create([
+        'type' => 'accordion_section_bundle',
+        'pb_content_accordion_title' => $label,
+      ]);
+      $slide->save();
+      $slides[] = [
+        'target_id' => $slide->id(),
+        'target_revision_id' => $slide->getRevisionId(),
+      ];
+    }
+
+    $carousel = Paragraph::create([
+      'type' => 'carousel_bundle',
+      'pb_content_carousel_body' => $slides,
+      'pb_display_vertical_carousel' => 'vertical',
+      'pb_display_navigation' => 'arrows',
+      'pb_display_carousel_play_stop' => 0,
+      'pb_display_big_screen' => 1,
+      'pb_display_small_screen' => 1,
+    ]);
+    $carousel->save();
+
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+    $node = $this->drupalCreateNode([
+      'type' => $nodeType,
+      $fieldName => [
+        [
+          'target_id' => $carousel->id(),
+          'target_revision_id' => $carousel->getRevisionId(),
+        ],
+      ],
+    ]);
+
+    $this->drupalGet($node->toUrl());
+    $this->assertSession()->waitForElement('css', '.pb-carousel__wrapper.pb-is-visible');
+
+    $session = $this->getSession();
+    $height = static fn (): int => (int) $session->evaluateScript("return document.querySelector('.pb-carousel__wrapper').offsetHeight;");
+    $tallest = (int) $session->evaluateScript("return Math.max(...[...document.querySelectorAll('.pb-carousel__slide')].map((s) => s.offsetHeight));");
+
+    $first = $height();
+    $this->assertSame($tallest, $first, 'The frame is as tall as the tallest page.');
+    foreach ([1, 2] as $index) {
+      $session->getPage()->find('css', '.pb-nav__next')->click();
+      $this->assertJsCondition("document.querySelectorAll('.pb-carousel__slide')[$index].classList.contains('pb-is-active')");
+      $this->assertSame($first, $height(), "The height is unchanged on page " . ($index + 1) . '.');
+    }
+  }
+
+  /**
    * Finds a node type + field that references paragraphs.
    *
    * @return array{0: string|null, 1: string|null}

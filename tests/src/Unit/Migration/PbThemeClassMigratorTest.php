@@ -191,7 +191,11 @@ class PbThemeClassMigratorTest extends TestCase {
       $this->assertStringNotContainsString('pb-slideshow__nav--', $out['content'], $css);
     }
     // In a stylesheet a context token in a property value is not a class.
-    foreach (['.brand { font-family: play; }', 'font-family: play, sans-serif;', '.pb__slides { animation: two-l6_l6 1s; }'] as $css) {
+    foreach ([
+      '.brand { font-family: play; }',
+      'font-family: play, sans-serif;',
+      '.pb__slides { animation: two-l6_l6 1s; }',
+    ] as $css) {
       $out = $this->migrate($css, 'a.css');
       $this->assertNotContains('context-dependent', array_column($out['notes'], 'kind'), $css);
     }
