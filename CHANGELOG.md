@@ -5,6 +5,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [2.1.0] — 2026-10-16
+
+First release from the new `2.1.x` branch. Covers everything since 2.0.2, the
+last published release.
+
 ### Added
 
 - **`drush pb:migrate-theme`: update a theme's v1 class names to v2.** It
