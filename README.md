@@ -168,8 +168,25 @@ v2 is a **drop-in upgrade**: same field machine names, same stored
 values, same `--pb-*` CSS variables. Replace the code, run updates,
 verify form displays, regenerate CSS.
 
-Full steps: **`docs/UPGRADE-V1-TO-V2.md`**. Sub-theme class renames:
-**`docs/CSS-CLASS-MIGRATION.md`**.
+Full steps: **`docs/UPGRADE-V1-TO-V2.md`**.
+
+**Your theme's class names.** v2 renamed most PB CSS classes. If your theme
+styles PB output, one Drush command updates its CSS, Twig and JavaScript:
+
+```bash
+drush pb:migrate-theme mytheme                          # dry run: counts only
+drush pb:migrate-theme mytheme --report=pb-report.md    # every change, listed
+drush pb:migrate-theme mytheme --apply                  # write the changes
+drush cr
+```
+
+Run it from the project folder (the one with `composer.json`), as the user
+who owns the theme files. It never edits `.yml` files and only works inside
+the Drupal root. The report contains your theme's source code, so it is
+written outside the web root (a path inside it is refused), even during a dry
+run. Add
+`--ext=css,scss` to limit it to some file types. Step-by-step guide, sample
+output and what to do with the report: **`docs/CSS-CLASS-MIGRATION.md`**.
 
 ## Screenshots
 

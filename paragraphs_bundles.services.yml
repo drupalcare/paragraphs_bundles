@@ -125,6 +125,17 @@ services:
     alias: paragraphs_bundles.display_class_resolver
 
   # ---------------------------------------------------------------------------
+  # Theme class migrator — rewrites v1 class names and ids in a theme's CSS,
+  # Twig and JS to the v2 BEM names. Used by `drush pb:migrate-theme` only;
+  # there is deliberately no web UI.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.theme_class_migrator:
+    class: Drupal\paragraphs_bundles\Migration\PbThemeClassMigrator
+
+  Drupal\paragraphs_bundles\Migration\PbThemeClassMigrator:
+    alias: paragraphs_bundles.theme_class_migrator
+
+  # ---------------------------------------------------------------------------
   # README help renderer — the single hook_help() implementation shared by this
   # module and all 26 bundle sub-modules. Their hook classes inject this and
   # pass their own module name; nothing else may duplicate the logic.

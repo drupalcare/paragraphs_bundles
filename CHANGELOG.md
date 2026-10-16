@@ -3,6 +3,30 @@
 All notable changes to `paragraphs_bundles` are recorded here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [Unreleased]
+
+### Added
+
+- **`drush pb:migrate-theme`: update a theme's v1 class names to v2.** It
+  reads a theme's (or custom module's) CSS, Twig and JavaScript and rewrites
+  the v1 class names and element ids listed in `docs/CSS-CLASS-MIGRATION.md`.
+  Dry run by default; `--apply` writes, `--report=FILE` lists every change and
+  every item to check by hand, `--ext=css,scss,...` limits the file types.
+  It never reads `.yml`, minified files, symbolic links or hard-linked files,
+  replaces each file atomically, refuses any folder outside the Drupal root
+  (and core, this module and the public files folder), writes the report only
+  outside the Drupal root and never over an existing file, and has no web UI.
+  Read-only files and files owned by another user are skipped and listed.
+  Sass/Less `&`/`#{}` nesting next to a PB class and file names that contain
+  a v1 name (`pb__card.png`) are reported, not rewritten. A second run changes
+  nothing.
+  Names that could mean two things (column ratios, `#pb__image-{id}`, Twig
+  value comparisons) are reported, not rewritten. On 257 hunks of real v1
+  themes it produced the same result as the maintainer's prototype.
+- `docs/CSS-CLASS-MIGRATION.md`: `pb__accor-btn` is listed as removed. It
+  wrapped each accordion section's button in 1.0.0 to 1.0.3 and was dropped
+  in 1.0.4; it is not the "toggle all" row (`pb__ex-button`).
+
 ## [2.0.4] — 2026-10-10
 
 No change to how any page renders. Stylesheet housekeeping and CI coverage.

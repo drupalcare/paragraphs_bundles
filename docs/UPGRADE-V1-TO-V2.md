@@ -85,9 +85,43 @@ drush cr
 drush pb:verify-form-displays
 drush pb:regenerate-css
 
-# 5. Leave maintenance mode.
+# 5. Update your own theme's class names (dry run first; see below).
+drush pb:migrate-theme mytheme
+drush pb:migrate-theme mytheme --apply
+drush cr
+
+# 6. Leave maintenance mode.
 drush state:set system.maintenance_mode 0 --input-format=integer
 ```
+
+### Step 5 in detail: your theme's class names
+
+v2 renamed about 300 CSS classes and 29 element ids. If your theme or a custom
+module styles Paragraphs Bundles output, its CSS, Twig and JavaScript still use
+the old names, and those styles stop applying after the upgrade. Your content
+is not affected.
+
+`drush pb:migrate-theme` changes the old names to the new ones for you:
+
+1. Commit or copy your theme, so you can compare and undo.
+2. Run `drush pb:migrate-theme mytheme`. This is a dry run: it only counts.
+3. From your project folder (the one with `composer.json`), run
+   `drush pb:migrate-theme mytheme --report=pb-report.md` and read the
+   report. It lists each changed line and the items you must check by hand.
+   It contains your theme's source code, so it must go outside the web root;
+   the command refuses a path inside it. It is written even in a dry run.
+4. Run `drush pb:migrate-theme mytheme --apply` to write the changes, as the
+   user who owns the theme files (not with `sudo`).
+5. Run `drush cr`.
+6. Check your pages against the live site.
+7. Fix the items in the report's "Needs manual review" section.
+
+Replace `mytheme` with your theme's machine name, or with a folder inside the
+Drupal root such as `modules/custom/my_module`. A theme folder that is a
+symbolic link to outside the Drupal root is refused; run the command on a copy
+inside the root. Each step, its sample output
+and what to do with each kind of report item are in
+[`CSS-CLASS-MIGRATION.md`](CSS-CLASS-MIGRATION.md#before-you-start-let-drush-do-the-renaming).
 
 ### Expected warnings during the drop-over
 

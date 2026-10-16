@@ -1,0 +1,29 @@
+/* Synthetic fixture for PbThemeClassMigratorTest. */
+.pb-card .pb-card__image {
+  border: 0;
+}
+#pb-hero-12 > .pb-ui-inner,
+.pb-grid-7 .pb-grid__wrapper {
+  padding: 0;
+}
+.pb-slideshow__number.pb-slideshow__nav--dot {
+  color: inherit;
+}
+.example .dot {
+  margin: 0;
+}
+.pb-u-mw--500 .pb__576 {
+  max-width: 500px;
+}
+#pb__image-3 {
+  display: block;
+}
+.two-l6_l6 .pb-card {
+  gap: 1rem;
+}
+.pb__accor-btn {
+  color: red;
+}
+.pb__example-widget__inner {
+  color: blue;
+}

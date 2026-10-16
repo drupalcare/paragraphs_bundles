@@ -1,0 +1,4 @@
+label: 'Fixture'
+kind: fixture
+weight: 1
+# Stored values must never be rewritten: pb__card pb__round_large

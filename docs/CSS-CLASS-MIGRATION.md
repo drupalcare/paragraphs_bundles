@@ -5,32 +5,177 @@
 and custom modules that target PB class names must update overrides
 using the tables below.
 
-The rename generator and its rule file are maintainer tooling and are not part
-of the release package; these tables are the shipped record.
+These tables are the shipped record. `drush pb:migrate-theme` applies them
+for you (see "Before you start"); `src/Migration/PbClassRenameMap.php` holds
+the same rows, and a test fails when the two disagree.
 
 ---
 
-## Before you start
+## Before you start: let Drush do the renaming
 
-1. **Search your theme first.** Most sites reference only a handful of PB
-   classes. From your theme or custom module directory:
+You do not need to apply the tables below by hand. Paragraphs Bundles 2.x
+ships a Drush command, `pb:migrate-theme`, that reads your theme's CSS, Twig
+and JavaScript files and changes the old v1 names to the v2 names for you.
+It never touches `.yml` files, minified files (`*.min.*`), or the
+`node_modules`, `vendor`, `dist` and `.git` folders, and it does not follow
+symbolic links.
 
-   ```bash
-   grep -rnE 'pb__|paragraph__inner' --include='*.css' --include='*.twig' \
-     --include='*.js' .
-   ```
+Run these steps in order, from your Drupal project folder (the folder with
+`composer.json`, which holds the `web/` folder). The examples use a theme
+called `mytheme`. Use your theme's machine name, or a folder path such as
+`web/modules/custom/my_module`. A folder path is read from the folder you are
+in; if it is not found there, it is read from the Drupal root (`web/`), so
+`modules/custom/my_module` works too.
 
-   Every hit is either in the rename table below, or in the **frozen** list —
-   frozen tokens need no change.
+The command only works inside the Drupal root. If your theme folder is a
+symbolic link to a folder outside the root (common with Composer path
+repositories), it is refused: run the command on a copy of the theme inside
+the root. Drupal core, Paragraphs Bundles itself and the public files folder
+are refused too.
 
-2. **Renames are one-way but non-destructive.** They affect only your own
-   overrides. No stored content or field value changes, so a missed rename
-   costs you a style that stops applying, never data.
+### Step 1. Save a copy of your theme
 
-3. **Work from the tables, not from a global find-and-replace.** Several v1
-   names are prefixes of others (`pb__card` vs `pb__card-image`), so an
-   unanchored replace will corrupt the longer name. If you do script it, sort
-   the pairs longest-first and match on a word boundary.
+The command edits files in place. Commit the theme to Git first, or copy it:
+
+```bash
+git add web/themes/custom/mytheme && git commit -m "Theme before PB v2 class migration"
+```
+
+### Step 2. Do a dry run
+
+A dry run changes nothing. It counts what would change:
+
+```bash
+drush pb:migrate-theme mytheme
+```
+
+The output looks like this:
+
+```text
+css/overrides.css: 6 line(s)
+js/card.js: 2 line(s)
+templates/card.html.twig: 2 line(s)
+  - unknown-v1-token      1  v1-style tokens not in any table (may be theme-owned; check by hand)
+  - removed               1  v1 classes with no v2 element
+  - value-in-template     1  Display-value classes in Twig/JS (often stored-value comparisons; change only if used as a CSS class)
+  - context-dependent     1  Context-dependent classes (pick the right variant)
+  - ambiguous-id          1  v1 ids shared by two bundles (pick the right one)
+ [success] Dry run: 10 line(s) in 3 file(s) would change; 5 item(s) need manual review; 0 file(s) skipped.
+ [success] Nothing was written. Add --report=pb-report.md to list every change, then --apply to write them.
+```
+
+"Skipped" counts symbolic links and hard-linked files inside the theme. The
+command never follows or edits them; the report lists them.
+
+### Step 3. Read the report
+
+Run the dry run again with `--report` to get every change, line by line, in
+a new Markdown file:
+
+```bash
+drush pb:migrate-theme mytheme --report=pb-report.md
+```
+
+The report holds lines of your theme's source code, so it must be written
+outside the web root, where no visitor can download it. On a Composer site
+the project folder is already outside the web root (`web/` is the web root),
+so `pb-report.md` lands next to `composer.json`. If your site has no
+Composer project folder and you run Drush inside the web root, use
+`--report=../pb-report.md` instead.
+
+The command refuses a report path inside the Drupal root or the public files
+folder, refuses to overwrite an existing file, and checks the folder is
+writable before it reads any theme file. The report is written even in a dry
+run (nothing in the theme changes) and only you can read it (mode 0600). The
+command prints where it wrote it. Run from `/var/www/example`:
+
+```text
+ [success] Report written to /var/www/example/pb-report.md
+```
+
+Delete the report when you are done. Each change shows the old line and the
+new line:
+
+```text
+## css/overrides.css
+
+- L2
+  - `.pb__card .pb__card-image {`
+  + `.pb-card .pb-card__image {`
+```
+
+The end of the report has a "Needs manual review" section. Step 7 explains
+it.
+
+### Step 4. Apply the changes
+
+```bash
+drush pb:migrate-theme mytheme --apply
+```
+
+Run it as the user who owns the theme files (the same user you edit them
+with), not with `sudo`. Each changed file is replaced by a new one owned by
+whoever runs the command; a file owned by someone else, or a read-only file,
+is skipped with a warning and listed in the report instead.
+
+The summary line now says `Applied:`. Each file is replaced in one step, so a
+full disk leaves the old file in place instead of a half-written one. If the
+command is stopped in the middle (power loss, `kill -9`), a hidden temporary
+file named `.pbmig` plus random letters can be left in a theme folder. It is
+safe to delete. Running
+the same command a second time changes nothing (`Applied: 0 line(s) in 0
+file(s) changed`), so it is safe to run again.
+
+To change only some file types, add `--ext` with a comma-separated list. Only
+`css`, `scss`, `sass`, `less`, `twig` and `js` are accepted; anything else
+(for example `yml` or `php`) is refused before any file is read:
+
+```bash
+drush pb:migrate-theme mytheme --ext=css,scss --apply
+```
+
+### Step 5. Clear the caches
+
+Drupal caches compiled Twig templates and aggregated CSS and JavaScript:
+
+```bash
+drush cache:rebuild
+```
+
+### Step 6. Check your pages
+
+Open the pages that use Paragraphs Bundles and compare them with the live
+site. Check the layouts, colors, sliders, tabs and accordions. If something
+looks wrong, compare the file with the copy from step 1 (`git diff
+web/themes/custom/mytheme`).
+
+### Step 7. Fix the report-only items by hand
+
+The command does not guess. When a name could mean two things, it leaves the
+line alone and lists it in the report. What to do with each kind:
+
+| Report section | What it means | What to do |
+|---|---|---|
+| `unknown-v1-token` | A `pb__` name that is not in any table below. Your theme may have made it up itself (for example in its own templates). | If your theme defines the class, leave it. Otherwise search the tables below. |
+| `removed` | The element no longer exists in v2. | Delete the rule, or move it to the class the table names. |
+| `value-in-template` | A value such as `pb__round_large` in Twig or JavaScript. This is usually a saved field value being compared (`== 'pb__round_large'`), which must not change. | Leave comparisons alone. If the string is used as a CSS class, change it using the "Value-driven utility classes" table. |
+| `context-dependent` | One v1 name became two v2 names, for example `two-l6_l6` became `pb-two-columns--l6-l6` or `pb-card-two-columns--l6-l6`. | Pick the one that matches the bundle the rule styles. |
+| `generic-token` | A short word such as `active` or `dot` next to a PB class. The command only renames it when it is joined to a PB class, as in `.pb-slideshow__number.dot`. | If the word belongs to the PB element, rename it using the "Manual-only renames" table. |
+| `ambiguous-id` | `#pb__image-…` and `#pb__parallax-…` were each used by two bundles in v1. | Use the "Outer element ids" table to pick the right new id. |
+| `pcre-error` | A line too long or complex for PHP's pattern engine. It was left unchanged. | Check that line by hand against the tables below. |
+| `scss-nesting` | A Sass or Less selector built from its parent with `&` or `#{}`, inside or next to a PB class. For example `.pb__card { &-image {} }` built `.pb__card-image` in v1. The parent is renamed to `.pb-card`, so `&-image` would now build `.pb-card-image`, not the v2 `.pb-card__image`. | Rewrite the nested selector by hand, for example `&__image`. |
+| `file-reference` | A file name that contains a v1 name, such as `url(../images/pb__card.png)` or `include 'pb__card.html.twig'`. The command does not rename files, so it leaves the reference alone. | Leave it, or rename the file and the reference together. |
+
+After your edits, run step 2 again. The dry run should report `0 line(s)`.
+
+### What a missed rename costs
+
+No stored content or field value changes. A missed rename means a style stops
+applying, never lost data. The tables below are the full record of every
+rename, if you want to check a single name by hand. Several v1 names are
+prefixes of others (`pb__card` and `pb__card-image`), so a plain
+find-and-replace corrupts the longer name; the command matches whole names
+only.
 
 ---
 
@@ -281,6 +426,7 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 | v1 class | v2 class |
 |----------|----------|
 | `pb__accor` | `pb-accordion` |
+| `pb__accor-btn` | removed in 1.0.4. It wrapped each section's button in 1.0.0 to 1.0.3; target `pb-accordion__button` instead |
 | `pb__accor-button` | `pb-accordion__button` |
 | `pb__accor-pane` | `pb-accordion__pane` |
 | `pb__accor-wrap-btn-item` | `pb-accordion__item` |
@@ -544,10 +690,10 @@ Apply these in sub-theme CSS, Twig, and JS when overriding PB markup.
 
 ---
 
-## Manual-only renames (not in bulk-apply script)
+## Manual-only renames (reported by the command)
 
-Update sub-theme / custom CSS overrides **by hand** for these. Do NOT
-run them through `migrate-class-names.sh`. Two reasons:
+`drush pb:migrate-theme` reports most of these instead of rewriting them
+(see "Step 7" above). Two reasons:
 
 - **State / flags / utilities** tokens collide with `:active`,
   `prefers-reduced-motion`, or already-migrated `pb-is-*` / `pb-u-*`.
@@ -555,9 +701,9 @@ run them through `migrate-class-names.sh`. Two reasons:
   field values**. v1 rendered the stored value *as* the class; v2 keeps
   the stored value byte-for-byte and renders a modern class via the
   `pb_class` filter. So the **stored value never changes** (never touch
-  content or config `allowed_values`). Only your CSS selector does. The
-  bulk script also rewrites `.yml`, which would corrupt those stored
-  values, so these are manual-only.
+  content or config `allowed_values`). Only your CSS selector does. A find-and-replace
+  that also rewrites `.yml` would corrupt those stored values. That is why the command never reads `.yml` files, and only
+  rewrites a value-driven class inside a stylesheet.
 
 ### State (manual)
 
