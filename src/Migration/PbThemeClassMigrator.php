@@ -182,6 +182,9 @@ final class PbThemeClassMigrator {
       'ambiguous' => self::compile($this->ambiguousIds, $lb . '(', ')(?=\d|\{\{|\'|")'),
       'generic' => self::compile($this->generic, '(?<=[.\s"\'])(', ')' . $la),
       'context' => self::compile($this->context, $lb . '(', ')' . $la),
+      // In a stylesheet a context token is a class only as a selector
+      // (`.play`), never as a bare word in a value (`font-family: play`).
+      'context_css' => self::compile($this->context, '(?<=\.)(', ')' . $la),
       'chained' => self::compile($this->generic, '(\.pb-[' . self::TOKEN_CHARS . ']+)\.(', ')' . $la),
       'removed' => self::compile($this->removed, $lb . '(', ')' . $la),
     ];
@@ -389,7 +392,7 @@ final class PbThemeClassMigrator {
           $notes[] = self::note($n, 'generic-token', $token, $this->generic[$token], $orig);
         }
       }
-      foreach ($this->find('context', $line) as $token) {
+      foreach ($this->find($isCss ? 'context_css' : 'context', $line) as $token) {
         $notes[] = self::note($n, 'context-dependent', $token, $this->context[$token], $orig);
       }
       foreach ($this->find('removed', $line) as $token) {
