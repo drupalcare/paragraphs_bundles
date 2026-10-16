@@ -96,6 +96,72 @@ class PbMigrationPathsTest extends TestCase {
   }
 
   /**
+   * From web/sites/<site>, every way of naming the target works.
+   */
+  public function testTargetFromSiteFolder(): void {
+    touch($this->base . '/composer.json');
+    mkdir($this->base . '/web/sites/ah', 0777, TRUE);
+    $paths = $this->paths();
+    $site = $this->base . '/web/sites/ah';
+    $theme = $this->base . '/web/themes/custom/mytheme';
+    $this->assertSame($this->base, $paths->project());
+    // Project-relative, root-relative, theme name, and a whole folder.
+    $this->assertSame($theme, $paths->resolveTarget('web/themes/custom/mytheme', $site));
+    $this->assertSame($theme, $paths->resolveTarget('themes/custom/mytheme', $site));
+    $this->assertSame($theme, $paths->resolveTarget('mytheme', $site));
+    $this->assertSame($this->base . '/web/themes/custom', $paths->resolveTarget('web/themes/custom', $site));
+  }
+
+  /**
+   * The not-found error lists every absolute path it tried.
+   */
+  public function testNotFoundListsEveryPathTried(): void {
+    touch($this->base . '/composer.json');
+    mkdir($this->base . '/web/sites/ah', 0777, TRUE);
+    try {
+      $this->paths()->resolveTarget('web/themes/nope', $this->base . '/web/sites/ah');
+      $this->fail('accepted');
+    }
+    catch (\InvalidArgumentException $e) {
+      foreach (['/web/sites/ah/web/themes/nope', '/web/themes/nope', '/web/web/themes/nope'] as $tail) {
+        $this->assertStringContainsString($this->base . $tail, $e->getMessage());
+      }
+    }
+  }
+
+  /**
+   * A relative report that lands in the web root moves to the project folder.
+   */
+  public function testReportRelocatedToProjectFolder(): void {
+    touch($this->base . '/composer.json');
+    mkdir($this->base . '/web/sites/ah', 0777, TRUE);
+    $result = $this->paths()->resolveReport('pb-report.md', $this->base . '/web/sites/ah');
+    $this->assertSame($this->base . '/pb-report.md', $result['path']);
+    $this->assertSame($this->base . '/web/sites/ah/pb-report.md', $result['moved_from']);
+    // Outside the root: kept where asked, not moved.
+    $result = $this->paths()->resolveReport('r.md', $this->base . '/outside');
+    $this->assertNull($result['moved_from']);
+    // An absolute path inside the root is still refused.
+    $this->expectException(\InvalidArgumentException::class);
+    $this->paths()->resolveReport($this->base . '/web/sites/ah/r.md', '/');
+  }
+
+  /**
+   * With no Composer project folder, a relative report in the root is refused.
+   */
+  public function testReportRefusedWithoutProjectFolder(): void {
+    mkdir($this->base . '/web/sites/ah', 0777, TRUE);
+    $this->assertNull($this->paths()->project());
+    try {
+      $this->paths()->resolveReport('pb-report.md', $this->base . '/web/sites/ah');
+      $this->fail('accepted');
+    }
+    catch (\InvalidArgumentException $e) {
+      $this->assertStringContainsString('--report=' . $this->base . '/pb-report.md', $e->getMessage());
+    }
+  }
+
+  /**
    * Targets outside the root, or covering refused folders, are refused.
    */
   public function testRefusedTargets(): void {
@@ -127,9 +193,9 @@ class PbMigrationPathsTest extends TestCase {
    */
   public function testReportResolvesAgainstCwd(): void {
     $paths = $this->paths();
-    $this->assertSame($this->base . '/pb-report.md', $paths->resolveReport('../pb-report.md', $this->base . '/web2'));
-    $this->assertSame($this->base . '/outside/r.md', $paths->resolveReport('r.md', $this->base . '/outside'));
-    $this->assertSame($this->base . '/outside/r.md', $paths->resolveReport($this->base . '/outside/r.md', '/'));
+    $this->assertSame($this->base . '/pb-report.md', $paths->resolveReport('../pb-report.md', $this->base . '/web2')['path']);
+    $this->assertSame($this->base . '/outside/r.md', $paths->resolveReport('r.md', $this->base . '/outside')['path']);
+    $this->assertSame($this->base . '/outside/r.md', $paths->resolveReport($this->base . '/outside/r.md', '/')['path']);
   }
 
   /**

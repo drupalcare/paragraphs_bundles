@@ -20,12 +20,22 @@ It never touches `.yml` files, minified files (`*.min.*`), or the
 `node_modules`, `vendor`, `dist` and `.git` folders, and it does not follow
 symbolic links.
 
-Run these steps in order, from your Drupal project folder (the folder with
-`composer.json`, which holds the `web/` folder). The examples use a theme
-called `mytheme`. Use your theme's machine name, or a folder path such as
-`web/modules/custom/my_module`. A folder path is read from the folder you are
-in; if it is not found there, it is read from the Drupal root (`web/`), so
-`modules/custom/my_module` works too.
+Run these steps in order. You can run Drush from any folder of the site:
+the project folder (the one with `composer.json`, which holds `web/`), `web/`
+itself, or a multisite folder such as `web/sites/example`. Add `--uri` for a
+multisite, as you do for any Drush command. The examples use a theme called
+`mytheme`.
+
+The target can be:
+
+- a theme's machine name: `mytheme`;
+- a folder path: `web/themes/custom/mytheme` or `web/modules/custom/my_module`;
+- a whole folder of themes: `web/themes/custom` migrates every theme in it.
+
+A folder path is looked up from the folder you are in, then from the project
+folder, then from the Drupal root, so `web/themes/custom/mytheme` and
+`themes/custom/mytheme` both work from anywhere. If nothing matches, the error
+lists every path it tried.
 
 The command only works inside the Drupal root. If your theme folder is a
 symbolic link to a folder outside the root (common with Composer path
@@ -78,10 +88,12 @@ drush pb:migrate-theme mytheme --report=pb-report.md
 
 The report holds lines of your theme's source code, so it must be written
 outside the web root, where no visitor can download it. On a Composer site
-the project folder is already outside the web root (`web/` is the web root),
-so `pb-report.md` lands next to `composer.json`. If your site has no
-Composer project folder and you run Drush inside the web root, use
-`--report=../pb-report.md` instead.
+the project folder is outside the web root (`web/` is the web root). Run from
+the project folder, `pb-report.md` lands next to `composer.json`. Run from
+inside `web/` (for example `web/sites/example`), a plain file name would land
+in the web root, so the command writes it to the project folder instead and
+says so. On a site with no Composer project folder, give a full path outside
+the web root, for example `--report=/home/me/pb-report.md`.
 
 The command refuses a report path inside the Drupal root or the public files
 folder, refuses to overwrite an existing file, and checks the folder is
@@ -91,6 +103,12 @@ command prints where it wrote it. Run from `/var/www/example`:
 
 ```text
  [success] Report written to /var/www/example/pb-report.md
+```
+
+Run from `/var/www/example/web/sites/example` with the same option:
+
+```text
+ [success] Report written to /var/www/example/pb-report.md (not /var/www/example/web/sites/example/pb-report.md: that is inside the web root, so it went to the project folder)
 ```
 
 Delete the report when you are done. Each change shows the old line and the
@@ -117,6 +135,11 @@ Run it as the user who owns the theme files (the same user you edit them
 with), not with `sudo`. Each changed file is replaced by a new one owned by
 whoever runs the command; a file owned by someone else, or a read-only file,
 is skipped with a warning and listed in the report instead.
+
+Symbolic links inside the target are never followed. When you migrate a
+whole folder such as `web/themes/custom`, a theme in it that is a symbolic
+link is skipped and counted in the summary; run the command on that theme's
+real folder if it is inside the Drupal root.
 
 The summary line now says `Applied:`. Each file is replaced in one step, so a
 full disk leaves the old file in place instead of a half-written one. If the

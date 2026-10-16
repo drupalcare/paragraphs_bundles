@@ -21,6 +21,11 @@ final class PbMigrationPaths {
   private string $root;
 
   /**
+   * The Composer project folder (the root's parent holding composer.json).
+   */
+  private ?string $project = NULL;
+
+  /**
    * Real directories that may never be a target, nor contain one.
    *
    * @var list<string>
@@ -65,6 +70,10 @@ final class PbMigrationPaths {
       throw new \InvalidArgumentException(sprintf('Cannot resolve the Drupal root (%s).', $drupalRoot));
     }
     $this->root = rtrim($root, DIRECTORY_SEPARATOR);
+    $parent = dirname($this->root);
+    if ($parent !== $this->root && is_file($parent . DIRECTORY_SEPARATOR . 'composer.json')) {
+      $this->project = $parent;
+    }
     $this->themePath = \Closure::fromCallable($themePath);
     foreach ($forbiddenTargets as $dir) {
       $real = realpath(self::isAbsolute($dir) ? $dir : $this->root . DIRECTORY_SEPARATOR . $dir);
@@ -82,6 +91,13 @@ final class PbMigrationPaths {
   }
 
   /**
+   * Returns the Composer project folder, or NULL when there is none.
+   */
+  public function project(): ?string {
+    return $this->project;
+  }
+
+  /**
    * Returns the real Drupal root.
    */
   public function root(): string {
@@ -92,8 +108,9 @@ final class PbMigrationPaths {
    * Resolves a theme name or directory to a real directory inside the root.
    *
    * @param string $target
-   *   A theme machine name, or a directory path: absolute, relative to $cwd
-   *   when it exists there, otherwise relative to the Drupal root.
+   *   A theme machine name, or a directory path. A relative path is looked up
+   *   from $cwd, then from the Composer project folder, then from the Drupal
+   *   root; the first existing directory wins.
    * @param string|null $cwd
    *   The folder Drush was run in, or NULL.
    *
@@ -104,28 +121,44 @@ final class PbMigrationPaths {
    *   With a message for the user when the target is refused.
    */
   public function resolveTarget(string $target, ?string $cwd = NULL): string {
-    $candidate = NULL;
+    // Candidate paths, in lookup order. Drush may be run from any folder:
+    // the project folder, web/, web/sites/<site> or anywhere else.
+    $candidates = [];
     if (preg_match('/^[a-z][a-z0-9_]*$/', $target) === 1) {
       $relative = ($this->themePath)($target);
       if (is_string($relative) && $relative !== '') {
-        $candidate = $this->root . DIRECTORY_SEPARATOR . $relative;
+        $candidates[] = $this->root . DIRECTORY_SEPARATOR . $relative;
       }
     }
-    if ($candidate === NULL && self::isAbsolute($target)) {
-      $candidate = $target;
+    if (self::isAbsolute($target)) {
+      $candidates[] = $target;
     }
-    if ($candidate === NULL && $cwd !== NULL && realpath(rtrim($cwd, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $target) !== FALSE) {
-      // A relative path that exists from the folder Drush was run in, such
-      // as web/themes/custom/mytheme from a Composer project folder.
-      $candidate = rtrim($cwd, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $target;
+    else {
+      $bases = [$cwd, $this->project, $this->root];
+      foreach ($bases as $base) {
+        if ($base !== NULL && $base !== '') {
+          $candidates[] = rtrim($base, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $target;
+        }
+      }
     }
-    if ($candidate === NULL) {
-      $candidate = $this->root . DIRECTORY_SEPARATOR . $target;
-    }
+    $candidates = array_values(array_unique($candidates));
 
-    $real = realpath($candidate);
-    if ($real === FALSE || !is_dir($real)) {
-      throw new \InvalidArgumentException(sprintf('%s is not a theme or an existing directory.', $target));
+    $candidate = NULL;
+    $real = FALSE;
+    foreach ($candidates as $try) {
+      $resolved = realpath($try);
+      if ($resolved !== FALSE && is_dir($resolved)) {
+        $candidate = $try;
+        $real = $resolved;
+        break;
+      }
+    }
+    if ($candidate === NULL || $real === FALSE) {
+      throw new \InvalidArgumentException(sprintf(
+        '%s is not a theme or an existing directory. Looked in: %s',
+        $target,
+        implode(', ', $candidates),
+      ));
     }
     if ($real === $this->root) {
       throw new \InvalidArgumentException('Refused: the whole Drupal root is not a valid target. Name one theme or module folder.');
@@ -156,19 +189,26 @@ final class PbMigrationPaths {
   /**
    * Resolves the --report path and checks it is safe to create.
    *
+   * A relative path that lands inside the Drupal root (for example
+   * pb-report.md run from web/sites/<site>) is moved to the Composer project
+   * folder, keeping its file name. An absolute path inside the root is
+   * refused, and so is a relative one when there is no project folder.
+   *
    * @param string $report
    *   The --report value.
    * @param string $cwd
    *   The directory the user ran Drush from; a relative path resolves here.
    *
-   * @return string
-   *   The absolute path of the file to create.
+   * @return array{path: string, moved_from: ?string}
+   *   The absolute path of the file to create, and the path the user asked
+   *   for when it was moved to the project folder (NULL otherwise).
    *
    * @throws \InvalidArgumentException
    *   With a message for the user when the path is refused.
    */
-  public function resolveReport(string $report, string $cwd): string {
-    $path = self::isAbsolute($report) ? $report : rtrim($cwd, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $report;
+  public function resolveReport(string $report, string $cwd): array {
+    $relativeReport = !self::isAbsolute($report);
+    $path = $relativeReport ? rtrim($cwd, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $report : $report;
     $name = basename($path);
     if ($name === '' || $name === '.' || $name === '..' || str_ends_with($report, DIRECTORY_SEPARATOR)) {
       throw new \InvalidArgumentException(sprintf('--report needs a file name, not a directory: %s', $report));
@@ -177,14 +217,20 @@ final class PbMigrationPaths {
     if ($parent === FALSE || !is_dir($parent)) {
       throw new \InvalidArgumentException(sprintf('The folder for the report does not exist: %s', dirname($path)));
     }
-    foreach ($this->reportForbidden as $dir) {
-      if ($parent === $dir || $this->isInside($parent, $dir)) {
+    $movedFrom = NULL;
+    if ($this->isReportForbidden($parent)) {
+      $example = ($this->project ?? dirname($this->root)) . DIRECTORY_SEPARATOR . 'pb-report.md';
+      if (!$relativeReport || $this->project === NULL) {
         throw new \InvalidArgumentException(sprintf(
-          'Refused: %s is inside %s, where a web server may serve it. Write the report outside the web root, for example --report=%s',
+          'Refused: %s is inside the Drupal root or the public files folder, where a web server may serve it. Write the report outside the web root, for example --report=%s',
           $parent . DIRECTORY_SEPARATOR . $name,
-          $dir,
-          dirname($this->root) . DIRECTORY_SEPARATOR . 'pb-report.md',
+          $example,
         ));
+      }
+      $movedFrom = $parent . DIRECTORY_SEPARATOR . $name;
+      $parent = $this->project;
+      if ($this->isReportForbidden($parent)) {
+        throw new \InvalidArgumentException(sprintf('Refused: the project folder %s is itself served. Give an absolute --report path outside the web root.', $parent));
       }
     }
     if (!is_writable($parent)) {
@@ -194,7 +240,19 @@ final class PbMigrationPaths {
     if (is_link($final) || file_exists($final)) {
       throw new \InvalidArgumentException(sprintf('Refused: %s already exists. Choose a new file name, or delete the old report first.', $final));
     }
-    return $final;
+    return ['path' => $final, 'moved_from' => $movedFrom];
+  }
+
+  /**
+   * Whether a real folder is one a report may not be written into.
+   */
+  private function isReportForbidden(string $dir): bool {
+    foreach ($this->reportForbidden as $forbidden) {
+      if ($dir === $forbidden || $this->isInside($dir, $forbidden)) {
+        return TRUE;
+      }
+    }
+    return FALSE;
   }
 
   /**

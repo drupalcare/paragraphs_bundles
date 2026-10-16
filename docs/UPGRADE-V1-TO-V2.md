@@ -105,11 +105,12 @@ is not affected.
 
 1. Commit or copy your theme, so you can compare and undo.
 2. Run `drush pb:migrate-theme mytheme`. This is a dry run: it only counts.
-3. From your project folder (the one with `composer.json`), run
-   `drush pb:migrate-theme mytheme --report=pb-report.md` and read the
+3. Run `drush pb:migrate-theme mytheme --report=pb-report.md` and read the
    report. It lists each changed line and the items you must check by hand.
    It contains your theme's source code, so it must go outside the web root;
-   the command refuses a path inside it. It is written even in a dry run.
+   a plain file name that would land there (for example when you run Drush
+   from `web/sites/example`) is written to the project folder instead. It is
+   written even in a dry run.
 4. Run `drush pb:migrate-theme mytheme --apply` to write the changes, as the
    user who owns the theme files (not with `sudo`).
 5. Run `drush cr`.
@@ -117,7 +118,9 @@ is not affected.
 7. Fix the items in the report's "Needs manual review" section.
 
 Replace `mytheme` with your theme's machine name, or with a folder inside the
-Drupal root such as `modules/custom/my_module`. A theme folder that is a
+Drupal root such as `web/modules/custom/my_module`, or a whole folder such as
+`web/themes/custom`. Drush can run from any folder of the site, including
+`web/sites/<site>` on a multisite. A theme folder that is a
 symbolic link to outside the Drupal root is refused; run the command on a copy
 inside the root. Each step, its sample output
 and what to do with each kind of report item are in

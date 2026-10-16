@@ -180,8 +180,10 @@ drush pb:migrate-theme mytheme --apply                  # write the changes
 drush cr
 ```
 
-Run it from the project folder (the one with `composer.json`), as the user
-who owns the theme files. It never edits `.yml` files and only works inside
+Run it from any folder of the site (the project folder, `web/` or
+`web/sites/<site>`), as the user who owns the theme files. The target can be a
+theme name, a folder such as `web/themes/custom/mytheme`, or a whole folder
+such as `web/themes/custom`. It never edits `.yml` files and only works inside
 the Drupal root. The report contains your theme's source code, so it is
 written outside the web root (a path inside it is refused), even during a dry
 run. Add

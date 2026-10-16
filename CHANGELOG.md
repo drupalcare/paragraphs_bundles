@@ -19,7 +19,9 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
   Read-only files and files owned by another user are skipped and listed.
   Sass/Less `&`/`#{}` nesting next to a PB class and file names that contain
   a v1 name (`pb__card.png`) are reported, not rewritten. A second run changes
-  nothing.
+  nothing. Drush can run from any folder of the site, including
+  `web/sites/<site>`; a whole folder such as `web/themes/custom` is a valid
+  target.
   Names that could mean two things (column ratios, `#pb__image-{id}`, Twig
   value comparisons) are reported, not rewritten. On 257 hunks of real v1
   themes it produced the same result as the maintainer's prototype.

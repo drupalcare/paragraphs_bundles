@@ -247,9 +247,9 @@ final class PbCommands extends DrushCommands {
    *   Drush options.
    */
   #[Command(name: 'pb:migrate-theme', aliases: ['pb-migrate-theme'])]
-  #[Argument(name: 'target', description: 'Theme machine name, or a directory inside the Drupal root. A relative path is read from the current folder first, then from the Drupal root.')]
+  #[Argument(name: 'target', description: 'Theme machine name, or a directory inside the Drupal root, such as web/themes/custom/mytheme or a whole folder like web/themes/custom. A relative path is looked up from the current folder, then the Composer project folder, then the Drupal root, so Drush can run from any folder, including web/sites/<site>.')]
   #[Option(name: 'apply', description: 'Write the changes. Without it nothing in the theme is written.')]
-  #[Option(name: 'report', description: 'Write a Markdown report of every change and every item to check by hand to this new file (mode 0600). Written even in a dry run. Must be outside the Drupal root; from a Composer project folder, --report=pb-report.md.')]
+  #[Option(name: 'report', description: 'Write a Markdown report of every change and every item to check by hand to this new file (mode 0600), even in a dry run. A relative name that would land inside the web root is written to the Composer project folder instead; an absolute path inside the web root is refused.')]
   #[Option(name: 'ext', description: 'Comma-separated extensions to process, narrowing the default set. Allowed: css, scss, sass, less, twig, js.')]
   #[Usage(name: 'drush pb:migrate-theme mytheme', description: 'Dry run: count what would change in theme "mytheme".')]
   #[Usage(name: 'drush pb:migrate-theme mytheme --report=pb-report.md', description: 'Dry run, and list every change and review item in a report (run from the project folder, outside the web root).')]
@@ -280,8 +280,11 @@ final class PbCommands extends DrushCommands {
       $cwd = $this->getConfig()->cwd();
       $root = $paths->resolveTarget($target, $cwd);
       $reportFile = NULL;
+      $reportMovedFrom = NULL;
       if (is_string($reportOption) && $reportOption !== '') {
-        $reportFile = $paths->resolveReport($reportOption, $cwd);
+        $resolved = $paths->resolveReport($reportOption, $cwd);
+        $reportFile = $resolved['path'];
+        $reportMovedFrom = $resolved['moved_from'];
       }
     }
     catch (\InvalidArgumentException $e) {
@@ -430,7 +433,15 @@ final class PbCommands extends DrushCommands {
         $this->logger()->error(dt('Could not write the whole report to @file.', ['@file' => $reportFile]));
         return 1;
       }
-      $this->logger()->success(dt('Report written to @file', ['@file' => $reportFile]));
+      if ($reportMovedFrom !== NULL) {
+        $this->logger()->success(dt('Report written to @file (not @asked: that is inside the web root, so it went to the project folder)', [
+          '@file' => $reportFile,
+          '@asked' => $reportMovedFrom,
+        ]));
+      }
+      else {
+        $this->logger()->success(dt('Report written to @file', ['@file' => $reportFile]));
+      }
     }
     elseif (!$apply) {
       $this->logger()->success(dt('Nothing was written. Add --report=pb-report.md to list every change, then --apply to write them.'));
