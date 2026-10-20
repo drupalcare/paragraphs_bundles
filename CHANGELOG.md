@@ -5,6 +5,16 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- **Carousel: pages no longer drift when the theme adds a margin to the
+  slides.** Page positions were worked out from each slide's width plus the
+  gap setting, so any margin a theme put on `.pb-carousel__slide` was missed
+  and every page landed a little further off, until the last slides could not
+  be reached. The carousel now measures where the browser actually placed each
+  slide, so margins, the gap and any other spacing are all counted. Carousels
+  without such a margin page exactly as before.
+
 ## [2.1.0] — 2026-10-16
 
 First release from the new `2.1.x` branch. Covers everything since 2.0.2, the

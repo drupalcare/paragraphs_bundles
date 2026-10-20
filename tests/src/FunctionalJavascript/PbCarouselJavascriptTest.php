@@ -266,6 +266,93 @@ final class PbCarouselJavascriptTest extends WebDriverTestBase {
   }
 
   /**
+   * Paging stays aligned when the theme puts a margin on the slides.
+   *
+   * The same carousel code in vvjb was found drifting on a live site whose
+   * theme gave every item a right margin: positions were added up from slide
+   * widths and the gap setting only, so each page landed one margin per slide
+   * further off. Every page must start where page one starts, whatever
+   * spacing the theme adds.
+   */
+  public function testPagingStaysAlignedWithThemeSlideMargins(): void {
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+
+    $slides = [];
+    foreach (range(1, 6) as $i) {
+      $slide = Paragraph::create([
+        'type' => 'accordion_section_bundle',
+        'pb_content_accordion_title' => 'Slide ' . $i,
+      ]);
+      $slide->save();
+      $slides[] = [
+        'target_id' => $slide->id(),
+        'target_revision_id' => $slide->getRevisionId(),
+      ];
+    }
+
+    $carousel = Paragraph::create([
+      'type' => 'carousel_bundle',
+      'pb_content_carousel_body' => $slides,
+      // Two slides per page at every width, arrows, autoplay off.
+      'pb_display_navigation' => 'arrows',
+      'pb_display_carousel_play_stop' => 0,
+      'pb_display_big_screen' => 2,
+      'pb_display_small_screen' => 2,
+    ]);
+    $carousel->save();
+
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+    $node = $this->drupalCreateNode([
+      'type' => $nodeType,
+      $fieldName => [
+        [
+          'target_id' => $carousel->id(),
+          'target_revision_id' => $carousel->getRevisionId(),
+        ],
+      ],
+    ]);
+
+    $this->drupalGet($node->toUrl());
+    $this->assertSession()->waitForElement('css', '.pb-carousel__slide');
+
+    // Fixed slide width plus a right margin, as a theme might add, then a
+    // resize so the carousel lays itself out again.
+    $this->getSession()->executeScript(
+      "const style = document.createElement('style');"
+      . " style.textContent = '.pb-carousel__slide { flex: 0 0 100px !important;"
+      . " width: 100px !important; max-width: 100px !important;"
+      . " margin-inline-end: 30px !important; }';"
+      . " document.head.appendChild(style);"
+      . " window.dispatchEvent(new Event('resize'));"
+      . " window.pbMarginProbe = null;"
+      . " setTimeout(() => {"
+      . "   const slides = document.querySelectorAll('.pb-carousel__slide');"
+      . "   const frame = slides[0].parentElement.parentElement.getBoundingClientRect();"
+      . "   window.pbMarginProbe = Math.round(slides[0].getBoundingClientRect().left - frame.left);"
+      . " }, 1000);"
+    );
+    $this->assertJsCondition('window.pbMarginProbe !== null', 5000);
+
+    $this->getSession()->getPage()->find('css', '.pb-nav__next')->click();
+
+    // The first slide of page two must sit where slide one sat on page one.
+    // Before the fix it sat two margins (60px) further right.
+    $this->assertJsCondition(
+      "(function () {"
+      . " const slides = [...document.querySelectorAll('.pb-carousel__slide')];"
+      . " const frame = slides[0].parentElement.parentElement.getBoundingClientRect();"
+      . " const first = slides.findIndex((s) => s.classList.contains('pb-is-active'));"
+      . " if (first < 1) { return false; }"
+      . " const left = Math.round(slides[first].getBoundingClientRect().left - frame.left);"
+      . " return Math.abs(left - window.pbMarginProbe) <= 1;"
+      . "})()",
+      5000,
+    );
+  }
+
+  /**
    * Finds a node type + field that references paragraphs.
    *
    * @return array{0: string|null, 1: string|null}

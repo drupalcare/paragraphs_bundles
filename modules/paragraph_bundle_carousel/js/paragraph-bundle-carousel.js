@@ -166,6 +166,43 @@
   }
 
   /**
+   * Gets where an item starts along the slide axis, as laid out by the browser.
+   *
+   * Positions are measured rather than summed from sizes and the gap setting,
+   * so margins a theme puts on the slides, the CSS gap and any other spacing
+   * are all counted. In RTL the axis runs from the right edge, so the result
+   * grows with the slide index in both directions.
+   *
+   * @param {HTMLElement} item - The carousel item element.
+   * @param {boolean} isVertical - Whether the carousel is in vertical mode.
+   * @return {number} The item's start position in pixels.
+   */
+  function getItemStart(item, isVertical) {
+    if (isVertical) {
+      return item.offsetTop;
+    }
+    return getComputedStyle(item).direction === 'rtl'
+      ? -(item.offsetLeft + item.offsetWidth)
+      : item.offsetLeft;
+  }
+
+  /**
+   * Gets the length from the start of one item to the end of another.
+   *
+   * @param {HTMLElement} first - The first item.
+   * @param {HTMLElement} last - The last item.
+   * @param {boolean} isVertical - Whether the carousel is in vertical mode.
+   * @return {number} The span in pixels, including the spacing between them.
+   */
+  function getSpan(first, last, isVertical) {
+    return (
+      getItemStart(last, isVertical) +
+      getItemSize(last, isVertical) -
+      getItemStart(first, isVertical)
+    );
+  }
+
+  /**
    * Calculates the number of visible items based on viewport and settings.
    *
    * @param {Object} state - The carousel state object.
@@ -191,18 +228,10 @@
     }
 
     const containerSize = state.wrapper.offsetWidth;
-    const gap = state.config.gap || 0;
-    let total = 0;
     let count = 0;
 
     for (let i = 0; i < state.items.length; i++) {
-      const itemSize = state.items[i].offsetWidth;
-      if (i > 0) {
-        total += gap;
-      }
-      total += itemSize;
-
-      if (total > containerSize) {
+      if (getSpan(state.items[0], state.items[i], false) > containerSize) {
         break;
       }
       count++;
@@ -235,24 +264,17 @@
   function getGroupOffset(state) {
     const itemsVisible = getItemsVisible(state);
     const isVertical = state.config.orientation === 'vertical';
-    const gap = state.config.gap || 0;
-    let offset = 0;
-
-    for (let page = 0; page < state.pageIndex; page++) {
-      const start = page * itemsVisible;
-      const end = start + itemsVisible;
-      for (let i = start; i < end && i < state.items.length; i++) {
-        const size = getItemSize(state.items[i], isVertical);
-        offset += size;
-        if (i < end - 1) {
-          offset += gap;
-        }
-      }
-      if (end < state.items.length) {
-        offset += gap;
-      }
+    const start = Math.min(
+      state.pageIndex * itemsVisible,
+      state.items.length - 1,
+    );
+    if (start <= 0) {
+      return 0;
     }
-    return offset;
+    return (
+      getItemStart(state.items[start], isVertical) -
+      getItemStart(state.items[0], isVertical)
+    );
   }
 
   /**
@@ -267,7 +289,9 @@
     }
 
     const visibleItems = getVisibleItems(state);
-    const gap = state.config.gap || 0;
+    if (!visibleItems.length) {
+      return;
+    }
 
     if (state.config.orientation === 'vertical') {
       // The frame is as tall as the tallest page, not the current one, so
@@ -277,9 +301,7 @@
       let tallestPage = 0;
       for (let start = 0; start < items.length; start += itemsVisible) {
         const page = items.slice(start, start + itemsVisible);
-        const pageHeight =
-          page.reduce((sum, item) => sum + getItemSize(item, true), 0) +
-          (page.length - 1) * gap;
+        const pageHeight = getSpan(page[0], page[page.length - 1], true);
         tallestPage = Math.max(tallestPage, pageHeight);
       }
       state.wrapper.style.maxHeight = `${tallestPage}px`;
@@ -287,9 +309,11 @@
       state.wrapper.style.maxWidth = '';
       state.centerOffset = 0;
     } else {
-      const totalWidth = visibleItems.reduce((sum, item, idx) => {
-        return sum + getItemSize(item, false) + (idx > 0 ? gap : 0);
-      }, 0);
+      const totalWidth = getSpan(
+        visibleItems[0],
+        visibleItems[visibleItems.length - 1],
+        false,
+      );
       const wrapperWidth = state.wrapper.offsetWidth;
 
       if (totalWidth > 0 && totalWidth <= wrapperWidth) {
