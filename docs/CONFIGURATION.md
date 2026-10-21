@@ -55,6 +55,14 @@ On the **view** display, all `pb_display_*` formatters are hidden.
 Presentation comes from dynamic CSS + static bundle CSS, not from
 formatter output.
 
+**Icon cards and hover.** An icon (`paragraph_bundle_icon`) acts as a
+card when its **Border**, **Background** or **Shadow** option is set.
+A card gets the chosen **Padding** on all four sides and lifts on
+hover, with its shadow one level stronger than the one chosen. An icon
+with none of those options set stays still on hover, even when it has
+a link: it has no surface to raise. To make an icon lift, give it a
+border, background or shadow.
+
 ---
 
 ## Dynamic CSS (per paragraph)
@@ -117,6 +125,18 @@ Details: **`docs/PB-V2-THEME-BRIDGE.md`**. Variable list:
 Foundation CSS uses chains like
 `var(--pb-tx, var(--r-tx, CanvasText))` so sub-themes can still
 override via `--pb-*` on the paragraph root.
+
+**Theme-drawn cards.** PB's icon hover lifts only its own cards, marked
+`pb-icon--card` on `.pb-icon__inner`. If a theme draws the card itself,
+for example with a class on the outer `.pb-icon` element added through
+the CSS classes field, PB leaves that card alone on hover. Style its
+hover in the theme, on the same element that draws the card:
+
+```css
+.my-card.pb-icon:hover {
+  box-shadow: 0 4px 20px rgb(0 0 0 / 20%);
+}
+```
 
 ---
 

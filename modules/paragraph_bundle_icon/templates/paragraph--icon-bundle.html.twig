@@ -34,7 +34,16 @@
 {{ attach_library('paragraph_bundle_icon/paragraph-bundle-icon-' ~ icon_style) }}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = ['pb-ui-inner', 'pb-icon__inner']|merge(pb_display_classes)|join(' ') %}
+{# The hover lift belongs to a card: an icon with a visible surface (shadow,
+   background or border). A plain icon, linked or not, has no surface to
+   raise; a theme that draws its own card styles that card's hover. #}
+{% set is_card = paragraph|pb_field_value('pb_display_shadow')
+  or paragraph|pb_field_value('pb_display_bg')
+  or paragraph|pb_field_value('pb_display_border') %}
+{% set classes_inner = ['pb-ui-inner', 'pb-icon__inner']
+  |merge(pb_display_classes)
+  |merge(is_card ? ['pb-icon--card'] : [])
+  |join(' ') %}
 
 {% set classes = [
   'paragraph',

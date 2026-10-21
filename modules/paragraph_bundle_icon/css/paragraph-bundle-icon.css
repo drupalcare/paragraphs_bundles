@@ -33,13 +33,53 @@
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  transition: all var(--pb-transition-duration, 500ms) ease;
+  transition-timing-function: ease;
+  transition-duration: var(--pb-transition-duration, 500ms);
+  transition-property: transform, box-shadow, background-color, border-color, color;
 }
 
-.paragraphs-bundles.pb-icon > .pb-icon__inner:hover,
-.paragraphs-bundles.pb-icon > .pb-icon__inner:focus-within {
+/* A card (shadow, background or border chosen) needs room on every side; the
+   padding options pad top and bottom only. */
+.paragraphs-bundles.pb-icon > .pb-icon--card {
+  padding-inline: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-icon > .pb-icon--card.pb-u-padding--24 {
+  padding-inline: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-icon > .pb-icon--card.pb-u-padding--32 {
+  padding-inline: var(--pb-px32);
+}
+
+.paragraphs-bundles.pb-icon > .pb-icon--card.pb-u-padding--48 {
+  padding-inline: var(--pb-px48);
+}
+
+.paragraphs-bundles.pb-icon > .pb-icon--card.pb-u-padding--64 {
+  padding-inline: var(--pb-px64);
+}
+
+/* Only a card lifts on hover, and the lift steps up one level from the
+   shadow the editor chose instead of replacing it. */
+.paragraphs-bundles.pb-icon > .pb-icon--card:hover,
+.paragraphs-bundles.pb-icon > .pb-icon--card:focus-within {
   transform: scale(1.01);
-  box-shadow: 0 20px 40px 0 color-mix(in sRGB, CanvasText 35%, transparent);
+  box-shadow:
+    0 var(--pb-px2) var(--pb-px5) 0 rgb(0, 0, 0, 0.16),
+    0 var(--pb-px2) var(--pb-px10) 0 rgb(0, 0, 0, 0.12);
+}
+
+.paragraphs-bundles.pb-icon > .pb-u-shadow--2:is(:hover, :focus-within) {
+  box-shadow:
+    0 var(--pb-px4) var(--pb-px10) 0 rgb(0, 0, 0, 0.2),
+    0 var(--pb-px4) var(--pb-px20) 0 rgb(0, 0, 0, 0.19);
+}
+
+.paragraphs-bundles.pb-icon > .pb-u-shadow--4:is(:hover, :focus-within) {
+  box-shadow:
+    0 var(--pb-px8) var(--pb-px16) 0 rgb(0, 0, 0, 0.22),
+    0 var(--pb-px8) var(--pb-px24) 0 rgb(0, 0, 0, 0.2);
 }
 
 .paragraphs-bundles.pb-icon a:focus-visible {
@@ -50,8 +90,8 @@
 @media (prefers-reduced-motion: reduce) {
   .paragraphs-bundles.pb-icon .icon-wrapper,
   .paragraphs-bundles.pb-icon > .pb-icon__inner,
-  .paragraphs-bundles.pb-icon > .pb-icon__inner:hover,
-  .paragraphs-bundles.pb-icon > .pb-icon__inner:focus-within {
+  .paragraphs-bundles.pb-icon > .pb-icon--card:hover,
+  .paragraphs-bundles.pb-icon > .pb-icon--card:focus-within {
     transition: none;
     transform: none;
   }

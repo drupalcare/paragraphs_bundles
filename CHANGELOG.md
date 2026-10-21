@@ -5,6 +5,19 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Icon: only an icon styled as a card lifts on hover.** Every icon used to
+  grow and gain a shadow on hover, even one with no border, background or
+  shadow, so the shadow sat tight around bare text, or floated inside a card
+  the theme had drawn around the icon. An icon now counts as a card when its
+  Border, Background or Shadow option is set. A card lifts on hover and its
+  shadow steps up one level from the one chosen, and it gets the chosen
+  Padding on all four sides instead of top and bottom only. Other icons,
+  linked or not, no longer move on hover. Sites that relied on the old hover
+  for plain icons can set a border, background or shadow, or add their own
+  hover rule in the theme.
+
 ### Fixed
 
 - **Carousel: pages no longer drift when the theme adds a margin to the
