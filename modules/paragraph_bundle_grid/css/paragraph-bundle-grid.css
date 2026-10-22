@@ -15,9 +15,11 @@
   grid-auto-columns: 100%;
   grid-auto-flow: row;
   align-content: start;
-  align-items: start;
+  /* Cells fill their row and column, so bordered or shaded items in one row
+     end on the same line and share the column width. */
+  align-items: stretch;
   justify-content: start;
-  justify-items: start;
+  justify-items: stretch;
   gap: 1rem;
 }
 

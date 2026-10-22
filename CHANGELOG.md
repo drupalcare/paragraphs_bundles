@@ -7,6 +7,14 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- **Grid: items fill their cell.** The grid used `align-items: start` and
+  `justify-items: start`, so each item was only as tall and as wide as its own
+  content. A bordered or shaded simple container with less text stopped short
+  of its neighbours, and a short one did not reach the column width. Items now
+  stretch to the row height and the column width, so borders in one row end on
+  the same line. A theme that relied on the old behaviour can restore it with
+  `align-items: start` on `.pb-grid__wrapper`.
+
 - **Icon: only an icon styled as a card lifts on hover.** Every icon used to
   grow and gain a shadow on hover, even one with no border, background or
   shadow, so the shadow sat tight around bare text, or floated inside a card
