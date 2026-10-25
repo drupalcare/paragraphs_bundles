@@ -138,10 +138,27 @@
     if (raw === 'vertical') {
       return 'vertical';
     }
-    if (raw === 'hybrid' && window.innerWidth <= bp) {
+    if (raw === 'hybrid' && belowBreakpoint(bp)) {
       return 'vertical';
     }
     return 'horizontal';
+  }
+
+  /**
+   * Asks the same question as the breakpoint stylesheets.
+   *
+   * Each `paragraph-bundle-carousel-pb-NNN.css` switches at
+   * `max-width: (NNN / 16 - 0.00125)rem`, so the script asks that media query
+   * rather than comparing `innerWidth` to NNN: at exactly NNN pixels the two
+   * used to disagree, and with a larger browser font size a rem is no longer
+   * 16 pixels.
+   *
+   * @param {number} breakpoint - The breakpoint in pixels, such as 992.
+   * @return {boolean} True if the viewport is below the breakpoint.
+   */
+  function belowBreakpoint(breakpoint) {
+    return window.matchMedia(`(max-width: ${breakpoint / 16 - 0.00125}rem)`)
+      .matches;
   }
 
   /**
@@ -151,7 +168,7 @@
    * @return {boolean} True if viewport is at or below the breakpoint.
    */
   function isSmallScreen(state) {
-    return window.innerWidth <= state.config.breakpoints;
+    return belowBreakpoint(state.config.breakpoints);
   }
 
   /**

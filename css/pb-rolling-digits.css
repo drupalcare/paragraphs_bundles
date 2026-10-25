@@ -1,0 +1,82 @@
+/**
+ * @file
+ * Rolling digits (pb-rolling-digits.js): each character in its own slot; a
+ * changed digit slides in while the old one leaves. A falling number brings
+ * the new digit from above, a rising one (`.pb-digits--rising`) from below.
+ * Tabular figures keep the width steady.
+ *
+ * Filename:     pb-rolling-digits.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+.pb-digits {
+  display: inline-flex;
+  font-variant-numeric: tabular-nums;
+}
+
+.pb-digits__slot {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  width: 1ch;
+  height: 1.3em;
+  text-align: center;
+  line-height: 1.3em;
+}
+
+.pb-digits__digit {
+  display: block;
+}
+
+.pb-digits__digit.is-leaving {
+  position: absolute;
+  inset: 0;
+  animation: pb-digits-out-down 0.3s ease-in forwards;
+}
+
+.pb-digits__digit.is-entering {
+  animation: pb-digits-in-from-above 0.3s ease-out;
+}
+
+.pb-digits--rising .pb-digits__digit.is-leaving {
+  animation-name: pb-digits-out-up;
+}
+
+.pb-digits--rising .pb-digits__digit.is-entering {
+  animation-name: pb-digits-in-from-below;
+}
+
+@keyframes pb-digits-out-down {
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes pb-digits-in-from-above {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes pb-digits-out-up {
+  to {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+@keyframes pb-digits-in-from-below {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-digits__digit {
+    animation: none;
+  }
+}

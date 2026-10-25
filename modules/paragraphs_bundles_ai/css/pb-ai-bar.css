@@ -57,6 +57,17 @@
   line-height: 1.4;
 }
 
+.pb-ai-bar__intro p {
+  margin: 0;
+}
+
+/* A section source's note: one quiet line under the main sentence. */
+.pb-ai-bar__intro .pb-ai-bar__note {
+  margin-block-start: 0.15rem;
+  font-size: 0.72rem;
+  font-style: italic;
+}
+
 /**
  * Two rows, across the full width of the bar: the choices along the top, the
  * prompt and its buttons underneath.
@@ -429,6 +440,44 @@
 
 .pb-ai-bar__row--actions > .form-submit {
   margin: 0;
+}
+
+/* The buttons in the bar's own look, small and quiet: the theme's page buttons
+   are made for a page, not for a dark tool strip. Three classes, so a theme's
+   `.button` or `input.form-submit` rule does not win. The first (Add) is the
+   bar's green; the second (Edit) is an outline. White on #0e5e54 is 7.6:1. */
+.pb-ai-bar .pb-ai-bar__row--actions > .form-submit {
+  padding: 0.35rem 0.85rem;
+  color: #f4f7f3;
+  border: 1px solid #0e5e54;
+  border-radius: 4px;
+  background: #0e5e54;
+  box-shadow: none;
+  font: inherit;
+  font-size: 0.85rem;
+  line-height: 1.4;
+  text-transform: none;
+  cursor: pointer;
+}
+
+.pb-ai-bar .pb-ai-bar__row--actions > .form-submit:hover {
+  border-color: #12776a;
+  background: #12776a;
+}
+
+.pb-ai-bar .pb-ai-bar__row--actions > .form-submit ~ .form-submit {
+  border-color: #3b4541;
+  background: transparent;
+}
+
+.pb-ai-bar .pb-ai-bar__row--actions > .form-submit ~ .form-submit:hover {
+  border-color: #a8b3ad;
+  background: #1e2422;
+}
+
+.pb-ai-bar .pb-ai-bar__row--actions > .form-submit:focus-visible {
+  outline: 2px solid #f4f7f3;
+  outline-offset: 2px;
 }
 
 /**

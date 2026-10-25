@@ -229,6 +229,76 @@ final class SectionDrafter implements SectionDrafterInterface {
   }
 
   /**
+   * {@inheritdoc}
+   */
+  public function draftTexts(string $about, array $places, string $words): array|\Stringable {
+    $words = trim($words);
+    if ($words === '') {
+      return $this->t('Say what the section should be about.');
+    }
+    if ($places === []) {
+      return [];
+    }
+
+    [$providerId, $modelId] = $this->chosenProvider();
+    if ($providerId === '') {
+      return $this->t('No default AI provider is set for chat. Choose one at Configuration › AI › Settings.');
+    }
+
+    $lines = [
+      sprintf('You are writing the words of %s on a Drupal site. Its layout is already built; only the words are missing.', $about),
+      sprintf('Answer with "texts": exactly %d strings, one per place below, in this order.', count($places)),
+      'Write plain text. No HTML, no Markdown, no quotation marks around the whole value.',
+      'Places of the same kind are siblings (cards, slides, tabs): give each its own content, never the same words twice.',
+      'Write real content, not a description of the layout.',
+    ];
+    foreach (array_values($places) as $i => $place) {
+      $lines[] = sprintf(
+        '%d. %s%s%s',
+        $i + 1,
+        $place['label'],
+        $place['hint'] !== '' ? ' (' . $place['hint'] . ')' : '',
+        $place['max'] > 0 ? sprintf(' at most %d characters', $place['max']) : '',
+      );
+    }
+
+    $input = new ChatInput([new ChatMessage('user', $words)]);
+    $input->setSystemPrompt(implode("\n", $lines));
+    $input->setChatStructuredJsonSchema(new StructuredOutputSchema(
+      name: 'pb_texts',
+      description: 'The words for each text place, in order.',
+      strict: FALSE,
+      json_schema: [
+        'type' => 'object',
+        'properties' => [
+          'texts' => [
+            'type' => 'array',
+            'items' => ['type' => 'string'],
+            'minItems' => count($places),
+            'maxItems' => count($places),
+          ],
+        ],
+        'required' => ['texts'],
+      ],
+    ));
+
+    $answer = $this->ask($input, $providerId, $modelId);
+    if (!is_array($answer)) {
+      return $answer;
+    }
+    $texts = is_array($answer['texts'] ?? NULL) ? array_values($answer['texts']) : [];
+    $out = [];
+    foreach (array_values($places) as $i => $place) {
+      $text = is_string($texts[$i] ?? NULL) ? trim($texts[$i]) : '';
+      if ($place['max'] > 0 && mb_strlen($text) > $place['max']) {
+        $text = rtrim(mb_substr($text, 0, $place['max'] - 1)) . '…';
+      }
+      $out[] = $text;
+    }
+    return $out;
+  }
+
+  /**
    * Sends one request and decodes the answer.
    *
    * @param \Drupal\ai\OperationType\Chat\ChatInput $input

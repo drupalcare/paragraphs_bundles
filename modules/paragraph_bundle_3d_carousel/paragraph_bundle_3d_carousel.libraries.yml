@@ -27,6 +27,7 @@ paragraph-bundle-3d-carousel:
   dependencies:
     - core/drupal
     - core/once
+    - paragraphs_bundles/rolling-digits
 
 paragraph-bundle-3d-carousel-ring:
   css:

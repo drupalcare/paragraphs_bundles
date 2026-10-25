@@ -100,8 +100,11 @@
          * Activates a tab and its corresponding panel.
          *
          * @param {HTMLButtonElement} button - Tab control to activate.
+         * @param {boolean} [moveFocus=true] - Whether focus moves to the tab.
+         *   False when the page opens on a tab's address: the page loading is
+         *   not the person choosing the tab, so focus stays where it was.
          */
-        const activateTab = (button) => {
+        const activateTab = (button, moveFocus = true) => {
           if (button.parentElement?.parentElement !== tabset) {
             return;
           }
@@ -123,10 +126,12 @@
           currentPanel.setAttribute('aria-hidden', 'false');
 
           button.classList.add(PB_IS_ACTIVE);
-          button.removeAttribute('tabindex');
+          button.setAttribute('tabindex', '0');
           button.setAttribute('aria-selected', 'true');
           button.setAttribute('aria-expanded', 'true');
-          button.focus();
+          if (moveFocus) {
+            button.focus();
+          }
 
           const slug = button.getAttribute('data-fragment') || button.id;
           window.history.replaceState(null, '', `#${slug}`);
@@ -176,6 +181,25 @@
           tabButtons[newIndex].focus();
         };
 
+        // Arrow keys move focus without selecting (manual activation), so the
+        // focusable tab can be one that is not selected. When focus leaves the
+        // tab list, the selected tab becomes the one Tab returns to.
+        tabButtons[0].parentElement.addEventListener(
+          'focusout',
+          (event) => {
+            if (tabButtons[0].parentElement.contains(event.relatedTarget)) {
+              return;
+            }
+            tabButtons.forEach((tabButton) => {
+              tabButton.setAttribute(
+                'tabindex',
+                tabButton.getAttribute('aria-selected') === 'true' ? '0' : '-1',
+              );
+            });
+          },
+          { signal },
+        );
+
         once(
           ONCE_PB_PARAGRAPH_BUNDLE_TABS_TAB,
           PB_TABS__TABSET_OWNED_TAB,
@@ -206,7 +230,8 @@
               candidate.getAttribute('data-fragment') === hash,
           );
           if (button) {
-            activateTab(button);
+            activateTab(button, false);
+            button.scrollIntoView({ block: 'start' });
             return;
           }
         }

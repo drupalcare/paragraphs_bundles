@@ -80,3 +80,15 @@ paragraphs-list:
     - core/drupal
     - core/drupal.announce
     - core/once
+
+# Rolling digits — any bundle whose number changes (the alert countdown, the 3D
+# carousel's slide index) marks it `data-pb-digits` and depends on this.
+rolling-digits:
+  css:
+    theme:
+      css/pb-rolling-digits.css: { }
+  js:
+    js/pb-rolling-digits.js: {}
+  dependencies:
+    - core/drupal
+    - core/once

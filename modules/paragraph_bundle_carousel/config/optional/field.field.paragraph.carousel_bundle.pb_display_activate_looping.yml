@@ -9,7 +9,7 @@ field_name: pb_display_activate_looping
 entity_type: paragraph
 bundle: carousel_bundle
 label: 'Activate Looping'
-description: 'This feature only works if you set the field "Time in seconds" number bigger than zero.'
+description: 'After the last slide, go back to the first, and before the first, to the last. Applies to the arrows and to autoplay.'
 required: false
 translatable: false
 default_value: {  }

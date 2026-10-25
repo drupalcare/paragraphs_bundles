@@ -238,3 +238,13 @@ services:
   # rather than reaching for \Drupal::service().
   Drupal\paragraphs_bundles_ai\Hook\PbAiPageHook:
     autowire: true
+
+  # Ready-made sections other modules offer in the bar (SectionSourceInterface).
+  # A module tags its service `paragraphs_bundles_ai.section_source`; with none
+  # tagged, the bar lists only this site's bundles, as before.
+  paragraphs_bundles_ai.section_sources:
+    class: Drupal\paragraphs_bundles_ai\SectionSource\SectionSources
+    arguments:
+      - !tagged_iterator paragraphs_bundles_ai.section_source
+
+  Drupal\paragraphs_bundles_ai\SectionSource\SectionSources: '@paragraphs_bundles_ai.section_sources'

@@ -109,7 +109,7 @@
         {% if pb_countdown_runs %}
           <div class="pb-alert__countdown" aria-live="polite">
             {% if pb_show_countdown_label %}
-              <span data-pb-countdown-label>{{ pb_countdown_seconds }}</span>
+              <span data-pb-countdown-label data-pb-digits>{{ pb_countdown_seconds }}</span>
               <span class="pb-alert__countdown-unit">{{ 'sec'|t }}</span>
             {% endif %}
             <button type="button"

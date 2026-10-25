@@ -59,8 +59,10 @@
       {# L3 behavior host: JS once() target #}
       <div id="{{ tab_id }}" class="pb-tabs__tabset pb-ui-row {{ tabset_layout }}">
 
-        <div class="pb-ui-bar pb-tabs__tablist" role="tablist" aria-label="{{ 'Tab List'|t }}">
-          <span class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
+        {# The hint sits outside the tab list, which may contain only tabs, and
+           reaches it as the list's description. #}
+        <span id="{{ tab_id }}-hint" class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
+        <div class="pb-ui-bar pb-tabs__tablist" role="tablist" aria-label="{{ 'Tab List'|t }}" aria-describedby="{{ tab_id }}-hint">
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
 
@@ -115,7 +117,7 @@
         <div class="pb-ui-row pb-tabs__panels">
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
-              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb-tabs__panel{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if key == 0 %} aria-live="polite"{% endif %}>
+              <div id="{{ tab_id }}-{{ key + 1 }}-pane" role="tabpanel" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" aria-labelledby="{{ tab_id }}-{{ key + 1 }}" class="pb-tabs__panel{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}">
                 {{ item|pb_section_bodies('pb_content_tab_body') }}
               </div>
             {% endif %}

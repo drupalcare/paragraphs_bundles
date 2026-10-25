@@ -55,21 +55,6 @@
     `${PB_KEY_OWNING_TEXT_ENTRY}, a[href], button, summary, audio, video,` +
     ' [role="button"], [role="tab"], [role="checkbox"], [role="radio"]';
 
-  /**
-   * Debounce utility to limit function execution frequency.
-   *
-   * @param {Function} func - The function to debounce.
-   * @param {number} delay - Delay in milliseconds.
-   * @return {Function} Debounced function.
-   */
-  const debounce = (func, delay) => {
-    let timer;
-    return (...args) => {
-      clearTimeout(timer);
-      timer = setTimeout(() => func(...args), delay);
-    };
-  };
-
   /** @type {WeakMap<HTMLElement, () => void>} */
   const stageCleanupHandlers = new WeakMap();
 
@@ -120,7 +105,6 @@
         let slideIndex = 1;
         let isPaused = slideTime === 0;
         let autoSlideIntervalId = null;
-        let previousVisibility = false;
         let isVisible = true;
         let touchStartX = 0;
 
@@ -292,33 +276,6 @@
         };
 
         /**
-         * Returns true when more than 20% of the stage is visible.
-         *
-         * @return {boolean}
-         */
-        const isMostlyVisible = () => {
-          const rect = stage.getBoundingClientRect();
-          const visibleHeight =
-            Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
-          return visibleHeight / rect.height > 0.2;
-        };
-
-        /**
-         * Pauses or resumes autoplay based on scroll visibility.
-         */
-        const handleVisibility = () => {
-          const currentlyVisible = isMostlyVisible();
-          if (currentlyVisible !== previousVisibility) {
-            previousVisibility = currentlyVisible;
-            if (currentlyVisible && !isPaused) {
-              startAutoSlide();
-            } else {
-              stopAutoSlide();
-            }
-          }
-        };
-
-        /**
          * Handles document visibility changes.
          */
         const handleSlideshowVisibilityChange = () => {
@@ -326,10 +283,7 @@
             stopAutoSlide();
             return;
           }
-          isVisible = isMostlyVisible();
-          if (isVisible && !isPaused) {
-            startAutoSlide();
-          }
+          startAutoSlide();
         };
 
         /**
@@ -387,24 +341,25 @@
           startAutoSlide();
         };
 
+        // ONE answer to "is the slideshow on screen": autoplay runs while more
+        // than a fifth of the stage is visible. A scroll handler and this
+        // observer used to answer it separately, at 20% and at 50%, so one
+        // could restart what the other had just stopped.
         const intersectionObserver = new IntersectionObserver(
           (entries) => {
-            const entry = entries[0];
-            isVisible = entry.isIntersecting;
-            if (isVisible && !isPaused) {
+            isVisible = entries[0].intersectionRatio > 0.2;
+            if (isVisible) {
               startAutoSlide();
             } else {
               stopAutoSlide();
             }
           },
           {
-            threshold: 0.5,
+            threshold: [0, 0.2, 0.5, 1],
           },
         );
         intersectionObserver.observe(stage);
 
-        const debouncedHandleVisibility = debounce(handleVisibility, 200);
-        const debouncedResize = debounce(handleVisibility, 200);
 
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
         nextButton?.addEventListener('click', nextSlide, { signal });
@@ -437,11 +392,6 @@
           signal,
         });
         stage.addEventListener('keydown', handleKeydown, { signal });
-        document.addEventListener('scroll', debouncedHandleVisibility, {
-          passive: true,
-          signal,
-        });
-        window.addEventListener('resize', debouncedResize, { signal });
         document.addEventListener(
           'visibilitychange',
           handleSlideshowVisibilityChange,

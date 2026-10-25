@@ -40,8 +40,8 @@
     inset-inline-end: auto;
   }
 
-  .paragraphs-bundles.pb-carousel.pb__1200.pb-u-hybrid-carousel button svg {
-    transform: rotate(-90deg);
+  .paragraphs-bundles.pb-carousel.pb__1200.pb-u-hybrid-carousel button:not(.pb-carousel__play-pause) svg {
+    transform: rotate(90deg);
   }
 
   /* Arrow hover - vertical direction when hybrid switches to vertical */

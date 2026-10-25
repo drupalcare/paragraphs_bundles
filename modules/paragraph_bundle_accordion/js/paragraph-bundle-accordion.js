@@ -183,13 +183,19 @@
                   return;
                 }
 
-                const isActive = element.classList.contains(PB_IS_ACTIVE);
-                element.classList.toggle(PB_IS_ACTIVE, !isActive);
-                element.classList.toggle(PB_IS_INACTIVE, isActive);
-
                 const toggleButton = element.querySelector(
                   `:scope > .${PB_ACCORDION__BUTTON}`,
                 );
+                // The button's state, not the class: a pane that is still
+                // sliding shut keeps its active class until the slide ends,
+                // and a second click then must open it again.
+                const isActive = toggleButton
+                  ? toggleButton.getAttribute('aria-expanded') === 'true'
+                  : element.classList.contains(PB_IS_ACTIVE);
+                const setOpen = (open) => {
+                  element.classList.toggle(PB_IS_ACTIVE, open);
+                  element.classList.toggle(PB_IS_INACTIVE, !open);
+                };
                 const contentPane = element.querySelector(
                   `:scope > .${PB_ACCORDION__PANE}`,
                 );
@@ -198,12 +204,21 @@
                 toggleButton?.setAttribute('aria-expanded', String(!isActive));
                 contentPane?.setAttribute('aria-hidden', String(isActive));
 
-                if (contentPane) {
-                  if (!isActive) {
+                // Opening shows the pane first, then slides it down. Closing
+                // slides it up while it is still shown and only then marks it
+                // inactive: the inactive class hides the pane through CSS, and
+                // marking it first left nothing to animate.
+                if (!isActive) {
+                  setOpen(true);
+                  if (contentPane) {
                     Drupal.paragraphBundleAccordion.slideDown(contentPane);
-                  } else {
-                    Drupal.paragraphBundleAccordion.slideUp(contentPane);
                   }
+                } else if (contentPane) {
+                  Drupal.paragraphBundleAccordion.slideUp(contentPane, 300, () =>
+                    setOpen(false),
+                  );
+                } else {
+                  setOpen(false);
                 }
                 togglePlusMinus(plus, minus, !isActive);
 
@@ -248,8 +263,11 @@
                     `:scope > .${PB_ACCORDION__BUTTON}`,
                   );
                   const { plus, minus } = getOwnedIcons(toggleButton);
+                  const isOpen = toggleButton
+                    ? toggleButton.getAttribute('aria-expanded') === 'true'
+                    : item.classList.contains(PB_IS_ACTIVE);
 
-                  if (isExpanding && !item.classList.contains(PB_IS_ACTIVE)) {
+                  if (isExpanding && !isOpen) {
                     item.classList.add(PB_IS_ACTIVE);
                     item.classList.remove(PB_IS_INACTIVE);
                     toggleButton?.setAttribute('aria-expanded', 'true');
@@ -258,16 +276,21 @@
                       Drupal.paragraphBundleAccordion.slideDown(contentPane);
                     }
                     togglePlusMinus(plus, minus, true);
-                  } else if (
-                    !isExpanding &&
-                    item.classList.contains(PB_IS_ACTIVE)
-                  ) {
-                    item.classList.remove(PB_IS_ACTIVE);
-                    item.classList.add(PB_IS_INACTIVE);
+                  } else if (!isExpanding && isOpen) {
+                    const close = () => {
+                      item.classList.remove(PB_IS_ACTIVE);
+                      item.classList.add(PB_IS_INACTIVE);
+                    };
                     toggleButton?.setAttribute('aria-expanded', 'false');
                     contentPane?.setAttribute('aria-hidden', 'true');
                     if (contentPane) {
-                      Drupal.paragraphBundleAccordion.slideUp(contentPane);
+                      Drupal.paragraphBundleAccordion.slideUp(
+                        contentPane,
+                        300,
+                        close,
+                      );
+                    } else {
+                      close();
                     }
                     togglePlusMinus(plus, minus, false);
                   }

@@ -8,6 +8,7 @@ paragraph-bundle-alert:
     - core/drupal
     - core/drupal.announce
     - core/once
+    - paragraphs_bundles/rolling-digits
 
 paragraph-bundle-alert-admin:
   js:

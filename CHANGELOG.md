@@ -5,6 +5,75 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **Rolling digits for changing numbers: the alert countdown and the 3D
+  carousel's slide number.** One shared helper in the base module
+  (`paragraphs_bundles/rolling-digits`: `js/pb-rolling-digits.js`,
+  `css/pb-rolling-digits.css`) rolls any element marked `data-pb-digits`.
+  Each digit that changes slides into place: from above when the number
+  falls (a countdown, going back a slide), from below when it rises (the next
+  slide). The bundle's own number stays in the page, visually hidden, so
+  screen readers hear exactly what they heard before; the moving copy is
+  hidden from them and keeps the number's classes, so theme styling still
+  applies. `.pb-digits` styles the face. With reduced motion the digits change
+  without moving. The slideshow shows no changing number, so it has nothing
+  to roll.
+- **AI bar (dev only): other modules can offer ready-made sections.** A
+  service tagged `paragraphs_bundles_ai.section_source`
+  (`SectionSourceInterface`) adds its own group to the section list and a
+  short note under the bar's intro. The form re-checks a chosen section
+  against what the source offers that field before the source builds it.
+  `SectionDrafter::draftTexts()` writes the words for a layout a source has
+  already built. With no source, the bar is exactly as before. The Extend
+  page's Configure link now opens the AI providers page.
+
+### Fixed
+
+- **Carousel, vertical: the arrows point the way they move.** The previous
+  arrow sits at the top and pointed down; the next arrow at the bottom pointed
+  up. A quarter turn the other way now points them up and down.
+- **Carousel, hybrid: the play/pause icon no longer turns sideways** when the
+  carousel switches to vertical below its breakpoint. Only the arrows turn,
+  as in the vertical layout.
+- **Carousel, hybrid: the script and the stylesheet agree at the
+  breakpoint.** At exactly the breakpoint width (992 pixels, for example) the
+  script switched to vertical while the stylesheet stayed horizontal. The
+  script now asks the stylesheet's own media query, which also holds when the
+  browser's font size is not 16 pixels.
+- **Carousel: the Activate Looping help text says what it does.** It said
+  looping needs autoplay; it has always applied to the arrows too. New sites
+  get the corrected text, and an update corrects it on existing sites unless
+  someone already changed it.
+- **Slideshow: the arrows fade until the slideshow is in use.** The
+  stylesheet meant to fade the arrows, but the template printed a class
+  nothing styled (`pb-nav__prev-next-arrow-1`), so they always showed at full
+  strength. It prints `pb-u-prev-next-arrow-on` now. The arrows rest at 10%
+  and come to full strength while the pointer is anywhere over the slideshow
+  or an arrow has keyboard focus. On touch screens, which have no hover, they
+  stay at full strength.
+- **Slideshow: one rule decides when autoplay runs.** A scroll handler (at
+  20% visible) and an observer (at 50%) each started and stopped autoplay, so
+  one could restart what the other had stopped. The observer alone now runs
+  autoplay while more than a fifth of the slideshow is on screen.
+- **Accordion: closing a section animates.** The section was marked closed,
+  which hid it at once, before the slide-up began, so only opening moved. It
+  now slides shut and is marked closed when the slide ends. Clicking again
+  while it is still closing opens it, and a slide still running can no longer
+  hide a section that was reopened.
+- **Tabs: Tab returns to the selected tab.** After moving between tabs with
+  the arrow keys, Tab back into the list landed on the last tab focused rather
+  than the selected one.
+- **Tabs: opening a page at a tab's address no longer moves focus.** The tab
+  opens and scrolls into view; focus stays where the page put it.
+- **Tabs: cleaner markup for assistive technology.** The keyboard hint moved
+  out of the tab list (which may hold only tabs) and describes the list
+  through `aria-describedby`. The first panel's `aria-live`, which announced
+  nothing useful, is gone.
+- **"Middle" position in right-to-left pages.** `.pb-u-ds--middle` was off
+  center by its whole width in right-to-left languages; it is centered in both
+  directions now.
+
 ### Changed
 
 - **Grid: items fill their cell.** The grid used `align-items: start` and

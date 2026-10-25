@@ -2,6 +2,9 @@ name: 'Paragraphs Bundles AI'
 type: module
 description: 'Optional. Adds a bar to the foot of a page you can edit: choose a section, say what it should say, and it is written for you. Uses the contrib AI module (drupal/ai). Paragraphs Bundles works exactly as before without it.'
 package: 'Paragraphs Bundles'
+# The Extend page's Configure link: the AI providers page, where a provider
+# and its key are set up. This module keeps no settings or key of its own.
+configure: ai.admin_providers
 
 # NOT `^11.3 || ^12`, and the difference is deliberate rather than an oversight.
 #

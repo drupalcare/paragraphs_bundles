@@ -20,6 +20,8 @@ use Drupal\paragraphs_bundles_ai\Service\PromptHintsInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionCatalogInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionComposerInterface;
 use Drupal\paragraphs_bundles_ai\Service\ChildSlotsInterface;
+use Drupal\paragraphs_bundles_ai\Model\CreationResult;
+use Drupal\paragraphs_bundles_ai\SectionSource\SectionSources;
 use Drupal\paragraphs_bundles_ai\Service\SectionDrafterInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionFeaturesInterface;
 use Drupal\paragraphs_bundles_ai\Service\SectionEditorInterface;
@@ -103,6 +105,11 @@ final class PbAiPageForm extends FormBase {
   protected BriefsInterface $briefs;
 
   /**
+   * Ready-made sections other modules offer in the list.
+   */
+  protected SectionSources $sources;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
@@ -119,6 +126,7 @@ final class PbAiPageForm extends FormBase {
     $form->renderer = $container->get('renderer');
     $form->hints = $container->get(PromptHintsInterface::class);
     $form->briefs = $container->get(BriefsInterface::class);
+    $form->sources = $container->get(SectionSources::class);
 
     return $form;
   }
@@ -302,6 +310,31 @@ final class PbAiPageForm extends FormBase {
       $perField,
     );
 
+    // READY-MADE SECTIONS OTHER MODULES OFFER (SectionSourceInterface), each
+    // source its own group after the bundle categories. Their values cannot
+    // be bundle names ("source:<id>:<key>"), the same per-field narrowing
+    // applies, and draft() hands a chosen one back to its source.
+    $sourceSentences = [];
+    foreach ($this->sources->all() as $sourceId => $source) {
+      $items = [];
+      foreach (array_keys($fields) as $name) {
+        foreach ($source->options($node, (string) $name, $this->currentUser()) as $key => $item) {
+          $value = SectionSources::value($sourceId, (string) $key);
+          $items[$value] = (string) $item['label'];
+          $pbAi['allowed'][$name][] = $value;
+          $pbAi['hints'][$value] = (string) $item['hint'];
+          $pbAi['nests'][$value] = FALSE;
+        }
+      }
+      if ($items !== []) {
+        $grouped[(string) $source->label()] = $items;
+        $sourceSentences[] = (string) $source->description();
+      }
+    }
+    foreach ($pbAi['allowed'] as $name => $values) {
+      $pbAi['allowed'][$name] = array_values(array_unique($values));
+    }
+
     $form['#attached'] = [
       'library' => ['paragraphs_bundles_ai/bar'],
       'drupalSettings' => ['pbAi' => $pbAi],
@@ -318,11 +351,24 @@ final class PbAiPageForm extends FormBase {
     ];
 
     $form['intro']['text'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'p',
-      '#value' => $this->t('Choose a section and say what it should say. Nothing is published: it is added to this page as a new version you can undo.'),
+      '#type' => 'container',
       '#attributes' => ['class' => ['pb-ai-bar__intro']],
+      'main' => [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => $this->t('Choose a section and say what it should say. Nothing is published: it is added to this page as a new version you can undo.'),
+      ],
     ];
+    // A source that offers something here adds its own short note, on a
+    // quieter line of its own, so the person knows what its group is.
+    if ($sourceSentences !== []) {
+      $form['intro']['text']['note'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'p',
+        '#value' => implode(' ', $sourceSentences),
+        '#attributes' => ['class' => ['pb-ai-bar__note']],
+      ];
+    }
 
     // ROW ONE: everything that is a choice.
     $form['choices'] = [
@@ -557,6 +603,23 @@ final class PbAiPageForm extends FormBase {
     $node = $this->entityTypeManager->getStorage('node')->load($nodeId);
     $before = $node instanceof NodeInterface ? (int) $node->getRevisionId() : 0;
 
+    // A READY-MADE SECTION from another module: its source builds, fills and
+    // saves it, through this module's writer and drafter. Re-checked against
+    // what the source offers this field, as a bundle is below.
+    $sourced = $this->sources->resolve($bundle);
+    if ($sourced !== NULL) {
+      [$source, $key] = $sourced;
+      if (!$node instanceof NodeInterface || !isset($source->options($node, $field, $this->currentUser())[$key])) {
+        return $this->say($response, 'error', [
+          $this->t('The "@field" field does not take that kind of section.', [
+            '@field' => $fields[$field] ?? $field,
+          ]),
+        ]);
+      }
+      $result = $source->create($node, $field, $key, $words);
+      return $this->afterCreate($response, $result, $nodeId, $before);
+    }
+
     // The Add list is per field, so the bundle is re-checked against the field
     // actually chosen. The script narrows the dropdown for convenience; THIS
     // is what enforces it, and it runs whether or not the script did.
@@ -775,6 +838,44 @@ final class PbAiPageForm extends FormBase {
     $chosen = self::asString($form_state->getValue('target_field'));
 
     return isset($fields[$chosen]) ? $chosen : '';
+  }
+
+  /**
+   * Reports a section a source created, then reloads the page onto it.
+   *
+   * The same ending as draft() for a bundle: the notes go through the
+   * messenger so they survive the reload, and the query marks the new section
+   * and offers undo.
+   *
+   * @param \Drupal\Core\Ajax\AjaxResponse $response
+   *   The response.
+   * @param \Drupal\paragraphs_bundles_ai\Model\CreationResult $result
+   *   What the source wrote.
+   * @param int $nodeId
+   *   The page.
+   * @param int $before
+   *   The revision before the write, for undo.
+   *
+   * @return \Drupal\Core\Ajax\AjaxResponse
+   *   The response.
+   */
+  private function afterCreate(AjaxResponse $response, CreationResult $result, int $nodeId, int $before): AjaxResponse {
+    if (!$result->created) {
+      return $this->say($response, 'error', $result->refusals);
+    }
+    foreach ($result->warnings as $warning) {
+      $this->messenger()->addWarning($warning instanceof MarkupInterface ? $warning : (string) $warning);
+    }
+    foreach ($result->notes as $note) {
+      $this->messenger()->addStatus($note instanceof MarkupInterface ? $note : (string) $note);
+    }
+    $url = Url::fromRoute('entity.node.canonical', ['node' => $nodeId], [
+      'query' => array_filter([
+        'pb-ai-added' => (string) $result->sections,
+        'pb-ai-revert' => $this->revertUrl($nodeId, $before),
+      ]),
+    ])->toString();
+    return $response->addCommand(new RedirectCommand($url));
   }
 
   /**

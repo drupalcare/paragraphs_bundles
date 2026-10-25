@@ -148,7 +148,7 @@
         {% endif %}
 
         {% if pb_prev_next %}
-          <div id="pb-slideshow__arrows-{{ paragraph.id.value }}" class="pb-ui-bar pb-slideshow__arrows pb-nav__prev-next-arrow-{{ pb_prev_next }}" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
+          <div id="pb-slideshow__arrows-{{ paragraph.id.value }}" class="pb-ui-bar pb-slideshow__arrows pb-u-prev-next-arrow-on" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
             <button class="pb-nav__prev pb-ui-btn control-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
               <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
               <span>{{ include('@paragraph_bundle_slideshow/svg/svg-prev.svg') }}</span>

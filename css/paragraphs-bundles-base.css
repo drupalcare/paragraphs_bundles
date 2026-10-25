@@ -347,6 +347,12 @@
   inset-inline-start: 50%;
 }
 
+/* In right-to-left text the inline start is the right edge, so the box must
+   move half its width the other way to stay centered. */
+.pb-u-ds--middle:dir(rtl) {
+  transform: translate(50%, -50%);
+}
+
 .pb-u-ds--left {
   position: absolute;
   inset-block-start: 50%;

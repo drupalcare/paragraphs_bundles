@@ -196,10 +196,22 @@
   opacity: 0.1;
 }
 
-.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on:hover {
-  opacity: 100;
+/* Full strength while the pointer is anywhere over the slideshow, and on
+   keyboard focus so a keyboard user can see the arrow they are on. Hovering
+   the arrows alone was not enough: at rest they are nearly invisible, so
+   nobody could find them to hover. */
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage:hover > .pb-slideshow__arrows.pb-u-prev-next-arrow-on,
+.paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on:focus-within {
+  opacity: 1;
   outline: none;
   background-color: transparent !important;
+}
+
+/* A touch screen has no hover to reveal them, so the arrows stay visible. */
+@media (hover: none) {
+  .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+    opacity: 1;
+  }
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-off {

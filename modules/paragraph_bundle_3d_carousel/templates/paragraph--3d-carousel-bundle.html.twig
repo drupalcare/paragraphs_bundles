@@ -140,7 +140,7 @@
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-prev.svg') }}</span>
         </button>
-        <span id="pb-3d-carousel__index-{{ paragraph.id.value }}" class="pb-slideshow__number" aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
+        <span id="pb-3d-carousel__index-{{ paragraph.id.value }}" class="pb-slideshow__number" data-pb-digits aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
 
         {% if pb_play_stop > 0 %}
           <button id="pb-3d-carousel__play-pause-{{ paragraph.id.value }}"

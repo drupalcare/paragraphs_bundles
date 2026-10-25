@@ -143,8 +143,10 @@
   pointer-events: all;
 }
 
+/* The arrows point left and right; a quarter turn clockwise points the
+   previous arrow (at the top) up and the next arrow (at the bottom) down. */
 .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel button:not(.pb-carousel__play-pause) svg {
-  transform: rotate(-90deg);
+  transform: rotate(90deg);
 }
 
 /* ==========================================================================
@@ -229,7 +231,7 @@
   transform: translateX(-4px);
 }
 
-/* Vertical layout - arrows move up/down (SVG is rotated in markup) */
+/* Vertical layout - arrows move up/down (the SVG is rotated above) */
 .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__next:hover {
   transform: translateY(4px);
 }

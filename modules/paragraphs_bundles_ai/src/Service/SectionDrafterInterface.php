@@ -50,4 +50,26 @@ interface SectionDrafterInterface {
    */
   public function draftEdit(string $bundle, array $current, string $words): DraftedSection;
 
+  /**
+   * Writes the words for a list of text places another module has laid out.
+   *
+   * For a section source (SectionSourceInterface) that builds its own
+   * structure and needs only the words: one request, one answer per place,
+   * in the same order. The provider and model are the ones this module uses.
+   *
+   * @param string $about
+   *   What is being written, for the model, for example
+   *   "a 3D carousel of quote cards".
+   * @param list<array{label: string, hint: string, max: int}> $places
+   *   Each text place: its field label, a hint such as "Under 60 words", and
+   *   its character limit (0 for none).
+   * @param string $words
+   *   What the person said it should say.
+   *
+   * @return list<string>|\Stringable
+   *   One text per place, in order (an empty string where the model left one
+   *   out), or a sentence saying why there are none.
+   */
+  public function draftTexts(string $about, array $places, string $words): array|\Stringable;
+
 }
