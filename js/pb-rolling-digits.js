@@ -58,6 +58,10 @@
       next.className = `${PREFIX}__digit`;
       next.textContent = char;
       if (current && animate) {
+        // A digit that entered earlier still carries is-entering, and that
+        // rule comes later in the CSS, so it would replay the entry animation
+        // over the new digit instead of leaving.
+        current.classList.remove('is-entering');
         current.classList.add('is-leaving');
         next.classList.add('is-entering');
         const remove = () => current.remove();

@@ -46,6 +46,7 @@
   'paragraph--id--' ~ paragraph.id.value,
   paragraph_id,
   pb_alert_state ? 'pb-alert--' ~ pb_alert_state,
+  pb_show_state_label ? 'pb-alert--has-state-label',
 ] %}
 
 {# USWDS alert semantics. The icon is aria-hidden, so the state is ALSO given
@@ -144,7 +145,12 @@
     {% endif %}
 
     <div class="pb-content__full pb-alert__content">
-      {% if pb_alert_state %}
+      {# The state word is printed ONCE, in the same place either way, so a
+         screen reader hears it once: visible when "Show state label" is on,
+         visually hidden otherwise. Never both. #}
+      {% if pb_alert_state and pb_show_state_label %}
+        <span class="pb-alert__state-label">{{ pb_state_labels[pb_alert_state] }}: </span>
+      {% elseif pb_alert_state %}
         <span class="visually-hidden">{{ pb_state_labels[pb_alert_state] }}: </span>
       {% endif %}
       {% if pb_title %}

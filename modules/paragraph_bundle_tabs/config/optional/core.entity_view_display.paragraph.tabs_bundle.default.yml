@@ -21,6 +21,7 @@ dependencies:
     - field.field.paragraph.tabs_bundle.pb_display_shadow
     - field.field.paragraph.tabs_bundle.pb_display_tab_active_item
     - field.field.paragraph.tabs_bundle.pb_display_tab_animated_tabs
+    - field.field.paragraph.tabs_bundle.pb_display_tab_stack_narrow
     - field.field.paragraph.tabs_bundle.pb_display_tab_vertical_tabs
     - field.field.paragraph.tabs_bundle.pb_display_tabs_breakpoints
     - field.field.paragraph.tabs_bundle.pb_display_text
@@ -71,6 +72,7 @@ hidden:
   pb_display_shadow: true
   pb_display_tab_active_item: true
   pb_display_tab_animated_tabs: true
+  pb_display_tab_stack_narrow: true
   pb_display_tab_vertical_tabs: true
   pb_display_tabs_breakpoints: true
   pb_display_text: true

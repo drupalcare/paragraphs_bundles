@@ -12,6 +12,8 @@
  * | pb_display_slide_gap            | `.pb-carousel__slides`  | inline `gap` (px) |
  * | pb_display_custom_slide_width   | `.pb-carousel__slide`   | inline `max-width` |
  * | pb_display_carousel_breakpoints | outer wrapper class     | breakpoint library |
+ * | pb_display_carousel_arrows_over | `pb-has-arrows-over`    | CSS: no arrow lane |
+ * | pb_content_kicker / pb_content_body | `.pb-content__kicker` / `.pb-content__lede` | printed only when filled |
  *
  * Dynamic CSS selector: `#pb-carousel-{id} > .pb-ui-inner`
  *
@@ -41,7 +43,13 @@
 {% set pb_looping = not paragraph.pb_display_activate_looping.isEmpty and paragraph|pb_field_value('pb_display_activate_looping') %}
 {% set item_width = paragraph|pb_field_value('pb_display_custom_slide_width') %}
 {% set item_gap = paragraph|pb_field_value('pb_display_slide_gap') %}
+{% set pb_arrows_over = paragraph|pb_field_value('pb_display_carousel_arrows_over') == '1' %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
+{# Kicker above the title, lede under it. Each prints only when filled, on
+   the same line as an existing tag, so an empty carousel's markup stays
+   byte identical. `default([])` keeps a site that has not run updb yet. #}
+{% set pb_kicker = content.pb_content_kicker|default([])|render|striptags|trim %}
+{% set pb_lede = content.pb_content_body|default([])|render|striptags|trim %}
 {% set carousel_id = paragraph_id %}
 {% set items_id = 'pb-carousel__slides-' ~ paragraph.id.value %}
 {% set valid_slides = content.pb_content_carousel_body|filter((item, key) => key|first != '#') %}
@@ -57,6 +65,7 @@
   'paragraph--id--' ~ paragraph.id.value,
   vertical_carousel == 'vertical' ? 'pb-u-vertical-carousel' : (vertical_carousel == 'hybrid' ? 'pb-u-hybrid-carousel' : 'pb-u-horizontal-carousel'),
   pb_navigation in ['arrows', 'both'] ? 'pb-has-arrows' : 'pb-no-arrows',
+  pb_arrows_over and pb_navigation in ['arrows', 'both'] ? 'pb-has-arrows-over',
   breakpoints_raw,
   paragraph_id,
 ] %}
@@ -64,9 +73,9 @@
 <div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="{{ 'Carousel'|t }}" tabindex="0">
   <div class="{{ classes_inner }}">
 
-    {% if pb_title %}
+    {% if pb_kicker %}<div class="pb-content__kicker">{{ content.pb_content_kicker }}</div>{% endif %}{% if pb_title %}
       {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
-    {% endif %}
+    {% endif %}{% if pb_lede %}<div class="pb-content__lede">{{ content.pb_content_body }}</div>{% endif %}
 
     {# L3 behavior host: JS once() target #}
     {# Deliberately NOT `pb-width-own`. The same finding as the slideshow. The

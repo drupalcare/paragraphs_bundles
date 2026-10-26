@@ -34,10 +34,14 @@
 {% set pb_link = content.pb_content_link.0['#url'] %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
 {% set pb_content_link_new_tab = paragraph.hasField('pb_content_link_new_tab') and not paragraph.pb_content_link_new_tab.isEmpty and paragraph|pb_field_value('pb_content_link_new_tab') %}
+{# Link display: 'title' (default, also when unset) links the title; 'button'
+   prints the link as a button under the body and leaves the title plain. #}
+{% set pb_link_button = paragraph.hasField('pb_display_card_link_mode') and not paragraph.pb_display_card_link_mode.isEmpty and paragraph|pb_field_value('pb_display_card_link_mode') == 'button' %}
+{% set pb_link_label = paragraph.pb_content_link.title|default('')|trim %}
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}">
-    {% if pb_link and pb_title %}
+    {% if pb_link and pb_title and not pb_link_button %}
       <a href="{{ pb_link }}" class="pb-ui-link"{% if pb_content_link_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
       </a>
@@ -45,5 +49,16 @@
       {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
     {% endif %}
     {{ content.pb_content_body }}
+    {% if pb_link and pb_link_button %}
+      <p class="pb-card-text-section__action">
+        <a href="{{ pb_link }}" class="button pb-card-text-section__button"{% if pb_content_link_new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}>
+          {%- if pb_link_label -%}
+            {{ pb_link_label }}
+          {%- else -%}
+            {{ 'Read more'|t }}{% if pb_title %}<span class="visually-hidden">: {{ pb_title }}</span>{% endif %}
+          {%- endif -%}
+        </a>
+      </p>
+    {% endif %}
   </div>
 </div>

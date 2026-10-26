@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.link_section_bundle.pb_content_link_section_title
     - field.field.paragraph.link_section_bundle.pb_content_link_section_url
+    - field.field.paragraph.link_section_bundle.pb_display_css_classes
     - paragraphs.paragraphs_type.link_section_bundle
   module:
     - link_attributes
@@ -37,6 +38,14 @@ content:
         aria-label: false
         title: false
       widget_default_open: expandIfValuesSet
+    third_party_settings: {  }
+  pb_display_css_classes:
+    type: string_textfield
+    weight: 60
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
 hidden:
   created: true

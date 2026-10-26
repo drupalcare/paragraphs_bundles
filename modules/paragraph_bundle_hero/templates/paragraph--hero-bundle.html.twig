@@ -34,7 +34,7 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
-{% set classes_inner = ['pb-ui-row', 'pb-hero__text-inner']|merge(pb_display_classes)|join(' ') %}
+{% set classes_inner = ['pb-ui-row', 'pb-hero__text-inner']|merge(pb_display_classes)|join(' ') %}{% set pb_kicker = paragraph.hasField('pb_content_kicker') ? (paragraph.pb_content_kicker.0.value ?? '')|trim : '' %}{% set pb_lheight = paragraph.hasField('pb_display_hero_lheight') ? paragraph|pb_field_value('pb_display_hero_lheight') : '' %}{% set pb_sheight = paragraph.hasField('pb_display_hero_sheight') ? paragraph|pb_field_value('pb_display_hero_sheight') : '' %}
 
 {% set classes = [
   'paragraph',
@@ -45,6 +45,8 @@
   not paragraph.isPublished() ? 'paragraph--unpublished',
   'paragraph--id--' ~ paragraph.id.value,
   paragraph_id,
+  pb_lheight ? 'pb-hero--h' ~ pb_lheight,
+  pb_sheight ? 'pb-hero--sh' ~ pb_sheight,
 ] %}
 
 {% set pb_link = content.pb_content_image_link.0['#url'] %}
@@ -66,7 +68,7 @@
         <a href="{{ pb_link }}" class="pb-ui-row pb-ui-link"{% if pb_link_title %} title="{{ pb_link_title }}"{% endif %}>
         {% endif %}
 
-        {% if pb_title %}
+        {% if pb_kicker %}<span class="pb-content__kicker">{{ pb_kicker }}</span>{% endif %}{% if pb_title %}
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
         {% endif %}
 
@@ -84,6 +86,9 @@
       'pb_content_title_tag',
       'pb_content_title_alignment',
       'pb_display_hero',
+      'pb_display_hero_lheight',
+      'pb_display_hero_sheight',
+      'pb_content_kicker',
       'pb_content_body',
       'pb_content_image',
       'pb_content_image_link',

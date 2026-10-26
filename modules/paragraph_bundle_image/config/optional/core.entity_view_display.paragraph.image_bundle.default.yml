@@ -2,11 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.image_bundle.pb_content_body
     - field.field.paragraph.image_bundle.pb_content_image
     - field.field.paragraph.image_bundle.pb_content_image_link
     - field.field.paragraph.image_bundle.pb_content_image_link_title
     - field.field.paragraph.image_bundle.pb_content_title
     - field.field.paragraph.image_bundle.pb_content_title_alignment
+    - field.field.paragraph.image_bundle.pb_content_title_position
     - field.field.paragraph.image_bundle.pb_content_title_tag
     - field.field.paragraph.image_bundle.pb_display_bg
     - field.field.paragraph.image_bundle.pb_display_bg_hover
@@ -29,11 +31,19 @@ dependencies:
     - link
     - options
     - paragraphs_bundles
+    - text
 id: paragraph.image_bundle.default
 targetEntityType: paragraph
 bundle: image_bundle
 mode: default
 content:
+  pb_content_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 17
+    region: content
   pb_content_image:
     type: entity_reference_entity_view
     label: hidden
@@ -73,6 +83,7 @@ content:
     region: content
 hidden:
   pb_content_title_alignment: true
+  pb_content_title_position: true
   pb_content_title_tag: true
   pb_display_bg: true
   pb_display_bg_hover: true

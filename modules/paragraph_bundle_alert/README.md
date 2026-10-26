@@ -32,6 +32,10 @@ state-colored alert and a hand-colored one produce identical output.
 
 - The state is also given as text for screen readers ("Warning: ...") because
   color and an icon alone would carry the meaning.
+- **Show state label** (Display → Additional, off by default) prints that same
+  word visibly above the title as `.pb-alert__state-label`, instead of
+  visually hidden. It is printed once either way, so a screen reader never
+  hears it twice. The root gets `pb-alert--has-state-label`.
 - Success and Info announce politely (`role="status"`); Warning and Error
   interrupt (`role="alert"`), which is what an emergency warrants and what a
   confirmation does not.

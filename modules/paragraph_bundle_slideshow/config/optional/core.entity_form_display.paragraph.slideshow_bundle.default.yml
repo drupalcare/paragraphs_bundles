@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.paragraph.slideshow_bundle.pb_content_body
+    - field.field.paragraph.slideshow_bundle.pb_content_kicker
     - field.field.paragraph.slideshow_bundle.pb_content_slideshow_section
     - field.field.paragraph.slideshow_bundle.pb_content_title
     - field.field.paragraph.slideshow_bundle.pb_content_title_alignment
@@ -22,6 +24,7 @@ dependencies:
     - field.field.paragraph.slideshow_bundle.pb_display_shadow
     - field.field.paragraph.slideshow_bundle.pb_display_slide_active_item
     - field.field.paragraph.slideshow_bundle.pb_display_slide_animated_slides
+    - field.field.paragraph.slideshow_bundle.pb_display_slide_play_label
     - field.field.paragraph.slideshow_bundle.pb_display_slide_play_stop
     - field.field.paragraph.slideshow_bundle.pb_display_slide_prev_next
     - field.field.paragraph.slideshow_bundle.pb_display_text
@@ -33,6 +36,7 @@ dependencies:
     - options
     - paragraphs
     - paragraphs_bundles
+    - text
 third_party_settings:
   field_group:
     group_pb_tabs_wrapper:
@@ -55,6 +59,8 @@ third_party_settings:
         - pb_content_title
         - pb_content_title_tag
         - pb_content_title_alignment
+        - pb_content_kicker
+        - pb_content_body
         - pb_content_slideshow_section
       label: Content
       region: content
@@ -170,6 +176,7 @@ third_party_settings:
         - pb_display_slide_play_stop
         - pb_display_slide_active_item
         - pb_display_slide_prev_next
+        - pb_display_slide_play_label
       label: Additional
       region: content
       parent_name: group_pb_tab_display
@@ -204,9 +211,25 @@ targetEntityType: paragraph
 bundle: slideshow_bundle
 mode: default
 content:
+  pb_content_body:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_kicker:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   pb_content_slideshow_section:
     type: paragraphs
-    weight: 4
+    weight: 6
     region: content
     settings:
       title: Section
@@ -322,6 +345,13 @@ content:
     weight: 34
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_slide_play_label:
+    type: boolean_checkbox
+    weight: 37
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_display_slide_prev_next:
     type: boolean_checkbox

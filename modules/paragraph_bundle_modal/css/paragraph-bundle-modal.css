@@ -39,10 +39,16 @@
   outline: 0;
 }
 
+/* Background Color is optional, so the panel needs its own ground: without
+   one it is transparent and the page shows through the dimmed backdrop.
+   Canvas and CanvasText always contrast with each other. An editor's colors
+   win, because the per-paragraph rule is scoped by id. */
 .paragraphs-bundles.pb-modal .pb-modal__content .pb-modal__inner {
   display: grid;
   margin-inline: auto;
   max-width: var(--pb-width);
+  color: CanvasText;
+  background-color: Canvas;
 }
 
 .paragraphs-bundles.pb-modal .pb-modal__content .pb-modal__inner > * {

@@ -250,6 +250,37 @@
 }
 
 /* ==========================================================================
+   Arrows Over The Slides (pb_display_carousel_arrows_over)
+   ========================================================================== */
+
+/* No arrow lane: the slides take the full width (or height) and the arrows
+   sit over their edges. The breakpoint files repeat this for the hybrid
+   carousel's vertical state. */
+.paragraphs-bundles.pb-carousel.pb-has-arrows.pb-has-arrows-over .pb-carousel__viewport {
+  padding: 0;
+}
+
+/* Over a picture the arrow needs its own solid ground (WCAG 1.4.11). Canvas
+   and CanvasText always contrast with each other, in light and dark schemes
+   and in forced colours. */
+.paragraphs-bundles.pb-carousel.pb-has-arrows-over .pb-carousel__options-bar .pb-ui-btn {
+  margin: var(--pb-px8);
+  color: CanvasText;
+  background-color: Canvas;
+  box-shadow: 0 0 0 1px color-mix(in sRGB, CanvasText 25%, transparent);
+}
+
+.paragraphs-bundles.pb-carousel.pb-has-arrows-over .pb-carousel__options-bar button svg {
+  opacity: 1;
+}
+
+/* The focus ring is drawn on a Canvas halo, so it stays visible on any
+   picture under it. */
+.paragraphs-bundles.pb-carousel.pb-has-arrows-over .pb-carousel__options-bar .pb-ui-btn:focus-visible {
+  box-shadow: 0 0 0 2px Canvas;
+}
+
+/* ==========================================================================
    Dot Navigation - Scrollable Single Row (Best Practice)
    ========================================================================== */
 
@@ -431,4 +462,14 @@
     pointer-events: auto;
     opacity: 1;
   }
+}
+
+/* Section kicker and lede (optional; printed only when filled). Spacing only:
+   the look is the theme's or a pattern's. */
+.paragraphs-bundles.pb-carousel .pb-content__kicker {
+  margin-block-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-carousel .pb-content__lede {
+  margin-block-end: var(--pb-px16);
 }

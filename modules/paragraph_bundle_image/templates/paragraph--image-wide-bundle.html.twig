@@ -13,6 +13,10 @@
  * | pb_display_link*          | `.pb-image-wide__inner`   | dynamic CSS `--pb-lk*` |
  * | title + radius + padding  | `.pb-image__wrapper`      | `pb-u-dis-*` utilities |
  *
+ * pb_content_title_position: `below` prints the title after
+ * `.pb-image__wrapper` (DOM order = visual order) and adds
+ * `pb-content__title--below` to it. Empty or `above` keeps the v2 output.
+ *
  * Dynamic CSS selector: `#pb-image-wide-{id} > .pb-ui-inner`
  * Scoping contract: L0 `pb-image-wide` on paragraph root.
  *
@@ -46,18 +50,19 @@
 {% set pb_radius = paragraph|pb_field_value('pb_display_border_radius')|pb_class %}
 {% set pb_image = content.pb_content_image %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
+{% set pb_title_below = paragraph|pb_field_value('pb_content_title_position') == 'below' %}
 
 {% set pb_img_classes = [
   'pb-image__wrapper',
   pb_radius == '' ? '' : ' ' ~ pb_radius,
-  pb_title ? 'pb-u-dis-top-left-right' : '',
+  pb_title and not pb_title_below ? 'pb-u-dis-top-left-right' : '',
   pb_padding ? 'pb-u-dis-radius' : '',
 ] %}
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}">
 
-    {% if pb_title %}
+    {% if pb_title and not pb_title_below %}
       {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
     {% endif %}
 
@@ -69,10 +74,15 @@
       <div class="{{ pb_img_classes|join(' ')|trim }}">{{ pb_image }}</div>
     {% endif %}
 
+    {% if pb_title and pb_title_below %}
+      {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content, title_extra_classes: 'pb-content__title--below'}, false) }}
+    {% endif %}
+
     {{ content|without(
       'pb_content_title',
       'pb_content_title_tag',
       'pb_content_title_alignment',
+      'pb_content_title_position',
       'pb_content_image',
       'pb_content_image_link',
       'pb_content_image_link_title',

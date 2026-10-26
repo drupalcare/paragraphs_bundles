@@ -36,6 +36,17 @@
   flex-direction: row-reverse;
 }
 
+/* The tab set (.pb-ui-row) and tab list (.pb-ui-bar) are flex containers, so
+ * the base clearfix pseudo-elements (paragraphs-bundles-base.css) would be
+ * empty flex items that take a share of any gap. Floats do not apply inside a
+ * flex container, so the clearfix has nothing to clear here. */
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset::before,
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset::after,
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset > .pb-tabs__tablist::before,
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset > .pb-tabs__tablist::after {
+  content: none;
+}
+
 /* ==========================================================================
    Tab Panes
    ========================================================================== */
@@ -93,6 +104,28 @@
 /* Active tab doesn't need hover effect */
 .paragraphs-bundles.pb-tabs .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active:hover {
   background-color: var(--pb-bt-a);
+}
+
+/* ==========================================================================
+   Vertical Tabs - stacked below the breakpoint (opt-in)
+   ========================================================================== */
+
+/* `pb-u-vertical-stack` is set only when "Keep vertical tabs as a column on
+ * small screens" is on. Below the selected breakpoint the tab list stays a
+ * column above the panel, matching the Up/Down keys the script already uses
+ * for vertical tabs. Above it, the breakpoint rules below place the column
+ * beside the panel as before. No media query: the column applies at every
+ * width, and the breakpoint rules only add the side-by-side layout. */
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb-u-vertical-stack > .pb-tabs__tablist,
+[dir="rtl"] .paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb-u-vertical-stack > .pb-tabs__tablist {
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+
+.paragraphs-bundles.pb-tabs .pb-tabs__tabset.pb-u-vertical-tabs.pb-u-vertical-stack .pb-tabs__tab {
+  clear: both;
+  width: 100%;
+  text-align: var(--pb-text-align-start);
 }
 
 /* ==========================================================================

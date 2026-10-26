@@ -26,3 +26,111 @@ function paragraph_bundle_hero_update_9001(): string {
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }
+
+/**
+ * Display tab group overrides for hero_bundle.
+ *
+ * The two image-height options belong in Display → Additional.
+ *
+ * @return array<string, array{remove?: list<string>, add?: list<string>}>
+ *   Group id => remove/add field lists.
+ */
+function paragraph_bundle_hero_display_group_overrides(): array {
+  return [
+    'group_pb_display_extra' => [
+      'add' => [
+        'pb_display_hero_lheight',
+        'pb_display_hero_sheight',
+      ],
+    ],
+  ];
+}
+
+/**
+ * Applies the hero Display tab field group layout on active config.
+ */
+function paragraph_bundle_hero_apply_form_display_layout(): void {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'inc', 'paragraphs_bundles.display');
+  paragraphs_bundles_pb_nest_display_field_groups(
+    'hero_bundle',
+    paragraph_bundle_hero_display_group_overrides(),
+  );
+}
+
+/**
+ * Adds the Kicker / badge field and the two image-height options to the hero.
+ *
+ * Kicker: a short label above the title (content field, Content tab). Height:
+ * Large and Small screen image height (display options, Display → Additional).
+ * With no value in any of them the hero renders exactly as before. Safe to
+ * re-run: every step checks first.
+ *
+ * @see paragraph_bundle_3d_carousel_update_9003()
+ */
+function paragraph_bundle_hero_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+
+  if (\Drupal::entityTypeManager()->getStorage('paragraphs_type')->load('hero_bundle') === NULL) {
+    return (string) t('Hero section is not installed; nothing to do.');
+  }
+
+  // 1. Storage, then instance. The kicker storage comes from the parent
+  //    module's update 9013 (see hook_update_dependencies()).
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_kicker');
+  foreach (['pb_display_hero_lheight', 'pb_display_hero_sheight'] as $name) {
+    paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_hero', 'field.storage.paragraph.' . $name);
+  }
+  foreach (['pb_content_kicker', 'pb_display_hero_lheight', 'pb_display_hero_sheight'] as $name) {
+    paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_hero', 'field.field.paragraph.hero_bundle.' . $name);
+  }
+
+  // 2. Form display. The kicker goes in the Content tab, after the existing
+  //    children (title, tag and alignment stay first: PbFormDisplayVerifier).
+  $form_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('paragraph.hero_bundle.default');
+  if ($form_display !== NULL) {
+    if (!$form_display->getComponent('pb_content_kicker')) {
+      $form_display->setComponent('pb_content_kicker', [
+        'type' => 'string_textfield',
+        'weight' => 8,
+        'region' => 'content',
+        'settings' => ['size' => 60, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ]);
+    }
+    $group = $form_display->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL) && !in_array('pb_content_kicker', $group['children'], TRUE)) {
+      $group['children'][] = 'pb_content_kicker';
+      $form_display->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+    }
+    $weights = ['pb_display_hero_lheight' => 32, 'pb_display_hero_sheight' => 33];
+    foreach ($weights as $name => $weight) {
+      if (!$form_display->getComponent($name)) {
+        $form_display->setComponent($name, [
+          'type' => 'options_select',
+          'weight' => $weight,
+          'region' => 'content',
+          'settings' => [],
+          'third_party_settings' => [],
+        ]);
+      }
+    }
+    $form_display->save();
+  }
+
+  // 3. View display: the template reads all three values, so none is printed
+  //    as a field.
+  $view_display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load('paragraph.hero_bundle.default');
+  if ($view_display !== NULL) {
+    foreach (['pb_content_kicker', 'pb_display_hero_lheight', 'pb_display_hero_sheight'] as $name) {
+      if ($view_display->getComponent($name)) {
+        $view_display->removeComponent($name);
+      }
+    }
+    $view_display->save();
+  }
+
+  // 4. Nest the height options under Display → Additional.
+  paragraph_bundle_hero_apply_form_display_layout();
+
+  return (string) t('Hero section: Kicker / badge field and Large / Small screen height options added or already present.');
+}

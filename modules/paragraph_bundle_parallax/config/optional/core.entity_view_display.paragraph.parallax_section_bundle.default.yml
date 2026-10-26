@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.parallax_section_bundle.pb_display_parallax_speed
     - field.field.paragraph.parallax_section_bundle.pb_content_body
     - field.field.paragraph.parallax_section_bundle.pb_content_image
+    - field.field.paragraph.parallax_section_bundle.pb_content_link
     - field.field.paragraph.parallax_section_bundle.pb_display_bg
     - field.field.paragraph.parallax_section_bundle.pb_display_bg_hover
     - field.field.paragraph.parallax_section_bundle.pb_display_bg_opacity
@@ -29,6 +30,7 @@ dependencies:
     - field.field.paragraph.parallax_section_bundle.pb_display_link_hover
     - paragraphs.paragraphs_type.parallax_section_bundle
   module:
+    - link
     - options
     - paragraphs_bundles
     - text
@@ -52,6 +54,18 @@ content:
       link: false
     third_party_settings: {  }
     weight: 21
+    region: content
+  pb_content_link:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 23
     region: content
 hidden:
   pb_display_bg: true

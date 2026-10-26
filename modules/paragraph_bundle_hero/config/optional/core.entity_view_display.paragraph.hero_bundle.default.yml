@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_content_image
     - field.field.paragraph.hero_bundle.pb_content_image_link
     - field.field.paragraph.hero_bundle.pb_content_image_link_title
+    - field.field.paragraph.hero_bundle.pb_content_kicker
     - field.field.paragraph.hero_bundle.pb_content_title
     - field.field.paragraph.hero_bundle.pb_content_title_alignment
     - field.field.paragraph.hero_bundle.pb_content_title_tag
@@ -82,6 +83,7 @@ content:
     weight: 14
     region: content
 hidden:
+  pb_content_kicker: true
   pb_content_title_alignment: true
   pb_content_title_tag: true
   pb_display_bg: true
@@ -93,6 +95,8 @@ hidden:
   pb_display_border_radius: true
   pb_display_css_classes: true
   pb_display_hero: true
+  pb_display_hero_lheight: true
+  pb_display_hero_sheight: true
   pb_display_link: true
   pb_display_link_hover: true
   pb_display_margin: true

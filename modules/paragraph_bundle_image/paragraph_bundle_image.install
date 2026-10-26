@@ -26,3 +26,58 @@ function paragraph_bundle_image_update_9001(): string {
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }
+
+/**
+ * Adds the Description field to the Image section.
+ *
+ * A short text shown under the picture (content field, Content tab). With no
+ * value the markup is unchanged. Safe to re-run: every step checks first.
+ *
+ * @see paragraph_bundle_alert_update_9001()
+ */
+function paragraph_bundle_image_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+
+  if (\Drupal::entityTypeManager()->getStorage('paragraphs_type')->load('image_bundle') === NULL) {
+    return (string) t('Image section is not installed; nothing to do.');
+  }
+
+  // The pb_content_body storage belongs to the parent module.
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_body');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_image', 'field.field.paragraph.image_bundle.pb_content_body');
+
+  $form_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('paragraph.image_bundle.default');
+  if ($form_display !== NULL) {
+    if (!$form_display->getComponent('pb_content_body')) {
+      $form_display->setComponent('pb_content_body', [
+        'type' => 'text_textarea',
+        'weight' => 8,
+        'region' => 'content',
+        'settings' => ['rows' => 3, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ]);
+    }
+    // After the existing children: title, tag and alignment stay first
+    // (PbFormDisplayVerifier::verifyContentTab).
+    $group = $form_display->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL) && !in_array('pb_content_body', $group['children'], TRUE)) {
+      $group['children'][] = 'pb_content_body';
+      $form_display->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+    }
+    $form_display->save();
+  }
+
+  $view_display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load('paragraph.image_bundle.default');
+  if ($view_display !== NULL && !$view_display->getComponent('pb_content_body')) {
+    $view_display->setComponent('pb_content_body', [
+      'type' => 'text_default',
+      'label' => 'hidden',
+      'settings' => [],
+      'third_party_settings' => [],
+      'weight' => 17,
+      'region' => 'content',
+    ])->save();
+  }
+
+  return (string) t('Image section: Description field added or already present.');
+}

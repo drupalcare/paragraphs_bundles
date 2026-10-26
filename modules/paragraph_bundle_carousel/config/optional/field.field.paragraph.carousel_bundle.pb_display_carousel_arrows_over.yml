@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_carousel_arrows_over
+    - paragraphs.paragraphs_type.carousel_bundle
+id: paragraph.carousel_bundle.pb_display_carousel_arrows_over
+field_name: pb_display_carousel_arrows_over
+entity_type: paragraph
+bundle: carousel_bundle
+label: 'Arrows Over The Slides'
+description: 'Place the arrows over the edges of the slides instead of in a lane beside them. The arrows get a solid background so they stay visible on pictures.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

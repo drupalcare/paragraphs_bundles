@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_title_position
+    - paragraphs.paragraphs_type.image_narrow_bundle
+  module:
+    - options
+id: paragraph.image_narrow_bundle.pb_content_title_position
+field_name: pb_content_title_position
+entity_type: paragraph
+bundle: image_narrow_bundle
+label: 'Title Position'
+description: 'Print the title above or below the picture. Screen readers read it in the same order.'
+required: false
+translatable: false
+default_value:
+  -
+    value: above
+default_value_callback: ''
+settings: {  }
+field_type: list_string

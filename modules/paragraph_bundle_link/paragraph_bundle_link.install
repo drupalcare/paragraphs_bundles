@@ -26,3 +26,21 @@ function paragraph_bundle_link_update_9001(): string {
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
 }
+
+/**
+ * Adds the CSS Classes field to each Link item (link_section_bundle).
+ *
+ * One class per link lets a theme give each link its own icon or colour.
+ * The preprocess hook already puts the sanitised classes on the item's outer
+ * element, so no render code changes. The item form has no Display tab, so
+ * the field stays ungrouped at the end of the form.
+ */
+function paragraph_bundle_link_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  if (\Drupal::entityTypeManager()->getStorage('paragraphs_type')->load('link_section_bundle') === NULL) {
+    return (string) t('Link item is not installed; nothing to do.');
+  }
+  return paragraphs_bundles_pb_css_classes_wire_bundle('paragraph_bundle_link', 'link_section_bundle')
+    ? (string) t('CSS Classes field added to: link_section_bundle.')
+    : (string) t('CSS Classes field could not be added to link_section_bundle.');
+}

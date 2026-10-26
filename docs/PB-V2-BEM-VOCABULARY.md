@@ -125,6 +125,10 @@ they are listed in the per-bundle tables below.
 |--------|--------|
 | `pb__active` | `pb-is-active` |
 | `pb__active-no` | `pb-is-inactive` |
+| (new in 2.1.x, no legacy name) | `pb-is-current` |
+
+`pb-is-current` is set by the carousel JS on the middle item of the visible set
+(one item per carousel). PB ships no style for it; a theme or pattern may.
 
 ## Flags
 

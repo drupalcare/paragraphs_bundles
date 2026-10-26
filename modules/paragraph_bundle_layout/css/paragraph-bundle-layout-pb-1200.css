@@ -61,15 +61,15 @@
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns.pb-three-columns--l3-l6-l3 {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) minmax(0, 1fr);
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns.pb-three-columns--l6-l3-l3 {
-    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-three-columns.pb-three-columns--l3-l3-l6 {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 3fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
   }
 
   .paragraphs-bundles.pb-layout.pb__1200 .pb-two-columns .paragraphs-bundles,
@@ -238,6 +238,17 @@
 
   .paragraphs-bundles.pb-layout.pb__1200.pb-layout-col__icon-pos--edge .pb-layout-col__toolbar.pb-three-columns [data-col-toggle="middle"] {
     justify-self: end;
+  }
+
+  /* ==========================================================================
+   Column toggle - toolbar position: toolbar.
+   The toolbar stays in normal flow above the columns (it comes first in the
+   DOM), so nothing overlays the content and the buttons keep their columns.
+   ========================================================================== */
+
+  .paragraphs-bundles.pb-layout.pb__1200.pb-layout-col__icon-pos--toolbar .pb-layout-col__toolbar {
+    position: relative;
+    margin-block-end: var(--pb-px10);
   }
 
   /* ==========================================================================

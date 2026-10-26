@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_body
+    - paragraphs.paragraphs_type.image_bundle
+  module:
+    - text
+id: paragraph.image_bundle.pb_content_body
+field_name: pb_content_body
+entity_type: paragraph
+bundle: image_bundle
+label: Description
+description: 'Short text shown under the picture. Leave empty for none.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats: {  }
+field_type: text_long

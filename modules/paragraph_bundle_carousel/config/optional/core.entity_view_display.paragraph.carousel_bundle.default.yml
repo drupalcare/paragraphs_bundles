@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.carousel_bundle.pb_content_carousel_body
+    - field.field.paragraph.carousel_bundle.pb_content_body
+    - field.field.paragraph.carousel_bundle.pb_content_kicker
     - field.field.paragraph.carousel_bundle.pb_content_title
     - field.field.paragraph.carousel_bundle.pb_content_title_alignment
     - field.field.paragraph.carousel_bundle.pb_content_title_tag
@@ -15,6 +17,7 @@ dependencies:
     - field.field.paragraph.carousel_bundle.pb_display_border_color
     - field.field.paragraph.carousel_bundle.pb_display_border_hover
     - field.field.paragraph.carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_arrows_over
     - field.field.paragraph.carousel_bundle.pb_display_carousel_breakpoints
     - field.field.paragraph.carousel_bundle.pb_display_carousel_play_stop
     - field.field.paragraph.carousel_bundle.pb_display_css_classes
@@ -36,11 +39,27 @@ dependencies:
     - entity_reference_revisions
     - options
     - paragraphs_bundles
+    - text
 id: paragraph.carousel_bundle.default
 targetEntityType: paragraph
 bundle: carousel_bundle
 mode: default
 content:
+  pb_content_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 21
+    region: content
+  pb_content_kicker:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 20
+    region: content
   pb_content_carousel_body:
     type: entity_reference_revisions_entity_view
     label: hidden
@@ -70,6 +89,7 @@ hidden:
   pb_display_border_color: true
   pb_display_border_hover: true
   pb_display_border_radius: true
+  pb_display_carousel_arrows_over: true
   pb_display_carousel_breakpoints: true
   pb_display_carousel_play_stop: true
   pb_display_css_classes: true

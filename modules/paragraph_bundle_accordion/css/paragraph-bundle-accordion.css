@@ -42,6 +42,22 @@
   border-block-end: var(--pb-px2) solid var(--pb-br);
 }
 
+/* The sections list and each item (.pb-ui-row) are grid containers, the
+ * button (.pb-ui-bar) and the expand-all row (.pb-ui-row) flex containers, so
+ * the base clearfix pseudo-elements (paragraphs-bundles-base.css) would be
+ * empty grid/flex items that take a share of any gap. Nothing floats inside
+ * them, so the clearfix has nothing to clear here. */
+.paragraphs-bundles.pb-accordion .pb-accordion__sections::before,
+.paragraphs-bundles.pb-accordion .pb-accordion__sections::after,
+.paragraphs-bundles.pb-accordion .pb-accordion__item::before,
+.paragraphs-bundles.pb-accordion .pb-accordion__item::after,
+.paragraphs-bundles.pb-accordion .pb-accordion__button::before,
+.paragraphs-bundles.pb-accordion .pb-accordion__button::after,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button::before,
+.paragraphs-bundles.pb-accordion .pb-grid__expand-button::after {
+  content: none;
+}
+
 /* `--pb-bt-a` is editor-only, emitted per paragraph from
  * pb_display_accor_active_item. Deliberately no fallback: unset resolves to
  * transparent, so an unconfigured accordion keeps the item background it

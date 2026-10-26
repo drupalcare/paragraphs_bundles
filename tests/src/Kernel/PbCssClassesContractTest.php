@@ -140,7 +140,10 @@ final class PbCssClassesContractTest extends KernelTestBase {
       $has = (bool) $em->getStorage('field_config')
         ->load('paragraph.' . $type . '.' . self::FIELD);
       if (str_ends_with($type, '_section_bundle')) {
-        if ($has) {
+        // The one deliberate exception: each Link item takes its own class so
+        // a theme can give every link its own icon (paragraph_bundle_link
+        // update 9002, maintainer-approved 2026-10-26).
+        if ($has && $type !== 'link_section_bundle') {
           $leaked[] = $type;
         }
         continue;
@@ -151,7 +154,7 @@ final class PbCssClassesContractTest extends KernelTestBase {
     }
 
     $this->assertSame([], $missing, 'Every parent bundle carries the CSS Classes field.');
-    $this->assertSame([], $leaked, 'No section child carries it; children are styled through their parent.');
+    $this->assertSame([], $leaked, 'No section child but the Link item carries it; children are styled through their parent.');
   }
 
   /**

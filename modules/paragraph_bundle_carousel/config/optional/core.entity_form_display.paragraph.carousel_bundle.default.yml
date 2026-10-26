@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.carousel_bundle.pb_content_carousel_body
+    - field.field.paragraph.carousel_bundle.pb_content_body
+    - field.field.paragraph.carousel_bundle.pb_content_kicker
     - field.field.paragraph.carousel_bundle.pb_content_title
     - field.field.paragraph.carousel_bundle.pb_content_title_alignment
     - field.field.paragraph.carousel_bundle.pb_content_title_tag
@@ -15,6 +17,7 @@ dependencies:
     - field.field.paragraph.carousel_bundle.pb_display_border_color
     - field.field.paragraph.carousel_bundle.pb_display_border_hover
     - field.field.paragraph.carousel_bundle.pb_display_border_radius
+    - field.field.paragraph.carousel_bundle.pb_display_carousel_arrows_over
     - field.field.paragraph.carousel_bundle.pb_display_carousel_breakpoints
     - field.field.paragraph.carousel_bundle.pb_display_carousel_play_stop
     - field.field.paragraph.carousel_bundle.pb_display_css_classes
@@ -37,6 +40,7 @@ dependencies:
     - options
     - paragraphs
     - paragraphs_bundles
+    - text
 third_party_settings:
   field_group:
     group_pb_tabs_wrapper:
@@ -59,6 +63,8 @@ third_party_settings:
         - pb_content_title
         - pb_content_title_tag
         - pb_content_title_alignment
+        - pb_content_kicker
+        - pb_content_body
         - pb_content_carousel_body
       label: Content
       region: content
@@ -178,6 +184,7 @@ third_party_settings:
         - pb_display_big_screen
         - pb_display_small_screen
         - pb_display_activate_looping
+        - pb_display_carousel_arrows_over
       label: Additional
       region: content
       parent_name: group_pb_tab_display
@@ -226,9 +233,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  pb_content_body:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
   pb_content_carousel_body:
     type: paragraphs
-    weight: 4
+    weight: 6
     region: content
     settings:
       title: 'Carousel item'
@@ -244,6 +259,14 @@ content:
         add_above: add_above
         collapse_edit_all: collapse_edit_all
         duplicate: duplicate
+    third_party_settings: {  }
+  pb_content_kicker:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
   pb_content_title:
     type: string_textfield
@@ -308,6 +331,13 @@ content:
     weight: 26
     region: content
     settings: {  }
+    third_party_settings: {  }
+  pb_display_carousel_arrows_over:
+    type: boolean_checkbox
+    weight: 29
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   pb_display_carousel_breakpoints:
     type: options_select

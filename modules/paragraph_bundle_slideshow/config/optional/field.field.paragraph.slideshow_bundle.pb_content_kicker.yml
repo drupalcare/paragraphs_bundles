@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_kicker
+    - paragraphs.paragraphs_type.slideshow_bundle
+id: paragraph.slideshow_bundle.pb_content_kicker
+field_name: pb_content_kicker
+entity_type: paragraph
+bundle: slideshow_bundle
+label: Kicker
+description: 'Short label shown above the section title. Leave empty for none.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

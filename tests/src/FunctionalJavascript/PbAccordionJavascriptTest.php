@@ -125,6 +125,18 @@ final class PbAccordionJavascriptTest extends WebDriverTestBase {
       "document.querySelector('.pb-accordion__pane').getAttribute('aria-hidden') === 'true'",
     );
 
+    // The sections list, items, buttons and expand-all row are grid/flex
+    // containers: the base clearfix pseudo-elements must not become empty
+    // items there.
+    $this->assertJsCondition(
+      "[...document.querySelectorAll('.pb-accordion__sections, .pb-accordion__item, .pb-accordion__button, .pb-grid__expand-button')]"
+      . ".every((el) => ['::before', '::after']"
+      . ".every((p) => getComputedStyle(el, p).content === 'none'))"
+      . " && document.querySelectorAll('.pb-accordion__sections, .pb-accordion__item, .pb-accordion__button, .pb-grid__expand-button').length > 0",
+      5000,
+      'The flex/grid rows carry no clearfix pseudo-elements.',
+    );
+
     // No serious/critical accessibility violations in the rendered widget.
     $this->assertNoAxeViolations('.pb-accordion');
   }

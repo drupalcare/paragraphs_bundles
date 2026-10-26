@@ -44,7 +44,7 @@
       {% endif %}
 
       {{ content.pb_content_body }}
-      {{ content.pb_content_link }}
+      {{ content.pb_content_link }}{{ content.pb_content_link_secondary }}
 
       {{ content|without(
         'pb_content_title',
@@ -52,6 +52,7 @@
         'pb_content_title_alignment',
         'pb_content_body',
         'pb_content_link',
+        'pb_content_link_secondary',
         'pb_display_bg',
         'pb_display_bg_opacity',
         'pb_display_bg_hover',

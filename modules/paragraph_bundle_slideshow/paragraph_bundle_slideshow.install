@@ -7,6 +7,8 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
+
 /**
  * Adds the CSS Classes field to the bundle this module owns.
  *
@@ -25,4 +27,150 @@ function paragraph_bundle_slideshow_update_9001(): string {
   return $done === []
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}
+
+/**
+ * Implements hook_update_dependencies().
+ */
+function paragraph_bundle_slideshow_update_dependencies(): array {
+  // 9002 imports the shared Kicker storage that paragraphs_bundles 9013 adds.
+  $dependencies['paragraph_bundle_slideshow'][9002]['paragraphs_bundles'] = 9013;
+  return $dependencies;
+}
+
+/**
+ * Adds Kicker, Lede and the Play/Pause text option to the slideshow.
+ *
+ * Kicker (pb_content_kicker) and Lede (pb_content_body) go in the Content tab
+ * after the title fields; the Play/Pause text option goes last in the Display
+ * tab's Additional group. Every field is optional and empty by default, so a
+ * slideshow renders exactly as before until an editor fills one. Safe to run
+ * again: each step checks before it writes.
+ */
+function paragraph_bundle_slideshow_update_9002(): string {
+  $bundle = 'slideshow_bundle';
+  $em = \Drupal::entityTypeManager();
+  if ($em->getStorage('paragraphs_type')->load($bundle) === NULL) {
+    return (string) t('No slideshow paragraph type; nothing to do.');
+  }
+
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $module = 'paragraph_bundle_slideshow';
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_kicker');
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_body');
+  paragraphs_bundles_import_optional_config_if_missing($module, 'field.storage.paragraph.pb_display_slide_play_label');
+  foreach (['pb_content_kicker', 'pb_content_body', 'pb_display_slide_play_label'] as $field) {
+    paragraphs_bundles_import_optional_config_if_missing($module, 'field.field.paragraph.' . $bundle . '.' . $field);
+  }
+
+  $added = [];
+  $form = $em->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+  if ($form instanceof EntityDisplayInterface) {
+    $changed = FALSE;
+    $content_fields = [
+      'pb_content_kicker' => [
+        'type' => 'string_textfield',
+        'weight' => 4,
+        'region' => 'content',
+        'settings' => ['size' => 60, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ],
+      'pb_content_body' => [
+        'type' => 'text_textarea',
+        'weight' => 5,
+        'region' => 'content',
+        'settings' => ['rows' => 3, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ],
+    ];
+    foreach ($content_fields as $field => $component) {
+      if ($form->getComponent($field) === NULL) {
+        $form->setComponent($field, $component);
+        $added[] = $field;
+        $changed = TRUE;
+      }
+    }
+    // Slides follow the kicker and lede (the Content tab verifier needs every
+    // child after the three title fields above weight 3).
+    $section = $form->getComponent('pb_content_slideshow_section');
+    if (is_array($section) && (int) ($section['weight'] ?? 0) < 6) {
+      $section['weight'] = 6;
+      $form->setComponent('pb_content_slideshow_section', $section);
+      $changed = TRUE;
+    }
+    $group = $form->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL)) {
+      $children = array_values(array_diff($group['children'], ['pb_content_kicker', 'pb_content_body']));
+      $at = array_search('pb_content_title_alignment', $children, TRUE);
+      $at = $at === FALSE ? 0 : $at + 1;
+      array_splice($children, $at, 0, ['pb_content_kicker', 'pb_content_body']);
+      if ($children !== $group['children']) {
+        $group['children'] = $children;
+        $form->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+        $changed = TRUE;
+      }
+    }
+
+    $option = 'pb_display_slide_play_label';
+    if ($form->getComponent($option) === NULL) {
+      $form->setComponent($option, [
+        'type' => 'boolean_checkbox',
+        'weight' => 37,
+        'region' => 'content',
+        'settings' => ['display_label' => TRUE],
+        'third_party_settings' => [],
+      ]);
+      $added[] = $option;
+      $changed = TRUE;
+    }
+    $extra = $form->getThirdPartySetting('field_group', 'group_pb_display_extra');
+    if (is_array($extra) && is_array($extra['children'] ?? NULL) && !in_array($option, $extra['children'], TRUE)) {
+      $extra['children'][] = $option;
+      $form->setThirdPartySetting('field_group', 'group_pb_display_extra', $extra);
+      $changed = TRUE;
+    }
+    if ($changed) {
+      $form->save();
+    }
+  }
+
+  $view = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($view instanceof EntityDisplayInterface) {
+    $changed = FALSE;
+    if ($view->getComponent('pb_content_kicker') === NULL) {
+      $view->setComponent('pb_content_kicker', [
+        'type' => 'string',
+        'label' => 'hidden',
+        'settings' => ['link_to_entity' => FALSE],
+        'third_party_settings' => [],
+        'weight' => 17,
+        'region' => 'content',
+      ]);
+      $changed = TRUE;
+    }
+    if ($view->getComponent('pb_content_body') === NULL) {
+      $view->setComponent('pb_content_body', [
+        'type' => 'text_default',
+        'label' => 'hidden',
+        'settings' => [],
+        'third_party_settings' => [],
+        'weight' => 20,
+        'region' => 'content',
+      ]);
+      $changed = TRUE;
+    }
+    // The template reads the option's value; the field itself never prints.
+    $hidden = $view->get('hidden');
+    if ($view->getComponent('pb_display_slide_play_label') !== NULL || !is_array($hidden) || !isset($hidden['pb_display_slide_play_label'])) {
+      $view->removeComponent('pb_display_slide_play_label');
+      $changed = TRUE;
+    }
+    if ($changed) {
+      $view->save();
+    }
+  }
+
+  return $added === []
+    ? (string) t('Slideshow Kicker, Lede and Play/Pause text option were already present; nothing to do.')
+    : (string) t('Added to the slideshow: @list.', ['@list' => implode(', ', $added)]);
 }

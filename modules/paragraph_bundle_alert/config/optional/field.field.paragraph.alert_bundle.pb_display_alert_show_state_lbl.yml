@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_alert_show_state_lbl
+    - paragraphs.paragraphs_type.alert_bundle
+id: paragraph.alert_bundle.pb_display_alert_show_state_lbl
+field_name: pb_display_alert_show_state_lbl
+entity_type: paragraph
+bundle: alert_bundle
+label: 'Show state label'
+description: 'Print the state word (Success, Info, Warning, Error) as a visible label above the title. Off: the word is still read by screen readers but not shown. Used only when an Alert state is chosen.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -3,10 +3,16 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.3d_carousel_bundle.pb_content_3d_car_body
+    - field.field.paragraph.3d_carousel_bundle.pb_content_body
+    - field.field.paragraph.3d_carousel_bundle.pb_content_kicker
+    - field.field.paragraph.3d_carousel_bundle.pb_content_title
+    - field.field.paragraph.3d_carousel_bundle.pb_content_title_alignment
+    - field.field.paragraph.3d_carousel_bundle.pb_content_title_tag
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_lheight
     - field.field.paragraph.3d_carousel_bundle.pb_content_3dcar_sheight
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_car_perspective
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_car_style
+    - field.field.paragraph.3d_carousel_bundle.pb_display_3d_controls_gap
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_caro_breakpoints
     - field.field.paragraph.3d_carousel_bundle.pb_display_3d_play_stop
     - field.field.paragraph.3d_carousel_bundle.pb_display_bg
@@ -30,6 +36,7 @@ dependencies:
     - field_group
     - paragraphs
     - paragraphs_bundles
+    - text
 third_party_settings:
   field_group:
     group_pb_tabs_wrapper:
@@ -49,6 +56,11 @@ third_party_settings:
         width_breakpoint: 992
     group_pb_tab_content:
       children:
+        - pb_content_title
+        - pb_content_title_tag
+        - pb_content_title_alignment
+        - pb_content_kicker
+        - pb_content_body
         - pb_content_3d_car_body
       label: Content
       region: content
@@ -165,6 +177,7 @@ third_party_settings:
         - pb_content_3dcar_lheight
         - pb_content_3dcar_sheight
         - pb_display_3d_car_perspective
+        - pb_display_3d_controls_gap
       label: Additional
       region: content
       parent_name: group_pb_tab_display
@@ -199,9 +212,45 @@ targetEntityType: paragraph
 bundle: 3d_carousel_bundle
 mode: default
 content:
+  pb_content_kicker:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_title:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_title_tag:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_content_title_alignment:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_content_body:
+    type: text_textarea
+    weight: 5
+    region: content
+    settings:
+      rows: 3
+      placeholder: ''
+    third_party_settings: {  }
   pb_content_3d_car_body:
     type: paragraphs
-    weight: 0
+    weight: 6
     region: content
     settings:
       title: 'Carousel item'
@@ -227,6 +276,12 @@ content:
   pb_content_3dcar_sheight:
     type: options_select
     weight: 21
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_3d_controls_gap:
+    type: options_select
+    weight: 25
     region: content
     settings: {  }
     third_party_settings: {  }

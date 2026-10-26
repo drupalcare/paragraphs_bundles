@@ -353,6 +353,71 @@ final class PbCarouselJavascriptTest extends WebDriverTestBase {
   }
 
   /**
+   * Exactly one visible slide is marked current: the middle of the page.
+   *
+   * Seven slides, three per page: page one marks slide 2 (index 1), page two
+   * slide 5 (index 4), and the short last page its only slide (index 6).
+   */
+  public function testCarouselMarksTheMiddleSlideCurrent(): void {
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+
+    $slides = [];
+    foreach (range(1, 7) as $i) {
+      $slide = Paragraph::create([
+        'type' => 'accordion_section_bundle',
+        'pb_content_accordion_title' => 'Slide ' . $i,
+      ]);
+      $slide->save();
+      $slides[] = [
+        'target_id' => $slide->id(),
+        'target_revision_id' => $slide->getRevisionId(),
+      ];
+    }
+
+    $carousel = Paragraph::create([
+      'type' => 'carousel_bundle',
+      'pb_content_carousel_body' => $slides,
+      'pb_display_navigation' => 'arrows',
+      'pb_display_carousel_play_stop' => 0,
+      'pb_display_big_screen' => 3,
+      'pb_display_small_screen' => 3,
+    ]);
+    $carousel->save();
+
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+    $node = $this->drupalCreateNode([
+      'type' => $nodeType,
+      $fieldName => [
+        [
+          'target_id' => $carousel->id(),
+          'target_revision_id' => $carousel->getRevisionId(),
+        ],
+      ],
+    ]);
+
+    $this->drupalGet($node->toUrl());
+    $this->assertSession()->waitForElement('css', '.pb-carousel__slide');
+
+    foreach ([1, 4, 6] as $page => $expected) {
+      if ($page > 0) {
+        $this->getSession()->getPage()->find('css', '.pb-nav__next')->click();
+      }
+      $this->assertJsCondition(
+        "(function () {"
+        . " const current = [...document.querySelectorAll('.pb-carousel__slide')]"
+        . "   .map((s, i) => s.classList.contains('pb-is-current') ? i : -1)"
+        . "   .filter((i) => i >= 0);"
+        . " return current.length === 1 && current[0] === $expected;"
+        . "})()",
+        5000,
+        "Page $page marks only slide index $expected current.",
+      );
+    }
+  }
+
+  /**
    * Finds a node type + field that references paragraphs.
    *
    * @return array{0: string|null, 1: string|null}

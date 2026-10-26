@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - paragraphs
+id: paragraph.pb_display_3d_controls_gap
+field_name: pb_display_3d_controls_gap
+entity_type: paragraph
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: '16'
+      label: '16 px'
+    -
+      value: '24'
+      label: '24 px'
+    -
+      value: '32'
+      label: '32 px'
+    -
+      value: '48'
+      label: '48 px'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

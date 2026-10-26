@@ -117,6 +117,17 @@ final class PbTabsJavascriptTest extends WebDriverTestBase {
       "document.querySelectorAll('.pb-tabs__panel')[0].getAttribute('aria-hidden') === 'true'",
     );
 
+    // The tab set and tab list are flex containers: the base clearfix
+    // pseudo-elements must not become empty flex items there.
+    $this->assertJsCondition(
+      "[...document.querySelectorAll('.pb-tabs__tabset, .pb-tabs__tablist')]"
+      . ".every((el) => ['::before', '::after']"
+      . ".every((p) => getComputedStyle(el, p).content === 'none'))"
+      . " && document.querySelectorAll('.pb-tabs__tabset, .pb-tabs__tablist').length > 0",
+      5000,
+      'The flex/grid rows carry no clearfix pseudo-elements.',
+    );
+
     // No serious/critical accessibility violations in the rendered widget.
     $this->assertNoAxeViolations('.pb-tabs');
   }

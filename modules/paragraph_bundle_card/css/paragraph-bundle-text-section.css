@@ -19,6 +19,12 @@
   background-color: var(--pb-bg-h, var(--pb-bg));
 }
 
+/* Link display "Button under the body": the theme's .button gives the look;
+ * PB only separates it from the body. */
+.paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__action {
+  margin-block: 1rem 0;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > div,
   .paragraphs-bundles.pb-card.pb-card-text-section .pb-card-text-section__inner > a > div {

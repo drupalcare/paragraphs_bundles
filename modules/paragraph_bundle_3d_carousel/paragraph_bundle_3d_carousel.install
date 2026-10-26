@@ -8,6 +8,8 @@
  *  - 9001: move max width and screen-height fields into Display → Additional.
  *  - 9002: add the CSS Classes field.
  *  - 9003: add the Carousel style field (rotating ring / coverflow).
+ *  - 9004: add the Kicker and Lede content fields (G1, G2) and the Controls
+ *    Gap display option (G14).
  *
  * THE FIELD IS OPTIONAL AND AN ABSENT VALUE MEANS THE ROTATING RING. Every
  * carousel that existed before this field was a ring, so "no value" resolves
@@ -27,6 +29,7 @@
 declare(strict_types=1);
 
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Entity\Display\EntityDisplayInterface;
 use Drupal\Core\Entity\Sql\DefaultTableMapping;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 
@@ -58,6 +61,7 @@ function paragraph_bundle_3d_carousel_display_group_overrides(): array {
         'pb_display_width',
         'pb_content_3dcar_lheight',
         'pb_content_3dcar_sheight',
+        'pb_display_3d_controls_gap',
       ],
     ],
   ];
@@ -474,4 +478,173 @@ function paragraph_bundle_3d_carousel_backfill_style(): int {
   }
 
   return $filled;
+}
+
+/**
+ * Adds the Kicker and Lede content fields to 3d_carousel_bundle.
+ *
+ * Both reuse parent storages: `pb_content_kicker` (paragraphs_bundles 9013)
+ * and `pb_content_body`. Each step is guarded, so the function is safe to run
+ * again and safe on a site that got the fields from config/optional.
+ *
+ * @return bool
+ *   TRUE when the Kicker instance was created by this call.
+ */
+function paragraph_bundle_3d_carousel_add_intro_fields(): bool {
+  $bundle = '3d_carousel_bundle';
+  $items_field = 'pb_content_3d_car_body';
+  $em = \Drupal::entityTypeManager();
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+
+  $existed = $em->getStorage('field_config')->load('paragraph.' . $bundle . '.pb_content_kicker') !== NULL;
+  // Storage first (parent), then this module's instance: the instance
+  // depends on the storage.
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_kicker');
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_body');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_3d_carousel', 'field.field.paragraph.' . $bundle . '.pb_content_kicker');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_3d_carousel', 'field.field.paragraph.' . $bundle . '.pb_content_body');
+
+  // Edit form: Content tab, after the three title fields. The form display
+  // verifier needs title, tag and alignment at weights 1-3, so these take 4
+  // and 5 and the items field moves to 6 to stay last.
+  $form = $em->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+  if ($form instanceof EntityDisplayInterface) {
+    $changed = FALSE;
+    if ($form->getComponent('pb_content_kicker') === NULL) {
+      $form->setComponent('pb_content_kicker', [
+        'type' => 'string_textfield',
+        'weight' => 4,
+        'region' => 'content',
+        'settings' => ['size' => 60, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ]);
+      $changed = TRUE;
+    }
+    if ($form->getComponent('pb_content_body') === NULL) {
+      $form->setComponent('pb_content_body', [
+        'type' => 'text_textarea',
+        'weight' => 5,
+        'region' => 'content',
+        'settings' => ['rows' => 3, 'placeholder' => ''],
+        'third_party_settings' => [],
+      ]);
+      $changed = TRUE;
+    }
+    $items = $form->getComponent($items_field);
+    if (is_array($items) && (int) ($items['weight'] ?? 0) < 6) {
+      $items['weight'] = 6;
+      $form->setComponent($items_field, $items);
+      $changed = TRUE;
+    }
+    $group = $form->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL)) {
+      $children = array_values(array_diff($group['children'], ['pb_content_kicker', 'pb_content_body']));
+      $at = array_search('pb_content_title_alignment', $children, TRUE);
+      $at = $at === FALSE ? count($children) : $at + 1;
+      array_splice($children, $at, 0, ['pb_content_kicker', 'pb_content_body']);
+      if ($children !== $group['children']) {
+        $group['children'] = $children;
+        $form->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+        $changed = TRUE;
+      }
+    }
+    if ($changed) {
+      $form->save();
+    }
+  }
+
+  // Display: both print (the template wraps them only when filled).
+  $view = $em->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($view instanceof EntityDisplayInterface) {
+    $changed = FALSE;
+    if ($view->getComponent('pb_content_kicker') === NULL) {
+      $view->setComponent('pb_content_kicker', [
+        'type' => 'string',
+        'label' => 'hidden',
+        'settings' => ['link_to_entity' => FALSE],
+        'third_party_settings' => [],
+        'weight' => 20,
+        'region' => 'content',
+      ]);
+      $changed = TRUE;
+    }
+    if ($view->getComponent('pb_content_body') === NULL) {
+      $view->setComponent('pb_content_body', [
+        'type' => 'text_default',
+        'label' => 'hidden',
+        'settings' => [],
+        'third_party_settings' => [],
+        'weight' => 21,
+        'region' => 'content',
+      ]);
+      $changed = TRUE;
+    }
+    if ($changed) {
+      $view->save();
+    }
+  }
+
+  return !$existed && $em->getStorage('field_config')->load('paragraph.' . $bundle . '.pb_content_kicker') !== NULL;
+}
+
+/**
+ * Adds Kicker, Lede and Controls Gap to sites that already have the bundle.
+ *
+ * New sites get all three from config/optional. Every field is optional and
+ * empty, so existing carousels render exactly as before: the template adds
+ * the kicker, the lede and the `pb-3d-carousel--cg*` class only when a value
+ * is set.
+ */
+function paragraph_bundle_3d_carousel_update_9004(): string {
+  $em = \Drupal::entityTypeManager();
+  if ($em->getStorage('paragraphs_type')->load('3d_carousel_bundle') === NULL) {
+    return (string) t('No 3D carousel paragraph type; nothing to do.');
+  }
+  $intro = paragraph_bundle_3d_carousel_add_intro_fields();
+
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $gap_existed = $em->getStorage('field_config')->load('paragraph.3d_carousel_bundle.pb_display_3d_controls_gap') !== NULL;
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_3d_carousel', 'field.storage.paragraph.pb_display_3d_controls_gap');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_3d_carousel', 'field.field.paragraph.3d_carousel_bundle.pb_display_3d_controls_gap');
+
+  $form = $em->getStorage('entity_form_display')->load('paragraph.3d_carousel_bundle.default');
+  if ($form instanceof EntityDisplayInterface && $form->getComponent('pb_display_3d_controls_gap') === NULL) {
+    $form->setComponent('pb_display_3d_controls_gap', [
+      'type' => 'options_select',
+      'weight' => 25,
+      'region' => 'content',
+      'settings' => [],
+      'third_party_settings' => [],
+    ])->save();
+  }
+  // A display option: the template reads the value, the field never prints.
+  $view = $em->getStorage('entity_view_display')->load('paragraph.3d_carousel_bundle.default');
+  if ($view instanceof EntityDisplayInterface) {
+    $hidden = $view->get('hidden');
+    if ($view->getComponent('pb_display_3d_controls_gap') !== NULL || !is_array($hidden) || !isset($hidden['pb_display_3d_controls_gap'])) {
+      $view->removeComponent('pb_display_3d_controls_gap')->save();
+    }
+  }
+  // Nest it under Display -> Additional.
+  paragraph_bundle_3d_carousel_apply_form_display_layout();
+
+  return ($intro || !$gap_existed)
+    ? (string) t('3D carousel: Kicker and Lede added to the Content tab, Controls Gap added under Display -> Additional.')
+    : (string) t('3D carousel: Kicker, Lede and Controls Gap were already present; form and display checked.');
+}
+
+/**
+ * Implements hook_update_dependencies().
+ *
+ * @phpstan-return array<string, array<int, array<string, int>>>
+ */
+function paragraph_bundle_3d_carousel_update_dependencies(): array {
+  // 9004 imports the Kicker storage that paragraphs_bundles 9013 ships. The
+  // 9001 -> paragraphs_bundles 9006 entry stays in paragraphs_bundles.install;
+  // Drupal merges both modules' answers.
+  return [
+    'paragraph_bundle_3d_carousel' => [
+      9004 => ['paragraphs_bundles' => 9013],
+    ],
+  ];
 }

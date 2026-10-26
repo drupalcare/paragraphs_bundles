@@ -170,3 +170,28 @@
 @media print {
   /* Hero layout only. */
 }
+
+/* ==========================================================================
+   Image height option (pb_display_hero_lheight / pb_display_hero_sheight)
+   Classes exist only when the editor picks a height; without one the hero
+   keeps the height its picture gives. The text box is absolutely positioned
+   over the picture, so it follows the new height.
+   ========================================================================== */
+
+@media (min-width: 62rem) {
+  .paragraphs-bundles.pb-hero.pb-hero--h300 .pb-u-image-full img { block-size: 300px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--h400 .pb-u-image-full img { block-size: 400px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--h500 .pb-u-image-full img { block-size: 500px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--h600 .pb-u-image-full img { block-size: 600px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--h700 .pb-u-image-full img { block-size: 700px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--h800 .pb-u-image-full img { block-size: 800px; object-fit: cover; }
+}
+
+@media (max-width: 61.99875rem) {
+  .paragraphs-bundles.pb-hero.pb-hero--sh300 .pb-u-image-full img { block-size: 300px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--sh400 .pb-u-image-full img { block-size: 400px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--sh500 .pb-u-image-full img { block-size: 500px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--sh600 .pb-u-image-full img { block-size: 600px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--sh700 .pb-u-image-full img { block-size: 700px; object-fit: cover; }
+  .paragraphs-bundles.pb-hero.pb-hero--sh800 .pb-u-image-full img { block-size: 800px; object-fit: cover; }
+}

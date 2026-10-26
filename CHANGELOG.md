@@ -7,6 +7,31 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **Alert: "Show state label" option (`pb_display_alert_show_state_lbl`).**
+  Off (the default, also when unset) renders exactly as before: the state
+  word stays visually hidden. On prints the same translated word ("Success",
+  "Info", "Warning", "Error") visibly as `<span class="pb-alert__state-label">`
+  above the title, in place of the hidden one, so it is announced once. The
+  root gets `pb-alert--has-state-label`. A post_update adds the field to
+  existing sites.
+- **Card text section: "Link display" option (`pb_display_card_link_mode`).**
+  "Link the title" (the default, also when unset) renders exactly as before;
+  "Button under the body" prints the link after the body as
+  `<a class="button pb-card-text-section__button">` inside
+  `.pb-card-text-section__action`, labelled with the link text (the card link
+  now accepts optional link text), or "Read more" plus the card title for
+  screen readers when there is none. A post_update adds the field to existing
+  sites and turns on the optional link text.
+- **Two/three columns: column toggle position "Toolbar above the columns"
+  (`toolbar`).** The toggle buttons stay in normal flow above the columns
+  instead of overlaying them (`pb-layout-col__icon-pos--toolbar`). A
+  post_update adds the value to existing sites; the default stays "Edge
+  center" and no stored value changes.
+- **Carousel: the middle visible slide carries `pb-is-current`.** The
+  carousel JS marks one slide per carousel, the middle of the slides shown
+  (on a short last page, the middle of what is really shown), so a theme can
+  emphasise a centre slide. PB ships no style for it; output is otherwise
+  unchanged.
 - **Rolling digits for changing numbers: the alert countdown and the 3D
   carousel's slide number.** One shared helper in the base module
   (`paragraphs_bundles/rolling-digits`: `js/pb-rolling-digits.js`,
@@ -30,6 +55,26 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- **Three-column ratios now match their labels (layout and card).** The
+  options labelled 1/4 - 1/2 - 1/4, 1/2 - 1/4 - 1/4 and 1/4 - 1/4 - 1/2 used
+  `3fr` for the wide column (3/5 of the row); they now use `2fr` (1/2), at
+  every breakpoint. **Visible change:** existing sections using these three
+  layouts get a narrower wide column. No stored value changes.
+  `PbColumnRatioContractTest` ties every two/three-column label to its CSS.
+- **Modal: the panel Background Color is optional with no default.** It was
+  required with `#000000`, so every new modal got a black panel whatever the
+  theme or pattern. Empty now prints no panel colour; an editor's colour
+  still wins. A post_update changes the field setting on existing sites;
+  stored colours are not rewritten (existing modals keep their panel).
+  With no colour the panel falls back to the system `Canvas` ground and
+  `CanvasText` text, so the page no longer shows through it.
+- **Tabs and accordion: no empty clearfix items inside their flex and grid
+  rows.** The base `.pb-ui-row` / `.pb-ui-bar` clearfix (`::before`/`::after`,
+  `display: table`) became empty flex/grid items in the tab set, tab list,
+  accordion sections, items, buttons and expand-all row, so a theme `gap`
+  added space before the first real child. Those elements now set
+  `content: none` on both pseudo-elements. With no gap set (PB sets none
+  there) nothing moves; where a theme sets a gap, the extra space is gone.
 - **Carousel, vertical: the arrows point the way they move.** The previous
   arrow sits at the top and pointed down; the next arrow at the bottom pointed
   up. A quarter turn the other way now points them up and down.

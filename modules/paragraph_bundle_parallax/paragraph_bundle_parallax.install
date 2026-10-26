@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 /**
  * Adds the CSS Classes field to the bundle this module owns.
  *
@@ -25,4 +28,62 @@ function paragraph_bundle_parallax_update_9001(): string {
   return $done === []
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}
+
+/**
+ * Adds the optional Link field to the Parallax section bundle.
+ *
+ * Reuses the shared pb_content_link storage. New sites get the instance and
+ * its form and view display entries from config/optional; this is the path
+ * for sites that already have the bundle. Safe to run more than once.
+ */
+function paragraph_bundle_parallax_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $etm = \Drupal::entityTypeManager();
+  if ($etm->getStorage('paragraphs_type')->load('parallax_section_bundle') === NULL) {
+    return (string) t('Parallax section is not installed; nothing to do.');
+  }
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_link');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_parallax', 'field.field.paragraph.parallax_section_bundle.pb_content_link');
+
+  $changed = FALSE;
+  $form_display = $etm->getStorage('entity_form_display')->load('paragraph.parallax_section_bundle.default');
+  if ($form_display instanceof EntityFormDisplayInterface && !$form_display->getComponent('pb_content_link')) {
+    $form_display->setComponent('pb_content_link', [
+      'type' => 'link_default',
+      'weight' => 5,
+      'region' => 'content',
+      'settings' => ['placeholder_url' => '', 'placeholder_title' => ''],
+      'third_party_settings' => [],
+    ]);
+    // Last child of the Content tab, after the image and the body.
+    $group = $form_display->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL) && !in_array('pb_content_link', $group['children'], TRUE)) {
+      $group['children'][] = 'pb_content_link';
+      $form_display->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+    }
+    $form_display->save();
+    $changed = TRUE;
+  }
+  $view_display = $etm->getStorage('entity_view_display')->load('paragraph.parallax_section_bundle.default');
+  if ($view_display instanceof EntityViewDisplayInterface && !$view_display->getComponent('pb_content_link')) {
+    $view_display->setComponent('pb_content_link', [
+      'type' => 'link',
+      'label' => 'hidden',
+      'settings' => [
+        'trim_length' => NULL,
+        'url_only' => FALSE,
+        'url_plain' => FALSE,
+        'rel' => '0',
+        'target' => '0',
+      ],
+      'third_party_settings' => [],
+      'weight' => 23,
+      'region' => 'content',
+    ])->save();
+    $changed = TRUE;
+  }
+  return $changed
+    ? (string) t('Added the Link field to Parallax section.')
+    : (string) t('Parallax section Link field was already present; nothing to do.');
 }

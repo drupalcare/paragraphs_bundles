@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.image_narrow_bundle.pb_content_image_link_title
     - field.field.paragraph.image_narrow_bundle.pb_content_title
     - field.field.paragraph.image_narrow_bundle.pb_content_title_alignment
+    - field.field.paragraph.image_narrow_bundle.pb_content_title_position
     - field.field.paragraph.image_narrow_bundle.pb_content_title_tag
     - field.field.paragraph.image_narrow_bundle.pb_display_bg
     - field.field.paragraph.image_narrow_bundle.pb_display_bg_hover
@@ -73,6 +74,7 @@ content:
     region: content
 hidden:
   pb_content_title_alignment: true
+  pb_content_title_position: true
   pb_content_title_tag: true
   pb_display_bg: true
   pb_display_bg_hover: true

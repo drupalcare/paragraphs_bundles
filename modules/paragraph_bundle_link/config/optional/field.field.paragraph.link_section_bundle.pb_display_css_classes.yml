@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_css_classes
+    - paragraphs.paragraphs_type.link_section_bundle
+id: paragraph.link_section_bundle.pb_display_css_classes
+field_name: pb_display_css_classes
+entity_type: paragraph
+bundle: link_section_bundle
+label: 'CSS Classes'
+description: "Extra classes for this link item's outer element, separated by spaces. They are added to the classes it already has, never replacing them. Use one to give this link its own icon or colour from your theme, for example pb-i-docs."
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

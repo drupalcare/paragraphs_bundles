@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.link_section_bundle.pb_content_link_section_title
     - field.field.paragraph.link_section_bundle.pb_content_link_section_url
+    - field.field.paragraph.link_section_bundle.pb_display_css_classes
     - paragraphs.paragraphs_type.link_section_bundle
   module:
     - link
@@ -32,4 +33,5 @@ content:
     third_party_settings: {  }
     weight: 1
     region: content
-hidden: {  }
+hidden:
+  pb_display_css_classes: true

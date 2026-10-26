@@ -14,6 +14,12 @@
  * | pb_display_slide_animated_slides| `.pb-slideshow__slide-inner` | class on pane |
  * | pb_display_slide_play_stop      | `data-slide-time`       | entity integer value |
  * | pb_display_slide_prev_next      | `.pb-slideshow__arrows`     | conditional render |
+ * | pb_display_slide_play_label     | `.pb-nav__play--labelled` + text spans | conditional render |
+ * | pb_content_kicker / pb_content_body | `.pb-content__kicker` / `.pb-content__lede` | printed only when filled |
+ *
+ * New elements sit on existing lines so an empty field adds no whitespace.
+ * The kicker prints the plain value (pb_field_value, autoescaped) inside a
+ * <p>: the field template would put a <div> inside the <p>.
  *
  * Dynamic CSS selector: `#pb-slideshow-{id} > .pb-ui-inner`
  *
@@ -63,15 +69,15 @@
        other bundle. #}
     <div class="pb-content__full">
 
-      {% if pb_title %}
+      {% if paragraph|pb_field_value('pb_content_kicker')|trim %}<p class="pb-content__kicker">{{ paragraph|pb_field_value('pb_content_kicker') }}</p>{% endif %}{% if pb_title %}
         {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
-      {% endif %}
+      {% endif %}{% if content.pb_content_body is not empty and content.pb_content_body|render|striptags|trim %}<div class="pb-content__lede">{{ content.pb_content_body }}</div>{% endif %}
 
       {% set total_slides = 0 %}
 
       {# WCAG 2.2.2: whenever autoplay can run there must be a pause control,
          regardless of which bottom-navigation style is selected. #}
-      {% set show_play_button = pb_slide_time > 0 %}
+      {% set show_play_button = pb_slide_time > 0 %}{% set pb_play_label = paragraph|pb_field_value('pb_display_slide_play_label', 0) %}
 
       {# This slideshow uses the ARIA APG **basic carousel** pattern, not the
          tabbed-picker variant: every slide is a `role="group"` with
@@ -123,11 +129,11 @@
             {% if show_play_button %}
               <button id="pb-slideshow__play-pause-{{ paragraph.id.value }}" type="button"
                       aria-label="{{ 'Pause slideshow'|t }}"
-                      class="pb-ui-btn pb-nav__play pb-is-playing control-btn"
+                      class="pb-ui-btn pb-nav__play pb-is-playing control-btn{{ pb_play_label ? ' pb-nav__play--labelled' }}"
                       aria-live="polite">
                 <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
-                <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_slideshow/svg/svg-play.svg') }}</span>
-                <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_slideshow/svg/svg-pause.svg') }}</span>
+                <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_slideshow/svg/svg-play.svg') }}{% if pb_play_label %}<span class="pb-nav__play-text">{{ 'Play'|t }}</span>{% endif %}</span>
+                <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_slideshow/svg/svg-pause.svg') }}{% if pb_play_label %}<span class="pb-nav__pause-text">{{ 'Pause'|t }}</span>{% endif %}</span>
               </button>
             {% endif %}
 

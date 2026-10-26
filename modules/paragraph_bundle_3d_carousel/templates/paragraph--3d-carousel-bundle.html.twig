@@ -13,6 +13,8 @@
  * | pb_display_3d_caro_breakpoints       | outer wrapper        | breakpoint library |
  * | pb_content_3dcar_lheight/sheight     | outer wrapper class  | entity field values |
  * | pb_display_3d_play_stop              | `data-rotation-delay`| entity integer value |
+ * | pb_display_3d_controls_gap           | outer wrapper class  | `pb-3d-carousel--cg*`, only when set |
+ * | pb_content_kicker / pb_content_body  | before / after title | printed only when filled |
  *
  * Dynamic CSS selector: `#pb-3d-carousel-{id} > .pb-ui-inner`
  *
@@ -89,6 +91,29 @@
    turns the leading digit of 3d_carousel_bundle into "_" and emitted
    paragraph--type--_d-carousel-bundle in 2.0.0. Both are kept, so a theme
    written against either release keeps working. -#}
+{# SECTION TITLE (optional). Printed OUTSIDE `.pb-3d-carousel__inner`: that box
+   has fixed heights per size class and the script measures it as the ring's
+   parent, so a heading inside it would shift the 3D geometry.
+
+   With no title the region keeps its fixed aria-label and the markup is byte
+   identical to the release before the title existed. With a title, the region
+   is named by the heading instead (aria-labelledby), so a screen reader hears
+   the editor's words rather than a generic "Image Carousel".
+
+   The root is a flex ROW (paragraph-bundle-3d-carousel.css), so a title
+   would sit beside the stage and squeeze it. `pb-3d-carousel--has-title`
+   lets the row wrap and gives the title its own full-width line; it is only
+   emitted when a title exists, so untitled carousels keep their classes. -#}
+{% set pb_title = content.pb_content_title|default([])|render|striptags|trim -%}
+{% set title_id = 'pb-3d-carousel__title-' ~ paragraph.id.value -%}
+{#- KICKER AND LEDE (optional), outside `.pb-3d-carousel__inner` for the same
+   reason as the title. `pb-3d-carousel--has-intro` gives them full-width
+   lines in the flex row; it and both elements appear only when filled, so an
+   empty carousel's markup stays byte identical. The controls gap adds a class
+   only when set (allowed values 16/24/32/48). -#}
+{% set pb_kicker = content.pb_content_kicker|default([])|render|striptags|trim -%}
+{% set pb_lede = content.pb_content_body|default([])|render|striptags|trim -%}
+{% set pb_controls_gap = paragraph|pb_field_value('pb_display_3d_controls_gap') -%}
 {% set classes = [
   'paragraph',
   'paragraphs-bundles',
@@ -102,6 +127,9 @@
   pb_lheight_raw ? 'pb-3d-carousel--h' ~ pb_lheight_raw,
   pb_sheight_raw ? 'pb-3d-carousel--sh' ~ pb_sheight_raw,
   pb_car_style == 'coverflow' ? 'pb-3d-carousel--coverflow',
+  pb_title ? 'pb-3d-carousel--has-title',
+  pb_kicker or pb_lede ? 'pb-3d-carousel--has-intro',
+  pb_controls_gap in ['16', '24', '32', '48'] ? 'pb-3d-carousel--cg' ~ pb_controls_gap,
 ] %}
 
 {% set carousel_id = 'pb-3d-carousel__ring-' ~ paragraph.id.value %}
@@ -109,8 +137,9 @@
 {% set valid_slides = content.pb_content_3d_car_body|filter((item, key) => key|first != '#') %}
 {% set total_slides = valid_slides|length %}
 
-<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} role="region" aria-label="{{ 'Image Carousel'|t }}">
-  <div class="{{ classes_inner }}">
+<div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} role="region" {% if pb_title %}aria-labelledby="{{ title_id }}"{% else %}aria-label="{{ 'Image Carousel'|t }}"{% endif %}>
+  {% if pb_kicker %}<div class="pb-content__kicker">{{ content.pb_content_kicker }}</div>{% endif %}{% if pb_title %}{{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content, title_id: title_id}, false) }}
+  {% endif %}{% if pb_lede %}<div class="pb-content__lede">{{ content.pb_content_body }}</div>{% endif %}<div class="{{ classes_inner }}">
 
     <div id="{{ carousel_id }}"
          class="pb-3d-carousel__ring"

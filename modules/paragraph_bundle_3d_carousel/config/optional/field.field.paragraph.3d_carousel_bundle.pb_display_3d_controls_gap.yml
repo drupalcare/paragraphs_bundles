@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_3d_controls_gap
+    - paragraphs.paragraphs_type.3d_carousel_bundle
+  module:
+    - options
+id: paragraph.3d_carousel_bundle.pb_display_3d_controls_gap
+field_name: pb_display_3d_controls_gap
+entity_type: paragraph
+bundle: 3d_carousel_bundle
+label: 'Controls Gap'
+description: 'Extra space between the carousel and its controls. Leave empty to keep the current spacing.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.image_narrow_bundle.pb_content_image_link_title
     - field.field.paragraph.image_narrow_bundle.pb_content_title
     - field.field.paragraph.image_narrow_bundle.pb_content_title_alignment
+    - field.field.paragraph.image_narrow_bundle.pb_content_title_position
     - field.field.paragraph.image_narrow_bundle.pb_content_title_tag
     - field.field.paragraph.image_narrow_bundle.pb_display_bg
     - field.field.paragraph.image_narrow_bundle.pb_display_bg_hover
@@ -53,6 +54,7 @@ third_party_settings:
         - pb_content_title
         - pb_content_title_tag
         - pb_content_title_alignment
+        - pb_content_title_position
         - pb_content_image
         - pb_content_image_link
         - pb_content_image_link_title
@@ -185,14 +187,14 @@ mode: default
 content:
   pb_content_image:
     type: media_library_widget
-    weight: 4
+    weight: 5
     region: content
     settings:
       media_types: {  }
     third_party_settings: {  }
   pb_content_image_link:
     type: link_default
-    weight: 5
+    weight: 6
     region: content
     settings:
       placeholder_url: ''
@@ -200,7 +202,7 @@ content:
     third_party_settings: {  }
   pb_content_image_link_title:
     type: string_textfield
-    weight: 6
+    weight: 7
     region: content
     settings:
       size: 60
@@ -217,6 +219,12 @@ content:
   pb_content_title_alignment:
     type: options_select
     weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_content_title_position:
+    type: options_select
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }

@@ -19,6 +19,9 @@ settings:
     -
       value: inside_center
       label: Inside center
+    -
+      value: toolbar
+      label: 'Toolbar above the columns'
   allowed_values_function: ''
 module: options
 locked: false

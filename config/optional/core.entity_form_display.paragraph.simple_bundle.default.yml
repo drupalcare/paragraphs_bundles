@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.simple_bundle.pb_content_body
     - field.field.paragraph.simple_bundle.pb_content_link
+    - field.field.paragraph.simple_bundle.pb_content_link_secondary
     - field.field.paragraph.simple_bundle.pb_content_title
     - field.field.paragraph.simple_bundle.pb_content_title_alignment
     - field.field.paragraph.simple_bundle.pb_content_title_tag
@@ -53,6 +54,7 @@ third_party_settings:
         - pb_content_title_alignment
         - pb_content_body
         - pb_content_link
+        - pb_content_link_secondary
       label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -191,6 +193,14 @@ content:
   pb_content_link:
     type: link_default
     weight: 5
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  pb_content_link_secondary:
+    type: link_default
+    weight: 6
     region: content
     settings:
       placeholder_url: ''

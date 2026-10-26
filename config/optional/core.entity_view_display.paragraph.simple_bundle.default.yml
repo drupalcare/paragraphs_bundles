@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.paragraph.simple_bundle.pb_content_body
     - field.field.paragraph.simple_bundle.pb_content_link
+    - field.field.paragraph.simple_bundle.pb_content_link_secondary
     - field.field.paragraph.simple_bundle.pb_content_title
     - field.field.paragraph.simple_bundle.pb_content_title_alignment
     - field.field.paragraph.simple_bundle.pb_content_title_tag
@@ -52,6 +53,18 @@ content:
       target: '0'
     third_party_settings: {  }
     weight: 14
+    region: content
+  pb_content_link_secondary:
+    type: link
+    label: hidden
+    settings:
+      trim_length: null
+      url_only: false
+      url_plain: false
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 16
     region: content
   pb_content_title:
     type: string

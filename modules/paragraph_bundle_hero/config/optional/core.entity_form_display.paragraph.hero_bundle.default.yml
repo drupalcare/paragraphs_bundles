@@ -6,6 +6,7 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_content_image
     - field.field.paragraph.hero_bundle.pb_content_image_link
     - field.field.paragraph.hero_bundle.pb_content_image_link_title
+    - field.field.paragraph.hero_bundle.pb_content_kicker
     - field.field.paragraph.hero_bundle.pb_content_title
     - field.field.paragraph.hero_bundle.pb_content_title_alignment
     - field.field.paragraph.hero_bundle.pb_content_title_tag
@@ -18,6 +19,8 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_display_border_radius
     - field.field.paragraph.hero_bundle.pb_display_css_classes
     - field.field.paragraph.hero_bundle.pb_display_hero
+    - field.field.paragraph.hero_bundle.pb_display_hero_lheight
+    - field.field.paragraph.hero_bundle.pb_display_hero_sheight
     - field.field.paragraph.hero_bundle.pb_display_link
     - field.field.paragraph.hero_bundle.pb_display_link_hover
     - field.field.paragraph.hero_bundle.pb_display_margin
@@ -60,6 +63,7 @@ third_party_settings:
         - pb_content_image
         - pb_content_image_link
         - pb_content_image_link_title
+        - pb_content_kicker
       label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -170,6 +174,8 @@ third_party_settings:
     group_pb_display_extra:
       children:
         - pb_display_hero
+        - pb_display_hero_lheight
+        - pb_display_hero_sheight
       label: Additional
       region: content
       parent_name: group_pb_tab_display
@@ -230,6 +236,14 @@ content:
   pb_content_image_link_title:
     type: string_textfield
     weight: 7
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  pb_content_kicker:
+    type: string_textfield
+    weight: 8
     region: content
     settings:
       size: 60
@@ -308,6 +322,18 @@ content:
   pb_display_hero:
     type: options_select
     weight: 31
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_hero_lheight:
+    type: options_select
+    weight: 32
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pb_display_hero_sheight:
+    type: options_select
+    weight: 33
     region: content
     settings: {  }
     third_party_settings: {  }

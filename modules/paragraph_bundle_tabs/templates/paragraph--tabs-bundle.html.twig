@@ -44,7 +44,9 @@
 {% set pb_breakpoints = paragraph|pb_field_value('pb_display_tabs_breakpoints', 'pb__992') %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
 {% set is_vertical = not paragraph.pb_display_tab_vertical_tabs.isEmpty and paragraph|pb_field_value('pb_display_tab_vertical_tabs') %}
-{% set tabset_layout = (is_vertical ? 'pb-u-vertical-tabs' : 'pb-u-horizontal-tabs') ~ ' ' ~ pb_breakpoints %}
+{# Opt-in: vertical tabs stay a column below the breakpoint (G13). Off adds nothing. #}
+{% set is_stacked = is_vertical and paragraph.hasField('pb_display_tab_stack_narrow') and not paragraph.pb_display_tab_stack_narrow.isEmpty and paragraph|pb_field_value('pb_display_tab_stack_narrow') %}
+{% set tabset_layout = (is_vertical ? 'pb-u-vertical-tabs' : 'pb-u-horizontal-tabs') ~ (is_stacked ? ' pb-u-vertical-stack' : '') ~ ' ' ~ pb_breakpoints %}
 
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="{{ classes_inner }}">
@@ -62,7 +64,7 @@
         {# The hint sits outside the tab list, which may contain only tabs, and
            reaches it as the list's description. #}
         <span id="{{ tab_id }}-hint" class="visually-hidden">{{ 'Use the arrow keys to navigate between tabs'|t }}</span>
-        <div class="pb-ui-bar pb-tabs__tablist" role="tablist" aria-label="{{ 'Tab List'|t }}" aria-describedby="{{ tab_id }}-hint">
+        <div class="pb-ui-bar pb-tabs__tablist" role="tablist"{% if is_stacked %} aria-orientation="vertical"{% endif %} aria-label="{{ 'Tab List'|t }}" aria-describedby="{{ tab_id }}-hint">
           {% for key, item in content.pb_content_tab_section %}
             {% if key|first != '#' %}
 

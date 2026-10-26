@@ -339,6 +339,33 @@
   outline-offset: 2px;
 }
 
+/* Visible Play/Pause word (pb_display_slide_play_label). Only the labelled
+   button gets these rules; the icon-only button is unchanged. */
+.paragraphs-bundles.pb-slideshow .pb-slideshow__nav .pb-nav__play--labelled > span:not(.visually-hidden) {
+  gap: var(--pb-px6);
+  width: auto;
+  border-radius: var(--pb-px20);
+  padding-inline: var(--pb-px6) var(--pb-px10);
+}
+
+.paragraphs-bundles.pb-slideshow .pb-nav__play-text,
+.paragraphs-bundles.pb-slideshow .pb-nav__pause-text {
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   Section kicker and lede (printed only when the editor fills them)
+   ========================================================================== */
+
+.paragraphs-bundles.pb-slideshow .pb-content__kicker {
+  margin-block: 0 var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-slideshow .pb-content__lede {
+  margin-block-end: var(--pb-px16);
+}
+
 /* ==========================================================================
    Navigation Type: Hidden (no nav/dot class)
    ========================================================================== */

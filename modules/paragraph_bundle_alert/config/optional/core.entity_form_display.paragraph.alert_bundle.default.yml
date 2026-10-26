@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.alert_bundle.pb_display_alert_dismissal_type
     - field.field.paragraph.alert_bundle.pb_display_alert_end_date
     - field.field.paragraph.alert_bundle.pb_display_alert_show_cdown_lbl
+    - field.field.paragraph.alert_bundle.pb_display_alert_show_state_lbl
     - field.field.paragraph.alert_bundle.pb_display_alert_start_date
     - field.field.paragraph.alert_bundle.pb_display_alert_state
     - field.field.paragraph.alert_bundle.pb_display_bg
@@ -172,6 +173,7 @@ third_party_settings:
         - pb_display_alert_dismissal_type
         - pb_display_alert_close_persist
         - pb_display_alert_state
+        - pb_display_alert_show_state_lbl
         - pb_display_alert_countdown_sec
         - pb_display_alert_show_cdown_lbl
         - pb_display_show_close_button
@@ -284,6 +286,13 @@ content:
   pb_display_alert_show_cdown_lbl:
     type: boolean_checkbox
     weight: 33
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  pb_display_alert_show_state_lbl:
+    type: boolean_checkbox
+    weight: 36
     region: content
     settings:
       display_label: true

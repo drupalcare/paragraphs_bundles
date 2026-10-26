@@ -804,6 +804,8 @@ function paragraphs_bundles_update_dependencies(): array {
   foreach ($submodules as $module => $update) {
     $dependencies[$module][$update]['paragraphs_bundles'] = 9006;
   }
+  // Hero 9002 imports the pb_content_kicker storage that update 9013 adds.
+  $dependencies['paragraph_bundle_hero'][9002]['paragraphs_bundles'] = 9013;
   return $dependencies;
 }
 
@@ -1435,4 +1437,67 @@ function paragraphs_bundles_update_9012(): string {
     'field.field.paragraph.simple_bundle.pb_display_padding' => '',
     'field.field.paragraph.simple_bundle.pb_display_shadow' => '',
   ], 'description');
+}
+
+/**
+ * Adds the shared Kicker field storage and the Simple section Second link.
+ *
+ * New sites get both from config/optional; this is the path for sites that
+ * already have the bundle. The Kicker storage has no field instance here:
+ * the bundles that show it import their own instance in their own update.
+ * The Second link is a new storage so the existing Link field keeps its
+ * single-value widget on Simple, Card and Icon sections.
+ */
+function paragraphs_bundles_update_9013(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_kicker');
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.storage.paragraph.pb_content_link_secondary');
+
+  if (\Drupal::entityTypeManager()->getStorage('paragraphs_type')->load('simple_bundle') === NULL) {
+    return (string) t('Kicker and Second link storages added; Simple section is not installed, so no instance was added.');
+  }
+  paragraphs_bundles_import_optional_config_if_missing('paragraphs_bundles', 'field.field.paragraph.simple_bundle.pb_content_link_secondary');
+
+  $changed = FALSE;
+  $form_display = \Drupal::entityTypeManager()->getStorage('entity_form_display')->load('paragraph.simple_bundle.default');
+  if ($form_display !== NULL && !$form_display->getComponent('pb_content_link_secondary')) {
+    $form_display->setComponent('pb_content_link_secondary', [
+      'type' => 'link_default',
+      'weight' => 6,
+      'region' => 'content',
+      'settings' => ['placeholder_url' => '', 'placeholder_title' => ''],
+      'third_party_settings' => [],
+    ]);
+    // Append to the Content tab, after the existing children, so the title,
+    // tag and alignment stay first (PbFormDisplayVerifier::verifyContentTab).
+    $group = $form_display->getThirdPartySetting('field_group', 'group_pb_tab_content');
+    if (is_array($group) && is_array($group['children'] ?? NULL) && !in_array('pb_content_link_secondary', $group['children'], TRUE)) {
+      $group['children'][] = 'pb_content_link_secondary';
+      $form_display->setThirdPartySetting('field_group', 'group_pb_tab_content', $group);
+    }
+    $form_display->save();
+    $changed = TRUE;
+  }
+  $view_display = \Drupal::entityTypeManager()->getStorage('entity_view_display')->load('paragraph.simple_bundle.default');
+  if ($view_display !== NULL && !$view_display->getComponent('pb_content_link_secondary')) {
+    $view_display->setComponent('pb_content_link_secondary', [
+      'type' => 'link',
+      'label' => 'hidden',
+      'settings' => [
+        'trim_length' => NULL,
+        'url_only' => FALSE,
+        'url_plain' => FALSE,
+        'rel' => '0',
+        'target' => '0',
+      ],
+      'third_party_settings' => [],
+      'weight' => 16,
+      'region' => 'content',
+    ]);
+    $view_display->save();
+    $changed = TRUE;
+  }
+  return $changed
+    ? (string) t('Added the Kicker storage and the Second link field to Simple section.')
+    : (string) t('Kicker storage and Simple section Second link were already present.');
 }

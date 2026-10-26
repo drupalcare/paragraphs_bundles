@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_hero_lheight
+    - paragraphs.paragraphs_type.hero_bundle
+  module:
+    - options
+id: paragraph.hero_bundle.pb_display_hero_lheight
+field_name: pb_display_hero_lheight
+entity_type: paragraph
+bundle: hero_bundle
+label: 'Large screen height'
+description: 'Image height on screens 992px wide and up. Leave empty to keep the height the picture gives.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

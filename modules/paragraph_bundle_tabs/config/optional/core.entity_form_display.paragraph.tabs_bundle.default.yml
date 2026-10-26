@@ -21,6 +21,7 @@ dependencies:
     - field.field.paragraph.tabs_bundle.pb_display_shadow
     - field.field.paragraph.tabs_bundle.pb_display_tab_active_item
     - field.field.paragraph.tabs_bundle.pb_display_tab_animated_tabs
+    - field.field.paragraph.tabs_bundle.pb_display_tab_stack_narrow
     - field.field.paragraph.tabs_bundle.pb_display_tab_vertical_tabs
     - field.field.paragraph.tabs_bundle.pb_display_tabs_breakpoints
     - field.field.paragraph.tabs_bundle.pb_display_text
@@ -168,6 +169,7 @@ third_party_settings:
         - pb_display_tab_animated_tabs
         - pb_display_tab_active_item
         - pb_display_tab_vertical_tabs
+        - pb_display_tab_stack_narrow
       label: Additional
       region: content
       parent_name: group_pb_tab_display
@@ -324,6 +326,13 @@ content:
   pb_display_tab_vertical_tabs:
     type: boolean_checkbox
     weight: 35
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  pb_display_tab_stack_narrow:
+    type: boolean_checkbox
+    weight: 36
     region: content
     settings:
       display_label: true

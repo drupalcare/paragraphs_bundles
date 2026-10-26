@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_slide_play_label
+    - paragraphs.paragraphs_type.slideshow_bundle
+id: paragraph.slideshow_bundle.pb_display_slide_play_label
+field_name: pb_display_slide_play_label
+entity_type: paragraph
+bundle: slideshow_bundle
+label: 'Show Play/Pause text on the button'
+description: 'Adds the word Play or Pause next to the icon on the autoplay button. Off by default.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

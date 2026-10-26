@@ -21,6 +21,71 @@
   margin-inline: auto;
 }
 
+/* Section title, kicker and lede (optional): the root is a flex row, so text
+   would sit beside the stage and squeeze it. A carousel with any of them
+   becomes a column: each text line gets its own line and the stage is centred
+   below. (A wrapping row did not hold: a flex item with a max-width, such as a
+   title capped to the pb_content node width, does not reserve a full line, so
+   the narrow stage moved up beside it.) Untitled carousels never get these
+   classes and keep the row. */
+.paragraphs-bundles.pb-3d-carousel:is(.pb-3d-carousel--has-title, .pb-3d-carousel--has-intro) {
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-3d-carousel:is(.pb-3d-carousel--has-title, .pb-3d-carousel--has-intro) > :is(.pb-content__title, .pb-content__kicker, .pb-content__lede) {
+  flex: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel:is(.pb-3d-carousel--has-title, .pb-3d-carousel--has-intro) > .pb-3d-carousel__inner {
+  align-self: center;
+}
+
+.paragraphs-bundles.pb-3d-carousel > .pb-content__kicker {
+  margin-block-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-3d-carousel > .pb-content__lede {
+  margin-block-end: var(--pb-px16);
+}
+
+/* Controls gap (optional; class only when set). The stage is a flex column
+   of a fixed height holding the ring and the controls, so a top margin on
+   the controls alone only shrinks the ring and the controls never move. The
+   controls therefore take the gap above them and give it back below them
+   (negative end margin): the ring keeps exactly the height it has with no
+   gap, and the controls move down by the gap into the stage's bottom
+   padding. That padding is the gap plus 8px, so below 992, where the stage
+   is `overflow: hidden`, the controls and their focus ring (3px outline +
+   3px offset) stay inside it. The card keeps its height and the
+   perspective origin is held at the old centre so the 3D view does not
+   shift. */
+.paragraphs-bundles.pb-3d-carousel[class*="pb-3d-carousel--cg"] > .pb-3d-carousel__inner {
+  --pb-3d-controls-room: calc(var(--pb-3d-controls-gap) + var(--pb-px8));
+  box-sizing: content-box !important;
+  padding-block-end: var(--pb-3d-controls-room);
+  perspective-origin: 50% calc(50% - var(--pb-3d-controls-room) / 2);
+}
+
+.paragraphs-bundles.pb-3d-carousel[class*="pb-3d-carousel--cg"] > .pb-3d-carousel__inner > .pb-3d-carousel__options {
+  margin-block: var(--pb-3d-controls-gap) calc(-1 * var(--pb-3d-controls-gap));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--cg16 {
+  --pb-3d-controls-gap: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--cg24 {
+  --pb-3d-controls-gap: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--cg32 {
+  --pb-3d-controls-gap: var(--pb-px32);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-3d-carousel--cg48 {
+  --pb-3d-controls-gap: var(--pb-px48);
+}
+
 /* Namespaced: an unprefixed `fadeIn` collides with the same name in a theme. */
 @keyframes pb-fade-in {
   from {

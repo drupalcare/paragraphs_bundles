@@ -54,6 +54,14 @@ final class PbaPreprocessAlertHook {
       }
     }
 
+    // Off by default and when the field is missing: the state word then stays
+    // visually hidden, exactly as before the option existed. Read before the
+    // early returns below for the same reason as the state itself.
+    $variables['pb_show_state_label'] = $variables['pb_alert_state'] !== ''
+      && $paragraph->hasField('pb_display_alert_show_state_lbl')
+      && !$paragraph->get('pb_display_alert_show_state_lbl')->isEmpty()
+      && (bool) $paragraph->get('pb_display_alert_show_state_lbl')->value;
+
     if (!$paragraph->hasField('pb_display_alert_dismissal_type')) {
       return;
     }

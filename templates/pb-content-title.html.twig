@@ -11,6 +11,9 @@
  * - content: The paragraph render array (must include pb_content_title).
  * - title_extra_classes: Optional extra classes (space-separated)
  *   appended to the title.
+ * - title_id: Optional id for the heading, so a region can name itself
+ *   with aria-labelledby. No id attribute is printed when it is empty, so
+ *   every caller that does not pass one keeps its markup byte identical.
  *
  * THERE IS NO `title_style`, DELIBERATELY. Its only caller was the image
  * overlay, whose colors now reach this element through the paragraph's
@@ -44,4 +47,6 @@
 {% set _base = 'pb-content__title pb-content__title--align-' ~ _align %}
 {% set _extra = title_extra_classes|default('')|trim %}
 
-<{{ _tag }} class="{{ _base }}{{ _extra ? ' ' ~ _extra : '' }}">{{ content.pb_content_title }}</{{ _tag }}>
+{%- set _id = title_id|default('')|trim %}
+
+<{{ _tag }}{% if _id %} id="{{ _id }}"{% endif %} class="{{ _base }}{{ _extra ? ' ' ~ _extra : '' }}">{{ content.pb_content_title }}</{{ _tag }}>

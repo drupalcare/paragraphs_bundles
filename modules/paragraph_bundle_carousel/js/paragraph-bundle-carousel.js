@@ -30,6 +30,7 @@
   const PB_CAROUSEL__PLAY_PAUSE = 'pb-carousel__play-pause';
   const PB_IS_ACTIVE = 'pb-is-active';
   const PB_IS_INACTIVE = 'pb-is-inactive';
+  const PB_IS_CURRENT = 'pb-is-current';
   const PB_IS_VISIBLE = 'pb-is-visible';
   const PB_U_SMALL_SCREEN = 'pb-u-small-screen';
   const PB_U_LARGE_SCREEN = 'pb-u-large-screen';
@@ -434,11 +435,16 @@
     const itemsVisible = getItemsVisible(state);
     const start = state.pageIndex * itemsVisible;
     const end = start + itemsVisible;
+    // The middle item of the visible set is the "current" one, so a theme can
+    // emphasise it. A short last page centres on the items it really shows.
+    const shown = Math.max(Math.min(end, state.items.length) - start, 1);
+    const current = start + Math.floor((shown - 1) / 2);
 
     state.items.forEach((item, i) => {
       const isActive = i >= start && i < end;
       item.classList.toggle(PB_IS_ACTIVE, isActive);
       item.classList.toggle(PB_IS_INACTIVE, !isActive);
+      item.classList.toggle(PB_IS_CURRENT, i === current);
       item.setAttribute('aria-hidden', String(!isActive));
       // Off-page slides are also removed from the tab order / a11y tree.
       item.toggleAttribute('inert', !isActive);

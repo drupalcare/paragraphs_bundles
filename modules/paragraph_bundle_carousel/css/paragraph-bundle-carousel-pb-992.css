@@ -19,6 +19,11 @@
     padding-block: var(--pb-px48);
   }
 
+  /* Arrows over the slides: no arrow lane in the vertical state either. */
+  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel.pb-has-arrows.pb-has-arrows-over .pb-carousel__viewport {
+    padding-block: 0;
+  }
+
   .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__slides {
     flex-direction: column;
     transform: translateY(0);

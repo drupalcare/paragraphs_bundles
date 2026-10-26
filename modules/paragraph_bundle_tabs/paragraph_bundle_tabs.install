@@ -7,6 +7,9 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+
 /**
  * Adds the CSS Classes field to the bundle this module owns.
  *
@@ -25,4 +28,49 @@ function paragraph_bundle_tabs_update_9001(): string {
   return $done === []
     ? (string) t('CSS Classes field was already present; nothing to do.')
     : (string) t('CSS Classes field added to: @list.', ['@list' => implode(', ', $done)]);
+}
+
+/**
+ * Adds "Keep vertical tabs as a column on small screens" to Tabs.
+ *
+ * New sites get the field from config/optional; this is the path for sites
+ * that already have the bundle. The widget joins Display, Additional, after
+ * Vertical Tabs. The template reads the value, so the view display hides it.
+ * Safe to run more than once.
+ */
+function paragraph_bundle_tabs_update_9002(): string {
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $etm = \Drupal::entityTypeManager();
+  if ($etm->getStorage('paragraphs_type')->load('tabs_bundle') === NULL) {
+    return (string) t('Tabs is not installed; nothing to do.');
+  }
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_tabs', 'field.storage.paragraph.pb_display_tab_stack_narrow');
+  paragraphs_bundles_import_optional_config_if_missing('paragraph_bundle_tabs', 'field.field.paragraph.tabs_bundle.pb_display_tab_stack_narrow');
+
+  $changed = FALSE;
+  $form_display = $etm->getStorage('entity_form_display')->load('paragraph.tabs_bundle.default');
+  if ($form_display instanceof EntityFormDisplayInterface && !$form_display->getComponent('pb_display_tab_stack_narrow')) {
+    $form_display->setComponent('pb_display_tab_stack_narrow', [
+      'type' => 'boolean_checkbox',
+      'weight' => 36,
+      'region' => 'content',
+      'settings' => ['display_label' => TRUE],
+      'third_party_settings' => [],
+    ]);
+    $group = $form_display->getThirdPartySetting('field_group', 'group_pb_display_extra');
+    if (is_array($group) && is_array($group['children'] ?? NULL) && !in_array('pb_display_tab_stack_narrow', $group['children'], TRUE)) {
+      $group['children'][] = 'pb_display_tab_stack_narrow';
+      $form_display->setThirdPartySetting('field_group', 'group_pb_display_extra', $group);
+    }
+    $form_display->save();
+    $changed = TRUE;
+  }
+  $view_display = $etm->getStorage('entity_view_display')->load('paragraph.tabs_bundle.default');
+  if ($view_display instanceof EntityViewDisplayInterface && $view_display->getComponent('pb_display_tab_stack_narrow')) {
+    $view_display->removeComponent('pb_display_tab_stack_narrow')->save();
+    $changed = TRUE;
+  }
+  return $changed
+    ? (string) t('Added "Keep vertical tabs as a column on small screens" to Tabs.')
+    : (string) t('Tabs stacking option was already present; nothing to do.');
 }

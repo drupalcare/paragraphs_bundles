@@ -11,6 +11,7 @@ dependencies:
     - field.field.paragraph.parallax_section_bundle.pb_display_parallax_speed
     - field.field.paragraph.parallax_section_bundle.pb_content_body
     - field.field.paragraph.parallax_section_bundle.pb_content_image
+    - field.field.paragraph.parallax_section_bundle.pb_content_link
     - field.field.paragraph.parallax_section_bundle.pb_display_bg
     - field.field.paragraph.parallax_section_bundle.pb_display_bg_hover
     - field.field.paragraph.parallax_section_bundle.pb_display_bg_opacity
@@ -30,6 +31,7 @@ dependencies:
     - paragraphs.paragraphs_type.parallax_section_bundle
   module:
     - field_group
+    - link
     - media_library
     - paragraphs_bundles
     - text
@@ -54,6 +56,7 @@ third_party_settings:
       children:
         - pb_content_image
         - pb_content_body
+        - pb_content_link
       label: Content
       region: content
       parent_name: group_pb_tabs_wrapper
@@ -195,6 +198,14 @@ content:
     settings:
       rows: 5
       placeholder: ''
+    third_party_settings: {  }
+  pb_content_link:
+    type: link_default
+    weight: 5
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
   pb_content_image:
     type: media_library_widget
