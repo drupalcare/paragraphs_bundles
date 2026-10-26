@@ -5,6 +5,7 @@ core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
   - drupal:options
+  - drupal:text
   - entity_reference_revisions:entity_reference_revisions
   - field_group:field_group
   - paragraphs:paragraphs
