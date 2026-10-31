@@ -392,25 +392,16 @@
 }
 
 /* Arrow hover - move in arrow direction */
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next:hover {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next:not(.pb-is-disabled):hover {
   transform: translateX(4px);
 }
 
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev:hover {
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev:not(.pb-is-disabled):hover {
   transform: translateX(-4px);
 }
 
-/* The `.pb-is-hidden` arrow rules MOVED to `…-3d-carousel-ring.css` on
-   2026-09-24. They were not deleted, and the class is still applied.
-
-   ⚠ CORRECTED 2026-09-25 after an independent review. This comment used to
-   read "Nothing adds that class any more: both styles loop … and the JS that
-   used to add it is gone." Every clause of that was false. It described an
-   intermediate version in which BOTH geometries wrapped; the ring was then
-   deliberately returned to ping-pong, so it still has a first and last slide,
-   and `js/paragraph-bundle-3d-carousel.js` still toggles the class in
-   `updateNavVisibility()`. The rules live in the ring stylesheet because they are true of
-   the ring and false of a fan, which is the whole point of the split. */
+/* The disabled-arrow rules live in `…-3d-carousel-ring.css`: only the ring
+   has ends; a coverflow wraps. */
 
 .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-slideshow__number {
   padding-block: var(--pb-px3);

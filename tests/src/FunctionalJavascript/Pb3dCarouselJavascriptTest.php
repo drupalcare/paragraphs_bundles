@@ -129,6 +129,107 @@ final class Pb3dCarouselJavascriptTest extends WebDriverTestBase {
   }
 
   /**
+   * The ring stops at its ends: the arrow there is disabled, never hidden.
+   *
+   * Owner decision 2026-10-30. The arrow keeps focus, a click on it does
+   * nothing, and it carries `aria-disabled="true"` plus `pb-is-disabled`.
+   */
+  public function testRingDisablesTheArrowAtEachEnd(): void {
+    $this->drupalGet($this->create3dCarouselNode([
+      'pb_display_3d_play_stop' => 0,
+      'pb_display_3d_car_style' => 'ring',
+    ]));
+    $this->assertSession()->waitForElement('css', '.pb-3d-carousel__slide');
+    $active = "document.querySelectorAll('.pb-3d-carousel__slide')[%d].classList.contains('pb-is-active')";
+    $page = $this->getSession()->getPage();
+
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__prev', TRUE);
+    $page->find('css', '.pb-3d-carousel .pb-nav__prev')->click();
+    $this->assertJsCondition(sprintf($active, 0));
+
+    $next = $page->find('css', '.pb-3d-carousel .pb-nav__next');
+    $next->click();
+    $next->click();
+    $this->assertJsCondition(sprintf($active, 2));
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__next', TRUE);
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__prev', FALSE);
+    $this->assertJsCondition("document.activeElement === document.querySelector('.pb-3d-carousel .pb-nav__next')");
+    $next->click();
+    $this->assertJsCondition(sprintf($active, 2));
+  }
+
+  /**
+   * The coverflow wraps, so neither arrow is ever disabled.
+   */
+  public function testCoverflowNeverDisablesArrows(): void {
+    $this->drupalGet($this->create3dCarouselNode([
+      'pb_display_3d_play_stop' => 0,
+      'pb_display_3d_car_style' => 'coverflow',
+    ]));
+    $this->assertSession()->waitForElement('css', '.pb-3d-carousel__slide');
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__prev', FALSE);
+    $this->getSession()->getPage()->find('css', '.pb-3d-carousel .pb-nav__prev')->click();
+    $this->assertJsCondition("document.querySelectorAll('.pb-3d-carousel__slide')[2].classList.contains('pb-is-active')");
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__prev', FALSE);
+    $this->assertArrowDisabled('.pb-3d-carousel .pb-nav__next', FALSE);
+  }
+
+  /**
+   * Builds a node holding one 3d_carousel_bundle of three slides, autoplay off.
+   *
+   * @param array<string, mixed> $display
+   *   Extra display field values for the 3d_carousel_bundle paragraph.
+   *
+   * @return string
+   *   The node URL.
+   */
+  private function create3dCarouselNode(array $display): string {
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+    $slides = [];
+    foreach (['Slide one', 'Slide two', 'Slide three'] as $label) {
+      $slide = Paragraph::create([
+        'type' => 'accordion_section_bundle',
+        'pb_content_accordion_title' => $label,
+      ]);
+      $slide->save();
+      $slides[] = [
+        'target_id' => $slide->id(),
+        'target_revision_id' => $slide->getRevisionId(),
+      ];
+    }
+    $carousel = Paragraph::create(['type' => '3d_carousel_bundle', 'pb_content_3d_car_body' => $slides] + $display);
+    $carousel->save();
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+    $node = $this->drupalCreateNode([
+      'type' => $nodeType,
+      $fieldName => [
+        [
+          'target_id' => $carousel->id(),
+          'target_revision_id' => $carousel->getRevisionId(),
+        ],
+      ],
+    ]);
+    return $node->toUrl()->toString();
+  }
+
+  /**
+   * Asserts an arrow's disabled state, by class and by aria-disabled.
+   *
+   * @param string $selector
+   *   The arrow selector.
+   * @param bool $disabled
+   *   The expected state.
+   */
+  private function assertArrowDisabled(string $selector, bool $disabled): void {
+    $element = "document.querySelector('" . $selector . "')";
+    $this->assertJsCondition($disabled
+      ? $element . ".getAttribute('aria-disabled') === 'true' && " . $element . ".classList.contains('pb-is-disabled')"
+      : "!" . $element . ".hasAttribute('aria-disabled') && !" . $element . ".classList.contains('pb-is-disabled')");
+  }
+
+  /**
    * Finds a node type + field that references paragraphs.
    *
    * @return array{0: string|null, 1: string|null}

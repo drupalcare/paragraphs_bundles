@@ -49,17 +49,15 @@
 }
 
 /* ==========================================================================
-   Arrow hiding at the ends
+   Arrows at the ends
    ========================================================================== */
 
 /* The ring ping-pongs, so it HAS ends: at the first slide there is nothing
-   before it and at the last nothing after, and the arrow is hidden to say so.
-   A coverflow wraps and never runs out, which is why these rules live here and
-   not in the base — a fan must never hide a control that still does something. */
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-hidden,
-.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-hidden {
-  visibility: hidden;
-  transform: translateX(-20px);
-  pointer-events: none;
-  opacity: 0;
+   before it and at the last nothing after. The arrow stays in place, dimmed
+   and inactive (aria-disabled). A coverflow wraps and never runs out, which is
+   why these rules live here and not in the base. */
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__next.pb-is-disabled,
+.paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__options .pb-nav__prev.pb-is-disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
 }

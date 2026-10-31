@@ -384,22 +384,31 @@
     const itemsVisible = getItemsVisible(state);
     const maxPage = Math.ceil(state.config.totalSlides / itemsVisible) - 1;
 
-    if (!state.config.looping) {
-      if (state.prevButton) {
-        state.prevButton.style.visibility =
-          state.pageIndex === 0 ? 'hidden' : 'visible';
-      }
-      if (state.nextButton) {
-        state.nextButton.style.visibility =
-          state.pageIndex >= maxPage ? 'hidden' : 'visible';
-      }
+    // Without looping, an arrow at the end stays in place but is disabled,
+    // so the controls never shift and the visitor can see where they are.
+    // aria-disabled (not the disabled attribute) keeps a focused arrow
+    // focused when the last click brings it to the end.
+    const atStart = !state.config.looping && state.pageIndex === 0;
+    const atEnd = !state.config.looping && state.pageIndex >= maxPage;
+    setArrowDisabled(state.prevButton, atStart);
+    setArrowDisabled(state.nextButton, atEnd);
+  }
+
+  /**
+   * Marks an arrow disabled or enabled without hiding it.
+   *
+   * @param {HTMLElement|null} button - The arrow button.
+   * @param {boolean} disabled - Whether the arrow is at an end.
+   */
+  function setArrowDisabled(button, disabled) {
+    if (!button) {
+      return;
+    }
+    button.classList.toggle('pb-is-disabled', disabled);
+    if (disabled) {
+      button.setAttribute('aria-disabled', 'true');
     } else {
-      if (state.prevButton) {
-        state.prevButton.style.visibility = 'visible';
-      }
-      if (state.nextButton) {
-        state.nextButton.style.visibility = 'visible';
-      }
+      button.removeAttribute('aria-disabled');
     }
   }
 
@@ -542,6 +551,9 @@
     state.nextButton?.addEventListener(
       'click',
       () => {
+        if (state.nextButton.getAttribute('aria-disabled') === 'true') {
+          return;
+        }
         nextSlide(state);
         resetAutoSlide();
       },
@@ -551,6 +563,9 @@
     state.prevButton?.addEventListener(
       'click',
       () => {
+        if (state.prevButton.getAttribute('aria-disabled') === 'true') {
+          return;
+        }
         prevSlide(state);
         resetAutoSlide();
       },

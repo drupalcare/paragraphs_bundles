@@ -55,6 +55,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Fixed
 
+- **Carousel and 3D carousel: the arrows no longer disappear at the ends.**
+  On a carousel that does not loop, and on the 3D carousel's ring, the
+  previous arrow on the first slide and the next arrow on the last were
+  hidden, which left a gap and shifted the controls beside them. They now
+  stay in place, dimmed and marked `aria-disabled="true"`, and a click on
+  them does nothing. On the ring an arrow key or a swipe past an end does
+  nothing either (it used to bounce back); autoplay still reverses there.
+  Keyboard focus stays on an arrow that becomes disabled.
+  Both use the new `pb-is-disabled` class; the 3D carousel's `pb-is-hidden`
+  and the carousel's inline `visibility: hidden` are gone, so a theme that
+  styled either should style `pb-is-disabled` instead. Looping carousels and
+  the coverflow are unchanged.
 - **Three-column ratios now match their labels (layout and card).** The
   options labelled 1/4 - 1/2 - 1/4, 1/2 - 1/4 - 1/4 and 1/4 - 1/4 - 1/2 used
   `3fr` for the wide column (3/5 of the row); they now use `2fr` (1/2), at

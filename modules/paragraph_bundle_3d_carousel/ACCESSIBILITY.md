@@ -32,8 +32,9 @@ See the parent playbook for required attributes per pattern.
 The editor picks **Carousel style** under Display → Additional:
 
 - **Rotating ring** (default): the drum. It stops at the first and last
-  slide, and the arrow for the end it has reached is hidden
-  (`pb-is-hidden`, `tabindex="-1"`).
+  slide. The arrow for the end it has reached stays in place, dimmed and
+  marked `aria-disabled="true"` (`pb-is-disabled`); it keeps focus, and a
+  click, an arrow key or a swipe past that end does nothing.
 - **Coverflow**: a fan of cards. It wraps, so both arrows always show.
 
 Both share one script, so the ARIA, keyboard, autoplay and `inert` behavior

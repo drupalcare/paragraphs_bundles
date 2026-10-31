@@ -13,7 +13,7 @@
  * The COVERFLOW loops: the cards wrap and the count starts over, because a
  * card sliding from the last position to the first is one step like any other.
  *
- * The RING ping-pongs: it reverses at each end and hides the arrow there. It
+ * The RING stops at each end and disables the arrow there; autoplay reverses. It
  * cannot loop, because its slides are the faces of a cylinder — returning from
  * the last to the first is a full revolution through every intermediate face
  * inside one transition, which reads as a violent spin rather than a loop. At
@@ -236,51 +236,37 @@
         };
 
         /**
-         * Updates prev/next button visibility at ends.
+         * Marks an arrow disabled or enabled without hiding it.
+         *
+         * @param {HTMLElement|null} button - The arrow button.
+         * @param {boolean} disabled - Whether the arrow is at an end.
+         */
+        const setArrowDisabled = (button, disabled) => {
+          if (!button) {
+            return;
+          }
+          button.classList.toggle('pb-is-disabled', disabled);
+          if (disabled) {
+            button.setAttribute('aria-disabled', 'true');
+          } else {
+            button.removeAttribute('aria-disabled');
+          }
+        };
+
+        /**
+         * Disables the prev/next arrow at an end of the ring.
          */
         const updateNavVisibility = () => {
-          // THE RING HAS ENDS AND SAYS SO. It ping-pongs, so at the first
-          // slide there is nothing before and at the last nothing after, and
-          // the arrow is hidden to show it.
+          // THE RING HAS ENDS. It ping-pongs, so at the first slide there is
+          // nothing before and at the last nothing after. The arrow at an end
+          // stays in place but is disabled, so the controls never shift.
+          // aria-disabled (not the disabled attribute) keeps a focused arrow
+          // focused when the last click brings it to the end.
           //
-          // THE FAN HAS NONE. It wraps, so both controls always do something
-          // and neither is ever hidden or taken out of the tab order.
-          // Read BEFORE any arrow is hidden: Chrome can drop focus from an
-          // element the moment it becomes `visibility: hidden`, and in vvjc
-          // it did, so a read after the toggle returned <body> (measured
-          // 2026-09-25). Here it happened to work; that was timing, not design.
-          const focused = document.activeElement;
-
+          // THE FAN HAS NONE. It wraps, so both arrows always do something.
           const looping = style === 'coverflow';
-          const hidePrev = !looping && currentIndex === 0;
-          const hideNext = !looping && currentIndex === cellCount - 1;
-
-          if (prevButton) {
-            prevButton.classList.toggle('pb-is-hidden', hidePrev);
-            prevButton.setAttribute('tabindex', hidePrev ? '-1' : '0');
-          }
-
-          if (nextButton) {
-            nextButton.classList.toggle('pb-is-hidden', hideNext);
-            nextButton.setAttribute('tabindex', hideNext ? '-1' : '0');
-          }
-
-          // 🚨 NEVER HIDE THE CONTROL THAT HOLDS FOCUS WITHOUT MOVING IT. The
-          // hidden arrow is `visibility: hidden`, which the browser cannot
-          // keep focused, so a keyboard user who pressed Enter to reach the
-          // last slide was dropped to the top of the page (WCAG 2.4.3).
-          // Inherited from v1, measured 2026-09-25. Focus moves to the
-          // opposite arrow, which is the one that still does something.
-          if (hideNext && focused === nextButton && prevButton && !hidePrev) {
-            prevButton.focus();
-          } else if (
-            hidePrev &&
-            focused === prevButton &&
-            nextButton &&
-            !hideNext
-          ) {
-            nextButton.focus();
-          }
+          setArrowDisabled(prevButton, !looping && currentIndex === 0);
+          setArrowDisabled(nextButton, !looping && currentIndex === cellCount - 1);
         };
 
         /**
@@ -719,8 +705,8 @@
           // such problem because nothing rotates; the cards just move along.
           //
           // So the ring reverses at each end instead, and `direction` carries
-          // that between ticks. updateNavVisibility() hides the arrow at each
-          // end to show the user there is nothing further that way.
+          // that between ticks. updateNavVisibility() disables the arrow at
+          // each end to show the user there is nothing further that way.
           currentIndex += direction;
 
           if (currentIndex >= cellCount) {
@@ -773,6 +759,17 @@
          */
         const manualAdvance = (step) => {
           if (cellCount <= 1) {
+            return;
+          }
+
+          // The ring stops at its ends for the visitor: an arrow, key or
+          // swipe past an end does nothing, as its disabled arrow says. Only
+          // autoplay bounces back from an end.
+          if (
+            style !== 'coverflow' &&
+            ((step > 0 && currentIndex === cellCount - 1) ||
+              (step < 0 && currentIndex === 0))
+          ) {
             return;
           }
 
@@ -882,12 +879,26 @@
           startAutoPlay();
         }
 
-        nextButton?.addEventListener('click', () => manualAdvance(1), {
-          signal,
-        });
-        prevButton?.addEventListener('click', () => manualAdvance(-1), {
-          signal,
-        });
+        nextButton?.addEventListener(
+          'click',
+          () => {
+            if (nextButton.getAttribute('aria-disabled') === 'true') {
+              return;
+            }
+            manualAdvance(1);
+          },
+          { signal },
+        );
+        prevButton?.addEventListener(
+          'click',
+          () => {
+            if (prevButton.getAttribute('aria-disabled') === 'true') {
+              return;
+            }
+            manualAdvance(-1);
+          },
+          { signal },
+        );
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
         playPauseButton?.addEventListener(
           'keydown',
@@ -974,22 +985,9 @@
             cell.setAttribute('aria-hidden', 'true');
             cell.removeAttribute('inert');
           });
-          // A block restoring `#prev-…`, `#next-…` and `#btn-…` used to sit
-          // here. Those are v1 ids: the template emits
-          // `pb-3d-carousel__prev-…`, `…__next-…` and `…__play-pause-…`, so
-          // the selector matched nothing and the restore was a no-op.
-          //
-          // ⚠ AND THE SECOND HALF OF THIS NOTE USED TO BE FALSE. It claimed
-          // "nothing adds `pb-is-hidden` any more, since a looping carousel
-          // has no ends" — written when both geometries wrapped. The ring was
-          // then returned to ping-pong, so it does have ends, and this file
-          // still toggles that class in `updateNavVisibility()` with `…-ring.css`
-          // styling it. Corrected 2026-09-25 after an independent review.
-          //
-          // The removal above is still right, for the v1-id reason only: the
-          // selectors matched nothing. What remains unfixed is that a ring's
-          // hidden arrow keeps `pb-is-hidden` and `tabindex="-1"` after
-          // detach — pre-existing in v1, not a regression from this work.
+          // A ring's arrow at an end leaves detach enabled again.
+          setArrowDisabled(prevButton, false);
+          setArrowDisabled(nextButton, false);
         });
       });
     },

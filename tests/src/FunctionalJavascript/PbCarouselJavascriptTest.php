@@ -418,6 +418,115 @@ final class PbCarouselJavascriptTest extends WebDriverTestBase {
   }
 
   /**
+   * Without looping, the arrow at an end stays in place but is disabled.
+   *
+   * Owner decision 2026-10-30: never hide it (a hidden arrow left a gap and
+   * shifted the controls). The arrow keeps focus, a click on it does nothing,
+   * and it carries `aria-disabled="true"` plus `pb-is-disabled`.
+   */
+  public function testArrowsDisabledAtTheEndsWithoutLooping(): void {
+    $this->drupalGet($this->createCarouselNode([
+      'pb_display_navigation' => 'arrows',
+      'pb_display_carousel_play_stop' => 0,
+      'pb_display_big_screen' => 1,
+      'pb_display_small_screen' => 1,
+      'pb_display_activate_looping' => 0,
+    ]));
+    $this->assertSession()->waitForElement('css', '.pb-carousel__slide');
+    $active = "document.querySelectorAll('.pb-carousel__slide')[%d].classList.contains('pb-is-active')";
+    $page = $this->getSession()->getPage();
+
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__prev', TRUE);
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__next', FALSE);
+    $page->find('css', '.pb-carousel .pb-nav__prev')->click();
+    $this->assertJsCondition(sprintf($active, 0));
+
+    $next = $page->find('css', '.pb-carousel .pb-nav__next');
+    $next->click();
+    $next->click();
+    $this->assertJsCondition(sprintf($active, 2));
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__next', TRUE);
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__prev', FALSE);
+    $this->assertJsCondition("document.activeElement === document.querySelector('.pb-carousel .pb-nav__next')");
+    $next->click();
+    $this->assertJsCondition(sprintf($active, 2));
+  }
+
+  /**
+   * A looping carousel never disables either arrow.
+   */
+  public function testLoopingNeverDisablesArrows(): void {
+    $this->drupalGet($this->createCarouselNode([
+      'pb_display_navigation' => 'arrows',
+      'pb_display_carousel_play_stop' => 0,
+      'pb_display_big_screen' => 1,
+      'pb_display_small_screen' => 1,
+      'pb_display_activate_looping' => 1,
+    ]));
+    $this->assertSession()->waitForElement('css', '.pb-carousel__slide');
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__prev', FALSE);
+    $this->getSession()->getPage()->find('css', '.pb-carousel .pb-nav__prev')->click();
+    $this->assertJsCondition("document.querySelectorAll('.pb-carousel__slide')[2].classList.contains('pb-is-active')");
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__prev', FALSE);
+    $this->assertArrowDisabled('.pb-carousel .pb-nav__next', FALSE);
+  }
+
+  /**
+   * Builds a node holding one carousel_bundle of three slides, autoplay off.
+   *
+   * @param array<string, mixed> $display
+   *   Extra display field values for the carousel_bundle paragraph.
+   *
+   * @return string
+   *   The node URL.
+   */
+  private function createCarouselNode(array $display): string {
+    Role::load(RoleInterface::ANONYMOUS_ID)
+      ->grantPermission('access content')
+      ->save();
+    $slides = [];
+    foreach (['Slide one', 'Slide two', 'Slide three'] as $label) {
+      $slide = Paragraph::create([
+        'type' => 'accordion_section_bundle',
+        'pb_content_accordion_title' => $label,
+      ]);
+      $slide->save();
+      $slides[] = [
+        'target_id' => $slide->id(),
+        'target_revision_id' => $slide->getRevisionId(),
+      ];
+    }
+    $carousel = Paragraph::create(['type' => 'carousel_bundle', 'pb_content_carousel_body' => $slides] + $display);
+    $carousel->save();
+    [$nodeType, $fieldName] = $this->discoverParagraphHost();
+    $node = $this->drupalCreateNode([
+      'type' => $nodeType,
+      $fieldName => [
+        [
+          'target_id' => $carousel->id(),
+          'target_revision_id' => $carousel->getRevisionId(),
+        ],
+      ],
+    ]);
+    return $node->toUrl()->toString();
+  }
+
+  /**
+   * Asserts an arrow's disabled state, by class and by aria-disabled.
+   *
+   * @param string $selector
+   *   The arrow selector.
+   * @param bool $disabled
+   *   The expected state.
+   */
+  private function assertArrowDisabled(string $selector, bool $disabled): void {
+    $element = "document.querySelector('" . $selector . "')";
+    $this->assertJsCondition($disabled
+      ? $element . ".getAttribute('aria-disabled') === 'true' && " . $element . ".classList.contains('pb-is-disabled')"
+      : "!" . $element . ".hasAttribute('aria-disabled') && !" . $element . ".classList.contains('pb-is-disabled')");
+  }
+
+  /**
    * Finds a node type + field that references paragraphs.
    *
    * @return array{0: string|null, 1: string|null}

@@ -206,9 +206,19 @@
   outline-offset: 2px;
 }
 
-.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn[style*="visibility:hidden"] {
-  pointer-events: none;
-  opacity: 0;
+/* At the end of a carousel that does not loop, the arrow stays in place, dimmed and inactive (aria-disabled). */
+.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn.pb-is-disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn.pb-is-disabled:hover,
+.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn.pb-is-disabled:active {
+  transform: none;
+}
+
+.paragraphs-bundles.pb-carousel .pb-carousel__options-bar .pb-ui-btn.pb-is-disabled:hover svg {
+  opacity: 0.7;
 }
 
 .paragraphs-bundles.pb-carousel .pb-carousel__options-bar button svg {
@@ -223,29 +233,29 @@
 }
 
 /* Horizontal layout - arrows move left/right */
-.paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next:hover {
+.paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover {
   transform: translateX(4px);
 }
 
-.paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
+.paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover {
   transform: translateX(-4px);
 }
 
 /* Vertical layout - arrows move up/down (the SVG is rotated above) */
-.paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__next:hover {
+.paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover {
   transform: translateY(4px);
 }
 
-.paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
+.paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover {
   transform: translateY(-4px);
 }
 
 /* Hybrid layout - horizontal by default, switches to vertical at breakpoints */
-.paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover {
+.paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover {
   transform: translateX(4px);
 }
 
-.paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
+.paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover {
   transform: translateX(-4px);
 }
 
@@ -424,12 +434,12 @@
     scroll-behavior: auto;
   }
 
-  .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next:hover,
-  .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev:hover,
-  .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__next:hover,
-  .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__prev:hover,
-  .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover,
-  .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover,
+  .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb-u-vertical-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover,
   .paragraphs-bundles.pb-carousel .pb-carousel__dot:hover,
   .paragraphs-bundles.pb-carousel .pb-carousel__dot.pb-is-active {
     transform: none;

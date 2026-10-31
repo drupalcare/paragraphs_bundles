@@ -50,18 +50,18 @@
   }
 
   /* Arrow hover - vertical direction when hybrid switches to vertical */
-  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover {
+  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover {
     transform: translateY(4px);
   }
 
-  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
+  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover {
     transform: translateY(-4px);
   }
 }
 
 @media (max-width: 61.99875rem) and (prefers-reduced-motion: reduce) {
-  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:hover,
-  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:hover {
+  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__next:not(.pb-is-disabled):hover,
+  .paragraphs-bundles.pb-carousel.pb__992.pb-u-hybrid-carousel .pb-carousel__options-bar .pb-nav__prev:not(.pb-is-disabled):hover {
     transform: none;
   }
 }
