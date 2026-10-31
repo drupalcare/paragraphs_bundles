@@ -266,7 +266,10 @@
           // THE FAN HAS NONE. It wraps, so both arrows always do something.
           const looping = style === 'coverflow';
           setArrowDisabled(prevButton, !looping && currentIndex === 0);
-          setArrowDisabled(nextButton, !looping && currentIndex === cellCount - 1);
+          setArrowDisabled(
+            nextButton,
+            !looping && currentIndex === cellCount - 1,
+          );
         };
 
         /**

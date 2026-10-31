@@ -369,6 +369,24 @@
   }
 
   /**
+   * Marks an arrow disabled or enabled without hiding it.
+   *
+   * @param {HTMLElement|null} button - The arrow button.
+   * @param {boolean} disabled - Whether the arrow is at an end.
+   */
+  function setArrowDisabled(button, disabled) {
+    if (!button) {
+      return;
+    }
+    button.classList.toggle('pb-is-disabled', disabled);
+    if (disabled) {
+      button.setAttribute('aria-disabled', 'true');
+    } else {
+      button.removeAttribute('aria-disabled');
+    }
+  }
+
+  /**
    * Updates navigation button visibility.
    *
    * @param {Object} state - The carousel state object.
@@ -392,24 +410,6 @@
     const atEnd = !state.config.looping && state.pageIndex >= maxPage;
     setArrowDisabled(state.prevButton, atStart);
     setArrowDisabled(state.nextButton, atEnd);
-  }
-
-  /**
-   * Marks an arrow disabled or enabled without hiding it.
-   *
-   * @param {HTMLElement|null} button - The arrow button.
-   * @param {boolean} disabled - Whether the arrow is at an end.
-   */
-  function setArrowDisabled(button, disabled) {
-    if (!button) {
-      return;
-    }
-    button.classList.toggle('pb-is-disabled', disabled);
-    if (disabled) {
-      button.setAttribute('aria-disabled', 'true');
-    } else {
-      button.removeAttribute('aria-disabled');
-    }
   }
 
   /**
