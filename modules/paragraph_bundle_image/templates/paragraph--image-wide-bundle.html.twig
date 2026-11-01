@@ -48,7 +48,8 @@
 {% set pb_link_title = content.pb_content_image_link_title|render|striptags|trim %}
 {% set pb_padding = paragraph|pb_field_value('pb_display_padding')|pb_class %}
 {% set pb_radius = paragraph|pb_field_value('pb_display_border_radius')|pb_class %}
-{% set pb_image = content.pb_content_image %}
+{# An image always wins; without one, the SVG from the theme's pb-svg-icons folder (pb_svg, PbSvgHook). #}
+{% set pb_image = content.pb_content_image|render|trim ? content.pb_content_image : pb_svg %}
 {% set pb_title = content.pb_content_title|render|striptags|trim %}
 {% set pb_title_below = paragraph|pb_field_value('pb_content_title_position') == 'below' %}
 

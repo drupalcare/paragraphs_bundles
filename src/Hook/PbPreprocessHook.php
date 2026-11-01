@@ -45,6 +45,7 @@ final class PbPreprocessHook {
     private readonly LoggerInterface $logger,
     private readonly PbDisplayClassResolverInterface $displayClasses,
     private readonly CacheBackendInterface $cache,
+    private readonly PbSvgHook $svgHook,
   ) {}
 
   /**
@@ -62,6 +63,8 @@ final class PbPreprocessHook {
     if (!in_array($paragraph->bundle(), $this->managedBundles(), TRUE)) {
       return;
     }
+    // SVG artwork from the theme's pb-svg-icons folder (pb_*_svg_* fields).
+    $this->svgHook->addSvgVariable($variables, $paragraph);
     // Seed the base classes in preprocess (not only the template) so they
     // survive a theme's paragraph-template override. The module's CSS and
     // per-paragraph dynamic CSS both hook onto `.paragraphs-bundles`, so

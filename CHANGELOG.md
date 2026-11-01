@@ -7,6 +7,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Added
 
+- **SVG artwork from the theme.** Seven paragraph types get one new field
+  each, with a picker that shows previews, a search box and one row per theme:
+  `icon_bundle`, `hero_bundle`, `image_bundle`, `image_narrow_bundle`,
+  `image_wide_bundle`, `card_image_section_bundle` and
+  `image_background_bundle`. The files come from
+  `images/pb-svg-icons/` in the default front-end theme or its base themes. An
+  image always wins over the SVG; on the icon the order is image icon, SVG,
+  Google Material icon. The picture fields on these types are now optional, and
+  a new constraint still asks for an image or an SVG. The SVG is printed inline
+  after an allow-list cleaner removes scripts, event handlers, HTML elements
+  and links that leave the drawing. Post-updates add the fields to existing
+  sites.
 - **Alert: "Show state label" option (`pb_display_alert_show_state_lbl`).**
   Off (the default, also when unset) renders exactly as before: the state
   word stays visually hidden. On prints the same translated word ("Success",

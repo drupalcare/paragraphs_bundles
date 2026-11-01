@@ -68,3 +68,17 @@ function paragraph_bundle_card_post_update_card_link_mode(): string {
 
   return (string) t('Card text section: "Link display" option added.');
 }
+
+/**
+ * Adds the SVG artwork field from the theme's pb-svg-icons folder.
+ */
+function paragraph_bundle_card_post_update_svg_field(): string {
+  // Existing sites get what new installs get from config/optional: the field
+  // storage and field, the SVG picker right after the picture field in its tab,
+  // and no view component (the template prints the SVG). Guarded steps, so a
+  // second run changes nothing.
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $done = [];
+  $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_card', 'card_image_section_bundle', 'pb_content_svg_card', 'pb_content_image');
+  return implode(' ', $done);
+}

@@ -1,0 +1,148 @@
+/**
+ * @file
+ * SVG picker widget (admin form): dropdown, search, one row per theme.
+ */
+
+.pb-svg-picker--enhanced {
+  position: relative;
+}
+
+.pb-svg-picker__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 14rem;
+  min-height: 2.75rem;
+  padding: 0.375rem 0.75rem;
+  cursor: pointer;
+  text-align: start;
+  border: 1px solid #8e929c;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.pb-svg-picker__trigger img {
+  width: 24px;
+  height: 24px;
+}
+
+.pb-svg-picker__panel {
+  position: absolute;
+  z-index: 100;
+  inset-inline-start: 0;
+  width: min(40rem, 90vw);
+  max-height: 26rem;
+  margin-top: 0.25rem;
+  padding: 0.75rem;
+  overflow: auto;
+  border: 1px solid #8e929c;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+}
+
+.pb-svg-picker__search {
+  position: sticky;
+  z-index: 1;
+  top: -0.75rem;
+  display: flex;
+  gap: 0.25rem;
+  padding-block: 0.25rem;
+  background: #fff;
+}
+
+.pb-svg-picker__search-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.pb-svg-picker__clear {
+  min-width: 2.75rem;
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+  border: 1px solid #8e929c;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.pb-svg-picker__count,
+.pb-svg-picker__empty {
+  margin: 0.5rem 0;
+  font-size: 0.875rem;
+}
+
+.pb-svg-picker__theme-title {
+  margin: 0.75rem 0 0.375rem;
+  font-size: 0.875rem;
+}
+
+.pb-svg-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3.25rem, 1fr));
+  gap: 0.375rem;
+}
+
+/* Each choice is a tile: the radio stays for keyboard and screen readers but
+   is not seen; the preview is its label. */
+.pb-svg-picker--enhanced .pb-svg-picker__item {
+  position: relative;
+  margin: 0;
+}
+
+.pb-svg-picker--enhanced .pb-svg-picker__item input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.pb-svg-picker--enhanced .pb-svg-picker__item label {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0.5rem;
+  cursor: pointer;
+  text-align: center;
+  border: 2px solid transparent;
+  border-radius: 4px;
+}
+
+.pb-svg-picker--enhanced .pb-svg-picker__item label:hover {
+  border-color: #c6c8cd;
+}
+
+.pb-svg-picker--enhanced .pb-svg-picker__item input:checked + label {
+  border-color: #003ecc;
+  background: #f0f4ff;
+}
+
+.pb-svg-picker--enhanced .pb-svg-picker__item input:focus-visible + label {
+  outline: 2px solid #003ecc;
+  outline-offset: 2px;
+}
+
+.pb-svg-picker__item img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.pb-svg-picker__tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pb-svg-picker__item--none label {
+  justify-content: center;
+  min-height: 3.5rem;
+  border: 2px dashed #c6c8cd;
+}
+
+.pb-svg-picker--enhanced [hidden] {
+  display: none;
+}

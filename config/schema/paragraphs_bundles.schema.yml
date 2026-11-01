@@ -34,3 +34,22 @@ field.value.paragraphs_bundles_range:
 # assigned to zero displays and the same field type still ships
 # ColorTextFormatterHEX and ColorTextFormatterRGB, neither of which inlines
 # anything. See PbInlineAssetSurfaceTest for the guard that now reads empty.
+
+# SVG artwork fields (pb_*_svg_*): the picture fields of the same paragraph that
+# an SVG can stand in for. Read by the PbSvgPicture constraint ("an image or an
+# SVG") and by paragraphs_bundles_svg_field_install().
+field.field.*.*.*.third_party.paragraphs_bundles:
+  type: mapping
+  label: 'Paragraphs Bundles field settings'
+  mapping:
+    svg_picture_fields:
+      type: sequence
+      label: 'Picture fields an SVG can replace'
+      sequence:
+        type: string
+        label: 'Field name'
+
+field.widget.settings.pb_svg_picker:
+  type: mapping
+  label: 'SVG picker widget settings'
+

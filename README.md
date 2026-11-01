@@ -132,6 +132,34 @@ Notes:
 - Section bundles (the children inside accordions, tabs, slideshows and
   the like) do not have the box. Style them through their parent.
 
+### 5. SVG artwork from your theme
+
+The Icon, Hero, Image (all three widths), Card image section and Image
+background types have an SVG picker. Editors choose a preview; a developer
+supplies the files.
+
+1. Create `images/pb-svg-icons/` in the default front-end theme or any of its
+   base themes. Folders inside it are optional and may nest up to five levels.
+2. Add `.svg` files you made or licensed. Names may use letters, digits, spaces,
+   `_` and `-`.
+3. Run `drush cr` once if the folder is new. New files then appear the next time
+   an editor opens the picker. After editing an existing drawing, run `drush cr`
+   again.
+
+An image always wins over the SVG. On the Icon type the order is image icon,
+SVG, then Google Material icon.
+
+Files are printed inline after cleaning. Only known SVG drawing elements are
+kept. Scripts, event handlers, HTML elements, embedded images, and any link or
+`url()` that leaves the drawing are removed, so `#gradient-1` works and an
+external file does not. A `<style>` block applies to the whole page, so prefix
+its class names. An illustration with a `<title>` is announced by that title;
+without one it is decorative. Icons and backgrounds are always decorative.
+
+If the site switches to a theme outside the chain, the file is no longer found.
+The paragraph shows its image, or nothing, and the editor picks again on the
+next save.
+
 ## The Paragraphs List
 
 Every paragraph on the site, in one table, at **Content → Paragraphs List**

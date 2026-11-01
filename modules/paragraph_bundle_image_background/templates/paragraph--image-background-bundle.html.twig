@@ -69,6 +69,11 @@
        {% if pb_image_alt %} data-image-alt="{{ pb_image_alt }}"{% endif %}>
 {% endif %}
 
+{# A background image always wins; without one, the SVG from the theme's pb-svg-icons folder (pb_svg, PbSvgHook). #}
+{% if not pb_image_url and not pb_image_url_sm and pb_svg %}
+  {{ pb_svg }}
+{% endif %}
+
 {% if pb_display_bg %}
   <div class="img-color-overlay"></div>
 {% endif %}

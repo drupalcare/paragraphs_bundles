@@ -31,7 +31,10 @@
 {% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
 
 {% set icon_style = paragraph|pb_field_value('pb_content_gms_style')|default('outlined') %}
+{# The Material Symbols font is only needed when no SVG from the theme replaces it (pb_svg, PbSvgHook). #}
+{% if not pb_svg %}
 {{ attach_library('paragraph_bundle_icon/paragraph-bundle-icon-' ~ icon_style) }}
+{% endif %}
 
 {% set paragraph_id = pb_paragraph_id %}
 {# The hover lift belongs to a card: an icon with a visible surface (shadow,
@@ -86,9 +89,14 @@
           {% if pb_title %}
             {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
           {% endif %}
-          <div class="icon-wrapper material-icons-hidden">
-            <span class="{{ gms_style }}">{{ gms_name }}</span>
-          </div>
+          {# Order: uploaded image icon (above), then the SVG from the theme, then the Google Material Symbols font. #}
+          {% if pb_svg %}
+            <div class="icon-wrapper">{{ pb_svg }}</div>
+          {% else %}
+            <div class="icon-wrapper material-icons-hidden">
+              <span class="{{ gms_style }}">{{ gms_name }}</span>
+            </div>
+          {% endif %}
           {% if icon_link %}
             </a>
           {% endif %}
@@ -99,6 +107,7 @@
       {{ content|without(
         'pb_content_body',
         'pb_content_image_icon',
+        'pb_content_svg_icon',
         'pb_content_link',
         'pb_content_title',
         'pb_content_title_tag',

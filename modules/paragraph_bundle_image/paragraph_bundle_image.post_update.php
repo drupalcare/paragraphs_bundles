@@ -87,3 +87,19 @@ function paragraph_bundle_image_post_update_title_position(): string {
 
   return (string) t('Title Position field added to: @list.', ['@list' => implode(', ', $bundles)]);
 }
+
+/**
+ * Adds the SVG artwork field from the theme's pb-svg-icons folder.
+ */
+function paragraph_bundle_image_post_update_svg_field(): string {
+  // Existing sites get what new installs get from config/optional: the field
+  // storage and field, the SVG picker right after the picture field in its tab,
+  // and no view component (the template prints the SVG). Guarded steps, so a
+  // second run changes nothing.
+  \Drupal::moduleHandler()->loadInclude('paragraphs_bundles', 'install');
+  $done = [];
+  $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_image', 'image_bundle', 'pb_content_svg_image', 'pb_content_image');
+  $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_image', 'image_narrow_bundle', 'pb_content_svg_image_narrow', 'pb_content_image');
+  $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_image', 'image_wide_bundle', 'pb_content_svg_image_wide', 'pb_content_image');
+  return implode(' ', $done);
+}

@@ -24,6 +24,8 @@
 }
 
 .paragraphs-bundles.pb-image-background .pb-image-background__inner {
+  /* Positioned so z-index applies: the content stays above an SVG background layer. */
+  position: relative;
   z-index: 2;
   height: 100%;
 }

@@ -17,6 +17,7 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_link
     - field.field.paragraph.image_background_bundle.pb_display_link_hover
     - field.field.paragraph.image_background_bundle.pb_display_padding
+    - field.field.paragraph.image_background_bundle.pb_display_svg_background
     - field.field.paragraph.image_background_bundle.pb_display_width
     - image.style.thumbnail
     - paragraphs.paragraphs_type.image_background_bundle
@@ -136,6 +137,7 @@ third_party_settings:
         - pb_display_image_repetition
         - pb_display_image_breakpoint
         - pb_display_background_image
+        - pb_display_svg_background
         - pb_display_background_image_sm
       label: Additional
       region: content
@@ -204,6 +206,12 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+    third_party_settings: {  }
+  pb_display_svg_background:
+    type: pb_svg_picker
+    weight: 1
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_display_background_image_sm:
     type: image_image

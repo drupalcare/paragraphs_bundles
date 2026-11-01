@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_content_image_link
     - field.field.paragraph.hero_bundle.pb_content_image_link_title
     - field.field.paragraph.hero_bundle.pb_content_kicker
+    - field.field.paragraph.hero_bundle.pb_content_svg_hero
     - field.field.paragraph.hero_bundle.pb_content_title
     - field.field.paragraph.hero_bundle.pb_content_title_alignment
     - field.field.paragraph.hero_bundle.pb_content_title_tag
@@ -84,6 +85,7 @@ content:
     region: content
 hidden:
   pb_content_kicker: true
+  pb_content_svg_hero: true
   pb_content_title_alignment: true
   pb_content_title_tag: true
   pb_display_bg: true

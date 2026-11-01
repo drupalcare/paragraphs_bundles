@@ -92,3 +92,22 @@ rolling-digits:
   dependencies:
     - core/drupal
     - core/once
+
+# SVG artwork printed by the pb_*_svg_* fields (PbSvgLibrary::build()).
+svg:
+  css:
+    component:
+      css/pb-svg.css: {}
+
+# The SVG picker widget (PbSvgPickerWidget): dropdown, search, theme rows.
+svg-picker:
+  css:
+    theme:
+      css/pb-svg-picker.css: {}
+  js:
+    js/pb-svg-picker.js: {}
+  dependencies:
+    - core/drupal
+    - core/drupalSettings
+    - core/once
+

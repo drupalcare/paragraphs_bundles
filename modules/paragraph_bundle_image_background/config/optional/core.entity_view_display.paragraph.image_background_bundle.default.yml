@@ -15,6 +15,7 @@ dependencies:
     - field.field.paragraph.image_background_bundle.pb_display_image_repetition
     - field.field.paragraph.image_background_bundle.pb_display_image_sizing
     - field.field.paragraph.image_background_bundle.pb_display_padding
+    - field.field.paragraph.image_background_bundle.pb_display_svg_background
     - field.field.paragraph.image_background_bundle.pb_display_width
     - paragraphs.paragraphs_type.image_background_bundle
   module:
@@ -49,4 +50,5 @@ hidden:
   pb_display_image_repetition: true
   pb_display_image_sizing: true
   pb_display_padding: true
+  pb_display_svg_background: true
   pb_display_width: true

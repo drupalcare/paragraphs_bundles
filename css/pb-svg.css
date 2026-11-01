@@ -1,0 +1,46 @@
+/**
+ * @file
+ * SVG artwork from the theme's images/pb-svg-icons folder (pb_*_svg_* fields).
+ */
+
+.pb-svg {
+  display: inline-flex;
+  line-height: 1;
+}
+
+.pb-svg svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Icon: 1em of the font size, in the text color, like the font icon. */
+.pb-svg--icon svg {
+  inline-size: 1em;
+  block-size: 1em;
+  fill: currentColor;
+}
+
+/* Illustration: fills its box, keeps its own colours and proportions. */
+.pb-svg--art {
+  display: block;
+}
+
+.pb-svg--art svg {
+  inline-size: 100%;
+  block-size: auto;
+}
+
+/* Background: a decorative layer behind the content. */
+.pb-svg--background {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.pb-svg--background svg {
+  inline-size: 100%;
+  block-size: 100%;
+}

@@ -288,6 +288,84 @@ function paragraphs_bundles_import_optional_config_if_missing(string $module_nam
 }
 
 /**
+ * Adds an SVG artwork field to a paragraph type on an existing site.
+ *
+ * Used by the post-updates of the bundle modules that ship a pb_*_svg_* field.
+ * New sites get the same storage, field, widget and hidden view component from
+ * the module's config/optional; this gives an existing site exactly that.
+ * Every step is guarded, so a second run changes nothing.
+ *
+ * @param string $module
+ *   The bundle module that ships the field.
+ * @param string $bundle
+ *   The paragraph type.
+ * @param string $field
+ *   The field name (pb_*_svg_*).
+ * @param string $after
+ *   The picture field the picker sits after, in the same form tab.
+ *
+ * @return string
+ *   What was done, for the update log.
+ */
+function paragraphs_bundles_svg_field_install(string $module, string $bundle, string $field, string $after): string {
+  $entity_type_manager = \Drupal::entityTypeManager();
+  if ($entity_type_manager->getStorage('paragraphs_type')->load($bundle) === NULL) {
+    return "No {$bundle} paragraph type; nothing to do.";
+  }
+  paragraphs_bundles_import_optional_config_if_missing($module, 'field.storage.paragraph.' . $field);
+  paragraphs_bundles_import_optional_config_if_missing($module, 'field.field.paragraph.' . $bundle . '.' . $field);
+
+  // The shipped form display is the one source for the widget settings.
+  $path = \Drupal::moduleHandler()->getModule($module)->getPath() . '/config/optional';
+  $shipped = (new FileStorage($path))->read('core.entity_form_display.paragraph.' . $bundle . '.default');
+  $content = is_array($shipped) && is_array($shipped['content'] ?? NULL) ? $shipped['content'] : [];
+  $component = is_array($content[$field] ?? NULL) ? $content[$field] : NULL;
+
+  $form = $entity_type_manager->getStorage('entity_form_display')->load('paragraph.' . $bundle . '.default');
+  if ($form instanceof EntityFormDisplayInterface && $form->getComponent($field) === NULL && $component !== NULL) {
+    $form->setComponent($field, $component);
+    // Into the tab that holds the picture field, right after it.
+    foreach ($form->getThirdPartySettings('field_group') as $group_name => $group) {
+      $children = is_array($group['children'] ?? NULL) ? array_values($group['children']) : [];
+      $at = array_search($after, $children, TRUE);
+      if (!is_int($at) || in_array($field, $children, TRUE)) {
+        continue;
+      }
+      array_splice($children, $at + 1, 0, [$field]);
+      $group['children'] = $children;
+      $form->setThirdPartySetting('field_group', (string) $group_name, $group);
+      break;
+    }
+    $form->save();
+  }
+
+  // The template prints the SVG; the field itself stays out of the display.
+  $view = $entity_type_manager->getStorage('entity_view_display')->load('paragraph.' . $bundle . '.default');
+  if ($view instanceof EntityViewDisplayInterface && $view->getComponent($field) !== NULL) {
+    $view->removeComponent($field)->save();
+  }
+
+  // "An image or an SVG": the picture fields the SVG replaces become optional;
+  // the PbSvgPicture constraint keeps a picture required. The list comes from
+  // the shipped SVG field, the one source, and is copied onto a field created
+  // before the setting existed.
+  $shipped_field = (new FileStorage($path))->read('field.field.paragraph.' . $bundle . '.' . $field);
+  $pictures = is_array($shipped_field) ? ($shipped_field['third_party_settings']['paragraphs_bundles']['svg_picture_fields'] ?? []) : [];
+  $svg_field = FieldConfig::loadByName('paragraph', $bundle, $field);
+  if ($svg_field instanceof FieldConfig && is_array($pictures) && $pictures !== [] && $svg_field->getThirdPartySetting('paragraphs_bundles', 'svg_picture_fields') === NULL) {
+    $svg_field->setThirdPartySetting('paragraphs_bundles', 'svg_picture_fields', array_values($pictures))->save();
+  }
+  foreach (is_array($pictures) ? $pictures : [] as $picture) {
+    $picture_field = is_string($picture) ? FieldConfig::loadByName('paragraph', $bundle, $picture) : NULL;
+    if ($picture_field instanceof FieldConfig && $picture_field->isRequired()) {
+      $picture_field->setRequired(FALSE)->save();
+    }
+  }
+
+  return "{$bundle}: SVG field {$field} added.";
+}
+
+/**
  * Ensure shared title-tag / title-alignment field storages.
  */
 function paragraphs_bundles_ensure_pb_title_storages(): void {

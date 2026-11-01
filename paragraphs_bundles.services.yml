@@ -171,9 +171,16 @@ services:
       - '@logger.channel.paragraphs_bundles'
       - '@paragraphs_bundles.display_class_resolver'
       - '@cache.default'
+      - '@Drupal\paragraphs_bundles\Hook\PbSvgHook'
 
   Drupal\paragraphs_bundles\Hook\PbFieldWidgetHook:
     autowire: true
+
+  # SVG artwork from the theme's images/pb-svg-icons folder (pb_*_svg_* fields).
+  Drupal\paragraphs_bundles\Hook\PbSvgHook:
+    arguments:
+      - '@paragraphs_bundles.svg_library'
+      - '@entity_field.manager'
 
   Drupal\paragraphs_bundles\Hook\PbLibraryHook:
     arguments:
@@ -190,6 +197,20 @@ services:
   Drupal\paragraphs_bundles\Hook\PbParagraphEditHook:
     arguments:
       - '@current_route_match'
+
+  # SVG artwork: theme-chain scan, cached list, resolve + clean + render.
+  paragraphs_bundles.svg_cleaner:
+    class: Drupal\paragraphs_bundles\Service\Svg\PbSvgCleaner
+  paragraphs_bundles.svg_library:
+    class: Drupal\paragraphs_bundles\Service\Svg\PbSvgLibrary
+    arguments:
+      - '@theme_handler'
+      - '@config.factory'
+      - '@cache.default'
+      - '@file_url_generator'
+      - '@paragraphs_bundles.svg_cleaner'
+      - '%app.root%'
+  Drupal\paragraphs_bundles\Service\Svg\PbSvgLibrary: '@paragraphs_bundles.svg_library'
 
   # ---------------------------------------------------------------------------
   # Paragraphs List index — derived table (pid -> root entity, depth, label).

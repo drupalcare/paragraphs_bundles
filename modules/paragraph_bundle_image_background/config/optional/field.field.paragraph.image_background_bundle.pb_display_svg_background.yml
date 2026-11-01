@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_svg_background
+    - paragraphs.paragraphs_type.image_background_bundle
+  module:
+    - options
+    - paragraphs_bundles
+third_party_settings:
+  paragraphs_bundles:
+    svg_picture_fields:
+      - pb_display_background_image
+id: paragraph.image_background_bundle.pb_display_svg_background
+field_name: pb_display_svg_background
+entity_type: paragraph
+bundle: image_background_bundle
+label: 'SVG background'
+description: 'A decorative SVG from the theme behind the content. Shown when no background image is chosen; an image always wins. A developer adds the SVG files in the theme folder <em>images/pb-svg-icons</em>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

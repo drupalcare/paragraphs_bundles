@@ -13,6 +13,7 @@ dependencies:
     - field.field.paragraph.icon_bundle.pb_content_gms_weight
     - field.field.paragraph.icon_bundle.pb_content_image_icon
     - field.field.paragraph.icon_bundle.pb_content_link
+    - field.field.paragraph.icon_bundle.pb_content_svg_icon
     - field.field.paragraph.icon_bundle.pb_content_title
     - field.field.paragraph.icon_bundle.pb_content_title_alignment
     - field.field.paragraph.icon_bundle.pb_content_title_tag
@@ -115,6 +116,7 @@ third_party_settings:
     group_pb_image_icon:
       children:
         - pb_content_image_icon
+        - pb_content_svg_icon
       label: 'Image Icon'
       region: content
       parent_name: group_icon_fields
@@ -315,6 +317,12 @@ content:
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
+    third_party_settings: {  }
+  pb_content_svg_icon:
+    type: pb_svg_picker
+    weight: 32
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_content_link:
     type: link_default

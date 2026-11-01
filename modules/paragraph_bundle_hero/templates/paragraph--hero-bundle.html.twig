@@ -57,8 +57,13 @@
 <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
   <div class="pb-ui-row hero-bundle-inner{{ pb_margin ? ' ' ~ pb_margin : '' }}">
 
+    {# An image always wins; without one, the SVG from the theme's pb-svg-icons folder (pb_svg, PbSvgHook). #}
     <div class="pb-ui-row pb-u-image-full">
-      {{ content.pb_content_image }}
+      {% if content.pb_content_image|render|trim %}
+        {{ content.pb_content_image }}
+      {% elseif pb_svg %}
+        {{ pb_svg }}
+      {% endif %}
     </div>
 
     <div class="pb-ui-row pb-hero__text-wrapper pb-content__full">

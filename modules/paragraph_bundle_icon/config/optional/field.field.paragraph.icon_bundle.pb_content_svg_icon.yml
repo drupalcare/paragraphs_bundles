@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_svg_icon
+    - paragraphs.paragraphs_type.icon_bundle
+  module:
+    - options
+    - paragraphs_bundles
+third_party_settings:
+  paragraphs_bundles:
+    svg_picture_fields:
+      - pb_content_image_icon
+      - pb_content_gms_icon_name
+id: paragraph.icon_bundle.pb_content_svg_icon
+field_name: pb_content_svg_icon
+entity_type: paragraph
+bundle: icon_bundle
+label: 'SVG icon'
+description: 'An SVG icon from the theme. Shown when no image icon is uploaded, in place of the Google Material Symbols icon. A developer adds the SVG files in the theme folder <em>images/pb-svg-icons</em>.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

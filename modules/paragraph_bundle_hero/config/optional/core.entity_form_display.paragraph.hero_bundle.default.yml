@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.hero_bundle.pb_content_image_link
     - field.field.paragraph.hero_bundle.pb_content_image_link_title
     - field.field.paragraph.hero_bundle.pb_content_kicker
+    - field.field.paragraph.hero_bundle.pb_content_svg_hero
     - field.field.paragraph.hero_bundle.pb_content_title
     - field.field.paragraph.hero_bundle.pb_content_title_alignment
     - field.field.paragraph.hero_bundle.pb_content_title_tag
@@ -61,6 +62,7 @@ third_party_settings:
         - pb_content_title_alignment
         - pb_content_body
         - pb_content_image
+        - pb_content_svg_hero
         - pb_content_image_link
         - pb_content_image_link_title
         - pb_content_kicker
@@ -224,6 +226,12 @@ content:
     region: content
     settings:
       media_types: {  }
+    third_party_settings: {  }
+  pb_content_svg_hero:
+    type: pb_svg_picker
+    weight: 5
+    region: content
+    settings: {  }
     third_party_settings: {  }
   pb_content_image_link:
     type: link_default

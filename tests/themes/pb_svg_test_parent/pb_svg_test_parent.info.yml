@@ -1,0 +1,6 @@
+name: 'PB SVG test parent'
+type: theme
+base theme: false
+core_version_requirement: ^11.3 || ^12
+hidden: true
+package: Testing

@@ -12,7 +12,7 @@ entity_type: paragraph
 bundle: image_background_bundle
 label: 'Background Image (Big Screen)'
 description: 'This image will serve as the background for the main content on large screens. If the small screen image field is left empty, this image will be used for both small and large screens.'
-required: true
+required: false
 translatable: false
 default_value: {  }
 default_value_callback: ''

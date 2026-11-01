@@ -13,6 +13,7 @@ dependencies:
     - field.field.paragraph.icon_bundle.pb_content_gms_weight
     - field.field.paragraph.icon_bundle.pb_content_image_icon
     - field.field.paragraph.icon_bundle.pb_content_link
+    - field.field.paragraph.icon_bundle.pb_content_svg_icon
     - field.field.paragraph.icon_bundle.pb_content_title
     - field.field.paragraph.icon_bundle.pb_content_title_alignment
     - field.field.paragraph.icon_bundle.pb_content_title_tag
@@ -142,6 +143,7 @@ content:
     weight: 21
     region: content
 hidden:
+  pb_content_svg_icon: true
   pb_content_title_alignment: true
   pb_content_title_tag: true
   pb_display_bg: true
