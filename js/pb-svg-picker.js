@@ -38,6 +38,30 @@
   }
 
   /**
+   * Finds the admin theme's background behind an element.
+   *
+   * The panel floats over the form, so it needs a solid background; reading it
+   * keeps the module from choosing a color.
+   *
+   * @param {HTMLElement} element
+   *   The element.
+   *
+   * @return {string}
+   *   A CSS color.
+   */
+  function adminBackground(element) {
+    let node = element.parentElement;
+    while (node) {
+      const color = window.getComputedStyle(node).backgroundColor;
+      if (color !== 'transparent' && !/,\s*0\)$|\/\s*0\)$/.test(color)) {
+        return color;
+      }
+      node = node.parentElement;
+    }
+    return 'Canvas';
+  }
+
+  /**
    * Builds one picker around a radios wrapper.
    *
    * @param {HTMLElement} radios
@@ -46,13 +70,23 @@
   function build(radios) {
     const t = strings();
     const items = Array.from(radios.querySelectorAll('.pb-svg-picker__item'));
-    const none = Array.from(radios.children).find(
-      (el) => el.querySelector('input[type="radio"][value="_none"]') !== null,
+    // The radio's own wrapper: a parent would take the description with it.
+    const noneInput = radios.querySelector(
+      'input[type="radio"][value="_none"]',
     );
+    const none = noneInput
+      ? noneInput.closest('.js-form-item') || noneInput.parentElement
+      : null;
+    const describedBy = radios.getAttribute('aria-describedby');
+    const description =
+      (describedBy && document.getElementById(describedBy)) ||
+      radios.querySelector(
+        '.description, .fieldset__description, .form-item__description',
+      );
 
     const trigger = document.createElement('button');
     trigger.type = 'button';
-    trigger.className = 'pb-svg-picker__trigger';
+    trigger.className = 'button pb-svg-picker__trigger';
     trigger.setAttribute('aria-expanded', 'false');
 
     const panel = document.createElement('div');
@@ -64,38 +98,41 @@
 
     const searchRow = document.createElement('div');
     searchRow.className = 'pb-svg-picker__search';
+    const count = document.createElement('span');
+    count.className = 'pb-svg-picker__count';
+    count.setAttribute('aria-live', 'polite');
     const search = document.createElement('input');
     search.type = 'search';
-    search.className = 'form-text pb-svg-picker__search-input';
+    search.className = 'form-text form-element pb-svg-picker__search-input';
     search.placeholder = t.search || '';
     search.setAttribute('aria-label', t.search || '');
     const clear = document.createElement('button');
     clear.type = 'button';
-    clear.className = 'pb-svg-picker__clear';
+    clear.className = 'button pb-svg-picker__clear';
     clear.textContent = '×';
     clear.setAttribute('aria-label', t.clear || '');
-    clear.hidden = true;
-    searchRow.append(search, clear);
-
-    const count = document.createElement('p');
-    count.className = 'pb-svg-picker__count';
-    count.setAttribute('aria-live', 'polite');
+    clear.disabled = true;
+    searchRow.append(count, search, clear);
 
     const empty = document.createElement('p');
     empty.className = 'pb-svg-picker__empty';
     empty.textContent = t.empty || '';
     empty.hidden = true;
 
+    const tip = document.createElement('span');
+    tip.className = 'pb-svg-picker__tip';
+    tip.setAttribute('aria-hidden', 'true');
+    tip.hidden = true;
+    let tipItem = null;
+    let isOpen = false;
+    let closeTimer = 0;
+
     const rows = document.createElement('div');
     rows.className = 'pb-svg-picker__rows';
-    if (none) {
-      none.classList.add('pb-svg-picker__item', 'pb-svg-picker__item--none');
-      const label = none.querySelector('label');
-      if (label) {
-        label.textContent = t.none || label.textContent;
-      }
-      rows.append(none);
-    }
+    // The script shows its own name on hover, so the browser's would double it.
+    radios.querySelectorAll('.pb-svg-picker__tile[title]').forEach((tile) => {
+      tile.removeAttribute('title');
+    });
     // One row per theme, in the server's order (default theme first).
     const sections = new Map();
     items.forEach((item) => {
@@ -115,7 +152,41 @@
       sections.get(theme).grid.append(item);
     });
 
-    panel.append(searchRow, count, empty, rows);
+    // "No SVG" is the first icon: a crossed circle, named on hover like the rest.
+    if (none) {
+      none.classList.add('pb-svg-picker__item', 'pb-svg-picker__item--none');
+      const label = none.querySelector('label');
+      if (label) {
+        const name = document.createElement('span');
+        name.className = 'pb-svg-picker__name visually-hidden';
+        name.textContent = t.none || label.textContent;
+        label.textContent = '';
+        label.innerHTML =
+          '<svg class="pb-svg-picker__none-icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M3 3l10 10" stroke="currentColor" stroke-width="2"/></svg>';
+        label.append(name);
+      }
+      const first = sections.values().next().value;
+      if (first) {
+        first.grid.prepend(none);
+      } else {
+        const grid = document.createElement('div');
+        grid.className = 'pb-svg-picker__grid';
+        grid.append(none);
+        rows.append(grid);
+      }
+    }
+
+    panel.append(searchRow);
+    if (description) {
+      description.classList.add('pb-svg-picker__description');
+      panel.append(description);
+    }
+    panel.append(empty, rows, tip);
+    // Core's radios wrapper is empty now and would only add space.
+    const emptyWrapper = radios.querySelector('.form-radios');
+    if (emptyWrapper && !emptyWrapper.querySelector('input')) {
+      emptyWrapper.hidden = true;
+    }
     radios.classList.add('pb-svg-picker--enhanced');
     // After the fieldset's legend, which must stay its first child.
     const legend = radios.querySelector(':scope > legend');
@@ -157,7 +228,10 @@
      */
     function filter() {
       const query = search.value.trim().toLowerCase();
-      clear.hidden = query === '';
+      clear.disabled = query === '';
+      if (none) {
+        none.hidden = query !== '';
+      }
       let shown = 0;
       items.forEach((item) => {
         const match =
@@ -172,9 +246,6 @@
           '.pb-svg-picker__item:not([hidden])',
         );
       });
-      if (none) {
-        none.hidden = query !== '';
-      }
       empty.hidden = shown !== 0;
       count.textContent =
         query === ''
@@ -189,14 +260,85 @@
      *   TRUE to open.
      */
     function toggle(open) {
-      panel.hidden = !open;
+      if (open === isOpen) {
+        return;
+      }
+      isOpen = open;
+      window.clearTimeout(closeTimer);
+      tip.hidden = true;
       trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
       if (open) {
+        panel.classList.remove('pb-svg-picker__panel--closing');
+        panel.style.backgroundColor = adminBackground(radios);
+        panel.hidden = false;
         search.focus();
+        return;
       }
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        panel.hidden = true;
+        return;
+      }
+      panel.classList.add('pb-svg-picker__panel--closing');
+      closeTimer = window.setTimeout(() => {
+        panel.hidden = true;
+        panel.classList.remove('pb-svg-picker__panel--closing');
+      }, 120);
     }
 
-    trigger.addEventListener('click', () => toggle(panel.hidden));
+    /**
+     * Shows an icon's name just above it, kept inside the panel's width.
+     *
+     * @param {HTMLElement} item
+     *   The icon's wrapper.
+     */
+    function showTip(item) {
+      const name = item.querySelector('.pb-svg-picker__name');
+      tip.textContent = name ? name.textContent : '';
+      // Measured at the left edge: its old place must not change its width.
+      tip.style.left = '0';
+      tip.hidden = false;
+      const box = item.getBoundingClientRect();
+      const outer = panel.getBoundingClientRect();
+      const left = Math.max(
+        0,
+        Math.min(
+          box.left - outer.left,
+          panel.clientWidth - tip.offsetWidth - 4,
+        ),
+      );
+      tip.style.left = `${left}px`;
+      tip.style.top = `${box.top - outer.top + panel.scrollTop - tip.offsetHeight - 4}px`;
+    }
+
+    // The gap between two icons keeps the name, so it does not flicker.
+    rows.addEventListener('mouseover', (event) => {
+      const item = event.target.closest('.pb-svg-picker__item');
+      if (item) {
+        if (item !== tipItem) {
+          tipItem = item;
+          showTip(item);
+        }
+      } else if (!event.target.closest('.pb-svg-picker__grid')) {
+        tipItem = null;
+        tip.hidden = true;
+      }
+    });
+    rows.addEventListener('mouseleave', () => {
+      tipItem = null;
+      tip.hidden = true;
+    });
+    rows.addEventListener('focusin', (event) => {
+      const item = event.target.closest('.pb-svg-picker__item');
+      if (item) {
+        showTip(item);
+      }
+    });
+    rows.addEventListener('focusout', () => {
+      tipItem = null;
+      tip.hidden = true;
+    });
+
+    trigger.addEventListener('click', () => toggle(!isOpen));
     search.addEventListener('input', filter);
     clear.addEventListener('click', () => {
       search.value = '';
@@ -235,7 +377,7 @@
         document.removeEventListener('click', closeOnOutsideClick);
         return;
       }
-      if (!panel.hidden && !radios.contains(event.target)) {
+      if (isOpen && !radios.contains(event.target)) {
         toggle(false);
       }
     };
