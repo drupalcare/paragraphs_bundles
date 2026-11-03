@@ -364,3 +364,71 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 .pb__tab-display .pb__display-advanced > .details-wrapper > .field--name-pb-display-css-classes .description {
   max-inline-size: 100%;
 }
+
+/* ==========================================================================
+   Display tab groups as compact cards with an icon, the same look as the
+   W3CSS Paragraphs Display tab (owner, 2026-11-02). Claro and Gin.
+   Icons: Google Material Symbols, Apache-2.0, in icons/admin/.
+   ========================================================================== */
+
+.pb__tab-display > .details-wrapper {
+  gap: 0.5rem !important;
+  padding: 0.75rem !important;
+}
+
+.pb__tab-display > .details-wrapper > [class*="pb__display-"] {
+  overflow: hidden !important;
+  margin: 0 !important;
+  border: 1px solid color-mix(in srgb, currentcolor 25%, transparent) !important;
+  border-inline-start: 3px solid #003ecc !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
+
+:is(.gin--dark-mode, .dark-mode) .pb__tab-display > .details-wrapper > [class*="pb__display-"] {
+  border-inline-start-color: #8fb3ff !important;
+}
+
+.pb__tab-display > .details-wrapper > [class*="pb__display-"] > summary {
+  padding-block: 0.625rem !important;
+  padding-inline-end: 3rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  background-repeat: no-repeat !important;
+  background-position: right 1rem center !important;
+  background-size: 1.25rem 1.25rem !important;
+}
+
+[dir="rtl"] .pb__tab-display > .details-wrapper > [class*="pb__display-"] > summary {
+  background-position: left 1rem center !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-colors > summary {
+  background-image: url(../icons/admin/palette.svg) !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-border > summary {
+  background-image: url(../icons/admin/border_style.svg) !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-spacing > summary {
+  background-image: url(../icons/admin/padding.svg) !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-size > summary {
+  background-image: url(../icons/admin/aspect_ratio.svg) !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-advanced > summary {
+  background-image: url(../icons/admin/code.svg) !important;
+}
+
+.pb__tab-display > .details-wrapper > .pb__display-extra > summary {
+  background-image: url(../icons/admin/tune.svg) !important;
+}
+
+/* The open group's body: a small inset under the header. */
+.pb__tab-display > .details-wrapper > [class*="pb__display-"] > .details-wrapper {
+  margin: 0 !important;
+  padding: 0.25rem 0.875rem 0.875rem !important;
+}

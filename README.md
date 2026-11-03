@@ -264,3 +264,5 @@ front-end preview.
 ## License
 
 GPL-2.0-or-later. See `LICENSE.txt`.
+
+The Display tab group icons in `icons/admin/` are Google Material Symbols (Apache-2.0).
