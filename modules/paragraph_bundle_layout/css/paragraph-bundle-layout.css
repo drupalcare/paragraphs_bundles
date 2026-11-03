@@ -60,6 +60,15 @@
   block-size: 100%;
 }
 
+/* In a column holding several bundles, only the last one grows: earlier
+ * siblings keep their content height. Without this, the descendant rule above
+ * also grows them, which opens an empty band under a short first bundle. */
+.paragraphs-bundles.pb-layout .pb-two-columns > div.pb-has-multiple .pb-layout-col__content > .paragraphs-bundles:not(:last-child),
+.paragraphs-bundles.pb-layout .pb-three-columns > div.pb-has-multiple .pb-layout-col__content > .paragraphs-bundles:not(:last-child) {
+  flex-grow: 0;
+  block-size: auto;
+}
+
 /* Fill the column: content pane and last nested paragraph stretch to 100%.
  * Earlier siblings (e.g. image + body) stay content-sized; only :last-child grows.
  * Sticky columns keep align-self: start / block-size: auto in breakpoint CSS. */
