@@ -15,9 +15,9 @@
  * overrode `calc(100% - var(--pb-px24))` and stepped outside the sizing system
  * the module already has —
  *
- *   width  : `pb_display_width` -> `pb-u-mw--N` on the inner, each carrying a
- *            max-width AND its matching `perspective` (300 -> 22rem … 900 ->
- *            34rem, 100 -> 40rem), so the 3D depth is tuned to the width;
+ *   width  : `pb_display_width` -> `pb-u-mw--N` on the inner, a max-width;
+ *            the depth is a ratio of the measured width (base inner rule and
+ *            the ratio below), so the fan looks the same at every width;
  *   height : `--hN` in the base file, `--shN` inside whichever single
  *            breakpoint stylesheet the editor selected.
  *
@@ -53,4 +53,17 @@
  * defends it. */
 .paragraphs-bundles.pb-3d-carousel--coverflow .pb-3d-carousel__ring > .pb-3d-carousel__slide {
   transform-origin: center center;
+}
+
+/* ==========================================================================
+   Depth
+   ========================================================================== */
+
+/* A fan wants a shallower view than a drum: its side cards are already turned
+   45 degrees by the script, and the drum's 5x would flatten that turn. Two
+   times the ring width keeps the turn readable without bending the near edge
+   of a card toward the viewer. The script also pushes each card back by a
+   share of the card width, so the two scale together. */
+.paragraphs-bundles.pb-3d-carousel--coverflow {
+  --pb-3d-perspective-ratio: 2;
 }

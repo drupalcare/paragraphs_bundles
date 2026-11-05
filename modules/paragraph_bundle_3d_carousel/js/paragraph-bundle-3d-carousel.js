@@ -153,7 +153,10 @@
         const CF_CENTRE_SCALE = 0.62;
         const CF_SPACING = 0.72;
         const CF_TILT = 45;
-        const CF_DEPTH = 120;
+        // How far each step back pushes a card, as a share of the card's own
+        // width. It was a fixed 120px, which looked deep on a small fan and
+        // flat on a wide one; 0.21 is 120px on the usual 576px card.
+        const CF_DEPTH_RATIO = 0.21;
         const CF_SHRINK = 0.16;
         const CF_MIN_SCALE = 0.3;
 
@@ -319,6 +322,22 @@
          *   Card width and step in px, the first and last card shown, and the
          *   index the group is centered on.
          */
+        /**
+         * Hands the ring's measured width to the stylesheet.
+         *
+         * The default perspective is this width times
+         * --pb-3d-perspective-ratio (base stylesheet), so the 3D view is the
+         * same at every width and every screen. Both geometries call it on
+         * attach and after every resize. A Perspective field value still
+         * wins: its generated rule targets the paragraph id.
+         */
+        const setRingWidth = () => {
+          ring.parentElement?.style.setProperty(
+            '--pb-3d-ring-width',
+            `${ring.offsetWidth}px`,
+          );
+        };
+
         const getCoverflowLayout = () => {
           // THE SLIDE'S REAL WIDTH, whatever the editor's width setting and
           // the breakpoint have made it. Nothing here assumes a size, which is
@@ -440,7 +459,10 @@
           // with no 'unsafe-inline' — CSP governs the style CONTENT ATTRIBUTE,
           // not .style.prop mutations. The reason is invisible to a reader
           // looking only at this function, hence the note.
-          const { left, right, step, maxDist } = getCoverflowLayout();
+          const { cardWidth, left, right, step, maxDist } =
+            getCoverflowLayout();
+          setRingWidth();
+          const depth = CF_DEPTH_RATIO * cardWidth;
 
           // Slot first, card second. Every slot from -left to +right is filled
           // because the list wraps, so no side is ever empty.
@@ -457,7 +479,7 @@
             placed.set(coverflowIndexAt(slot), {
               slot,
               x: slot * step,
-              z: -dist * CF_DEPTH,
+              z: -dist * depth,
               ry: -dir * CF_TILT,
               scale,
               dist,
@@ -592,6 +614,8 @@
           }
 
           const { theta, radius } = getCarouselGeometry();
+
+          setRingWidth();
 
           const reducedMotion = prefersReducedMotion();
 

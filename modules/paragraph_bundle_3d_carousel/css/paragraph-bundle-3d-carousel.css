@@ -103,7 +103,16 @@
   box-sizing: border-box !important;
   width: 100%;
   max-height: 38.125rem;
-  perspective: 40rem;
+  /* THE DEPTH IS A RATIO OF THE RING'S REAL WIDTH, for both styles. The
+     script measures the ring and sets --pb-3d-ring-width on this element (on
+     attach and after every resize), so the view is the same at every width
+     and screen size. The ring uses 5x (a third of each side card shows with
+     six cards); the coverflow sets 2x in its own file. The old fixed table
+     (22rem at 300px up to 40rem at full width) fell under 1x the width from
+     600px up and hid a ring's side cards. A Perspective field value still
+     wins: its generated rule targets the paragraph id. A theme may set
+     --pb-3d-perspective-ratio to change the depth. */
+  perspective: calc(var(--pb-3d-ring-width, 25rem) * var(--pb-3d-perspective-ratio, 5));
 }
 
 /* `transition: transform 1s` used to sit here and is now in …-ring.css: the
@@ -517,47 +526,39 @@
 }
 
 /* ==========================================================================
-   Width Variants with Perspective
+   Width Variants (the depth follows the measured width, see the inner rule)
    ========================================================================== */
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--300 {
   max-width: 18.75rem;
-  perspective: 22rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--400 {
   max-width: 25rem;
-  perspective: 24rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--500 {
   max-width: 31.25rem;
-  perspective: 26rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--600 {
   max-width: 37.5rem;
-  perspective: 28rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--700 {
   max-width: 43.75rem;
-  perspective: 30rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--800 {
   max-width: 50rem;
-  perspective: 32rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--900 {
   max-width: 56.25rem;
-  perspective: 34rem;
 }
 
 .paragraphs-bundles.pb-3d-carousel > .pb-3d-carousel__inner.pb-u-mw--100 {
   max-width: 100% !important;
-  perspective: 40rem;
 }
 
 /* ==========================================================================

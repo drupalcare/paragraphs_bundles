@@ -145,6 +145,15 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ### Changed
 
+- **3D carousel depth follows the carousel's width.** When the Perspective
+  field is empty, the depth is now the ring's measured width times a ratio
+  (ring 5x, coverflow 2x), set again on every resize. The old fixed table
+  (22rem at 300px up to 40rem at full width) fell under 1x the width from
+  600px up, so a ring's side cards hid behind the front card. The coverflow's
+  step back is now a share of the card width instead of a fixed 120px. A
+  value in the Perspective field still wins. Themes can set
+  `--pb-3d-perspective-ratio`. Carousels with an empty Perspective field look
+  different after this update.
 - **Grid: items fill their cell.** The grid used `align-items: start` and
   `justify-items: start`, so each item was only as tall and as wide as its own
   content. A bordered or shaded simple container with less text stopped short
