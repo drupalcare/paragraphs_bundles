@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Alert'
 type: module
-description: 'Dismissible alert paragraph with countdown, date range, and nested body content.'
+description: 'Provides a dismissible alert paragraph type with a countdown, a display date range and nested content.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

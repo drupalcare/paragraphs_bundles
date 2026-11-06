@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Parallax'
 type: module
-description: 'Parallax wrapper and section paragraphs with legacy CSS and JS scroll effects.'
+description: 'Provides parallax wrapper and section paragraph types with scrolling effects.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

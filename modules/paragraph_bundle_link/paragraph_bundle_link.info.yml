@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Link'
 type: module
-description: 'Link list paragraph with nested link section child paragraphs.'
+description: 'Provides a link list paragraph type with nested link sections.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

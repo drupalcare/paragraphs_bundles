@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Slideshow'
 type: module
-description: 'Slideshow paragraph with nested slides, navigation dots, arrows, and autoplay.'
+description: 'Provides a slideshow paragraph type with nested slides, navigation dots, arrows and autoplay.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

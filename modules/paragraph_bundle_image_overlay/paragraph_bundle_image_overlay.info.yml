@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Image Overlay'
 type: module
-description: 'Image with hover overlay effects (fade, zoom, slide, title bar).'
+description: 'Provides an image paragraph type with hover overlay effects: fade, zoom, slide and title bar.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

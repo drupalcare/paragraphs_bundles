@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Node Reference'
 type: module
-description: 'Paragraph bundle that references PB Node Reference content with view-mode-specific rendering.'
+description: 'Provides a paragraph type that displays referenced PB Node Reference content in a chosen view mode.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

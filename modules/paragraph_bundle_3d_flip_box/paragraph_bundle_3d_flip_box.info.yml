@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle 3D Flip Box'
 type: module
-description: 'CSS 3D flip box with nested front/back paragraph content.'
+description: 'Provides a 3D flip box paragraph type with nested front and back content.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

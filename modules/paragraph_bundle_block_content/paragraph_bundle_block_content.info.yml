@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Block Content'
 type: module
-description: 'Embed custom block content inside a paragraph.'
+description: 'Embeds a custom block in a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

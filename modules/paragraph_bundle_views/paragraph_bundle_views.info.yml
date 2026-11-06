@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Views'
 type: module
-description: 'Embed a Views reference inside a paragraph.'
+description: 'Embeds a view in a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Tabs'
 type: module
-description: 'Tabbed paragraph with nested tab sections, vertical/horizontal layout, and icon tab labels.'
+description: 'Provides a tabs paragraph type with nested tab sections, a vertical or horizontal layout and icon tab labels.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

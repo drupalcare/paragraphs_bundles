@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Block'
 type: module
-description: 'Embed a Drupal block inside a paragraph with Display tab styling.'
+description: 'Embeds a block in a paragraph, styled from the Display tab.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

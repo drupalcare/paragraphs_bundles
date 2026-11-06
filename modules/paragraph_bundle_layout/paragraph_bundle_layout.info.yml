@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Layout'
 type: module
-description: 'One, two, and three column layout paragraphs with sticky columns, toggles, and breakpoint CSS.'
+description: 'Provides one-, two- and three-column layout paragraph types with sticky columns and responsive breakpoints.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

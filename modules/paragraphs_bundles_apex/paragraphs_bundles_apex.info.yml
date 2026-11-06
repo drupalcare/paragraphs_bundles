@@ -1,6 +1,6 @@
 name: 'Paragraphs Bundles APEX'
 type: module
-description: 'Optional bridge: renders Paragraphs Bundles media through APEX layout-aware responsive images. Adds view modes; changes nothing until a site selects one.'
+description: 'Renders Paragraphs Bundles media through APEX layout-aware responsive images. Adds view modes and changes nothing until a site selects one.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 lifecycle: stable

@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Icon'
 type: module
-description: 'Icon paragraph with Google Material Symbols or uploaded image icon.'
+description: 'Provides an icon paragraph type that uses Google Material Symbols or an uploaded image.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

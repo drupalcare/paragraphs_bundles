@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Hero'
 type: module
-description: 'Hero banner paragraph with background image and positioned overlay text.'
+description: 'Provides a hero banner paragraph type with a background image and positioned overlay text.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

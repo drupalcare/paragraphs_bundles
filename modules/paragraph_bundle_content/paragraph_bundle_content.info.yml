@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Content'
 type: module
-description: 'A reusable Content Type for all Paragraphs Bundles to create full width content.'
+description: 'Provides a content type for full-width pages built with Paragraphs Bundles.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

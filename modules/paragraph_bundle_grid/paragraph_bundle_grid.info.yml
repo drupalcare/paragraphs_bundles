@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Grid'
 type: module
-description: 'Responsive CSS grid paragraph with configurable columns, gap, and nested body items.'
+description: 'Provides a responsive CSS grid paragraph type with configurable columns, gaps and nested items.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

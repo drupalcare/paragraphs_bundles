@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Accordion'
 type: module
-description: 'Collapsible accordion paragraph with nested section paragraphs and expand-all controls.'
+description: 'Provides a collapsible accordion paragraph type with nested sections and an expand-all control.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

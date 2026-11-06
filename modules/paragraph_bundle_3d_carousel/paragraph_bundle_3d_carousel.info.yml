@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle 3D Carousel'
 type: module
-description: '3D rotating carousel with nested slides, autoplay, and breakpoint CSS.'
+description: 'Provides a 3D rotating carousel paragraph type with nested slides, autoplay and responsive breakpoints.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

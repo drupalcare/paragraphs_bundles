@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Contact Form'
 type: module
-description: 'Embed a contact form inside a paragraph.'
+description: 'Embeds a contact form in a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

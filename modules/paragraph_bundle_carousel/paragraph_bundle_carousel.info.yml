@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Carousel'
 type: module
-description: 'Carousel paragraph with slides, navigation, breakpoints, and autoplay controls.'
+description: 'Provides a carousel paragraph type with slides, navigation, responsive breakpoints and autoplay.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

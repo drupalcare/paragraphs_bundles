@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Card'
 type: module
-description: 'Two- and three-column card layouts with image and text section child paragraphs.'
+description: 'Provides two- and three-column card paragraph types with image and text sections.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

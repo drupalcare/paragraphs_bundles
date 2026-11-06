@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Image'
 type: module
-description: 'Paragraph bundles for wide, narrow, and original-size images with media and responsive image styles.'
+description: 'Provides wide, narrow and original-size image paragraph types that use media and responsive image styles.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

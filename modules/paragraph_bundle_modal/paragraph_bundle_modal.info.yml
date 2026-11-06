@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Modal'
 type: module
-description: 'Modal dialog paragraph with trigger button, body/footer nested paragraphs, and animation options.'
+description: 'Provides a modal dialog paragraph type with a trigger button, nested body and footer content, and opening animations.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:

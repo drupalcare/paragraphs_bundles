@@ -1,6 +1,6 @@
 name: 'Paragraph Bundle Webform'
 type: module
-description: 'Embed a Webform inside a paragraph.'
+description: 'Embeds a webform in a paragraph.'
 core_version_requirement: ^11.3 || ^12
 package: 'Paragraphs Bundles'
 dependencies:
