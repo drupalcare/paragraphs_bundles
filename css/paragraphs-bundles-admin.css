@@ -432,3 +432,14 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
   margin: 0 !important;
   padding: 0.25rem 0.875rem 0.875rem !important;
 }
+
+/* The PB logo before each bundle name. Paragraphs forces type icons to a
+   16px square; only the icons PB ships (files named <id>_bundle-default-icon)
+   get 24px height at their own width, so other icons are left as they are. */
+.js img.paragraph-type-icon[src*="/paragraphs_type_icon/"][src*="_bundle-default-icon"] {
+  flex-shrink: 0;
+  width: auto;
+  max-width: none;
+  height: 24px;
+  object-fit: contain;
+}

@@ -138,3 +138,31 @@
 .pb-paragraphs-list .pb-col[hidden] {
   display: none;
 }
+
+
+/* The Paragraphs Bundles logo leads the summary line of the top bar. */
+.pb-paragraphs-list .paragraph-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.pb-paragraphs-list .paragraph-summary::before {
+  flex: none;
+  inline-size: 2.75rem;
+  block-size: 2.5rem;
+  content: "";
+  background: url("../images/logo.svg") no-repeat center / contain;
+}
+
+/* Paragraphs Bundles palette on the page's main button: coral, clay ink on hover (white text 4.80:1 and higher). */
+.pb-paragraphs-list .button--primary {
+  border-color: #b75448;
+  background-color: #b75448;
+}
+
+.pb-paragraphs-list .button--primary:hover,
+.pb-paragraphs-list .button--primary:focus {
+  border-color: #793a32;
+  background-color: #793a32;
+}
