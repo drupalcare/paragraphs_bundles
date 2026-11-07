@@ -47,6 +47,9 @@ final class PbSimpleSecondLinkTest extends KernelTestBase {
     parent::setUp();
     $this->installEntitySchema('user');
     $this->installEntitySchema('paragraph');
+    // Paragraph types ship a default icon, which is a file entity.
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('media');
     $this->installConfig(['system']);
     $this->container->get('config.installer')->installOptionalConfig();

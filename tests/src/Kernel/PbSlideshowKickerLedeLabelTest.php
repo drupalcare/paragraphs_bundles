@@ -51,6 +51,9 @@ final class PbSlideshowKickerLedeLabelTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('paragraph');
+    // Paragraph types ship a default icon, which is a file entity.
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('media');
     $this->installConfig(['system', 'filter']);
     $this->container->get('config.installer')->installOptionalConfig();

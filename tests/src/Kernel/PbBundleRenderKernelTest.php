@@ -89,6 +89,9 @@ final class PbBundleRenderKernelTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('paragraph');
+    // Paragraph types ship a default icon, which is a file entity.
+    $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('block_content');
     $this->installEntitySchema('media');
     // Date formats (for timestamp rendering) live in system config.

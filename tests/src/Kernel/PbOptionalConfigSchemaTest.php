@@ -71,6 +71,7 @@ final class PbOptionalConfigSchemaTest extends KernelTestBase {
     $this->installEntitySchema('user');
     $this->installEntitySchema('node');
     $this->installEntitySchema('file');
+    $this->installSchema('file', ['file_usage']);
     $this->installEntitySchema('paragraph');
     $this->installEntitySchema('block_content');
     $this->installEntitySchema('media');

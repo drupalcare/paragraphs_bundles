@@ -468,8 +468,8 @@ function paragraphs_bundles_post_update_bundle_type_icons(): string {
     }
     $files = new FileStorage($path . '/config/optional');
     foreach ($files->listAll('paragraphs.paragraphs_type.') as $name) {
-      $record = $files->read($name);
-      if (!is_array($record) || empty($record['icon_uuid']) || empty($record['icon_default'])) {
+      $record = $files->read((string) $name);
+      if (!is_array($record) || !is_string($record['id'] ?? NULL) || empty($record['icon_uuid']) || empty($record['icon_default'])) {
         continue;
       }
       $type = $storage->load($record['id']);
