@@ -7,6 +7,7 @@ namespace Drupal\paragraphs_bundles_ai\Service;
 use Drupal\Core\Entity\EntityFieldManagerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Entity\Display\EntityFormDisplayInterface;
+use Drupal\Core\Field\FieldConfigInterface;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\paragraphs\ParagraphsTypeInterface;
 use Drupal\paragraphs_bundles_ai\Model\BundleProfile;
@@ -138,6 +139,22 @@ final class BundleProfiler implements BundleProfilerInterface {
     $children = $this->childFields($definitions);
     $facts = [];
 
+    // A picture an SVG field stands in for is not required on the field, but
+    // PbSvgPictureConstraint refuses the section when both are empty. So it is
+    // required in the sense FieldFact means: the section will not save without
+    // it. The SVG field names those pictures in its svg_picture_fields setting.
+    $svgPictures = [];
+    foreach ($definitions as $definition) {
+      if ($definition instanceof FieldConfigInterface) {
+        $listed = $definition->getThirdPartySetting('paragraphs_bundles', 'svg_picture_fields', []);
+        foreach (is_array($listed) ? $listed : [] as $field) {
+          if (is_string($field)) {
+            $svgPictures[$field] = TRUE;
+          }
+        }
+      }
+    }
+
     foreach ($definitions as $name => $definition) {
       $storage = $definition->getFieldStorageDefinition();
       $limit = $storage->getSetting('max_length');
@@ -148,7 +165,7 @@ final class BundleProfiler implements BundleProfilerInterface {
         (string) $definition->getLabel(),
         $definition->getType(),
         in_array($name, $content, TRUE) ? 'content' : (in_array($name, $styling, TRUE) ? 'display' : 'unknown'),
-        $definition->isRequired(),
+        $definition->isRequired() || isset($svgPictures[$name]),
         is_numeric($limit) ? (int) $limit : NULL,
         $this->allowedValues($definition),
         // Every reference field, not only the section-holding ones. A media
@@ -450,7 +467,13 @@ final class BundleProfiler implements BundleProfilerInterface {
    *   Allowed keys, or an empty list for a field with no fixed set.
    */
   private function allowedValues(FieldDefinitionInterface $definition): array {
-    $allowed = $definition->getFieldStorageDefinition()->getSetting('allowed_values');
+    $storage = $definition->getFieldStorageDefinition();
+    // A list field may name an allowed_values_function instead of a fixed
+    // list (the SVG illustration fields do). options_allowed_values() reads
+    // both; the raw setting alone is empty for those fields.
+    $allowed = function_exists('options_allowed_values') && str_starts_with($storage->getType(), 'list_')
+      ? options_allowed_values($storage)
+      : $storage->getSetting('allowed_values');
 
     if (!is_array($allowed) || $allowed === []) {
       return [];

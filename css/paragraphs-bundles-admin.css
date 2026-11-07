@@ -111,11 +111,13 @@
    Color + hover pairs stay adjacent via form display field order.
    ========================================================================== */
 
+/* Each group is a compact card with an icon, the same look as the W3CSS
+   Paragraphs Display tab (owner, 2026-11-02); the icons are set further down. */
 .pb__tab-display > .details-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 0 !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem !important;
 }
 
 .pb__tab-display > .details-wrapper > [class*="pb__display-"] {
@@ -123,16 +125,22 @@
   inline-size: 100%;
   min-inline-size: 0;
   box-sizing: border-box;
-  margin: 0;
+  overflow: hidden !important;
+  margin: 0 !important;
+  border: 1px solid color-mix(in srgb, currentcolor 25%, transparent) !important;
+  border-inline-start: 3px solid #003ecc !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
 }
 
+/* The open group's body: a small inset under the header. */
 .pb__tab-display > .details-wrapper > [class*="pb__display-"] > .details-wrapper {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
   gap: 16px;
-  padding-block: 0;
-  padding-inline: 0;
+  margin: 0 !important;
+  padding: 0.25rem 0.875rem 0.875rem !important;
 }
 
 .pb__tab-display .pb__display-regions > .details-wrapper {
@@ -371,20 +379,6 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
    Icons: Google Material Symbols, Apache-2.0, in icons/admin/.
    ========================================================================== */
 
-.pb__tab-display > .details-wrapper {
-  gap: 0.5rem !important;
-  padding: 0.75rem !important;
-}
-
-.pb__tab-display > .details-wrapper > [class*="pb__display-"] {
-  overflow: hidden !important;
-  margin: 0 !important;
-  border: 1px solid color-mix(in srgb, currentcolor 25%, transparent) !important;
-  border-inline-start: 3px solid #003ecc !important;
-  border-radius: 8px !important;
-  box-shadow: none !important;
-}
-
 :is(.gin--dark-mode, .dark-mode) .pb__tab-display > .details-wrapper > [class*="pb__display-"] {
   border-inline-start-color: #8fb3ff !important;
 }
@@ -425,12 +419,6 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 
 .pb__tab-display > .details-wrapper > .pb__display-extra > summary {
   background-image: url(../icons/admin/tune.svg) !important;
-}
-
-/* The open group's body: a small inset under the header. */
-.pb__tab-display > .details-wrapper > [class*="pb__display-"] > .details-wrapper {
-  margin: 0 !important;
-  padding: 0.25rem 0.875rem 0.875rem !important;
 }
 
 /* The PB logo before each bundle name. Paragraphs forces type icons to a

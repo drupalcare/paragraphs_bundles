@@ -61,6 +61,8 @@ class PbControlButtonClassContractTest extends TestCase {
    */
   private const array ADMIN_SCRIPTS = [
     'js/paragraphs-bundles-color-picker.js',
+    // The SVG picker field widget (PbSvgPickerWidget), on edit forms only.
+    'js/pb-svg-picker.js',
     'modules/paragraph_bundle_alert/js/paragraph-bundle-alert-admin.js',
   ];
 

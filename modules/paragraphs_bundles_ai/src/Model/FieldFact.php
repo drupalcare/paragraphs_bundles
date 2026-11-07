@@ -115,6 +115,11 @@ final readonly class FieldFact {
    *   because a wrong one looks exactly like a right one.
    */
   public function isWords(): bool {
+    // A list field with no choices (an SVG field when the theme ships no
+    // SVGs) accepts no value at all, so nothing may be written into it.
+    if ($this->type === 'list_string' && $this->allowedValues === []) {
+      return FALSE;
+    }
     return !$this->holdsSections && in_array($this->type, self::WORDS, TRUE);
   }
 
