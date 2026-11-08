@@ -14,14 +14,25 @@ icon, optional title/body/link, and the standard Paragraphs Bundles Display tab.
 
 ## How the icon font loads
 
-**By default a page downloads only the icons your site actually uses.** The
-module collects every Material Symbols name in use, per style, and points the
-stylesheet at a Google Fonts subset naming exactly those icons. On a
-page with one outlined icon: **9,118 bytes, against 3,411,436 for the bundled
-Outlined font: 374x smaller.** All four variable axes (Fill, Weight, Grade,
-Optical Size) still work, and icon names remain free text.
+**By default the bundled full font is the only face, and every icon renders.**
+An optional Google Fonts subset, naming only the icons stored in saved
+`icon_bundle` paragraphs, is available for sites that use no other icon source.
+Enable it in `settings.php`:
 
-The subset URL is rebuilt whenever an icon paragraph is added, changed or
+```php
+$settings['paragraph_bundle_icon_subset'] = TRUE;
+```
+
+**Why it is off by default:** the subset uses the same font family name, so an
+icon that is not in its list (a preview, an unsaved paragraph, a template or
+another module printing a `material-symbols-*` class) prints as its ligature
+word, for example "rocket_launch", with no fallback. Turn it on only when every
+icon on the site is a saved `icon_bundle` paragraph. On a page with one outlined
+icon the subset is 9,118 bytes, against 3,411,436 for the bundled Outlined font.
+All four variable axes (Fill, Weight, Grade, Optical Size) still work, and icon
+names remain free text.
+
+When enabled, the subset URL is rebuilt whenever an icon paragraph is added, changed or
 deleted. Nothing to configure, and no change to any template or library name.
 
 **The three `.woff2` files still ship, in `fonts/`, and are a real fallback.**

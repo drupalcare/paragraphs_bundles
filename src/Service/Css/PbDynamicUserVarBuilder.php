@@ -557,7 +557,9 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
     if ($width === '' || !is_numeric($width)) {
       return '';
     }
-    return sprintf('repeat(auto-fill, minmax(%spx, 1fr))', $width);
+    // min(100%, Npx): a column never grows wider than its container, so a
+    // 400px setting no longer pushes a 375px phone screen sideways.
+    return sprintf('repeat(auto-fill, minmax(min(100%%, %spx), 1fr))', $width);
   }
 
   /**

@@ -6,6 +6,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ## [Unreleased]
 
 - Extend and Appearance pages: every module and theme description is a short, professional statement that begins with a verb; credits, links and version notes moved out of the info files.
+- Image Grid: the grid width setting no longer makes a phone screen scroll sideways. A 400px width on a 375px screen pushed the page 45px wide; the column now shrinks to fit its container (`minmax(min(100%, Npx), 1fr)`).
 - New Paragraphs Bundles logo: each shipped bundle shows it as its paragraph type icon (new installs from config, existing sites through `drush updatedb`), and the Paragraphs list page leads with it.
 
 ### Added

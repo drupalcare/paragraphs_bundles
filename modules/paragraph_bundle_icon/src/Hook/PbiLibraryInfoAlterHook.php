@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Drupal\paragraph_bundle_icon\Hook;
 
 use Drupal\Core\Hook\Attribute\Hook;
+use Drupal\Core\Site\Settings;
 use Drupal\paragraph_bundle_icon\Service\PbiFontUrlBuilderInterface;
 use Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface;
 
@@ -68,6 +69,19 @@ use Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface;
  * removed the fonts outright and turned every icon into its ligature name in
  * plain text on upgrade.
  *
+ * OPT-IN, BECAUSE A SUBSET CAN NEVER BE KNOWN TO BE COMPLETE. The icon list is
+ * read from saved `icon_bundle` paragraph rows only. Icons rendered any other
+ * way (a library preview, an unsaved paragraph, a template or another module
+ * printing a `material-symbols-*` class) are not in the list. Because the
+ * subset face declares the SAME family name, loads successfully and is the
+ * last face declared, the browser never falls back to the bundled full font
+ * for a glyph the subset lacks: the ligature name prints as plain words
+ * ("rocket_launch"). Measured 2026-11-07 on the apex_patterns library: the
+ * Outlined subset held 3 names, the page used 11. So the subset is attached
+ * only when a site sets `$settings['paragraph_bundle_icon_subset'] = TRUE;` in
+ * settings.php, meaning it accepts that every icon it renders is a saved
+ * `icon_bundle` paragraph. By default the bundled full font is the only face.
+ *
  * ORDER IS LOAD-BEARING. The subset only wins the family while it renders
  * AFTER the bundled `@font-face`, so it is appended carrying a weight one
  * above the local file's rather than left to the stability of core's sort.
@@ -78,6 +92,11 @@ final class PbiLibraryInfoAlterHook {
    * The extension whose libraries this hook may touch.
    */
   private const string EXTENSION = 'paragraph_bundle_icon';
+
+  /**
+   * The settings.php key that opts a site in to the Google Fonts subset.
+   */
+  private const string SETTING = 'paragraph_bundle_icon_subset';
 
   public function __construct(
     private readonly PbiIconUsageInterface $usage,
@@ -95,6 +114,11 @@ final class PbiLibraryInfoAlterHook {
   #[Hook('library_info_alter')]
   public function libraryInfoAlter(array &$libraries, string $extension): void {
     if ($extension !== self::EXTENSION) {
+      return;
+    }
+
+    // Off unless the site opts in; see the class docblock.
+    if (Settings::get(self::SETTING, FALSE) !== TRUE) {
       return;
     }
 
