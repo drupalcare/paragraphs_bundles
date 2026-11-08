@@ -268,6 +268,48 @@
   block-size: var(--pb-px24, 24px);
 }
 
+/**
+ * One line: state icon, then the text, then the countdown and close controls.
+ *
+ * The top row used to sit ABOVE the text, so the icon stood alone on its own
+ * line. With a state, the top row's box is dropped (display: contents) and its
+ * children join the inner grid beside the text. Empty tracks are `auto` and
+ * take no space; spacing is set on the items, not as a grid gap, so a missing
+ * control leaves no hole. Without a state nothing here applies.
+ */
+.paragraphs-bundles.pb-alert > .pb-ui-inner:has(> .pb-alert--top.pb--has-state) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: start;
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top.pb--has-state {
+  display: contents;
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top.pb--has-state > .pb-alert__state-icon {
+  grid-row: 1;
+  grid-column: 1;
+  margin-inline-end: var(--pb-px8, 0.5rem);
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner:has(> .pb-alert--top.pb--has-state) > .pb-alert__content {
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top.pb--has-state > .pb-alert__countdown {
+  grid-row: 1;
+  grid-column: 3;
+  margin-inline-start: var(--pb-px8, 0.5rem);
+}
+
+.paragraphs-bundles.pb-alert > .pb-ui-inner > .pb-alert--top.pb--has-state > .pb-alert__close {
+  grid-row: 1;
+  grid-column: 4;
+  margin-inline-start: var(--pb-px8, 0.5rem);
+}
+
 .paragraphs-bundles.pb-alert--success {
   --pb-alert-state-color: #047857;
 }

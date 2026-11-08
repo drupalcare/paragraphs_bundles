@@ -72,6 +72,15 @@
               {% set tab_para = item['#paragraph'] %}
               {% set use_tab_icon = tab_para.hasField('pb_content_tab_name_icon') and not tab_para.pb_content_tab_name_icon.isEmpty() and tab_para.pb_content_tab_name_icon.value %}
               {% set tab_label_raw = tab_para.pb_content_tab_name.value|default('') %}
+              {# An icon tab's name field holds icon markup, so its accessible name
+                 comes from the first title the editor wrote in the tab's body. #}
+              {% set tab_icon_name = '' %}
+              {% if use_tab_icon %}
+                {% set _body = tab_para.hasField('pb_content_tab_body') ? tab_para.pb_content_tab_body.entity : null %}
+                {% if _body and _body.hasField('pb_content_title') and not _body.pb_content_title.isEmpty() %}
+                  {% set tab_icon_name = _body.pb_content_title.value|striptags|decode_entities|trim %}
+                {% endif %}
+              {% endif %}
 
               {% if use_tab_icon %}
                 {% set raw_slug = 'icon-' ~ paragraph.id.value ~ '-' ~ tab_index %}
@@ -87,7 +96,7 @@
                 class="pb-ui-btn pb-tabs__tab{% if key == 0 %} pb-is-active{% endif %}"
                 data-fragment="{{ tab_slug }}"
                 {% if use_tab_icon %}
-                  aria-label="{{ 'Tab @n'|t({'@n': tab_index}) }}"
+                  aria-label="{{ tab_icon_name ?: 'Tab @n'|t({'@n': tab_index}) }}"
                 {% endif %}
                 aria-selected="{% if key == 0 %}true{% else %}false{% endif %}"
                 aria-expanded="{% if key == 0 %}true{% else %}false{% endif %}"
