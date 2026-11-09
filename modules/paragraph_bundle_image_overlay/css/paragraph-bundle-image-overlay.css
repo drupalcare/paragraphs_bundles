@@ -225,6 +225,15 @@
   /* Image overlay colors are editor controlled. */
 }
 
+/* Right-to-left: the title starts at the right edge (inset-inline-start), so it
+   moves half its width the other way to stay centered. Print keeps no
+   transform (below). */
+@media not print {
+  .paragraphs-bundles.pb-image-overlay:is(.pb-image-overlay--fade, .pb-image-overlay--zoom, .pb-image-overlay--slide-top, .pb-image-overlay--slide-bottom, .pb-image-overlay--slide-left, .pb-image-overlay--slide-right) .pb-image-overlay__inner .pb-overlay__title:dir(rtl) {
+    transform: translate(50%, -50%);
+  }
+}
+
 @media (forced-colors: active) {
   .paragraphs-bundles.pb-image-overlay a.pb-ui-link:focus-visible {
     outline-color: CanvasText;

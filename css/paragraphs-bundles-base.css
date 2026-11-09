@@ -381,6 +381,13 @@
   transform: translate(-50%, 0%);
 }
 
+/* Same as --middle: in right-to-left text the inline start is the right edge,
+   so the box moves half its width the other way to stay centered. */
+.pb-u-ds--top-middle:dir(rtl),
+.pb-u-ds--bottom-middle:dir(rtl) {
+  transform: translate(50%, 0%);
+}
+
 /* Border Colors */
 
 .pb-u-animate--opacity {

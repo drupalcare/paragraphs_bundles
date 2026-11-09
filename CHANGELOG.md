@@ -5,6 +5,8 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+- Node reference (slideshow and 3D carousel view modes): the caption bar keeps its 12px padding. The reset that zeroes the node's other children also caught the header and outranked its padding rule, so caption text touched the edge of its colored bar.
+- Right-to-left pages: the top-middle and bottom-middle placements, and the image overlay title (fade, zoom and slide styles), are centered again. They moved half their width the wrong way, as the middle placement did before it was fixed.
 - Extend and Appearance pages: every module and theme description is a short, professional statement that begins with a verb; credits, links and version notes moved out of the info files.
 - Image Grid: the grid width setting no longer makes a phone screen scroll sideways. A 400px width on a 375px screen pushed the page 45px wide; the column now shrinks to fit its container (`minmax(min(100%, Npx), 1fr)`).
 - New Paragraphs Bundles logo: each shipped bundle shows it as its paragraph type icon (new installs from config, existing sites through `drush updatedb`), and the Paragraphs list page leads with it.
