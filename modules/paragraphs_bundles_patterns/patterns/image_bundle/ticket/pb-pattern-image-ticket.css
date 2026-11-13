@@ -1,0 +1,49 @@
+/**
+ * @file
+ * Pattern Ticket for the Image.
+ *
+ * The notches sit on the seam between photo and caption, whose height depends
+ * on the words, so the photo and the title each cut their own half of every
+ * notch. A mask on the whole card cannot find that seam without a script.
+ */
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket {
+  --pb-pattern-ticket-notch: clamp(9px, 2.6cqi, 18px);
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-image__inner > :is(.pb-ui-link, .pb-image__wrapper, .pb-content__title, .pb-image__desc) {
+  display: block;
+  box-sizing: border-box;
+  max-inline-size: min(100%, 44rem);
+  margin-inline: auto;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-image__wrapper {
+  mask:
+    radial-gradient(circle var(--pb-pattern-ticket-notch) at 0 100%, transparent calc(100% - 0.5px), #000 calc(100% + 0.5px)) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--pb-pattern-ticket-notch) at 100% 100%, transparent calc(100% - 0.5px), #000 calc(100% + 0.5px)) right / 51% 100% no-repeat;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-image__wrapper img {
+  display: block;
+  width: 100%;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-content__title--below {
+  margin-block: 0;
+  padding: clamp(14px, 3cqi, 24px) clamp(16px, 4cqi, 32px);
+  border-block-start: 2px dashed var(--pb-br, var(--pb-pattern-line));
+  background: var(--pb-bg, var(--pb-pattern-raised));
+  mask:
+    radial-gradient(circle var(--pb-pattern-ticket-notch) at 0 0, transparent calc(100% - 0.5px), #000 calc(100% + 0.5px)) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--pb-pattern-ticket-notch) at 100% 0, transparent calc(100% - 0.5px), #000 calc(100% + 0.5px)) right / 51% 100% no-repeat;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-image__desc {
+  padding: 0 clamp(16px, 4cqi, 32px) clamp(14px, 3cqi, 24px);
+  background: var(--pb-bg, var(--pb-pattern-raised));
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-ticket .pb-image__desc > :last-child {
+  margin-block-end: 0;
+}

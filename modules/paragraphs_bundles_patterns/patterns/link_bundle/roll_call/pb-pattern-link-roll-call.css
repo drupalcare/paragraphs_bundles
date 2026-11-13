@@ -1,0 +1,160 @@
+/**
+ * @file
+ * Pattern Roll call for the Link bundle.
+ *
+ * Each row is one link in poster type, with its arrow in a column of its own so
+ * it can never touch the words. The field wrappers come from the theme, so the
+ * rows are reached by child position and by the link itself. The default is a
+ * dark stage with a rule above every row and a small running number in its own
+ * column; the editor's colors replace any of it.
+ */
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call {
+  --pb-pattern-roll-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E");
+  --pb-pattern-roll-dir: 1;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-link.pb-pattern--link-roll-call {
+  --pb-pattern-roll-dir: -1;
+}
+
+:where(.pb-pattern--link-roll-call > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+
+  padding: clamp(20px, 5cqi, 80px) clamp(16px, 5cqi, 96px);
+  color: var(--pb-pattern-stage-color);
+  background: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-content__title {
+  margin-block: 0 clamp(0.75rem, 3cqi, 2rem);
+  font-family: var(--pb-pattern-font-ui);
+  font-size: clamp(0.875rem, 1.6cqi, 1.0625rem);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link__inner {
+  counter-reset: pb-roll-call;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link__inner > .pb-content__full {
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-stage-line));
+}
+
+/* A rule above each row and the running number in a column of its own. */
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section {
+  display: grid;
+  grid-template-columns: clamp(2rem, 5cqi, 3.5rem) minmax(0, 1fr);
+  align-items: start;
+  counter-increment: pb-roll-call;
+  border-block-start: 1px solid var(--pb-br, var(--pb-pattern-stage-line));
+  padding-block: clamp(0.5rem, 1.6cqi, 1.25rem);
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section::before {
+  grid-row: 1;
+  grid-column: 1;
+  padding-block-start: 0.5em;
+  content: counter(pb-roll-call, decimal-leading-zero);
+  color: var(--pb-tx, var(--pb-pattern-stage-muted));
+  font-family: var(--pb-pattern-font-ui);
+  font-size: clamp(0.75rem, 1.4cqi, 0.9375rem);
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section > * {
+  grid-column: 2;
+  min-width: 0;
+}
+
+/* The optional row title sits above the link as a small line. */
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section > :first-child:not(:last-child) {
+  margin-block-end: var(--pb-px4);
+  color: var(--pb-tx, var(--pb-pattern-stage-muted));
+  font-size: clamp(0.8125rem, 1.4cqi, 0.9375rem);
+  overflow-wrap: anywhere;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(1.75rem, 6cqi, 4rem);
+  align-items: center;
+  column-gap: clamp(0.75rem, 2cqi, 1.5rem);
+  transition: color 0.25s var(--pb-pattern-ease-out);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+  color: var(--pb-lk, var(--pb-pattern-stage-color));
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.75rem, 7cqi, 4.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  min-block-size: var(--pb-pattern-target);
+  overflow-wrap: anywhere;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a::after {
+  justify-self: end;
+  inline-size: 0.6em;
+  aspect-ratio: 1;
+  content: "";
+  transition:
+    opacity 0.25s var(--pb-pattern-ease-out),
+    transform 0.35s var(--pb-pattern-ease-out);
+  transform: translateX(calc(-0.4em * var(--pb-pattern-roll-dir))) scaleX(var(--pb-pattern-roll-dir));
+  opacity: 0;
+  background: currentColor;
+  -webkit-mask: var(--pb-pattern-roll-arrow) center / contain no-repeat;
+  mask: var(--pb-pattern-roll-arrow) center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a:hover,
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a:focus-visible {
+  color: var(--pb-lk-h, var(--pb-tx-h, var(--pb-lk, var(--pb-pattern-stage-color))));
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a:hover::after,
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a:focus-visible::after {
+  transform: translateX(0) scaleX(var(--pb-pattern-roll-dir));
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Only the dimming needs :has(); without it every link simply stays at full
+   strength. The rest sit at 62% over whatever ground the editor picked. */
+.paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link__inner:has(a:hover, a:focus-visible) .pb-link-section a:not(:hover, :focus-visible) {
+  color: color-mix(in sRGB, var(--pb-lk, var(--pb-pattern-stage-color)) 62%, transparent);
+}
+
+/* A touch screen has no pointing, so the arrow is simply there. */
+@media (hover: none) {
+  .paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a::after {
+    transform: scaleX(var(--pb-pattern-roll-dir));
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a,
+  .paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a::after {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a::after {
+    transform: scaleX(var(--pb-pattern-roll-dir));
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-link.pb-pattern--link-roll-call .pb-link-section a::after {
+    background: LinkText;
+    forced-color-adjust: none;
+  }
+}

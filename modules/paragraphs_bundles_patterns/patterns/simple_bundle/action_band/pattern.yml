@@ -1,0 +1,11 @@
+label: 'Action band'
+description: 'A band with the message on one side and one or two outlined buttons on the other, stacked on a narrow screen.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [nonprofit, associations, government, saas]
+needs:
+  - 'Enter a Title and a Link with its text. Body and the Secondary link are optional.'
+  - 'The buttons take the text color of the band, so they stay readable on any background you set.'
+settings: {}

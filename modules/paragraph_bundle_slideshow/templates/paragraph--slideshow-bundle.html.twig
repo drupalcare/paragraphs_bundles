@@ -107,7 +107,7 @@
             {% if key|first != '#' %}
               {% set total_slides = total_slides + 1 %}
 
-              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" role="group" aria-roledescription="{{ 'slide'|t }}" aria-label="{{ 'Slide '|t ~ (key + 1) }}" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}" class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
+              <div id="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}" role="group" aria-roledescription="{{ 'slide'|t }}" aria-label="{{ 'Slide @n'|t({'@n': key + 1}) }}" data-index="{{ key }}" aria-hidden="{% if key == 0 %}false{% else %}true{% endif %}"{% if key != 0 %} inert{% endif %} class="pb-ui-row pb-slideshow__slide{% if key == 0 %} pb-is-active{% endif %}">
                 <div class="pb-ui-row pb-slideshow__slide-inner{{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" id="{{ slide_id }}-{{ key + 1 }}-pane">
                   {{ item|pb_section_bodies('pb_content_slideshow_body') }}
                   {% if item['#paragraph'].pb_content_slideshow_title.value %}
@@ -129,8 +129,7 @@
             {% if show_play_button %}
               <button id="pb-slideshow__play-pause-{{ paragraph.id.value }}" type="button"
                       aria-label="{{ 'Pause slideshow'|t }}"
-                      class="pb-ui-btn pb-nav__play pb-is-playing control-btn{{ pb_play_label ? ' pb-nav__play--labelled' }}"
-                      aria-live="polite">
+                      class="pb-ui-btn pb-nav__play pb-is-playing control-btn{{ pb_play_label ? ' pb-nav__play--labelled' }}">
                 <span class="visually-hidden">{{ 'Play and Stop Slideshow'|t }}</span>
                 <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_slideshow/svg/svg-play.svg') }}{% if pb_play_label %}<span class="pb-nav__play-text">{{ 'Play'|t }}</span>{% endif %}</span>
                 <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_slideshow/svg/svg-pause.svg') }}{% if pb_play_label %}<span class="pb-nav__pause-text">{{ 'Pause'|t }}</span>{% endif %}</span>
@@ -141,7 +140,7 @@
               {% for key, item in content.pb_content_slideshow_section %}
                 {% if key|first != '#' %}
                   <button id="pb-slideshow__nav-btn-{{ paragraph.id.value }}-{{ key + 1 }}" type="button"
-                          aria-label="{{ 'Slide '|t ~ (key + 1) }}"
+                          aria-label="{{ 'Slide @n'|t({'@n': key + 1}) }}"
                           aria-current="{{ key == 0 ? 'true' : 'false' }}"
                           aria-controls="pb-slideshow__slide-{{ paragraph.id.value }}-{{ key + 1 }}"
                           class="pb-ui-btn pb-slideshow__nav-btn control-btn{{ key == 0 ? ' pb-is-active' : '' }}">
@@ -155,11 +154,11 @@
 
         {% if pb_prev_next %}
           <div id="pb-slideshow__arrows-{{ paragraph.id.value }}" class="pb-ui-bar pb-slideshow__arrows pb-u-prev-next-arrow-on" role="navigation" aria-label="{{ 'Slideshow Navigation'|t }}">
-            <button class="pb-nav__prev pb-ui-btn control-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
+            <button type="button" class="pb-nav__prev pb-ui-btn control-btn" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Previous Slide'|t }}">
               <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
               <span>{{ include('@paragraph_bundle_slideshow/svg/svg-prev.svg') }}</span>
             </button>
-            <button class="pb-nav__next pb-ui-btn control-btn" role="button" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Next Slide'|t }}">
+            <button type="button" class="pb-nav__next pb-ui-btn control-btn" aria-controls="pb-slideshow__slides-{{ paragraph.id.value }}" aria-label="{{ 'Next Slide'|t }}">
               <span class="visually-hidden">{{ 'Next Slide'|t }}</span>
               <span>{{ include('@paragraph_bundle_slideshow/svg/svg-next.svg') }}</span>
             </button>

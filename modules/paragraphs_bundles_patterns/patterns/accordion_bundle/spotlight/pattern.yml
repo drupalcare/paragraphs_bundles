@@ -1,0 +1,18 @@
+label: 'Spotlight'
+description: 'Photo panels side by side; the open one widens, with a bottom bar of segments and previous and next.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [cultural, events, creative, nonprofit]
+needs:
+  - 'Keep three to six sections. Each needs a title and a body: first an Image, then one text block. Only one panel stays open and the indicator is switched on for you.'
+settings:
+  pb_display_accor_indicator: 1
+  pb_display_accor_show_expand: 0
+  pb_display_accor_open_first: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

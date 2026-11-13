@@ -1,0 +1,9 @@
+label: 'Fuse'
+description: 'A thin line along the bottom of the alert burns down until the alert closes, so the time limit shows without reading a number. The line uses the color of the state, not your colors.'
+weight: 3
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [government, healthcare, events]
+needs:
+  - 'Choose Countdown as the dismissal type and enter its seconds.'

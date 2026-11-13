@@ -1,0 +1,20 @@
+label: 'Pillar'
+description: 'A calm corporate slideshow with a Hero in every slide: a row of named tabs across the top, the open one with a thin bar that fills while the slide plays, and under it the Hero as a split of photo and words on the page ground. Pause sits at the end of the tab row. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead.'
+weight: 1
+stage: open
+ground: light
+placement: outer-margin
+serves: [corporate, saas, associations]
+needs:
+  - 'Keep three to six slides. Each slide holds one Hero with an Image, a Title, one or two sentences of Body, and a Link with a Link title: that title is the button text.'
+  - 'Give every slide a Slide Title of up to 22 characters, such as Consulting: it is the name on its tab. A slide with no Slide Title shows its number instead.'
+  - 'Leave the Pattern field of each Hero empty. The tabs, the timer bar, Pause and the timing are set for you.'
+settings:
+  pb_display_bottom_navigation: nav
+  pb_display_slide_play_stop: 8000
+  pb_display_slide_prev_next: 0
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

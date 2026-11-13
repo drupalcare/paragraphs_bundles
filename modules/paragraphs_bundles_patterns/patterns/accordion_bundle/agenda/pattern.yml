@@ -1,0 +1,18 @@
+label: 'Agenda'
+description: 'A numbered schedule on a line with a dot per item, a copy-link button in each and a row of numbers under the list.'
+weight: 4
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [events, university, associations, government]
+needs:
+  - 'Keep at least two sections, each with a title and a body. Start a body with an Image to show a small round picture. Numbers are added for you, so leave them out of the title. Expand all and the indicator are switched on for you.'
+settings:
+  pb_display_accor_indicator: 1
+  pb_display_accor_show_expand: 1
+  pb_display_accor_open_first: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

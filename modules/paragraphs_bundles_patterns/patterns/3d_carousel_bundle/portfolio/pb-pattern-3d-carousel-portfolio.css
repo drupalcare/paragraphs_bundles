@@ -1,0 +1,372 @@
+/**
+ * @file
+ * Pattern Portfolio for the 3D Carousel: white Hero cards in a shallow fan.
+ *
+ * The front card is a Hero split into photo and words side by side (stacked
+ * on phones). A vertical control spine stands at the stage's inline end:
+ * Previous on top, the count (current over a short rule over the total), a
+ * diamond Pause, Next at the bottom. On phones the spine becomes a row under
+ * the fan, at the end. PB's script owns the fan and its controls; nothing
+ * here moves a card.
+ *
+ * The spine and PB's 3D geometry: the script measures the ring and the first
+ * card (paragraph-bundle-3d-carousel.js, setRingWidth and
+ * getCoverflowLayout), and the ring is 100% of the inner box's content. So
+ * the spine's room is padding on the inner box: the ring and the cards shrink
+ * by it and the script spaces the fan from their real width, unshifted. The
+ * controls stay in the inner box in the markup and are placed absolutely in
+ * that padding. The perspective origin is moved back to the ring's centre.
+ * Every PB height class gives the inner box 60px more than the card
+ * (paragraph-bundle-3d-carousel.css, height variants), so the spine is
+ * centred on the card, and the phone row fits in those 60px.
+ *
+ * Because PB draws the front card at 0.62 of its box, the words are set
+ * larger than usual so they read at about body size on screen. PB sizes every
+ * div inside a slide's Hero text wrapper with an important flag, so the card
+ * is laid out on the Hero's own boxes and flex growth. Nested rules read
+ * `.pb-hero:not(.pb-pattern)`, so a Hero with its own Pattern, or any Hero
+ * outside this Pattern, is not changed.
+ */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio {
+  --pb-pattern-portfolio-spine: 76px;
+  --pb-pattern-portfolio-room: 60px;
+
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+/* The stage ground, on the bundle's inner box so the editor's own ground
+   wins. */
+:where(.pb-pattern--3d-carousel-portfolio > .pb-ui-inner) {
+  background-color: var(--pb-pattern-raised);
+}
+
+/* ---- The cards. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__ring > .pb-3d-carousel__slide {
+  overflow: hidden;
+  max-inline-size: 60rem;
+  margin-inline: auto;
+  padding: 0;
+  border-radius: 6px;
+  background: linear-gradient(var(--pb-pattern-editor-bg, transparent), var(--pb-pattern-editor-bg, transparent)), var(--pb-pattern-surface);
+  box-shadow: 0 10px 28px color-mix(in sRGB, var(--pb-pattern-shadow) 12%, transparent);
+  inset-inline: 0;
+}
+
+/* The Hero fills the card: photo, then words; side by side when wide. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+  display: grid;
+  grid-template-rows: 50% minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr);
+  height: 100%;
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0;
+}
+
+/* Outranks PB's slide image sizes and the Hero's height classes. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  height: auto;
+  min-height: 0;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+/* Flex growth, not height: PB holds this box's height at auto. It scrolls
+   when the words outgrow the card. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 0 1 auto;
+  align-content: center;
+  min-height: 0;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+  padding-block: clamp(1rem, 3.5cqi, 2.5rem);
+  padding-inline: clamp(1.25rem, 4cqi, 3rem);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-content__title {
+  margin-block: 0.375rem 0.625rem;
+  text-wrap: balance;
+  font-size: clamp(1.75rem, 3.5cqi, 2.5rem);
+  font-weight: 600;
+  line-height: 1.12;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner p {
+  margin-block: 0;
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The Hero's link: an ink rectangle reading the Link title, the card's two
+   colors swapped so it keeps its pair. No Link title, no button. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  box-sizing: border-box;
+  width: fit-content;
+  min-height: 56px;
+  margin-block-start: 1rem;
+  content: attr(title);
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  border: 2px solid var(--pb-tx, var(--pb-pattern-ink));
+  border-radius: 0;
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  font-size: 1.125rem;
+  font-weight: 600;
+  padding-inline: 1.5rem;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background-color: transparent;
+}
+
+/* ---- The controls: a row under the fan on phones, the spine when wide. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options {
+  position: absolute;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: auto;
+  block-size: var(--pb-pattern-portfolio-room);
+  margin: 0;
+  padding-inline: var(--pb-px12);
+  inset-block: auto 0;
+  inset-inline: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  width: auto;
+  gap: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options-inner::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options-inner::after {
+  content: none;
+}
+
+/* PB's rule is all: unset plus padding, so the box is set in full here: a
+   44px square with 6px corners and a 1px edge. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options .pb-ui-btn {
+  position: relative;
+  box-sizing: border-box;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  padding: 0;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background-color: var(--pb-bg, var(--pb-pattern-surface));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options .pb-ui-btn svg {
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover {
+  transform: none;
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options .pb-ui-btn:not(.pb-is-disabled):hover svg {
+  transform: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next) svg,
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover svg {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options .pb-ui-btn:focus-visible {
+  border-radius: 6px;
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* Pause: a 44px diamond. The button keeps its square hit area with no edge
+   or ground; the diamond is a turned square behind the upright icon. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play) {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play):is(:hover, :active) {
+  transform: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play)::before {
+  position: absolute;
+  box-sizing: border-box;
+  inline-size: 31px;
+  block-size: 31px;
+  margin: auto;
+  content: "";
+  transition: background-color 0.2s;
+  transform: rotate(45deg);
+  pointer-events: none;
+  border: 1px solid currentColor;
+  background-color: var(--pb-bg, var(--pb-pattern-surface));
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play):hover {
+  color: var(--pb-bg, var(--pb-pattern-surface));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play):hover::before {
+  border-color: var(--pb-tx, var(--pb-pattern-ink));
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play) > span:not(.visually-hidden, [hidden]) {
+  position: relative;
+  z-index: 1;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play) svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* The count: PB's current number over a 16px rule over the total. The total
+   is hidden from the accessible name (PB's aria-label says "Slide n of N"). */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options-inner > .pb-slideshow__number {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: var(--pb-pattern-target);
+  padding: 0;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  font-size: 1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options-inner > .pb-slideshow__number[data-pb-pattern-total]::after {
+  margin-block-start: 4px;
+  padding-block-start: 5px;
+  content: attr(data-pb-pattern-total) / "";
+  color: var(--pb-pattern-muted);
+  background: linear-gradient(currentColor, currentColor) top center / 16px 1px no-repeat;
+  font-weight: 500;
+}
+
+/* ---- Wide: photo and words side by side, the controls as a spine. ---- */
+@container pb-pattern-region (min-width: 48rem) {
+  :where(.pb-pattern--3d-carousel-portfolio > .pb-ui-inner) {
+    padding-inline-end: var(--pb-pattern-portfolio-spine);
+  }
+
+  /* The ring is now narrower than the inner box by the spine: the 3D view is
+     centred back on the ring. */
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio > .pb-3d-carousel__inner {
+    perspective-origin: calc(50% - var(--pb-pattern-portfolio-spine) / 2) 50%;
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio > .pb-3d-carousel__inner {
+    perspective-origin: calc(50% + var(--pb-pattern-portfolio-spine) / 2) 50%;
+  }
+
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner p {
+    font-size: 1.375rem;
+  }
+
+  /* The spine: the inline-end column, centred on the card (the card's box
+     ends 60px above the inner box's foot). */
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options {
+    justify-content: center;
+    inline-size: var(--pb-pattern-portfolio-spine);
+    block-size: auto;
+    padding-inline: 0;
+    inset-block: 0 var(--pb-pattern-portfolio-room);
+    inset-inline: auto 0;
+  }
+
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
+    flex-direction: column;
+    gap: var(--pb-px16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options .pb-ui-btn,
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play)::before,
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-portfolio .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+    transition: none;
+  }
+}

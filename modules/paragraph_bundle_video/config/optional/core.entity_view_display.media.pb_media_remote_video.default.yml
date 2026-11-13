@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.media.pb_media_remote_video.pb_video_url
+    - media.type.pb_media_remote_video
+  module:
+    - media
+id: media.pb_media_remote_video.default
+targetEntityType: media
+bundle: pb_media_remote_video
+mode: default
+content:
+  pb_video_url:
+    type: oembed
+    label: hidden
+    settings:
+      max_width: 0
+      max_height: 0
+      loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

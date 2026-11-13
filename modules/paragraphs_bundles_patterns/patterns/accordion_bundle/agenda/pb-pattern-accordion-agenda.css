@@ -1,0 +1,301 @@
+/**
+ * @file
+ * Pattern Agenda for the Accordion.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ */
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda {
+  overflow: visible;
+}
+
+:where(.pb-pattern--accordion-agenda > .pb-ui-inner) {
+  padding: clamp(20px, 4cqi, 64px) clamp(16px, 6cqi, 112px) var(--pb-px16);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__sections {
+  counter-reset: pb-pattern-agenda;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-grid__expand-button {
+  margin-block-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__toggle-all {
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  border-radius: 12px;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row {
+  --pb-pattern-agenda-rail: 7.5rem;
+
+  position: relative;
+  overflow: visible;
+  padding-inline-start: calc(var(--pb-pattern-agenda-rail) + 2.5rem);
+  counter-increment: pb-pattern-agenda;
+  border-block-end: 0;
+}
+
+/* The line and the dot of each item. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row::before {
+  position: absolute;
+  width: 2px;
+  content: "";
+  background: var(--pb-br, var(--pb-pattern-line));
+  inset-block: 0;
+  inset-inline-start: calc(var(--pb-pattern-agenda-rail) + 0.6875rem);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row::after {
+  position: absolute;
+  box-sizing: border-box;
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  transition:
+    background-color 0.3s,
+    transform 0.4s var(--pb-pattern-ease-out);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: var(--pb-bg, var(--pb-pattern-surface));
+  inset-block-start: 1.6rem;
+  inset-inline-start: calc(var(--pb-pattern-agenda-rail) + 0.25rem);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"])::after {
+  transform: scale(1.25);
+  background: currentColor;
+}
+
+/* The number sits in the rail, in place of a clock time. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__button::before {
+  position: absolute;
+  width: var(--pb-pattern-agenda-rail);
+  content: counter(pb-pattern-agenda, decimal-leading-zero) / "";
+  transition: opacity 0.3s;
+  opacity: 0.62;
+  inset-block-start: 1.25rem;
+  inset-inline-start: 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.35rem, 2.6cqi, 2rem);
+  font-weight: 650;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__button[aria-expanded="true"]::before {
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pb-pattern-target);
+  align-items: center;
+  min-height: 4.25rem;
+  color: inherit;
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-line));
+  background: transparent;
+  gap: var(--pb-px16);
+  padding-block: var(--pb-px12);
+  padding-inline: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-ui-btn__title {
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.15rem, 2.2cqi, 1.5rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__button:hover .pb-ui-btn__title {
+  text-decoration: underline 2px;
+  text-underline-offset: 0.2em;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-icon-toggle {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  margin-inline-start: 0;
+  border-radius: 50%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+  overflow: hidden;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  width: auto;
+  margin: 0;
+  padding: 0;
+  column-gap: var(--pb-px20);
+}
+
+/* Open items only: on a closed item this would beat PB's display: none and
+   show a pane that is aria-hidden, with links keyboard focus can reach. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row.pb-is-active > .pb-accordion__pane:has(> :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  display: grid;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  overflow: hidden;
+  grid-column: 1;
+  width: 5rem;
+  height: 5rem;
+  margin-block-start: var(--pb-px20);
+  border-radius: 50%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  grid-column: 2;
+  max-width: 60ch;
+  margin-block-start: var(--pb-px20);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+/* PB's slide script writes padding-bottom: 0 inline on the pane. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :last-child {
+  margin-block-end: var(--pb-px28);
+}
+
+/* Copy link: its own row, on its own, under the words. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-self: start;
+  min-height: var(--pb-pattern-target);
+  margin-block-start: var(--pb-px14);
+  cursor: pointer;
+  color: inherit;
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  gap: var(--pb-px8);
+  padding-block: 0;
+  padding-inline: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-copy:hover,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-copy:focus-visible {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-copy::before {
+  width: 1.1rem;
+  height: 1.1rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='80 -680 800 400'%3E%3Cpath d='M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='80 -680 800 400'%3E%3Cpath d='M440-280H280q-83 0-141.5-58.5T80-480q0-83 58.5-141.5T280-680h160v80H280q-50 0-85 35t-35 85q0 50 35 85t85 35h160v80ZM320-440v-80h320v80H320Zm200 160v-80h160q50 0 85-35t35-85q0-50-35-85t-85-35H520v-80h160q83 0 141.5 58.5T880-480q0 83-58.5 141.5T680-280H520Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-copy.is-done::before {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='154 -664 652 424'%3E%3Cpath d='M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='154 -664 652 424'%3E%3Cpath d='M382-240 154-468l57-57 171 171 367-367 57 57-424 424Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* The row of numbers sits under the list, never over its text. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-dock {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-track {
+  display: flex;
+  overflow-x: auto;
+  gap: var(--pb-px4);
+  max-width: 100%;
+  padding: var(--pb-px5);
+  pointer-events: auto;
+  border-radius: 999px;
+  background: var(--pb-bg, var(--pb-pattern-surface));
+  box-shadow:
+    inset 0 0 0 1px var(--pb-br, var(--pb-pattern-line)),
+    0 12px 32px color-mix(in oklab, var(--pb-pattern-shadow) 14%, transparent);
+  scrollbar-width: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-chip {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  min-width: var(--pb-pattern-target);
+  min-height: var(--pb-pattern-target);
+  cursor: pointer;
+  color: inherit;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 650;
+  padding-block: 0;
+  padding-inline: var(--pb-px14);
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-chip:hover {
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-chip[aria-current="true"] {
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+  box-shadow: inset 0 0 0 2px currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-pattern-agenda-chip:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -3px;
+}
+
+@container pb-pattern-region (max-width: 36rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row {
+    --pb-pattern-agenda-rail: 2rem;
+
+    /* The dot ends 2.25rem from the rail's edge, so the bar starts 16px after it. */
+    padding-inline-start: calc(var(--pb-pattern-agenda-rail) + 2.25rem);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__button::before {
+    inset-block-start: 1.1rem;
+    font-size: 1rem;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+    grid-template-columns: 3.5rem minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    width: 3.5rem;
+    height: 3.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row::after {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-agenda .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"])::after {
+    transform: none;
+  }
+}

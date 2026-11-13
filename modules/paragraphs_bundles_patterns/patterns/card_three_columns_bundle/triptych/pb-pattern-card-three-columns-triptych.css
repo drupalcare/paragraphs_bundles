@@ -1,0 +1,113 @@
+/**
+ * @file
+ * Pattern Triptych for the Card (three columns).
+ *
+ * Three photos as one artwork, the middle one taller and arched. The Pattern
+ * draws its own columns (a third each, the middle slightly wider), so the
+ * column ratio the editor picks is not used. Radius and border the editor
+ * sets on a section win: the arch is a :where() default.
+ */
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner) {
+  padding-block: clamp(1rem, 3cqi, 3rem);
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner > .pb-content__full > .pb-card-three-columns {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: row;
+  align-items: end;
+  gap: clamp(0.5rem, 1.5cqi, 1rem);
+}
+
+/* Each photo's height is its own; PB stretches columns to the row. */
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > div {
+  block-size: auto;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section__inner {
+  overflow: hidden;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section img {
+  display: block;
+  transition: opacity 0.35s var(--pb-pattern-ease-out);
+  object-fit: cover;
+  inline-size: 100%;
+  min-block-size: clamp(12rem, 50cqi, 20rem);
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__left .pb-card-image-section__inner) {
+  border-start-start-radius: clamp(1rem, 3cqi, 2rem);
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__right .pb-card-image-section__inner) {
+  border-start-end-radius: clamp(1rem, 3cqi, 2rem);
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__middle .pb-card-image-section__inner) {
+  border-start-start-radius: clamp(2rem, 8cqi, 5rem);
+  border-start-end-radius: clamp(2rem, 8cqi, 5rem);
+}
+
+/* Only the picture dims; the title bar keeps its contrast. */
+@media (hover: hover) {
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner > .pb-content__full > .pb-card-three-columns:hover > div:not(:hover) .field--name-pb-content-image img {
+    opacity: 0.5;
+  }
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner > .pb-content__full > .pb-card-three-columns:focus-within > div:not(:focus-within) .field--name-pb-content-image img {
+  opacity: 0.5;
+}
+
+@container pb-pattern-region (min-width: 40rem) {
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych > .pb-ui-inner > .pb-content__full > .pb-card-three-columns {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__left .pb-card-image-section img,
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__right .pb-card-image-section img {
+    min-block-size: clamp(14rem, 30cqi, 28rem);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-three-columns__middle .pb-card-image-section img {
+    min-block-size: clamp(18rem, 40cqi, 36rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section img {
+    transition: none;
+  }
+}
+
+/* The region's text color would land on the caption's dark plate, so the
+   section names its own. An editor's section colors still win. */
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section > .pb-ui-inner {
+  --pb-tx: var(--pb-pattern-stage-color);
+}
+
+/* The caption sits on the photo's foot, so it gets its own plate: a theme's
+   heading color cannot land on the picture. The editor's section colors
+   (--pb-tx, --pb-bg) still win. The plate is on the field, because PB forces
+   heading backgrounds transparent. */
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section .pb-card__image-title .pb-content__title {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section .pb-card__image-title .field--name-pb-content-title {
+  /* A nested section's --pb-bg is transparent, so it can sit over the default
+     plate: the plate shows, and an editor's section color paints on top. */
+  background: linear-gradient(var(--pb-bg, transparent) 0 0), color-mix(in sRGB, var(--pb-pattern-stage-bg) 78%, transparent);
+}
+
+/* The caption: display face, centered, with a hairline above. */
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-triptych .pb-card-image-section .pb-content__title) {
+  padding-block-start: var(--pb-px8);
+  text-align: center;
+  border-block-start: 1px solid var(--pb-pattern-line);
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.0625rem, 0.9rem + 1cqi, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+}

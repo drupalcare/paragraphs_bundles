@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.pb_video_captions
+    - media.type.pb_media_video
+  module:
+    - file
+id: media.pb_media_video.pb_video_captions
+field_name: pb_video_captions
+entity_type: media
+bundle: pb_media_video
+label: 'Captions file'
+description: 'A WebVTT file (.vtt) with the spoken words. Without it the editor form shows a warning and the video is published without captions.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'vtt'
+  max_filesize: ''
+  description_field: false
+field_type: file

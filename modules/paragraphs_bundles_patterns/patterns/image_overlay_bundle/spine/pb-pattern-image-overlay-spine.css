@@ -1,0 +1,98 @@
+/**
+ * @file
+ * Pattern Spine for the Image Overlay.
+ *
+ * The title sits on a solid band in the editor's colors, so the words are never
+ * on the photo. At rest the band is stood up along the start edge, reading
+ * upward. On hover or focus it lies flat along the bottom. In right-to-left
+ * pages the band stays horizontal at the side, because vertical joined script
+ * reads poorly. The editor's color, text color, radius and title padding are
+ * used as they are.
+ */
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine {
+  --pb-pattern-spine-rot: -90deg;
+  --pb-pattern-spine-shift: 100%;
+  --pb-pattern-spine-len: 100cqh;
+  --pb-pattern-spine-time: 0.5s;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine:dir(rtl) {
+  --pb-pattern-spine-rot: 0deg;
+  --pb-pattern-spine-shift: 0%;
+  --pb-pattern-spine-len: min(100cqw, 18rem);
+}
+
+/* The container is sized by its insets, so it can measure the photo. The spine
+   is as long as the photo is tall. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__container {
+  container-type: size;
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__title {
+  display: block;
+  overflow: hidden;
+  box-sizing: border-box;
+  width: var(--pb-pattern-spine-len);
+  max-width: none;
+  height: auto;
+  min-height: var(--pb-pattern-target, 44px);
+  margin: 0;
+  transition:
+    transform var(--pb-pattern-spine-time) var(--pb-pattern-ease-out),
+    width var(--pb-pattern-spine-time) var(--pb-pattern-ease-out);
+  transform: rotate(var(--pb-pattern-spine-rot)) translateY(var(--pb-pattern-spine-shift));
+  transform-origin: 0 100%;
+  text-align: start;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  line-height: 1.2;
+  isolation: isolate;
+  inset-block: auto 0;
+  inset-inline: 0 auto;
+}
+
+/* PB forces heading backgrounds transparent with !important, so the label's
+   ground is painted behind the words by a pseudo-element. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__title::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  background-color: var(--pb-bg, var(--pb-pattern-stage-bg));
+  inset: 0;
+}
+
+:where(.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-overlay__title) {
+  padding-block: max(0.75rem, calc((var(--pb-pattern-target, 44px) - 1.2em) / 2));
+  padding-inline: clamp(0.75rem, 3cqi, 1.25rem);
+  font-size: clamp(0.875rem, 3.2cqi, 1.25rem);
+}
+
+/* Flat: along the bottom, the full width of the photo. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner:is(:hover, :focus-within) .pb-overlay__title {
+  width: 100cqw;
+  transform: rotate(0deg) translateY(0%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__title {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__title {
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    background-color: Canvas;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-spine .pb-image-overlay__inner .pb-overlay__title {
+    width: 100%;
+    transform: none;
+  }
+}

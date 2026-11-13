@@ -1,0 +1,16 @@
+label: 'Bento'
+description: 'Four Hero cards in a bento grid: the first is large, the fourth is wide, and a summary opens on hover or focus.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [saas, corporate, studio]
+needs:
+  - 'Keep exactly four Hero items in the Grid, each with an Image and a Title. A Link on a Hero makes its summary reachable by keyboard.'
+  - 'Words stay on the photo at every width; the cards zoom in one after another.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

@@ -1,0 +1,21 @@
+label: 'Monolith'
+description: 'Tall dark slabs standing in a fan, with a Hero in every slab: the photo fills the slab and the words sit on a solid band at its foot. Under the fan, a large slide number and two tall slim arrow blocks, with a slim Pause block whose fill drains over each slide. Plays on its own; Pause stops it. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead.'
+weight: 3
+stage: open
+ground: dark
+placement: outer-margin
+serves: [creative, events, saas]
+needs:
+  - 'Keep about five slides. Each slide holds one Hero with a portrait Image, a Title of up to six words, a Body of up to 120 characters, and a Link with a Link title: that title is the underlined line on the band.'
+  - 'Leave the Pattern field of each Hero empty. The slabs have a fixed height, so longer words scroll inside the band. The fan, the heights and the timing are set for you.'
+settings:
+  pb_display_3d_car_style: coverflow
+  pb_content_3dcar_lheight: '550'
+  pb_content_3dcar_sheight: '450'
+  pb_display_3d_caro_breakpoints: pb__768
+  pb_display_3d_play_stop: 6000
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

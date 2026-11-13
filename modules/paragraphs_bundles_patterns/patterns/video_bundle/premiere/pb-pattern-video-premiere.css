@@ -1,0 +1,97 @@
+/**
+ * @file
+ * Pattern Premiere for Video: the room dims, Play is notched into the picture.
+ *
+ * Colors sit on the inner element as --pb-* tokens or under :where(), so the
+ * editor's Background, Text and Link settings win. Layout is specific because
+ * PB's own rule on the inner element sets display at class specificity.
+ */
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere {
+  --pb-pattern-premiere-play: clamp(4.5rem, 9cqi, 6.5rem);
+}
+
+:where(.pb-pattern--video-premiere > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+
+  padding-block: clamp(20px, 4.5cqi, 64px) clamp(28px, 5cqi, 72px);
+  padding-inline: clamp(16px, 5cqi, 72px);
+  background-color: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__stage {
+  overflow: visible;
+  order: 1;
+  border-radius: 0;
+  box-shadow: none;
+  max-inline-size: min(100%, 70rem, calc(var(--pb-video-max-block) * var(--pb-video-w) / var(--pb-video-h)));
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__poster,
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__frame {
+  overflow: hidden;
+  border-radius: clamp(4px, 0.8cqi, 10px);
+}
+
+/* The ring is the room's color, so the disc reads as cut into the picture. */
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__play {
+  inset-block: auto calc(var(--pb-pattern-premiere-play) / -2);
+  inset-inline: 0;
+  inline-size: var(--pb-pattern-premiere-play);
+  block-size: var(--pb-pattern-premiere-play);
+  color: var(--pb-tx);
+  border: 2px solid var(--pb-tx);
+  background-color: var(--pb-bg, var(--pb-pattern-stage-bg));
+  box-shadow: 0 0 0 clamp(6px, 0.9cqi, 10px) var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__play:hover,
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__play:focus-visible {
+  color: var(--pb-bg, var(--pb-pattern-stage-bg));
+  background-color: var(--pb-tx);
+  box-shadow: 0 0 0 clamp(6px, 0.9cqi, 10px) var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__play:focus-visible {
+  outline-color: var(--pb-tx);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__play .pb-video__icon {
+  inline-size: clamp(1.5rem, 3cqi, 2.25rem);
+  block-size: clamp(1.5rem, 3cqi, 2.25rem);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-content__title {
+  order: 2;
+  margin-block-start: calc(var(--pb-pattern-premiere-play) / 2 + clamp(1rem, 2.4cqi, 2rem));
+  letter-spacing: -0.02em;
+  font-size: clamp(2rem, 6cqi, 4.5rem);
+  line-height: 1.04;
+  max-inline-size: 20ch;
+}
+
+/* Derived from the text color, so the editor's Text setting reaches it. */
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__description {
+  order: 3;
+  max-inline-size: 52ch;
+  margin-block-start: clamp(0.75rem, 1.4cqi, 1.25rem);
+  text-align: center;
+  color: color-mix(in sRGB, currentColor 72%, transparent);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-premiere .pb-video__transcript {
+  order: 4;
+  inline-size: min(100%, 46rem);
+  margin-block-start: clamp(1.25rem, 3cqi, 2.5rem);
+  border-color: color-mix(in sRGB, currentColor 40%, transparent);
+
+  /* A theme may paint details pale; the words here are the stage's light color. */
+  background: transparent;
+}

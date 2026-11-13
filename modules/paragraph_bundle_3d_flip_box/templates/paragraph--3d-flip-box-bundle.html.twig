@@ -67,7 +67,7 @@
           as they were before. The script is what makes the face-down one
           inert.
         #}
-        <button type="button" class="pb-3d-flip-box__toggle control-btn" aria-expanded="false" aria-controls="{{ paragraph_id }}-faces" hidden>
+        <button type="button" class="pb-3d-flip-box__toggle control-btn" aria-controls="{{ paragraph_id }}-faces" hidden>
           {#
             A card with an arrow turning over it: "show me the other side".
 
@@ -90,9 +90,10 @@
           </svg>
           {#
             The label is the SPOKEN state, and it has to change with the face on
-            show, including when a pointer is what changed it. `aria-expanded`
-            alone says open/closed, which does not describe a card that has two
-            equal sides. The behavior swaps between these two strings; both are
+            show, including when a pointer is what changed it. There is no
+            `aria-expanded`: open/closed does not describe a card with two equal
+            sides, and a changing label plus a state attribute would say the
+            state twice. The behavior swaps between these two strings; both are
             translated here rather than built in JS so they stay extractable.
           #}
           <span class="visually-hidden" data-pb-label-front="{{ pb_title ? 'Show the back of @title'|t({'@title': pb_title}) : 'Show the back'|t }}" data-pb-label-back="{{ pb_title ? 'Show the front of @title'|t({'@title': pb_title}) : 'Show the front'|t }}">{{ pb_title ? 'Show the back of @title'|t({'@title': pb_title}) : 'Show the back'|t }}</span>

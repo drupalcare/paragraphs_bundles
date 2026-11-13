@@ -16,7 +16,9 @@ images at a breakpoint. No custom widget roles.
 
 ## ARIA roles and attributes
 
-No custom ARIA roles are required for this bundle.
+- When the background image has alt text, an empty, visually hidden element
+  with `role="img"` and that alt as its `aria-label` exposes it as an image.
+  An empty alt means decorative: nothing is exposed.
 
 See the parent playbook for required attributes per pattern.
 
@@ -32,7 +34,8 @@ See the parent playbook for required attributes per pattern.
 
 ## Screen reader
 
-- Decorative background images use empty alt when configured in the media field.
+- Leave the image's alt empty when the background is decorative; fill it when
+  the image carries meaning, and screen readers announce it as an image.
 - Nested content links and controls keep accessible names from markup.
 
 ## Testing checklist

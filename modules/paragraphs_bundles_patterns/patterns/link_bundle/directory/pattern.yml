@@ -1,0 +1,9 @@
+label: 'Directory'
+description: 'A tidy ruled list with a muted label on one side and the link on the other, like the index at the back of a book.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [government, associations, university, publication]
+needs:
+  - 'Keep at least one link, and fill in both the Title and the Link of every row. The Title becomes the muted label.'

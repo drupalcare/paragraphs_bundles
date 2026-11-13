@@ -1,0 +1,140 @@
+/**
+ * @file
+ * Pattern Corner notice for the Alert.
+ *
+ * The root leaves the page flow, so it opts out of the size container that
+ * every Pattern gets: a container could trap the fixed position. Nothing here
+ * may use cqi or @container; sizes come from rem, vw and vh. The height is
+ * capped so the card stays small, and long text scrolls instead of being cut.
+ */
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice {
+  position: fixed;
+  z-index: 400;
+  inline-size: min(24rem, 100vw - 2rem);
+  animation: pb-pattern-alert-corner-in 0.35s var(--pb-pattern-ease-out) backwards;
+  container: none;
+  inset-block-end: max(1rem, env(safe-area-inset-bottom));
+  inset-inline-end: 1rem;
+}
+
+@keyframes pb-pattern-alert-corner-in {
+  from {
+    transform: translateY(1rem);
+    opacity: 0;
+  }
+}
+
+:where(.pb-pattern--alert-corner-notice > .pb-ui-inner) {
+  padding: clamp(0.75rem, 2vw, 1rem);
+  color: var(--pb-pattern-ink);
+  border-radius: 0.75rem;
+  background: var(--pb-pattern-surface);
+  box-shadow: 0 0.75rem 2rem color-mix(in oklab, var(--pb-pattern-shadow) 20%, transparent);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: start;
+  font-size: clamp(0.875rem, 1.2vw, 1rem);
+  line-height: 1.4;
+}
+
+/* Words and controls each keep their own column, so the close button never
+   sits above or beside the words. */
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top {
+  display: contents;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+  grid-row: 1;
+  grid-column: 1;
+  margin-inline-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert__content {
+  overflow-y: auto;
+  grid-row: 1;
+  grid-column: 2;
+  max-block-size: min(40vh, 20rem);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert__content > .pb-content__title {
+  margin-block: 0 var(--pb-px4);
+  font-size: 1.0625em;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown {
+  grid-row: 1;
+  grid-column: 3;
+  min-block-size: var(--pb-pattern-target);
+  margin-inline-start: var(--pb-px12);
+  padding-block: 0;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown > button.pb-alert__countdown-pause {
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > button.pb-alert__close {
+  grid-row: 1;
+  grid-column: 4;
+  align-self: start;
+  margin-inline-start: var(--pb-px12);
+  border-radius: 10px;
+  background: color-mix(in sRGB, currentColor 12%, transparent);
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > button.pb-alert__close svg {
+  inline-size: var(--pb-px24);
+  block-size: var(--pb-px24);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice {
+    animation: none;
+  }
+}
+
+/* A fixed box repeats on every printed page. */
+@media print {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice {
+    position: static;
+    inline-size: auto;
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert__content {
+    overflow: visible;
+    max-block-size: none;
+  }
+}
+
+/* On a phone the close button leads the row, so it has a place of its own. */
+@media (max-width: 30rem) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner {
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > button.pb-alert__close {
+    grid-column: 1;
+    margin-inline: 0 var(--pb-px12);
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+    grid-column: 2;
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert__content {
+    grid-column: 3;
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-corner-notice > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown {
+    grid-column: 4;
+  }
+}

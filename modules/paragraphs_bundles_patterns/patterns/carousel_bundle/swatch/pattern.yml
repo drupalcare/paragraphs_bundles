@@ -1,0 +1,23 @@
+label: 'Swatch'
+description: 'Edge-to-edge square tiles that open as circles, with big round magnetic arrows, dots and a ring around Pause.'
+weight: 3
+stage: open
+ground: light
+placement: outer-margin
+serves: [studio, creative, cultural]
+needs:
+  - 'Keep at least six Image slides with square images, each with a title. The layout and timing are set for you.'
+settings:
+  pb_display_vertical_carousel: horizontal
+  pb_display_carousel_breakpoints: pb__768
+  pb_display_navigation: both
+  pb_display_big_screen: 3
+  pb_display_small_screen: 1
+  pb_display_carousel_play_stop: 5000
+  pb_display_activate_looping: 1
+  pb_display_carousel_arrows_over: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

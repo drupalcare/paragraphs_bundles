@@ -86,8 +86,8 @@
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]:focus {
   border-color: var(--gin-color-primary, var(--gin-border-color-focus, currentcolor));
-  outline: none;
-  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
+  outline: 2px solid var(--gin-color-focus, var(--color-focus, currentcolor));
+  outline-offset: 2px;
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="color"]::-webkit-color-swatch-wrapper {
@@ -131,8 +131,8 @@
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]:focus {
   border-color: var(--gin-color-primary, var(--gin-border-color-focus, currentcolor));
-  outline: none;
-  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
+  outline: 2px solid var(--gin-color-focus, var(--color-focus, currentcolor));
+  outline-offset: 2px;
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper input[type="text"]::placeholder {
@@ -169,8 +169,8 @@
 }
 
 [data-drupal-selector="pb-color-picker"] .pb-color-picker__wrapper .pb-color__clear-btn:focus {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--gin-color-primary-light, rgb(0, 0, 0, 0.1));
+  outline: 2px solid var(--gin-color-focus, var(--color-focus, currentcolor));
+  outline-offset: 2px;
 }
 
 /* ==========================================================================

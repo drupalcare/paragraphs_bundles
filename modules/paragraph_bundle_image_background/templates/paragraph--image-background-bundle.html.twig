@@ -12,6 +12,7 @@
  * | pb_display_background_* (no sm img)  | outer `#pb-image-background-{id}` | dynamic CSS |
  * | pb_display_image_min_height          | outer wrapper           | dynamic CSS `min-height` |
  * | pb_display_background_image_sm       | outer `data-*` + JS     | breakpoint swap |
+ * | pb_image_url, pb_image_url_sm        | outer `data-*`          | PbibPreprocessHook (Pattern image style or the file) |
  *
  * Outer id: `#pb-image-background-{id}`; inner colors use default inner scope when set.
  *
@@ -39,10 +40,10 @@
   paragraph_id,
 ] %}
 
-{% set pb_image_url = paragraph|pb_image_field_url('pb_display_background_image') %}
+{# pb_image_url and pb_image_url_sm come from PbibPreprocessHook: the image
+   style the section's Pattern names, else the file as uploaded. #}
 {% set pb_image_alt = paragraph.pb_display_background_image.alt|default('') %}
 {% set pb_image_title = paragraph.pb_display_background_image.title|default('') %}
-{% set pb_image_url_sm = paragraph|pb_image_field_url('pb_display_background_image_sm') %}
 {% set pb_display_bg = paragraph|pb_field_value('pb_display_bg') %}
 
 {% if pb_image_url_sm %}
@@ -67,6 +68,14 @@
        data-image-big="{{ pb_image_url }}"
        {% if pb_image_title %} data-image-title="{{ pb_image_title }}"{% endif %}
        {% if pb_image_alt %} data-image-alt="{{ pb_image_alt }}"{% endif %}>
+{% endif %}
+
+{# The background is CSS, so it has no alt of its own. Alt text set means the
+   image carries meaning: a separate empty element exposes it as an image named
+   by the alt (role="img" on the wrapper would hide the section's content). An
+   empty alt means decorative, and nothing is exposed. #}
+{% if pb_image_alt and (pb_image_url or pb_image_url_sm) %}
+  <span class="pb-image-background__alt visually-hidden" role="img" aria-label="{{ pb_image_alt }}"></span>
 {% endif %}
 
 {# A background image always wins; without one, the SVG from the theme's pb-svg-icons folder (pb_svg, PbSvgHook). #}

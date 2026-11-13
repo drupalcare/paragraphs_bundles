@@ -1,0 +1,15 @@
+label: 'Figures'
+description: 'Number tiles, the first twice the size; the numbers count up, and a tile tips back to the photo and one sentence.'
+weight: 4
+stage: boxed
+ground: light
+placement: both
+serves: [nonprofit, corporate, associations, government]
+needs:
+  - 'Keep at least four 3D Flip Box items in the Grid. In each: a Front with a Simple paragraph whose Title is a whole number, such as 1200, and whose Body is the label; a Back with an Image and a Simple paragraph holding one sentence.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

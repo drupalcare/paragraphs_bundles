@@ -1,0 +1,20 @@
+label: 'Orbit dock'
+description: 'A deep ring of wide photos with a floor glow, a caption chip and a floating dock with a progress ring.'
+weight: 1
+stage: open
+ground: dark
+placement: outer-margin
+serves: [creative, studio, events]
+needs:
+  - 'Keep at least five Image slides, each with a wide image and a title. The ring, the heights and the timing are set for you.'
+settings:
+  pb_display_3d_car_style: ring
+  pb_content_3dcar_lheight: '450'
+  pb_content_3dcar_sheight: '350'
+  pb_display_3d_caro_breakpoints: pb__768
+  pb_display_3d_play_stop: 5000
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

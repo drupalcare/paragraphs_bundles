@@ -1,0 +1,16 @@
+label: 'Keyline'
+description: 'A clean page-ground hero with a framed photo at the end. Thin alignment lines, like an architect drawing, run under the kicker, along the title and across the photo top and bottom edges, and draw themselves in once. The button is a full-width bar between two rules. The small label above the title keeps its own colors.'
+weight: 3
+stage: open
+ground: light
+placement: outer-margin
+serves: [corporate, government, saas]
+needs:
+  - 'Add an Image, a Kicker for the small label, a Title and two sentences of Body.'
+  - 'To show the bar button, add a Link and fill in the Link title: that title is the button text.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

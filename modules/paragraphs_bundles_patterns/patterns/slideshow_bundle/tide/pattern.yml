@@ -1,0 +1,21 @@
+label: 'Tide'
+description: 'A calm, image-led slideshow: one wide photo at a time inside a generous margin, changing slowly, each photo drifting very gently from slightly close to its full frame while it is shown. Under it, a quiet caption row: the photo title, then the words Pause, Previous and Next instead of icon buttons. The drift stops when the slideshow is paused and is off for visitors who ask for less motion.'
+weight: 4
+stage: open
+ground: light
+placement: outer-margin
+serves: [cultural, nonprofit, publication]
+needs:
+  - 'Keep four to six slides. Each slide holds one Image paragraph with a wide Image and a short Title, such as The north garden in May: that title is the caption under the photo.'
+  - 'Set the Image title position to below. The timing, Pause and the Previous and Next words are set for you.'
+settings:
+  pb_display_bottom_navigation: play
+  pb_display_slide_play_stop: 9000
+  pb_display_slide_play_label: 1
+  pb_display_slide_prev_next: 1
+  pb_display_slide_animated_slides: pb__animate_opacity
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

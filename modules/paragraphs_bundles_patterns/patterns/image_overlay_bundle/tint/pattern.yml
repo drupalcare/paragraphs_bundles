@@ -1,0 +1,17 @@
+label: 'Tint'
+description: 'The photo shows in one color at rest, made from your background color, and blooms to full color when pointed at. The title sits on a solid label in your colors.'
+weight: 2
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [nonprofit, associations, events]
+needs:
+  - 'Add an image and a title. Choose a background color for the tint and a text color that reads on it. A mid or dark color works best.'
+  - 'The hover style list is replaced by this pattern, so the title is always visible.'
+settings:
+  pb_display_image_overlay: ''
+pictures:
+  image_overlay_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

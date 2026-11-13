@@ -1,6 +1,10 @@
 services:
   Drupal\paragraph_bundle_image_background\Hook\PbibThemeHook: {}
 
+  Drupal\paragraph_bundle_image_background\Hook\PbibPreprocessHook:
+    arguments:
+      - '@paragraphs_bundles.image_field_url_resolver'
+
   Drupal\paragraph_bundle_image_background\Hook\PbibHelpHook:
     arguments:
       - '@paragraphs_bundles.readme_help_renderer'

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\Tests\paragraph_bundle_icon\Unit;
 
+use Drupal\Core\Site\Settings;
 use Drupal\paragraph_bundle_icon\Hook\PbiLibraryInfoAlterHook;
 use Drupal\paragraph_bundle_icon\Service\PbiFontUrlBuilder;
 use Drupal\paragraph_bundle_icon\Service\PbiIconUsageInterface;
@@ -75,6 +76,34 @@ final class PbiLibraryInfoAlterTest extends TestCase {
       }
 
     };
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function setUp(): void {
+    parent::setUp();
+    // The subset is opt-in; these tests cover what it does once turned on.
+    new Settings(['paragraph_bundle_icon_subset' => TRUE]);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function tearDown(): void {
+    new Settings([]);
+    parent::tearDown();
+  }
+
+  /**
+   * With the setting off, the bundled stylesheet is left alone.
+   */
+  public function testNothingChangesUntilTheSiteOptsIn(): void {
+    new Settings([]);
+    $libraries = $this->yamlShapedLibraries();
+    $before = $libraries;
+    $this->hook(['outlined' => ['star']])->libraryInfoAlter($libraries, 'paragraph_bundle_icon');
+    self::assertSame($before, $libraries);
   }
 
   /**

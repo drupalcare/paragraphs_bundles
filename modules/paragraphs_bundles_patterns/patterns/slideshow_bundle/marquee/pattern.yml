@@ -1,0 +1,20 @@
+label: 'Marquee'
+description: 'A full-width dark stage with a Hero in every slide: the new photo opens through five slats like a shutter and the words rise in on a solid band. Glass rails on both photo edges, a tick ruler and a Pause chip in the strip below. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead. The rails keep the stage colors so they stay readable on any photo.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [events, creative, saas]
+needs:
+  - 'Keep three to eight slides. Each slide holds one Hero with a wide Image, a Kicker, a Title, one sentence of Body, and a Link with a Link title: that title is the button text.'
+  - 'Leave the Pattern field of each Hero empty. The Slide Title is read by screen readers only. The arrows, ticks, Pause button and timing are set for you.'
+settings:
+  pb_display_bottom_navigation: nav
+  pb_display_slide_play_stop: 7000
+  pb_display_slide_play_label: 1
+  pb_display_slide_prev_next: 1
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

@@ -1,0 +1,292 @@
+/**
+ * @file
+ * Pattern Stage for the Accordion.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * The photo is placed from the sections element, so PB's inline height on the
+ * pane never touches it.
+ */
+
+:where(.pb-pattern--accordion-stage > .pb-ui-inner) {
+  padding: clamp(20px, 4cqi, 64px) clamp(16px, 4cqi, 64px);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__sections {
+  --pb-pattern-stage-gap: clamp(32px, 5cqi, 80px);
+
+  position: relative;
+  counter-reset: pb-pattern-stage;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item.pb-ui-row {
+  overflow: visible;
+  counter-increment: pb-pattern-stage;
+  border-block-start: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-block-end: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item.pb-ui-row:last-of-type {
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button {
+  position: relative;
+  align-items: baseline;
+  gap: var(--pb-px20);
+  min-height: 4.5rem;
+  padding-block: var(--pb-px18);
+  padding-inline: 0;
+  color: inherit;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button::before {
+  flex: none;
+  content: counter(pb-pattern-stage, decimal-leading-zero) / "";
+  transition: opacity 0.3s;
+  opacity: 0.62;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-ui-btn__title {
+  transition:
+    opacity 0.3s,
+    translate 0.5s var(--pb-pattern-ease-out);
+  letter-spacing: -0.03em;
+  opacity: 0.62;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.75rem, 4.2cqi, 3.25rem);
+  font-weight: 650;
+  line-height: 1;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button:hover .pb-ui-btn__title {
+  opacity: 1;
+  translate: 0.35rem 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button:hover .pb-ui-btn__title {
+  translate: -0.35rem 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button[aria-expanded="true"]::before,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button[aria-expanded="true"] .pb-ui-btn__title {
+  opacity: 1;
+}
+
+/* The progress line under the open step is the autoplay timer. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button::after {
+  position: absolute;
+  height: 3px;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+  inset-block-end: -1px;
+  inset-inline: 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button::after {
+  transform-origin: right;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button[aria-expanded="true"]::after {
+  transition: transform 0.4s var(--pb-pattern-ease-out);
+  transform: scaleX(1);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage.pb-pattern-stage--playing .pb-accordion__button[aria-expanded="true"]::after {
+  transition: none;
+  animation: pb-pattern-accordion-stage-fill 7s linear both;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage.pb-pattern-stage--held .pb-accordion__button[aria-expanded="true"]::after {
+  animation-play-state: paused;
+}
+
+@keyframes pb-pattern-accordion-stage-fill {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* The photo: inside the open step until the stage has room beside the steps. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* The text keeps clear of the step button above it. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :not(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  padding-block-start: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  overflow: hidden;
+  margin-block-end: var(--pb-px20);
+  border-radius: 20px;
+  aspect-ratio: 4 / 3;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  max-width: 34rem;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+/* PB's slide script writes padding-bottom: 0 inline on the pane. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :last-child {
+  margin-block-end: var(--pb-px24);
+}
+
+/* Pause or Play and the counter: their own row below the steps. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--pb-px16);
+  margin-block-start: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  min-height: var(--pb-pattern-target);
+  margin-inline-start: auto;
+  cursor: pointer;
+  color: inherit;
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 12px;
+  background: transparent;
+  font-weight: 600;
+  gap: var(--pb-px10);
+  padding-block: 0;
+  padding-inline: var(--pb-px14) var(--pb-px18);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play:hover,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play:focus-visible {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play::before {
+  width: 0.85rem;
+  height: 0.85rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='200 -760 560 560'%3E%3Cpath d='M520-200v-560h240v560H520Zm-320 0v-560h240v560H200Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='200 -760 560 560'%3E%3Cpath d='M520-200v-560h240v560H520Zm-320 0v-560h240v560H200Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play.is-stopped::before {
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='320 -760 440 560'%3E%3Cpath d='M320-200v-560l440 280-440 280Z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='320 -760 440 560'%3E%3Cpath d='M320-200v-560l440 280-440 280Z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-count {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-count-now {
+  font-weight: 700;
+}
+
+/* From 55rem of its own width: the steps on one side, the photo on the other. */
+@container pb-pattern-region (min-width: 55rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__sections {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-content: start;
+    min-height: 34rem;
+    column-gap: var(--pb-pattern-stage-gap);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__sections > * {
+    grid-column: 1;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-controls {
+    width: calc((100% - var(--pb-pattern-stage-gap)) * 5 / 12);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+    position: static;
+    display: block;
+    overflow: hidden;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item.pb-is-inactive > .pb-accordion__pane {
+    height: 0;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    position: absolute;
+    z-index: 0;
+    margin: 0;
+    aspect-ratio: auto;
+    transition: clip-path 0.9s var(--pb-pattern-ease-out) 0.9s;
+    clip-path: inset(0 0 0 100% round 20px);
+    inset-block: 0;
+    inset-inline: calc((100% - var(--pb-pattern-stage-gap)) * 5 / 12 + var(--pb-pattern-stage-gap)) 0;
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    clip-path: inset(0 100% 0 0 round 20px);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    z-index: 1;
+    transition-delay: 0s;
+    clip-path: inset(0 round 20px);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+    margin-inline-start: 2.25rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button::before,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-ui-btn__title,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button[aria-expanded="true"]::after {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__button:hover .pb-ui-btn__title {
+    translate: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    transition: none;
+  }
+}
+
+@container pb-pattern-region (max-width: 30rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-stage .pb-pattern-stage-play {
+    margin-inline-start: 0;
+  }
+}

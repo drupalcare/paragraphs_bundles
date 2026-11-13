@@ -1,0 +1,18 @@
+label: 'Cards'
+description: 'Portrait photo cards; the open card spans the row with previous and next inside.'
+weight: 3
+stage: boxed
+ground: light
+placement: both
+serves: [university, cultural, nonprofit]
+needs:
+  - 'Keep three to eight sections. Each needs a title and a body: first an Image, then a text block. Only one card stays open and the indicator is switched on for you.'
+settings:
+  pb_display_accor_indicator: 1
+  pb_display_accor_show_expand: 0
+  pb_display_accor_open_first: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

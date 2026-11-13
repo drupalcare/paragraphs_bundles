@@ -1,0 +1,118 @@
+/**
+ * @file
+ * Pattern Loupe for the Image.
+ *
+ * The lens carries pointer-events: none, so a linked photo still clicks. It
+ * adds no information, so nothing is lost for touch and keyboard users.
+ */
+
+/* Mat: the photo sits on a raised ground with room around it. Under :where(),
+   so the editor's colors and padding win. */
+:where(.pb-pattern--image-loupe > .pb-ui-inner) {
+  padding: clamp(10px, 2.4cqi, 24px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-content__title {
+  margin-block: clamp(10px, 2cqi, 16px) 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.25rem, 2.6cqi, 1.875rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__desc {
+  max-inline-size: 62ch;
+  margin-block-start: clamp(6px, 1.2cqi, 10px);
+  line-height: 1.6;
+}
+
+:where(.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__desc) {
+  color: var(--pb-tx, var(--pb-pattern-muted));
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__desc > :last-child {
+  margin-block-end: 0;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cue: a small magnifier in the photo's end corner, only where the lens
+   exists (a fine pointer). It is decorative, sits on the photo and holds no
+   text. The disc is ::before and the glyph is a mask on ::after, so both
+   colors are the Pattern's own tokens. */
+@media (hover: hover) and (pointer: fine) {
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper::before,
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper::after {
+    position: absolute;
+    z-index: 1;
+    box-sizing: border-box;
+    content: "";
+    pointer-events: none;
+  }
+
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper::before {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background-color: var(--pb-pattern-surface);
+    box-shadow: 0 2px 8px color-mix(in sRGB, var(--pb-pattern-shadow) 35%, transparent);
+    inset-block-end: 0.75rem;
+    inset-inline-end: 0.75rem;
+  }
+
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper::after {
+    width: 1.375rem;
+    height: 1.375rem;
+    background-color: var(--pb-pattern-ink);
+    inset-block-end: 1.1875rem;
+    inset-inline-end: 1.1875rem;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  }
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-image__wrapper img {
+  display: block;
+}
+
+.paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-pattern-loupe {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-pattern-loupe {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    box-sizing: border-box;
+    width: clamp(120px, 30cqi, 200px);
+    transition:
+      opacity 0.2s ease,
+      transform 0.08s ease-out,
+      background-position 0.08s ease-out;
+    pointer-events: none;
+    opacity: 0;
+    border: 3px solid var(--pb-br, var(--pb-pattern-surface));
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    box-shadow: 0 8px 24px color-mix(in oklab, var(--pb-pattern-shadow) 35%, transparent);
+    aspect-ratio: 1;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    will-change: transform;
+  }
+
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-pattern-loupe.pb-is-active {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image.pb-pattern--image-loupe .pb-pattern-loupe {
+    transition: none;
+  }
+}

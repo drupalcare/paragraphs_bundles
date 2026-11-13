@@ -1,0 +1,379 @@
+/**
+ * @file
+ * Pattern Reel for the Image Grid.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, gap) is
+ * written with :where() or left to PB's own ID-scoped rules, so the editor
+ * wins. The one exception is grid-template-columns: PB writes the Grid Image
+ * Width on an ID selector, and one sideways row cannot be drawn from it, so
+ * :not(#pb-pattern-columns) lifts that single declaration over it. No element
+ * has that ID; it only adds specificity. The pattern description tells the
+ * editor the field has no effect here.
+ */
+
+:where(.pb-pattern--image-grid-reel > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+
+  padding-block: var(--pb-px4);
+  color: var(--pb-pattern-stage-color);
+  background: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel {
+  --pb-pattern-reel-pad: clamp(16px, 6cqi, 96px);
+
+  timeline-scope: --pb-pattern-reel;
+}
+
+/* The lightbox lives in this scroller, and stays fixed to the viewport: nothing here may set a transform, filter or contain. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel:not(#pb-pattern-columns) .pb-image-grid__wrapper {
+  overflow-x: auto;
+  grid-template-columns: none;
+  grid-auto-columns: clamp(220px, 27cqi, 360px);
+  grid-auto-flow: column;
+  padding: var(--pb-px28) var(--pb-pattern-reel-pad) var(--pb-px20);
+  overscroll-behavior-x: contain;
+  scroll-padding-inline: var(--pb-pattern-reel-pad);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-timeline: --pb-pattern-reel inline;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section {
+  position: relative;
+  scroll-snap-align: start;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-ui-link {
+  height: auto;
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-ui-link .field--name-pb-content-image {
+  z-index: auto;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image {
+  overflow: hidden;
+  height: auto;
+  border-radius: 999px 999px 14px 14px;
+  aspect-ratio: 3 / 4;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image__wrapper.pb-image-grid img {
+  height: 100%;
+  transition: transform 0.9s var(--pb-pattern-ease-out);
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image__wrapper.pb-image-grid img {
+  transform: scale(1.07);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel > .pb-ui-inner > .pb-content__full > .pb-content__title {
+  color: inherit;
+}
+
+/* Caption: a dark chip at the foot of the arch. Editor colors win by ID. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-image-grid__title {
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  color: var(--pb-pattern-stage-color);
+  border-radius: 10px;
+  background-color: color-mix(in oklab, var(--pb-pattern-stage-bg) 80%, transparent);
+  inset-block: auto 12px;
+  inset-inline: 12px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .field--name-pb-content-title {
+  padding: var(--pb-px12) var(--pb-px14);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-content__title {
+  margin: 0;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+/* The expand button sits at the top of the arch, clear of the caption chip. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-grid__expand,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-bg: transparent;
+
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  transition: transform 0.45s var(--pb-pattern-ease-out);
+  border-radius: 50%;
+  background: var(--pb-pattern-surface);
+  inset-block-start: var(--pb-px16);
+  inset-inline: calc(50% - 22px) auto;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image-grid .pb-grid__expand,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-grid__expand:focus-visible {
+  transform: rotate(90deg) scale(1.08);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-grid__expand svg {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+  fill: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-grid__expand:focus-visible {
+  outline: 2px solid var(--pb-pattern-stage-color);
+  outline-offset: 2px;
+}
+
+/* Viewer: light, story bars on top, photo centered, caption under it. */
+@keyframes pb-pattern-image-grid-reel-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-bg: transparent;
+
+  padding-block-start: 0;
+  color: var(--pb-pattern-ink);
+  background-color: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox[aria-hidden="false"],
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-grid__lightbox-content.pb-is-fade-in {
+  animation-name: pb-pattern-image-grid-reel-fade;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-grid__lightbox-content {
+  position: absolute;
+  max-width: calc(100% - 32px);
+  height: auto;
+  inset-block: 116px 24px;
+  inset-inline: 16px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox-content img {
+  max-width: min(100%, 1100px);
+  height: auto;
+  max-height: calc(100vh - 250px);
+  border-radius: 18px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox-content .pb-ui-link {
+  height: auto;
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox-content .pb-image-grid .pb-image-grid__title {
+  position: static;
+  height: auto;
+  color: var(--pb-pattern-ink);
+  background: none;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox-content .pb-image-grid .field--name-pb-content-title {
+  padding-block: var(--pb-px16) 0;
+  padding-inline: 0;
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox-content .pb-content__title {
+  margin: 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(22px, 2.4vw, 32px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Story bars: every photo before the current one, and the current one, are full. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail {
+  position: absolute;
+  z-index: 2;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: var(--pb-px4);
+  inset-block-start: var(--pb-px16);
+  inset-inline: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail li {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button::before {
+  display: block;
+  height: 4px;
+  content: "";
+  transition: background 0.5s var(--pb-pattern-ease-out);
+  border-radius: 4px;
+  background: color-mix(in sRGB, var(--pb-pattern-ink) 22%, transparent);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail li:has(~ li button[aria-current]) button::before,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button[aria-current]::before {
+  background: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button:hover::before {
+  background: color-mix(in sRGB, var(--pb-pattern-ink) 45%, transparent);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button:focus-visible {
+  outline: 2px solid var(--pb-pattern-ink);
+  outline-offset: 2px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-counter {
+  position: absolute;
+  margin: 0;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 44px;
+  inset-block-start: 64px;
+  inset-inline-start: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-grid__close {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  border-radius: 50%;
+  inset-block-start: 64px;
+  inset-inline-end: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-grid__close svg {
+  width: 22px;
+  height: 22px;
+  background-color: transparent;
+  fill: var(--pb-pattern-ink);
+}
+
+/* Arrows hold the edges of the photo row, in a band with no caption in it. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__prev,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__next {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--pb-pattern-surface);
+  box-shadow: 0 0 0 1px var(--pb-pattern-line);
+  inset-block-start: calc(50% - 24px);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__prev {
+  inset-inline-start: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__next {
+  inset-inline-end: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__prev svg,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__next svg {
+  width: 22px;
+  height: 22px;
+  background-color: transparent;
+  fill: var(--pb-pattern-ink);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__prev svg,
+[dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__next svg {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-grid__close:focus-visible,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__prev:focus-visible,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-modal__next:focus-visible {
+  outline: 2px solid var(--pb-pattern-ink);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image {
+      animation: pb-pattern-image-grid-reel-depth linear both;
+      animation-timeline: view(inline);
+    }
+
+    .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel > .pb-ui-inner::after {
+      display: block;
+      height: 3px;
+      margin-block: 0 var(--pb-px28);
+      margin-inline: var(--pb-pattern-reel-pad);
+      content: "";
+      transform-origin: 0 50%;
+      animation: pb-pattern-image-grid-reel-progress linear both;
+      background: var(--pb-lk, var(--pb-pattern-stage-color));
+      animation-timeline: --pb-pattern-reel;
+    }
+
+    [dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel > .pb-ui-inner::after {
+      transform-origin: 100% 50%;
+    }
+    @keyframes pb-pattern-image-grid-reel-depth {
+      0%,
+      100% {
+        transform: scale(0.9);
+        filter: saturate(0.6);
+      }
+
+      35%,
+      65% {
+        transform: none;
+        filter: none;
+      }
+    }
+
+    @keyframes pb-pattern-image-grid-reel-progress {
+      from {
+        transform: scaleX(0.08);
+      }
+
+      to {
+        transform: scaleX(1);
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image__wrapper.pb-image-grid img,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-grid__expand,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-grid__lightbox .pb-pattern-rail button::before {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image__wrapper.pb-image-grid img,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image-grid .pb-grid__expand,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-reel .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-grid__expand:focus-visible {
+    transform: none;
+  }
+}

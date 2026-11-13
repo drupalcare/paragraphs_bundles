@@ -1,0 +1,398 @@
+/**
+ * @file
+ * Paragraph Bundle Video.
+ *
+ * Scoping contract: `.paragraphs-bundles.pb-video`. The Background text plate's
+ * padding, colors and radius sit under `:where()`, so the bundle's own settings
+ * win. In Background mode the inner's background color paints the plate, not
+ * the film; the film stays at full brightness.
+ *
+ * Filename:     paragraph-bundle-video.css
+ * Website:      https://www.flashwebcenter.com
+ * Developer:    Alaa Haddad https://www.alaahaddad.com.
+ */
+
+/* Zero specificity, so a theme bridge or a Pattern replaces any of these. */
+:where(.paragraphs-bundles.pb-video) {
+  --pb-video-ink: #16181c;
+  --pb-video-surface: #fff;
+  --pb-video-radius: clamp(6px, 1.1vw, 12px);
+  --pb-video-play: max(var(--pb-video-control), clamp(3.75rem, 7vw, 5rem));
+  --pb-video-gap: clamp(0.75rem, 2.4vw, 2rem);
+}
+
+.paragraphs-bundles.pb-video {
+  --pb-video-w: 16;
+  --pb-video-h: 9;
+  --pb-video-max-block: 85vh;
+  --pb-video-control: max(44px, 2.75rem);
+
+  position: relative;
+  inline-size: 100%;
+}
+
+.paragraphs-bundles.pb-video.pb-video--ratio-4-3 {
+  --pb-video-w: 4;
+  --pb-video-h: 3;
+}
+
+.paragraphs-bundles.pb-video.pb-video--ratio-1-1 {
+  --pb-video-w: 1;
+  --pb-video-h: 1;
+}
+
+.paragraphs-bundles.pb-video.pb-video--ratio-9-16 {
+  --pb-video-w: 9;
+  --pb-video-h: 16;
+}
+
+@supports (block-size: 1svh) {
+  .paragraphs-bundles.pb-video {
+    --pb-video-max-block: 85svh;
+  }
+}
+
+/* The bundle's own title only: a nested paragraph keeps its own title. */
+.paragraphs-bundles.pb-video :where(.pb-video__inner, .pb-video__content) > .pb-content__title {
+  max-inline-size: 30ch;
+  margin: 0;
+  letter-spacing: -0.01em;
+  font-size: clamp(1.5rem, 1.15rem + 1.5vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* The width limit must not undo the editor's title alignment. */
+.paragraphs-bundles.pb-video :where(.pb-video__inner, .pb-video__content) > .pb-content__title--align-center {
+  margin-inline: auto;
+}
+
+.paragraphs-bundles.pb-video :where(.pb-video__inner, .pb-video__content) > .pb-content__title--align-right {
+  margin-inline-start: auto;
+}
+
+/* The poster, in both modes. */
+.paragraphs-bundles.pb-video .pb-video__poster {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Field and media wrappers around the picture must fill it. */
+.paragraphs-bundles.pb-video .pb-video__poster :where(div, article, figure, picture):not(.contextual, .contextual *) {
+  block-size: 100%;
+  margin: 0;
+}
+
+.paragraphs-bundles.pb-video .pb-video__poster img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+/* Player. The inner is PB's flex column, so this gap spaces its parts. */
+:where(.paragraphs-bundles.pb-video--player > .pb-video__inner) {
+  gap: clamp(0.75rem, 1.4vw, 1.25rem);
+}
+
+.paragraphs-bundles.pb-video .pb-video__description {
+  max-inline-size: 62ch;
+  font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+}
+
+.paragraphs-bundles.pb-video .pb-video__description :where(p:first-child) {
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-video .pb-video__description :where(p:last-child) {
+  margin-block-end: 0;
+}
+
+.paragraphs-bundles.pb-video .pb-video__stage {
+  position: relative;
+  overflow: hidden;
+  inline-size: 100%;
+  min-inline-size: min(100%, 15rem);
+  max-inline-size: min(100%, calc(var(--pb-video-max-block) * var(--pb-video-w) / var(--pb-video-h)));
+  margin-inline: auto;
+  aspect-ratio: var(--pb-video-w) / var(--pb-video-h);
+  border-radius: var(--pb-video-radius);
+  background-color: #000;
+  box-shadow:
+    0 1px 2px rgb(0, 0, 0, 0.14),
+    0 22px 44px -26px rgb(0, 0, 0, 0.5);
+}
+
+.paragraphs-bundles.pb-video .pb-video__frame {
+  position: absolute;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-video .pb-video__frame :where(div):not(.contextual, .contextual *) {
+  block-size: 100%;
+}
+
+.paragraphs-bundles.pb-video .pb-video__frame video,
+.paragraphs-bundles.pb-video .pb-video__frame iframe {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+}
+
+/* The poster has no text on it, so the control cannot touch any. */
+.paragraphs-bundles.pb-video .pb-video__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: var(--pb-video-play);
+  block-size: var(--pb-video-play);
+  margin: auto;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
+  color: var(--pb-video-ink);
+  border: 0;
+  border-radius: 50%;
+  background-color: var(--pb-video-surface);
+  box-shadow: 0 8px 24px rgb(0, 0, 0, 0.35);
+}
+
+.paragraphs-bundles.pb-video .pb-video__play:hover,
+.paragraphs-bundles.pb-video .pb-video__play:focus-visible {
+  transform: scale(1.06);
+  background-color: var(--pb-video-surface);
+}
+
+.paragraphs-bundles.pb-video .pb-video__play:hover {
+  box-shadow: 0 10px 30px rgb(0, 0, 0, 0.5);
+}
+
+/* Last of the control states, so the focus ring beats the hover shadow. */
+.paragraphs-bundles.pb-video .pb-video__play:focus-visible,
+.paragraphs-bundles.pb-video .pb-video__pause:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgb(0, 0, 0, 0.7);
+}
+
+.paragraphs-bundles.pb-video .pb-video__icon {
+  display: block;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-video .pb-video__play .pb-video__icon {
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  /* The triangle's weight sits to its point; this centers it in the circle. */
+  margin-inline-start: 0.15rem;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-video .pb-video__play .pb-video__icon {
+  margin-inline-start: 0;
+  margin-inline-end: 0.15rem;
+}
+
+/* Read by screen readers here; a Pattern may show it. */
+.paragraphs-bundles.pb-video .pb-video__play-label {
+  position: absolute;
+  overflow: hidden;
+  inline-size: 1px;
+  block-size: 1px;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript {
+  border-block: 1px solid color-mix(in sRGB, currentColor 22%, transparent);
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  cursor: pointer;
+  font-weight: 600;
+  gap: 1rem;
+  min-block-size: var(--pb-video-control);
+  padding-block: 0.5rem;
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript > summary::-webkit-details-marker {
+  display: none;
+}
+
+/* A mask, so the chevron is drawn in the text color. */
+.paragraphs-bundles.pb-video .pb-video__transcript > summary::after {
+  flex: none;
+  inline-size: 0.8rem;
+  block-size: 0.5rem;
+  content: "";
+  transition: transform 0.18s ease;
+  background-color: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='6 8.59 12 7.41'%3E%3Cpath d='M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript > :not(summary) {
+  max-inline-size: 68ch;
+  padding-block-end: 1rem;
+}
+
+.paragraphs-bundles.pb-video .pb-video__transcript p {
+  margin-block: 0 0.75em;
+}
+
+/* Background. The ::before sizes the section; taller content grows it. */
+.paragraphs-bundles.pb-video.pb-video--background {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.paragraphs-bundles.pb-video.pb-video--background::before {
+  grid-area: 1 / 1;
+  align-self: start;
+  content: "";
+  inline-size: 100%;
+  min-block-size: 18rem;
+  max-block-size: var(--pb-video-max-block);
+  aspect-ratio: var(--pb-video-w) / var(--pb-video-h);
+}
+
+.paragraphs-bundles.pb-video.pb-video--background > .pb-video__film {
+  position: absolute;
+  z-index: 1;
+  transition: opacity 0.4s ease;
+  object-fit: cover;
+  opacity: 0;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+}
+
+.paragraphs-bundles.pb-video.pb-video--background.is-film-playing > .pb-video__film {
+  opacity: 1;
+}
+
+/* The plate. Its top margin keeps it 12px below the pause button. */
+.paragraphs-bundles.pb-video.pb-video--background > .pb-video__inner {
+  position: relative;
+  z-index: 2;
+  grid-area: 1 / 1;
+  align-self: end;
+  justify-self: start;
+  box-sizing: border-box;
+  inline-size: min(100% - 2 * var(--pb-video-gap), 34rem);
+  margin-block: calc(var(--pb-video-control) + 1.5rem) var(--pb-video-gap);
+  margin-inline: var(--pb-video-gap);
+}
+
+/* The plate's own ink, so light text from a dark region never lands on it. */
+:where(.paragraphs-bundles.pb-video--background:not(.pb-pattern) > .pb-video__inner) {
+  --pb-tx: var(--pb-video-ink);
+  --pb-lk: var(--pb-video-ink);
+
+  padding: clamp(1.25rem, 2.6vw, 2.25rem);
+  border-radius: var(--pb-video-radius);
+  background-color: var(--pb-video-surface);
+}
+
+.paragraphs-bundles.pb-video .pb-video__content {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.paragraphs-bundles.pb-video .pb-video__content :where(p:first-child) {
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-video .pb-video__content :where(p:last-child) {
+  margin-block-end: 0;
+}
+
+/* In the film's corner, above the plate, so no text can reach it. */
+.paragraphs-bundles.pb-video.pb-video--background > .pb-video__pause {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: 0.75rem;
+  inset-inline-end: 0.75rem;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: var(--pb-video-control);
+  block-size: var(--pb-video-control);
+  padding: 0;
+  cursor: pointer;
+  color: #fff;
+  border: 2px solid rgb(255, 255, 255, 0.85);
+  border-radius: 50%;
+  background-color: rgb(0, 0, 0, 0.6);
+}
+
+.paragraphs-bundles.pb-video .pb-video__pause .pb-video__pause-icon {
+  display: block;
+}
+
+.paragraphs-bundles.pb-video .pb-video__pause .pb-video__pause-icon--play,
+.paragraphs-bundles.pb-video .pb-video__pause.is-paused .pb-video__pause-icon--pause {
+  display: none;
+}
+
+.paragraphs-bundles.pb-video .pb-video__pause.is-paused .pb-video__pause-icon--play {
+  display: block;
+}
+
+/* Last, so the hidden attribute beats each control's own display. */
+.paragraphs-bundles.pb-video .pb-video__poster[hidden],
+.paragraphs-bundles.pb-video .pb-video__frame[hidden],
+.paragraphs-bundles.pb-video .pb-video__play[hidden],
+.paragraphs-bundles.pb-video.pb-video--background > .pb-video__pause[hidden] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-video .pb-video__play,
+  .paragraphs-bundles.pb-video .pb-video__transcript > summary::after,
+  .paragraphs-bundles.pb-video.pb-video--background > .pb-video__film {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-video .pb-video__play,
+  .paragraphs-bundles.pb-video.pb-video--background > .pb-video__pause {
+    color: ButtonText;
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+  }
+
+  .paragraphs-bundles.pb-video .pb-video__transcript > summary::after {
+    background-color: ButtonText;
+    forced-color-adjust: none;
+  }
+
+  .paragraphs-bundles.pb-video .pb-video__play:focus-visible,
+  .paragraphs-bundles.pb-video .pb-video__pause:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-video .pb-video__play,
+  .paragraphs-bundles.pb-video.pb-video--background > .pb-video__pause {
+    display: none;
+  }
+}

@@ -1,4 +1,6 @@
 /**
+ * @param Drupal
+ * @param once
  * @file
  * Paragraphs Bundles: rolling digits for any number a bundle updates.
  *
@@ -48,9 +50,7 @@
     }
     chars.forEach((char, index) => {
       const slot = box.children[index];
-      const current = slot.querySelector(
-        `.${PREFIX}__digit:not(.is-leaving)`,
-      );
+      const current = slot.querySelector(`.${PREFIX}__digit:not(.is-leaving)`);
       if (current && current.textContent === char) {
         return;
       }

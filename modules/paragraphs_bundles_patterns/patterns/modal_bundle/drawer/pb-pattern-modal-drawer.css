@@ -1,0 +1,120 @@
+/**
+ * @file
+ * Pattern Drawer for the Modal.
+ *
+ * A full-height panel at the inline end of the screen. Long content scrolls
+ * inside the panel, with the close button in reach. PB's script owns opening,
+ * closing, the focus trap, Escape and inert.
+ *
+ * Whatever the editor can set on the panel (colors, padding, border, radius,
+ * width) is written with :where() or left to PB, so the editor wins.
+ */
+
+/* A size container can trap position: fixed children, so this root opts out
+   and every size below uses the viewport. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer {
+  --pb-pattern-drawer-from: 100%;
+  --pb-pattern-drawer-shadow-x: -1rem;
+
+  container: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-modal.pb-pattern--modal-drawer {
+  --pb-pattern-drawer-from: -100%;
+  --pb-pattern-drawer-shadow-x: 1rem;
+}
+
+/* The shared Pattern reset removes the padding of every button. */
+/* Opener: a square, thick outline with an arrow that points to the side the
+   drawer comes from. The arrow is decorative and has an empty text alternative. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__button > .pb-ui-btn {
+  align-items: center;
+  justify-content: center;
+  min-width: var(--pb-pattern-target);
+  max-width: 100%;
+  min-height: var(--pb-pattern-target);
+  white-space: normal;
+  color: var(--pb-pattern-ink);
+  border: 2px solid var(--pb-pattern-ink);
+  border-radius: 0;
+  background-color: var(--pb-pattern-surface);
+  padding-block: var(--pb-px8);
+  padding-inline: var(--pb-px16);
+  gap: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__button > .pb-ui-btn::after {
+  content: "\2192" / "";
+  font-size: 1.25em;
+  line-height: 1;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__button > .pb-ui-btn::after {
+  content: "\2190" / "";
+}
+
+/* Panel: its own ground, a rule on the edge that meets the page and a shadow
+   falling toward the page. Stock paints Canvas here, so this outranks it by
+   one class; the editor's id-scoped colors still win. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner {
+  display: block;
+  overflow-y: auto;
+  box-sizing: border-box;
+  height: 100%;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  border-inline-start: 1px solid var(--pb-pattern-line);
+  background-color: var(--pb-bg, var(--pb-pattern-surface));
+  box-shadow: var(--pb-pattern-drawer-shadow-x) 0 2.5rem -1rem color-mix(in sRGB, var(--pb-pattern-shadow) 45%, transparent);
+  overscroll-behavior: contain;
+}
+
+:where(.pb-pattern--modal-drawer > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner) {
+  padding: clamp(16px, 4vw, 32px);
+}
+
+/* overflow: clip, not hidden: PB moves focus into the panel while it is still
+   off screen, and a scroll container would scroll to it and stay shifted. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog {
+  overflow: clip;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog.pb-is-open {
+  align-items: stretch;
+  justify-content: flex-end;
+}
+
+/* animation: none also covers a stock animation class that stayed on. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog > .pb-modal__content {
+  width: min(100%, 30rem);
+  height: 100%;
+  margin: 0;
+  animation: none;
+}
+
+/* The header sits inside the scrolling panel so the arrow keys scroll it from
+   the close button, which PB focuses on opening. Block layout, because sticky
+   cannot leave its own grid row. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__header {
+  position: sticky;
+  z-index: 1;
+  inset-block-start: 0;
+  column-gap: var(--pb-px12);
+  background-color: inherit;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-modal.pb-pattern--modal-drawer > .pb-modal__dialog.pb-is-open > .pb-modal__content {
+    animation: pb-pattern-modal-drawer-open 0.4s var(--pb-pattern-ease-out);
+  }
+}
+
+@keyframes pb-pattern-modal-drawer-open {
+  from {
+    transform: translateX(var(--pb-pattern-drawer-from));
+  }
+
+  to {
+    transform: translateX(0);
+  }
+}

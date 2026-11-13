@@ -1,0 +1,90 @@
+/**
+ * @file
+ * Pattern Halo for the Icon.
+ *
+ * The ring is a conic gradient hollowed by a mask. PB's script fades the icon
+ * wrapper's opacity, so the only transition added here is on the ring itself.
+ */
+
+@property --pb-pattern-halo-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+:where(.pb-pattern--icon-halo > .pb-ui-inner) {
+  padding: clamp(16px, 4cqi, 40px);
+}
+
+/* The icon, title and words share one centered axis. The header is a centered
+   column but the title field and the body default to start-aligned text, so
+   they sat left of the icon. The pattern owns the alignment, and the body
+   gets a readable column that stays centered. */
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .pb-content__full {
+  inline-size: 100%;
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .pb-content__title > .field--name-pb-content-title {
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .field--name-pb-content-body {
+  max-inline-size: 36ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .pb-icon__header,
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .pb-icon__header > .pb-ui-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2cqi, 18px);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .icon-wrapper {
+  position: relative;
+  order: -1;
+  isolation: isolate;
+  box-sizing: border-box;
+  width: fit-content;
+  padding: clamp(10px, 3cqi, 18px);
+  aspect-ratio: 1;
+}
+
+/* Rest state: a full track in the line color, a raised disc behind the icon,
+   and the colored arc drawn over the track on hover. At rest and on a phone
+   the ring is already there. */
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .icon-wrapper::before {
+  position: absolute;
+  content: "";
+  inset: 0;
+  transition: --pb-pattern-halo-angle 0.6s var(--pb-pattern-ease-out);
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--pb-lk, var(--pb-pattern-link)) 0 var(--pb-pattern-halo-angle), var(--pb-pattern-line) 0);
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo .icon-wrapper::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--pb-pattern-raised);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-icon.pb-pattern--icon-halo .icon-wrapper::before {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-halo:is(:hover, :focus-within) .icon-wrapper::before {
+  --pb-pattern-halo-angle: 360deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-halo .icon-wrapper::before {
+    transition: none;
+  }
+}

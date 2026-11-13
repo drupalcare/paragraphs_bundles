@@ -1,0 +1,139 @@
+/**
+ * @file
+ * Pattern Hinge for the 3D Flip Box.
+ *
+ * The back never moves. Only the front swings, from the start edge. Colors and
+ * spacing are the editor's and are not touched here. The turn button is
+ * restated at 44px on a transparent ground in the end corner.
+ */
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge {
+  --pb-pattern-hinge-open: -105deg;
+  --pb-pattern-hinge-origin: left center;
+  --pb-pattern-hinge-time: 0.9s;
+  --pb-pattern-hinge-gutter: calc(var(--pb-pattern-target, 44px) + 1.75rem);
+}
+
+/* Right-to-left: the hinge moves to the right edge and the door opens the
+   other way. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge:dir(rtl) {
+  --pb-pattern-hinge-open: 105deg;
+  --pb-pattern-hinge-origin: right center;
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene {
+  perspective: clamp(900px, 160cqi, 2400px);
+}
+
+/* The faces wrapper stays flat in every state. The bundle's own flip rules
+   would turn it, so each of them is answered here. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y):is(:hover, .pb-is-flipped) .pb-3d-flip-box__inner,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y) .pb-3d-flip-box__inner:focus-within {
+  transform: translateZ(0);
+}
+
+/* The back waits one pixel behind the door so the two never fight for depth. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+  transform: translateZ(-1px);
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__front {
+  transition: transform var(--pb-pattern-hinge-time) var(--pb-pattern-ease-out);
+  transform: translateZ(1px) rotateY(0deg);
+  transform-origin: var(--pb-pattern-hinge-origin);
+  border-inline-start: 1px solid var(--pb-pattern-line);
+}
+
+/* Open: hover, keyboard focus on the faces, or the toggle button. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped) .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+  transform: translateZ(1px) rotateY(var(--pb-pattern-hinge-open));
+}
+
+/* Default door and wall: an opaque front, so it hides the back while it
+   swings, and a hairline on the hinge edge. The editor's own colors win. */
+:where(.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__front) {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: var(--pb-bg, var(--pb-pattern-raised));
+}
+
+/* Specific on purpose: APEX paints every div and heading with its own text
+   colors, which would put dark words on this dark face, and PB's APEX bridge
+   hands them down at 0,3,0. The color still comes from --pb-tx when an editor
+   sets one. */
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__back {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__back :is(h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
+:where(.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__back) {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  background: var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+/* The front has no ground unless the editor sets one, so the back stays out
+   of sight until it is uncovered. Reduced motion uses the bundle's own fade. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+    transition: opacity 0.25s linear;
+    opacity: 0;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped) .pb-3d-flip-box__inner .pb-3d-flip-box__back,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
+    opacity: 1;
+  }
+}
+
+/* The turn button owns the end corner, so the faces keep a gutter there. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+  /* The words sit in the middle of the card's height, front and back. A grid
+     with centered content keeps them whole whatever the stock flex does. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: start;
+  box-sizing: border-box;
+  padding-inline-start: clamp(16px, 4cqi, 28px);
+  padding-inline-end: var(--pb-pattern-hinge-gutter);
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__toggle {
+  inset-block: auto clamp(0.25rem, 1.5cqi, 0.75rem);
+  inset-inline: auto clamp(0.25rem, 1.5cqi, 0.75rem);
+  width: var(--pb-pattern-target, 44px);
+  height: var(--pb-pattern-target, 44px);
+  color: var(--pb-pattern-ink);
+  border: 1px solid var(--pb-pattern-line);
+  border-radius: 6px;
+  background-color: var(--pb-pattern-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No swing: the faces cross-fade with the bundle's own opacity rules. */
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped) .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+    transition: none;
+    transform: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__toggle {
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-hinge .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+    transform: none;
+  }
+}

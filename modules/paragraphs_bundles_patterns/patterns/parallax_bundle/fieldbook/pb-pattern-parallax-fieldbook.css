@@ -1,0 +1,229 @@
+/**
+ * @file
+ * Pattern Field book for the Parallax.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * --pb-pattern-enter comes from this Pattern's script and defaults to open.
+ */
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-br: var(--pb-pattern-line);
+  --pb-lk: var(--pb-pattern-ink);
+
+  counter-reset: pb-pattern-plate;
+}
+
+:where(.pb-pattern--parallax-fieldbook > .pb-ui-inner) {
+  background: var(--pb-pattern-surface);
+}
+
+:where(.pb-pattern--parallax-fieldbook .pb-parallax__text) {
+  width: min(360px, 100%);
+  padding: var(--pb-px28, 28px) 30px var(--pb-px24);
+  border-radius: 4px;
+  box-shadow: 0 24px 50px -24px color-mix(in oklab, var(--pb-pattern-shadow) 50%, transparent);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section {
+  min-height: max(600px, 82vh);
+  counter-increment: pb-pattern-plate;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner {
+  --pb-pattern-frame: calc(1 - var(--pb-pattern-enter, 1));
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding-block-end: calc(var(--pb-pattern-frame) * 10vh + clamp(24px, 5vh, 56px));
+  padding-inline-end: calc(var(--pb-pattern-frame) * 9cqi + clamp(24px, 5cqi, 80px));
+  clip-path: inset(calc(var(--pb-pattern-frame) * 10vh) calc(var(--pb-pattern-frame) * 9cqi) round calc(var(--pb-pattern-frame) * 40px));
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__bg {
+  position: absolute;
+  inset-block-start: -18%;
+  inset-inline: 0;
+  display: block;
+  width: auto;
+  height: 136%;
+  min-height: 0;
+  transition-property: transform, opacity;
+  background-attachment: scroll;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+  position: relative;
+  z-index: 2;
+  display: block;
+  height: auto;
+  min-height: 0;
+  transition: transform 0.7s var(--pb-pattern-ease-out);
+  transform: scale(0.94) translateY(30px) rotate(-2deg);
+  transform-origin: 100% 100%;
+  margin-inline: 0;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner.pb-is-visible > .pb-parallax__text {
+  transform: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+  transform: scale(0.94) translateY(30px) rotate(2deg);
+  transform-origin: 0 100%;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner.pb-is-visible > .pb-parallax__text {
+  transform: none;
+}
+
+/* The caption is the card; a section's own background field still wins. */
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax__text {
+  --pb-bg: var(--pb-pattern-surface);
+}
+
+/* The plate number hangs on the caption, so it survives a missing kicker.
+   Roman numerals in an italic display face read as slashes ("/", "//"), so it
+   is a two-digit number over a short rule. */
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax__text::before {
+  display: block;
+  margin-block-end: var(--pb-px10, 10px);
+  padding-block-end: var(--pb-px6, 6px);
+  padding-inline-end: 1.5rem;
+  content: counter(pb-pattern-plate, decimal-leading-zero) / "";
+  letter-spacing: 0.1em;
+  border-block-end: 1px solid currentColor;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1;
+  inline-size: fit-content;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-body p:has(+ :is(h2, h3, h4)) {
+  margin: 0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: color-mix(in sRGB, currentColor 72%, transparent);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-body p:has(+ :is(h2, h3, h4)) {
+  letter-spacing: normal;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-body :is(h2, h3, h4) {
+  margin: var(--pb-px6, 6px) 0 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.5rem, 2.2cqi, 2rem);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-body :is(h2, h3, h4) ~ p {
+  margin: var(--pb-px12) 0 0;
+  color: color-mix(in sRGB, currentColor 72%, transparent);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link {
+  margin-block-start: var(--pb-px10, 10px);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a {
+  padding-block-end: 2px;
+  text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a {
+  background-position: 100% 100%;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a:hover,
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a:focus-visible {
+  animation: pb-pattern-parallax-fieldbook-redraw 0.9s var(--pb-pattern-ease-out) forwards;
+}
+
+@keyframes pb-pattern-parallax-fieldbook-redraw {
+  from {
+    background-size: 0 1px;
+  }
+
+  to {
+    background-size: 100% 1px;
+  }
+}
+
+/* Holds the photo still in the stacked layout. PB writes an inline transform
+   and opacity on it at any width unless the section sets a breakpoint, and
+   only an animation can outrank an inline style without !important. */
+@keyframes pb-pattern-parallax-fieldbook-still {
+  to {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@container pb-pattern-region (max-width: 61.99rem) {
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section {
+    min-height: 0;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    clip-path: none;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__bg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    transition: none;
+    animation: pb-pattern-parallax-fieldbook-still 1ms forwards;
+    aspect-ratio: 3 / 2;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+    transition: none;
+    transform: none;
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+    transform: none;
+  }
+
+  :where(.pb-pattern--parallax-fieldbook .pb-parallax__text) {
+    width: auto;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner {
+    clip-path: none;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text,
+  [dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+    transition: none;
+    transform: none;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a:hover,
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-fieldbook .field--name-pb-content-link a:focus-visible {
+    animation: none;
+  }
+}

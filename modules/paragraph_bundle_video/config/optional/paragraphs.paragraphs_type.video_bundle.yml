@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+id: video_bundle
+label: Video
+description: 'A video the visitor starts with Play, or a looping film behind a section.'
+behavior_plugins: {  }

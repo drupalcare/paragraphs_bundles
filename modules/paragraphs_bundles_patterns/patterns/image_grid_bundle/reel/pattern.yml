@@ -1,0 +1,15 @@
+label: 'Reel'
+description: 'One sideways row of arched tiles; a light viewer with story bars on top.'
+weight: 2
+stage: open
+ground: light
+placement: outer-margin
+serves: [cultural, events, nonprofit]
+needs:
+  - 'Keep at least two sections, each with an image and a title. The pattern sets the single row, so Grid Image Width has no effect here; Grid Gap still applies.'
+settings: {}
+pictures:
+  image_grid_section_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_picture

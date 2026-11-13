@@ -1,0 +1,19 @@
+label: 'Shuffle'
+description: 'A playful slideshow with a Hero in every slide: the Hero is a card lying on a small pile of two colored cards. On the next slide, the top card is tossed off to the side with a little spin and the next one settles on the pile. Tilted square arrows beside the card and tilted number tiles under it. Manual, no autoplay. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead. The pile keeps the Pattern colors.'
+weight: 2
+stage: open
+ground: light
+placement: outer-margin
+serves: [creative, events, nonprofit]
+needs:
+  - 'Keep three to six slides. Each slide holds one Hero with an Image, a Kicker, a Title, one sentence of Body, and a Link with a Link title: that title is the tag under the words.'
+  - 'Leave the Pattern field of each Hero empty. The Slide Title is read by screen readers only. The pile, the arrows and the number tiles are set for you.'
+settings:
+  pb_display_bottom_navigation: nav
+  pb_display_slide_play_stop: 0
+  pb_display_slide_prev_next: 1
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

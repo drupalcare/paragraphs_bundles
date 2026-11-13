@@ -1,0 +1,431 @@
+/**
+ * @file
+ * Pattern Contact sheet for the Image Grid.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, grid
+ * width, gap) is written with :where() or left to PB's own ID-scoped rules,
+ * so the editor wins.
+ */
+
+:where(.pb-pattern--image-grid-sheet > .pb-ui-inner) {
+  padding: clamp(12px, 3cqi, 40px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper {
+  counter-reset: pb-pattern-sheet;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section {
+  counter-increment: pb-pattern-sheet;
+}
+
+/* The caption sits under the 3:2 frame. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image__wrapper.pb-image-grid {
+  display: grid;
+  grid-template-rows: auto auto;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-ui-link {
+  display: grid;
+  grid-row: 1 / 3;
+  grid-column: 1;
+  height: auto;
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image {
+  position: relative;
+  z-index: auto;
+  overflow: hidden;
+  grid-area: 1 / 1;
+  height: auto;
+  aspect-ratio: 3 / 2;
+}
+
+/* A border is drawn around the frame on hover, starting from the corner. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image::after {
+  position: absolute;
+  content: "";
+  transition: clip-path 0.55s var(--pb-pattern-ease-out);
+  pointer-events: none;
+  border: 3px solid var(--pb-lk, var(--pb-pattern-link));
+  inset: 0;
+  clip-path: inset(0 100% 100% 0);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image::after {
+  clip-path: inset(0 0 100% 100%);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:hover .field--name-pb-content-image::after,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:focus-within .field--name-pb-content-image::after {
+  clip-path: inset(0);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image__wrapper.pb-image-grid img {
+  height: 100%;
+  transition:
+    filter 0.4s,
+    transform 0.8s var(--pb-pattern-ease-out);
+  object-fit: cover;
+  filter: saturate(0.85);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image__wrapper.pb-image-grid img {
+  transform: scale(1.03);
+  filter: none;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-image-grid__title {
+  position: static;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-row: 2;
+  align-items: baseline;
+  height: auto;
+  color: inherit;
+  background: none;
+  gap: 0 var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .pb-image-grid__title::before {
+  padding-block-start: var(--pb-px12);
+  padding-inline-start: var(--pb-px4);
+  content: counter(pb-pattern-sheet, decimal-leading-zero) "A";
+  color: var(--pb-lk, var(--pb-pattern-muted));
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid .field--name-pb-content-title {
+  padding-block: var(--pb-px12);
+  padding-inline: 0 var(--pb-px4);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-content__title {
+  margin: 0;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 1.0625rem;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Without a link the whole frame opens the viewer; the caption stays clear. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand {
+  position: relative;
+  z-index: 2;
+  grid-area: 1 / 1;
+  width: 100%;
+  height: 100%;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand svg {
+  width: 40px;
+  height: 40px;
+  padding: var(--pb-px12);
+  transition:
+    opacity 0.3s,
+    transform 0.3s var(--pb-pattern-ease-out);
+  transform: translateY(6px);
+  opacity: 0;
+  fill: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image-grid.not-clickable .pb-grid__expand svg,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand:focus-visible svg {
+  transform: none;
+  opacity: 1;
+}
+
+/* With a link the frame is the link, so the viewer gets its own corner button. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid:not(.not-clickable) .pb-grid__expand {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-bg: transparent;
+
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  background: var(--pb-pattern-surface);
+  inset-block-start: var(--pb-px8);
+  inset-inline: auto var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid:not(.not-clickable) .pb-grid__expand svg {
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+  fill: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-grid__expand:focus-visible {
+  outline: 2px solid var(--pb-pattern-ink);
+  outline-offset: -3px;
+}
+
+/* Viewer: the photo on one side, a paper sidebar with the thumbnails on the other. */
+@keyframes pb-pattern-image-grid-sheet-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-bg: transparent;
+  --pb-pattern-sheet-side: 380px;
+
+  padding-block-start: 0;
+  color: var(--pb-pattern-ink);
+  background-color: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox[aria-hidden="false"],
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__lightbox-content.pb-is-fade-in {
+  animation-name: pb-pattern-image-grid-sheet-fade;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__lightbox-content {
+  position: absolute;
+  max-width: calc(100% - var(--pb-pattern-sheet-side));
+  height: auto;
+  inset-block: 0;
+  inset-inline: 0 var(--pb-pattern-sheet-side);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-ui-link {
+  height: auto;
+  margin-block-start: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content img {
+  height: auto;
+  max-height: calc(100vh - 80px);
+}
+
+/* The title of the photo becomes the sidebar. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-image-grid .pb-image-grid__title {
+  position: fixed;
+  z-index: 1;
+  align-items: start;
+  width: var(--pb-pattern-sheet-side);
+  height: auto;
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-raised);
+  inset-block: 0;
+  inset-inline: auto 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-image-grid .field--name-pb-content-title {
+  padding-block: 96px var(--pb-px32);
+  padding-inline: var(--pb-px32);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-content__title {
+  margin: 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: 1.875rem;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-counter {
+  position: absolute;
+  z-index: 2;
+  margin: 0;
+  color: var(--pb-pattern-ink);
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 24px;
+  inset-block-start: 36px;
+  inset-inline-end: calc(var(--pb-pattern-sheet-side) - 80px - var(--pb-px32) * 2);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__close,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next {
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  transition:
+    background 0.2s,
+    color 0.2s;
+  color: var(--pb-pattern-ink);
+  border: 1.5px solid currentColor;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__close {
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  inset-block-start: var(--pb-px24);
+  inset-inline-end: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next {
+  width: 150px;
+  height: 48px;
+  inset-block-start: 250px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev {
+  inset-inline: auto 198px;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next {
+  inset-inline: auto var(--pb-px32);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__close svg,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev svg,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next svg {
+  width: 22px;
+  height: 22px;
+  background-color: transparent;
+  fill: currentColor;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev svg,
+[dir="rtl"] .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next svg {
+  transform: scaleX(-1);
+}
+
+/* Thumbnails along the foot of the sidebar. */
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  overflow-y: auto;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  width: 316px;
+  max-height: calc(100vh - 330px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  gap: var(--pb-px6);
+  inset-block-end: var(--pb-px32);
+  inset-inline: auto var(--pb-px32);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail li {
+  margin: 0;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail button {
+  display: block;
+  overflow: hidden;
+  width: 100%;
+  min-height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  transition: opacity 0.25s;
+  opacity: 0.6;
+  border: 0;
+  background: none;
+  aspect-ratio: 3 / 2;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail button:hover,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail button[aria-current] {
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail button[aria-current] {
+  box-shadow: 0 0 0 3px var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__close:focus-visible,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev:focus-visible,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next:focus-visible,
+.paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail button:focus-visible {
+  outline: 2px solid var(--pb-pattern-ink);
+  outline-offset: 2px;
+}
+
+/* Phones and tablets: the photo on top, the sidebar becomes a bottom sheet. */
+@media (max-width: 56.1875rem) {
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__lightbox-content {
+    max-width: 100%;
+    inset-block: 64px 320px;
+    inset-inline: 0;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content img {
+    max-height: calc(100vh - 410px);
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-image-grid .pb-image-grid__title {
+    width: auto;
+    height: 320px;
+    inset-block: auto 0;
+    inset-inline: 0;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-image-grid .field--name-pb-content-title {
+    padding: var(--pb-px20) var(--pb-px16);
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox-content .pb-content__title {
+    font-size: 1.375rem;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-grid__close {
+    color: var(--pb-pattern-stage-color);
+    inset-block-start: var(--pb-px10);
+    inset-inline-end: var(--pb-px10);
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-counter {
+    color: var(--pb-pattern-stage-color);
+    inset-block-start: var(--pb-px20);
+    inset-inline: var(--pb-px16) auto;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next {
+    width: calc(50% - 22px);
+    inset-block: auto 112px;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__prev {
+    inset-inline: var(--pb-px16) auto;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-modal__next {
+    inset-inline: auto var(--pb-px16);
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-grid__lightbox .pb-pattern-rail {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    width: auto;
+    max-height: 96px;
+    inset-block-end: var(--pb-px16);
+    inset-inline: var(--pb-px16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .field--name-pb-content-image::after,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image__wrapper.pb-image-grid img,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand svg {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image__wrapper.pb-image-grid img,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section:hover .pb-image-grid.not-clickable .pb-grid__expand svg,
+  .paragraphs-bundles.pb-image-grid.pb-pattern--image-grid-sheet .pb-image-grid__wrapper > .pb-image-grid-section .pb-image-grid.not-clickable .pb-grid__expand:focus-visible svg {
+    transform: none;
+  }
+}

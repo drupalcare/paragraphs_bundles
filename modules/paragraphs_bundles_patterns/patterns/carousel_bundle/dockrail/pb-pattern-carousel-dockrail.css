@@ -1,0 +1,316 @@
+/**
+ * @file
+ * Pattern Dockrail for the Carousel.
+ *
+ * Three portrait cards and one glass dock. PB's two control bars dissolve into
+ * the viewport grid; the dock's ground is a pseudo-element behind them. The
+ * ring around Pause restarts on every slide change (see the script).
+ */
+
+@property --pb-pattern-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+:where(.pb-pattern--carousel-dockrail > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+
+  padding: clamp(24px, 5cqi, 64px) clamp(16px, 5cqi, 64px) clamp(24px, 4cqi, 48px);
+  background: var(--pb-pattern-stage-bg);
+}
+
+:where(.pb-pattern--carousel-dockrail .pb-carousel__slides) {
+  gap: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(5, auto) minmax(0, 1fr);
+  gap: var(--pb-px6);
+  align-items: center;
+  padding: 0;
+}
+
+/* The dock's ground, behind prev, dots, counter, play and next. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport::before {
+  grid-row: 2;
+  grid-column: 2 / 7;
+  align-self: stretch;
+  margin: calc(-1 * var(--pb-px6));
+  content: "";
+  border: 1px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 999px;
+  background: var(--pb-pattern-glass-bg, color-mix(in srgb, currentColor 12%, transparent));
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__wrapper {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  margin-block-end: clamp(24px, 4cqi, 40px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__bottom-bar,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar {
+  display: contents;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-pattern-dockrail__counter,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__play-pause,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+  z-index: 1;
+  grid-row: 2;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev {
+  grid-column: 2;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots {
+  grid-column: 3;
+  padding: 0;
+  gap: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-pattern-dockrail__counter {
+  grid-column: 4;
+  min-width: 66px;
+  text-align: center;
+  font-size: var(--pb-px14);
+  font-weight: 600;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__play-pause {
+  position: relative;
+  grid-column: 5;
+  width: 52px;
+  height: 52px;
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__play-pause::before {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+  background: conic-gradient(currentColor calc(var(--pb-pattern-progress) * 360deg), var(--pb-pattern-stage-line) 0);
+  -webkit-mask: radial-gradient(closest-side, transparent 80%, #000 82%);
+  mask: radial-gradient(closest-side, transparent 80%, #000 82%);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-pattern-is-running .pb-carousel__play-pause::before {
+  animation: pb-pattern-carousel-dockrail-fill var(--pb-pattern-time, 6s) linear both;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-pattern-is-held .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-pattern-is-focus-held .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel:has(.pb-carousel__wrapper:hover) .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel:has(.pb-carousel__play-pause.pb-is-paused) .pb-carousel__play-pause::before {
+  animation: none;
+}
+
+@keyframes pb-pattern-carousel-dockrail-fill {
+  from {
+    --pb-pattern-progress: 0;
+  }
+
+  to {
+    --pb-pattern-progress: 1;
+  }
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__play-pause svg {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+  grid-column: 6;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn {
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  color: var(--pb-pattern-stage-bg);
+  border-radius: 50%;
+  background: var(--pb-bt-a, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn svg {
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__next:not(.pb-is-disabled):hover,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__prev:not(.pb-is-disabled):hover {
+  transform: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar svg {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  min-width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  transition:
+    width 0.45s,
+    min-width 0.45s,
+    opacity 0.3s;
+  transform: none;
+  opacity: 0.55;
+  color: inherit;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before {
+  width: 10px;
+  height: 10px;
+  content: "";
+  transition: width 0.45s;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot:hover {
+  transform: none;
+  opacity: 0.85;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active {
+  width: 68px;
+  min-width: 68px;
+  transform: none;
+  opacity: 1;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active::before {
+  width: 28px;
+  border-radius: 6px;
+}
+
+/* Cards: 100% below the breakpoint, three across above it. The gap comes from
+   the script reading the real gap the editor set. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__wrapper.pb-u-small-screen .pb-carousel__slide {
+  flex: 0 0 100%;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__wrapper:not(.pb-u-small-screen) .pb-carousel__slide {
+  flex: 0 0 calc((100% - 2 * var(--pb-pattern-gap, var(--pb-px24))) / 3 - 0.5px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-inactive {
+  opacity: 0.42;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide :is(a.pb-ui-link, .pb-image__wrapper) {
+  order: -1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 3 / 4;
+  transition: clip-path 0.9s var(--pb-pattern-ease-out);
+  border-radius: 18px;
+  clip-path: inset(7% round 36px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 1.2s var(--pb-pattern-ease-out);
+  transform: scale(1.14);
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-image__wrapper {
+  clip-path: inset(0 round 18px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-image__wrapper img {
+  transform: scale(1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-content__title {
+  letter-spacing: -0.01em;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.35rem, 2.1cqi, 1.9rem);
+  font-weight: 500;
+  line-height: 1.15;
+  margin-block: var(--pb-px18) var(--pb-px6);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__desc {
+  max-width: 38ch;
+  opacity: 0.75;
+  line-height: 1.5;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active :is(.pb-content__title, .pb-image__desc) {
+  animation: pb-pattern-carousel-dockrail-up 0.7s var(--pb-pattern-ease-out) both 250ms;
+}
+
+@keyframes pb-pattern-carousel-dockrail-up {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+}
+
+/* On a wide region the dock opens into a rail above the cards. */
+@container pb-pattern-region (min-width: 60rem) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport::before,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-pattern-dockrail__counter,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__play-pause,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+    grid-row: 1;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__wrapper {
+    grid-row: 2;
+    margin-block: clamp(24px, 4cqi, 40px) 0;
+  }
+}
+
+/* Too narrow for dots beside the counter: the counter and arrows carry it. */
+@container pb-pattern-region (max-width: 27.5rem) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel.pb-pattern-is-running .pb-carousel__play-pause::before,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active :is(.pb-content__title, .pb-image__desc) {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-dockrail.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before {
+    transition: none;
+  }
+}

@@ -1,0 +1,536 @@
+/**
+ * @file
+ * The node form's PB Patterns picker. The same layout as the APEX picker.
+ *
+ * Copyright (c) 2026 Flash Web Center, LLC
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ *
+ * Editing-interface chrome, drawn inside the admin theme, so this file is
+ * un-layered: a layered rule loses to the admin theme's form CSS. Colors and
+ * spacing are the admin theme's own variables, with a fallback for a theme
+ * that has none. Every selector starts at the picker's own class.
+ */
+
+/* 1. Shell: the admin theme's own details; the mark and the name sit in its
+   summary, so they show while the picker is closed. */
+.pb-patterns-insert .pb-patterns-insert__logo {
+  display: inline-block;
+  inline-size: auto;
+  block-size: 1.5rem;
+  margin-inline-end: var(--space-xs, 0.5rem);
+  vertical-align: middle;
+}
+
+.pb-patterns-insert .pb-patterns-insert__name {
+  vertical-align: middle;
+}
+
+.pb-patterns-insert__intro {
+  margin-block: 0 var(--space-m, 1rem);
+  color: var(--color-gray-800, #55565b);
+}
+
+/* 2. Toolbar (built by patterns-insert.js; absent without JS). */
+.pb-patterns-insert__toolbar {
+  display: grid;
+  gap: var(--space-s, 0.75rem);
+  margin-block-end: var(--space-m, 1rem);
+}
+
+.pb-patterns-insert__search {
+  position: relative;
+  max-inline-size: 28rem;
+}
+
+/* Material "search", painted in the text colour through a mask. */
+.pb-patterns-insert__search::before {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  background-color: var(--color-gray-800, #55565b);
+  inset-block-start: 50%;
+  inset-inline-start: var(--space-s, 0.75rem);
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  translate: 0 -50%;
+  mask: url("../images/icons/search.svg") center / contain no-repeat;
+}
+
+.pb-patterns-insert__search .form-element {
+  inline-size: 100%;
+  padding-inline-start: calc(var(--space-s, 0.75rem) + 1.25rem + var(--space-xs, 0.5rem));
+}
+
+.pb-patterns-insert__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 0.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pb-patterns-insert__chips > li {
+  margin: 0;
+}
+
+.pb-patterns-insert__chip {
+  min-block-size: 2.25rem;
+  padding-block: 0.25rem;
+  padding-inline: var(--space-s, 0.75rem);
+  cursor: pointer;
+  white-space: nowrap;
+  color: var(--color-text, #232429);
+  border: 1px solid var(--color-gray-300, #d3d4d9);
+  border-radius: 2rem;
+  background: var(--color-white, #fff);
+  font: inherit;
+  font-size: var(--font-size-s, 0.875rem);
+}
+
+.pb-patterns-insert__chip:hover {
+  border-color: var(--color-absolutezero, #003cc5);
+}
+
+.pb-patterns-insert__chip-count {
+  margin-inline-start: 0.25rem;
+  color: var(--color-gray-800, #55565b);
+}
+
+/* Pressed: filled AND bold, never colour alone. */
+.pb-patterns-insert__chip[aria-pressed="true"] {
+  color: var(--color-white, #fff);
+  border-color: var(--color-absolutezero, #003cc5);
+  background: var(--color-absolutezero, #003cc5);
+  font-weight: 700;
+}
+
+.pb-patterns-insert__chip[aria-pressed="true"] .pb-patterns-insert__chip-count {
+  color: inherit;
+}
+
+.pb-patterns-insert__chip:focus-visible {
+  outline: 3px solid var(--color-focus, #26a769);
+  outline-offset: 2px;
+}
+
+.pb-patterns-insert__count,
+.pb-patterns-insert__empty {
+  margin: 0;
+  color: var(--color-gray-800, #55565b);
+  font-size: var(--font-size-s, 0.875rem);
+}
+
+/* 3. The list: one fieldset (one radio group, its legend for screen readers
+   only) holding every card in one grid. Claro's fieldset frame is replaced by
+   the list box (section 5). */
+.pb-patterns-insert .pb-patterns-insert__list.fieldset {
+  min-inline-size: 0;
+  margin: 0;
+  box-shadow: none;
+}
+
+.pb-patterns-insert__list > .fieldset__wrapper {
+  margin: 0;
+  padding: 0;
+}
+
+.pb-patterns-insert__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12.5rem), 1fr));
+  gap: var(--space-m, 1rem);
+}
+
+.pb-patterns-insert__option[hidden] {
+  display: none;
+}
+
+/* 4. One card. */
+.pb-patterns-insert__option {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  min-inline-size: 0;
+  border: 1px solid var(--color-gray-300, #d3d4d9);
+  border-radius: var(--base-border-radius, 0.125rem);
+  background: var(--color-white, #fff);
+}
+
+.pb-patterns-insert__option:hover {
+  border-color: var(--color-absolutezero, #003cc5);
+}
+
+.pb-patterns-insert__figure {
+  padding: var(--space-xs, 0.5rem);
+  border-block-end: 1px solid var(--color-gray-200, #dedfe4);
+  background: var(--color-gray-050, #f3f4f9);
+}
+
+.pb-patterns-insert__figure svg,
+.pb-patterns-insert__figure img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+}
+
+/* The PB mark on each thumbnail: the logo on a 32px white circle in the
+   top-left corner, just before the family tag, legible on any picture. */
+.pb-patterns-insert .pb-patterns-insert__figure {
+  position: relative;
+}
+
+.pb-patterns-insert .pb-patterns-insert__figure::after {
+  position: absolute;
+  content: "";
+  pointer-events: none;
+  border-radius: 50%;
+  background: var(--color-white, #fff) url("../../../images/logo.svg") center / 22px auto no-repeat;
+  box-shadow: 0 1px 2px color-mix(in srgb, var(--color-text, #232429) 20%, transparent);
+  inset-block-start: calc(var(--space-xs, 0.5rem) + 0.25rem);
+  inset-inline-start: calc(var(--space-xs, 0.5rem) + 0.25rem);
+  inline-size: 32px;
+  block-size: 32px;
+}
+
+/* Every photograph in the same 4:3 frame, so the titles line up across a
+   row. The whole width always shows (a wide sample is never cut at the
+   sides); a short one sits at the top of the frame. */
+.pb-patterns-insert .pb-patterns-insert__figure img {
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  object-position: top center;
+}
+
+/* Two rows under the picture: the radio and its title (the title is the
+   radio's label and wraps beside it), then the description. Every box here is
+   this module's own markup (see pb-patterns-radio.html.twig), so no admin
+   theme's form-item or toggle styling reaches it; the layout is set in full
+   rather than inherited. */
+.pb-patterns-insert .pb-patterns-insert__head {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs, 0.5rem);
+  margin: 0;
+  padding-block: var(--space-s, 0.75rem) 0;
+  padding-inline: var(--space-s, 0.75rem);
+}
+
+.pb-patterns-insert .pb-patterns-insert__radio {
+  flex: none;
+  inline-size: 1rem;
+  block-size: 1rem;
+  margin: 0.125rem 0 0;
+  padding: 0;
+  cursor: pointer;
+  appearance: auto;
+  accent-color: var(--color-absolutezero, #003cc5);
+}
+
+.pb-patterns-insert .pb-patterns-insert__title {
+  display: block;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  hyphens: none;
+  color: var(--color-text, #232429);
+  font-size: var(--font-size-s, 0.875rem);
+  font-weight: 700;
+  line-height: 1.3;
+  min-inline-size: 0;
+  overflow-wrap: break-word;
+}
+
+/* The whole card is the click target: the label stretches over it. */
+.pb-patterns-insert .pb-patterns-insert__title::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+}
+
+/* Three lines on every card, the same height on all of them: the box is
+   exactly three line-heights tall and clips there, so no part of a fourth
+   line shows. It runs the card's full width, under the radio too. The full
+   text stays in the DOM, read through the radio's aria-describedby. */
+.pb-patterns-insert .pb-patterns-insert__description {
+  display: -webkit-box;
+  overflow: hidden;
+  box-sizing: content-box;
+  block-size: calc(3 * 1.4em);
+  margin-block: var(--space-xs, 0.5rem) var(--space-s, 0.75rem);
+  margin-inline: var(--space-s, 0.75rem);
+  padding: 0;
+  color: var(--color-gray-800, #55565b);
+  font-size: var(--font-size-xs, 0.8125rem);
+  line-height: 1.4;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Selected: ring + badge + the filled radio; never colour alone. */
+.pb-patterns-insert__option:has(input:checked) {
+  border-color: var(--color-absolutezero, #003cc5);
+  box-shadow: 0 0 0 2px var(--color-absolutezero, #003cc5);
+}
+
+/* Keyboard focus sits on the radio; the CARD shows it. */
+.pb-patterns-insert__option:has(input:focus-visible) {
+  outline: 3px solid var(--color-focus, #26a769);
+  outline-offset: 3px;
+}
+
+.pb-patterns-insert__badge {
+  position: absolute;
+  /* On the logo circle's centre line, like the family tag. */
+  inset-block-start: calc(var(--space-xs, 0.5rem) + 0.25rem + 16px);
+  inset-inline-end: calc(var(--space-xs, 0.5rem) + 0.25rem);
+  translate: 0 -50%;
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+  padding-block: 0.125rem;
+  padding-inline: 0.25rem var(--space-xs, 0.5rem);
+  color: var(--color-white, #fff);
+  border-radius: 2rem;
+  background: var(--color-absolutezero, #003cc5);
+  font-size: var(--font-size-xxs, 0.75rem);
+  font-weight: 700;
+}
+
+/* The family tag, over the picture's top corner: the cards of every family
+   run together, so each says which kind it is. */
+.pb-patterns-insert .pb-patterns-insert__tag {
+  position: absolute;
+  z-index: 1;
+  /* After the 32px logo circle, centred on it. */
+  inset-block-start: calc(var(--space-xs, 0.5rem) + 0.25rem + 16px);
+  translate: 0 -50%;
+  inset-inline-start: calc(var(--space-xs, 0.5rem) + 0.25rem + 32px + 0.375rem);
+  max-inline-size: calc(100% - 2 * var(--space-xs, 0.5rem) - 32px - 0.625rem);
+  overflow: hidden;
+  padding-block: 0.125rem;
+  padding-inline: var(--space-xs, 0.5rem);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--color-text, #232429);
+  border: 1px solid var(--color-gray-300, #d3d4d9);
+  border-radius: 2rem;
+  background: var(--color-white, #fff);
+  font-size: var(--font-size-xxs, 0.75rem);
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* Selected: the badge takes the other corner; on a narrow card the tag
+   gives way. */
+.pb-patterns-insert__option:has(input:checked) .pb-patterns-insert__tag {
+  max-inline-size: calc(100% - 7rem - 32px - 0.625rem);
+}
+
+/* Material "check_circle", painted in the badge's text colour. */
+.pb-patterns-insert__badge::before {
+  inline-size: 1rem;
+  block-size: 1rem;
+  content: "";
+  background-color: currentColor;
+  mask: url("../images/icons/check_circle.svg") center / contain no-repeat;
+}
+
+.pb-patterns-insert__option:has(input:checked) .pb-patterns-insert__badge {
+  display: inline-flex;
+}
+
+/* A card whose bundle is not enabled: the picture stays visible, the radio is
+   off, and the note names the module. Never color alone: the note says it. */
+.pb-patterns-insert .pb-patterns-insert__option--off {
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.pb-patterns-insert .pb-patterns-insert__option--off:hover {
+  border-color: var(--color-gray-300, #d3d4d9);
+}
+
+.pb-patterns-insert .pb-patterns-insert__option--off .pb-patterns-insert__figure img {
+  opacity: 0.55;
+  filter: grayscale(0.7);
+}
+
+.pb-patterns-insert .pb-patterns-insert__option--off .pb-patterns-insert__radio,
+.pb-patterns-insert .pb-patterns-insert__option--off .pb-patterns-insert__title {
+  cursor: not-allowed;
+}
+
+.pb-patterns-insert .pb-patterns-insert__option--off .pb-patterns-insert__title {
+  color: var(--color-gray-800, #55565b);
+}
+
+/* 5. The search and the Insert bar share one row: search on one side, the
+   status line and the button on the other. Without the script the bar sits
+   alone above the list. */
+.pb-patterns-insert .pb-patterns-insert__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s, 0.75rem) var(--space-m, 1rem);
+}
+
+.pb-patterns-insert .pb-patterns-insert__bar > .pb-patterns-insert__search {
+  flex: 1 1 18rem;
+}
+
+.pb-patterns-insert .pb-patterns-insert__actions {
+  display: flex;
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-s, 0.75rem) var(--space-m, 1rem);
+  margin: 0;
+  padding: 0;
+}
+
+/* The list: one box of fixed height that scrolls on its own, so the search,
+   the chips and the button stay in view. */
+.pb-patterns-insert .pb-patterns-insert__list {
+  overflow-y: auto;
+  max-block-size: min(36rem, 70vh);
+  padding: var(--space-s, 0.75rem);
+  border: 1px solid var(--color-gray-300, #d3d4d9);
+  border-radius: var(--base-border-radius, 0.125rem);
+  overscroll-behavior: contain;
+}
+
+/* Once a pattern is chosen the bar becomes the next step: a framed, tinted
+   panel around the choice and the button, and one ring pulse on the button
+   so the eye goes to it. Frame and pulse, not colour alone. */
+.pb-patterns-insert:has(.pb-patterns-insert__radio:checked) .pb-patterns-insert__actions {
+  padding-block: var(--space-xs, 0.5rem);
+  padding-inline: var(--space-s, 0.75rem) var(--space-xs, 0.5rem);
+  border: 2px solid var(--color-absolutezero, #003cc5);
+  border-radius: var(--base-border-radius, 0.125rem);
+  background: color-mix(in srgb, var(--color-absolutezero, #003cc5) 8%, var(--color-white, #fff));
+}
+
+.pb-patterns-insert:has(.pb-patterns-insert__radio:checked) .pb-patterns-insert__submit {
+  animation: pb-patterns-insert-pulse 1.2s ease-out 2;
+}
+
+@keyframes pb-patterns-insert-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-absolutezero, #003cc5) 55%, transparent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0.75rem color-mix(in srgb, var(--color-absolutezero, #003cc5) 0%, transparent);
+  }
+}
+
+.pb-patterns-insert__status {
+  flex: 0 1 auto;
+  margin: 0;
+  text-align: end;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.pb-patterns-insert__actions .pb-patterns-insert__submit {
+  margin: 0;
+}
+
+/* aria-disabled, not disabled: the button stays focusable and its message
+   readable. */
+.pb-patterns-insert__submit[aria-disabled="true"] {
+  cursor: not-allowed;
+  color: var(--color-gray-800, #55565b);
+  border-color: var(--color-gray-300, #d3d4d9);
+  background: var(--color-gray-200, #dedfe4);
+}
+
+/* 6. Responsive: two narrow cards on a phone, summaries hidden (still read
+   through aria-describedby). Admin chrome, so the PB breakpoint convention
+   does not apply. */
+@media (max-width: 29.99rem) {
+  .pb-patterns-insert__search {
+    max-inline-size: none;
+  }
+
+  .pb-patterns-insert__chips {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-block: 0.25rem;
+  }
+
+  .pb-patterns-insert__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-s, 0.75rem);
+  }
+
+  .pb-patterns-insert .pb-patterns-insert__description {
+    display: none;
+  }
+
+  .pb-patterns-insert__actions .pb-patterns-insert__submit {
+    inline-size: 100%;
+  }
+}
+
+/* 768: three cards a row. */
+@media (min-width: 30rem) and (max-width: 61.99rem) {
+  .pb-patterns-insert__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Coarse pointers: 44px chip targets. */
+@media (pointer: coarse) {
+  .pb-patterns-insert__chip {
+    min-block-size: 2.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-patterns-insert__option {
+    transition: none;
+  }
+
+  .pb-patterns-insert .pb-patterns-insert__submit {
+    animation: none !important;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .pb-patterns-insert__option {
+    border-width: 2px;
+  }
+}
+
+@media (forced-colors: active) {
+  .pb-patterns-insert:has(.pb-patterns-insert__radio:checked) .pb-patterns-insert__actions {
+    border-color: Highlight;
+  }
+
+  .pb-patterns-insert__option:has(input:checked) {
+    outline: 3px solid Highlight;
+  }
+
+  .pb-patterns-insert__chip[aria-pressed="true"] {
+    outline: 2px solid Highlight;
+  }
+
+  .pb-patterns-insert__search::before,
+  .pb-patterns-insert__badge::before {
+    background-color: CanvasText;
+  }
+
+  .pb-patterns-insert .pb-patterns-insert__figure::after {
+    display: none;
+  }
+}
+
+@media print {
+  .pb-patterns-insert {
+    display: none;
+  }
+}

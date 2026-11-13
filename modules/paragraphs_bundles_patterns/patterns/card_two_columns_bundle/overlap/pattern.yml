@@ -1,0 +1,16 @@
+label: 'Overlap'
+description: 'A text panel slides over the edge of the photo, so the two read as one composed piece.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [corporate, studio, nonprofit, publication]
+needs:
+  - 'Put one Image section and one Text section in Left and Right, in either order. Give the Text section a title and a short body.'
+  - 'The panel keeps its own light surface unless you set a background on the Text section. The Image section title, if any, stays on the side away from the panel.'
+settings: {}
+pictures:
+  card_image_section_bundle.pb_content_image:
+    style: pb_card
+    responsive: true
+    view_mode: pb_media_card

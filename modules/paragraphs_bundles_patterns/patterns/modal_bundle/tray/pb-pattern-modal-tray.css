@@ -1,0 +1,112 @@
+/**
+ * @file
+ * Pattern Tray for the Modal.
+ *
+ * A panel resting on the bottom edge of the screen. Long content scrolls
+ * inside the panel, with the close button in reach. PB's script owns opening,
+ * closing, the focus trap, Escape and inert.
+ *
+ * Whatever the editor can set on the panel (colors, padding, border, radius,
+ * width) is written with :where() or left to PB, so the editor wins.
+ */
+
+/* A size container can trap position: fixed children, so this root opts out
+   and every size below uses the viewport. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray {
+  --pb-pattern-tray-max: min(85dvh, 56rem);
+
+  container: none;
+}
+
+/* The shared Pattern reset removes the padding of every button. */
+/* Opener: a filled pill. Stock ties the border to the text color, so the
+   border is restated to match the fill. An editor's button colors win, as
+   they are set by an id-scoped rule. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__button > .pb-ui-btn {
+  align-items: center;
+  justify-content: center;
+  min-width: var(--pb-pattern-target);
+  max-width: 100%;
+  min-height: var(--pb-pattern-target);
+  white-space: normal;
+  color: var(--pb-pattern-surface);
+  border-color: var(--pb-pattern-ink);
+  border-radius: 999px;
+  background-color: var(--pb-pattern-ink);
+  padding-block: var(--pb-px8);
+  padding-inline: var(--pb-px16);
+}
+
+/* Panel: its own ground, a soft shadow on the edge that meets the page and a
+   rule under the header. Stock paints Canvas here, so this outranks it by one
+   class; the editor's id-scoped colors still win. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner {
+  display: block;
+  overflow-y: auto;
+  box-sizing: border-box;
+  max-height: var(--pb-pattern-tray-max);
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background-color: var(--pb-bg, var(--pb-pattern-surface));
+  box-shadow: 0 -0.75rem 2.5rem -0.75rem color-mix(in sRGB, var(--pb-pattern-shadow) 45%, transparent);
+  overscroll-behavior: contain;
+}
+
+/* The header sits inside the scrolling panel so the arrow keys scroll it from
+   the close button, which PB focuses on opening. Block layout, because sticky
+   cannot leave its own grid row. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__header {
+  position: sticky;
+  z-index: 1;
+  column-gap: var(--pb-px12);
+  border-block-end: 1px solid var(--pb-pattern-line);
+  background-color: inherit;
+  inset-block-start: 0;
+}
+
+:where(.pb-pattern--modal-tray > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner) {
+  padding: clamp(16px, 4vw, 32px);
+  border-start-start-radius: var(--pb-px16);
+  border-start-end-radius: var(--pb-px16);
+}
+
+/* overflow: clip, not hidden: PB moves focus into the panel while it is still
+   off screen, and a scroll container would scroll to it and stay shifted. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog {
+  overflow: clip;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog.pb-is-open {
+  align-items: flex-end;
+}
+
+/* animation: none also covers a stock animation class that stayed on. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog > .pb-modal__content {
+  width: min(100%, 48rem);
+  max-height: var(--pb-pattern-tray-max);
+  margin: 0;
+  animation: none;
+}
+
+/* Most of a phone, however short the content is. */
+@media (max-width: 35.99875rem) {
+  .paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner {
+    min-height: 70dvh;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-modal.pb-pattern--modal-tray > .pb-modal__dialog.pb-is-open > .pb-modal__content {
+    animation: pb-pattern-modal-tray-open 0.4s var(--pb-pattern-ease-out);
+  }
+}
+
+@keyframes pb-pattern-modal-tray-open {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}

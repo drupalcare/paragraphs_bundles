@@ -1,0 +1,17 @@
+label: 'Peel'
+description: 'The front lifts away from the bottom corner like a page, leaving a small dog-ear and a soft fold shadow. The turning direction setting is ignored.'
+weight: 3
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [publication, creative, cultural]
+needs:
+  - 'Fill in both the front and the back with Simple, Image, Icon or Link paragraphs. Keep the top corner at the start of each side free of text, because the turn button sits there.'
+  - 'Set a height for the box. Plain colors read best, because the fold is a neutral shadow.'
+settings:
+  pb_display_flip_xy: flip_y
+pictures:
+  image_narrow_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

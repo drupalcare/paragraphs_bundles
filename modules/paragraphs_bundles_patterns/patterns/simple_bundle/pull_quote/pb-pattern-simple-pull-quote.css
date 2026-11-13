@@ -1,0 +1,85 @@
+/**
+ * @file
+ * Pattern Pull quote for the Simple paragraph.
+ *
+ * The body is the quote, the title the attribution beneath it. Colors,
+ * padding and border the editor sets win: the defaults are :where().
+ * Visual order only changes for the title and body; links stay last.
+ */
+
+:where(.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote > .pb-ui-inner) {
+  padding: clamp(1.5rem, 5cqi, 4rem) clamp(1rem, 6cqi, 5rem);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .pb-content__full {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-body {
+  order: 1;
+  text-wrap: balance;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.375rem, 1rem + 2.2cqi, 2.5rem);
+  font-weight: 500;
+  line-height: 1.3;
+  max-inline-size: 34em;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-body::before {
+  display: block;
+  margin-block-end: 0.15em;
+  content: "\201C" / "";
+  color: var(--pb-lk, var(--pb-pattern-link));
+  font-size: clamp(3.5rem, 12cqi, 7rem);
+  font-weight: 700;
+  line-height: 0.6;
+  block-size: 0.5em;
+}
+
+[dir="rtl"] .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-body::before {
+  content: "\201D" / "";
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-body p {
+  margin: 0;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-body p + p {
+  margin-block-start: 0.75em;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .pb-content__title {
+  order: 2;
+  margin: clamp(1rem, 2.5cqi, 1.75rem) 0 0;
+  letter-spacing: 0.02em;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .pb-content__title::before {
+  display: inline-block;
+  margin-inline-end: 0.75rem;
+  content: "";
+  vertical-align: middle;
+  background: currentColor;
+  inline-size: 2rem;
+  block-size: 2px;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-link,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-link-secondary {
+  order: 3;
+  margin-block-start: clamp(1rem, 2.5cqi, 1.5rem);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-link a,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-pull-quote .field--name-pb-content-link-secondary a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pb-pattern-target);
+}

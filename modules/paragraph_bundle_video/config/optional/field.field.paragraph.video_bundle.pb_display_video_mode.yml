@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_video_mode
+    - paragraphs.paragraphs_type.video_bundle
+  module:
+    - options
+id: paragraph.video_bundle.pb_display_video_mode
+field_name: pb_display_video_mode
+entity_type: paragraph
+bundle: video_bundle
+label: 'Mode'
+description: 'Player shows a poster with a Play button. Background plays a muted, looping film behind the content below, and needs a video file with a poster. A visitor who sees the poster instead does not get anything said only in the film.'
+required: true
+translatable: false
+default_value:
+  -
+    value: player
+default_value_callback: ''
+settings: {  }
+field_type: list_string

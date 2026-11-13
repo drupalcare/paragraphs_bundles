@@ -1,0 +1,15 @@
+label: 'Slate'
+description: 'The words get their own solid column and the film runs beside it, so text never sits on moving pictures. On a narrow region the film is a band above the column.'
+weight: 3
+stage: open
+ground: light
+placement: inner-padding
+serves: [events, cultural, corporate]
+needs:
+  - 'Open this section and choose your video; the sample has none. Keep the Video Title and at least one item in Description or Content: they fill the column, and a link there becomes a button.'
+settings: {}
+pictures:
+  video_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

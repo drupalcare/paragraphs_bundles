@@ -1,0 +1,25 @@
+{
+    "name": "drupal/paragraph_bundle_video",
+    "description": "Paragraph bundle for video: a poster-first player or a muted looping background film.",
+    "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "authors": [
+        {
+            "name": "Alaa Haddad (alaahaddad.com)",
+            "homepage": "https://www.drupal.org/u/flashwebcenter",
+            "role": "Maintainer"
+        }
+    ],
+    "homepage": "https://drupal.org/project/paragraph_bundle_video",
+    "require": {
+        "php": ">=8.3",
+        "drupal/core": "^11.3 || ^12",
+        "drupal/paragraphs_bundles": "*"
+    },
+    "support": {
+        "issues": "https://drupal.org/project/issues/paragraph_bundle_video",
+        "source": "https://git.drupalcode.org/project/paragraph_bundle_video"
+    }
+}

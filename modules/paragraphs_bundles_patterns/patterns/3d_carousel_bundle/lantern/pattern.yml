@@ -1,0 +1,21 @@
+label: 'Lantern'
+description: 'A soft, light ring of rounded cards with a Hero in every card: photo on top, words on a raised panel underneath. The front card is bright and sharp, the cards behind fade and blur a little. Under the ring, a slim track with a round knob shows which card you are on, with an arrow at each end. Manual, no autoplay. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead.'
+weight: 2
+stage: open
+ground: light
+placement: outer-margin
+serves: [cultural, healthcare, university]
+needs:
+  - 'Keep five to seven slides. Each slide holds one Hero with an Image, a Kicker, a Title of up to six words, a Body of up to 120 characters, and a Link with a Link title: that title is the line under the words.'
+  - 'Leave the Pattern field of each Hero empty. The cards have a fixed height, so longer words scroll inside the card. The ring, the heights and the track are set for you.'
+settings:
+  pb_display_3d_car_style: ring
+  pb_content_3dcar_lheight: '500'
+  pb_content_3dcar_sheight: '450'
+  pb_display_3d_caro_breakpoints: pb__768
+  pb_display_3d_play_stop: 0
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

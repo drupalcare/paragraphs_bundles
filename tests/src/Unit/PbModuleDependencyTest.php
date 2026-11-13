@@ -120,8 +120,15 @@ final class PbModuleDependencyTest extends TestCase {
       );
       // A dependency on config another PB module ships is a dependency on that
       // module: uninstall it and the referenced config goes with it.
+      // The Patterns module's optional config adds its field to the bundles of
+      // sub-modules that are optional by design: Drupal installs each file
+      // only when that bundle exists, so naming them in .info.yml would
+      // wrongly force every bundle module on. Module dependencies in those
+      // files stay checked.
+      $optional_bundle_field = $name === 'paragraphs_bundles_patterns'
+        && basename(dirname($file)) === 'optional';
       foreach ($dependencies['config'] ?? [] as $config) {
-        if (isset($owners[$config]) && $owners[$config] !== $name) {
+        if (!$optional_bundle_field && isset($owners[$config]) && $owners[$config] !== $name) {
           $needed[] = $owners[$config];
         }
       }

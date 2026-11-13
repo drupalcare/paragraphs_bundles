@@ -1,0 +1,17 @@
+label: 'Dock'
+description: 'Full-width photo stage with the words at the foot and the tabs in a floating dock.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [events, creative, corporate]
+needs:
+  - 'Keep two to five tabs, each with a name and a body: first an Image, then a text block. The tabs stay across the top for you. Place it in a full-width region.'
+settings:
+  pb_display_tab_vertical_tabs: 0
+  pb_display_tab_stack_narrow: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_picture

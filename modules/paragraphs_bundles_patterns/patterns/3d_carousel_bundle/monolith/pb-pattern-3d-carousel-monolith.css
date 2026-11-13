@@ -1,0 +1,351 @@
+/**
+ * @file
+ * Pattern Monolith for the 3D Carousel: tall dark slabs in a coverflow fan.
+ *
+ * Each slab is a Hero: the photo fills it and the words sit on a solid band
+ * at its foot. Under the fan, a control strip: a slim Pause block at the
+ * start whose fill drains over the slide time, then at the end a large slide
+ * number with a small "/ N" and two tall slim arrow blocks. PB's script owns
+ * the fan and its controls; nothing here moves a card.
+ *
+ * Portrait slabs: PB's coverflow script measures the first card's real width
+ * (paragraph-bundle-3d-carousel.js, getCoverflowLayout) and spaces the fan by
+ * it, and shrinks every card by transform about its centre (0.62 for the
+ * front card). So a narrower card is a portrait card the script lays out
+ * correctly; the card is centred with equal insets and auto margins so the
+ * script's x offsets start from the middle. The height stays PB's (lheight /
+ * sheight classes). Because the front card is drawn at 0.62, the words are
+ * set larger than usual so they read at about body size on screen.
+ *
+ * PB sizes every div inside a slide's Hero text wrapper with an important
+ * flag (width and height auto), so the band is laid out on the wrapper and
+ * flex growth, never on those divs' sizes. Nested rules read
+ * `.pb-hero:not(.pb-pattern)`, so a Hero with its own Pattern, or any Hero
+ * outside this Pattern, is not changed.
+ */
+
+@property --pb-pattern-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith {
+  --pb-pattern-monolith-slab: 25rem;
+  --pb-pattern-monolith-band: 40%;
+}
+
+/* The dark stage, on the bundle's inner box so the editor's own ground wins. */
+:where(.pb-pattern--3d-carousel-monolith > .pb-ui-inner) {
+  padding-block-end: var(--pb-px12);
+  padding-inline: var(--pb-px12);
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  background-color: var(--pb-pattern-stage-bg);
+}
+
+/* The stage is a flex column: the fan takes what the control strip leaves.
+   The front slab is drawn at 0.62 of its box about its centre, so its foot
+   stays well above the strip (550px box: drawn from 104px to 446px; the fan
+   keeps 502px). */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith > .pb-3d-carousel__inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+/* ---- The slabs. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__ring > .pb-3d-carousel__slide {
+  overflow: hidden;
+  inline-size: min(calc(100% - var(--pb-px24)), var(--pb-pattern-monolith-slab));
+  margin-inline: auto;
+  padding: 0;
+  border-radius: 0;
+  background-color: var(--pb-pattern-stage-bg);
+  box-shadow: 0 24px 48px color-mix(in sRGB, var(--pb-pattern-shadow) 45%, transparent);
+  inset-inline: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+  position: relative;
+  height: 100%;
+}
+
+/* PB's clearfix pseudo-elements are not used. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::after {
+  content: none;
+}
+
+/* The photo fills the whole slab. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  position: absolute;
+  overflow: hidden;
+  inset: 0;
+}
+
+/* Outranks PB's slide image sizes and the Hero's height classes. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+/* The band at the foot: at least 40% of the slab, growing with the words.
+   Its ground is the editor's carousel ground when set, else the stage at 90%
+   (rule C3: words never sit bare on a photo). */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+  position: absolute;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: auto;
+  min-block-size: var(--pb-pattern-monolith-band);
+  max-block-size: 100%;
+  background: linear-gradient(var(--pb-pattern-editor-bg, transparent), var(--pb-pattern-editor-bg, transparent)), color-mix(in sRGB, var(--pb-pattern-stage-bg) 90%, transparent);
+  inset-block: auto 0;
+  inset-inline: 0;
+}
+
+/* Flex growth, not height: PB holds this box's height at auto. It scrolls
+   when the words outgrow the slab. Specific on purpose (rule C2): the words
+   keep their pair under any theme. */
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  flex: 0 1 auto;
+  align-content: end;
+  min-height: 0;
+  transform: none;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  inset: auto;
+  max-block-size: none;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner :is(h2, h3, h4, h5, h6, p, span, a) {
+  color: inherit;
+}
+
+:where(.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+  padding-block: clamp(1.25rem, 4cqi, 2rem);
+  padding-inline: clamp(1.25rem, 4cqi, 2rem);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-content__title {
+  margin-block: 0 0.5rem;
+  text-transform: uppercase;
+  text-wrap: balance;
+  font-size: clamp(2rem, 5cqi, 2.5rem);
+  font-weight: 800;
+  line-height: 1.02;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner p {
+  margin-block: 0;
+  font-size: 1.375rem;
+  line-height: 1.4;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The Hero's link: a stage-color line with a thick underline. No Link title,
+   no line. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-block-start: 0.5rem;
+  content: attr(title);
+  transition: text-decoration-thickness 0.2s;
+  text-decoration: underline;
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.3em;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  text-decoration-thickness: 4px;
+}
+
+/* ---- The control strip: Pause at the start; the number and the arrows at
+   the end. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex: 0 0 auto;
+  width: 100%;
+  margin-block-start: 8px;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
+  display: grid;
+  grid-template-areas: "play . count prev next";
+  grid-template-rows: 88px;
+  grid-template-columns: 44px minmax(0, 1fr) auto 44px 44px;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  column-gap: var(--pb-px12);
+}
+
+/* PB's clearfix pseudo-elements would become extra grid cells. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options-inner::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options-inner::after {
+  content: none;
+}
+
+/* PB's rule is all: unset plus padding, so the box is set in full here: a
+   44 x 88 slim block, square corners, a stage-line edge. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn {
+  position: relative;
+  box-sizing: border-box;
+  width: 44px;
+  height: 88px;
+  padding: 0;
+  transition: background-color 0.2s;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-nav__prev {
+  grid-area: prev;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-nav__next {
+  grid-area: next;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play) {
+  grid-area: play;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn > span:not(.visually-hidden, [hidden]) {
+  position: relative;
+  z-index: 1;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn svg {
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn:not(.pb-is-disabled):hover {
+  background-color: color-mix(in sRGB, currentColor 16%, transparent);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play):is(:hover, :active) {
+  transform: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn:not(.pb-is-disabled):hover svg {
+  transform: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next) svg,
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover svg {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn:focus-visible {
+  border-radius: 0;
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+/* The drain: a fill that empties from the top down over the slide time. Full
+   and still when paused, held, under reduced motion or without the script. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play)::before {
+  position: absolute;
+  block-size: calc((1 - var(--pb-pattern-progress)) * 100%);
+  content: "";
+  pointer-events: none;
+  background-color: color-mix(in sRGB, currentColor 28%, transparent);
+  inset-block-end: 0;
+  inset-inline: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith.pb-pattern-is-running .pb-3d-carousel__options .pb-nav__pause::before {
+  animation: pb-pattern-3d-carousel-monolith-drain var(--pb-pattern-time, 6s) linear both;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith.pb-pattern-is-held .pb-3d-carousel__options .pb-nav__pause::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith:has(.pb-3d-carousel__ring:hover) .pb-3d-carousel__options .pb-nav__pause::before {
+  animation: none;
+}
+
+@keyframes pb-pattern-3d-carousel-monolith-drain {
+  from {
+    --pb-pattern-progress: 0;
+  }
+
+  to {
+    --pb-pattern-progress: 1;
+  }
+}
+
+/* The number: PB's counter set large, with "/ N" small beside it. The total
+   is a figure, not a word, and is hidden from the accessible name (PB's own
+   aria-label already says "Slide n of N"). Specific on purpose (rule C2). */
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options-inner > .pb-slideshow__number {
+  display: flex;
+  grid-area: count;
+  align-items: baseline;
+  justify-content: flex-end;
+  min-width: 0;
+  padding: 0;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  font-size: clamp(2.5rem, 6cqi, 4rem);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  gap: 0.35rem;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options-inner > .pb-slideshow__number[data-pb-pattern-total]::after {
+  content: "/ " attr(data-pb-pattern-total) / "";
+  color: var(--pb-pattern-stage-muted);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__options .pb-ui-btn,
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith .pb-3d-carousel__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-monolith.pb-pattern-is-running .pb-3d-carousel__options .pb-nav__pause::before {
+    animation: none;
+  }
+}

@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies: {  }
+id: pb_media_remote_video
+label: 'Remote video (PB)'
+description: 'A video from a supported provider, for Paragraph Bundle Video.'
+source: 'oembed:video'
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: pb_video_url
+  thumbnails_directory: 'public://oembed_thumbnails/[date:custom:Y-m]'
+  providers:
+    - YouTube
+    - Vimeo
+field_map:
+  title: name

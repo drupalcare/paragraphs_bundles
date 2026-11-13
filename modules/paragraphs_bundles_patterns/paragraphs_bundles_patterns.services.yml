@@ -1,0 +1,47 @@
+services:
+  _defaults:
+    autowire: true
+
+  logger.channel.paragraphs_bundles_patterns:
+    parent: logger.channel_base
+    arguments: ['paragraphs_bundles_patterns']
+
+  Drupal\paragraphs_bundles_patterns\PatternRepository:
+    arguments:
+      $moduleExtensionList: '@extension.list.module'
+      $cache: '@cache.discovery'
+
+  Drupal\paragraphs_bundles_patterns\PatternSampleMedia:
+    arguments:
+      $moduleExtensionList: '@extension.list.module'
+
+  Drupal\paragraphs_bundles_patterns\PatternTreeBuilder: {}
+
+  # Hands each Pattern's `pictures` to the parent module's picture binder.
+  Drupal\paragraphs_bundles_patterns\PatternPictureMapProvider:
+    tags:
+      - { name: paragraphs_bundles.picture_map_provider }
+
+  Drupal\paragraphs_bundles_patterns\PatternInserter:
+    arguments:
+      $selectionManager: '@plugin.manager.entity_reference_selection'
+
+  Drupal\paragraphs_bundles_patterns\PatternPicker:
+    arguments:
+      $moduleExtensionList: '@extension.list.module'
+
+  # Named: the Insert button stores this id in the form cache as a callback.
+  paragraphs_bundles_patterns.insert_form:
+    class: Drupal\paragraphs_bundles_patterns\PatternInsertForm
+    arguments:
+      $logger: '@logger.channel.paragraphs_bundles_patterns'
+
+  Drupal\paragraphs_bundles_patterns\Hook\PatternHooks: {}
+
+  Drupal\paragraphs_bundles_patterns\Hook\PatternLibraryInfoAlterHook:
+    arguments:
+      - '@paragraphs_bundles.theme_bridge'
+
+  Drupal\paragraphs_bundles_patterns\Hook\PatternHelpHook:
+    arguments:
+      - '@paragraphs_bundles.readme_help_renderer'

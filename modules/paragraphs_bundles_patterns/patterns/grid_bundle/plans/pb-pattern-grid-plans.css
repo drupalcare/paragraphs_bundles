@@ -1,0 +1,238 @@
+/**
+ * @file
+ * Pattern Plans for the Grid: plan cards, the second raised, a switch turns all.
+ *
+ * Click-only and sideways, as in Hand. The editor's card height comes first;
+ * min-block-size only raises a card too short for the layout.
+ */
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans {
+  --pb-pattern-plans-radius: 28px;
+  /* PB puts the button 0.5rem from the top; 0.5rem + 44px + 12px clear. */
+  --pb-pattern-plans-cue: 4rem;
+}
+
+:where(.pb-pattern--grid-plans > .pb-ui-inner) {
+  padding: clamp(32px, 6cqi, 80px) var(--pb-px20);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-grid__wrapper.pb-grid__wrapper {
+  grid-template-rows: none;
+  grid-template-columns: minmax(0, 1fr);
+  max-inline-size: 69rem;
+  margin-inline: auto;
+}
+
+/* The switch: its own row above the cards, away from every card button. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-pattern-plans__switch {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  margin-inline: auto;
+  margin-block: var(--pb-px16) var(--pb-px36);
+  padding: var(--pb-px5);
+  border-radius: 999px;
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-pattern-plans__switch > button {
+  display: inline-grid;
+  place-items: center;
+  min-height: var(--pb-pattern-target);
+  cursor: pointer;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    box-shadow 0.3s;
+  text-align: center;
+  color: inherit;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-size: var(--pb-px15);
+  font-weight: 600;
+  line-height: 1;
+  padding-block: 0;
+  padding-inline: var(--pb-px22);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-pattern-plans__switch > button[aria-pressed="true"] {
+  background: var(--pb-pattern-surface);
+  box-shadow: 0 0 0 1px var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-pattern-plans__switch > button:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene {
+  min-block-size: 29.375rem;
+  border-radius: var(--pb-pattern-plans-radius);
+  box-shadow: 0 18px 40px -24px color-mix(in sRGB, var(--pb-pattern-ink) 40%, transparent);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back {
+  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  padding: var(--pb-px16) var(--pb-px16) var(--pb-px24);
+  border-radius: inherit;
+}
+
+:where(.pb-pattern--grid-plans .pb-3d-flip-box__front) {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: var(--pb-bg, var(--pb-pattern-surface));
+  box-shadow: inset 0 0 0 1px var(--pb-br, var(--pb-pattern-line));
+}
+
+:where(.pb-pattern--grid-plans .pb-3d-flip-box__back) {
+  /* Nested in a Grid, PB resets --pb-bg to transparent, so this face shows
+     the Grid's light ground: its words use the ink that goes with it. */
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: var(--pb-bg, var(--pb-pattern-surface));
+}
+
+/* Front: an arched photo, the name and the price. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front > .pb-image {
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 0;
+  height: auto;
+  min-height: 96px;
+  clip-path: inset(0 round 140px 140px 14px 14px);
+  transition: clip-path 0.7s var(--pb-pattern-ease-out);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front > .pb-image img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box:hover .pb-3d-flip-box__front > .pb-image {
+  clip-path: inset(0 round 14px);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front > .paragraphs-bundles:not(.pb-image),
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back > .paragraphs-bundles {
+  height: auto;
+}
+
+/* The back keeps its words below the button's corner. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back {
+  overflow-y: auto;
+  padding-block-start: var(--pb-pattern-plans-cue);
+  padding-inline: var(--pb-px28);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-content__title {
+  margin-block: var(--pb-px6);
+  color: inherit;
+  font-size: clamp(1.6rem, 2.4cqi, 2.2rem);
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back .pb-content__title {
+  margin-block: 0 var(--pb-px18);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back .pb-content__full > :not(.pb-content__title) {
+  padding-block-start: var(--pb-px14);
+  border-block-start: 1px solid var(--pb-pattern-stage-line);
+  font-size: var(--pb-px16);
+  line-height: 1.5;
+}
+
+/* The turn control. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__toggle {
+  right: auto;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  filter: drop-shadow(0 0 1px var(--pb-pattern-surface)) drop-shadow(0 0 2px var(--pb-pattern-surface));
+  color: var(--pb-pattern-ink);
+  border: 0;
+  background: transparent;
+  inset-inline-end: var(--pb-px4);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene.pb-is-showing-back .pb-3d-flip-box__toggle {
+  filter: drop-shadow(0 0 1px var(--pb-pattern-stage-bg)) drop-shadow(0 0 2px var(--pb-pattern-stage-bg));
+  color: var(--pb-pattern-stage-color);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__toggle:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Click only: PB's hover and focus flips are removed; only the button turns. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__inner,
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within {
+  transform: translateZ(0);
+}
+
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-grid__wrapper.pb-grid__wrapper {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-grid__wrapper > .pb-3d-flip-box:nth-child(3n + 2) {
+    transform: translateY(-18px);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-grid__wrapper > .pb-3d-flip-box:nth-child(3n + 2) .pb-3d-flip-box__front {
+    box-shadow: inset 0 0 0 2px var(--pb-pattern-ink);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Always sideways, whichever way the editor set each card. */
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y).pb-is-flipped .pb-3d-flip-box__inner {
+    transform: rotateY(180deg);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__back:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y) {
+    transform: rotateY(180deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front > .pb-image {
+    transition: none;
+  }
+
+  /* PB fades the faces on hover and focus here; only the button may turn. */
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+    opacity: 1;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__back,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__toggle,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__scene.pb-is-showing-back .pb-3d-flip-box__toggle {
+    filter: none;
+    color: ButtonText;
+  }
+}
+
+/* A card without a picture: keep the text clear of the corner flip button. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-plans .pb-3d-flip-box__front:not(:has(> .pb-image)) {
+  padding-block-start: var(--pb-pattern-plans-cue);
+}

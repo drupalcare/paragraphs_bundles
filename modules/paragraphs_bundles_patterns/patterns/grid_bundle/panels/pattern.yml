@@ -1,0 +1,16 @@
+label: 'Panels'
+description: 'A row of Hero strips: the hovered or focused strip opens wide, its photo regains color and its words rise in.'
+weight: 2
+stage: open
+ground: dark
+placement: outer-margin
+serves: [cultural, events, nonprofit]
+needs:
+  - 'Keep three to five Hero items in the Grid, each with an Image, a Title and a Link. The Link lets keyboard users open a strip.'
+  - 'On phones the strips become a stacked list with the words under each photo.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

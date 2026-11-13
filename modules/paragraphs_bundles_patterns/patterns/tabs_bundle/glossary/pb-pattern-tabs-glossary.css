@@ -1,0 +1,272 @@
+/**
+ * @file
+ * Pattern Glossary for the Tabs.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * The strip's buttons and counter are created by the script beside the tab
+ * list, never inside it: PB needs the tab list to stay a child of the tab set.
+ */
+
+:where(.pb-pattern--tabs-glossary > .pb-ui-inner) {
+  padding: clamp(24px, 4cqi, 56px) clamp(12px, 3cqi, 40px);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: var(--pb-px18) var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset > .pb-tabs__tablist {
+  --pb-pattern-glossary-start: 0px;
+  --pb-pattern-glossary-end: 0px;
+
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  grid-row: 1;
+  grid-column: 2;
+  gap: var(--pb-px4);
+  margin-block: calc(var(--pb-px8) * -1);
+  padding-block: var(--pb-px8);
+  scroll-behavior: smooth;
+  scroll-padding-inline: 56px;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 var(--pb-pattern-glossary-start), #000 calc(100% - var(--pb-pattern-glossary-end)), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 var(--pb-pattern-glossary-start), #000 calc(100% - var(--pb-pattern-glossary-end)), transparent);
+}
+
+/* The fade follows the strip's own scroll edges; "90deg" is drawn physically. */
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset > .pb-tabs__tablist {
+  flex-direction: row;
+  -webkit-mask-image: linear-gradient(270deg, transparent, #000 var(--pb-pattern-glossary-start), #000 calc(100% - var(--pb-pattern-glossary-end)), transparent);
+  mask-image: linear-gradient(270deg, transparent, #000 var(--pb-pattern-glossary-start), #000 calc(100% - var(--pb-pattern-glossary-end)), transparent);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary.pb-pattern-glossary--ready:not(.pb-pattern-glossary--at-start) .pb-tabs__tablist {
+  --pb-pattern-glossary-start: 48px;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary.pb-pattern-glossary--ready:not(.pb-pattern-glossary--at-end) .pb-tabs__tablist {
+  --pb-pattern-glossary-end: 48px;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > button {
+  position: relative;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  max-width: 180px;
+  min-height: 48px;
+  padding-block: var(--pb-px8) var(--pb-px12);
+  padding-inline: var(--pb-px16);
+  white-space: normal;
+  color: inherit;
+  background: transparent;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.1875rem, 1.8cqi, 1.5rem);
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+  scroll-snap-align: start;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
+  text-decoration: none;
+  background: var(--pb-bt-a, transparent);
+  font-weight: 500;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > button::after {
+  position: absolute;
+  height: 2px;
+  content: "";
+  transition: transform 0.5s var(--pb-pattern-ease-out);
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+  inset-block-end: 6px;
+  inset-inline: var(--pb-px16);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > button::after {
+  transform-origin: right;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > .pb-is-active::after {
+  transform: scaleX(1);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  border: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 50%;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll:hover,
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll:focus-visible {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll::before {
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: var(--pb-pattern-glossary-arrow) center / contain no-repeat;
+  mask: var(--pb-pattern-glossary-arrow) center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-prev {
+  --pb-pattern-glossary-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z'/%3E%3C/svg%3E");
+
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-next {
+  --pb-pattern-glossary-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E");
+
+  grid-row: 1;
+  grid-column: 3;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll::before {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-scroll[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.4;
+}
+
+/* With nothing to scroll the buttons would do nothing: they go away. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary:not(.pb-pattern-glossary--ready) .pb-pattern-glossary-scroll,
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary.pb-pattern-glossary--static .pb-pattern-glossary-scroll {
+  display: none;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-count {
+  grid-row: 1;
+  grid-column: 4;
+  margin: 0;
+  margin-inline-start: var(--pb-px4);
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-count-now {
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panels {
+  grid-column: 1 / -1;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel {
+  border-radius: 16px;
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  overflow: hidden;
+  aspect-ratio: 21 / 9;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child img {
+      transform: scale(1.12);
+      animation: pb-pattern-tabs-glossary-drift linear both;
+      animation-timeline: view();
+    }
+
+    @keyframes pb-pattern-tabs-glossary-drift {
+      from {
+        object-position: 50% 30%;
+      }
+
+      to {
+        object-position: 50% 70%;
+      }
+    }
+  }
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  padding-block: var(--pb-px22) var(--pb-px24);
+  padding-inline: clamp(18px, 3cqi, 36px);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+@container pb-pattern-region (max-width: 35rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset {
+    grid-template-columns: 1fr auto auto;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset > .pb-tabs__tablist {
+    overflow-x: visible;
+    flex-wrap: wrap;
+    grid-row: 2;
+    grid-column: 1 / -1;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-count {
+    grid-column: 1;
+    margin-inline-start: 0;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-prev {
+    grid-column: 2;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-pattern-glossary-next {
+    grid-column: 3;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > button {
+    padding-inline: var(--pb-px12);
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tabset > .pb-tabs__tablist {
+    scroll-behavior: auto;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-glossary .pb-tabs__tablist > button::after {
+    transition: none;
+  }
+}

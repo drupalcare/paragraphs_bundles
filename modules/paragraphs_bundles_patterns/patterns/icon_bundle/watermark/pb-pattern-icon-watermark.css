@@ -1,0 +1,66 @@
+/**
+ * @file
+ * Pattern Watermark for the Icon.
+ *
+ * PB's script fades the wrapper's opacity and the editor's icon color is
+ * written at id level on the span, so the faintness is the glyph's own opacity
+ * and the size is a scale of the editor's Icon Font Size.
+ */
+
+:where(.pb-pattern--icon-watermark > .pb-ui-inner) {
+  padding: clamp(24px, 5cqi, 56px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark > .pb-icon__inner {
+  align-items: stretch;
+  justify-content: flex-start;
+  min-block-size: clamp(12rem, 30cqi, 20rem);
+  isolation: isolate;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .pb-content__full {
+  width: 100%;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .icon-wrapper {
+  position: absolute;
+  z-index: -1;
+  inset-block-end: clamp(-40px, -3cqi, -12px);
+  inset-inline-end: clamp(-40px, -3cqi, -12px);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .icon-wrapper > :is(span, svg) {
+  transform: scale(4);
+  transform-origin: 100% 100%;
+  opacity: 0.1;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .icon-wrapper > :is(span, svg) {
+  transform-origin: 0 100%;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .pb-icon__header img {
+  position: absolute;
+  z-index: -1;
+  inset-block-end: clamp(-40px, -3cqi, -12px);
+  inset-inline-end: clamp(-40px, -3cqi, -12px);
+  width: clamp(8rem, 32cqi, 16rem);
+  height: auto;
+  opacity: 0.1;
+}
+
+@container pb-pattern-region (max-width: 28rem) {
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .icon-wrapper > :is(span, svg) {
+    transform: scale(2.6);
+  }
+}
+
+/* The title is the display face; the icon stays a faint 10 percent mark. */
+:where(.paragraphs-bundles.pb-icon.pb-pattern--icon-watermark .pb-content__title) {
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.375rem, 1rem + 2cqi, 2.25rem);
+  font-weight: 700;
+  line-height: 1.15;
+}

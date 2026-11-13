@@ -1,0 +1,15 @@
+label: 'Horizon'
+description: 'Full-height chapters: the photo rises in behind a slanted line and a huge title sits at the bottom.'
+weight: 0
+stage: open
+ground: dark
+placement: neither
+serves: [cultural, creative, events]
+needs:
+  - 'Keep at least two sections, each with an image and a body. Type the body as a short line, then a heading, then a short paragraph. Add a link if you want one. For the designed motion set Scroll Effect to Fade In and Parallax Speed to 0.35 on each section.'
+settings: {}
+pictures:
+  parallax_section_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_parallax

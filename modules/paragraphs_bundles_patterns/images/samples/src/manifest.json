@@ -1,0 +1,98 @@
+{
+  "sample-landscape-1.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "design": "waves",
+    "svg": "sample-landscape-1.svg",
+    "brand_box": [
+      692,
+      506,
+      1232.5203036846137,
+      574
+    ]
+  },
+  "sample-landscape-2.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "design": "bubbles",
+    "svg": "sample-landscape-2.svg",
+    "brand_box": [
+      692,
+      506,
+      1232.5203036846137,
+      574
+    ]
+  },
+  "sample-landscape-3.jpg": {
+    "width": 1920,
+    "height": 1080,
+    "design": "hexagons",
+    "svg": "sample-landscape-3.svg",
+    "brand_box": [
+      692,
+      506,
+      1232.5203036846137,
+      574
+    ]
+  },
+  "sample-portrait-1.jpg": {
+    "width": 1440,
+    "height": 1920,
+    "design": "waves",
+    "svg": "sample-portrait-1.svg",
+    "brand_box": [
+      359,
+      916,
+      1084.5024099742286,
+      1005
+    ]
+  },
+  "sample-portrait-2.jpg": {
+    "width": 1440,
+    "height": 1920,
+    "design": "hexagons",
+    "svg": "sample-portrait-2.svg",
+    "brand_box": [
+      359,
+      916,
+      1084.5024099742286,
+      1005
+    ]
+  },
+  "sample-portrait-3.jpg": {
+    "width": 1440,
+    "height": 1920,
+    "design": "bubbles",
+    "svg": "sample-portrait-3.svg",
+    "brand_box": [
+      359,
+      916,
+      1084.5024099742286,
+      1005
+    ]
+  },
+  "sample-square-1.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "design": "bubbles",
+    "svg": "sample-square-1.svg",
+    "brand_box": [
+      480,
+      902,
+      1443.3365466323048,
+      1018
+    ]
+  },
+  "sample-square-2.jpg": {
+    "width": 1920,
+    "height": 1920,
+    "design": "hexagons",
+    "svg": "sample-square-2.svg",
+    "brand_box": [
+      480,
+      902,
+      1443.3365466323048,
+      1018
+    ]
+  }
+}

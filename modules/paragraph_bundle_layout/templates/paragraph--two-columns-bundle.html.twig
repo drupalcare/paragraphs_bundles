@@ -80,28 +80,22 @@
           <button type="button"
                   class="pb-layout-col__toggle control-btn"
                   data-col-toggle="left"
-                  data-label-expand="{{ 'Expand left column'|t }}"
-                  data-label-collapse="{{ 'Collapse left column'|t }}"
                   aria-controls="{{ paragraph_id }}-col-left"
                   aria-expanded="{{ pb_2c_l_def == 'closed' ? 'false' : 'true' }}"
-                  aria-label="{{ pb_2c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}"
-                  title="{{ pb_2c_l_def == 'closed' ? 'Expand left column'|t : 'Collapse left column'|t }}">
+                  title="{{ 'Left column'|t }}">
             {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', {icon_style: pb_2c_icn, col_side: 'left'}, false) }}
-            <span class="visually-hidden">{{ 'Toggle left column'|t }}</span>
+            <span class="visually-hidden">{{ 'Left column'|t }}</span>
           </button>
         {% endif %}
         {% if pb_2c_r_tgl %}
           <button type="button"
                   class="pb-layout-col__toggle control-btn"
                   data-col-toggle="right"
-                  data-label-expand="{{ 'Expand right column'|t }}"
-                  data-label-collapse="{{ 'Collapse right column'|t }}"
                   aria-controls="{{ paragraph_id }}-col-right"
                   aria-expanded="{{ pb_2c_r_def == 'closed' ? 'false' : 'true' }}"
-                  aria-label="{{ pb_2c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}"
-                  title="{{ pb_2c_r_def == 'closed' ? 'Expand right column'|t : 'Collapse right column'|t }}">
+                  title="{{ 'Right column'|t }}">
             {{ include('@paragraph_bundle_layout/templates/pb-col-toggle-icons.html.twig', {icon_style: pb_2c_icn, col_side: 'right'}, false) }}
-            <span class="visually-hidden">{{ 'Toggle right column'|t }}</span>
+            <span class="visually-hidden">{{ 'Right column'|t }}</span>
           </button>
         {% endif %}
       </div>

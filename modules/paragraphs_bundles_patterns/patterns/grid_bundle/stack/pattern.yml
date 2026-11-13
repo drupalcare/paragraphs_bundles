@@ -1,0 +1,15 @@
+label: 'Stack'
+description: 'Split cards of photo and words that stick and pile up as the page scrolls, the card below shrinking and dimming.'
+weight: 3
+stage: boxed
+ground: light
+placement: both
+serves: [corporate, saas, studio]
+needs:
+  - 'Keep two to five Hero items in the Grid, each with an Image and a Title. A Link is optional; the whole text box becomes the link.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

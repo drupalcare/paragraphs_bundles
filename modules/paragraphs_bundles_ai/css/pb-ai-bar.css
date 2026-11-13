@@ -448,6 +448,8 @@
    bar's green; the second (Edit) is an outline. White on #0e5e54 is 7.6:1. */
 .pb-ai-bar .pb-ai-bar__row--actions > .form-submit {
   padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  text-transform: none;
   color: #f4f7f3;
   border: 1px solid #0e5e54;
   border-radius: 4px;
@@ -456,8 +458,6 @@
   font: inherit;
   font-size: 0.85rem;
   line-height: 1.4;
-  text-transform: none;
-  cursor: pointer;
 }
 
 .pb-ai-bar .pb-ai-bar__row--actions > .form-submit:hover {

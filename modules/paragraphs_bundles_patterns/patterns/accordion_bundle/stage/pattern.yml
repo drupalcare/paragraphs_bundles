@@ -1,0 +1,18 @@
+label: 'Stage'
+description: 'Big numbered steps on one side and one photo stage on the other; it plays through the steps with a visible Pause.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [corporate, saas, healthcare, associations]
+needs:
+  - 'Keep three to five sections. Each needs a title and a body: first an Image, then one text block. Only one step stays open, it plays by itself every seven seconds, and the indicator is switched off for you.'
+settings:
+  pb_display_accor_indicator: 0
+  pb_display_accor_show_expand: 0
+  pb_display_accor_open_first: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

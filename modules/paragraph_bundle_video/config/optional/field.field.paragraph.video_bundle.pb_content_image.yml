@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_image
+    - media.type.pb_media_image
+    - paragraphs.paragraphs_type.video_bundle
+id: paragraph.video_bundle.pb_content_image
+field_name: pb_content_image
+entity_type: paragraph
+bundle: video_bundle
+label: Poster
+description: 'The picture shown before Play, and whenever the film does not play. Required for a video file. For a video from a provider, leave it empty to use the thumbnail this site stored when the video was saved.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      pb_media_image: pb_media_image
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

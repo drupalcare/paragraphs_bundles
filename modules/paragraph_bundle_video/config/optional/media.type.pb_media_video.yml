@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies: {  }
+id: pb_media_video
+label: 'Video file (PB)'
+description: 'A video file uploaded to this site, for Paragraph Bundle Video.'
+source: video_file
+queue_thumbnail_downloads: false
+new_revision: true
+source_configuration:
+  source_field: pb_video_file
+field_map:
+  name: name

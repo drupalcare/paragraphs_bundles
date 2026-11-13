@@ -1,0 +1,17 @@
+label: 'Contents'
+description: 'Numbered contents list with a progress rail beside the open chapter.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [university, government, associations, publication]
+needs:
+  - 'Keep at least three tabs, each with a name and a body: start with an Image, then a text block. Numbers come from the list, so leave them out of the names. The tabs stay vertical for you.'
+settings:
+  pb_display_tab_vertical_tabs: 1
+  pb_display_tab_stack_narrow: 1
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

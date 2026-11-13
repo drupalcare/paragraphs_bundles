@@ -1,0 +1,93 @@
+/**
+ * @file
+ * Pattern Slimline for the Alert.
+ *
+ * Icon, message and controls share one row, each in its own grid column, so
+ * the words wrap inside their own cell and never reach a control. An alert's
+ * body accepts any bundle, including another alert, so every control is reached
+ * with a child path. Whatever the editor can set on the bundle is written with
+ * :where() or as var(--pb-*, default), so the editor wins.
+ */
+
+:where(.pb-pattern--alert-slimline > .pb-ui-inner) {
+  padding: clamp(2px, 0.5cqi, 6px) clamp(10px, 3cqi, 40px);
+  color: var(--pb-pattern-ink);
+  border-block-end: 2px solid var(--pb-alert-state-color, var(--pb-pattern-line));
+  background: color-mix(in sRGB, var(--pb-alert-state-color, var(--pb-pattern-line)) 10%, var(--pb-pattern-surface));
+}
+
+/* PB builds this grid only when a state is picked and :has() is available. The
+   columns match, so a message without a state gets the same single row. */
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+  font-size: clamp(0.875rem, 1.6cqi, 1rem);
+  line-height: 1.35;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top {
+  display: contents;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+  grid-row: 1;
+  grid-column: 1;
+  align-self: center;
+  margin-inline-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon svg {
+  inline-size: clamp(18px, 1.8cqi, 22px);
+  block-size: clamp(18px, 1.8cqi, 22px);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert__content {
+  display: flex;
+  flex-wrap: wrap;
+  grid-row: 1;
+  grid-column: 2;
+  align-items: baseline;
+  align-self: center;
+  min-width: 0;
+  column-gap: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert__content > .pb-content__title {
+  margin-block: 0;
+  font: inherit;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert__content :where(p, ul, ol) {
+  margin-block: 0;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: center;
+  min-block-size: var(--pb-pattern-target);
+  margin-inline-start: var(--pb-px8);
+  padding: 0;
+  border: 0;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown > button.pb-alert__countdown-pause {
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top > button.pb-alert__close {
+  grid-row: 1;
+  grid-column: 4;
+  align-self: center;
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+  margin-inline-start: var(--pb-px12);
+  border-radius: 4px;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-slimline > .pb-ui-inner > .pb-alert--top > button.pb-alert__close svg {
+  inline-size: var(--pb-px24);
+  block-size: var(--pb-px24);
+}

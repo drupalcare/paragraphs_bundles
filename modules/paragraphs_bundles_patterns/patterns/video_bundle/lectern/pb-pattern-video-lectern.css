@@ -1,0 +1,107 @@
+/**
+ * @file
+ * Pattern Lectern for Video: the transcript reads beside the picture.
+ *
+ * Colors sit on the inner element as --pb-* tokens or under :where(), so the
+ * editor's Background, Text and Link settings win. Layout is specific because
+ * PB's own rule on the inner element sets display at class specificity.
+ */
+
+:where(.pb-pattern--video-lectern > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-lk: var(--pb-pattern-ink);
+
+  padding: clamp(14px, 2.6cqi, 32px);
+  background-color: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern > .pb-ui-inner {
+  display: grid;
+  grid-template-areas:
+    "stage"
+    "title"
+    "description"
+    "transcript";
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(16px, 2cqi, 20px);
+}
+
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-video.pb-pattern--video-lectern > .pb-ui-inner {
+    grid-template-areas:
+      "stage title"
+      "stage description"
+      "stage transcript";
+    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.7fr) minmax(15rem, 1fr);
+    column-gap: clamp(20px, 3cqi, 40px);
+  }
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__stage {
+  grid-area: stage;
+  align-self: start;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-content__title {
+  grid-area: title;
+  font-size: clamp(1.35rem, 2.7cqi, 2rem);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__description {
+  grid-area: description;
+  color: color-mix(in sRGB, currentColor 72%, transparent);
+  font-size: clamp(0.95rem, 1.2cqi, 1.05rem);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__transcript {
+  grid-area: transcript;
+  border-color: color-mix(in sRGB, currentColor 22%, transparent);
+  border-block-end: 0;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__transcript > :not(summary) {
+  overflow-y: auto;
+  max-block-size: clamp(8rem, 12cqi, 18rem);
+
+  /* The summary's label ends 7px short of the words below it; 12px clear. */
+  padding-block-start: var(--pb-px12);
+  padding-inline-end: 0.75rem;
+  font-size: clamp(0.9rem, 1.1cqi, 1rem);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__transcript > :not(summary):focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* A flush square in the corner of the poster; the stage clips an outer ring. */
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__play {
+  inset-block-start: auto;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  inline-size: clamp(3.5rem, 6cqi, 4.5rem);
+  block-size: clamp(3.5rem, 6cqi, 4.5rem);
+  margin: 0;
+  color: var(--pb-pattern-surface);
+  border: 0;
+  border-radius: 0;
+  background-color: var(--pb-pattern-accent);
+  box-shadow: none;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__play:hover,
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__play:focus-visible {
+  transform: none;
+  color: var(--pb-pattern-surface);
+  background-color: var(--pb-pattern-ink);
+  box-shadow: none;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-lectern .pb-video__play:focus-visible {
+  outline: 2px solid var(--pb-pattern-surface);
+  outline-offset: -6px;
+}

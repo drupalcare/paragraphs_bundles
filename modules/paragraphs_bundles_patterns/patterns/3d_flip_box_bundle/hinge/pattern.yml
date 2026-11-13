@@ -1,0 +1,17 @@
+label: 'Hinge'
+description: 'The front swings open like a door from one edge while the back waits still behind it. The turning direction setting is ignored.'
+weight: 2
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [creative, corporate, saas]
+needs:
+  - 'Fill in both the front and the back with Simple, Image, Icon or Link paragraphs. Keep the bottom corner at the end of each side free of text, because the turn button sits there.'
+  - 'Set a height for the box.'
+settings:
+  pb_display_flip_xy: flip_y
+pictures:
+  image_narrow_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

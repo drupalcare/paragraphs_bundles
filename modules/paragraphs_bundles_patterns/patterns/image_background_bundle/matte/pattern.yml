@@ -1,0 +1,14 @@
+label: 'Matte'
+description: 'The photo sits inside a thick colored mat like a framed print, with the content on a plain band at the bottom of the frame; the mat takes the Image Overlay Color.'
+weight: 2
+stage: boxed
+ground: light
+placement: neither
+serves: [studio, cultural, publication]
+needs:
+  - 'Add a background image and short content. Set Image Overlay Color for the mat, at full opacity for a solid mat; without it the mat is light gray.'
+settings: {}
+pictures:
+  image_background_bundle.pb_display_background_image:
+    style: pb_wide_xxlg
+    responsive: false

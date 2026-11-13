@@ -1,0 +1,37 @@
+insert:
+  version: VERSION
+  css:
+    component:
+      css/pb-patterns-insert.css: {}
+  js:
+    js/pb-patterns-insert.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+
+base:
+  version: VERSION
+  css:
+    theme:
+      css/pb-patterns-base.css: {}
+
+# Theme bridges: added to "base" by PatternLibraryInfoAlterHook when the active
+# theme is Solo, APEX or W3CSS, or a sub-theme of one. Their selector outranks
+# the :where() in pb-patterns-base.css, so they replace its color tokens. Other themes get none.
+theme-bridge-solo:
+  version: VERSION
+  css:
+    theme:
+      css/bridge/pb-patterns-bridge-solo.css: { weight: 100 }
+
+theme-bridge-apex:
+  version: VERSION
+  css:
+    theme:
+      css/bridge/pb-patterns-bridge-apex.css: { weight: 100 }
+
+theme-bridge-w3css:
+  version: VERSION
+  css:
+    theme:
+      css/bridge/pb-patterns-bridge-w3css.css: { weight: 100 }

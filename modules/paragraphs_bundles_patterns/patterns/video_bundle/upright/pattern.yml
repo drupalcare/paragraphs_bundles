@@ -1,0 +1,15 @@
+label: 'Upright'
+description: 'For a film shot on a phone, such as a testimonial or a founder talking to camera: a tall picture with a very large title beside it, and a labeled Play plate across the foot of the picture.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [healthcare, nonprofit, corporate]
+needs:
+  - 'Open this section and choose your video; the sample has none. Keep Shape at 9:16, and keep the Video Title and Poster. A short title reads best at this size.'
+settings: {}
+pictures:
+  video_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

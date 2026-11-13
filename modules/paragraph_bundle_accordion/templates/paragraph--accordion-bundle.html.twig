@@ -32,6 +32,19 @@
 {% set pb_expand_all = not paragraph.pb_display_accor_show_expand.isEmpty and paragraph|pb_field_value('pb_display_accor_show_expand') %}
 {% set pb_show_indicator = not paragraph.pb_display_accor_indicator.isEmpty and paragraph|pb_field_value('pb_display_accor_indicator') %}
 {% set pb_open_first = not paragraph.pb_display_accor_open_first.isEmpty and paragraph|pb_field_value('pb_display_accor_open_first') %}
+{# Each pane is a named region landmark only while there are six sections or
+   fewer; more would flood the landmark list (ARIA APG accordion pattern). #}
+{% set pb_pane_regions = paragraph.pb_content_accordion_section|length <= 6 %}
+{# Each section button sits in a heading one level below the printed title
+   (pb_content_title_tag, read the same way as pb-content-title.html.twig:
+   h1 -> h2 ... h5 -> h6, h6 stays h6). No title, or a "div" title: h3.
+   WCAG 1.3.1, ARIA APG accordion pattern. #}
+{% set pb_heading_levels = {h1: 'h2', h2: 'h3', h3: 'h4', h4: 'h5', h5: 'h6', h6: 'h6'} %}
+{% set pb_section_heading = 'h3' %}
+{% if pb_title %}
+  {% set pb_title_tag = paragraph.hasField('pb_content_title_tag') and not paragraph.pb_content_title_tag.isEmpty() ? paragraph|pb_field_value('pb_content_title_tag') : 'h3' %}
+  {% set pb_section_heading = pb_heading_levels[pb_title_tag]|default('h3') %}
+{% endif %}
 
 {% set classes = [
   'paragraph',
@@ -80,6 +93,7 @@
               {% set raw_slug = accordion_title|lower|replace({' ': '-', '?': '', ',': '', '.': '', '/': '-'}) %}
               {% set base_slug = raw_slug|length > 50 ? raw_slug[:50]|clean_id : raw_slug|clean_id %}
               {% set tab_slug = paragraph.id.value ~ '-' ~ tab_index ~ '-' ~ base_slug %}
+              <{{ pb_section_heading }} class="pb-accordion__heading">
               <button id="{{ acc_id }}-{{ tab_index }}" class="pb-ui-btn pb-ui-bar pb-accordion__button" data-fragment="{{ tab_slug }}" aria-label="{{ accordion_title|decode_entities }}" aria-expanded="{% if key == 0 and pb_open_first %}true{% else %}false{% endif %}" aria-controls="{{ acc_id }}-{{ tab_index }}-pane" type="button">
 
                 <span class="pb-ui-btn__title">
@@ -98,8 +112,9 @@
                   </span>
                 {% endif %}
               </button>
+              </{{ pb_section_heading }}>
 
-              <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb-ui-row pb-accordion__pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}" aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">
+              <div id="{{ acc_id }}-{{ key + 1 }}-pane" class="pb-ui-row pb-accordion__pane {{ pb_animated_tab == '' ? '' : ' ' ~ pb_animated_tab }}" {% if pb_pane_regions %}role="region" aria-labelledby="{{ acc_id }}-{{ key + 1 }}" {% endif %}aria-hidden="{% if key == 0 and pb_open_first %}false{% else %}true{% endif %}" data-index="{{ key }}">
                 {{ item|pb_section_bodies('pb_content_accordion_body') }}
               </div>
 

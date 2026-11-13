@@ -1,0 +1,15 @@
+label: 'Unveil'
+description: 'A solid panel slides off the photo as it scrolls into view, and slides back if the visitor scrolls up past it.'
+weight: 4
+stage: open
+ground: light
+placement: outer-margin
+serves: [creative, nonprofit, studio]
+needs:
+  - 'Add an image. The panel takes the Background color; browsers without scroll animation show the photo with no panel.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

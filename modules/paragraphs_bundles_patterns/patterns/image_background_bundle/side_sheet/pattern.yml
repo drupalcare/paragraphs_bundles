@@ -1,0 +1,14 @@
+label: 'Side sheet'
+description: 'A full-width photo with a solid sheet of content resting against one side, so the words never sit on the photo; the sheet takes the Image Overlay Color, and full opacity keeps the words easy to read.'
+weight: 1
+stage: open
+ground: light
+placement: neither
+serves: [nonprofit, university, government]
+needs:
+  - 'Add a background image and the main content. Set Image Overlay Color to color the sheet; without it the sheet is white.'
+settings: {}
+pictures:
+  image_background_bundle.pb_display_background_image:
+    style: pb_original_size
+    responsive: false

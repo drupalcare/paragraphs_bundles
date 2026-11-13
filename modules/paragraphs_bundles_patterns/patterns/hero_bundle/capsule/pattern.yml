@@ -1,0 +1,16 @@
+label: 'Capsule'
+description: 'A playful hero: the photo sits in a tall rounded capsule with a solid accent twin behind it that slides a little further when you point at the hero, and a round tilted sticker on the capsule carries the button words. Keep the Link title to 18 characters or fewer, for example Join us, so it fits the sticker in two lines. No Link title, no sticker.'
+weight: 5
+stage: open
+ground: light
+placement: outer-margin
+serves: [nonprofit, events, creative]
+needs:
+  - 'Add a portrait Image, a Kicker, a Title and one or two sentences of Body.'
+  - 'To show the sticker, add a Link and fill in a short Link title (18 characters or fewer): that title is the sticker text.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

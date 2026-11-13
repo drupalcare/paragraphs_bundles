@@ -1,0 +1,86 @@
+/**
+ * @file
+ * Pattern Wedge for the Image Overlay.
+ *
+ * The color is painted by a pseudo-element, so the link keeps the whole photo
+ * as its target. The editor's color, opacity, text color, radius and title
+ * padding are used as they are. The x coordinates are written once as
+ * variables so right-to-left mirrors them by switching --pb-pattern-wedge-m.
+ */
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge {
+  --pb-pattern-wedge-m: 0;
+  --pb-pattern-wedge-leg: 70%;
+  --pb-pattern-wedge-time: 0.6s;
+  --pb-pattern-wedge-x0: calc(var(--pb-pattern-wedge-m) * 100%);
+  --pb-pattern-wedge-xa: calc(var(--pb-pattern-wedge-m) * 100% + (1 - 2 * var(--pb-pattern-wedge-m)) * var(--pb-pattern-wedge-leg));
+  --pb-pattern-wedge-xf: calc(var(--pb-pattern-wedge-m) * 100% + (1 - 2 * var(--pb-pattern-wedge-m)) * 220%);
+}
+
+/* Right-to-left: the corner and the title move to the right. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge:dir(rtl) {
+  --pb-pattern-wedge-m: 1;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__container {
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__container::before {
+  position: absolute;
+  content: "";
+  inset: 0;
+  transition: clip-path var(--pb-pattern-wedge-time) var(--pb-pattern-ease-out);
+  pointer-events: none;
+  border-radius: inherit;
+  background-color: var(--pb-bg, var(--pb-pattern-stage-bg));
+  clip-path: polygon(var(--pb-pattern-wedge-x0) 30%, var(--pb-pattern-wedge-x0) 100%, var(--pb-pattern-wedge-xa) 100%);
+}
+
+/* Swept: pointer or keyboard focus anywhere on the photo. The triangle grows
+   past the far corner, so it covers the photo at any shape. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner:is(:hover, :focus-within) .pb-overlay__container::before {
+  clip-path: polygon(var(--pb-pattern-wedge-x0) -120%, var(--pb-pattern-wedge-x0) 100%, var(--pb-pattern-wedge-xf) 100%);
+}
+
+/* The title waits inside the wedge, kept to three lines so it never leaves it. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__title {
+  display: -webkit-box;
+  overflow: hidden;
+  width: auto;
+  max-width: 34cqi;
+  height: auto;
+  margin: 0;
+  transform: none;
+  text-align: start;
+  overflow-wrap: anywhere;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  inset-block: auto clamp(0.5rem, 3cqi, 1.25rem);
+  inset-inline: clamp(0.5rem, 3cqi, 1.25rem) auto;
+  font-size: clamp(0.8125rem, 3.2cqi, 1.25rem);
+  line-height: 1.2;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__container::before {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__container::before {
+    background-color: Canvas;
+  }
+
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__title {
+    color: CanvasText;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-wedge .pb-image-overlay__inner .pb-overlay__container::before {
+    clip-path: none;
+  }
+}

@@ -1,0 +1,169 @@
+/**
+ * @file
+ * Pattern Stack for the Grid: split Hero cards that stick and pile up.
+ *
+ * Scroll-driven where supported, a plain sticky stack elsewhere. Defaults sit
+ * on the text wrapper and in :where() rules, so the editor's text box colors
+ * and padding win.
+ */
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack {
+  --pb-pattern-stack-radius: 16px;
+  --pb-pattern-stack-n: 3;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper.pb-grid__wrapper {
+  overflow: visible;
+  grid-template-rows: none;
+  grid-template-columns: minmax(0, 1fr);
+  counter-reset: pb-pattern-stack pb-pattern-stack-total var(--pb-pattern-stack-n);
+  view-timeline: --pb-pattern-stack block;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper:has(> .pb-hero:nth-child(2):last-child) {
+  --pb-pattern-stack-n: 2;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper:has(> .pb-hero:nth-child(4):last-child) {
+  --pb-pattern-stack-n: 4;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper:has(> .pb-hero:nth-child(5):last-child) {
+  --pb-pattern-stack-n: 5;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero {
+  --pb-pattern-stack-i: 1;
+
+  min-width: 0;
+  counter-increment: pb-pattern-stack;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero:nth-child(2) {
+  --pb-pattern-stack-i: 2;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero:nth-child(3) {
+  --pb-pattern-stack-i: 3;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero:nth-child(4) {
+  --pb-pattern-stack-i: 4;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero:nth-child(5) {
+  --pb-pattern-stack-i: 5;
+}
+
+/* The card: photo over words, side by side from 44rem. The clearfix
+   pseudo-elements would become grid cells and push the photo out of place. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .hero-bundle-inner::before,
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .hero-bundle-inner {
+  display: grid;
+  transform-origin: 50% 0;
+  border: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: var(--pb-pattern-stack-radius);
+  background: var(--pb-pattern-surface);
+  box-shadow: 0 28px 60px -34px color-mix(in sRGB, var(--pb-pattern-stage-bg) 45%, transparent);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-hero__text-wrapper {
+  --pb-tx: var(--pb-pattern-ink);
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: auto;
+  height: auto;
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-hero__text-inner {
+  position: relative;
+  width: 100%;
+  transform: none;
+  inset: auto;
+}
+
+:where(.pb-pattern--grid-stack .pb-hero__text-inner) {
+  padding: clamp(1.25rem, 4cqi, 3.25rem);
+}
+
+/* The running count, before the words. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-hero__text-wrapper::before {
+  display: block;
+  clear: none;
+  padding-block: clamp(1.25rem, 4cqi, 3.25rem) 0;
+  padding-inline: clamp(1.25rem, 4cqi, 3.25rem);
+  content: counter(pb-pattern-stack, decimal-leading-zero) " / " counter(pb-pattern-stack-total, decimal-leading-zero);
+  letter-spacing: 0.12em;
+  color: var(--pb-pattern-muted);
+  font: 650 var(--pb-px13) / 1 monospace;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-content__title {
+  margin-block: 0 var(--pb-px14);
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-size: clamp(1.6rem, 3.2cqi, 2.75rem);
+  font-weight: 750;
+  line-height: 1.08;
+}
+
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero {
+    position: sticky;
+    inset-block-start: calc(1.5rem + (var(--pb-pattern-stack-i) - 1) * 14px);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .hero-bundle-inner {
+    grid-template-columns: minmax(0, 58fr) minmax(0, 42fr);
+    min-block-size: 32rem;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-hero .pb-u-image-full {
+    align-self: stretch;
+    aspect-ratio: auto;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @container pb-pattern-region (min-width: 44rem) {
+      .paragraphs-bundles.pb-grid.pb-pattern--grid-stack .pb-grid__wrapper > .pb-hero:not(:last-child) .hero-bundle-inner {
+        animation: pb-pattern-stack-recede linear both;
+        animation-timeline: --pb-pattern-stack;
+        animation-range: exit-crossing calc((var(--pb-pattern-stack-i) - 1) / var(--pb-pattern-stack-n) * 100%) exit-crossing calc(var(--pb-pattern-stack-i) / var(--pb-pattern-stack-n) * 100%);
+      }
+    }
+
+    @keyframes pb-pattern-stack-recede {
+      to {
+        transform: scale(0.9);
+        filter: brightness(0.88);
+      }
+    }
+  }
+}

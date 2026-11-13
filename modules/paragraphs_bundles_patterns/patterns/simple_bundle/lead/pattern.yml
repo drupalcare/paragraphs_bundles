@@ -1,0 +1,11 @@
+label: 'Lead'
+description: 'An article opening: a larger first paragraph and, on left-to-right pages, a large first letter.'
+weight: 3
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [publication, university, government, healthcare]
+needs:
+  - 'Enter a Title and a Body of at least 120 characters that begins with a full paragraph. Body paragraphs after the first keep normal size.'
+  - 'Pages in right-to-left languages get the larger first paragraph without the large first letter.'
+settings: {}

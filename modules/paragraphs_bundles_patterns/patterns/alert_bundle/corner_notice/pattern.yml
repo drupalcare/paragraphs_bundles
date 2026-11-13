@@ -1,0 +1,11 @@
+label: 'Corner notice'
+description: 'A small card waits in the bottom corner of the screen instead of pushing the page down. It floats over the page and can cover what is behind it, so use one per page and keep the message short.'
+weight: 4
+stage: open
+ground: light
+placement: neither
+serves: [government, healthcare, events, university]
+needs:
+  - 'Add one Simple paragraph to the Body, 240 characters at most. A Title of up to 60 characters is optional. The close button is switched on for you so visitors can always dismiss it.'
+settings:
+  pb_display_show_close_button: 1

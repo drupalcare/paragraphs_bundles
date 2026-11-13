@@ -1,0 +1,15 @@
+label: 'Cube'
+description: 'The box rolls like a solid block, so the back arrives on the next side with visible depth. The turning direction stays your choice.'
+weight: 1
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [saas, creative, studio]
+needs:
+  - 'Fill in both the front and the back with Simple, Image, Icon or Link paragraphs. Keep the top corner at the end of each side free of text, because the turn button sits there.'
+  - 'Set a height for the box. Pick Horizontal or Vertical to choose which way it rolls.'
+pictures:
+  image_narrow_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

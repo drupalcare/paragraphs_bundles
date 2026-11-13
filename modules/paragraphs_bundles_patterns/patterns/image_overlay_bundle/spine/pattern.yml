@@ -1,0 +1,17 @@
+label: 'Spine'
+description: 'The title runs up the side of the photo like a book spine and lies flat across the photo when pointed at. In right-to-left languages it stays horizontal at the side. Long titles are cut short.'
+weight: 3
+stage: boxed
+ground: dark
+placement: outer-margin
+serves: [publication, cultural, university]
+needs:
+  - 'Add an image and a short title of one to three words. Choose a background color and a text color that read well together.'
+  - 'The hover style list is replaced by this pattern, so the title is always visible.'
+settings:
+  pb_display_image_overlay: ''
+pictures:
+  image_overlay_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

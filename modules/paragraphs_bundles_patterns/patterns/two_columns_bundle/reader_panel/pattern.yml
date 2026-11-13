@@ -1,0 +1,14 @@
+label: 'Reader panel'
+description: 'A side column that folds away with a round tab on the divider, so the reader can read wider; the tab keeps its own light colors.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [publication, university, healthcare, associations]
+needs:
+  - 'Put the main text in the Left column and the side material (notes, contents, a figure) in the Right column.'
+  - 'The fold tab on the right column is switched on and placed at the middle of the divider for you. It shows from the layout breakpoint you chose, where the columns sit side by side.'
+settings:
+  pb_display_2c_r_tgl: 1
+  pb_display_2c_l_tgl: 0
+  pb_display_2c_icn_pos: inside_center

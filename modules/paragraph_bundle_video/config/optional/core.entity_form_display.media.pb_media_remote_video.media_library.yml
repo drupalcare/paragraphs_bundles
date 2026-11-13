@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.media_library
+    - field.field.media.pb_media_remote_video.pb_video_url
+    - media.type.pb_media_remote_video
+  module:
+    - media
+id: media.pb_media_remote_video.media_library
+targetEntityType: media
+bundle: pb_media_remote_video
+mode: media_library
+content:
+  pb_video_url:
+    type: oembed_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  name: true
+  path: true
+  status: true
+  uid: true

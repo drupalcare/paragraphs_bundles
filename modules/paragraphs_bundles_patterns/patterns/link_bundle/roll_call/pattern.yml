@@ -1,0 +1,9 @@
+label: 'Roll call'
+description: 'Links stacked in very large type like a poster; pointing at one dims the rest and slides in an arrow.'
+weight: 1
+stage: open
+ground: dark
+placement: neither
+serves: [creative, studio, cultural]
+needs:
+  - 'Add 3 to 7 links, and give each link a short title so the large type stays readable.'

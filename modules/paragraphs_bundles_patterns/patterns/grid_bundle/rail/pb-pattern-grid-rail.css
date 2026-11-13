@@ -1,0 +1,365 @@
+/**
+ * @file
+ * Pattern Rail for the Grid: tall portrait flip cards in a snapping row.
+ *
+ * The row is never a user scroller (overflow-x: hidden); the buttons, a touch
+ * swipe and keyboard focus move it. Click-only and sideways, as in Hand.
+ */
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail {
+  --pb-pattern-rail-width: 340px;
+  --pb-pattern-rail-radius: 28px;
+  --pb-pattern-rail-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z'/%3E%3C/svg%3E");
+  --pb-pattern-rail-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E");
+}
+
+:where(.pb-pattern--grid-rail > .pb-ui-inner) {
+  padding-block: clamp(32px, 6cqi, 80px);
+  padding-inline: 0;
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-grid__wrapper.pb-grid__wrapper {
+  overflow-x: hidden;
+  grid-template-rows: none;
+  grid-template-columns: none;
+  grid-auto-columns: min(var(--pb-pattern-rail-width), 82%);
+  grid-auto-flow: column;
+  padding-block: var(--pb-px8) var(--pb-px24);
+  padding-inline: var(--pb-px20);
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pb-px20);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-y pinch-zoom;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-grid__wrapper.pb-grid__wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-grid__wrapper.pb-pattern-rail--moving {
+  scroll-snap-type: none;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-grid__wrapper > .pb-3d-flip-box {
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene {
+  min-block-size: 30rem;
+  border-radius: var(--pb-pattern-rail-radius);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back {
+  overflow: hidden;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  border-radius: inherit;
+}
+
+:where(.pb-pattern--grid-rail .pb-3d-flip-box__front) {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  background: var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+:where(.pb-pattern--grid-rail .pb-3d-flip-box__back) {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: var(--pb-bg, var(--pb-pattern-raised));
+}
+
+/* Front: the photo fills the card; the title is a glass plate at the foot. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front > .pb-image {
+  position: absolute;
+  overflow: hidden;
+  height: 100%;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front > .pb-image img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front > .paragraphs-bundles:not(.pb-image) {
+  position: relative;
+  z-index: 1;
+  height: auto;
+}
+
+:where(.pb-pattern--grid-rail .pb-3d-flip-box__front > .paragraphs-bundles:not(.pb-image) > .pb-ui-inner) {
+  margin: var(--pb-px12);
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  border-radius: 18px;
+  background: color-mix(in sRGB, var(--pb-bg, var(--pb-pattern-stage-bg)) 86%, transparent);
+  padding-block: var(--pb-px14);
+  padding-inline: var(--pb-px18);
+}
+
+/* A nested paragraph's --pb-bg is transparent and its --pb-tx is the region's,
+   so the plate names its own pair here. An editor's colors on it still win. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front > .paragraphs-bundles:not(.pb-image) > .pb-ui-inner {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+  --pb-bg: var(--pb-pattern-stage-bg);
+}
+
+/* Every word on the plate takes the plate's own color, so a theme's dark body
+   color cannot land on the photo behind it. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front > .paragraphs-bundles:not(.pb-image) > .pb-ui-inner :is(.pb-content__full, p, div, span) {
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__front .pb-content__title {
+  margin: 0;
+  color: inherit;
+  font-size: var(--pb-px20);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* Back: the quote, and below it the name of who said it (the Title). */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back {
+  overflow-y: auto;
+  justify-content: space-between;
+  padding-block: var(--pb-px36);
+  padding-inline: var(--pb-px28);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back > .paragraphs-bundles {
+  height: auto;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back .pb-content__full {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: var(--pb-px18);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back .pb-content__full > :not(.pb-content__title) {
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+  font-size: clamp(1.35rem, 2.2cqi, 1.75rem);
+  line-height: 1.28;
+}
+
+/* The tall opening quote mark also keeps the first line below the button's corner. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back .pb-content__full > :not(.pb-content__title)::before {
+  display: block;
+  content: "\201C";
+  color: var(--pb-pattern-muted);
+  font-size: 3em;
+  line-height: 0.8;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back .pb-content__title {
+  margin: 0;
+  color: inherit;
+  font-size: var(--pb-px15);
+}
+
+/* The turn control. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__toggle {
+  right: auto;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  filter: drop-shadow(0 0 1px var(--pb-pattern-stage-bg)) drop-shadow(0 0 2px var(--pb-pattern-stage-bg));
+  color: var(--pb-pattern-stage-color);
+  border: 0;
+  background: transparent;
+  inset-inline-end: var(--pb-px4);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene.pb-is-showing-back .pb-3d-flip-box__toggle {
+  filter: drop-shadow(0 0 1px var(--pb-pattern-raised)) drop-shadow(0 0 2px var(--pb-pattern-raised));
+  color: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__toggle:focus-visible {
+  outline: 3px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Click only: PB's hover and focus flips are removed; only the button turns. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__inner,
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within {
+  transform: translateZ(0);
+}
+
+/* The bar: counter, track, then both buttons at the end, its own row. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--pb-px14);
+  max-inline-size: 75rem;
+  margin-inline: auto;
+  margin-block-start: var(--pb-px6);
+  padding-inline: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__bar[hidden] {
+  display: none;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__count {
+  order: 1;
+  min-width: 3.5em;
+  margin: 0;
+  text-align: center;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__track {
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  order: 2;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__thumb {
+  --pb-pattern-rail-w: calc(var(--pb-pattern-rail-size, 0.3) * 100%);
+
+  position: absolute;
+  width: var(--pb-pattern-rail-w);
+  border-radius: 4px;
+  background: var(--pb-pattern-ink);
+  inset-block: 0;
+  inset-inline-start: calc(var(--pb-pattern-rail-p, 0) * (100% - var(--pb-pattern-rail-w)));
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+  color: var(--pb-pattern-surface);
+  border: 0;
+  border-radius: 16px;
+  background: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__prev {
+  order: 3;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__next {
+  order: 4;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn::before {
+  width: 1.25rem;
+  height: 1.25rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: var(--pb-pattern-rail-next) center / contain no-repeat;
+  mask: var(--pb-pattern-rail-next) center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__prev::before {
+  -webkit-mask-image: var(--pb-pattern-rail-prev);
+  mask-image: var(--pb-pattern-rail-prev);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn::before {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn[aria-disabled="true"] {
+  cursor: default;
+  opacity: 0.3;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn:focus-visible {
+  outline: 3px solid var(--pb-pattern-ink);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* Always sideways, whichever way the editor set each card. */
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y).pb-is-flipped .pb-3d-flip-box__inner {
+    transform: rotateY(180deg);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__back:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y) {
+    transform: rotateY(180deg);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn:not([aria-disabled="true"]):hover {
+    transform: translateY(-2px);
+  }
+
+  @supports (animation-timeline: view()) {
+    .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-grid__wrapper > .pb-3d-flip-box {
+      animation: pb-pattern-rail-in linear both;
+      animation-timeline: view(x);
+      animation-range: entry 0% entry 90%;
+    }
+
+    @keyframes pb-pattern-rail-in {
+      from {
+        transform: scale(0.86) rotate(4deg) translateY(24px);
+        opacity: 0.3;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn {
+    transition: none;
+  }
+
+  /* PB fades the faces on hover and focus here; only the button may turn. */
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+    opacity: 1;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__back,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene:not(.pb-is-flipped) .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
+    opacity: 0;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__toggle,
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-3d-flip-box__scene.pb-is-showing-back .pb-3d-flip-box__toggle {
+    filter: none;
+    color: ButtonText;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__btn::before {
+    forced-color-adjust: none;
+  }
+}
+
+/* On a phone the track takes its own line and the buttons center under it. */
+@container pb-pattern-region (max-width: 30rem) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__bar {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-rail .pb-pattern-rail__track {
+    flex: 1 0 100%;
+    order: 0;
+  }
+}

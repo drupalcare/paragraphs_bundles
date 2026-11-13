@@ -47,6 +47,11 @@ final class PbThemeBridgeService implements PbThemeBridgeServiceInterface {
       if ($name === 'solo' || str_starts_with($name, 'solo_')) {
         return self::BRIDGE_SOLO;
       }
+      // The W3CSS theme's machine name; its sub-themes (amun, amunet, anhur,
+      // a site sub-theme) reach it through the base-theme chain.
+      if ($name === 'drupal8_w3css_theme') {
+        return self::BRIDGE_W3CSS;
+      }
     }
     return self::BRIDGE_NEUTRAL;
   }

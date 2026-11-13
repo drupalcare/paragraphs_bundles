@@ -1,0 +1,155 @@
+/**
+ * @file
+ * Pattern Pinned chapter for the Two columns layout.
+ *
+ * The left column stays pinned (PB's own sticky column, forced on) while the
+ * right column scrolls past, with a thin line beside the left column that
+ * fills as the right column is read. The line is always drawn; its fill needs
+ * scroll-driven animations and shows only where they exist, with motion
+ * allowed. Both appear only while the columns sit side by side (the editor's
+ * layout breakpoint). The left column has its own raised ground and title.
+ * Sticky stops working under a theme ancestor with overflow set: then the
+ * columns simply scroll together.
+ */
+
+:where(.pb-pattern--two-columns-pinned-chapter .pb-two-columns > .pb-col-left) {
+  padding: clamp(1rem, 3cqi, 2rem);
+  color: var(--pb-pattern-ink);
+  background: linear-gradient(var(--pb-pattern-editor-bg) 0 0), var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter .pb-two-columns > .pb-col-left .pb-content__title {
+  margin-block-start: 0;
+  letter-spacing: -0.01em;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.5rem, 3.4cqi, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* The static rule beside the left column, drawn whatever the browser. */
+.paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter .pb-two-columns > .pb-col-left::before {
+  position: absolute;
+  display: none;
+  content: "";
+  inset-block: 0;
+  inset-inline-end: 0;
+  inline-size: 2px;
+  background: var(--pb-br, var(--pb-pattern-line));
+}
+
+@media (min-width: 36rem) {
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__576 .pb-two-columns > .pb-col-left {
+    padding-inline-end: clamp(1rem, 2cqi, 1.5rem);
+  }
+
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__576 .pb-two-columns > .pb-col-left::before {
+    display: block;
+  }
+}
+
+@media (min-width: 48rem) {
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__768 .pb-two-columns > .pb-col-left {
+    padding-inline-end: clamp(1rem, 2cqi, 1.5rem);
+  }
+
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__768 .pb-two-columns > .pb-col-left::before {
+    display: block;
+  }
+}
+
+@media (min-width: 62rem) {
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__992 .pb-two-columns > .pb-col-left {
+    padding-inline-end: clamp(1rem, 2cqi, 1.5rem);
+  }
+
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__992 .pb-two-columns > .pb-col-left::before {
+    display: block;
+  }
+}
+
+@media (min-width: 75rem) {
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1200 .pb-two-columns > .pb-col-left {
+    padding-inline-end: clamp(1rem, 2cqi, 1.5rem);
+  }
+
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1200 .pb-two-columns > .pb-col-left::before {
+    display: block;
+  }
+}
+
+@media (min-width: 87.5rem) {
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1400 .pb-two-columns > .pb-col-left {
+    padding-inline-end: clamp(1rem, 2cqi, 1.5rem);
+  }
+
+  .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1400 .pb-two-columns > .pb-col-left::before {
+    display: block;
+  }
+}
+
+@supports (animation-timeline: view()) and (timeline-scope: --pb-pattern-chapter) {
+  @media (prefers-reduced-motion: no-preference) {
+    .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter .pb-two-columns {
+      timeline-scope: --pb-pattern-chapter;
+    }
+
+    .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter .pb-two-columns > .pb-col-right {
+      view-timeline: --pb-pattern-chapter block;
+    }
+
+    .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter .pb-two-columns > .pb-col-left::after {
+      position: absolute;
+      display: none;
+      content: "";
+      transform-origin: top;
+      animation: pb-pattern-chapter-fill linear both;
+      background: var(--pb-lk, var(--pb-pattern-link));
+      inset-block: 0;
+      inset-inline-end: 0;
+      inline-size: 2px;
+      animation-timeline: --pb-pattern-chapter;
+      animation-range: cover 0% cover 100%;
+    }
+
+    @media (min-width: 36rem) {
+      .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__576 .pb-two-columns > .pb-col-left::after {
+        display: block;
+      }
+    }
+
+    @media (min-width: 48rem) {
+      .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__768 .pb-two-columns > .pb-col-left::after {
+        display: block;
+      }
+    }
+
+    @media (min-width: 62rem) {
+      .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__992 .pb-two-columns > .pb-col-left::after {
+        display: block;
+      }
+    }
+
+    @media (min-width: 75rem) {
+      .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1200 .pb-two-columns > .pb-col-left::after {
+        display: block;
+      }
+    }
+
+    @media (min-width: 87.5rem) {
+      .paragraphs-bundles.pb-layout.pb-pattern--two-columns-pinned-chapter.pb__1400 .pb-two-columns > .pb-col-left::after {
+        display: block;
+      }
+    }
+  }
+}
+
+@keyframes pb-pattern-chapter-fill {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}

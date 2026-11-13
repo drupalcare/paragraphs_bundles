@@ -1,0 +1,15 @@
+label: 'Skyline'
+description: 'Split rows: a dark card with an outlined number on one side and the photo settling on the other.'
+weight: 1
+stage: open
+ground: dark
+placement: both
+serves: [corporate, university, associations, saas]
+needs:
+  - 'Keep at least two sections, each with an image and a body. Type the body as a short line, then a heading, then a short paragraph. Add a link if you want one. For the designed motion set Scroll Effect to Smooth Transition and Timing Functions and Parallax Speed to 0.25 on each section.'
+settings: {}
+pictures:
+  parallax_section_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_parallax

@@ -1,0 +1,108 @@
+/**
+ * @file
+ * Pattern Fuse for the Alert.
+ *
+ * PB's countdown script owns the time limit. This line only shows it: the
+ * script file gives it the seconds, and it stops on the same three things that
+ * stop the countdown (pointer inside, keyboard focus inside, Pause pressed).
+ * Without a countdown, or without the script, it stays a plain full-width rule.
+ */
+
+:where(.pb-pattern--alert-fuse > .pb-ui-inner) {
+  padding: clamp(12px, 2.5cqi, 28px) clamp(12px, 3cqi, 40px);
+  color: var(--pb-pattern-ink);
+  background: color-mix(in sRGB, var(--pb-alert-state-color, var(--pb-pattern-line)) 10%, var(--pb-pattern-surface));
+}
+
+/* Holds the words clear of the line whatever padding the editor picks. */
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert__content {
+  margin-block-end: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner::after {
+  position: absolute;
+  block-size: clamp(3px, 0.4cqi, 5px);
+  content: "";
+  transform-origin: 0 50%;
+  background: var(--pb-alert-state-color, currentColor);
+  inset-block-end: 0;
+  inset-inline: 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner::after {
+  transform-origin: 100% 50%;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse.pb-pattern-fuse--running > .pb-ui-inner::after {
+  animation: pb-pattern-alert-fuse-burn var(--pb-pattern-fuse-seconds, 0s) linear forwards;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse.pb-pattern-fuse--running:hover > .pb-ui-inner::after,
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse.pb-pattern-fuse--running:focus-within > .pb-ui-inner::after,
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse.pb-pattern-fuse--running.pb-pattern-fuse--paused > .pb-ui-inner::after {
+  animation-play-state: paused;
+}
+
+@keyframes pb-pattern-alert-fuse-burn {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown {
+  min-block-size: var(--pb-pattern-target);
+  padding-block: 0;
+  /* PB sets 4px; the number and "sec" stay 12px clear of the Pause button. */
+  gap: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown > button.pb-alert__countdown-pause {
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top > button.pb-alert__close {
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top > button.pb-alert__close svg {
+  inline-size: var(--pb-px24);
+  block-size: var(--pb-px24);
+}
+
+/* On a narrow region with a state icon: icon and close share the first row, the
+   message takes the full width under them, the countdown has its own row. */
+@container pb-pattern-region (max-width: 36rem) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner:has(> .pb-alert--top.pb--has-state) > .pb-alert__content {
+    grid-row: 2;
+    grid-column: 1 / -1;
+    margin-block: var(--pb-px12);
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top.pb--has-state > .pb-alert__countdown {
+    grid-row: 3;
+    grid-column: 1 / -1;
+    justify-self: start;
+    margin-inline-start: 0;
+  }
+
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner > .pb-alert--top.pb--has-state > button.pb-alert__close {
+    grid-column: 4;
+  }
+}
+
+/* No moving line: the number stays if the editor turned it on. */
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse.pb-pattern-fuse--running > .pb-ui-inner::after {
+    display: none;
+    animation: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-fuse > .pb-ui-inner::after {
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}

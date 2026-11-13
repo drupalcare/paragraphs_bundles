@@ -1,0 +1,179 @@
+{#
+/**
+ * @file
+ * `video_bundle` paragraph template.
+ *
+ * Two modes, set by `pb_display_video_mode`:
+ *
+ * - player: poster, a Play button, and the video kept in a <template>, so the
+ *   browser fetches nothing for it until the visitor presses Play. The title
+ *   and the description (pb_content_video_main) sit outside the picture.
+ * - background: poster behind the content; a muted film whose sources also
+ *   wait in a <template> until the script allows them.
+ *
+ * Content that cannot be displayed as chosen (a remote video in Background
+ * mode, an uploaded video without a poster) shows the poster or nothing.
+ *
+ * Scoping contract: `.pb-video` on the paragraph root.
+ *
+ * Available variables, besides the paragraph's own:
+ * - pb_video: The array built in PbvPreprocessHook.
+ *
+ * @see \Drupal\paragraph_bundle_video\Hook\PbvPreprocessHook
+ *
+ * @ingroup themeable
+ */
+#}
+
+{{ attach_library('paragraphs_bundles/paragraphs-bundles') }}
+{{ attach_library('paragraph_bundle_video/paragraph-bundle-video') }}
+{% if pb_dynamic_library %}{{ attach_library(pb_dynamic_library) }}{% endif %}
+
+{% set paragraph_id = pb_paragraph_id %}
+{% set classes_inner = ['pb-ui-inner', 'pb-video__inner', 'pb-content__full']|merge(pb_display_classes)|join(' ') %}
+
+{% set classes = [
+  'paragraph',
+  'paragraphs-bundles',
+  'pb-video',
+  'pb-video--' ~ pb_video.mode,
+  'pb-video--ratio-' ~ pb_video.ratio,
+  'paragraph--type--' ~ paragraph.bundle|clean_class,
+  view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+  not paragraph.isPublished() ? 'paragraph--unpublished',
+  'paragraph--id--' ~ paragraph.id.value,
+  paragraph_id,
+] %}
+
+{% set pb_title = content.pb_content_title|render|striptags|trim %}
+{# A remote video may fall back to the local thumbnail core stored at save time; an uploaded one has no such file. #}
+{% set pb_poster = content.pb_content_image|render|trim ? content.pb_content_image : (pb_video.kind == 'remote' ? pb_video.thumbnail : null) %}
+{% set pb_can_play = pb_poster and ((pb_video.kind == 'file' and pb_video.sources) or (pb_video.kind == 'remote' and pb_video.embed)) %}
+{% set pb_has_film = pb_poster and pb_video.kind == 'file' and pb_video.sources %}
+
+{% set pb_rest = content|without(
+  'pb_content_title',
+  'pb_content_title_tag',
+  'pb_content_title_alignment',
+  'pb_content_body',
+  'pb_content_image',
+  'pb_content_video',
+  'pb_content_video_main',
+  'pb_display_video_mode',
+  'pb_display_video_ratio',
+  'pb_display_video_breakpoint',
+  'pb_display_bg',
+  'pb_display_bg_opacity',
+  'pb_display_bg_hover',
+  'pb_display_border_color',
+  'pb_display_border_hover',
+  'pb_display_text',
+  'pb_display_text_hover',
+  'pb_display_link',
+  'pb_display_link_hover',
+  'pb_display_border',
+  'pb_display_border_radius',
+  'pb_display_margin',
+  'pb_display_padding',
+  'pb_display_width',
+  'pb_display_shadow',
+  'pb_display_css_classes',
+) %}
+
+{# These icons are trimmed to their painted edge. The play triangle is an SVG, so right-to-left text does not mirror it. #}
+{% set pb_icon_play %}<svg class="pb-video__icon" viewBox="8 5 11 14" aria-hidden="true" focusable="false"><path d="M8 5v14l11-7z"/></svg>{% endset %}
+{% set pb_icon_pause %}<svg class="pb-video__icon" viewBox="6 5 12 14" aria-hidden="true" focusable="false"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>{% endset %}
+
+{% if pb_video.mode == 'background' %}
+  <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }} data-pb-video-breakpoint="{{ pb_video.breakpoint }}">
+
+    {% if pb_poster %}
+      <div class="pb-video__poster">{{ pb_poster }}</div>
+    {% endif %}
+
+    {% if pb_has_film %}
+      <video class="pb-video__film" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
+      <template data-pb-video-sources>
+        {% for source in pb_video.sources %}
+          <source src="{{ source.url }}" type="{{ source.type }}">
+        {% endfor %}
+      </template>
+      <button type="button" class="pb-video__pause control-btn" data-pb-video-pause data-label-pause="{{ 'Pause background video'|t }}" data-label-play="{{ 'Play background video'|t }}" hidden>
+        <span class="pb-video__pause-icon pb-video__pause-icon--pause">{{ pb_icon_pause }}</span>
+        <span class="pb-video__pause-icon pb-video__pause-icon--play">{{ pb_icon_play }}</span>
+        <span class="visually-hidden" data-pb-video-pause-text>{{ 'Pause background video'|t }}</span>
+      </button>
+    {% endif %}
+
+    <div class="{{ classes_inner }}">
+      <div class="pb-video__content">
+        {% if pb_title %}
+          {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
+        {% endif %}
+        {{ content.pb_content_video_main }}
+        {{ pb_rest }}
+      </div>
+    </div>
+
+  </div>
+{% else %}
+  <div {{ attributes.addClass(classes).setAttribute('id', paragraph_id) }}>
+    <div class="{{ classes_inner }}">
+
+      {% if pb_title %}
+        {{ include('@paragraphs_bundles/pb-content-title.html.twig', {paragraph: paragraph, content: content}, false) }}
+      {% endif %}
+
+      {% if content.pb_content_video_main|render|trim %}
+        <div class="pb-video__description">{{ content.pb_content_video_main }}</div>
+      {% endif %}
+
+      {% if pb_poster %}
+        <div class="pb-video__stage" data-pb-video-stage>
+          <div class="pb-video__poster" data-pb-video-poster>{{ pb_poster }}</div>
+
+          {% if pb_can_play %}
+            <div class="pb-video__frame" data-pb-video-frame hidden></div>
+
+            {% if pb_video.link %}
+              <a class="pb-video__play" href="{{ pb_video.link }}" data-pb-video-link>
+                {{ pb_icon_play }}
+                <span class="pb-video__play-label">{{ pb_video.link_label }}</span>
+              </a>
+            {% endif %}
+
+            <button type="button" class="pb-video__play control-btn" data-pb-video-play hidden>
+              {{ pb_icon_play }}
+              <span class="pb-video__play-label">{{ pb_video.play_label }}</span>
+            </button>
+
+            <template data-pb-video-deferred>
+              {% if pb_video.kind == 'file' %}
+                <video class="pb-video__player" controls playsinline preload="metadata">
+                  {% for source in pb_video.sources %}
+                    <source src="{{ source.url }}" type="{{ source.type }}">
+                  {% endfor %}
+                  {% for track in pb_video.tracks %}
+                    <track kind="captions" src="{{ track.src }}" srclang="{{ track.srclang }}" label="{{ track.label }}">
+                  {% endfor %}
+                </video>
+              {% else %}
+                {{ pb_video.embed }}
+              {% endif %}
+            </template>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if content.pb_content_body|render|striptags|trim %}
+        <details class="pb-video__transcript">
+          <summary>{{ 'Transcript'|t }}</summary>
+          {{ content.pb_content_body }}
+        </details>
+      {% endif %}
+
+      {{ pb_rest }}
+
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,152 @@
+{
+ "3d_carousel_bundle": {
+  "label": "3D Carousel",
+  "module": "paragraph_bundle_3d_carousel",
+  "module_label": "Paragraph Bundle 3D Carousel"
+ },
+ "3d_flip_box_bundle": {
+  "label": "3D Flip Box",
+  "module": "paragraph_bundle_3d_flip_box",
+  "module_label": "Paragraph Bundle 3D Flip Box"
+ },
+ "accordion_bundle": {
+  "label": "Accordion",
+  "module": "paragraph_bundle_accordion",
+  "module_label": "Paragraph Bundle Accordion"
+ },
+ "accordion_section_bundle": {
+  "label": "Accordion Section",
+  "module": "paragraph_bundle_accordion",
+  "module_label": "Paragraph Bundle Accordion"
+ },
+ "alert_bundle": {
+  "label": "Alert",
+  "module": "paragraph_bundle_alert",
+  "module_label": "Paragraph Bundle Alert"
+ },
+ "card_image_section_bundle": {
+  "label": "Card Image Section",
+  "module": "paragraph_bundle_card",
+  "module_label": "Paragraph Bundle Card"
+ },
+ "card_text_section_bundle": {
+  "label": "Card Text Section",
+  "module": "paragraph_bundle_card",
+  "module_label": "Paragraph Bundle Card"
+ },
+ "card_three_columns_bundle": {
+  "label": "Card Three Columns",
+  "module": "paragraph_bundle_card",
+  "module_label": "Paragraph Bundle Card"
+ },
+ "card_two_columns_bundle": {
+  "label": "Card Two Columns",
+  "module": "paragraph_bundle_card",
+  "module_label": "Paragraph Bundle Card"
+ },
+ "carousel_bundle": {
+  "label": "Carousel",
+  "module": "paragraph_bundle_carousel",
+  "module_label": "Paragraph Bundle Carousel"
+ },
+ "grid_bundle": {
+  "label": "Grid",
+  "module": "paragraph_bundle_grid",
+  "module_label": "Paragraph Bundle Grid"
+ },
+ "hero_bundle": {
+  "label": "Hero",
+  "module": "paragraph_bundle_hero",
+  "module_label": "Paragraph Bundle Hero"
+ },
+ "icon_bundle": {
+  "label": "Icon",
+  "module": "paragraph_bundle_icon",
+  "module_label": "Paragraph Bundle Icon"
+ },
+ "image_background_bundle": {
+  "label": "Image Background",
+  "module": "paragraph_bundle_image_background",
+  "module_label": "Paragraph Bundle Image Background"
+ },
+ "image_bundle": {
+  "label": "Image",
+  "module": "paragraph_bundle_image",
+  "module_label": "Paragraph Bundle Image"
+ },
+ "image_grid_bundle": {
+  "label": "Lightbox Gallery",
+  "module": "paragraph_bundle_image_grid",
+  "module_label": "Paragraph Bundle Image Grid"
+ },
+ "image_grid_section_bundle": {
+  "label": "Lightbox Image",
+  "module": "paragraph_bundle_image_grid",
+  "module_label": "Paragraph Bundle Image Grid"
+ },
+ "image_overlay_bundle": {
+  "label": "Image Overlay",
+  "module": "paragraph_bundle_image_overlay",
+  "module_label": "Paragraph Bundle Image Overlay"
+ },
+ "link_bundle": {
+  "label": "Link",
+  "module": "paragraph_bundle_link",
+  "module_label": "Paragraph Bundle Link"
+ },
+ "link_section_bundle": {
+  "label": "Link Section",
+  "module": "paragraph_bundle_link",
+  "module_label": "Paragraph Bundle Link"
+ },
+ "modal_bundle": {
+  "label": "Modal",
+  "module": "paragraph_bundle_modal",
+  "module_label": "Paragraph Bundle Modal"
+ },
+ "parallax_bundle": {
+  "label": "Parallax",
+  "module": "paragraph_bundle_parallax",
+  "module_label": "Paragraph Bundle Parallax"
+ },
+ "parallax_section_bundle": {
+  "label": "Parallax Section",
+  "module": "paragraph_bundle_parallax",
+  "module_label": "Paragraph Bundle Parallax"
+ },
+ "simple_bundle": {
+  "label": "Simple",
+  "module": "paragraphs_bundles",
+  "module_label": "Paragraphs Bundles"
+ },
+ "slideshow_bundle": {
+  "label": "Slideshow",
+  "module": "paragraph_bundle_slideshow",
+  "module_label": "Paragraph Bundle Slideshow"
+ },
+ "slideshow_section_bundle": {
+  "label": "Slideshow Section",
+  "module": "paragraph_bundle_slideshow",
+  "module_label": "Paragraph Bundle Slideshow"
+ },
+ "tab_section_bundle": {
+  "label": "Tab Section",
+  "module": "paragraph_bundle_tabs",
+  "module_label": "Paragraph Bundle Tabs"
+ },
+ "tabs_bundle": {
+  "label": "Tabs",
+  "module": "paragraph_bundle_tabs",
+  "module_label": "Paragraph Bundle Tabs"
+ },
+ "two_columns_bundle": {
+  "label": "Two Columns",
+  "module": "paragraph_bundle_layout",
+  "module_label": "Paragraph Bundle Layout"
+ },
+ "video_bundle": {
+  "label": "Video",
+  "module": "paragraph_bundle_video",
+  "module_label": "Paragraph Bundle Video"
+ }
+}

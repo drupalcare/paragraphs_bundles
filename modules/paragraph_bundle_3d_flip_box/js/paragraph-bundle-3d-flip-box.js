@@ -19,6 +19,13 @@
  * The presented face has three independent sources — the button, the pointer
  * and focus — tracked separately so they cannot overwrite each other. The
  * button's state is sticky: hovering away does not undo an explicit flip.
+ *
+ * Focus never turns away the face that holds it. Focus on the back face keeps
+ * the back up (so a pointer leaving cannot make the focused link inert), and
+ * focus on the front face keeps the front up against a hover. The old rule,
+ * "any focus in the faces shows the back", made the front inert while a front
+ * link had focus, so focus dropped and front links were unreachable by
+ * keyboard.
  */
 // The Drupal standard sniffs JavaScript with PHP rules; `false` is not a PHP
 // constant here. Same exemption as the other bundle behaviours.
@@ -33,7 +40,10 @@
    *   flip sources.
    */
   function sync(box) {
-    const showBack = box.pressed || box.hovered || box.focused;
+    const showBack =
+      box.focusedFace === 'back' ||
+      box.pressed ||
+      (box.hovered && box.focusedFace !== 'front');
     const up = showBack ? box.back : box.front;
     const down = showBack ? box.front : box.back;
 
@@ -53,12 +63,14 @@
     // drawing the front-facing icon over a back-facing card.
     box.scene.classList.toggle('pb-is-showing-back', showBack);
 
-    box.toggle.setAttribute('aria-expanded', showBack ? 'true' : 'false');
+    // The label changes with the face, so the button carries no
+    // aria-expanded (an older cached page may still print one).
+    box.toggle.removeAttribute('aria-expanded');
 
-    // Swap the spoken label with the state. `aria-expanded` says open/closed,
-    // which does not describe a card with two equal sides -- "Show the front of
-    // X" / "Show the back of X" names what pressing will DO. Both strings are
-    // translated in the template and carried on the element.
+    // Swap the spoken label with the state. Open/closed does not describe a
+    // card with two equal sides -- "Show the front of X" / "Show the back of X"
+    // names what pressing will DO. Both strings are translated in the template
+    // and carried on the element.
     if (box.label) {
       const next = showBack
         ? box.label.dataset.pbLabelBack
@@ -81,9 +93,7 @@
     const back = scene.querySelector('.pb-3d-flip-box__back');
     const toggle = scene.querySelector('.pb-3d-flip-box__toggle');
     // Optional: an older rendered page may still carry a static label.
-    const label = toggle
-      ? toggle.querySelector('[data-pb-label-front]')
-      : null;
+    const label = toggle ? toggle.querySelector('[data-pb-label-front]') : null;
 
     if (!faces || !front || !back || !toggle) {
       return;
@@ -98,7 +108,8 @@
       label,
       pressed: false,
       hovered: false,
-      focused: false,
+      // 'front', 'back' or null: which face holds keyboard focus.
+      focusedFace: null,
     };
 
     toggle.hidden = false;
@@ -122,16 +133,21 @@
 
     // Focus is tracked on the faces wrapper, not the scene: the toggle lives
     // in the scene, and treating focus on it as "show the back" would make
-    // the button fight its own state.
-    faces.addEventListener('focusin', () => {
-      box.focused = true;
+    // the button fight its own state. The face that holds focus is recorded,
+    // so sync() never makes it inert.
+    faces.addEventListener('focusin', (event) => {
+      if (back.contains(event.target)) {
+        box.focusedFace = 'back';
+      } else if (front.contains(event.target)) {
+        box.focusedFace = 'front';
+      }
       sync(box);
     });
     faces.addEventListener('focusout', (event) => {
       if (faces.contains(event.relatedTarget)) {
         return;
       }
-      box.focused = false;
+      box.focusedFace = null;
       sync(box);
     });
 

@@ -1,0 +1,162 @@
+/**
+ * @file
+ * Paragraphs Bundles Patterns theme bridge: APEX region colors.
+ *
+ * Loaded only when the active theme is apex_theme or an apex_* sub-theme
+ * (PatternLibraryInfoAlterHook). Token mapping ONLY: it gives the
+ * --pb-pattern-* color tokens of pb-patterns-base.css new values taken from the
+ * APEX region the Pattern sits in, and never paints an element.
+ *
+ * Step 1 reads the theme's region colors into --pb-pattern-theme-* role tokens
+ * (the same 19 names the Solo bridge declares, plus the five APEX scheme roles; the Pattern tokens read these
+ * and never spell a --r-* name, so each theme's spelling lives only here). Step 2 derives every Pattern token
+ * from those roles with color-mix(); no color is hard-coded except the
+ * black-and-white fallbacks for a region that leaves a color unset. Mixed
+ * through step 2, they land close to pb-patterns-base.css, not exactly on it.
+ *
+ * Selector: `.pb-pattern` (0,1,0). pb-patterns-base.css declares the tokens in
+ * :where() (0,0,0), so this file wins whichever one the page loads first.
+ *
+ * APEX names, each checked against apex_theme/css/base/
+ * apex-variables-regions.css (2026-11-05, read only).
+ */
+
+.pb-pattern {
+  /* Step 1: the theme's colors as roles. */
+  --pb-pattern-theme-bg: var(--r-background, #fff);
+  --pb-pattern-theme-text: var(--r-text, #111);
+  --pb-pattern-theme-heading: var(--r-heading, var(--pb-pattern-theme-text));
+  --pb-pattern-theme-link: var(--r-link, var(--pb-pattern-theme-text));
+  --pb-pattern-theme-link-hover: var(--r-link-hover, var(--pb-pattern-theme-link));
+  --pb-pattern-theme-border: var(--r-border, color-mix(in oklab, var(--pb-pattern-theme-text) 16%, var(--pb-pattern-theme-bg)));
+  --pb-pattern-theme-form-bg: var(--r-form-background, var(--pb-pattern-theme-bg));
+  --pb-pattern-theme-menu-text: var(--r-menu-text, var(--pb-pattern-theme-text));
+  --pb-pattern-theme-menu-text-hover: var(--r-menu-text-hover, var(--pb-pattern-theme-menu-text));
+  --pb-pattern-theme-menu-bg: var(--r-menu-background, var(--pb-pattern-theme-bg));
+  --pb-pattern-theme-menu-bg-hover: var(--r-menu-background-hover, var(--pb-pattern-theme-menu-bg));
+  --pb-pattern-theme-button-text: var(--r-button-text, var(--pb-pattern-theme-bg));
+  --pb-pattern-theme-button-text-hover: var(--r-button-text-hover, var(--pb-pattern-theme-button-text));
+  --pb-pattern-theme-button-bg: var(--r-button-background, var(--pb-pattern-theme-text));
+  --pb-pattern-theme-button-bg-hover: var(--r-button-background-hover, var(--pb-pattern-theme-button-bg));
+  /*
+   * Pairs: a fill and the text on it come from the same pair of roles, and the
+   * fallbacks of a pair are the page pair swapped (fill = text color, text =
+   * ground), so with both unset they are a black-and-white pair. APEX always
+   * sets both halves (a missing one is derived, apex-variables-regions.css);
+   * the ground guards below cover the derived pairs.
+   */
+  /* The active pair (current tab, active chip, open bar): menu hover colors, ink fill and ground text when unset. */
+  --pb-pattern-theme-active-bg: var(--r-menu-background-hover, var(--pb-pattern-theme-text));
+  --pb-pattern-theme-active-text: var(--r-menu-text-hover, var(--pb-pattern-theme-bg));
+  /* A control's outline (quiet button line): the theme border, else the muted ink. */
+  --pb-pattern-theme-control-line: var(--r-border, var(--pb-pattern-muted));
+  /* The track a progress fill runs on: the theme border (see the guards below). */
+  --pb-pattern-theme-track: var(--pb-pattern-theme-border);
+
+  /*
+   * APEX scheme colors (owner, 2026-11-05): the five --apex-scheme-* colors
+   * APEX writes on :root. They are page-wide, not per region, so they are used
+   * only where a contrast floor holds whatever the region is: the dark stage.
+   * Secondary and ink-dark are declared for parity with the Solo bridge; neither
+   * is used for text, because no fixed ground is known for them.
+   */
+  --pb-pattern-theme-primary: var(--apex-scheme-primary, var(--pb-pattern-theme-heading));
+  --pb-pattern-theme-secondary: var(--apex-scheme-secondary, var(--pb-pattern-theme-link));
+  --pb-pattern-theme-accent: var(--apex-scheme-accent, var(--pb-pattern-theme-link-hover));
+  --pb-pattern-theme-ink-light: var(--apex-scheme-ink-light, var(--pb-pattern-theme-bg));
+  --pb-pattern-theme-ink-dark: var(--apex-scheme-ink-dark, var(--pb-pattern-theme-text));
+
+  /* Step 2: page tokens. */
+  --pb-pattern-surface: var(--pb-pattern-theme-bg);
+  --pb-pattern-raised: color-mix(in oklab, var(--pb-pattern-theme-bg), var(--pb-pattern-theme-text) 6%);
+  --pb-pattern-ink: var(--pb-pattern-theme-text);
+  /* 15%, not 30%: measured on apex_theme (ink 6.99:1 on its ground) 30% gave
+     3.58:1 and 15% gives 5.0:1, so muted words pass WCAG AA (4.5:1). */
+  --pb-pattern-muted: color-mix(in oklab, var(--pb-pattern-theme-text), var(--pb-pattern-theme-bg) 15%);
+  --pb-pattern-line: var(--pb-pattern-theme-border);
+  /* Link words on the page ground: the theme's own link color. */
+  --pb-pattern-link: var(--pb-pattern-theme-link);
+
+  /*
+   * Stage tokens. The ground is the scheme primary with its OKLCH lightness
+   * capped at 0.4 (a dark primary is used as it is, a light one is
+   * darkened); the words keep 15% of the scheme light ink and 85% white, so
+   * their lightness is at least 0.85. That is at least about 5.8:1 (WCAG AA
+   * 4.5:1) under any scheme, dark APEX regions included. Measured with the
+   * default APEX scheme (primary #33285d, light ink #eeedf8): 13:1.
+   */
+  --pb-pattern-stage-bg: oklch(from var(--pb-pattern-theme-primary) min(l, 0.4) c h);
+  --pb-pattern-stage-color: color-mix(in oklab, var(--pb-pattern-theme-ink-light) 15%, white);
+  --pb-pattern-stage-muted: color-mix(in oklab, var(--pb-pattern-stage-color), var(--pb-pattern-stage-bg) 22%);
+  --pb-pattern-stage-line: color-mix(in oklab, var(--pb-pattern-stage-color) 50%, transparent);
+
+  /* Theme accent for one-color Patterns, and the color of shadows and scrims. */
+  --pb-pattern-accent: oklch(from var(--pb-pattern-theme-primary) min(l, 0.55) c h);
+  --pb-pattern-shadow: var(--pb-pattern-stage-bg);
+}
+
+/*
+ * Ground guards (WCAG 1.4.11, 3:1). APEX gives every region all 15 colors:
+ * one it leaves unset is derived from Color 1 and 2 (apex-variables-regions.css,
+ * "Two-Color Cascade Foundation"), so the button and menu-hover fills are the
+ * ground itself and the border is the full text color. The var() fallbacks
+ * above then never apply, and a Pattern fill (button, active tab, mark, progress)
+ * would vanish into its ground. Each query below matches only that derived
+ * case (the color equals the one APEX derives it from), so a scheme that sets
+ * its own colors keeps them. The query reads the Pattern's parent, which
+ * holds the same inherited region colors. A browser without style queries
+ * keeps the colors above.
+ */
+
+/* Button pair left to APEX: ink fill, ground words (the region's own contrast). */
+@container style(--r-button-background: var(--r-background)) and style(--r-button-text: var(--r-text)) {
+  .pb-pattern {
+    --pb-pattern-theme-button-bg: var(--pb-pattern-theme-text);
+    --pb-pattern-theme-button-text: var(--pb-pattern-theme-bg);
+  }
+}
+
+@container style(--r-button-background-hover: var(--r-background)) and style(--r-button-text-hover: var(--r-text)) {
+  .pb-pattern {
+    --pb-pattern-theme-button-bg-hover: var(--pb-pattern-theme-text);
+    --pb-pattern-theme-button-text-hover: var(--pb-pattern-theme-bg);
+  }
+}
+
+/* Active pair left to APEX: the same ink fill and ground words. */
+@container style(--r-menu-background-hover: var(--r-background)) and style(--r-menu-text-hover: var(--r-text)) {
+  .pb-pattern {
+    --pb-pattern-theme-active-bg: var(--pb-pattern-theme-text);
+    --pb-pattern-theme-active-text: var(--pb-pattern-theme-bg);
+  }
+}
+
+/* Menu fill left to APEX: the raised step, so an idle tab differs from the
+   ground-colored current one, as in pb-patterns-base.css. */
+@container style(--r-menu-background: var(--r-background)) {
+  .pb-pattern {
+    --pb-pattern-theme-menu-bg: var(--pb-pattern-raised);
+  }
+}
+
+/* Border left to APEX (the full text color): a light track, so an ink
+   progress fill stays visible on it. */
+@container style(--r-border: var(--r-text)) {
+  .pb-pattern {
+    --pb-pattern-theme-track: color-mix(in oklab, var(--pb-pattern-theme-text) 20%, var(--pb-pattern-theme-bg));
+  }
+}
+
+@media (forced-colors: active) {
+  .pb-pattern {
+    --pb-pattern-surface: Canvas;
+    --pb-pattern-raised: Canvas;
+    --pb-pattern-ink: CanvasText;
+    --pb-pattern-muted: CanvasText;
+    --pb-pattern-line: CanvasText;
+    --pb-pattern-stage-bg: Canvas;
+    --pb-pattern-stage-color: CanvasText;
+    --pb-pattern-stage-muted: CanvasText;
+    --pb-pattern-stage-line: CanvasText;
+  }
+}

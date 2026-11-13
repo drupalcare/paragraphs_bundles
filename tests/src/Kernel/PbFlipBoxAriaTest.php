@@ -110,7 +110,9 @@ final class PbFlipBoxAriaTest extends KernelTestBase {
 
     $this->assertStringContainsString('pb-3d-flip-box__toggle', $html);
     $this->assertStringContainsString('type="button"', $html);
-    $this->assertStringContainsString('aria-expanded="false"', $html);
+    // The label changes with the state, so the button carries no aria-expanded
+    // (decision FE, planning/vvj-pb-a11y-fix-FE-2026-11-12.md: never both).
+    $this->assertStringNotContainsString('aria-expanded', $html);
     // The icon is decoration; the name comes from the visually-hidden text.
     $this->assertStringContainsString('aria-hidden="true"', $html);
     $this->assertStringContainsString('visually-hidden', $html);

@@ -1,0 +1,91 @@
+/**
+ * @file
+ * Pattern Directory for the Link bundle.
+ *
+ * Each row is a two-column grid made from its two fields, reached by position
+ * because the field wrappers come from the theme. The closing rule sits on the
+ * list, not on a last row: a theme may wrap every row, which would make each
+ * one a last child.
+ */
+
+:where(.pb-pattern--link-directory > .pb-ui-inner) {
+  padding: clamp(16px, 4cqi, 56px) clamp(16px, 5cqi, 80px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-content__title {
+  margin-block: 0 clamp(0.75rem, 2.5cqi, 1.5rem);
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.125rem, 2.4cqi, 1.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link__inner > .pb-content__full {
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section {
+  display: grid;
+  grid-template-columns: minmax(0, clamp(8rem, 28cqi, 16rem)) minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: clamp(1rem, 4cqi, 3rem);
+  transition:
+    background-color 0.2s var(--pb-pattern-ease-out),
+    border-color 0.2s var(--pb-pattern-ease-out);
+  border-block-start: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-inline-start: 3px solid transparent;
+  padding-block: var(--pb-px4);
+  padding-inline: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section:is(:hover, :focus-within) {
+  border-inline-start-color: var(--pb-pattern-accent);
+  background: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section > :first-child:not(:last-child) {
+  min-width: 0;
+  letter-spacing: 0.04em;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: clamp(0.875rem, 1.6cqi, 1rem);
+  font-weight: 600;
+  font-variant-caps: all-small-caps;
+  overflow-wrap: anywhere;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pb-pattern-target);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  color: var(--pb-lk, var(--pb-pattern-link));
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section a:hover {
+  color: var(--pb-lk-h, var(--pb-tx-h, var(--pb-lk, var(--pb-pattern-link))));
+  text-decoration-thickness: 2px;
+}
+
+.paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+@container pb-pattern-region (max-width: 30rem) {
+  .paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--pb-px8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-link.pb-pattern--link-directory .pb-link-section {
+    transition: none;
+  }
+}

@@ -1,0 +1,17 @@
+label: 'Wedge'
+description: 'A triangle of color waits in the bottom corner with the title and sweeps diagonally across the photo when pointed at. The color and opacity you set are used as they are, so keep the title short.'
+weight: 1
+stage: boxed
+ground: dark
+placement: outer-margin
+serves: [creative, events, studio]
+needs:
+  - 'Add an image and a short title of a few words. Choose a background color and a text color that read well together.'
+  - 'The hover style list is replaced by this pattern, so the title is always visible.'
+settings:
+  pb_display_image_overlay: ''
+pictures:
+  image_overlay_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

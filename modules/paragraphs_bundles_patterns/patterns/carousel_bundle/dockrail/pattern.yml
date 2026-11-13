@@ -1,0 +1,23 @@
+label: 'Dockrail'
+description: 'Three portrait cards with a glass dock of arrows, page dots, a page counter and a pause button with a progress ring.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [events, cultural, creative]
+needs:
+  - 'Keep at least six Image slides with portrait images, each with a title. The dock and the timing are set for you.'
+settings:
+  pb_display_vertical_carousel: horizontal
+  pb_display_carousel_breakpoints: pb__768
+  pb_display_navigation: both
+  pb_display_big_screen: 3
+  pb_display_small_screen: 1
+  pb_display_carousel_play_stop: 6000
+  pb_display_activate_looping: 1
+  pb_display_carousel_arrows_over: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

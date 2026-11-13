@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.pb_video_url
+    - media.type.pb_media_remote_video
+id: media.pb_media_remote_video.pb_video_url
+field_name: pb_video_url
+entity_type: media
+bundle: pb_media_remote_video
+label: 'Video URL'
+description: 'The address of a video on a supported provider (YouTube or Vimeo). Pressing Play connects the visitor''s browser to that provider.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

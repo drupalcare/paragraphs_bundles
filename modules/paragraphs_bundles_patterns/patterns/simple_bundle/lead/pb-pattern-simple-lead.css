@@ -1,0 +1,65 @@
+/**
+ * @file
+ * Pattern Lead for the Simple paragraph.
+ *
+ * An article opening: a larger first paragraph and, on left-to-right pages
+ * in a wide enough region, a large first letter. Joined scripts such as
+ * Arabic never get the drop cap. Colors, padding and border the editor sets
+ * win: the defaults are :where().
+ */
+
+:where(.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead > .pb-ui-inner) {
+  padding: clamp(1.25rem, 4cqi, 3rem) clamp(1rem, 5cqi, 4rem);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .pb-content__full {
+  max-inline-size: 42rem;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .pb-content__title {
+  text-wrap: balance;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.75rem, 1.2rem + 3cqi, 3rem);
+  font-weight: 700;
+  line-height: 1.1;
+  margin-block: 0 clamp(0.75rem, 2cqi, 1.5rem);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-body {
+  font-size: 1.0625rem;
+  line-height: 1.7;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-body p {
+  margin-block: 0 1em;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-body p:first-of-type {
+  font-size: clamp(1.1875rem, 1rem + 1cqi, 1.5rem);
+  line-height: 1.55;
+}
+
+@container pb-pattern-region (min-width: 30rem) {
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-body p:first-of-type:dir(ltr)::first-letter {
+    float: left;
+    margin-inline-end: 0.08em;
+    font-family: var(--pb-pattern-font-display);
+    font-size: 3.6em;
+    font-weight: 700;
+    line-height: 0.82;
+  }
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-link,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-link-secondary {
+  margin-block-start: 0.75rem;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-link a,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-lead .field--name-pb-content-link-secondary a {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--pb-pattern-target);
+}

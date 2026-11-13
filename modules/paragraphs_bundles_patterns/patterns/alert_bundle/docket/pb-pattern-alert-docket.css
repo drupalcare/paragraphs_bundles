@@ -1,0 +1,99 @@
+/**
+ * @file
+ * Pattern Docket for the Alert.
+ *
+ * The tab is taken out of the grid and pinned to the inner box, so it runs edge
+ * to edge whatever padding the editor picks. Its width is reserved on the
+ * message, never on the box's own padding, so the editor's padding cannot let
+ * the words slide under the tab. PB's state bar touches the tab in the same
+ * color and reads as part of it.
+ *
+ * White on the four state colors, calculated from their hex values and not
+ * measured on a page: success 5.5, info 6.7, warning 5.0, error 6.5 to 1.
+ */
+
+:where(.pb-pattern--alert-docket > .pb-ui-inner) {
+  padding-block: clamp(10px, 2cqi, 20px);
+  padding-inline: 0 clamp(10px, 3cqi, 32px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket {
+  --pb-pattern-docket-tab: clamp(2.75rem, 12cqi, 4.5rem);
+}
+
+/* PB builds this grid only where :has() is available. The columns match. */
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto auto;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--pb-pattern-docket-tab);
+  margin-inline-end: 0;
+  color: var(--pb-pattern-stage-color);
+  background: var(--pb-alert-state-color);
+  inset-block: 0;
+  inset-inline-start: 0;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon svg {
+  inline-size: clamp(22px, 5cqi, 32px);
+  block-size: clamp(22px, 5cqi, 32px);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert__content {
+  grid-row: 1;
+  grid-column: 2;
+  align-self: center;
+  min-width: 0;
+  padding-inline-start: calc(var(--pb-pattern-docket-tab) + var(--pb-px12));
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert__content > .pb-content__title {
+  margin-block: 0 var(--pb-px4);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown {
+  grid-row: 1;
+  grid-column: 3;
+  align-self: center;
+  min-block-size: var(--pb-pattern-target);
+  margin-inline-start: var(--pb-px12);
+  padding-block: 0;
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert--top > .pb-alert__countdown > button.pb-alert__countdown-pause {
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert--top > button.pb-alert__close {
+  grid-row: 1;
+  grid-column: 4;
+  align-self: end;
+  margin-inline-start: var(--pb-px12);
+  border: 1px solid color-mix(in sRGB, currentColor 45%, transparent);
+  inline-size: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.pb-alert.pb-pattern--alert-docket > .pb-ui-inner > .pb-alert--top > button.pb-alert__close svg {
+  inline-size: var(--pb-px24);
+  block-size: var(--pb-px24);
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-alert.pb-pattern--alert-docket[data-alert-state] > .pb-ui-inner > .pb-alert--top > .pb-alert__state-icon {
+    color: Canvas;
+    background: CanvasText;
+    forced-color-adjust: none;
+  }
+}

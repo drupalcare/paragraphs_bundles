@@ -1,0 +1,15 @@
+label: 'Lectern'
+description: 'For lessons and explainers: the transcript stays open beside the film on a wide region, and folds under the picture on a phone. The Play button is a flush square in the corner of the picture.'
+weight: 1
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [university, saas, associations]
+needs:
+  - 'Open this section and choose your video; the sample has none. Keep Shape at 16:9 or 4:3, and keep the Video Title and Transcript. Long transcripts scroll inside their own panel.'
+settings: {}
+pictures:
+  video_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

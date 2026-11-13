@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_video_ratio
+    - paragraphs.paragraphs_type.video_bundle
+  module:
+    - options
+id: paragraph.video_bundle.pb_display_video_ratio
+field_name: pb_display_video_ratio
+entity_type: paragraph
+bundle: video_bundle
+label: 'Shape'
+description: 'Width to height of the player or the background section.'
+required: true
+translatable: false
+default_value:
+  -
+    value: '16_9'
+default_value_callback: ''
+settings: {  }
+field_type: list_string

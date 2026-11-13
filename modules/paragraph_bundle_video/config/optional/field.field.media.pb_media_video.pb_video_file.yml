@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.pb_video_file
+    - media.type.pb_media_video
+  module:
+    - file
+id: media.pb_media_video.pb_video_file
+field_name: pb_video_file
+entity_type: media
+bundle: pb_media_video
+label: 'Video file'
+description: 'MP4 or WebM. The file is served from this site.'
+required: true
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'mp4 webm'
+  max_filesize: ''
+  description_field: false
+field_type: file

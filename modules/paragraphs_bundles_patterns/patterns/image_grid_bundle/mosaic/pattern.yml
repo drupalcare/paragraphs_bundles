@@ -1,0 +1,15 @@
+label: 'Mosaic'
+description: 'A bento grid of photos; the tile photo grows into a dark viewer with round arrows.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [creative, studio, events]
+needs:
+  - 'Keep at least two sections, each with an image and a title. Six sections fill the bento exactly, and it repeats every six. The pattern sets the columns, so Grid Image Width has no effect here; Grid Gap still applies.'
+settings: {}
+pictures:
+  image_grid_section_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_picture

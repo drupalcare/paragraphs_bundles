@@ -1,0 +1,23 @@
+label: 'Ledger'
+description: 'A vertical list of numbered rows with a thumbnail at the end and a control rail with a page counter and progress line.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [publication, university, associations]
+needs:
+  - 'Keep at least six Image slides, each with an image, a title and a short description. The rail and timing are set for you.'
+settings:
+  pb_display_vertical_carousel: vertical
+  pb_display_carousel_breakpoints: pb__576
+  pb_display_navigation: arrows
+  pb_display_big_screen: 3
+  pb_display_small_screen: 2
+  pb_display_carousel_play_stop: 7000
+  pb_display_activate_looping: 1
+  pb_display_carousel_arrows_over: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

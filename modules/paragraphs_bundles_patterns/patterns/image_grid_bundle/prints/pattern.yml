@@ -1,0 +1,15 @@
+label: 'Prints'
+description: 'Tilted instant prints that straighten on hover; the print grows into a viewer with a bottom bar.'
+weight: 3
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [events, nonprofit, cultural]
+needs:
+  - 'Keep at least two sections, each with an image and a title. Grid Image Width sets the print size and Grid Gap the space between prints.'
+settings: {}
+pictures:
+  image_grid_section_bundle.pb_content_image:
+    style: pb_image_grid
+    responsive: false
+    view_mode: pb_image_grid

@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * @file
+ * Paragraph Bundle Video module bootstrap.
+ *
+ * Hooks live as OOP #[Hook] classes under src/Hook/.
+ */
+
+declare(strict_types=1);

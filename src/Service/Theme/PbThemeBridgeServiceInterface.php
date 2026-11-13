@@ -20,7 +20,12 @@ interface PbThemeBridgeServiceInterface {
   public const string BRIDGE_SOLO = 'solo';
 
   /**
-   * Bridge identifier for themes without Solo/APEX in the base chain.
+   * Bridge identifier for the W3CSS theme and its sub-themes.
+   */
+  public const string BRIDGE_W3CSS = 'w3css';
+
+  /**
+   * Bridge identifier for themes without Solo/APEX/W3CSS in the base chain.
    */
   public const string BRIDGE_NEUTRAL = 'neutral';
 
@@ -29,7 +34,7 @@ interface PbThemeBridgeServiceInterface {
    *
    * @return string
    *   One of {@see self::BRIDGE_APEX}, {@see self::BRIDGE_SOLO},
-   *   or {@see self::BRIDGE_NEUTRAL}.
+   *   {@see self::BRIDGE_W3CSS} or {@see self::BRIDGE_NEUTRAL}.
    */
   public function resolveBridgeId(): string;
 

@@ -256,25 +256,14 @@
    * @param {HTMLElement} col
    * @param {HTMLElement} toggleButton
    * @param {HTMLElement} content
-   * @param {boolean} announce
    */
-  const syncAriaState = (col, toggleButton, content, announce = false) => {
+  const syncAriaState = (col, toggleButton, content) => {
+    // The button keeps one fixed name ("Left column") from the template;
+    // aria-expanded alone carries the state, so it is never spoken twice.
     const collapsed = isCollapsed(col);
     toggleButton.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     content.setAttribute('aria-hidden', collapsed ? 'true' : 'false');
     content.inert = collapsed;
-
-    const expandLabel = toggleButton.getAttribute('data-label-expand');
-    const collapseLabel = toggleButton.getAttribute('data-label-collapse');
-    const actionLabel = collapsed ? expandLabel : collapseLabel;
-
-    if (actionLabel) {
-      toggleButton.setAttribute('aria-label', actionLabel);
-      toggleButton.setAttribute('title', actionLabel);
-      if (announce) {
-        Drupal.announce(actionLabel, 'polite');
-      }
-    }
   };
 
   /**
@@ -446,7 +435,7 @@
           setCollapsed(col, collapsing);
           toggleButton.toggleAttribute('data-collapsed', collapsing);
           updateCollapseClass(grid);
-          syncAriaState(col, toggleButton, content, true);
+          syncAriaState(col, toggleButton, content);
           setGridColumns(grid, ratios);
           restoreScrollAfterLayout(sx, sy);
         },

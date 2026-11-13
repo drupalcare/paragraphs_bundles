@@ -1,0 +1,228 @@
+/**
+ * @file
+ * Pattern Showroom for the Parallax.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * --pb-pattern-enter comes from this Pattern's script and defaults to open.
+ */
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-br: var(--pb-pattern-stage-line);
+  --pb-lk: var(--pb-pattern-stage-color);
+}
+
+:where(.pb-pattern--parallax-showroom > .pb-ui-inner) {
+  background: var(--pb-pattern-stage-bg);
+}
+
+:where(.pb-pattern--parallax-showroom .pb-parallax__text) {
+  width: 100%;
+  padding: 0 var(--pb-px24) clamp(48px, 9vh, 96px);
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section {
+  min-height: max(560px, 90vh);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner {
+  display: grid;
+  place-items: end center;
+}
+
+/* The spotlight opens with --pb-pattern-enter on the photo's own mask. */
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__bg {
+  position: absolute;
+  inset-block-start: -18%;
+  inset-inline: 0;
+  display: block;
+  width: auto;
+  height: 136%;
+  min-height: 0;
+  transition-property: transform, opacity;
+  background-attachment: scroll;
+  -webkit-mask-image: radial-gradient(ellipse calc(30% + 70% * var(--pb-pattern-enter, 1)) calc(22% + 78% * var(--pb-pattern-enter, 1)) at 50% 55%, #000 62%, transparent 100%);
+  mask-image: radial-gradient(ellipse calc(30% + 70% * var(--pb-pattern-enter, 1)) calc(22% + 78% * var(--pb-pattern-enter, 1)) at 50% 55%, #000 62%, transparent 100%);
+}
+
+:where(.pb-pattern--parallax-showroom .pb-parallax-section__inner)::after {
+  position: absolute;
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, color-mix(in sRGB, var(--pb-pattern-stage-bg) 92%, transparent) 0%, transparent 55%);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__text {
+  position: relative;
+  z-index: 2;
+  display: block;
+  height: auto;
+  min-height: 0;
+  margin-inline: 0;
+}
+
+:where(.pb-pattern--parallax-showroom .pb-parallax__text)::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: -60% 0 0;
+  pointer-events: none;
+  background: linear-gradient(0deg, color-mix(in sRGB, var(--pb-pattern-stage-bg) 78%, transparent) 70%, transparent 100%);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax__text > .pb-content__full {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body p:has(+ :is(h2, h3, h4)) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+  gap: var(--pb-px14, 14px);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body p:has(+ :is(h2, h3, h4))::before,
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body p:has(+ :is(h2, h3, h4))::after {
+  width: 36px;
+  height: 1px;
+  content: "";
+  background: currentColor;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body p:has(+ :is(h2, h3, h4)) {
+  letter-spacing: normal;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body :is(h2, h3, h4) {
+  margin: var(--pb-px16) 0 0;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: clamp(1.9rem, 4.6cqi, 4rem);
+  font-weight: 300;
+  line-height: 1.05;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-body :is(h2, h3, h4) ~ p {
+  max-width: 32rem;
+  margin: var(--pb-px16) auto 0;
+  color: color-mix(in sRGB, currentColor 84%, transparent);
+  line-height: 1.6;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link {
+  margin-block-start: 26px;
+}
+
+/* A pill: the fill sweeps in on hover and focus. */
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a {
+  position: relative;
+  display: inline-flex;
+  overflow: hidden;
+  align-items: center;
+  min-height: 48px;
+  padding-inline: 26px;
+  transition: color 0.4s var(--pb-pattern-ease-out);
+  text-decoration: none;
+  letter-spacing: 0.06em;
+  border: 1px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 999px;
+  font-size: 0.875rem;
+  isolation: isolate;
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  inset: 0;
+  transition: clip-path 0.5s var(--pb-pattern-ease-out);
+  background: var(--pb-lk, var(--pb-pattern-stage-color));
+  clip-path: inset(0 100% 0 0);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a::before {
+  clip-path: inset(0 0 0 100%);
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:hover,
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:focus-visible {
+  color: var(--pb-lk-h, var(--pb-pattern-stage-bg));
+}
+
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:hover::before,
+.paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:focus-visible::before,
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:hover::before,
+[dir="rtl"] .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a:focus-visible::before {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Holds the photo still in the stacked layout. PB writes an inline transform
+   and opacity on it at any width unless the section sets a breakpoint, and
+   only an animation can outrank an inline style without !important. */
+@keyframes pb-pattern-parallax-showroom-still {
+  to {
+    transform: none;
+    opacity: 1;
+    filter: none;
+  }
+}
+
+@container pb-pattern-region (max-width: 47.99rem) {
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section {
+    min-height: 0;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner {
+    display: block;
+    min-height: 0;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__bg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    transition: none;
+    animation: pb-pattern-parallax-showroom-still 1ms forwards;
+    -webkit-mask-image: none;
+    mask-image: none;
+    aspect-ratio: 3 / 2;
+  }
+
+  :where(.pb-pattern--parallax-showroom .pb-parallax-section__inner)::after,
+  :where(.pb-pattern--parallax-showroom .pb-parallax__text)::before {
+    content: none;
+  }
+
+  :where(.pb-pattern--parallax-showroom .pb-parallax__text) {
+    padding: var(--pb-px28, 28px) var(--pb-px20) var(--pb-px48);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .pb-parallax-section > .pb-ui-inner.pb-parallax-section__inner > .pb-parallax__bg {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a,
+  .paragraphs-bundles.pb-parallax.pb-pattern--parallax-showroom .field--name-pb-content-link a::before {
+    transition: none;
+  }
+}
+
+/* The title band runs edge to edge; this keeps it off the edge. */
+:where(.pb-pattern--parallax-showroom .pb-content__full > .pb-content__title) {
+  padding-inline: var(--pb-px16);
+}

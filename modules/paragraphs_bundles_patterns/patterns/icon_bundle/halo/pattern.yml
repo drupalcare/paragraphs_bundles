@@ -1,0 +1,10 @@
+label: 'Halo'
+description: 'A thin ring draws itself around the icon when pointed at, ending at the top, in the link color.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [healthcare, government, saas, associations]
+needs:
+  - 'Enter a Material icon name or pick an SVG from the theme. An uploaded icon has no ring.'
+settings: {}

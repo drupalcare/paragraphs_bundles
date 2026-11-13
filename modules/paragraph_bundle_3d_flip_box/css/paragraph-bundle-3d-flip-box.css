@@ -51,14 +51,24 @@
    `:focus-within` is on the faces wrapper, not the scene. The flip toggle
    lives in the scene but outside the wrapper, so focusing the toggle no
    longer flips the box out from under its own button.
+
+   Only focus on the BACK face turns the box. Focus on the front used to flip
+   it too, hiding the very link that had focus. And focus on the front keeps
+   the front up against a hover, so a keyboard user with the pointer resting
+   on the box still sees what is focused. The behaviour applies the same rule
+   to `inert`.
    ========================================================================== */
 
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:focus-within {
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within) {
   transform: rotateX(180deg);
 }
 
-.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:focus-within {
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within) {
   transform: rotateY(180deg);
+}
+
+.paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__inner:has(.pb-3d-flip-box__front:focus-within) {
+  transform: none;
 }
 
 /* ==========================================================================
@@ -192,8 +202,8 @@
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y:hover .pb-3d-flip-box__inner,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x.pb-is-flipped .pb-3d-flip-box__inner,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y.pb-is-flipped .pb-3d-flip-box__inner,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:focus-within,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:focus-within {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-x .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within),
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-3d-flip-box--flip-y .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within) {
     transform: none;
   }
 
@@ -210,14 +220,23 @@
 
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:hover .pb-3d-flip-box__front,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-is-flipped .pb-3d-flip-box__front,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within) .pb-3d-flip-box__front {
     opacity: 0;
   }
 
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:hover .pb-3d-flip-box__back,
   .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene.pb-is-flipped .pb-3d-flip-box__back,
-  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__inner:has(.pb-3d-flip-box__back:focus-within) .pb-3d-flip-box__back {
     opacity: 1;
+  }
+
+  /* Front focus keeps the front up against a hover, as in the motion rules. */
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__inner:has(.pb-3d-flip-box__front:focus-within) .pb-3d-flip-box__front {
+    opacity: 1;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box .pb-3d-flip-box__scene:not(.pb-is-flipped):hover .pb-3d-flip-box__inner:has(.pb-3d-flip-box__front:focus-within) .pb-3d-flip-box__back {
+    opacity: 0;
   }
 }
 

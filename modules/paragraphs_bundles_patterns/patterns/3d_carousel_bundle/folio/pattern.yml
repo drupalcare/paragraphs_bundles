@@ -1,0 +1,16 @@
+label: 'Folio'
+description: 'An editorial, text-led 3D Carousel: a shallow ring of paper pages, each a short text with a large title and a few lines of reading, its page number printed at the foot. Under the ring, long thin line arrows at the two outer corners and the words Page 2 of 6 between them. Manual, no autoplay.'
+weight: 5
+stage: open
+ground: light
+placement: outer-margin
+serves: [publication, university, nonprofit]
+needs:
+  - 'Keep five to seven slides. Each slide holds one Simple paragraph with a short Title, such as What we heard, and two or three sentences of Body.'
+  - 'The pages have a fixed height, so longer words scroll inside the page. The ring, the heights, the arrows and the page count are set for you.'
+settings:
+  pb_display_3d_car_style: ring
+  pb_content_3dcar_lheight: '450'
+  pb_content_3dcar_sheight: '400'
+  pb_display_3d_caro_breakpoints: pb__768
+  pb_display_3d_play_stop: 0

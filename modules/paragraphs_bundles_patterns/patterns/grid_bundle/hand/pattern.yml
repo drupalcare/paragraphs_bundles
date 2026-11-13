@@ -1,0 +1,16 @@
+label: 'Hand'
+description: 'Cards fanned like a hand of playing cards; they deal in, lift when pointed at, and turn over sideways with a quiet corner button.'
+weight: 5
+stage: open
+ground: dark
+placement: outer-margin
+serves: [events, creative, studio]
+needs:
+  - 'Keep at least three 3D Flip Box items in the Grid. In each: a Front with an Image and a Simple paragraph with a Title; a Back with a Simple paragraph holding the Title and text.'
+  - 'Cards turn with the corner button only, sideways. Links on a face work on the side that shows.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

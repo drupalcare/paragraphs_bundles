@@ -1,0 +1,13 @@
+label: 'Answers'
+description: 'Text only: big questions on hairlines, a square button, a bar on the open answer and Expand all.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [government, healthcare, saas, university]
+needs:
+  - 'Keep at least two sections, each with a title. Expand all and the indicator are switched on for you.'
+settings:
+  pb_display_accor_indicator: 1
+  pb_display_accor_show_expand: 1
+  pb_display_accor_open_first: 0

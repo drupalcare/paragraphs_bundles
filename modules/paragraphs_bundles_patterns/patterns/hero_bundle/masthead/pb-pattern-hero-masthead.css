@@ -1,0 +1,213 @@
+/**
+ * @file
+ * Pattern Masthead for the Hero: an editorial cover.
+ *
+ * Built in the design's named fallback: the photo is a letterbox band ABOVE
+ * the masthead (kicker, large title, double rule), and the body and the split
+ * button share the row under it. The Hero's one link wraps kicker, title and
+ * body, so the photo cannot sit between title and body without making that
+ * link `display: contents`, which would remove its focus box; that is not
+ * used. The Hero text box is the editor's: its --pb-tx, --pb-bg and padding win.
+ * Button colours are the editor's pair swapped (ink = --pb-tx, words = --pb-bg),
+ * falling back to the Pattern's ink and surface.
+ */
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .hero-bundle-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-inline-size: 90rem;
+  margin-inline: auto;
+  background: var(--pb-pattern-surface);
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .hero-bundle-inner::before,
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  height: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--hero-masthead .pb-hero__text-inner) {
+  padding-block: clamp(1.5rem, 5cqi, 3rem);
+  padding-inline: clamp(1.25rem, 4cqi, 3rem);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* PB's clearfix pseudo-elements on the link would become grid cells; the
+   button below reuses them. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title] {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  justify-content: start;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title] > * {
+  grid-column: 1 / -1;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* The masthead: a very large title over a fine double rule. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-content__title {
+  margin-block: 0.5rem 1.25rem;
+  padding-block-end: 1rem;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+  border-block-end: 4px double var(--pb-br, var(--pb-tx, var(--pb-pattern-ink)));
+  font-size: clamp(2.2rem, 11cqi, 3.2rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner p {
+  max-inline-size: 60ch;
+  line-height: 1.6;
+}
+
+/* The split button: the Link title in a square ink box (::after) and a
+   square arrow cell (::before, moved last by `order`). The arrow cell is the
+   ink box with a Google Material north_east cut out of it (mask exclude), so
+   the ground shows through the arrow; on hover and focus it flips to a plain
+   arrow and the words box takes an inset ring. No Link title, no button. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  grid-column: 1;
+  align-items: center;
+  order: 1;
+  box-sizing: border-box;
+  min-height: 48px;
+  margin-block-start: 1.5rem;
+  content: attr(title);
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    box-shadow 0.25s;
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  border-radius: 0;
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  font-weight: 700;
+  padding-inline: 1.25rem;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::before {
+  display: block;
+  clear: none;
+  grid-column: 2;
+  order: 2;
+  box-sizing: border-box;
+  margin-block-start: 1.5rem;
+  content: "";
+  transition: background-color 0.25s;
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  inline-size: 48px;
+  block-size: 48px;
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 14 14'%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z'/%3E%3C/svg%3E") center / 1.125rem 1.125rem no-repeat,
+    linear-gradient(#000, #000);
+  -webkit-mask-composite: xor;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='5 5 14 14'%3E%3Cpath d='M9 5v2h6.59L4 18.59 5.41 20 17 8.41V15h2V5z'/%3E%3C/svg%3E") center / 1.125rem 1.125rem no-repeat,
+    linear-gradient(#000, #000);
+  mask-composite: exclude;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::before {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background-color: transparent;
+  box-shadow: inset 0 0 0 2px var(--pb-tx, var(--pb-pattern-ink));
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::before {
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Wide: photo as a 21:9 letterbox, the body in the first 7/12 of its row and
+   the button at the end of that row. */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-u-image-full {
+    aspect-ratio: 21 / 9;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-content__title {
+    font-size: clamp(3.5rem, 8cqi, 6.5rem);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title] {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 1fr) max-content max-content;
+    justify-content: stretch;
+    column-gap: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title] > :not(.pb-content__kicker, .pb-content__title) {
+    grid-column: 1 / 3;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::after {
+    grid-column: 3;
+    align-self: end;
+    margin-block-start: 0;
+    margin-inline-start: 1.5rem;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::before {
+    grid-column: 4;
+    align-self: end;
+    margin-block-start: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::after,
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-masthead .pb-hero__text-inner > .pb-ui-link[title]::before {
+    transition: none;
+  }
+}

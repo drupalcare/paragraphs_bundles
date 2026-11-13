@@ -35,19 +35,23 @@
  * tree and focus order (the script also sets `inert` and `aria-hidden`). */
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
   display: flex;
+  visibility: hidden;
   flex-direction: column;
   grid-area: 1 / 1;
   min-width: 0;
+  transition:
+    opacity 0.6s ease-in,
+    visibility 0s linear 0.6s;
   opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.6s ease-in, visibility 0s linear 0.6s;
 }
 
 .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide.pb-is-active {
   z-index: 1;
-  opacity: 1;
   visibility: visible;
-  transition: opacity 0.6s ease-out, visibility 0s linear 0s;
+  transition:
+    opacity 0.6s ease-out,
+    visibility 0s linear 0s;
+  opacity: 1;
 }
 
 /* Shorter slides fill the full height (backgrounds reach the edges) with their
@@ -350,8 +354,8 @@
 
 .paragraphs-bundles.pb-slideshow .pb-nav__play-text,
 .paragraphs-bundles.pb-slideshow .pb-nav__pause-text {
-  line-height: 1;
   white-space: nowrap;
+  line-height: 1;
 }
 
 /* ==========================================================================
@@ -565,8 +569,8 @@
   }
 
   .paragraphs-bundles.pb-slideshow .pb-slideshow__slides > .pb-slideshow__slide {
-    opacity: 1;
     visibility: visible;
+    opacity: 1;
   }
 
   .paragraphs-bundles.pb-slideshow .pb-slideshow__nav {

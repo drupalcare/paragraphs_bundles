@@ -35,6 +35,9 @@
 
   const STORAGE_KEY_PREFIX = 'pb-alert-closed-';
 
+  // Seconds left when the countdown warns a screen reader user, once.
+  const COUNTDOWN_WARNING_SECONDS = 10;
+
   const ONCE_PB_PARAGRAPH_BUNDLE_ALERT = 'pb-paragraph-bundle-alert';
 
   /** @type {WeakMap<HTMLElement, AbortController>} */
@@ -313,6 +316,21 @@
         if (countdownLabelEl) {
           countdownLabelEl.textContent = String(remaining > 0 ? remaining : 0);
         }
+        // The digits are hidden from assistive technology (they change every
+        // second), so a screen reader user gets ONE warning before the alert
+        // goes, and only when the countdown was long enough to need it.
+        if (
+          remaining === COUNTDOWN_WARNING_SECONDS &&
+          countdownSeconds > COUNTDOWN_WARNING_SECONDS &&
+          typeof Drupal.announce === 'function'
+        ) {
+          Drupal.announce(
+            Drupal.t('This alert closes in @count seconds.', {
+              '@count': remaining,
+            }),
+            'polite',
+          );
+        }
         if (remaining <= 0) {
           closeAlert(alertBox, closeButton, focusableElements);
           return;
@@ -321,16 +339,13 @@
       };
 
       if (pauseButton) {
+        // A fixed label plus aria-pressed: "Pause ..., pressed" means paused.
+        // Changing the label as well would say the state twice and read as
+        // "Resume ..., pressed".
         const syncPauseButton = () => {
           pauseButton.setAttribute(
             'aria-pressed',
             manuallyPaused ? 'true' : 'false',
-          );
-          pauseButton.setAttribute(
-            'aria-label',
-            manuallyPaused
-              ? Drupal.t('Resume the countdown that dismisses this alert')
-              : Drupal.t('Pause the countdown that dismisses this alert'),
           );
           const pauseIcon = pauseButton.querySelector(
             `.${PB_ALERT__PAUSE_ICON}`,

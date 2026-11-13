@@ -145,15 +145,18 @@
          class="pb-3d-carousel__ring"
          role="group"
          aria-roledescription="carousel"
-         aria-labelledby="pb-3d-carousel__index-{{ paragraph.id.value }}"
+         aria-labelledby="pb-3d-carousel__label-{{ paragraph.id.value }}"
          data-rotation-delay="{{ pb_play_stop }}"{% if pb_car_style == 'coverflow' %}
          data-pb-style="coverflow"{% endif %}>
 
+      {#- Hidden slides carry `inert` from the first byte, so their links are
+         never focusable inside an aria-hidden node before the script runs. -#}
       {% for key, item in valid_slides %}
         <div id="pb-3d-carousel__slide-{{ paragraph.id.value }}-{{ loop.index }}"
              class="pb-3d-carousel__slide"
              role="group"
-             aria-hidden="{{ loop.first ? 'false' : 'true' }}"
+             aria-hidden="{{ loop.first ? 'false' : 'true' }}"{% if not loop.first %}
+             inert{% endif %}
              tabindex="{{ loop.first ? 0 : -1 }}"
              aria-labelledby="pb-3d-carousel__slide-label-{{ paragraph.id.value }}-{{ loop.index }}">
           <div id="pb-3d-carousel__slide-label-{{ paragraph.id.value }}-{{ loop.index }}" class="visually-hidden">{{ 'Slide @current of @total'|t({'@current': loop.index, '@total': total_slides}) }}</div>
@@ -163,21 +166,24 @@
 
     </div>
 
-    <div id="{{ co_id }}" class="pb-3d-carousel__options" aria-label="{{ 'Carousel Controls'|t }}">
+    <div id="{{ co_id }}" class="pb-3d-carousel__options" role="group" aria-label="{{ 'Carousel Controls'|t }}">
       <div class="pb-ui-row pb-3d-carousel__options-inner">
         <button id="pb-3d-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
           <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
           <span>{{ include('@paragraph_bundle_3d_carousel/svg/svg-prev.svg') }}</span>
         </button>
-        <span id="pb-3d-carousel__index-{{ paragraph.id.value }}" class="pb-slideshow__number" data-pb-digits aria-label="{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}" role="status" aria-live="polite"></span>
+        {#- The digit is visual only. The ring's name is the hidden label
+           beside it, and the live region speaks only after a user action. -#}
+        <span id="pb-3d-carousel__index-{{ paragraph.id.value }}" class="pb-slideshow__number" data-pb-digits aria-hidden="true"></span>
+        <span id="pb-3d-carousel__label-{{ paragraph.id.value }}" class="visually-hidden">{{ 'Slide 1 of @total'|t({'@total': total_slides}) }}</span>
+        <span id="pb-3d-carousel__announcer-{{ paragraph.id.value }}" class="visually-hidden" aria-live="polite"></span>
 
         {% if pb_play_stop > 0 %}
           <button id="pb-3d-carousel__play-pause-{{ paragraph.id.value }}"
                   type="button"
                   class="pb-ui-btn pb-nav__pause control-btn"
                   aria-controls="{{ carousel_id }}"
-                  aria-label="{{ 'Pause slideshow'|t }}"
-                  aria-pressed="true">
+                  aria-label="{{ 'Pause slideshow'|t }}">
             <span class="visually-hidden">{{ 'Pause slideshow'|t }}</span>
             <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_3d_carousel/svg/svg-pause.svg') }}</span>
             <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_3d_carousel/svg/svg-play.svg') }}</span>

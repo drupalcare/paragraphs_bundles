@@ -1,0 +1,17 @@
+label: 'Swatch'
+description: 'Photo thumbnails as tabs in a rail; the picture opens as a circle with a card of words over it.'
+weight: 2
+stage: open
+ground: light
+placement: outer-margin
+serves: [studio, creative, university]
+needs:
+  - 'Keep three to six tabs, each with a name and a body: first an Image, then one text block. Each tab shows its panel image as a thumbnail. The tabs stay vertical for you.'
+settings:
+  pb_display_tab_vertical_tabs: 1
+  pb_display_tab_stack_narrow: 1
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

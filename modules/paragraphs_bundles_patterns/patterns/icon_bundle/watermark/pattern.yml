@@ -1,0 +1,10 @@
+label: 'Watermark'
+description: 'The icon becomes a huge, faint shape cropped by the corner of the card, with the words clear in front; its size follows the Icon Font Size setting, from 1 to 8.'
+weight: 3
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [nonprofit, healthcare, associations, government]
+needs:
+  - 'Enter a title and some body text; the icon sits behind them. A dark or strong icon color stays faint because the Pattern fades it.'
+settings: {}

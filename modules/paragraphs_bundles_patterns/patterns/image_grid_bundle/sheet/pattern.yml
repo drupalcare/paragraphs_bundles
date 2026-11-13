@@ -1,0 +1,15 @@
+label: 'Contact sheet'
+description: 'Even 3:2 frames with frame numbers; the viewer is a split screen with a paper sidebar and thumbnails.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [publication, university, studio]
+needs:
+  - 'Keep at least two sections, each with an image and a title. Grid Image Width sets the frame size and Grid Gap the space between frames.'
+settings: {}
+pictures:
+  image_grid_section_bundle.pb_content_image:
+    style: pb_image_grid
+    responsive: false
+    view_mode: pb_image_grid

@@ -1,0 +1,10 @@
+name: 'Paragraphs Bundles Patterns'
+type: module
+description: 'Adds ready-made design patterns that editors insert with one click on a content form.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
+dependencies:
+  - drupal:file
+  - drupal:media
+  - paragraphs:paragraphs
+  - paragraphs_bundles:paragraphs_bundles

@@ -1,0 +1,10 @@
+label: 'Ink fill'
+description: 'An outline Material icon fills with color and gains weight when pointed at; the Pattern draws the icon line itself, so the Fill, Weight, Grade and Optical Size settings have no effect.'
+weight: 1
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [saas, corporate, university]
+needs:
+  - 'Enter a Material icon name. An uploaded icon or an SVG from the theme changes color only and does not fill.'
+settings: {}

@@ -1,0 +1,91 @@
+/**
+ * @file
+ * Shared variables for every Pattern. Only applies inside a picked Pattern.
+ *
+ * A Pattern reads these with a fallback. PB's own --pb-* colors and spacing
+ * stay the editor's: a Pattern sets its default on the root element and the
+ * editor's rule on the inner element overrides it.
+ *
+ * This block is the one place a Pattern color value is written. On Solo, APEX
+ * and their sub-themes a bridge in css/bridge/ gives these tokens the colors of
+ * the region the Pattern sits in; every other theme keeps these values.
+ */
+
+/* Zero specificity, so a theme bridge wins whichever file loads first. */
+:where(.pb-pattern) {
+  --pb-pattern-surface: #fff;
+  --pb-pattern-raised: #f2f2f2;
+  --pb-pattern-ink: #111;
+  --pb-pattern-muted: #555;
+  --pb-pattern-line: #d4d4d4;
+  --pb-pattern-stage-bg: #000;
+  --pb-pattern-stage-color: #fff;
+  --pb-pattern-stage-muted: #c8c8c8;
+  --pb-pattern-stage-line: rgb(255, 255, 255, 0.5);
+  --pb-pattern-accent: #1f4d8f;
+  --pb-pattern-glass-bg: color-mix(in sRGB, currentColor 10%, transparent);
+  --pb-pattern-shadow: #000;
+  --pb-pattern-font-display: inherit;
+  --pb-pattern-font-ui: inherit;
+  --pb-pattern-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pb-pattern-target: 44px;
+  --pb-pattern-link: var(--pb-pattern-ink);
+
+  container: pb-pattern-region / inline-size;
+}
+
+/*
+ * PB's theme bridges (css/bridge/pb-theme-bridge-*.css) give every outer
+ * paragraph the theme's text, link and border colors in --pb-tx, --pb-lk and
+ * --pb-br. A Pattern reads those tokens with its own fallback, such as light
+ * words on its dark stage, so with the bridge value in place the fallback never
+ * applied: dark theme words on a dark stage (measured 2026-11-10 on Solo,
+ * 14 failures on the gallery page). On a Pattern the tokens inherit instead, so
+ * they hold only what an editor set, on this paragraph (PB's ID-scoped rule
+ * outranks this one) or on a paragraph around it. Light Patterns lose nothing:
+ * their fallbacks are the same theme colors, through the Pattern bridges.
+ */
+@media not (forced-colors: active) {
+  .paragraphs-bundles.pb-pattern {
+    --pb-tx: inherit;
+    --pb-lk: inherit;
+    --pb-br: inherit;
+  }
+}
+
+/* A theme's button and image rules must not resize a Pattern's controls.
+   Low specificity on purpose: PB's and each Pattern's own rules still win. */
+.paragraphs-bundles.pb-pattern button:where(:not(.contextual *)),
+.paragraphs-bundles.pb-pattern a.pb-ui-btn:where(:not(.contextual *)) {
+  float: none;
+  box-sizing: border-box;
+  min-width: auto;
+  min-height: auto;
+  margin: 0;
+  padding: 0;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  border: 0;
+  line-height: inherit;
+}
+
+.paragraphs-bundles.pb-pattern img {
+  float: none;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* --pb-bg is set on a paragraph only when an editor picks a ground, and is
+   reset on nested paragraphs. Saved here, a Pattern's panel can sit on the
+   editor's ground, and on its own default when there is none. */
+:where(.pb-pattern > .pb-ui-inner) {
+  --pb-pattern-editor-bg: var(--pb-bg, transparent);
+}
+
+/* A linked block holds a title and whole paragraphs, so a theme's link underline
+   would run under all of it. A Pattern marks its links in its own file. */
+.pb-pattern a.pb-ui-link {
+  text-decoration: none;
+}

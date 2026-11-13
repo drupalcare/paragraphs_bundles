@@ -1,0 +1,196 @@
+/**
+ * @file
+ * Pattern Bento for the Grid: four Hero cards in a bento layout.
+ *
+ * The Hero text box is the editor's: its colors and padding come from
+ * --pb-tx / --pb-bg on .pb-hero__text-inner. This file sets defaults one level
+ * up on the text wrapper and :where() rules, so the editor always wins.
+ */
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento {
+  --pb-pattern-bento-radius: 14px;
+  --pb-pattern-bento-tile: 17rem;
+  --pb-pattern-bento-scrim: linear-gradient(to top, color-mix(in sRGB, var(--pb-pattern-stage-bg) 90%, transparent) 0%, color-mix(in sRGB, var(--pb-pattern-stage-bg) 55%, transparent) 45%, transparent 75%);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper.pb-grid__wrapper {
+  grid-template-rows: none;
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: minmax(var(--pb-pattern-bento-tile), auto);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .hero-bundle-inner {
+  height: 100%;
+  min-block-size: var(--pb-pattern-bento-tile);
+  isolation: isolate;
+  border-radius: var(--pb-pattern-bento-radius);
+  background: var(--pb-pattern-stage-bg);
+}
+
+/* The photo fills the card; ::after is the scrim (the clearfix pseudo). */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-u-image-full {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-u-image-full::after {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  clear: none;
+  content: "";
+  pointer-events: none;
+  background: var(--pb-pattern-bento-scrim);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-hero__text-wrapper {
+  --pb-tx: var(--pb-pattern-stage-color);
+
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  color: var(--pb-pattern-stage-color);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-hero__text-inner {
+  position: relative;
+  width: 100%;
+  transform: none;
+  inset: auto;
+}
+
+:where(.pb-pattern--grid-bento .pb-hero__text-inner) {
+  padding: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-content__kicker {
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-content__title {
+  margin-block: var(--pb-px4) 0;
+  font-size: clamp(1.25rem, 1.9cqi, 1.6rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* The summary is every child of the text box except the kicker and title. */
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero__text-inner > :not(.pb-ui-link, .pb-content__kicker, .pb-content__title),
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero__text-inner > .pb-ui-link > :not(.pb-content__kicker, .pb-content__title) {
+  overflow: hidden;
+  max-width: 44ch;
+  max-height: 0;
+  transition:
+    max-height 0.5s var(--pb-pattern-ease-out),
+    opacity 0.4s,
+    padding 0.5s var(--pb-pattern-ease-out);
+  opacity: 0;
+}
+
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:is(:hover, :focus-within) .pb-hero__text-inner > :not(.pb-ui-link, .pb-content__kicker, .pb-content__title),
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:is(:hover, :focus-within) .pb-hero__text-inner > .pb-ui-link > :not(.pb-content__kicker, .pb-content__title),
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:first-child .pb-hero__text-inner > :not(.pb-ui-link, .pb-content__kicker, .pb-content__title),
+.paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:first-child .pb-hero__text-inner > .pb-ui-link > :not(.pb-content__kicker, .pb-content__title) {
+  max-height: 12rem;
+  padding-block-start: var(--pb-px6);
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero__text-inner > :not(.pb-ui-link, .pb-content__kicker, .pb-content__title),
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero__text-inner > .pb-ui-link > :not(.pb-content__kicker, .pb-content__title) {
+    max-height: 12rem;
+    padding-block-start: var(--pb-px6);
+    opacity: 1;
+  }
+}
+
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper.pb-grid__wrapper {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(1),
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(4) {
+    grid-column: span 2;
+  }
+}
+
+@container pb-pattern-region (min-width: 60rem) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper.pb-grid__wrapper {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(16.25rem, auto);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(1) {
+    grid-row: 1 / 3;
+    grid-column: 1 / 3;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(4) {
+    grid-column: 3 / 5;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:nth-child(1) .pb-content__title {
+    letter-spacing: -0.02em;
+    font-size: clamp(1.75rem, 3cqi, 2.75rem);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero .pb-u-image-full img {
+    transition: transform 1s var(--pb-pattern-ease-out);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero:is(:hover, :focus-within) .pb-u-image-full img {
+    transform: scale(1.06);
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero .pb-u-image-full {
+    animation: pb-pattern-bento-in 0.9s var(--pb-pattern-ease-out) both;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(2) .pb-u-image-full {
+    animation-delay: 0.09s;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(3) .pb-u-image-full {
+    animation-delay: 0.2s;
+  }
+
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-grid__wrapper > .pb-hero:nth-child(4) .pb-u-image-full {
+    animation-delay: 0.25s;
+  }
+
+  @keyframes pb-pattern-bento-in {
+    from {
+      transform: scale(1.05);
+      opacity: 0;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-grid.pb-pattern--grid-bento .pb-hero__text-inner > * {
+    transition: none;
+  }
+}

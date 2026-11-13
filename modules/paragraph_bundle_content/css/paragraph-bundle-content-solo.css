@@ -2,15 +2,20 @@
  * @file
  * Paragraph Bundle Content - Solo theme layout overrides.
  *
+ * Solo 2.0 and later renamed the 1.x layout classes and ids. Each selector names both:
+ * the 1.x name and the current name (solo_utilities solo-class-map.yml rows
+ * sidebar-box-main, main-container-inner, sidebar-box-main-inner, main-box-inner).
+ * `.solo-block` and `.solo-col` are unchanged in Solo 3.
+ *
  * Filename:     paragraph-bundle-content-solo.css
  * Website:      https://www.flashwebcenter.com
  * Developer:    Alaa Haddad https://www.alaahaddad.com
  */
-#sidebar-box-main {
+:is(#sidebar-box-main, #solo-sidebar-box-main) {
   width: 100%;
 }
 
-.page-node-type-pb-content .sidebar-box-main-inner > .solo-block {
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) > .solo-block {
   width: 100%;
   margin-inline-start: auto;
   margin-inline-end: auto;
@@ -18,13 +23,13 @@
 
 /* Core's contextual-links wrapper (div.contextual) is a direct child of every
    <nav> block; sized here it covers the menu and blocks its clicks. */
-.page-node-type-pb-content .sidebar-box-main-inner > nav > :not(.contextual),
-.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb-slideshow__title,
-.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb-content__title,
-.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb-content__kicker,
-.page-node-type-pb-content .sidebar-box-main-inner .solo-block .pb-content__lede,
-.page-node-type-pb-content .sidebar-box-main-inner > .solo-block:not(.block-system-main-block),
-.page-node-type-pb-content .sidebar-box-main-inner .node--view-mode-full > .node__content > *:not(.paragraphs-bundles, .contextual),
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) > nav > :not(.contextual),
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) .solo-block .pb-slideshow__title,
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) .solo-block .pb-content__title,
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) .solo-block .pb-content__kicker,
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) .solo-block .pb-content__lede,
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) > .solo-block:not(.block-system-main-block),
+.page-node-type-pb-content :is(.sidebar-box-main-inner, .solo-region-box__inner--content) .node--view-mode-full > .node__content > *:not(.paragraphs-bundles, .contextual),
 .page-node-type-pb-content .node--view-mode-full > .node__content > .paragraphs-bundles.pb-link-section,
 .page-node-type-pb-content .node--view-mode-full .pb-content__full:not(.pb-width-own) {
   width: 100%;
@@ -33,8 +38,8 @@
   margin-inline-end: auto;
 }
 
-#main-container-inner .pb-content,
-#main-container-inner .pb-content > div {
+:is(#main-container-inner, #solo-main-container-inner) .pb-content,
+:is(#main-container-inner, #solo-main-container-inner) .pb-content > div {
   margin-block: 0 !important;
   margin-inline: auto !important;
   padding: 0 !important;
@@ -54,8 +59,8 @@ div.pb-content section.pb-ui-block > article.node > header {
   width: 100%;
 }
 
-.page-node-type-pb-content #main-container-inner .main-box-inner,
-.page-node-type-pb-content #main-container-inner.solo-col {
+.page-node-type-pb-content :is(#main-container-inner, #solo-main-container-inner) :is(.main-box-inner, .solo-region-box__inner--main),
+.page-node-type-pb-content :is(#main-container-inner, #solo-main-container-inner).solo-col {
   width: 100% !important;
   padding: 0 !important;
   gap: 0 !important;

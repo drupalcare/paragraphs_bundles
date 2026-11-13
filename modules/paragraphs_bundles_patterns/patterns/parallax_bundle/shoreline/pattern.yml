@@ -1,0 +1,15 @@
+label: 'Shoreline'
+description: 'Photos pull into focus as they scroll in, with a frosted card that alternates sides.'
+weight: 3
+stage: open
+ground: light
+placement: outer-margin
+serves: [nonprofit, healthcare, cultural]
+needs:
+  - 'Keep at least two sections, each with an image and a body. Type the body as a short line, then a heading, then a short paragraph. Add a link if you want one. For the designed motion set Scroll Effect to 3D Transformations and Parallax Speed to 0.5 on each section.'
+settings: {}
+pictures:
+  parallax_section_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_parallax

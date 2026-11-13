@@ -1,0 +1,61 @@
+/**
+ * @file
+ * Pattern Side sheet for the Image Background.
+ *
+ * PB paints the editor's Image Overlay Color on its overlay element, and no
+ * color variable reaches the inner element, so the overlay itself becomes the
+ * sheet's ground. Without an overlay the inner element carries the ground.
+ */
+
+.paragraphs-bundles.pb-image-background.pb-pattern--image-background-side-sheet {
+  --pb-pattern-sheet: clamp(18rem, 42cqi, 34rem);
+  --pb-pattern-sheet-photo: clamp(11rem, 58cqi, 19rem);
+
+  display: flex;
+  justify-content: flex-end;
+}
+
+:where(.pb-pattern--image-background-side-sheet) {
+  min-height: clamp(22rem, 46vw, 42rem);
+}
+
+:where(.pb-pattern--image-background-side-sheet > .pb-ui-inner) {
+  box-sizing: border-box;
+  width: var(--pb-pattern-sheet);
+  padding: clamp(20px, 4cqi, 56px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+:where(.pb-pattern--image-background-side-sheet > .img-color-overlay + .pb-ui-inner) {
+  color: inherit;
+  background: transparent;
+}
+
+/* The words sit in the middle of the panel's height. Without this a tall panel
+   leaves them at the top with the empty part below. Editor padding and colors
+   stay on the element as before. */
+.paragraphs-bundles.pb-image-background.pb-pattern--image-background-side-sheet > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paragraphs-bundles.pb-image-background.pb-pattern--image-background-side-sheet > .img-color-overlay {
+  width: var(--pb-pattern-sheet);
+  height: auto;
+  inset-block: 0;
+  inset-inline: auto 0;
+}
+
+@container pb-pattern-region (max-width: 42rem) {
+  :where(.pb-pattern--image-background-side-sheet > .pb-ui-inner) {
+    width: 100%;
+    margin-block-start: var(--pb-pattern-sheet-photo);
+  }
+
+  .paragraphs-bundles.pb-image-background.pb-pattern--image-background-side-sheet > .img-color-overlay {
+    width: 100%;
+    inset-block-start: var(--pb-pattern-sheet-photo);
+  }
+}

@@ -1,0 +1,246 @@
+/**
+ * @file
+ * Pattern Keyline for the Hero: visible alignment lines.
+ *
+ * A page-ground split with a framed photo at the inline end. Lines run under
+ * the kicker, along the title row and across the photo's top and bottom edges;
+ * where the browser has view timelines they draw in as the hero enters, and
+ * they are simply there otherwise. Lines are aligned to rows, not to exact
+ * baselines, because the editor's font size moves the baseline.
+ * The Hero text box is the editor's: its --pb-tx, --pb-bg and padding win.
+ */
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline {
+  --pb-pattern-keyline-line: var(--pb-br, var(--pb-pattern-line));
+  --pb-pattern-keyline-from: 0;
+  --pb-pattern-keyline-inset: clamp(1.25rem, 4cqi, 3rem);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline {
+  --pb-pattern-keyline-from: 100%;
+}
+
+/* Phone: photo 16:10 on top between two lines, words below, bar full width. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .hero-bundle-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background-color: var(--pb-pattern-surface);
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .hero-bundle-inner::before,
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+  border-block: 1px solid var(--pb-pattern-keyline-line);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  height: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--hero-keyline .pb-hero__text-inner) {
+  padding-block: clamp(1.5rem, 5cqi, 2.5rem);
+  padding-inline: clamp(1.25rem, 5cqi, 2.5rem);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link {
+  position: relative;
+  display: flex;
+  float: none;
+  flex-direction: column;
+  height: auto;
+}
+
+/* The kicker: a small boxed label, ink on the raised ground. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner .pb-content__kicker {
+  display: inline-block;
+  align-self: flex-start;
+  justify-self: start;
+  padding-block: 0.3125rem;
+  padding-inline: 0.625rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pb-pattern-ink);
+  border-radius: 2px;
+  background-color: var(--pb-pattern-raised);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* The title row: one line above it (under the kicker) and one along its foot. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-content__title {
+  margin-block: 1rem 1.25rem;
+  padding-block: 1rem;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+  background:
+    linear-gradient(var(--pb-br, var(--pb-pattern-line)), var(--pb-br, var(--pb-pattern-line))) var(--pb-pattern-keyline-from) 0 / 100% 1px no-repeat,
+    linear-gradient(var(--pb-br, var(--pb-pattern-line)), var(--pb-br, var(--pb-pattern-line))) var(--pb-pattern-keyline-from) 100% / 100% 1px no-repeat;
+  font-size: clamp(2rem, 4.4cqi, 3.5rem);
+  font-weight: 650;
+  line-height: 1.08;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner p {
+  max-inline-size: 38rem;
+  line-height: 1.6;
+}
+
+/* The bar: the Link title across the whole column between two rules, no
+   sides, an arrow at the end. No Link title, no bar. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: flex;
+  clear: none;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 52px;
+  content: attr(title);
+  color: var(--pb-lk, var(--pb-pattern-link));
+  font-weight: 650;
+  margin-block: 1.75rem 0;
+  padding-block: 0.25rem;
+  padding-inline: 0 2.25rem;
+  border-block: 1px solid var(--pb-tx, var(--pb-pattern-ink));
+}
+
+/* The arrow: Google Material east, trimmed to its drawing, centred on the
+   bar's height (52px) at its inline end. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]::before {
+  position: absolute;
+  display: block;
+  clear: none;
+  inline-size: 1.25rem;
+  block-size: 0.875rem;
+  content: "";
+  transition: translate 0.3s var(--pb-pattern-ease-out);
+  background-color: var(--pb-lk, var(--pb-pattern-link));
+  inset-block-end: calc((52px - 0.875rem) / 2);
+  inset-inline-end: 0.25rem;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='2 5 20 14'%3E%3Cpath d='M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='2 5 20 14'%3E%3Cpath d='M15 5l-1.41 1.41L18.17 11H2v2h16.17l-4.59 4.59L15 19l7-7-7-7z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::before {
+  translate: 4px 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]::before {
+  transform: scaleX(-1);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::before {
+  translate: -4px 0;
+}
+
+/* Wide: 7/5 grid, photo at the inline end between two lines that run the
+   full width of the hero (background layers at the photo's top and foot). */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .hero-bundle-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    box-sizing: border-box;
+    column-gap: clamp(1.5rem, 4cqi, 4rem);
+    background-image: linear-gradient(var(--pb-pattern-keyline-line), var(--pb-pattern-keyline-line)), linear-gradient(var(--pb-pattern-keyline-line), var(--pb-pattern-keyline-line));
+    background-repeat: no-repeat;
+    background-position:
+      var(--pb-pattern-keyline-from) var(--pb-pattern-keyline-inset),
+      var(--pb-pattern-keyline-from) calc(100% - var(--pb-pattern-keyline-inset));
+    background-size:
+      100% 1px,
+      100% 1px;
+    min-block-size: clamp(26rem, 55vh, 40rem);
+    padding-block: var(--pb-pattern-keyline-inset);
+    padding-inline: clamp(1.25rem, 4cqi, 4rem);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-u-image-full {
+    grid-row: 1;
+    grid-column: 2;
+    aspect-ratio: auto;
+    border-block: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-wrapper {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
+  }
+
+  :where(.pb-pattern--hero-keyline .pb-hero__text-inner) {
+    padding-inline: 0;
+  }
+}
+
+@container pb-pattern-region (min-width: 80rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner {
+    max-inline-size: 38rem;
+  }
+}
+
+/* The draw-in, only where view timelines exist and motion is welcome. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-content__title {
+      animation: pb-pattern-keyline-draw linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    @container pb-pattern-region (min-width: 48rem) {
+      .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .hero-bundle-inner {
+        animation: pb-pattern-keyline-draw linear both;
+        animation-timeline: view();
+        animation-range: entry 0% cover 30%;
+      }
+    }
+
+    @keyframes pb-pattern-keyline-draw {
+      from {
+        background-size:
+          0% 1px,
+          0% 1px;
+      }
+
+      to {
+        background-size:
+          100% 1px,
+          100% 1px;
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-keyline .pb-hero__text-inner > .pb-ui-link[title]::before {
+    transition: none;
+  }
+}

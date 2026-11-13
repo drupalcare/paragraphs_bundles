@@ -1,0 +1,183 @@
+/**
+ * @file
+ * Pattern Peel for the 3D Flip Box.
+ *
+ * The front is cut away along a diagonal that sweeps from the end edge to a
+ * small dog-ear at the start corner, uncovering the back. The fold shadow is a
+ * neutral black on purpose, so it works on any face color. Colors and spacing
+ * are the editor's and are not touched here. The turn button is restated at
+ * 44px on a transparent ground in the end corner, which the cut uncovers.
+ *
+ * The x coordinates are written once as variables so right-to-left mirrors
+ * them by switching --pb-pattern-peel-m to 1.
+ */
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel {
+  --pb-pattern-peel-m: 0;
+  --pb-pattern-peel-t: clamp(2.5rem, 12%, 7rem);
+  --pb-pattern-peel-s: clamp(2.5rem, 20%, 7rem);
+  --pb-pattern-peel-gap: 1.25rem;
+  --pb-pattern-peel-time: 0.8s;
+  --pb-pattern-peel-fold: to bottom right;
+  --pb-pattern-peel-x0: calc(var(--pb-pattern-peel-m) * 100%);
+  --pb-pattern-peel-x1: calc(var(--pb-pattern-peel-m) * 100% + (1 - 2 * var(--pb-pattern-peel-m)) * 100%);
+  --pb-pattern-peel-xt: calc(var(--pb-pattern-peel-m) * 100% + (1 - 2 * var(--pb-pattern-peel-m)) * var(--pb-pattern-peel-t));
+  --pb-pattern-peel-xg: calc(var(--pb-pattern-peel-m) * 100% + (1 - 2 * var(--pb-pattern-peel-m)) * (var(--pb-pattern-peel-t) + var(--pb-pattern-peel-gap)));
+  --pb-pattern-peel-xs: calc(var(--pb-pattern-peel-m) * 100% + (1 - 2 * var(--pb-pattern-peel-m)) * var(--pb-pattern-peel-gap));
+  --pb-pattern-peel-gutter: calc(var(--pb-pattern-target, 44px) + 1.75rem);
+}
+
+/* Right-to-left: the dog-ear moves to the right corner. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel:dir(rtl) {
+  --pb-pattern-peel-m: 1;
+  --pb-pattern-peel-fold: to bottom left;
+}
+
+/* Flat faces: stacking uses z-index, so no depth is needed. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner {
+  transform-style: flat;
+}
+
+/* The faces wrapper never turns. The bundle's own flip rules are answered. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y):is(:hover, .pb-is-flipped) .pb-3d-flip-box__inner,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(.pb-3d-flip-box--flip-x, .pb-3d-flip-box--flip-y) .pb-3d-flip-box__inner:focus-within {
+  transform: translateZ(0);
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+  z-index: 1;
+  transform: none;
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__front {
+  z-index: 2;
+  transition: clip-path var(--pb-pattern-peel-time) var(--pb-pattern-ease-out);
+  clip-path: polygon(var(--pb-pattern-peel-x0) 0, var(--pb-pattern-peel-x1) 0, var(--pb-pattern-peel-x1) 100%, var(--pb-pattern-peel-x0) 100%);
+}
+
+/* Peeled: hover, keyboard focus on the faces, the toggle button, or the state
+   the script reports for any of those. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped, .pb-is-showing-back) .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+  clip-path: polygon(var(--pb-pattern-peel-x0) 0, var(--pb-pattern-peel-xt) 0, var(--pb-pattern-peel-x0) var(--pb-pattern-peel-s), var(--pb-pattern-peel-x0) var(--pb-pattern-peel-s));
+}
+
+/* Fold shadow: a band along the cut, on the side where the front is gone. It
+   has no width at rest, so it only shows once the front is lifting. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene::after {
+  position: absolute;
+  z-index: 1;
+  content: "";
+  inset: 0;
+  transition: clip-path var(--pb-pattern-peel-time) var(--pb-pattern-ease-out);
+  pointer-events: none;
+  background: linear-gradient(var(--pb-pattern-peel-fold), color-mix(in oklab, var(--pb-pattern-shadow) 30%, transparent), transparent 60%);
+  clip-path: polygon(var(--pb-pattern-peel-x1) 0, var(--pb-pattern-peel-x1) 0, var(--pb-pattern-peel-x1) 100%, var(--pb-pattern-peel-x1) 100%);
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped, .pb-is-showing-back)::after {
+  clip-path: polygon(var(--pb-pattern-peel-xt) 0, var(--pb-pattern-peel-xg) 0, var(--pb-pattern-peel-xs) var(--pb-pattern-peel-s), var(--pb-pattern-peel-x0) var(--pb-pattern-peel-s));
+}
+
+/* Default paper: an opaque front over a darker back, so there is a sheet to
+   peel. The editor's own colors win (--pb-bg and --pb-tx). */
+:where(.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__front) {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: var(--pb-bg, var(--pb-pattern-raised));
+}
+
+/* Specific on purpose: APEX paints every div and heading with its own text
+   colors, which would put dark words on this dark face, and PB's APEX bridge
+   hands them down at 0,3,0. The color still comes from --pb-tx when an editor
+   sets one. */
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__back {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__back :is(h2, h3, h4, h5, h6) {
+  color: inherit;
+}
+
+:where(.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__back) {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  background: var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+/* The front has no ground unless the editor sets one, so the back stays out
+   of sight until it is uncovered. Reduced motion uses the bundle's own fade. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+    transition: opacity 0.25s linear;
+    opacity: 0;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped, .pb-is-showing-back) .pb-3d-flip-box__inner .pb-3d-flip-box__back,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__back {
+    opacity: 1;
+  }
+}
+
+/* The turn button owns the end corner, so the faces keep a gutter there. */
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__back {
+  /* The words sit in the middle of the card's height, front and back. A grid
+     with centered content keeps them whole whatever the stock flex does. */
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: center;
+  justify-items: start;
+  box-sizing: border-box;
+  padding-inline-start: var(--pb-pattern-peel-gutter);
+}
+
+.paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__toggle {
+  z-index: 3;
+  inset-block-start: clamp(0.25rem, 1.5cqi, 0.75rem);
+  inset-inline: clamp(0.25rem, 1.5cqi, 0.75rem) auto;
+  width: var(--pb-pattern-target, 44px);
+  height: var(--pb-pattern-target, 44px);
+  color: var(--pb-pattern-ink);
+  border: 2px dotted var(--pb-pattern-muted);
+  border-radius: 0;
+  background-color: var(--pb-pattern-surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No peel: the faces cross-fade with the bundle's own opacity rules. */
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene:is(:hover, .pb-is-flipped, .pb-is-showing-back) .pb-3d-flip-box__inner .pb-3d-flip-box__front,
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner:focus-within .pb-3d-flip-box__front {
+    transition: none;
+    clip-path: none;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene::after {
+    display: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__toggle {
+    color: ButtonText;
+    border-color: ButtonText;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene::after {
+    display: none;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__inner .pb-3d-flip-box__front {
+    clip-path: none;
+  }
+
+  .paragraphs-bundles.pb-3d-flip-box.pb-pattern--3d-flip-box-peel .pb-3d-flip-box__scene::after {
+    display: none;
+  }
+}

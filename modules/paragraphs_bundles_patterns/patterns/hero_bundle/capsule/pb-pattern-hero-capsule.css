@@ -1,0 +1,225 @@
+/**
+ * @file
+ * Pattern Capsule for the Hero: a pill-shaped photo, a moving color twin and
+ * a sticker for the button.
+ *
+ * The photo is a rounded capsule on the page ground; the twin is the accent
+ * color shifted behind it. The sticker is the Link title printed by the
+ * hero's one link (::after) and positioned against the hero inner, so the
+ * Hero's text wrapper, text box and link are static in this Pattern. It is
+ * still a descendant of the link, so a click on it follows the link. CSS
+ * cannot measure attr(title): the 18-character limit lives in the description.
+ * The Hero text box is the editor's: its --pb-tx, --pb-bg and padding win.
+ */
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule {
+  --pb-pattern-capsule-pad: 1.5rem;
+  --pb-pattern-capsule-padi: 1rem;
+  --pb-pattern-capsule-h: clamp(24rem, 60vh, 36rem);
+  --pb-pattern-capsule-dx: 12px;
+  --pb-pattern-capsule-dy: 12px;
+  --pb-pattern-capsule-tilt: -8deg;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule {
+  --pb-pattern-capsule-dx: -12px;
+  --pb-pattern-capsule-tilt: 8deg;
+}
+
+/* Hovering the hero slides the twin a little further. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule:hover {
+  --pb-pattern-capsule-dx: 20px;
+  --pb-pattern-capsule-dy: 20px;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule:hover {
+  --pb-pattern-capsule-dx: -20px;
+}
+
+/* Phone: capsule 3:4 centered at 78% width, words below. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .hero-bundle-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  box-sizing: border-box;
+  padding-block-start: var(--pb-pattern-capsule-pad);
+  background: var(--pb-pattern-surface);
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .hero-bundle-inner::before,
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full {
+  position: relative;
+  inline-size: 78%;
+  aspect-ratio: 3 / 4;
+  margin-inline: auto;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full::after {
+  content: none;
+}
+
+/* The twin: the accent color, the capsule's shape, shifted behind it. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full::before {
+  position: absolute;
+  z-index: 0;
+  display: block;
+  clear: none;
+  content: "";
+  translate: var(--pb-pattern-capsule-dx) var(--pb-pattern-capsule-dy);
+  transition: translate 0.45s var(--pb-pattern-ease-out);
+  border-radius: 999px;
+  background-color: var(--pb-pattern-accent);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full img {
+  position: absolute;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 999px;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-wrapper {
+  position: static;
+  overflow: visible;
+  height: auto;
+  margin-block-start: 1.5rem;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+}
+
+/* With a sticker the words clear its overhang (2rem) plus 1rem. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-wrapper:has(.pb-ui-link[title]) {
+  margin-block-start: 3rem;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner {
+  position: static;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--hero-capsule .pb-hero__text-inner) {
+  padding-block: 0 clamp(1.5rem, 5cqi, 2.5rem);
+  padding-inline: clamp(1.25rem, 6cqi, 3rem);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner > .pb-ui-link {
+  position: static;
+  float: none;
+  height: auto;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 0.9375rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-content__title {
+  margin-block: 0.5rem 0.875rem;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-size: clamp(2rem, 5cqi, 3.75rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner p {
+  max-inline-size: 36rem;
+  line-height: 1.6;
+}
+
+/* The sticker: 104px round, accent ground, two lines of Link title, tilted,
+   with a 2px surface ring so it reads on any photo. No Link title, no sticker. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner > .pb-ui-link[title]::after {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  clear: none;
+  place-items: center;
+  box-sizing: border-box;
+  /* Percent margins read the hero inner's width: the capsule is 78% wide and
+     4:3 tall, so its foot is 104% of that width below the top padding. */
+  margin-block-start: calc(104% - 4.5rem);
+  padding: 0.75rem;
+  content: attr(title);
+  text-align: center;
+  color: var(--pb-pattern-surface);
+  border-radius: 50%;
+  background-color: var(--pb-pattern-accent);
+  box-shadow: 0 0 0 2px var(--pb-pattern-surface);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.15;
+  inline-size: 104px;
+  block-size: 104px;
+  rotate: var(--pb-pattern-capsule-tilt);
+  overflow-wrap: anywhere;
+  inset-block-start: var(--pb-pattern-capsule-pad);
+  inset-inline-end: calc(11% + 0.5rem);
+}
+
+/* Wide: capsule at the start, words at the end, centered together. */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule {
+    --pb-pattern-capsule-pad: clamp(1.5rem, 5vh, 3rem);
+    --pb-pattern-capsule-padi: clamp(1.5rem, 5cqi, 5rem);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .hero-bundle-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    column-gap: clamp(1.5rem, 4cqi, 4rem);
+    padding-block: var(--pb-pattern-capsule-pad);
+    padding-inline: var(--pb-pattern-capsule-padi);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full {
+    grid-row: 1;
+    grid-column: 1;
+    justify-self: start;
+    inline-size: calc(var(--pb-pattern-capsule-h) * 3 / 4);
+    max-inline-size: 100%;
+    block-size: var(--pb-pattern-capsule-h);
+    margin-inline: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-wrapper,
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-wrapper:has(.pb-ui-link[title]) {
+    grid-row: 1;
+    grid-column: 2;
+    max-inline-size: 36rem;
+    margin-block-start: 0;
+  }
+
+  :where(.pb-pattern--hero-capsule .pb-hero__text-inner) {
+    padding-block: 0;
+    padding-inline: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-hero__text-inner > .pb-ui-link[title]::after {
+    margin-block-start: calc(var(--pb-pattern-capsule-h) - 4.5rem);
+    inset-block-start: var(--pb-pattern-capsule-pad);
+    inset-inline-start: calc(var(--pb-pattern-capsule-padi) + var(--pb-pattern-capsule-h) * 3 / 4 - 5rem);
+    inset-inline-end: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-capsule .pb-u-image-full::before {
+    transition: none;
+  }
+}

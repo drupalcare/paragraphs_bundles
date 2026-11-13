@@ -49,8 +49,9 @@
   min-inline-size: 0;
 }
 
-.field--widget-range-number-widget [data-drupal-selector="para-opacity-range"] input[type="range"]:focus {
-  outline: none;
+.field--widget-range-number-widget [data-drupal-selector="para-opacity-range"] input[type="range"]:focus-visible {
+  outline: 2px solid var(--gin-color-focus, var(--color-focus, currentcolor));
+  outline-offset: 2px;
 }
 
 .field--widget-range-number-widget [data-drupal-selector="para-opacity-range"] input[type="range"]::-webkit-slider-runnable-track {

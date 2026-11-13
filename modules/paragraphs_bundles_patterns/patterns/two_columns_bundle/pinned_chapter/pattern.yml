@@ -1,0 +1,13 @@
+label: 'Pinned chapter'
+description: 'A short heading column stays pinned while the long column scrolls past, with a thin line filling as you read.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [publication, university, cultural, government]
+needs:
+  - 'Put the heading, a sentence and an optional button in the Left column (up to three items). Put the long text in the Right column.'
+  - 'The left column is pinned for you. The reading line appears only in browsers that support it and when the visitor has not asked for less motion.'
+settings:
+  pb_display_2c_l_stk: 1
+  pb_display_2c_r_stk: 0

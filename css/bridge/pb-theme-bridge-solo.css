@@ -28,9 +28,9 @@
  * flaw and is corrected the same way.
  */
 :where(.paragraphs-bundles:not(.paragraphs-bundles .paragraphs-bundles)) {
-  --pb-tx: var(--r-tx);
-  --pb-br: var(--r-br);
-  --pb-lk: var(--r-lk, var(--r-tx));
+  --pb-tx: var(--r-text, var(--r-tx));
+  --pb-br: var(--r-border, var(--r-br));
+  --pb-lk: var(--r-link, var(--r-lk, var(--r-text, var(--r-tx))));
 }
 
 /**

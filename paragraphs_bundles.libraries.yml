@@ -30,6 +30,11 @@ theme-bridge-solo:
     theme:
       css/bridge/pb-theme-bridge-solo.css: { weight: 100 }
 
+theme-bridge-w3css:
+  css:
+    theme:
+      css/bridge/pb-theme-bridge-w3css.css: { weight: 100 }
+
 theme-bridge-neutral:
   css:
     theme:

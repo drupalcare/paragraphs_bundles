@@ -107,6 +107,15 @@
         let autoSlideIntervalId = null;
         let isVisible = true;
         let touchStartX = 0;
+        // Rotation holds: the pointer is over the slides, or keyboard focus is
+        // inside the stage. Pressing Play while focused lifts the focus hold
+        // until focus leaves (playRequested).
+        let hoverHold = false;
+        let focusHold = false;
+        let playRequested = false;
+        // Set by a user action (arrows, dots, keys, swipe) so the next slide
+        // change is announced. The timer and the first render stay silent.
+        let announceNext = false;
 
         /**
          * Stops the automatic slideshow interval.
@@ -122,9 +131,13 @@
          * Announces the current slide to screen readers.
          */
         const announceSlide = () => {
-          if (announcer) {
-            announcer.textContent = `Slide ${slideIndex} of ${totalSlides}`;
+          if (announcer && announceNext) {
+            announcer.textContent = Drupal.t('Slide @current of @total', {
+              '@current': slideIndex,
+              '@total': totalSlides,
+            });
           }
+          announceNext = false;
         };
 
         /**
@@ -175,6 +188,9 @@
          * Visibility itself is CSS: every slide shares one grid cell, so the
          * slides container is always as tall as the tallest slide and the page
          * below never moves; `pb-is-active` decides which slide is visible.
+         *
+         * `inert` alone takes hidden slides out of the tab order, so authored
+         * tabindex values inside a slide are left as the editor set them.
          */
         const updateSlideVisibility = () => {
           slides.forEach((slide, index) => {
@@ -182,13 +198,6 @@
             slide.setAttribute('aria-hidden', String(!isActive));
             slide.toggleAttribute('inert', !isActive);
             slide.classList.toggle(PB_IS_ACTIVE, isActive);
-            slide
-              .querySelectorAll(
-                'a, button, input, textarea, select, [tabindex]',
-              )
-              .forEach((el) => {
-                el.setAttribute('tabindex', isActive ? '0' : '-1');
-              });
           });
           updateDots();
           announceSlide();
@@ -203,11 +212,27 @@
         };
 
         /**
+         * Runs a slide change the visitor asked for, so it is announced.
+         *
+         * @param {Function} move - nextSlide or prevSlide.
+         */
+        const userMove = (move) => {
+          announceNext = true;
+          move();
+        };
+
+        /**
          * Starts automatic slide rotation.
          */
         const startAutoSlide = () => {
           stopAutoSlide();
-          if (slideTime > 0 && !isPaused && isVisible) {
+          if (
+            slideTime > 0 &&
+            !isPaused &&
+            isVisible &&
+            !hoverHold &&
+            (!focusHold || playRequested)
+          ) {
             autoSlideIntervalId = setInterval(nextSlide, slideTime);
           }
         };
@@ -227,6 +252,7 @@
           // The state toggles even without a button: a template that renders no
           // play control must still not leave autoplay unstoppable (WCAG 2.2.2).
           isPaused = !isPaused;
+          playRequested = !isPaused;
           playIcon?.toggleAttribute('hidden', !isPaused);
           pauseIcon?.toggleAttribute('hidden', isPaused);
           playPauseButton?.setAttribute(
@@ -251,6 +277,7 @@
          */
         const handleDotClick = (index) => {
           slideIndex = index + 1;
+          announceNext = true;
           updateSlideVisibility();
           startAutoSlide();
         };
@@ -270,7 +297,10 @@
           }
           playIcon?.removeAttribute('hidden');
           pauseIcon?.setAttribute('hidden', '');
-          playPauseButton.setAttribute('aria-label', Drupal.t('Play slideshow'));
+          playPauseButton.setAttribute(
+            'aria-label',
+            Drupal.t('Play slideshow'),
+          );
           playPauseButton.classList.add(PB_IS_PAUSED);
           playPauseButton.classList.remove(PB_IS_PLAYING);
         };
@@ -302,9 +332,9 @@
             return;
           }
           if (event.key === 'ArrowRight') {
-            nextSlide();
+            userMove(nextSlide);
           } else if (event.key === 'ArrowLeft') {
-            prevSlide();
+            userMove(prevSlide);
           }
           // Space activates a focused control natively (WCAG 2.1.1), so the
           // play/pause shortcut only applies outside one.
@@ -334,9 +364,9 @@
         const handleTouchEnd = (event) => {
           const delta = event.changedTouches[0].clientX - touchStartX;
           if (delta > 50) {
-            prevSlide();
+            userMove(prevSlide);
           } else if (delta < -50) {
-            nextSlide();
+            userMove(nextSlide);
           }
           startAutoSlide();
         };
@@ -360,10 +390,13 @@
         );
         intersectionObserver.observe(stage);
 
-
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
-        nextButton?.addEventListener('click', nextSlide, { signal });
-        prevButton?.addEventListener('click', prevSlide, { signal });
+        nextButton?.addEventListener('click', () => userMove(nextSlide), {
+          signal,
+        });
+        prevButton?.addEventListener('click', () => userMove(prevSlide), {
+          signal,
+        });
 
         dots.forEach((dot, index) => {
           dot.addEventListener('click', () => handleDotClick(index), {
@@ -371,15 +404,52 @@
           });
         });
 
-        slidesContainer.addEventListener('mouseenter', stopAutoSlide, {
-          signal,
-        });
+        slidesContainer.addEventListener(
+          'mouseenter',
+          () => {
+            hoverHold = true;
+            stopAutoSlide();
+          },
+          { signal },
+        );
         slidesContainer.addEventListener(
           'mouseleave',
           () => {
+            hoverHold = false;
             if (!isPaused) {
               startAutoSlide();
             }
+          },
+          { signal },
+        );
+
+        // Keyboard focus anywhere in the stage (slides, dots, arrows, the
+        // play/pause button) holds rotation, so a slide never changes under a
+        // keyboard user. It resumes when focus leaves, unless the user
+        // pressed Pause.
+        stage.addEventListener(
+          'focusin',
+          () => {
+            // Focus arriving from outside starts a fresh hold.
+            if (!focusHold) {
+              playRequested = false;
+            }
+            focusHold = true;
+            if (!playRequested) {
+              stopAutoSlide();
+            }
+          },
+          { signal },
+        );
+        stage.addEventListener(
+          'focusout',
+          (event) => {
+            if (event.relatedTarget && stage.contains(event.relatedTarget)) {
+              return;
+            }
+            focusHold = false;
+            playRequested = false;
+            startAutoSlide();
           },
           { signal },
         );

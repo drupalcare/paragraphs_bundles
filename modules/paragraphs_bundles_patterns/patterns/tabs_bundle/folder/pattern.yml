@@ -1,0 +1,12 @@
+label: 'Folder'
+description: 'Tabs joined to a raised card like folder tabs.'
+weight: 3
+stage: boxed
+ground: light
+placement: both
+serves: [corporate, healthcare, government, associations]
+needs:
+  - 'Keep at least two tabs, each with a name. The tabs stay across the top for you.'
+settings:
+  pb_display_tab_vertical_tabs: 0
+  pb_display_tab_stack_narrow: 0

@@ -121,16 +121,16 @@
 }
 
 .pb__tab-display > .details-wrapper > [class*="pb__display-"] {
-  flex: 0 0 100%;
-  inline-size: 100%;
-  min-inline-size: 0;
-  box-sizing: border-box;
   overflow: hidden !important;
+  flex: 0 0 100%;
+  box-sizing: border-box;
   margin: 0 !important;
-  border: 1px solid color-mix(in srgb, currentcolor 25%, transparent) !important;
+  border: 1px solid color-mix(in sRGB, currentColor 25%, transparent) !important;
   border-inline-start: 3px solid #003ecc !important;
   border-radius: 8px !important;
   box-shadow: none !important;
+  inline-size: 100%;
+  min-inline-size: 0;
 }
 
 /* The open group's body: a small inset under the header. */
@@ -384,13 +384,13 @@ details.pb__tab-content .field--name-pb-content-title-alignment .form-select {
 }
 
 .pb__tab-display > .details-wrapper > [class*="pb__display-"] > summary {
-  padding-block: 0.625rem !important;
   padding-inline-end: 3rem !important;
-  font-weight: 600 !important;
   letter-spacing: 0.01em;
   background-repeat: no-repeat !important;
   background-position: right 1rem center !important;
   background-size: 1.25rem 1.25rem !important;
+  font-weight: 600 !important;
+  padding-block: 0.625rem !important;
 }
 
 [dir="rtl"] .pb__tab-display > .details-wrapper > [class*="pb__display-"] > summary {

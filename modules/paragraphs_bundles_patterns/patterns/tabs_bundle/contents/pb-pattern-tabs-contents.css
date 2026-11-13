@@ -1,0 +1,226 @@
+/**
+ * @file
+ * Pattern Contents for the Tabs.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * No script: the rail fills from the tab order with :has().
+ */
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents {
+  overflow: visible;
+}
+
+:where(.pb-pattern--tabs-contents > .pb-ui-inner) {
+  padding: clamp(32px, 6cqi, 80px) clamp(16px, 4cqi, 48px);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset {
+  gap: var(--pb-px28);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset > .pb-tabs__tablist {
+  overflow: visible;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  counter-reset: pb-pattern-contents;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
+  align-items: baseline;
+  width: 100%;
+  counter-increment: pb-pattern-contents;
+  text-align: start;
+  white-space: normal;
+  color: inherit;
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-line));
+  background: transparent;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.25rem, 2cqi, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  gap: var(--pb-px10);
+  padding-block: var(--pb-px18);
+  padding-inline: var(--pb-px22) 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button:last-child {
+  border-block-end: 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button::before {
+  content: counter(pb-pattern-contents, decimal-leading-zero) / "";
+  opacity: 0.62;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button > span {
+  transition: translate 0.5s var(--pb-pattern-ease-out);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button:hover > span {
+  translate: 6px 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button:hover > span {
+  translate: -6px 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
+  text-decoration: none;
+  background: var(--pb-bt-a, transparent);
+  font-weight: 500;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > .pb-is-active::before {
+  opacity: 1;
+}
+
+/* The rail: one segment per tab, the earlier ones and the active one filled. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button::after {
+  position: absolute;
+  width: 2px;
+  content: "";
+  transition: background-color 0.5s;
+  background: var(--pb-br, var(--pb-pattern-line));
+  inset-block: 0;
+  inset-inline-start: 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button:has(~ .pb-is-active)::after,
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > .pb-is-active::after {
+  background: currentColor;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  overflow: hidden;
+  margin-block-end: var(--pb-px24);
+  border-radius: 16px;
+  aspect-ratio: 16 / 10;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel[aria-hidden="false"] > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  animation: pb-pattern-tabs-contents-wipe 0.9s var(--pb-pattern-ease-out) both;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel[aria-hidden="false"] > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  animation-name: pb-pattern-tabs-contents-wipe-rtl;
+}
+
+@keyframes pb-pattern-tabs-contents-wipe {
+  from {
+    clip-path: inset(0 100% 0 0 round 16px);
+  }
+
+  to {
+    clip-path: inset(0 round 16px);
+  }
+}
+
+@keyframes pb-pattern-tabs-contents-wipe-rtl {
+  from {
+    clip-path: inset(0 0 0 100% round 16px);
+  }
+
+  to {
+    clip-path: inset(0 round 16px);
+  }
+}
+
+/* From 48rem of its own width: the rail beside the chapter. These rules must
+   outweigh PB's viewport breakpoint rules for vertical tabs. */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(40px, 5cqi, 80px);
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row {
+    flex-direction: row;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row > .pb-tabs__tablist {
+    position: sticky;
+    flex: 0 0 min(300px, 34%);
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    inset-block-start: 24px;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row > .pb-tabs__panels {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+@container pb-pattern-region (max-width: 47.99rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row {
+    flex-direction: column;
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row {
+    flex-direction: column;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tabset.pb-u-vertical-tabs.pb-ui-row > .pb-tabs__tablist {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+/* From 68.75rem of its own width: picture and words side by side. */
+@container pb-pattern-region (min-width: 68.75rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panels > .pb-tabs__panel {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--pb-px32);
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > * {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    flex: 1.15;
+    margin-block-end: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button > span,
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button::after {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__tablist > button:hover > span {
+    translate: none;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-contents .pb-tabs__panel[aria-hidden="false"] > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    animation: none;
+  }
+}

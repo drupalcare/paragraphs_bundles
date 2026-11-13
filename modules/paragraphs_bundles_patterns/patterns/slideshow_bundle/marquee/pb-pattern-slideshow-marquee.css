@@ -1,0 +1,483 @@
+/**
+ * @file
+ * Pattern Marquee for the Slideshow: a Hero in every slide on a dark stage.
+ *
+ * The new photo opens through five slats (a mask animated on .pb-is-active,
+ * PB keeps its own opacity swap underneath) and the words rise in on a solid
+ * band. Previous and Next are full-height glass rails on the photo edges; the
+ * numbered buttons become a tick ruler and Pause a square chip, both in a
+ * strip under the photo. Needs no script.
+ *
+ * Nested rules read `.pb-slideshow__slide .pb-hero:not(.pb-pattern)`, so a
+ * Hero outside this Pattern, or one with its own Pattern, is not changed.
+ * Colors read the editor first: --pb-tx and --pb-bg on the nested Hero's text
+ * box, then the slideshow's (inherited), then the stage tokens.
+ */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee {
+  --pb-pattern-marquee-h: clamp(30rem, 78vh, 46rem);
+  --pb-pattern-marquee-photo: clamp(18rem, 125cqi, 40rem);
+  --pb-pattern-marquee-rail: 56px;
+  --pb-pattern-marquee-strip: 64px;
+  --pb-pattern-marquee-clear: max(80px, 6cqi);
+
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+:where(.pb-pattern--slideshow-marquee > .pb-ui-inner) {
+  padding: 0;
+  background: var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+/* The stage is the size the photo and the rails are measured against. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage {
+  position: relative;
+  container: pb-pattern-marquee / inline-size;
+}
+
+/* The Slide Title stays for screen readers only. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide-inner > .pb-slideshow__title {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* ---- The nested Hero. Phone: photo on top, words below on the stage. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+  overflow: hidden;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  block-size: var(--pb-pattern-marquee-photo);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  height: auto;
+  inset: auto;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+  background-color: var(--pb-bg, color-mix(in srgb, var(--pb-pattern-stage-bg) 88%, transparent));
+}
+
+:where(.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+  padding-block: clamp(1.25rem, 5cqi, 2.25rem) clamp(1.5rem, 6cqi, 2.5rem);
+  padding-inline: clamp(1.25rem, 5cqi, 2.5rem);
+}
+
+/* Specific on purpose (rule C2): APEX paints every div and heading with its
+   own text colors, which would put dark words on this dark band. The color
+   still comes from --pb-tx when an editor sets one. */
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner :is(h2, h3, h4, h5, h6, p, span) {
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-stage-muted));
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-content__title {
+  margin-block: 0.625rem 0.875rem;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  font-size: clamp(1.75rem, 4.2cqi, 3.25rem);
+  font-weight: 750;
+  line-height: 1.05;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The Hero's button: the Link title in a stage-color outlined box. No Link
+   title, no button. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-block-start: 1.25rem;
+  content: attr(title);
+  transition:
+    background-color 0.3s,
+    color 0.3s;
+  border-radius: 2px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  font-weight: 650;
+  padding-block: 0.25rem;
+  padding-inline: 1.25rem;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-bg, var(--pb-pattern-stage-bg));
+  background-color: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+/* ---- Motion: the shutter opens the photo, the band rises. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide.pb-is-active .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  animation: pb-pattern-slideshow-marquee-shutter 0.8s var(--pb-pattern-ease-out) backwards;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide.pb-is-active .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  animation: pb-pattern-slideshow-marquee-rise 0.7s var(--pb-pattern-ease-out) 0.35s backwards;
+}
+
+/* Five slats: five mask layers of one size, at 0%, 25%, 50%, 75% and 100%,
+   which at 20.5% wide sit side by side with a hair of overlap. Only the size
+   moves. With no forwards fill the mask is gone once the slats are open. */
+@keyframes pb-pattern-slideshow-marquee-shutter {
+  from {
+    -webkit-mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000);
+    mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000);
+    -webkit-mask-position:
+      0% 0,
+      25% 0,
+      50% 0,
+      75% 0,
+      100% 0;
+    mask-position:
+      0% 0,
+      25% 0,
+      50% 0,
+      75% 0,
+      100% 0;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 0% 100%;
+    mask-size: 0% 100%;
+  }
+
+  to {
+    -webkit-mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000);
+    mask-image: linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000), linear-gradient(#000, #000);
+    -webkit-mask-position:
+      0% 0,
+      25% 0,
+      50% 0,
+      75% 0,
+      100% 0;
+    mask-position:
+      0% 0,
+      25% 0,
+      50% 0,
+      75% 0,
+      100% 0;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 20.5% 100%;
+    mask-size: 20.5% 100%;
+  }
+}
+
+@keyframes pb-pattern-slideshow-marquee-rise {
+  from {
+    opacity: 0;
+    translate: 0 24px;
+  }
+
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+/* ---- Previous and Next: full-height glass rails on the photo edges. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+  position: absolute;
+  z-index: 3;
+  overflow: visible;
+  width: auto;
+  padding: 0;
+  pointer-events: none;
+  opacity: 1;
+  inset-block-start: 0;
+  inset-inline: 0;
+  block-size: var(--pb-pattern-marquee-photo);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: var(--pb-pattern-marquee-rail);
+  min-width: var(--pb-pattern-marquee-rail);
+  block-size: 100%;
+  min-height: 44px;
+  cursor: pointer;
+  pointer-events: auto;
+  color: var(--pb-pattern-stage-color);
+  inset-block-start: 0;
+  isolation: isolate;
+}
+
+/* PB keeps the button itself transparent with an important flag, so the glass is a
+   layer behind the chevron. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  transition: background-color 0.25s;
+  background-color: color-mix(in sRGB, var(--pb-pattern-stage-bg) 70%, transparent);
+  inset: 0;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__prev {
+  inset-inline-start: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next {
+  inset-inline-end: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows :is(.pb-nav__prev, .pb-nav__next):hover {
+  transform: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button:is(:hover, :focus-visible)::before {
+  background-color: color-mix(in sRGB, var(--pb-pattern-stage-bg) 86%, transparent);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button svg {
+  width: 28px;
+  min-width: 0;
+  height: 28px;
+  min-height: 0;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible {
+  border-radius: 0;
+  outline: 2px solid var(--pb-pattern-stage-color);
+  outline-offset: -4px;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button svg {
+  transform: scaleX(-1);
+}
+
+/* ---- The strip under the photo: Pause chip at the start, ticks at the end. ---- */
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number {
+  display: flex;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: var(--pb-pattern-marquee-strip);
+  gap: 0;
+  padding-block: 0.625rem;
+  padding-inline: clamp(1rem, 3cqi, 2rem);
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  scroll-snap-type: none;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number :is(span, p) {
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number::after {
+  content: none;
+}
+
+/* Pause: a square-cornered chip with its word (PB's play label) and icon. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-inline-end: auto;
+  padding-block: 0;
+  padding-inline: 0.875rem 1rem;
+  transition: background-color 0.25s;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: inherit;
+  border-radius: 2px;
+  background-color: transparent;
+  box-shadow: inset 0 0 0 1px currentColor;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play:is(:hover, :active) {
+  transform: none;
+  background-color: color-mix(in sRGB, currentColor 14%, transparent);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play > span:not(.visually-hidden) {
+  min-width: 0;
+  min-height: 0;
+  gap: 0.5rem;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play svg {
+  width: 18px;
+  min-width: 0;
+  height: 18px;
+  min-height: 0;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* The numbered buttons: a ruler of thin vertical ticks, the open one taller.
+   Each tick sits in a 44px button; its name is PB's aria-label. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
+  position: relative;
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: 44px;
+  min-width: 44px;
+  block-size: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn > span {
+  grid-area: 1 / 1;
+  font-size: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn::before {
+  display: block;
+  grid-area: 1 / 1;
+  inline-size: 2px;
+  block-size: 14px;
+  content: "";
+  transition:
+    block-size 0.35s var(--pb-pattern-ease-out),
+    background-color 0.25s;
+  background-color: color-mix(in sRGB, currentColor 50%, transparent);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover::before {
+  background-color: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::before {
+  block-size: 28px;
+  background-color: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -2px;
+}
+
+/* ---- Wide: the photo fills the stage, the words sit on a band at the lower
+   start, clear of the rails. ---- */
+@container pb-pattern-region (min-width: 45rem) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+    min-block-size: var(--pb-pattern-marquee-h);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+    position: absolute;
+    block-size: auto;
+    inset: 0;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    overflow: hidden;
+    align-items: flex-end;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    height: 100%;
+    padding-block: clamp(1.5rem, 5cqi, 3.5rem);
+    padding-inline: var(--pb-pattern-marquee-clear);
+    inset: 0;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-inline-size: 40rem;
+    max-block-size: 100%;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+    block-size: var(--pb-pattern-marquee-h);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide.pb-is-active .pb-hero:not(.pb-pattern) .pb-u-image-full,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide.pb-is-active .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__arrows button::before,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-marquee .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn::before {
+    transition: none;
+  }
+}

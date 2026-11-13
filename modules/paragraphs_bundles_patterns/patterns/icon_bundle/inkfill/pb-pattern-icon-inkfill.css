@@ -1,0 +1,120 @@
+/**
+ * @file
+ * Pattern Ink fill for the Icon.
+ *
+ * The glyph animates its own fill and weight. PB writes the editor's axes on
+ * the wrapper, so setting them on the span replaces them on purpose; the
+ * Pattern's description says so. The two axes are registered so the change
+ * eases even in browsers that only interpolate matching axis lists.
+ */
+
+@property --pb-pattern-inkfill-fill {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --pb-pattern-inkfill-weight {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 300;
+}
+
+:where(.pb-pattern--icon-inkfill > .pb-ui-inner) {
+  padding: clamp(16px, 4cqi, 40px);
+  color: var(--pb-pattern-ink);
+  border-radius: 1rem;
+  background: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .pb-content__title {
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.375rem, 4cqi, 1.875rem);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* The icon, title and words share one centered axis. The header is a centered
+   column but the title field and the body default to start-aligned text, so
+   they sat left of the icon. The pattern owns the alignment, and the body
+   gets a readable column that stays centered. */
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .pb-content__full {
+  inline-size: 100%;
+  text-align: center;
+}
+
+/* The theme sizes the field inside the heading, which left the title at body
+   size; the field takes the heading's own size here. */
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .pb-content__title > .field--name-pb-content-title {
+  text-align: center;
+  font: inherit;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .field--name-pb-content-body {
+  max-inline-size: 36ch;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .pb-icon__header,
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .pb-icon__header > .pb-ui-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(10px, 2cqi, 18px);
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper {
+  order: -1;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > span {
+  --pb-pattern-inkfill-fill: 0;
+  --pb-pattern-inkfill-weight: 300;
+
+  transition:
+    --pb-pattern-inkfill-fill 0.35s var(--pb-pattern-ease-out),
+    --pb-pattern-inkfill-weight 0.35s var(--pb-pattern-ease-out),
+    color 0.35s ease;
+  font-variation-settings:
+    "FILL" var(--pb-pattern-inkfill-fill),
+    "wght" var(--pb-pattern-inkfill-weight),
+    "GRAD" 0,
+    "opsz" 48;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > svg {
+  transition: color 0.35s ease;
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill:is(:hover, :focus-within) .icon-wrapper > span {
+  --pb-pattern-inkfill-fill: 1;
+  --pb-pattern-inkfill-weight: 600;
+
+  color: var(--pb-lk-h, var(--pb-lk, var(--pb-pattern-link)));
+}
+
+.paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill:is(:hover, :focus-within) .icon-wrapper > svg {
+  color: var(--pb-lk-h, var(--pb-lk, color-mix(in srgb, currentColor 65%, transparent)));
+}
+
+/* Touch has no hover, so the filled glyph is the resting state there. */
+@media (hover: none) {
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > span {
+    --pb-pattern-inkfill-fill: 1;
+    --pb-pattern-inkfill-weight: 600;
+
+    color: var(--pb-lk-h, var(--pb-lk, var(--pb-pattern-link)));
+  }
+
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > svg {
+    color: var(--pb-lk-h, var(--pb-lk, color-mix(in srgb, currentColor 65%, transparent)));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > span,
+  .paragraphs-bundles.pb-icon.pb-pattern--icon-inkfill .icon-wrapper > svg {
+    transition: none;
+  }
+}

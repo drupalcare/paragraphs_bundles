@@ -1,0 +1,200 @@
+/**
+ * @file
+ * Pattern Mist for the Hero: the photo melts into the page instead of ending.
+ *
+ * A split on the page ground. The photo's edge toward the words is a mask
+ * that fades to transparent over the Hero's own ground, so no word ever sits
+ * on the photo. The Hero text box is the editor's: its --pb-tx, --pb-bg and
+ * padding win (the defaults sit on the wrapper and in :where() rules).
+ */
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist {
+  --pb-pattern-mist-fade: to left;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-mist {
+  --pb-pattern-mist-fade: to right;
+}
+
+/* Phone: photo on top, its lower 30% fading to the page ground, words below. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .hero-bundle-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--pb-pattern-surface);
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .hero-bundle-inner::before,
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  -webkit-mask-image: linear-gradient(to bottom, #000 70%, transparent);
+  mask-image: linear-gradient(to bottom, #000 70%, transparent);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  height: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--hero-mist .pb-hero__text-inner) {
+  padding-block: clamp(1.25rem, 5cqi, 3rem) clamp(2rem, 6cqi, 3.5rem);
+  padding-inline: clamp(1.25rem, 5cqi, 3.5rem);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-content__title {
+  margin-block: 0.875rem 1.25rem;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  font-size: clamp(2.25rem, 5cqi, 4.25rem);
+  font-weight: 300;
+  line-height: 1.08;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner p {
+  max-inline-size: 34rem;
+  line-height: 1.65;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The button: the Link title as plain words, an arrow after them and a 1px
+   line under them. The link is a grid so the arrow (::before, moved last by
+   `order`) sits beside the words (::after); the kicker, title and body span
+   both columns. No Link title, no button. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title] {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  column-gap: 0.5rem;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title] > * {
+  grid-column: 1 / -1;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  grid-column: 1;
+  align-items: center;
+  order: 1;
+  min-height: 44px;
+  margin-block-start: 1.5rem;
+  content: attr(title);
+  transition: background-size 0.45s var(--pb-pattern-ease-out);
+  color: var(--pb-lk, var(--pb-pattern-link));
+  background: linear-gradient(currentColor, currentColor) 0 calc(100% - 8px) / 2.5rem 1px no-repeat;
+  font-weight: 600;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]::after {
+  background-position: 100% calc(100% - 8px);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  background-size: 100% 1px;
+}
+
+/* The arrow: Google Material arrow_forward, trimmed to its drawing. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]::before {
+  display: block;
+  clear: none;
+  grid-column: 2;
+  justify-self: start;
+  order: 2;
+  margin-block-start: 1.5rem;
+  content: "";
+  background-color: var(--pb-lk, var(--pb-pattern-link));
+  inline-size: 1.125rem;
+  block-size: 1.125rem;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 16 16'%3E%3Cpath d='M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='4 4 16 16'%3E%3Cpath d='M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]::before {
+  transform: scaleX(-1);
+}
+
+/* Wide: two columns, photo at the inline end, the fade runs toward the words
+   over a quarter of the photo. */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .hero-bundle-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-block-size: clamp(28rem, 60vh, 44rem);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-u-image-full {
+    grid-row: 1;
+    grid-column: 2;
+    aspect-ratio: auto;
+    -webkit-mask-image: linear-gradient(var(--pb-pattern-mist-fade), #000 75%, transparent);
+    mask-image: linear-gradient(var(--pb-pattern-mist-fade), #000 75%, transparent);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-wrapper {
+    grid-row: 1;
+    grid-column: 1;
+    align-self: center;
+  }
+
+  :where(.pb-pattern--hero-mist .pb-hero__text-inner) {
+    padding-block: clamp(2rem, 6vh, 4rem);
+    padding-inline: clamp(1.5rem, 5cqi, 5rem) clamp(1rem, 2cqi, 2rem);
+  }
+}
+
+@container pb-pattern-region (min-width: 80rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .hero-bundle-inner {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner {
+    max-inline-size: 34rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-mist .pb-hero__text-inner > .pb-ui-link[title]::after {
+    transition: none;
+  }
+}

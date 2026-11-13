@@ -1,0 +1,23 @@
+label: 'Switchboard'
+description: 'Three cards across, compact list rows on small screens, with a numbered segmented control between the arrows; no autoplay.'
+weight: 2
+stage: boxed
+ground: light
+placement: both
+serves: [corporate, university, healthcare, government]
+needs:
+  - 'Keep at least six Image slides, each with an image and a title. The layout, the numbers and the arrows are set for you.'
+settings:
+  pb_display_vertical_carousel: hybrid
+  pb_display_carousel_breakpoints: pb__992
+  pb_display_navigation: both
+  pb_display_big_screen: 3
+  pb_display_small_screen: 3
+  pb_display_carousel_play_stop: 0
+  pb_display_activate_looping: 0
+  pb_display_carousel_arrows_over: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

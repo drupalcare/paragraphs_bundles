@@ -1,0 +1,276 @@
+/**
+ * @file
+ * Pattern Cards for the Accordion.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * The photo sits in the pane; the pane stays painted while closed and the
+ * script removes the inline display PB writes when a pane has shut.
+ */
+
+:where(.pb-pattern--accordion-cards > .pb-ui-inner) {
+  padding: clamp(12px, 3cqi, 40px);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__sections {
+  --pb-pattern-cards-ground: var(--pb-bg, var(--pb-pattern-surface));
+  --pb-pattern-cards-radius: 24px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  gap: var(--pb-px16);
+  /* An open card moves its neighbors. The browser would follow one of them and
+     scroll the page, taking the card that was clicked out of view. */
+  overflow-anchor: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__sections > :not(.pb-accordion__item) {
+  grid-column: 1 / -1;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-ui-row {
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+  border-block-end: 0;
+  border-radius: var(--pb-pattern-cards-radius);
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+}
+
+/* The photo stays painted while its card is closed. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+  position: static;
+  display: block;
+  overflow: hidden;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-is-inactive > .pb-accordion__pane {
+  height: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.9s var(--pb-pattern-ease-out);
+  object-fit: cover;
+  filter: grayscale(1);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-is-inactive:hover .pb-accordion__pane > :first-child img {
+  transform: scale(1.06);
+}
+
+/* The button is the card's face: the title sits on a band of the card's own
+   ground, so the editor's text color stays readable over any photo. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button {
+  position: relative;
+  z-index: 1;
+  display: block;
+  padding: 0;
+  aspect-ratio: 4 / 5;
+  color: inherit;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-ui-btn__title {
+  position: absolute;
+  z-index: 1;
+  inset-block-end: 0;
+  inset-inline: 0;
+  padding-block: var(--pb-px48) var(--pb-px20);
+  padding-inline: var(--pb-px20) calc(var(--pb-pattern-target) + var(--pb-px24));
+  background: linear-gradient(to top, var(--pb-pattern-cards-ground) 58%, transparent), linear-gradient(to top, var(--pb-pattern-surface) 58%, transparent);
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.25rem, 2cqi, 1.6rem);
+  font-weight: 650;
+  line-height: 1.1;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-icon-toggle {
+  position: absolute;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  margin-inline-start: 0;
+  transition: transform 0.45s var(--pb-pattern-ease-out);
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 50%;
+  background: var(--pb-bt-a, var(--pb-pattern-raised));
+  inset-block-end: var(--pb-px12);
+  inset-inline-end: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button:hover .pb-icon-toggle {
+  transform: rotate(90deg) scale(1.06);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button:active .pb-icon-toggle {
+  transform: scale(0.9);
+}
+
+/* The open card: photo and title in the first column, words in the second. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) {
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  grid-column: 1 / -1;
+  box-shadow: inset 0 0 0 1px var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__button {
+  min-height: 26rem;
+  aspect-ratio: auto;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  inset-inline-end: calc(100% * 5 / 12);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-ui-btn__title {
+  padding-inline-end: var(--pb-px24);
+  font-size: clamp(1.75rem, 4cqi, 3rem);
+}
+
+/* In a corner of the photo with no text, clear of the title. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-icon-toggle {
+  inset-block: var(--pb-px12) auto;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) > .pb-accordion__pane {
+  align-self: center;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  position: relative;
+  margin-block: var(--pb-px24) 0;
+  padding-inline: clamp(24px, 4cqi, 56px);
+}
+
+/* PB's slide script writes padding-bottom: 0 inline on the pane. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :last-child {
+  margin-block-end: var(--pb-px24);
+}
+
+/* Previous and next: their own row at the end of the open card's words. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-step {
+  display: flex;
+  align-items: center;
+  gap: var(--pb-px8);
+  padding-block-start: var(--pb-px16);
+  border-block-start: 1px solid var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-count {
+  margin-block: 0;
+  margin-inline-end: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-count-now {
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 50%;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-btn:hover,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-btn:focus-visible {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-btn::before {
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: var(--pb-pattern-cards-arrow) center / contain no-repeat;
+  mask: var(--pb-pattern-cards-arrow) center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-prev {
+  --pb-pattern-cards-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z'/%3E%3C/svg%3E");
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-next {
+  --pb-pattern-cards-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E");
+}
+
+/* The arrows point the way of reading. */
+[dir="rtl"] .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-pattern-cards-btn::before {
+  transform: scaleX(-1);
+}
+
+@container pb-pattern-region (max-width: 43.99rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__sections {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button {
+    aspect-ratio: 16 / 10;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__button {
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+  }
+
+  /* The photo stays above the words, the height of the card's face. */
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    aspect-ratio: 4 / 3;
+    inset: 0 0 auto;
+  }
+}
+
+/* A card opens in place and the cards after it fill the gap it leaves. */
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__sections {
+    grid-auto-flow: row dense;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__pane > :first-child img,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-icon-toggle {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__item.pb-is-inactive:hover .pb-accordion__pane > :first-child img,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button:hover .pb-icon-toggle,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-cards .pb-accordion__button:active .pb-icon-toggle {
+    transform: none;
+  }
+}

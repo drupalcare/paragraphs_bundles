@@ -1,0 +1,15 @@
+label: 'Aperture'
+description: 'One full hero: the photo opens as a circle from the text corner, then the title rises word by word.'
+weight: 0
+stage: open
+ground: dark
+placement: outer-margin
+serves: [creative, studio, cultural]
+needs:
+  - 'Add an Image and a Title. To show the pill button, add a Link and fill in the Link title: that title is the button text.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

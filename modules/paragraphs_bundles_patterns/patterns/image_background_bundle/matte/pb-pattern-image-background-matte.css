@@ -1,0 +1,62 @@
+/**
+ * @file
+ * Pattern Matte for the Image Background.
+ *
+ * The root is its own size container, so its padding cannot use cqi; a
+ * percentage resolves to the same width on the root and on its painted rings.
+ * background-clip also clips background-color, so the mat is painted by a ring
+ * element above the root: PB's overlay when the editor picked a color, the
+ * ::before fallback otherwise. Editor padding stays on the inner element.
+ */
+
+.paragraphs-bundles.pb-image-background.pb-pattern--image-background-matte {
+  --pb-pattern-matte: clamp(16px, 5.5%, 56px);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  background-clip: content-box;
+  background-origin: content-box;
+}
+
+:where(.pb-pattern--image-background-matte) {
+  min-height: clamp(20rem, 44vw, 40rem);
+  padding: var(--pb-pattern-matte);
+}
+
+:where(.pb-pattern--image-background-matte > .pb-ui-inner) {
+  padding: clamp(14px, 3cqi, 32px) clamp(16px, 4cqi, 40px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+/* The words sit in the middle of the panel's height. Without this a tall panel
+   leaves them at the top with the empty part below. Editor padding and colors
+   stay on the element as before. */
+.paragraphs-bundles.pb-image-background.pb-pattern--image-background-matte > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+@supports (mask-composite: exclude) {
+  .paragraphs-bundles.pb-image-background.pb-pattern--image-background-matte::before,
+  .paragraphs-bundles.pb-image-background.pb-pattern--image-background-matte > .img-color-overlay {
+    position: absolute;
+    box-sizing: border-box;
+    width: auto;
+    height: auto;
+    padding: var(--pb-pattern-matte);
+    inset: 0;
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .paragraphs-bundles.pb-image-background.pb-pattern--image-background-matte::before {
+    content: "";
+    background: var(--pb-pattern-raised);
+  }
+}

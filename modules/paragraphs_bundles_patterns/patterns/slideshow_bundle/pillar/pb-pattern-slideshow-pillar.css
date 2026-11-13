@@ -1,0 +1,431 @@
+/**
+ * @file
+ * Pattern Pillar for the Slideshow: named tabs over a Hero split.
+ *
+ * The numbered buttons become a row of tabs across the top of the stage, each
+ * carrying its slide's Slide Title (written into data-pb-pattern-label by the
+ * Pattern script); the open tab has a 3px bar along its top that fills over
+ * the slide time. Pause is a square cell at the end of the row. No arrows:
+ * the keyboard arrows still work (PB's script). Without the script the tabs
+ * show PB's numbers and the open tab's bar is simply full.
+ *
+ * Nested rules read `.pb-slideshow__slide .pb-hero:not(.pb-pattern)`, so a
+ * Hero outside this Pattern, or one with its own Pattern, is not changed.
+ * Colors read the editor first: --pb-tx and --pb-bg on the nested Hero's text
+ * box, then the slideshow's (inherited), then the page tokens.
+ */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar {
+  --pb-pattern-pillar-tab: 56px;
+  --pb-pattern-pillar-bar: 3px;
+
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+:where(.pb-pattern--slideshow-pillar > .pb-ui-inner) {
+  background: var(--pb-bg, var(--pb-pattern-surface));
+}
+
+/* The tab row goes above the slides; it follows them in the markup. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__slides {
+  order: 2;
+}
+
+/* The Slide Title is the tab's name, so inside the slide it stays for screen
+   readers only. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide-inner > .pb-slideshow__title {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* ---- The tab row. ---- */
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number {
+  display: flex;
+  overflow: visible;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-content: flex-start;
+  order: 1;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 0;
+  margin-block-end: clamp(1rem, 3cqi, 2rem);
+  gap: 0;
+  padding: 0;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  scroll-snap-type: none;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number :is(span, p) {
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number::before {
+  content: none;
+}
+
+/* Phone: the open tab's name on its own line under the row of numbers. The
+   name is already the tab's accessible name, so the copy is decorative. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number[data-pb-pattern-current]::after {
+  display: block;
+  flex: 1 0 100%;
+  order: 3;
+  min-width: 0;
+  padding-block-start: 0.75rem;
+  content: attr(data-pb-pattern-current);
+  content: attr(data-pb-pattern-current) / "";
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number:not([data-pb-pattern-current])::after {
+  content: none;
+}
+
+/* A tab: equal share of the row, the slide's name (or number), a rule along
+   its foot. Its accessible name is set by the Pattern script. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--pb-pattern-target);
+  max-inline-size: 18rem;
+  min-height: var(--pb-pattern-pillar-tab);
+  margin: 0;
+  padding-block: 0.75rem;
+  padding-inline: clamp(0.5rem, 1.5cqi, 1.25rem);
+  cursor: pointer;
+  transition: color 0.25s;
+  transform: none;
+  text-align: center;
+  text-decoration: none;
+  opacity: 1;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 0 -1px 0 var(--pb-br, var(--pb-pattern-line));
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.3;
+  scroll-snap-align: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active {
+  cursor: default;
+  text-decoration: none;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  box-shadow: inset 0 -2px 0 currentColor;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+/* With the script, the name (wide) or the padded number (phone) is printed
+   from the data attributes; PB's own number is hidden. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn[data-pb-pattern-num] > span {
+  display: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn[data-pb-pattern-num]::before {
+  display: block;
+  overflow: hidden;
+  min-width: 0;
+  max-inline-size: 100%;
+  content: attr(data-pb-pattern-num);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The timer bar, on the open tab only: a track in the line color with the
+   fill on top. Without the script, or with no slide time, it is full. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::after {
+  position: absolute;
+  block-size: var(--pb-pattern-pillar-bar);
+  content: "";
+  pointer-events: none;
+  background-color: var(--pb-br, var(--pb-pattern-line));
+  background-image: linear-gradient(var(--pb-bt-a, var(--pb-pattern-ink)), var(--pb-bt-a, var(--pb-pattern-ink)));
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 100% 100%;
+  inset-block-start: 0;
+  inset-inline: 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::after {
+  background-position: 100% 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar.pb-pattern-is-running .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::after {
+  animation: pb-pattern-slideshow-pillar-fill var(--pb-pattern-time, 8s) linear both;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar.pb-pattern-is-running.pb-pattern-is-held .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::after {
+  animation-play-state: paused;
+}
+
+@keyframes pb-pattern-slideshow-pillar-fill {
+  from {
+    background-size: 0% 100%;
+  }
+
+  to {
+    background-size: 100% 100%;
+  }
+}
+
+/* Pause: one square cell at the end of the row, a 1px rule before it. The
+   word option is kept for screen readers only, so the cell stays square. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  order: 2;
+  box-sizing: border-box;
+  min-width: var(--pb-pattern-pillar-tab);
+  min-height: var(--pb-pattern-pillar-tab);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.25s;
+  color: inherit;
+  border: 0;
+  border-inline-start: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: inset 0 -1px 0 var(--pb-br, var(--pb-pattern-line));
+  inline-size: var(--pb-pattern-pillar-tab);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play:is(:hover, :active) {
+  transform: none;
+  background-color: color-mix(in sRGB, currentColor 8%, transparent);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play > span:not(.visually-hidden) {
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play :is(.pb-nav__play-text, .pb-nav__pause-text) {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play svg {
+  width: 20px;
+  min-width: 0;
+  height: 20px;
+  min-height: 0;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -4px;
+}
+
+/* ---- The nested Hero. Phone: photo 16:10 on top, words below. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+  display: grid;
+  overflow: hidden;
+  grid-template-columns: minmax(0, 1fr);
+  background: transparent;
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 16 / 10;
+}
+
+/* Outranks the Hero's own height classes, so the slide decides the height. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  align-self: center;
+  height: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+  padding-block: clamp(1.25rem, 4cqi, 2.5rem);
+  padding-inline: clamp(0.25rem, 2cqi, 1rem);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-content__title {
+  margin-block: 0.5rem 0.875rem;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  font-size: clamp(1.625rem, 3.2cqi, 2.5rem);
+  font-weight: 650;
+  line-height: 1.12;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner p {
+  max-inline-size: 34rem;
+  line-height: 1.6;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The Hero's button: the Link title in an ink-filled rectangle. Specific on
+   purpose (rule C2), so a theme that paints links cannot change its words.
+   No Link title, no button. */
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-block-start: 1.5rem;
+  content: attr(title);
+  transition:
+    background-color 0.25s,
+    color 0.25s;
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  border-radius: 2px;
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  box-shadow: inset 0 0 0 1.5px var(--pb-tx, var(--pb-pattern-ink));
+  font-weight: 650;
+  padding-block: 0.25rem;
+  padding-inline: 1.25rem;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background-color: transparent;
+}
+
+/* ---- Wide: tabs carry names, the Hero splits photo and words 6/6. ---- */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number[data-pb-pattern-current]::after {
+    content: none;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
+    justify-content: flex-start;
+    text-align: start;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn[data-pb-pattern-label]::before {
+    content: attr(data-pb-pattern-label);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-block-size: clamp(20rem, 34cqi, 32rem);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+    grid-row: 1;
+    grid-column: 1;
+    aspect-ratio: auto;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+    grid-row: 1;
+    grid-column: 2;
+  }
+
+  :where(.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+    padding-block: clamp(1.5rem, 4cqi, 3rem);
+    padding-inline: clamp(1.5rem, 4cqi, 3.5rem) clamp(0.5rem, 1cqi, 1rem);
+  }
+}
+
+/* ---- Very wide: photo first at 7/5, the text column at most 34rem. ---- */
+@container pb-pattern-region (min-width: 80rem) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+    max-inline-size: 34rem;
+  }
+}
+
+/* No moving bar: it stays full on the open tab (PB pauses autoplay here too). */
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar.pb-pattern-is-running .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active::after {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-pillar .pb-slideshow__stage > .pb-slideshow__nav .pb-nav__play,
+  .paragraphs-bundles.pb-pattern.pb-pattern--slideshow-pillar .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+    transition: none;
+  }
+}

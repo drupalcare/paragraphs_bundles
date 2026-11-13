@@ -1,0 +1,9 @@
+label: 'Slimline'
+description: 'A thin one-line strip with the state icon, the message and the close button, built for the top of a site.'
+weight: 1
+stage: open
+ground: light
+placement: neither
+serves: [government, healthcare, nonprofit, university]
+needs:
+  - 'Add one short Simple paragraph to the Body and keep it to one sentence, 160 characters at most. A Title of up to 60 characters is optional. Put long messages in an Accordion instead.'

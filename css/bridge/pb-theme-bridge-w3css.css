@@ -1,0 +1,50 @@
+/**
+ * @file
+ * PB theme bridge - W3CSS theme (d8w3css and its sub-themes).
+ *
+ * Maps the region roles the W3CSS theme sets (`--r-text`, `--r-border`; a
+ * region class also sets `--r-background`, which PB never bridges) to paragraph
+ * `--pb-*` token DEFAULTS on `.paragraphs-bundles`. The theme sets no link
+ * role, so the link token keeps the neutral bridge's value (`LinkText`), and
+ * each role falls back to the neutral value where a region leaves it unset.
+ * Token-mapping ONLY - all element painting lives once in
+ * paragraphs-bundles-custom.css (`.pb-ui-inner`); bridges never repeat it.
+ * Hover tokens (`--pb-*-h`) and surface tokens (`--pb-bg` / `--pb-bg-h`) are
+ * editor-only and never bridged. `:where()` keeps these at zero specificity so
+ * per-region and editor id-scoped values win.
+ *
+ * THE CONTRACT: the theme supplies the default; any of the eight editor
+ * colour fields that is set takes over, per field, for that paragraph and
+ * everything inside it.
+ */
+
+/**
+ * Bridge the OUTERMOST paragraph only (same reason as the Solo and APEX
+ * bridges: re-declaring a token on a nested paragraph would discard the value
+ * inherited from an ancestor the editor styled).
+ */
+:where(.paragraphs-bundles:not(.paragraphs-bundles .paragraphs-bundles)) {
+  --pb-tx: var(--r-text, CanvasText);
+  --pb-br: var(--r-border, currentColor);
+  --pb-lk: LinkText;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Bridge tokens only; no motion. */
+}
+
+@media (prefers-contrast: more) {
+  /* Bridge tokens only. */
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles {
+    --pb-tx: CanvasText;
+    --pb-br: CanvasText;
+    --pb-lk: LinkText;
+  }
+}
+
+@media print {
+  /* Bridge tokens only. */
+}

@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.pb_video_captions_lang
+    - media.type.pb_media_video
+id: media.pb_media_video.pb_video_captions_lang
+field_name: pb_video_captions_lang
+entity_type: media
+bundle: pb_media_video
+label: 'Captions language'
+description: 'Language code of the captions file, for example en or ar.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

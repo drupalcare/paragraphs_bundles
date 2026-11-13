@@ -1,0 +1,18 @@
+label: 'Ledger'
+description: 'An editorial split: numbered chapter tabs, a giant outlined numeral and the words, the photo cut in on a diagonal. Manual, no autoplay.'
+weight: 3
+stage: open
+ground: light
+placement: outer-margin
+serves: [publication, university, cultural]
+needs:
+  - 'Keep at least two slides, each with an Image, a Simple paragraph for the words, and a Slide Title for the small label above them. The tabs, arrows and timing are set for you.'
+settings:
+  pb_display_bottom_navigation: nav
+  pb_display_slide_play_stop: ~
+  pb_display_slide_prev_next: 1
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

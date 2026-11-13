@@ -1,0 +1,295 @@
+/**
+ * @file
+ * Pattern Nightstory for the Carousel.
+ *
+ * Two tall photo cards with story bars across the top. The active bar's fill
+ * is a CSS animation that restarts when PB moves pb-is-active, so it needs no
+ * script. The title rises word by word (see the script).
+ */
+
+:where(.pb-pattern--carousel-nightstory > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+
+  padding: clamp(16px, 4cqi, 48px);
+  background: var(--pb-pattern-stage-bg);
+}
+
+:where(.pb-pattern--carousel-nightstory .pb-carousel__slides) {
+  gap: var(--pb-px16);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) repeat(3, auto) minmax(0, 1fr);
+  gap: var(--pb-px14) var(--pb-px8);
+  align-items: center;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__wrapper {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__bottom-bar,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar {
+  display: contents;
+}
+
+/* Story bars sit over the photos; each card keeps an 80px band clear of them. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots {
+  position: absolute;
+  z-index: 2;
+  flex-wrap: nowrap;
+  padding: 0;
+  gap: var(--pb-px4);
+  inset-block-start: var(--pb-px4);
+  inset-inline: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot {
+  position: relative;
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  height: var(--pb-pattern-target);
+  transform: none;
+  border-radius: 0;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::after {
+  position: absolute;
+  height: 3px;
+  content: "";
+  border-radius: 3px;
+  inset-block-start: calc(50% - 1.5px);
+  inset-inline: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before {
+  background: color-mix(in sRGB, currentColor 35%, transparent);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::after {
+  transform: scaleX(0);
+  transform-origin: left;
+  background: currentColor;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::after {
+  transform-origin: right;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot:has(~ .pb-carousel__dot.pb-is-active)::after {
+  transform: scaleX(1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active {
+  width: auto;
+  min-width: 0;
+  transform: none;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active::after {
+  animation: pb-pattern-carousel-nightstory-fill var(--pb-pattern-time, 6s) linear both;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel.pb-pattern-is-held .pb-carousel__dots .pb-carousel__dot.pb-is-active::after,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel.pb-pattern-is-focus-held .pb-carousel__dots .pb-carousel__dot.pb-is-active::after,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel:has(.pb-carousel__wrapper:hover) .pb-carousel__dots .pb-carousel__dot.pb-is-active::after,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel:has(.pb-carousel__play-pause.pb-is-paused) .pb-carousel__dots .pb-carousel__dot.pb-is-active::after {
+  animation: none;
+}
+
+@keyframes pb-pattern-carousel-nightstory-fill {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Prev, play, next at the end of a row under the cards. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__play-pause {
+  grid-row: 2;
+  grid-column: 3;
+  width: 48px;
+  height: 48px;
+  color: inherit;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__play-pause svg {
+  width: 22px;
+  height: 22px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+  grid-row: 2;
+  grid-column: 4;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn {
+  width: 48px;
+  height: 48px;
+  color: var(--pb-pattern-stage-bg);
+  border-radius: 50%;
+  background: var(--pb-bt-a, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn svg {
+  width: 24px;
+  height: 24px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__next:not(.pb-is-disabled):hover,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__prev:not(.pb-is-disabled):hover {
+  transform: none;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar svg {
+  transform: scaleX(-1);
+}
+
+/* Cards. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__wrapper.pb-u-small-screen .pb-carousel__slide {
+  flex: 0 0 100%;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__wrapper:not(.pb-u-small-screen) .pb-carousel__slide {
+  flex: 0 0 calc((100% - var(--pb-pattern-gap, var(--pb-px16))) / 2 - 0.5px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: clamp(440px, 72vh, 680px);
+  padding: clamp(20px, 3cqi, 36px);
+  padding-block-start: 80px;
+  border-radius: 24px;
+  isolation: isolate;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  background: linear-gradient(to top, color-mix(in sRGB, var(--pb-pattern-stage-bg) 88%, transparent) 0%, color-mix(in sRGB, var(--pb-pattern-stage-bg) 60%, transparent) 42%, transparent 70%), linear-gradient(to bottom, color-mix(in sRGB, var(--pb-pattern-stage-bg) 55%, transparent), transparent 18%);
+  inset: 0;
+}
+
+/* The photo fills the card; PB's Image paragraph stays a static shell so the
+   wrapper can be absolute against the slide. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles > .pb-ui-inner {
+  position: static;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide :is(a.pb-ui-link, .pb-image__wrapper) {
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper {
+  overflow: hidden;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 6s linear;
+  transform: scale(1.08);
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-image__wrapper img {
+  transform: scale(1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide .pb-content__title {
+  order: 1;
+  margin: 0 0 var(--pb-px12);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.75rem, 4.4cqi, 3.6rem);
+  font-weight: 800;
+  line-height: 1.02;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__desc {
+  order: 2;
+  max-width: 40ch;
+  line-height: 1.5;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-pattern-word {
+  display: inline-block;
+  overflow: hidden;
+  padding-block-end: 0.06em;
+  vertical-align: bottom;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-pattern-word > span {
+  display: inline-block;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-pattern-word > span {
+  animation: pb-pattern-carousel-nightstory-word 0.8s var(--pb-pattern-ease-out) both calc(var(--pb-pattern-i, 0) * 70ms + 200ms);
+}
+
+@keyframes pb-pattern-carousel-nightstory-word {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active::after {
+    transform: scaleX(1);
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-pattern-word > span {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Its own shape: no other Pattern's arrows are this soft square. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn:is(.pb-nav__prev, .pb-nav__next) {
+  border-radius: 12px;
+}
+
+/* On a phone the controls sit at the start of the row. */
+@container pb-pattern-region (max-width: 30rem) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-nightstory.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport {
+    grid-template-columns: 0 repeat(3, auto) minmax(0, 1fr);
+  }
+}

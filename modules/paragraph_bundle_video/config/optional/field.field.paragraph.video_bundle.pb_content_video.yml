@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_content_video
+    - media.type.pb_media_remote_video
+    - media.type.pb_media_video
+    - paragraphs.paragraphs_type.video_bundle
+id: paragraph.video_bundle.pb_content_video
+field_name: pb_content_video
+entity_type: paragraph
+bundle: video_bundle
+label: Video
+description: 'A video file uploaded to this site, or a video from a supported provider. A video from a provider is not loaded until the visitor presses Play. Pressing Play connects the visitor''s browser to that provider, and a site with a Content Security Policy must allow the provider in frame-src. Background mode accepts a video file only.'
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      pb_media_remote_video: pb_media_remote_video
+      pb_media_video: pb_media_video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

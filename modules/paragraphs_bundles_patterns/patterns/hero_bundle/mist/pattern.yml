@@ -1,0 +1,16 @@
+label: 'Mist'
+description: 'A light, quiet split: the photo melts softly into the page color toward the words, so there is no hard edge, and a large light title sits in generous space. The button is the Link title with an arrow and a fine line that grows under it. A ground picked for the words colors their box; the photo still fades to the page color.'
+weight: 1
+stage: open
+ground: light
+placement: outer-margin
+serves: [healthcare, nonprofit, associations]
+needs:
+  - 'Add an Image (a light-toned photo reads best), a Kicker, a Title and one or two sentences of Body.'
+  - 'To show the button, add a Link and fill in the Link title: that title is the button text.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

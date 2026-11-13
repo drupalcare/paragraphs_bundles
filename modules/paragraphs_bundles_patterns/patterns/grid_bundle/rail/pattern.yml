@@ -1,0 +1,16 @@
+label: 'Rail'
+description: 'A sideways row of tall portrait cards that snap as you move; a card turns to its words, and a bottom bar shows where you are.'
+weight: 7
+stage: open
+ground: light
+placement: outer-margin
+serves: [publication, cultural, university]
+needs:
+  - 'Keep at least three 3D Flip Box items in the Grid. In each: a Front with an Image and a Simple paragraph with a Title; a Back with a Simple paragraph whose Body is the quote and whose Title is the name of who said it.'
+  - 'Cards turn with the corner button only, sideways.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

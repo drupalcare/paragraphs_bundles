@@ -1,0 +1,127 @@
+/**
+ * @file
+ * Pattern Action band for the Simple paragraph.
+ *
+ * The message on one side and one or two buttons on the other, stacked in a
+ * narrow region. The buttons are outlined in the text color so they stay
+ * readable on whatever ground the editor chooses. Colors, padding and border
+ * the editor sets win: the defaults are :where().
+ */
+
+:where(.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band > .pb-ui-inner) {
+  padding: clamp(1.25rem, 4cqi, 3rem) clamp(1rem, 5cqi, 4rem);
+  color: var(--pb-pattern-ink);
+  border-radius: 0.75rem;
+  background: var(--pb-pattern-raised);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .pb-content__full {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 0;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .pb-content__title {
+  margin: 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.25rem, 1rem + 1.8cqi, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-body {
+  margin-block-start: 0.5rem;
+  max-inline-size: 60ch;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-body p {
+  margin: 0;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-body p + p {
+  margin-block-start: 0.5rem;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary {
+  justify-self: start;
+  margin-block-start: 1rem;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  transition: box-shadow 0.25s var(--pb-pattern-ease-out);
+  text-align: center;
+  text-decoration: none;
+  border: 2px solid currentColor;
+  border-radius: 999px;
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  min-block-size: var(--pb-pattern-target);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary a {
+  text-decoration: underline;
+  border-color: transparent;
+  text-underline-offset: 0.25em;
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a:hover,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a:focus-visible {
+  box-shadow: inset 0 0 0 2em color-mix(in sRGB, currentColor 14%, transparent);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary a:hover,
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary a:focus-visible {
+  text-decoration-thickness: 2px;
+}
+
+@container pb-pattern-region (min-width: 40rem) {
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .pb-content__full {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+  }
+
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .pb-content__title,
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-body {
+    grid-column: 1;
+  }
+
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link,
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary {
+    grid-row: 1 / span 2;
+    margin-block-start: 0;
+  }
+
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link {
+    grid-column: 2;
+    margin-inline-start: clamp(1.5rem, 4cqi, 3rem);
+  }
+
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link-secondary {
+    grid-column: 3;
+    margin-inline-start: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a {
+    transition: none;
+  }
+}
+
+/* The one action the band exists for is filled; the secondary stays quiet. */
+:where(.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a) {
+  color: var(--pb-pattern-surface);
+  background: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.paragraph--type--simple-bundle.pb-pattern--simple-action-band .field--name-pb-content-link a {
+  border-color: var(--pb-pattern-ink);
+}

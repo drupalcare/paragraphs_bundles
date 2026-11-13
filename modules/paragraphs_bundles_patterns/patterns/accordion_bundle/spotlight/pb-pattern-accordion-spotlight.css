@@ -1,0 +1,369 @@
+/**
+ * @file
+ * Pattern Spotlight for the Accordion.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * The ground is a stage: its text token is set on the root element and the
+ * editor's rule on the inner element overrides it.
+ */
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+  --pb-br: var(--pb-pattern-stage-line);
+}
+
+:where(.pb-pattern--accordion-spotlight > .pb-ui-inner) {
+  padding: clamp(12px, 2.5cqi, 32px);
+  background: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__sections {
+  --pb-pattern-spotlight-ground: var(--pb-bg, var(--pb-pattern-stage-bg));
+  --pb-pattern-spotlight-height: clamp(26rem, 74vh, 44rem);
+
+  display: flex;
+  flex-wrap: wrap;
+  counter-reset: pb-pattern-spotlight;
+  gap: var(--pb-px8);
+}
+
+/* PB's title and expand-all rows are children of the same container. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__sections > :not(.pb-accordion__item) {
+  flex: 0 0 100%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  flex: 1 1 0;
+  width: auto;
+  min-width: 4.5rem;
+  height: var(--pb-pattern-spotlight-height);
+  counter-increment: pb-pattern-spotlight;
+  transition: flex-grow 0.45s var(--pb-pattern-ease-out);
+  border-block-end: 0;
+  border-radius: 24px;
+  background: var(--pb-pattern-spotlight-ground);
+  isolation: isolate;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) {
+  flex-grow: 6.5;
+}
+
+/* The photo stays painted while closed: it is placed from the item, so the
+   pane's collapse and PB's inline height never touch it. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row > .pb-accordion__pane {
+  position: static;
+  display: block;
+  overflow: hidden;
+  width: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-is-inactive > .pb-accordion__pane {
+  height: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition:
+    transform 1.4s var(--pb-pattern-ease-out),
+    filter 0.8s;
+  transform: scale(1.14);
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.62);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) .pb-accordion__pane > :first-child img {
+  transform: none;
+  filter: grayscale(1);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="false"]):hover .pb-accordion__pane > :first-child img {
+  transform: scale(1.08);
+  filter: grayscale(1) brightness(0.74);
+}
+
+/* The words: at the foot of the open panel, on a band of the ground color so
+   the editor's text color stays readable. Hidden once a closed panel fades. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  position: absolute;
+  z-index: 1;
+  padding-block: var(--pb-px64) clamp(20px, 3cqi, 40px);
+  padding-inline: clamp(20px, 3.5cqi, 48px);
+  background: linear-gradient(to top, var(--pb-pattern-spotlight-ground) 62%, transparent);
+  inset-block-end: 0;
+  inset-inline: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="false"]) .pb-accordion__pane > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  visibility: hidden;
+}
+
+/* The header: a full-height strip when closed, a pill when open. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button {
+  position: absolute;
+  z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: auto;
+  padding-block: var(--pb-px20);
+  padding-inline: 0;
+  color: inherit;
+  background: color-mix(in sRGB, var(--pb-pattern-spotlight-ground) 40%, transparent);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button::before {
+  content: counter(pb-pattern-spotlight, decimal-leading-zero) / "";
+  letter-spacing: 0.08em;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-ui-btn__title {
+  overflow: hidden;
+  flex: 0 1 auto;
+  min-height: 0;
+  transform: rotate(180deg);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  writing-mode: vertical-rl;
+  font-family: var(--pb-pattern-font-display);
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-icon-toggle {
+  flex: none;
+  align-self: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  margin-inline-start: 0;
+  transition: transform 0.35s var(--pb-pattern-ease-out);
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 50%;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button:hover .pb-icon-toggle {
+  transform: rotate(90deg);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button[aria-expanded="true"] {
+  flex-direction: row;
+  gap: var(--pb-px12);
+  max-width: calc(100% - 2rem);
+  height: auto;
+  padding-block: var(--pb-px5);
+  padding-inline: var(--pb-px16) var(--pb-px5);
+  border-radius: 999px;
+  background: color-mix(in sRGB, var(--pb-pattern-spotlight-ground) 72%, transparent);
+  inset-block: var(--pb-px16) auto;
+  inset-inline: var(--pb-px16) auto;
+  backdrop-filter: blur(12px);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button[aria-expanded="true"] .pb-ui-btn__title {
+  transform: none;
+  writing-mode: horizontal-tb;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button[aria-expanded="true"] .pb-icon-toggle {
+  width: 36px;
+  height: 36px;
+}
+
+/* The bar: counter, one segment per panel, previous and next. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  padding-block-start: var(--pb-px16);
+  gap: clamp(12px, 2cqi, 24px);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-count {
+  margin: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-count-now {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bars {
+  display: flex;
+  gap: var(--pb-px6);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bar {
+  position: relative;
+  flex: 1;
+  height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  border: 0;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bar::before {
+  position: absolute;
+  height: 4px;
+  margin-block: auto;
+  content: "";
+  transition:
+    background-color 0.3s,
+    height 0.3s;
+  border-radius: 4px;
+  background: var(--pb-br, var(--pb-pattern-stage-line));
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bar[aria-current="true"]::before {
+  height: 6px;
+  background: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-arrows {
+  display: flex;
+  gap: var(--pb-px8);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-btn {
+  display: inline-grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 50%;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-btn:hover,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-btn:focus-visible {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-btn::before {
+  width: 1rem;
+  height: 1rem;
+  content: "";
+  background: currentColor;
+  -webkit-mask: var(--pb-pattern-spotlight-arrow) center / contain no-repeat;
+  mask: var(--pb-pattern-spotlight-arrow) center / contain no-repeat;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-prev {
+  --pb-pattern-spotlight-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M313-440l224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z'/%3E%3C/svg%3E");
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-next {
+  --pb-pattern-spotlight-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='160 -800 640 640'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E");
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-btn::before {
+  transform: scaleX(-1);
+}
+
+@container pb-pattern-region (max-width: 43.99rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__sections {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    height: 4.5rem;
+    transition: height 0.45s var(--pb-pattern-ease-out);
+    border-radius: 16px;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="true"]) {
+    height: min(31rem, 82vh);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button {
+    flex-direction: row;
+    padding-block: 0;
+    padding-inline: var(--pb-px20) var(--pb-px12);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-ui-btn__title {
+    display: -webkit-box;
+    transform: none;
+    white-space: normal;
+    writing-mode: horizontal-tb;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-nav {
+    grid-template-columns: auto 1fr;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bars {
+    display: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-arrows {
+    justify-self: end;
+  }
+}
+
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-arrows {
+    order: -1;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-count {
+    justify-self: end;
+    order: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item.pb-ui-row,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child img,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-icon-toggle,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-pattern-spotlight-bar::before {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__pane > :first-child img,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__item:has(> .pb-accordion__heading > .pb-accordion__button[aria-expanded="false"]):hover .pb-accordion__pane > :first-child img,
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-spotlight .pb-accordion__button:hover .pb-icon-toggle {
+    transform: none;
+  }
+}

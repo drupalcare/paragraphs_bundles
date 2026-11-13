@@ -1,0 +1,9 @@
+label: 'Docket'
+description: 'The state icon sits in a solid colored tab down the leading edge, with the message beside it. The tab always keeps the color of the state so its meaning survives; your background and text colors apply to the message.'
+weight: 2
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [government, healthcare, associations, university]
+needs:
+  - 'Choose a State. Picking a State fills in a tinted Background for you; set the Background to a plain color if you want a calm ground beside the tab.'

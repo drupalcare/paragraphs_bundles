@@ -1,0 +1,91 @@
+/**
+ * @file
+ * Pattern Folder for the Tabs.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ */
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder {
+  --pb-pattern-folder-radius: 14px;
+  --pb-pattern-folder-card: var(--pb-bt-a, var(--pb-pattern-raised));
+}
+
+:where(.pb-pattern--tabs-folder > .pb-ui-inner) {
+  padding: clamp(28px, 5cqi, 72px) clamp(12px, 4cqi, 48px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tabset > .pb-tabs__tablist {
+  gap: 0 var(--pb-px2);
+  padding-inline: calc(var(--pb-pattern-folder-radius) + 2px);
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  color: inherit;
+  border-radius: var(--pb-pattern-folder-radius) var(--pb-pattern-folder-radius) 0 0;
+  background: color-mix(in sRGB, var(--pb-pattern-folder-card) 45%, transparent);
+  font-weight: 600;
+  padding-block: 0;
+  padding-inline: var(--pb-px20);
+}
+
+/* PB's button clips its overflow; the two curved joins below sit outside the
+   active tab, so the clip would cut them off. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active {
+  z-index: 1;
+  overflow: visible;
+  background: var(--pb-pattern-folder-card);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::before,
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::after {
+  position: absolute;
+  width: var(--pb-pattern-folder-radius);
+  height: var(--pb-pattern-folder-radius);
+  content: "";
+  pointer-events: none;
+  inset-block-end: 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::before {
+  inset-inline-start: calc(var(--pb-pattern-folder-radius) * -1);
+  background: radial-gradient(circle at 0 0, transparent var(--pb-pattern-folder-radius), var(--pb-pattern-folder-card) calc(var(--pb-pattern-folder-radius) + 0.5px));
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::after {
+  inset-inline-end: calc(var(--pb-pattern-folder-radius) * -1);
+  background: radial-gradient(circle at 100% 0, transparent var(--pb-pattern-folder-radius), var(--pb-pattern-folder-card) calc(var(--pb-pattern-folder-radius) + 0.5px));
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::before {
+  background: radial-gradient(circle at 100% 0, transparent var(--pb-pattern-folder-radius), var(--pb-pattern-folder-card) calc(var(--pb-pattern-folder-radius) + 0.5px));
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::after {
+  background: radial-gradient(circle at 0 0, transparent var(--pb-pattern-folder-radius), var(--pb-pattern-folder-card) calc(var(--pb-pattern-folder-radius) + 0.5px));
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__panels {
+  padding: clamp(16px, 3cqi, 32px);
+  border-radius: calc(var(--pb-pattern-folder-radius) * 1.5);
+  background: var(--pb-pattern-folder-card);
+}
+
+@container pb-pattern-region (max-width: 27.5rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tabset > .pb-tabs__tablist {
+    gap: var(--pb-px4) var(--pb-px2);
+    padding-inline: var(--pb-px4);
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::before,
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-folder .pb-tabs__tablist > button.pb-is-active::after {
+    display: none;
+  }
+}

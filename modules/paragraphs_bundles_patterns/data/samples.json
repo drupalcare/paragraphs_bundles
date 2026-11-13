@@ -1,0 +1,3437 @@
+{
+  "3d_carousel_bundle.folio": {
+    "bundle": "3d_carousel_bundle",
+    "pb_content_3dcar_lheight": "450",
+    "pb_content_3dcar_sheight": "400",
+    "pb_content_3d_car_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>People told us the forms were too long. Most gave up before the second page, and many called us instead.</p>",
+        "pb_content_title": "What we heard"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We cut the form to one page and asked only what we need. Everything else can wait until later.</p>",
+        "pb_content_title": "What we changed"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>The work took six weeks and a small team. We reused the parts that already worked well.</p>",
+        "pb_content_title": "What it cost"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Calls about the form fell by half in the first month. More people finished it on their own.</p>",
+        "pb_content_title": "What happened next"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Ask fewer questions, and ask them plainly. Test each change with real people before it goes live.</p>",
+        "pb_content_title": "What we learned"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We will apply the same steps to the booking pages. You can follow the work in our monthly notes.</p>",
+        "pb_content_title": "What comes now"
+      }
+    ]
+  },
+  "3d_carousel_bundle.lantern": {
+    "bundle": "3d_carousel_bundle",
+    "pb_content_3dcar_lheight": "500",
+    "pb_content_3dcar_sheight": "450",
+    "pb_content_3d_car_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Small groups and patient guides, with time to ask every question.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Workshops",
+        "pb_content_title": "Learn at a gentle pace"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Paths, benches and shade, open every day from early morning.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Gardens",
+        "pb_content_title": "Walk the quiet gardens"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Books, films and music, with a reading room that stays calm.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Library",
+        "pb_content_title": "Borrow books and more"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Daylight rooms by the hour for painting, music or a quiet meeting.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Studios",
+        "pb_content_title": "Rent a bright studio"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Local coffee, fresh bread and soup made in our kitchen each morning.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Cafe",
+        "pb_content_title": "Rest over a warm drink"
+      }
+    ]
+  },
+  "3d_carousel_bundle.monolith": {
+    "bundle": "3d_carousel_bundle",
+    "pb_content_3dcar_lheight": "550",
+    "pb_content_3dcar_sheight": "450",
+    "pb_content_3d_car_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Stone, steel and glass chosen to stand for a hundred years.</p>",
+        "pb_content_image": {
+          "picture": "portrait"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "See the build"
+        },
+        "pb_content_image_link_title": "See the build",
+        "pb_content_title": "Built to last"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>The main hall stays open late every Friday, with live music.</p>",
+        "pb_content_image": {
+          "picture": "portrait"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Plan a visit"
+        },
+        "pb_content_image_link_title": "Plan a visit",
+        "pb_content_title": "Night opening"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Five days of talks, demos and hands-on sessions for every team.</p>",
+        "pb_content_image": {
+          "picture": "portrait"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Get a pass"
+        },
+        "pb_content_image_link_title": "Get a pass",
+        "pb_content_title": "Launch week"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Forty floors of daylight studios above the old market square.</p>",
+        "pb_content_image": {
+          "picture": "portrait"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Take the tour"
+        },
+        "pb_content_image_link_title": "Take the tour",
+        "pb_content_title": "The new tower"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Twelve weeks of making, from first sketch to finished piece.</p>",
+        "pb_content_image": {
+          "picture": "portrait"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Join now"
+        },
+        "pb_content_image_link_title": "Join now",
+        "pb_content_title": "Summer program"
+      }
+    ]
+  },
+  "3d_carousel_bundle.orbit_dock": {
+    "bundle": "3d_carousel_bundle",
+    "pb_content_3dcar_lheight": "300",
+    "pb_content_3dcar_sheight": "250",
+    "pb_content_3d_car_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Start the review",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Open the archive",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Plan the visit",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Meet the team",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>A short guide sets out the steps, the costs and the dates, so you can plan the work before we begin.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Get the guide",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Join the program"
+  },
+  "3d_carousel_bundle.portfolio": {
+    "bundle": "3d_carousel_bundle",
+    "pb_content_3dcar_lheight": "500",
+    "pb_content_3dcar_sheight": "450",
+    "pb_content_3d_car_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>A plan for 40 hectares of waterfront, shaped with residents over two years.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "View project"
+        },
+        "pb_content_image_link_title": "View project",
+        "pb_content_kicker": "Case study",
+        "pb_content_title": "Harbor district renewal"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>One booking system for nine clinics, cutting wait times by a third.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "View project"
+        },
+        "pb_content_image_link_title": "View project",
+        "pb_content_kicker": "Case study",
+        "pb_content_title": "Regional health network"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Renewals, events and records in one place for 12,000 members.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "View project"
+        },
+        "pb_content_image_link_title": "View project",
+        "pb_content_kicker": "Case study",
+        "pb_content_title": "Member services portal"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Clear signs and maps across 80 stations, tested with riders.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "View project"
+        },
+        "pb_content_image_link_title": "View project",
+        "pb_content_kicker": "Case study",
+        "pb_content_title": "City transit wayfinding"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>A shorter, readable report that members finished, not skimmed.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "View project"
+        },
+        "pb_content_image_link_title": "View project",
+        "pb_content_kicker": "Case study",
+        "pb_content_title": "Annual report redesign"
+      }
+    ]
+  },
+  "3d_flip_box_bundle.cube": {
+    "bundle": "3d_flip_box_bundle",
+    "pb_content_3d_box_back": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Back of the card"
+      }
+    ],
+    "pb_content_3d_box_front": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_title": "Front of the card"
+      }
+    ],
+    "pb_display_3d_height": "380"
+  },
+  "3d_flip_box_bundle.hinge": {
+    "bundle": "3d_flip_box_bundle",
+    "pb_content_3d_box_back": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Back of the card"
+      }
+    ],
+    "pb_content_3d_box_front": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_title": "Front of the card"
+      }
+    ],
+    "pb_display_3d_height": "380"
+  },
+  "3d_flip_box_bundle.peel": {
+    "bundle": "3d_flip_box_bundle",
+    "pb_content_3d_box_back": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Back of the card"
+      }
+    ],
+    "pb_content_3d_box_front": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_title": "Front of the card"
+      }
+    ],
+    "pb_display_3d_height": "380"
+  },
+  "accordion_bundle.agenda": {
+    "bundle": "accordion_bundle",
+    "pb_content_accordion_section": [
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 41 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Start the review"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 42 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Plan the visit"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 43 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Check the numbers"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 44 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Read the report"
+      }
+    ],
+    "pb_content_title": "Join the program"
+  },
+  "accordion_bundle.cards": {
+    "bundle": "accordion_bundle",
+    "pb_content_accordion_section": [
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 33 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Open the archive"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 34 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Meet the team"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 35 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Book a place"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 36 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "See the results"
+      }
+    ],
+    "pb_content_title": "Start the review"
+  },
+  "accordion_bundle.faq": {
+    "bundle": "accordion_bundle",
+    "pb_content_accordion_section": [
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 1 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_accordion_title": "Question number 1 that a visitor would ask"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 2 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_accordion_title": "Question number 2 that a visitor would ask"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 3 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_accordion_title": "Question number 3 that a visitor would ask"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 4 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_accordion_title": "Question number 4 that a visitor would ask"
+      }
+    ]
+  },
+  "accordion_bundle.spotlight": {
+    "bundle": "accordion_bundle",
+    "pb_content_accordion_section": [
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 13 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Meet the team"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 14 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Book a place"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 15 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "See the results"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 16 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Join the program"
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "accordion_bundle.stage": {
+    "bundle": "accordion_bundle",
+    "pb_content_accordion_section": [
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 25 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Plan the visit"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 26 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Check the numbers"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 27 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Read the report"
+      },
+      {
+        "bundle": "accordion_section_bundle",
+        "pb_content_accordion_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 28 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_accordion_title": "Ask a question"
+      }
+    ],
+    "pb_content_title": "Open the archive"
+  },
+  "alert_bundle.corner_notice": {
+    "bundle": "alert_bundle",
+    "pb_content_alert_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Tell us how we are doing.</p>"
+      }
+    ],
+    "pb_content_title": "We use a short survey"
+  },
+  "alert_bundle.docket": {
+    "bundle": "alert_bundle",
+    "pb_content_alert_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>"
+      }
+    ],
+    "pb_content_title": "Service update",
+    "pb_display_alert_state": "warning"
+  },
+  "alert_bundle.fuse": {
+    "bundle": "alert_bundle",
+    "pb_content_alert_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>"
+      }
+    ],
+    "pb_content_title": "Limited offer",
+    "pb_display_alert_countdown_sec": "120",
+    "pb_display_alert_dismissal_type": "countdown",
+    "pb_display_alert_state": "success"
+  },
+  "alert_bundle.slimline": {
+    "bundle": "alert_bundle",
+    "pb_content_alert_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>The site will be offline on Sunday from 2 to 3 in the morning.</p>"
+      }
+    ],
+    "pb_content_title": "Scheduled maintenance",
+    "pb_display_alert_state": "info"
+  },
+  "card_three_columns_bundle.route": {
+    "bundle": "card_three_columns_bundle",
+    "pb_content_card_left": [
+      {
+        "bundle": "card_text_section_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_link_new_tab": "0",
+        "pb_content_title": "Discover"
+      }
+    ],
+    "pb_content_card_middle": [
+      {
+        "bundle": "card_text_section_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_link_new_tab": "0",
+        "pb_content_title": "Design"
+      }
+    ],
+    "pb_content_card_right": [
+      {
+        "bundle": "card_text_section_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_link_new_tab": "0",
+        "pb_content_title": "Launch"
+      }
+    ]
+  },
+  "card_three_columns_bundle.triptych": {
+    "bundle": "card_three_columns_bundle",
+    "pb_content_card_left": [
+      {
+        "bundle": "card_image_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link_new_tab": "0",
+        "pb_content_title": "Shore"
+      }
+    ],
+    "pb_content_card_middle": [
+      {
+        "bundle": "card_image_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link_new_tab": "0",
+        "pb_content_title": "Harbor"
+      }
+    ],
+    "pb_content_card_right": [
+      {
+        "bundle": "card_image_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link_new_tab": "0",
+        "pb_content_title": "Ridge"
+      }
+    ]
+  },
+  "card_two_columns_bundle.overlap": {
+    "bundle": "card_two_columns_bundle",
+    "pb_content_card_left": [
+      {
+        "bundle": "card_image_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link_new_tab": "0",
+        "pb_content_title": "Our studio"
+      }
+    ],
+    "pb_content_card_right": [
+      {
+        "bundle": "card_text_section_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_link_new_tab": "0",
+        "pb_content_title": "Built around your visitors"
+      }
+    ]
+  },
+  "carousel_bundle.dockrail": {
+    "bundle": "carousel_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_carousel_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Book a place",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Read the report",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "See the results",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Ask a question",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>A short guide sets out the steps, the costs and the dates, so you can plan the work before we begin.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Get the guide",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Come and see where the work happens. Tours run each Friday morning and take about forty minutes.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Visit the studio",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Check the numbers"
+  },
+  "carousel_bundle.ledger": {
+    "bundle": "carousel_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_carousel_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Start the review",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Open the archive",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Plan the visit",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Meet the team",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>A short guide sets out the steps, the costs and the dates, so you can plan the work before we begin.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Get the guide",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Come and see where the work happens. Tours run each Friday morning and take about forty minutes.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Visit the studio",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Join the program"
+  },
+  "carousel_bundle.nightstory": {
+    "bundle": "carousel_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_carousel_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Book a place",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Read the report",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "See the results",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Ask a question",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Check the numbers"
+  },
+  "carousel_bundle.swatch": {
+    "bundle": "carousel_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_carousel_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Start the review",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Open the archive",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Plan the visit",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Meet the team",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>A short guide sets out the steps, the costs and the dates, so you can plan the work before we begin.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Get the guide",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Come and see where the work happens. Tours run each Friday morning and take about forty minutes.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Visit the studio",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Join the program"
+  },
+  "carousel_bundle.switchboard": {
+    "bundle": "carousel_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_carousel_body": [
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Book a place",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Read the report",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "See the results",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Ask a question",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>A short guide sets out the steps, the costs and the dates, so you can plan the work before we begin.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Get the guide",
+        "pb_content_title_position": "above"
+      },
+      {
+        "bundle": "image_bundle",
+        "pb_content_body": "<p>Come and see where the work happens. Tours run each Friday morning and take about forty minutes.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_title": "Visit the studio",
+        "pb_content_title_position": "above"
+      }
+    ],
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Check the numbers"
+  },
+  "grid_bundle.bento": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 93",
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 94",
+        "pb_content_title": "Read the report"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 95",
+        "pb_content_title": "See the results"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 96",
+        "pb_content_title": "Ask a question"
+      }
+    ],
+    "pb_content_title": "Check the numbers"
+  },
+  "grid_bundle.figures": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 121 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Label 1</p>",
+            "pb_content_title": "1200"
+          }
+        ],
+        "pb_content_title": "Start the review"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 122 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Label 2</p>",
+            "pb_content_title": "2400"
+          }
+        ],
+        "pb_content_title": "Plan the visit"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 123 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Label 3</p>",
+            "pb_content_title": "3600"
+          }
+        ],
+        "pb_content_title": "Check the numbers"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 124 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Label 4</p>",
+            "pb_content_title": "4800"
+          }
+        ],
+        "pb_content_title": "Read the report"
+      }
+    ],
+    "pb_content_title": "Join the program"
+  },
+  "grid_bundle.hand": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 129 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 129 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Join the program"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 130 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 130 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Plan the visit"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 131 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 131 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 132 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 132 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Ask a question"
+      }
+    ],
+    "pb_content_title": "Ask a question"
+  },
+  "grid_bundle.panels": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 105",
+        "pb_content_title": "Start the review"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 106",
+        "pb_content_title": "Open the archive"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 107",
+        "pb_content_title": "Plan the visit"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 108",
+        "pb_content_title": "Meet the team"
+      }
+    ],
+    "pb_content_title": "Join the program"
+  },
+  "grid_bundle.plans": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 137 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 137 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Plan the visit"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 138 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 138 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 139 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 139 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Ask a question"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 140 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 140 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Open the archive"
+      }
+    ],
+    "pb_content_title": "Open the archive"
+  },
+  "grid_bundle.rail": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 145 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 145 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 146 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 146 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Ask a question"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 147 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 147 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Open the archive"
+      },
+      {
+        "bundle": "3d_flip_box_bundle",
+        "pb_content_3d_box_back": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 148 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_3d_box_front": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 148 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_title": "Check the numbers"
+      }
+    ],
+    "pb_content_title": "Check the numbers"
+  },
+  "grid_bundle.stack": {
+    "bundle": "grid_bundle",
+    "pb_content_grid_body": [
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 113",
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 114",
+        "pb_content_title": "Read the report"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Our team walks you through each step, what to bring and how long it takes, so nothing arrives as a surprise.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 115",
+        "pb_content_title": "See the results"
+      },
+      {
+        "bundle": "hero_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_kicker": "Kicker 116",
+        "pb_content_title": "Ask a question"
+      }
+    ],
+    "pb_content_title": "Check the numbers"
+  },
+  "hero_bundle.aperture": {
+    "bundle": "hero_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "Read more"
+    },
+    "pb_content_image_link_title": "Read more",
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Meet the team"
+  },
+  "hero_bundle.capsule": {
+    "bundle": "hero_bundle",
+    "pb_content_body": "<p>Spend a Saturday with neighbours, make something together and take it home. Everyone is welcome.</p>",
+    "pb_content_image": {
+      "picture": "portrait"
+    },
+    "pb_content_image_link": {
+      "title": "Join us",
+      "uri": "internal:/"
+    },
+    "pb_content_image_link_title": "Join us",
+    "pb_content_kicker": "Open day",
+    "pb_content_title": "Come and make something"
+  },
+  "hero_bundle.keyline": {
+    "bundle": "hero_bundle",
+    "pb_content_body": "<p>We plan, build and look after websites for teams that need them to work every day. Tell us what you need and we will reply within one working day.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "Talk to us"
+    },
+    "pb_content_image_link_title": "Talk to us",
+    "pb_content_kicker": "Our services",
+    "pb_content_title": "Work with a team you can count on"
+  },
+  "hero_bundle.masthead": {
+    "bundle": "hero_bundle",
+    "pb_content_body": "<p>Twelve pages on the people, places and ideas shaping the season, with the full programme and how to book.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "title": "Read the issue",
+      "uri": "internal:/"
+    },
+    "pb_content_image_link_title": "Read the issue",
+    "pb_content_kicker": "Issue 12",
+    "pb_content_title": "The season in full"
+  },
+  "hero_bundle.mist": {
+    "bundle": "hero_bundle",
+    "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "Read more"
+    },
+    "pb_content_image_link_title": "Read more",
+    "pb_content_kicker": "Kicker",
+    "pb_content_title": "Book a place"
+  },
+  "icon_bundle.halo": {
+    "bundle": "icon_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_gms_fill": "0",
+    "pb_content_gms_grade": "0",
+    "pb_content_gms_icon_color": [],
+    "pb_content_gms_icon_font_size": "5",
+    "pb_content_gms_icon_name": "rocket_launch",
+    "pb_content_gms_optical_size": "48",
+    "pb_content_gms_style": "outlined",
+    "pb_content_gms_weight": "400",
+    "pb_content_title": "Fast delivery"
+  },
+  "icon_bundle.inkfill": {
+    "bundle": "icon_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_gms_fill": "0",
+    "pb_content_gms_grade": "0",
+    "pb_content_gms_icon_color": [],
+    "pb_content_gms_icon_font_size": "5",
+    "pb_content_gms_icon_name": "rocket_launch",
+    "pb_content_gms_optical_size": "48",
+    "pb_content_gms_style": "outlined",
+    "pb_content_gms_weight": "400",
+    "pb_content_title": "Fast delivery"
+  },
+  "icon_bundle.watermark": {
+    "bundle": "icon_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_gms_fill": "0",
+    "pb_content_gms_grade": "0",
+    "pb_content_gms_icon_color": [],
+    "pb_content_gms_icon_font_size": "5",
+    "pb_content_gms_icon_name": "rocket_launch",
+    "pb_content_gms_optical_size": "48",
+    "pb_content_gms_style": "outlined",
+    "pb_content_gms_weight": "400",
+    "pb_content_title": "Fast delivery"
+  },
+  "image_background_bundle.matte": {
+    "bundle": "image_background_bundle",
+    "pb_content_main": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "A place to begin"
+      }
+    ],
+    "pb_display_background_image": {
+      "picture": "landscape"
+    }
+  },
+  "image_background_bundle.side_sheet": {
+    "bundle": "image_background_bundle",
+    "pb_content_main": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "A place to begin"
+      }
+    ],
+    "pb_display_background_image": {
+      "picture": "landscape"
+    }
+  },
+  "image_bundle.caption_line": {
+    "bundle": "image_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Morning on the coast",
+    "pb_content_title_position": "above"
+  },
+  "image_bundle.loupe": {
+    "bundle": "image_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Morning on the coast",
+    "pb_content_title_position": "above"
+  },
+  "image_bundle.ticket": {
+    "bundle": "image_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Morning on the coast",
+    "pb_content_title_position": "above"
+  },
+  "image_bundle.unveil": {
+    "bundle": "image_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Morning on the coast",
+    "pb_content_title_position": "above"
+  },
+  "image_grid_bundle.index": {
+    "bundle": "image_grid_bundle",
+    "pb_content_image_grid_image": [
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Meet the team"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Check the numbers"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Read the report"
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "image_grid_bundle.mosaic": {
+    "bundle": "image_grid_bundle",
+    "pb_content_image_grid_image": [
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Meet the team"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Check the numbers"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Read the report"
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "image_grid_bundle.prints": {
+    "bundle": "image_grid_bundle",
+    "pb_content_image_grid_image": [
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Ask a question"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Join the program"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Start the review"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Open the archive"
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "image_grid_bundle.reel": {
+    "bundle": "image_grid_bundle",
+    "pb_content_image_grid_image": [
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Meet the team"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Check the numbers"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Book a place"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Read the report"
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "image_grid_bundle.sheet": {
+    "bundle": "image_grid_bundle",
+    "pb_content_image_grid_image": [
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Ask a question"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Join the program"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Start the review"
+      },
+      {
+        "bundle": "image_grid_section_bundle",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_image_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        },
+        "pb_content_image_link_title": "Read more",
+        "pb_content_title": "Open the archive"
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "image_overlay_bundle.spine": {
+    "bundle": "image_overlay_bundle",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "View project"
+    },
+    "pb_content_title": "Harbor renovation"
+  },
+  "image_overlay_bundle.tint": {
+    "bundle": "image_overlay_bundle",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "View project"
+    },
+    "pb_content_title": "Harbor renovation"
+  },
+  "image_overlay_bundle.wedge": {
+    "bundle": "image_overlay_bundle",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_image_link": {
+      "uri": "internal:/",
+      "title": "View project"
+    },
+    "pb_content_title": "Harbor renovation"
+  },
+  "link_bundle.directory": {
+    "bundle": "link_bundle",
+    "pb_content_title": "Explore",
+    "pb_link_section_body": [
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Services",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Services"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Our work",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Our work"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "About the team",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "About the team"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Contact",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Contact"
+        }
+      }
+    ]
+  },
+  "link_bundle.roll_call": {
+    "bundle": "link_bundle",
+    "pb_content_title": "Explore",
+    "pb_link_section_body": [
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Services",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Services"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Our work",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Our work"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "About the team",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "About the team"
+        }
+      },
+      {
+        "bundle": "link_section_bundle",
+        "pb_content_link_section_title": "Contact",
+        "pb_content_link_section_url": {
+          "uri": "internal:/",
+          "title": "Contact"
+        }
+      }
+    ]
+  },
+  "modal_bundle.bloom": {
+    "bundle": "modal_bundle",
+    "pb_content_modal_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "What is included"
+      }
+    ],
+    "pb_content_modal_button": "Open details",
+    "pb_content_modal_title": "Project details"
+  },
+  "modal_bundle.drawer": {
+    "bundle": "modal_bundle",
+    "pb_content_modal_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "What is included"
+      }
+    ],
+    "pb_content_modal_button": "Open details",
+    "pb_content_modal_title": "Project details"
+  },
+  "modal_bundle.tray": {
+    "bundle": "modal_bundle",
+    "pb_content_modal_body": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "What is included"
+      }
+    ],
+    "pb_content_modal_button": "Open details",
+    "pb_content_modal_title": "Project details"
+  },
+  "parallax_bundle.fieldbook": {
+    "bundle": "parallax_bundle",
+    "pb_content_parallax_section": [
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>The figures are updated each quarter, with the method beside them so anyone can check how they were reached.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "parallax_bundle.horizon": {
+    "bundle": "parallax_bundle",
+    "pb_content_parallax_section": [
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>The figures are updated each quarter, with the method beside them so anyone can check how they were reached.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "parallax_bundle.shoreline": {
+    "bundle": "parallax_bundle",
+    "pb_content_parallax_section": [
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>The figures are updated each quarter, with the method beside them so anyone can check how they were reached.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "parallax_bundle.showroom": {
+    "bundle": "parallax_bundle",
+    "pb_content_parallax_section": [
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>The figures are updated each quarter, with the method beside them so anyone can check how they were reached.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "parallax_bundle.skyline": {
+    "bundle": "parallax_bundle",
+    "pb_content_parallax_section": [
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Every project starts with a short call. We listen first, then write down what we heard and what comes next.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>The figures are updated each quarter, with the method beside them so anyone can check how they were reached.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Places are limited to twelve a session. Choose a date that suits you and we will confirm within one working day.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      },
+      {
+        "bundle": "parallax_section_bundle",
+        "pb_content_body": "<p>Read the full findings, or start with the two-page summary that covers what changed and why it matters.</p>",
+        "pb_content_image": {
+          "picture": "landscape"
+        },
+        "pb_content_link": {
+          "uri": "internal:/",
+          "title": "Read more"
+        }
+      }
+    ],
+    "pb_content_title": "Plan the visit"
+  },
+  "simple_bundle.action_band": {
+    "bundle": "simple_bundle",
+    "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_link": {
+      "uri": "internal:/",
+      "title": "Get a quote"
+    },
+    "pb_content_link_secondary": {
+      "uri": "internal:/",
+      "title": "See our work"
+    },
+    "pb_content_title": "Ready to start?"
+  },
+  "simple_bundle.lead": {
+    "bundle": "simple_bundle",
+    "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p><p>Plan the work, agree the scope and see every step before anything is built.</p>",
+    "pb_content_title": "A new chapter"
+  },
+  "simple_bundle.pull_quote": {
+    "bundle": "simple_bundle",
+    "pb_content_body": "<p>They understood what we needed before we finished explaining it, and the new site shows it.</p>",
+    "pb_content_title": "Dana Reyes, Founder"
+  },
+  "slideshow_bundle.ledger": {
+    "bundle": "slideshow_bundle",
+    "pb_content_body": "<p>Intro text for this section.</p>",
+    "pb_content_kicker": "Kicker",
+    "pb_content_slideshow_section": [
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 241 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_slideshow_title": "Book a place"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 242 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_slideshow_title": "See the results"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 243 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_slideshow_title": "Join the program"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 244 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_slideshow_title": "Open the archive"
+      }
+    ],
+    "pb_content_title": "Check the numbers"
+  },
+  "slideshow_bundle.marquee": {
+    "bundle": "slideshow_bundle",
+    "pb_content_slideshow_section": [
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Places are limited to twelve a session, so choose a date that suits you.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_kicker": "Kicker",
+            "pb_content_title": "Book a place"
+          }
+        ],
+        "pb_content_slideshow_title": "Book a place"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Read what changed this year and why it matters to the people we serve.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_kicker": "Kicker",
+            "pb_content_title": "See the results"
+          }
+        ],
+        "pb_content_slideshow_title": "See the results"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Every program starts with a short call where we listen first.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_kicker": "Kicker",
+            "pb_content_title": "Join the program"
+          }
+        ],
+        "pb_content_slideshow_title": "Join the program"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Ten years of reports, talks and photos are now in one place.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_kicker": "Kicker",
+            "pb_content_title": "Open the archive"
+          }
+        ],
+        "pb_content_slideshow_title": "Open the archive"
+      }
+    ]
+  },
+  "slideshow_bundle.pillar": {
+    "bundle": "slideshow_bundle",
+    "pb_content_slideshow_section": [
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>We map what you have, what you need and the order that gets you there.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_title": "Plan the work with us"
+          }
+        ],
+        "pb_content_slideshow_title": "Consulting"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Each release is small, tested and explained, so nothing arrives as a surprise.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_title": "Ship it in steady steps"
+          }
+        ],
+        "pb_content_slideshow_title": "Delivery"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>One team answers your questions and keeps your site current every month.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_title": "Stay covered after launch"
+          }
+        ],
+        "pb_content_slideshow_title": "Support"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Short sessions show your editors how to publish with confidence.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "Read more"
+            },
+            "pb_content_image_link_title": "Read more",
+            "pb_content_title": "Teach your team the tools"
+          }
+        ],
+        "pb_content_slideshow_title": "Training"
+      }
+    ]
+  },
+  "slideshow_bundle.shuffle": {
+    "bundle": "slideshow_bundle",
+    "pb_content_slideshow_section": [
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Small groups, real tools and a friendly guide for every step.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "See more"
+            },
+            "pb_content_image_link_title": "See more",
+            "pb_content_kicker": "Workshops",
+            "pb_content_title": "Make something this week"
+          }
+        ],
+        "pb_content_slideshow_title": "Make something this week"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Meet people who like the same things and plan the next outing together.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "See more"
+            },
+            "pb_content_image_link_title": "See more",
+            "pb_content_kicker": "Clubs",
+            "pb_content_title": "Find your weekend crew"
+          }
+        ],
+        "pb_content_slideshow_title": "Find your weekend crew"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Music, food and games on the green, free for everyone who comes.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "See more"
+            },
+            "pb_content_image_link_title": "See more",
+            "pb_content_kicker": "Events",
+            "pb_content_title": "Bring the whole family"
+          }
+        ],
+        "pb_content_slideshow_title": "Bring the whole family"
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "hero_bundle",
+            "pb_content_body": "<p>Share your best photo of the season and win a day out for four.</p>",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_image_link": {
+              "uri": "internal:/",
+              "title": "See more"
+            },
+            "pb_content_image_link_title": "See more",
+            "pb_content_kicker": "Prizes",
+            "pb_content_title": "Enter the summer contest"
+          }
+        ],
+        "pb_content_slideshow_title": "Enter the summer contest"
+      }
+    ]
+  },
+  "slideshow_bundle.tide": {
+    "bundle": "slideshow_bundle",
+    "pb_content_slideshow_section": [
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title": "The north garden in May",
+            "pb_content_title_position": "below"
+          }
+        ]
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title": "Morning light on the lake",
+            "pb_content_title_position": "below"
+          }
+        ]
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title": "The old orchard after rain",
+            "pb_content_title_position": "below"
+          }
+        ]
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title": "A quiet path through the woods",
+            "pb_content_title_position": "below"
+          }
+        ]
+      },
+      {
+        "bundle": "slideshow_section_bundle",
+        "pb_content_slideshow_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title": "Evening over the west meadow",
+            "pb_content_title_position": "below"
+          }
+        ]
+      }
+    ]
+  },
+  "tabs_bundle.contents": {
+    "bundle": "tabs_bundle",
+    "pb_content_tab_section": [
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 265 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Ask a question",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 266 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Start the review",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 267 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Plan the visit",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 268 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Check the numbers",
+        "pb_content_tab_name_icon": "0"
+      }
+    ],
+    "pb_content_title": "See the results"
+  },
+  "tabs_bundle.dock": {
+    "bundle": "tabs_bundle",
+    "pb_content_tab_section": [
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 253 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Join the program",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 254 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Open the archive",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 255 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Meet the team",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 256 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Book a place",
+        "pb_content_tab_name_icon": "0"
+      }
+    ],
+    "pb_content_title": "Ask a question"
+  },
+  "tabs_bundle.folder": {
+    "bundle": "tabs_bundle",
+    "pb_content_tab_section": [
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 1 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_tab_name": "Tab 1",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 2 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_tab_name": "Tab 2",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 3 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_tab_name": "Tab 3",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Answer 4 explains the point in plain words, with enough text to wrap across more than one line on a phone screen.</p>"
+          }
+        ],
+        "pb_content_tab_name": "Tab 4",
+        "pb_content_tab_name_icon": "0"
+      }
+    ]
+  },
+  "tabs_bundle.glossary": {
+    "bundle": "tabs_bundle",
+    "pb_content_tab_section": [
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 281 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Read the report",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 282 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Ask a question",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 283 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Start the review",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 284 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Plan the visit",
+        "pb_content_tab_name_icon": "0"
+      }
+    ],
+    "pb_content_title": "Book a place"
+  },
+  "tabs_bundle.swatch": {
+    "bundle": "tabs_bundle",
+    "pb_content_tab_section": [
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 273 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "See the results",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 274 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Join the program",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 275 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Open the archive",
+        "pb_content_tab_name_icon": "0"
+      },
+      {
+        "bundle": "tab_section_bundle",
+        "pb_content_tab_body": [
+          {
+            "bundle": "image_bundle",
+            "pb_content_image": {
+              "picture": "landscape"
+            },
+            "pb_content_title_position": "above"
+          },
+          {
+            "bundle": "simple_bundle",
+            "pb_content_body": "<p>Text 276 explains the point in plain words and runs long enough to wrap across more than one line on a phone.</p><p><a href=\"/\">Read more</a></p>"
+          }
+        ],
+        "pb_content_tab_name": "Meet the team",
+        "pb_content_tab_name_icon": "0"
+      }
+    ],
+    "pb_content_title": "Read the report"
+  },
+  "two_columns_bundle.pinned_chapter": {
+    "bundle": "two_columns_bundle",
+    "pb_content_left_column": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_title": "How we work"
+      }
+    ],
+    "pb_content_right_column": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Step 1"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Step 2"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Step 3"
+      },
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Step 4"
+      }
+    ]
+  },
+  "two_columns_bundle.reader_panel": {
+    "bundle": "two_columns_bundle",
+    "pb_content_left_column": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live. We start by listening to what your visitors need, then shape the structure around it. Every section is reviewed with your team, so nothing arrives as a surprise when the site goes live.</p>",
+        "pb_content_title": "Main reading column"
+      }
+    ],
+    "pb_content_right_column": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Plan the work, agree the scope and see every step before anything is built.</p>",
+        "pb_content_title": "Side notes"
+      }
+    ]
+  },
+  "video_bundle.lectern": {
+    "bundle": "video_bundle",
+    "pb_content_body": "<p>Before you pick up a saw, read the whole drawing once without stopping. You are looking for the one dimension that everything else depends on.</p><p>Find the datum first. Every measurement on the sheet starts from that one edge, so an error there repeats everywhere.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Reading a drawing before you cut"
+  },
+  "video_bundle.premiere": {
+    "bundle": "video_bundle",
+    "pb_content_body": "<p>Transcript: a short tour of the studio.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "The long way up"
+  },
+  "video_bundle.slate": {
+    "bundle": "video_bundle",
+    "pb_content_image": {
+      "picture": "portrait"
+    },
+    "pb_content_title": "Drive the canyon road",
+    "pb_content_video_main": [
+      {
+        "bundle": "simple_bundle",
+        "pb_content_body": "<p>Words sit on the section, and the pause control keeps its own corner.</p>",
+        "pb_content_title": "Over the film"
+      }
+    ],
+    "pb_display_video_mode": "background"
+  },
+  "video_bundle.upright": {
+    "bundle": "video_bundle",
+    "pb_content_body": "<p>Transcript: a short tour of the studio.</p>",
+    "pb_content_image": {
+      "picture": "landscape"
+    },
+    "pb_content_title": "Why I stayed",
+    "pb_display_video_ratio": "9_16"
+  }
+}

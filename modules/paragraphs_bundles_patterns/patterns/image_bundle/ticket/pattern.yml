@@ -1,0 +1,16 @@
+label: 'Ticket'
+description: 'The photo and caption are cut like a paper ticket stub, with half-circle notches and a dashed tear line; the ticket shape ignores the bundle''s corner radius and border settings.'
+weight: 2
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [events, cultural, associations]
+needs:
+  - 'Add an image and a title; body text is optional. The title goes below the picture for you.'
+settings:
+  pb_content_title_position: below
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

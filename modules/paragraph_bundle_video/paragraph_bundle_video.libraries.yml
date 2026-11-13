@@ -1,0 +1,9 @@
+paragraph-bundle-video:
+  css:
+    theme:
+      css/paragraph-bundle-video.css: { }
+  js:
+    js/paragraph-bundle-video.js: { }
+  dependencies:
+    - core/drupal
+    - core/once

@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.media_library
+    - field.field.media.pb_media_remote_video.pb_video_url
+    - image.style.medium
+    - media.type.pb_media_remote_video
+  module:
+    - image
+id: media.pb_media_remote_video.media_library
+targetEntityType: media
+bundle: pb_media_remote_video
+mode: media_library
+content:
+  thumbnail:
+    type: image
+    label: hidden
+    settings:
+      image_link: ''
+      image_style: medium
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  name: true
+  pb_video_url: true
+  uid: true

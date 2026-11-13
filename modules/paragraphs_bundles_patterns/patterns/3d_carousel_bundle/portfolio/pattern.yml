@@ -1,0 +1,21 @@
+label: 'Portfolio'
+description: 'Clean white cards in a shallow fan, with a Hero in every card: photo and words side by side on wide screens, stacked on phones. A tidy control column stands at the end of the stage, like a document viewer: Previous on top, the count, a diamond Pause, Next at the bottom. On phones the column becomes a row under the stage. Plays on its own; Pause stops it. Leave the Pattern field of each Hero inside it empty: a Hero with its own Pattern keeps that look instead.'
+weight: 4
+stage: open
+ground: light
+placement: outer-margin
+serves: [corporate, associations, government]
+needs:
+  - 'Keep four to six slides. Each slide holds one Hero with an Image, a Kicker such as "Case study", a Title, a Body of up to 120 characters, and a Link with a Link title such as "View project": that title is the button on the card.'
+  - 'Leave the Pattern field of each Hero empty. The cards have a fixed height, so longer words scroll inside the card. The fan, the heights and the timing are set for you.'
+settings:
+  pb_display_3d_car_style: coverflow
+  pb_content_3dcar_lheight: '500'
+  pb_content_3dcar_sheight: '450'
+  pb_display_3d_caro_breakpoints: pb__768
+  pb_display_3d_play_stop: 7000
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_narrow
+    responsive: true
+    view_mode: pb_media_responsive_narrow

@@ -1,0 +1,16 @@
+label: 'Plans'
+description: 'Plan cards with the second raised; a segmented switch turns every card in a wave from the overview to what is included, and each card turns on its own.'
+weight: 6
+stage: boxed
+ground: light
+placement: both
+serves: [saas, associations, healthcare, corporate]
+needs:
+  - 'Keep at least two 3D Flip Box items in the Grid, three reads best. In each: a Front with an Image and a Simple paragraph holding the plan name and price; a Back with a Simple paragraph listing what is included.'
+  - 'Cards turn with the corner button and the switch only, sideways.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

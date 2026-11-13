@@ -1,0 +1,274 @@
+/**
+ * @file
+ * Pattern Folio for the 3D Carousel: a shallow ring of numbered paper pages.
+ *
+ * Each card is a page: a Simple paragraph's large title and a few lines of
+ * reading on the paper ground, with a hairline edge and its page number at
+ * the foot (a CSS counter: a figure, not a word). The ring is shallow: the
+ * Pattern raises PB's perspective ratio (PB's own variable; a Perspective
+ * field value still wins). Under the ring, long line arrows (a 64px line
+ * with a head, drawn in CSS, no box) sit at the two outer corners and the
+ * words "Page 2 of 6" between them, written by the Pattern script with
+ * Drupal.t() and printed here. PB's script owns the ring; nothing here moves
+ * a card.
+ */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio {
+  --pb-3d-perspective-ratio: 8;
+  --pb-pattern-folio-pad: clamp(20px, 6cqi, 40px);
+  --pb-pattern-folio-foot: 2.25rem;
+
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+/* The stage is a flex column: the ring takes what the controls leave. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio > .pb-3d-carousel__inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio > .pb-3d-carousel__inner > .pb-3d-carousel__ring {
+  flex: 1 1 auto;
+  min-height: 0;
+  counter-reset: pb-pattern-folio;
+}
+
+/* ---- The pages. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__ring > .pb-3d-carousel__slide {
+  overflow: hidden;
+  box-sizing: border-box;
+  inline-size: min(100% - 24px, 40rem);
+  margin-inline: auto;
+  padding: var(--pb-pattern-folio-pad);
+  padding-block-end: calc(var(--pb-pattern-folio-pad) + var(--pb-pattern-folio-foot));
+  counter-increment: pb-pattern-folio;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  border: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 2px;
+  background: linear-gradient(var(--pb-pattern-editor-bg, transparent), var(--pb-pattern-editor-bg, transparent)), var(--pb-pattern-surface);
+  box-shadow: 0 10px 24px color-mix(in sRGB, var(--pb-pattern-shadow) 10%, transparent);
+  inset-inline: 0;
+}
+
+/* The page number at the foot: a figure, so it needs no translation; the
+   empty alternative text keeps PB's "Slide n of N" label as the one name. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__ring > .pb-3d-carousel__slide::after {
+  position: absolute;
+  content: counter(pb-pattern-folio);
+  content: counter(pb-pattern-folio) / "";
+  text-align: center;
+  letter-spacing: 0.08em;
+  color: var(--pb-pattern-muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+  inset-block-end: calc(var(--pb-pattern-folio-pad) * 0.6);
+  inset-inline: var(--pb-pattern-folio-pad);
+  font-variant-numeric: oldstyle-nums;
+}
+
+/* The Simple paragraph reads as the page: no box of its own here, unless an
+   editor paints one (PB's own ID rule then wins). */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__slide .pb-content__full {
+  max-inline-size: 52ch;
+  margin-inline: auto;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__slide .pb-content__title {
+  margin-block: 0 0.75rem;
+  text-wrap: balance;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.5rem, 4cqi, 2.25rem);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__slide .pb-content__full p {
+  margin-block: 0 0.75em;
+  line-height: 1.65;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__slide .pb-content__full a {
+  color: var(--pb-lk, var(--pb-pattern-link));
+}
+
+/* ---- The controls: line arrows at the outer corners, words between. ---- */
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options {
+  position: relative;
+  z-index: 5;
+  flex: 0 0 auto;
+  width: 100%;
+  margin-block-start: 8px;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options > .pb-3d-carousel__options-inner {
+  display: grid;
+  grid-template-rows: var(--pb-pattern-target);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  column-gap: 12px;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options-inner::before,
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options-inner::after {
+  content: none;
+}
+
+/* PB's rule is all: unset plus padding, so the box is set in full here. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next) {
+  position: relative;
+  box-sizing: border-box;
+  width: 80px;
+  min-width: 80px;
+  height: var(--pb-pattern-target);
+  padding: 0;
+  /* The line stretches a little toward its head on hover. */
+  transition:
+    translate 0.25s var(--pb-pattern-ease-out),
+    opacity 0.3s;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__prev {
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__next {
+  grid-row: 1;
+  grid-column: 3;
+}
+
+/* Pause only exists if a slide time was set; it then sits beside Next. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__pause, .pb-nav__play) {
+  grid-row: 1;
+  grid-column: 4;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  padding: 0;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+/* PB's chevron is replaced by the drawn line arrow. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next) > span:not(.visually-hidden) {
+  display: none;
+}
+
+/* The line: 64px, 2px. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next)::before {
+  position: absolute;
+  inset-block-start: calc(50% - 1px);
+  inset-inline: 8px;
+  block-size: 2px;
+  content: "";
+  border-radius: 1px;
+  background-color: currentColor;
+}
+
+/* The head: two sides of a small square, turned to point along the line.
+   Logical sides plus a mirrored turn keep it pointing the reading way in
+   RTL. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next)::after {
+  position: absolute;
+  inset-block-start: calc(50% - 6px);
+  box-sizing: border-box;
+  inline-size: 12px;
+  block-size: 12px;
+  content: "";
+  border-block-start: 2px solid currentColor;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__next::after {
+  inset-inline-end: 9px;
+  transform: rotate(45deg);
+  border-inline-end: 2px solid currentColor;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__prev::after {
+  inset-inline-start: 9px;
+  transform: rotate(-45deg);
+  border-inline-start: 2px solid currentColor;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__next::after {
+  transform: rotate(-45deg);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__prev::after {
+  transform: rotate(45deg);
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover {
+  transform: none;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__next:not(.pb-is-disabled):hover {
+  translate: 4px 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__prev:not(.pb-is-disabled):hover {
+  translate: -4px 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__next:not(.pb-is-disabled):hover {
+  translate: -4px 0;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-nav__prev:not(.pb-is-disabled):hover {
+  translate: 4px 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options .pb-ui-btn:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid currentColor;
+  outline-offset: 0;
+}
+
+/* The counter: "Page 2 of 6" in small caps, centred. PB's bare number stays
+   until the script has written the words; the empty alternative text keeps
+   PB's own label and live announcement as what screen readers hear. */
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options-inner > .pb-slideshow__number {
+  grid-row: 1;
+  grid-column: 2;
+  justify-self: center;
+  width: auto;
+  min-width: 0;
+  padding: 0;
+  letter-spacing: 0.08em;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  font-size: 0.9375rem;
+  font-variant-caps: small-caps;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options-inner > .pb-slideshow__number[data-pb-pattern-page] {
+  font-size: 0;
+}
+
+.paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options-inner > .pb-slideshow__number[data-pb-pattern-page]::before {
+  content: attr(data-pb-pattern-page);
+  content: attr(data-pb-pattern-page) / "";
+  white-space: nowrap;
+  font-size: 0.9375rem;
+}
+
+/* ---- Wide: a page with a reading measure. ---- */
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio {
+    --pb-pattern-folio-foot: 2.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next) {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-3d-carousel.pb-pattern--3d-carousel-folio .pb-3d-carousel__options :is(.pb-nav__prev, .pb-nav__next):not(.pb-is-disabled):hover {
+    translate: none;
+  }
+}

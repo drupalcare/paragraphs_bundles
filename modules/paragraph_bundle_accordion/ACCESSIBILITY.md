@@ -16,8 +16,14 @@ Disclosure](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/). Trigger is a
 
 ## ARIA roles and attributes
 
-- `button`
-- `region`
+- `button`, inside a heading (`.pb-accordion__heading`) one level below the
+  accordion title tag (h1 gives h2 ... h5 and h6 give h6); h3 when no title is
+  printed or the title tag is "div". The heading is reset in CSS so it adds no
+  margin, font or color of its own (WCAG 1.3.1, APG accordion pattern)
+- `region` on each pane, named by its button, only when the accordion has six
+  sections or fewer (more would flood the landmark list)
+- "Toggle all sections" keeps one label; its `aria-expanded` is `true` only while
+  every section is open, and it updates when one section is opened or closed
 
 See the parent playbook for required attributes per pattern.
 
@@ -30,6 +36,8 @@ See the parent playbook for required attributes per pattern.
 
 - Enter/Space toggles sections
 - Tab through headers
+- Opening a section from a link scrolls to it; with
+  `prefers-reduced-motion: reduce` the scroll jumps instead of gliding
 
 ## Screen reader
 

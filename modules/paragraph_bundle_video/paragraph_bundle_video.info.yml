@@ -1,0 +1,17 @@
+name: 'Paragraph Bundle Video'
+type: module
+description: 'Provides a video paragraph type: a poster-first player, or a muted looping film behind a section. Uses media, with video files and videos from a supported provider.'
+core_version_requirement: ^11.3 || ^12
+package: 'Paragraphs Bundles'
+dependencies:
+  - drupal:file
+  - drupal:image
+  - drupal:media
+  - drupal:media_library
+  - drupal:options
+  - drupal:text
+  - entity_reference_revisions:entity_reference_revisions
+  - field_group:field_group
+  - paragraphs:paragraphs
+  - paragraphs_bundles:paragraph_bundle_image
+  - paragraphs_bundles:paragraphs_bundles

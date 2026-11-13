@@ -169,7 +169,11 @@ final class PbInlineAssetSurfaceTest extends TestCase {
    *
    * @var array<string, int>
    */
-  private const ALLOWED_INLINE_STYLE_PHP = [];
+  // PatternRepository: an image-style NAME in the pattern data record
+  // (`'style' => $picture['style']`), never an HTML attribute.
+  private const ALLOWED_INLINE_STYLE_PHP = [
+    'modules/paragraphs_bundles_patterns/src/PatternRepository.php' => 1,
+  ];
 
   /**
    * Inline style attributes built in PHP stay on the PHP allowlist.

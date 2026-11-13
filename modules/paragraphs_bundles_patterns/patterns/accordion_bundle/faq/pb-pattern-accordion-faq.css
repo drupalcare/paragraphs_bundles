@@ -1,0 +1,135 @@
+/**
+ * @file
+ * Pattern Answers for the Accordion.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ */
+
+:where(.pb-pattern--accordion-faq > .pb-ui-inner) {
+  padding: clamp(20px, 4cqi, 64px) clamp(16px, 6cqi, 112px);
+  color: var(--pb-pattern-ink);
+  background: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__sections {
+  counter-reset: pb-pattern-faq;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-grid__expand-button {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-end: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__toggle-all {
+  display: inline-grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 999px;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__item {
+  position: relative;
+  padding-inline-start: var(--pb-px12);
+  counter-increment: pb-pattern-faq;
+  border-block-start: 1px solid var(--pb-br, var(--pb-pattern-line));
+  border-block-end: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__item:last-child {
+  border-block-end: 1px solid var(--pb-br, var(--pb-pattern-line));
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__item::before {
+  position: absolute;
+  width: 3px;
+  content: "";
+  transition: transform 0.5s var(--pb-pattern-ease-out);
+  transform: scaleY(0);
+  transform-origin: top;
+  background: currentColor;
+  inset-block: 1.35rem;
+  inset-inline-start: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__item.pb-is-active::before {
+  transform: scaleY(1);
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--pb-pattern-target);
+  align-items: center;
+  color: inherit;
+  background: transparent;
+  gap: var(--pb-px16);
+  padding-block: var(--pb-px22);
+  padding-inline: 0;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-ui-btn__title {
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: baseline;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.15rem, 2.4cqi, 1.75rem);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-ui-btn__title::before {
+  content: counter(pb-pattern-faq, decimal-leading-zero) / "";
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-icon-toggle {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  margin-inline-start: 0;
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+  border: 1.5px solid var(--pb-br, var(--pb-pattern-line));
+  border-radius: 12px;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__button:hover .pb-icon-toggle,
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-is-active .pb-icon-toggle {
+  border-color: currentColor;
+}
+
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__pane {
+  max-width: 62ch;
+  padding-inline: 2.75rem calc(var(--pb-pattern-target) + 1rem);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+}
+
+/* PB's slide script writes padding-bottom: 0 inline on the pane. */
+.paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__pane > :last-child {
+  margin-block-end: var(--pb-px24);
+}
+
+@container pb-pattern-region (max-width: 36rem) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-ui-btn__title {
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq .pb-accordion__pane {
+    padding-inline: 2.25rem 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-accordion.pb-pattern--accordion-faq * {
+    transition: none;
+  }
+}

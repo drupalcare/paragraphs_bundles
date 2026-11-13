@@ -175,6 +175,75 @@
     };
 
     /**
+     * Returns the alt text of a tile's image, or an empty string.
+     *
+     * @param {HTMLElement} section - One image grid section.
+     *
+     * @return {string} The trimmed alt text.
+     */
+    const getTileAlt = (section) => {
+      const image = section.querySelector('img');
+      return image instanceof HTMLImageElement ? image.alt.trim() : '';
+    };
+
+    /**
+     * Names an untitled tile's expand button by its image or its position.
+     *
+     * The template names a titled tile itself (data-pb-titled); every other
+     * button would read "Enlarge image" N times in a list of buttons.
+     *
+     * @param {HTMLElement} button - The tile's expand button.
+     *
+     * @return {void}
+     */
+    const nameExpandButton = (button) => {
+      if (button.hasAttribute('data-pb-titled')) {
+        return;
+      }
+      const section = button.closest(PARAGRAPHS_BUNDLES_PB_IMAGE_GRID_SECTION);
+      const index =
+        section instanceof HTMLElement ? items.indexOf(section) : -1;
+      if (index < 0) {
+        return;
+      }
+      const alt = getTileAlt(items[index]);
+      const label = alt
+        ? Drupal.t('Enlarge image: @name', { '@name': alt })
+        : Drupal.t('Enlarge image @current of @total', {
+            '@current': index + 1,
+            '@total': items.length,
+          });
+      button.setAttribute('aria-label', label);
+      const hiddenText = button.querySelector('.visually-hidden');
+      if (hiddenText) {
+        hiddenText.textContent = label;
+      }
+    };
+
+    /**
+     * Announces which image the lightbox shows after Next or Previous.
+     *
+     * @return {void}
+     */
+    const announceCurrentImage = () => {
+      if (typeof Drupal.announce !== 'function' || currentIndex < 0) {
+        return;
+      }
+      const alt = getTileAlt(items[currentIndex]);
+      const args = {
+        '@current': currentIndex + 1,
+        '@total': items.length,
+        '@name': alt,
+      };
+      Drupal.announce(
+        alt
+          ? Drupal.t('Image @current of @total: @name', args)
+          : Drupal.t('Image @current of @total', args),
+        'polite',
+      );
+    };
+
+    /**
      * @param {string} fullImageUrl
      *
      * @return {void}
@@ -285,6 +354,7 @@
       const fullImageUrl =
         items[currentIndex].getAttribute('data-full-image-url') || '';
       updateModalContent(fullImageUrl);
+      announceCurrentImage();
     };
 
     /**
@@ -318,6 +388,21 @@
         }
       } else if (event.key === 'Escape') {
         handleCloseLightbox(event);
+      } else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        // Left and Right step through the images, mirrored on right-to-left
+        // pages. A form field inside a tile keeps its own arrow keys.
+        const target = event.target;
+        if (
+          target instanceof HTMLElement &&
+          (target.isContentEditable ||
+            target.matches('input, textarea, select'))
+        ) {
+          return;
+        }
+        const isRtl = getComputedStyle(lightbox).direction === 'rtl';
+        const forward = (event.key === 'ArrowRight') !== isRtl;
+        navigateLightbox(forward ? 'next' : 'prev');
+        event.preventDefault();
       }
     };
 
@@ -329,6 +414,7 @@
       if (lightbox.id) {
         button.setAttribute('aria-controls', lightbox.id);
       }
+      nameExpandButton(button);
       button.addEventListener('click', openLightbox, { signal });
     });
 

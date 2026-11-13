@@ -61,6 +61,7 @@
    shift. */
 .paragraphs-bundles.pb-3d-carousel[class*="pb-3d-carousel--cg"] > .pb-3d-carousel__inner {
   --pb-3d-controls-room: calc(var(--pb-3d-controls-gap) + var(--pb-px8));
+
   box-sizing: content-box !important;
   padding-block-end: var(--pb-3d-controls-room);
   perspective-origin: 50% calc(50% - var(--pb-3d-controls-room) / 2);

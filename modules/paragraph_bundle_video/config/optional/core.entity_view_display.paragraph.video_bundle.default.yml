@@ -1,0 +1,103 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.video_bundle.pb_content_body
+    - field.field.paragraph.video_bundle.pb_content_image
+    - field.field.paragraph.video_bundle.pb_content_title
+    - field.field.paragraph.video_bundle.pb_content_title_alignment
+    - field.field.paragraph.video_bundle.pb_content_title_tag
+    - field.field.paragraph.video_bundle.pb_content_video
+    - field.field.paragraph.video_bundle.pb_content_video_main
+    - field.field.paragraph.video_bundle.pb_display_bg
+    - field.field.paragraph.video_bundle.pb_display_bg_hover
+    - field.field.paragraph.video_bundle.pb_display_bg_opacity
+    - field.field.paragraph.video_bundle.pb_display_border
+    - field.field.paragraph.video_bundle.pb_display_border_color
+    - field.field.paragraph.video_bundle.pb_display_border_hover
+    - field.field.paragraph.video_bundle.pb_display_border_radius
+    - field.field.paragraph.video_bundle.pb_display_css_classes
+    - field.field.paragraph.video_bundle.pb_display_link
+    - field.field.paragraph.video_bundle.pb_display_link_hover
+    - field.field.paragraph.video_bundle.pb_display_margin
+    - field.field.paragraph.video_bundle.pb_display_padding
+    - field.field.paragraph.video_bundle.pb_display_shadow
+    - field.field.paragraph.video_bundle.pb_display_text
+    - field.field.paragraph.video_bundle.pb_display_text_hover
+    - field.field.paragraph.video_bundle.pb_display_video_breakpoint
+    - field.field.paragraph.video_bundle.pb_display_video_mode
+    - field.field.paragraph.video_bundle.pb_display_video_ratio
+    - field.field.paragraph.video_bundle.pb_display_width
+    - paragraphs.paragraphs_type.video_bundle
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.video_bundle.default
+targetEntityType: paragraph
+bundle: video_bundle
+mode: default
+content:
+  pb_content_body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  pb_content_image:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: pb_media_original_size
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  pb_content_title:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  pb_content_video:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  pb_content_video_main:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 5
+    region: content
+hidden:
+  pb_content_title_alignment: true
+  pb_content_title_tag: true
+  pb_display_bg: true
+  pb_display_bg_hover: true
+  pb_display_bg_opacity: true
+  pb_display_border: true
+  pb_display_border_color: true
+  pb_display_border_hover: true
+  pb_display_border_radius: true
+  pb_display_css_classes: true
+  pb_display_link: true
+  pb_display_link_hover: true
+  pb_display_margin: true
+  pb_display_padding: true
+  pb_display_shadow: true
+  pb_display_text: true
+  pb_display_text_hover: true
+  pb_display_video_breakpoint: true
+  pb_display_video_mode: true
+  pb_display_video_ratio: true
+  pb_display_width: true

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Drupal\paragraphs_bundles\Service\Css;
 
+use Drupal\Core\Cache\CacheableMetadata;
 use Drupal\paragraphs\ParagraphInterface;
 use Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface;
 
@@ -487,10 +488,15 @@ final class PbDynamicUserVarBuilder implements PbDynamicUserVarBuilderInterface 
    *   `url('...')` or empty string.
    */
   private function backgroundImageIfNoSmall(ParagraphInterface $paragraph): string {
-    if ($this->imageFieldUrl($paragraph, 'pb_display_background_image_sm') !== '') {
+    // The same URL the template hands the script (PbibPreprocessHook): the
+    // Pattern's image style when one is named, else the file. This CSS is a
+    // file written on save, so the cacheability has nowhere to go.
+    $cacheability = new CacheableMetadata();
+    if ($this->imageFieldUrls->patternUrl($paragraph, 'pb_display_background_image_sm', $cacheability) !== '') {
       return '';
     }
-    return $this->imageFieldUrl($paragraph, 'pb_display_background_image');
+    $url = $this->imageFieldUrls->patternUrl($paragraph, 'pb_display_background_image', $cacheability);
+    return $url === '' ? '' : sprintf("url('%s')", $this->escapeUrl($url));
   }
 
   /**

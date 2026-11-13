@@ -1,0 +1,17 @@
+label: 'Triptych'
+description: 'Three photos as one artwork, the middle one taller and arched, the other two dimming when one is pointed at; the columns are fixed, the middle slightly wider.'
+weight: 2
+stage: open
+ground: light
+placement: outer-margin
+serves: [cultural, publication, studio]
+needs:
+  - 'Keep one Image section in each of Left, Middle and Right, each with an image. A short title on each is optional.'
+  - 'Photos are cropped to fit, so choose images with the subject in the middle. The arch and the dimming are part of the design.'
+settings:
+  pb_display_card_layout_three: l4_l4_l4
+pictures:
+  card_image_section_bundle.pb_content_image:
+    style: pb_card
+    responsive: true
+    view_mode: pb_media_card

@@ -1,0 +1,16 @@
+label: 'Caption line'
+description: 'A magazine-style photo with a fine rule beneath it, the title on one side and the description on the other.'
+weight: 3
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [publication, cultural, studio]
+needs:
+  - 'Add an image, a title and a description. The title goes below the picture for you.'
+settings:
+  pb_content_title_position: below
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

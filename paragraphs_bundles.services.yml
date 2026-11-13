@@ -57,6 +57,8 @@ services:
     class: Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolver
     arguments:
       - '@file_url_generator'
+      - '@paragraphs_bundles.picture_binder'
+      - '@entity_type.manager'
 
   Drupal\paragraphs_bundles\Service\Field\PbImageFieldUrlResolverInterface:
     alias: paragraphs_bundles.image_field_url_resolver
@@ -249,6 +251,25 @@ services:
   # Attaches the CSS-classes validator to every bundle carrying that field.
   Drupal\paragraphs_bundles\Hook\PbCssClassesFieldHook:
     autowire: true
+
+  # ---------------------------------------------------------------------------
+  # Picture binder: a Pattern names the media view mode of the pictures in its
+  # section. Each Pattern module tags a provider that hands its `pictures` map.
+  # ---------------------------------------------------------------------------
+  paragraphs_bundles.picture_binder:
+    class: Drupal\paragraphs_bundles\Service\Picture\PbPictureBinder
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_display.repository'
+    tags:
+      - { name: service_collector, tag: paragraphs_bundles.picture_map_provider, call: addProvider }
+
+  Drupal\paragraphs_bundles\Service\Picture\PbPictureBinderInterface:
+    alias: paragraphs_bundles.picture_binder
+
+  Drupal\paragraphs_bundles\Hook\PbPictureBindingHook:
+    arguments:
+      - '@paragraphs_bundles.picture_binder'
 
   Drupal\paragraphs_bundles\Hook\PbEntityHook:
     arguments:

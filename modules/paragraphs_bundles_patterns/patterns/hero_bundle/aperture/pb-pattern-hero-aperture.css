@@ -1,0 +1,228 @@
+/**
+ * @file
+ * Pattern Aperture for the Hero: a circle of photo opens, the title rises.
+ *
+ * The Hero text box is the editor's. Defaults sit on the text wrapper and in
+ * :where() rules, so --pb-tx, --pb-bg and the editor's padding win.
+ */
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture {
+  --pb-pattern-aperture-at: 22% 78%;
+  --pb-pattern-aperture-side: to right;
+  --pb-pattern-aperture-wipe: left;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture {
+  --pb-pattern-aperture-at: 78% 78%;
+  --pb-pattern-aperture-side: to left;
+  --pb-pattern-aperture-wipe: right;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .hero-bundle-inner {
+  isolation: isolate;
+  background: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+/* Phone: the words sit under the photo. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  max-block-size: 72vh;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-wrapper {
+  --pb-tx: var(--pb-pattern-ink);
+
+  position: relative;
+  height: auto;
+  color: var(--pb-pattern-ink);
+  background: var(--pb-bg, var(--pb-pattern-surface));
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--hero-aperture .pb-hero__text-inner) {
+  padding-block: var(--pb-px24) var(--pb-px32);
+  padding-inline: var(--pb-px20);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-content__kicker {
+  display: flex;
+  align-items: center;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: var(--pb-px13);
+  font-weight: 700;
+  gap: var(--pb-px12);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-content__kicker::before {
+  width: 2.25rem;
+  height: 2px;
+  content: "";
+  background: currentColor;
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-content__title {
+  margin-block: var(--pb-px14) var(--pb-px16);
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+  font-size: clamp(2.1rem, 5.2cqi, 4.75rem);
+  font-weight: 750;
+  line-height: 1.02;
+}
+
+/* The button: the Link title printed by the text box's link. No title, no pill. */
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  width: fit-content;
+  min-height: 3.25rem;
+  margin-block-start: var(--pb-px28);
+  content: attr(title);
+  transition:
+    background-size 0.55s var(--pb-pattern-ease-out),
+    color 0.35s,
+    box-shadow 0.35s;
+  color: var(--pb-pattern-surface);
+  border-radius: 999px;
+  background:
+    linear-gradient(var(--pb-pattern-stage-bg), var(--pb-pattern-stage-bg)) var(--pb-pattern-aperture-wipe) / 0% 100% no-repeat,
+    var(--pb-pattern-ink);
+  font-weight: 650;
+  padding-block: var(--pb-px5);
+  padding-inline: var(--pb-px24);
+}
+
+.paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-pattern-stage-color);
+  background-size: 100% 100%;
+  box-shadow: inset 0 0 0 1.5px var(--pb-pattern-stage-color);
+}
+
+/* The photo opens only after the script has run: without it the photo shows. */
+@container pb-pattern-region (min-width: 44rem) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .hero-bundle-inner {
+    min-block-size: 88vh;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full {
+    position: absolute;
+    max-block-size: none;
+    aspect-ratio: auto;
+    inset: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full::after {
+    position: absolute;
+    z-index: 1;
+    display: block;
+    clear: none;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to top, color-mix(in sRGB, var(--pb-pattern-stage-bg) 88%, transparent) 0%, color-mix(in sRGB, var(--pb-pattern-stage-bg) 60%, transparent) 40%, transparent 74%), linear-gradient(var(--pb-pattern-aperture-side), color-mix(in sRGB, var(--pb-pattern-stage-bg) 60%, transparent) 0%, transparent 62%);
+    inset: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-wrapper {
+    --pb-tx: var(--pb-pattern-stage-color);
+
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    height: 100%;
+    color: var(--pb-pattern-stage-color);
+    background: transparent;
+    inset: 0;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner {
+    max-inline-size: 52ch;
+  }
+
+  :where(.pb-pattern--hero-aperture .pb-hero__text-inner) {
+    padding-block: clamp(1.5rem, 8vh, 5rem);
+    padding-inline: clamp(1.25rem, 5cqi, 4.5rem);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner > .pb-ui-link[title]::after {
+    color: var(--pb-pattern-stage-bg);
+    background:
+      linear-gradient(var(--pb-pattern-stage-bg), var(--pb-pattern-stage-bg)) var(--pb-pattern-aperture-wipe) / 0% 100% no-repeat,
+      var(--pb-pattern-stage-color);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture[data-pb-pattern-ready] .pb-u-image-full {
+    transition: clip-path 1.6s var(--pb-pattern-ease-out);
+    clip-path: circle(0% at var(--pb-pattern-aperture-at));
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture[data-pb-pattern-ready].pb-pattern-is-open .pb-u-image-full {
+    clip-path: circle(150% at var(--pb-pattern-aperture-at));
+  }
+
+  /* The words built by the script. Words start below their own clip box. */
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-pattern-word {
+    display: inline-block;
+    overflow: hidden;
+    margin-block-end: -0.1em;
+    padding-block-end: 0.1em;
+    vertical-align: top;
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture[data-pb-pattern-ready] .pb-pattern-word > span {
+    display: inline-block;
+    transition: transform 0.9s var(--pb-pattern-ease-out);
+    transition-delay: calc(0.55s + var(--pb-pattern-i, 0) * 70ms);
+    transform: translateY(110%);
+  }
+
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture.pb-pattern-is-open .pb-pattern-word > span {
+    transform: none;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @container pb-pattern-region (min-width: 44rem) {
+      .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full img {
+        animation: pb-pattern-aperture-drift linear both;
+        animation-timeline: view();
+        animation-range: exit 0% exit 100%;
+      }
+    }
+
+    @keyframes pb-pattern-aperture-drift {
+      to {
+        transform: scale(1.12) translateY(5%);
+      }
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-u-image-full,
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-pattern-word > span,
+  .paragraphs-bundles.pb-hero.pb-pattern--hero-aperture .pb-hero__text-inner > .pb-ui-link[title]::after {
+    transition: none;
+  }
+}

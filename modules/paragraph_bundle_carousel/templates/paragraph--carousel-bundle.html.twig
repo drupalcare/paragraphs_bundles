@@ -70,7 +70,8 @@
   paragraph_id,
 ] %}
 
-<div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="{{ 'Carousel'|t }}" tabindex="0">
+{# The region is named by the carousel's title when it has one. #}
+<div {{ attributes.addClass(classes).setAttribute('id', carousel_id) }} role="region" aria-label="{{ pb_title ?: 'Carousel'|t }}" tabindex="0">
   <div class="{{ classes_inner }}">
 
     {% if pb_kicker %}<div class="pb-content__kicker">{{ content.pb_content_kicker }}</div>{% endif %}{% if pb_title %}
@@ -135,7 +136,7 @@
       {% if total_slides > 1 and (pb_show_dots or pb_play_stop > 0) %}
         <div class="pb-carousel__bottom-bar">
           {% if pb_play_stop > 0 %}
-            <button id="pb-carousel__play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}" aria-pressed="true">
+            <button id="pb-carousel__play-pause-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-carousel__play-pause pb-is-playing control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Pause slideshow'|t }}">
               <span class="visually-hidden">{{ 'Play or pause the carousel'|t }}</span>
               <span class="pb-nav__pause-icon">{{ include('@paragraph_bundle_carousel/svg/svg-pause.svg') }}</span>
               <span class="pb-nav__play-icon" hidden>{{ include('@paragraph_bundle_carousel/svg/svg-play.svg') }}</span>
@@ -143,7 +144,7 @@
           {% endif %}
 
           {% if pb_show_dots %}
-            <div class="pb-carousel__dots" aria-label="{{ 'Slide navigation'|t }}">
+            <div class="pb-carousel__dots" role="group" aria-label="{{ 'Slide navigation'|t }}">
               {# Dots populated by JavaScript. #}
             </div>
           {% endif %}
@@ -152,7 +153,7 @@
 
       {% set pb_show_arrows = pb_navigation in ['arrows', 'both'] %}
       {% if total_slides > 1 and pb_show_arrows %}
-        <div class="pb-carousel__options-bar" aria-label="{{ 'Carousel Controls'|t }}">
+        <div class="pb-carousel__options-bar" role="group" aria-label="{{ 'Carousel Controls'|t }}">
           <button id="pb-carousel__prev-{{ paragraph.id.value }}" type="button" class="pb-ui-btn pb-nav__prev control-btn" aria-controls="{{ carousel_id }}" aria-label="{{ 'Previous Slide'|t }}">
             <span class="visually-hidden">{{ 'Previous Slide'|t }}</span>
             {{ include('@paragraph_bundle_carousel/svg/svg-prev.svg') }}

@@ -119,6 +119,16 @@
         const slideNumberElement = document.getElementById(
           `pb-3d-carousel__index-${uniqueId}`,
         );
+        // The visible counter above shows only the digit and is hidden from
+        // assistive technology. The ring is named by this visually hidden
+        // "Slide N of M" label (kept current, not live), and the live region
+        // below speaks the same words, but only after a user action.
+        const labelElement = document.getElementById(
+          `pb-3d-carousel__label-${uniqueId}`,
+        );
+        const announcer = document.getElementById(
+          `pb-3d-carousel__announcer-${uniqueId}`,
+        );
         const prevButton = document.getElementById(
           `pb-3d-carousel__prev-${uniqueId}`,
         );
@@ -167,6 +177,15 @@
         // argument so a Prev click cannot leave autoplay running backwards.
         let direction = 1;
         let isPaused = false;
+        // Rotation holds: the pointer is over the ring, or keyboard focus is
+        // inside the carousel. Pressing Play while focused lifts the focus
+        // hold until focus leaves (playRequested).
+        let hoverHold = false;
+        let focusHold = false;
+        let playRequested = false;
+        // Set by a user action so the next counter update is announced; the
+        // autoplay timer and resizes stay silent.
+        let announceNext = false;
         let intervalId = null;
         let previousVisibility = isMostlyVisible(ring);
         let touchStartX = 0;
@@ -206,6 +225,9 @@
         /**
          * Updates play/pause button visuals.
          *
+         * The label changes (Pause/Play), so the button carries no
+         * aria-pressed: both together read as "Play, pressed".
+         *
          * @param {boolean} paused - Whether autoplay is paused.
          */
         const updatePlayPauseButton = (paused) => {
@@ -221,21 +243,7 @@
             'aria-label',
             paused ? Drupal.t('Play slideshow') : Drupal.t('Pause slideshow'),
           );
-          playPauseButton.setAttribute('aria-pressed', String(!paused));
-        };
-
-        /**
-         * Updates tabindex for focusable elements within a cell.
-         *
-         * @param {HTMLElement} cell - Slide element.
-         * @param {boolean} isActive - Whether the slide is active.
-         */
-        const updateFocusableElements = (cell, isActive) => {
-          cell
-            .querySelectorAll('a, button, input, textarea, select, [tabindex]')
-            .forEach((el) => {
-              el.setAttribute('tabindex', isActive ? '0' : '-1');
-            });
+          playPauseButton.removeAttribute('aria-pressed');
         };
 
         /**
@@ -579,18 +587,21 @@
          * Updates the visible slide counter and its label.
          */
         const updateCounter = () => {
-          if (!slideNumberElement) {
-            return;
-          }
+          const label = Drupal.t('Slide @current of @total', {
+            '@current': currentIndex + 1,
+            '@total': cellCount,
+          });
 
-          slideNumberElement.setAttribute(
-            'aria-label',
-            Drupal.t('Slide @current of @total', {
-              '@current': currentIndex + 1,
-              '@total': cellCount,
-            }),
-          );
-          slideNumberElement.textContent = String(currentIndex + 1);
+          if (slideNumberElement) {
+            slideNumberElement.textContent = String(currentIndex + 1);
+          }
+          if (labelElement) {
+            labelElement.textContent = label;
+          }
+          if (announcer && announceNext) {
+            announcer.textContent = label;
+          }
+          announceNext = false;
         };
 
         /**
@@ -659,7 +670,6 @@
 
               cell.setAttribute('aria-hidden', String(!shown));
               cell.toggleAttribute('inert', !shown);
-              updateFocusableElements(cell, shown);
               cell.classList.toggle(PB_IS_ACTIVE, index === currentIndex);
             });
 
@@ -683,7 +693,6 @@
             const isActive = index === currentIndex;
             cell.setAttribute('aria-hidden', String(!isActive));
             cell.toggleAttribute('inert', !isActive);
-            updateFocusableElements(cell, isActive);
             cell.classList.toggle(PB_IS_ACTIVE, isActive);
           });
 
@@ -765,6 +774,8 @@
             cellCount > 1 &&
             rotationDelay > 0 &&
             !isPaused &&
+            !hoverHold &&
+            (!focusHold || playRequested) &&
             isMostlyVisible(ring)
           ) {
             intervalId = setInterval(() => advanceSlide(), rotationDelay);
@@ -810,6 +821,7 @@
             direction = step;
           }
 
+          announceNext = true;
           advanceSlide(step);
           restartAutoPlay();
         };
@@ -819,6 +831,7 @@
          */
         const togglePlayPause = () => {
           isPaused = !isPaused;
+          playRequested = !isPaused;
           updatePlayPauseButton(isPaused);
           if (isPaused) {
             pauseAutoPlay();
@@ -926,21 +939,23 @@
           },
           { signal },
         );
+        // A native <button> already turns Enter and Space into one click. The
+        // extra keydown listener that used to sit here could toggle twice
+        // (no net change), so the button looked dead from the keyboard.
         playPauseButton?.addEventListener('click', togglePlayPause, { signal });
-        playPauseButton?.addEventListener(
-          'keydown',
-          (event) => {
-            if (event.key === 'Enter' || event.key === ' ') {
-              event.preventDefault();
-              togglePlayPause();
-            }
-          },
-          { signal },
-        );
 
         ring.addEventListener(
           'keydown',
           (event) => {
+            // Leave arrow keys to form fields and editable text in a slide.
+            const target = event.target;
+            if (
+              target instanceof HTMLElement &&
+              (target.isContentEditable ||
+                target.closest('input, textarea, select'))
+            ) {
+              return;
+            }
             if (event.key === 'ArrowRight') {
               event.preventDefault();
               manualAdvance(1);
@@ -952,10 +967,55 @@
           { signal },
         );
 
-        ring.addEventListener('mouseenter', pauseAutoPlay, { signal });
+        ring.addEventListener(
+          'mouseenter',
+          () => {
+            hoverHold = true;
+            pauseAutoPlay();
+          },
+          { signal },
+        );
         ring.addEventListener(
           'mouseleave',
           () => {
+            hoverHold = false;
+            if (!isPaused) {
+              startAutoPlay();
+            }
+          },
+          { signal },
+        );
+
+        // Keyboard focus anywhere in the carousel (slides, arrows, the
+        // play/pause button) holds rotation, so a slide never turns away from
+        // a keyboard user. It resumes when focus leaves, unless the user
+        // pressed Pause.
+        const focusRoot = root || ring;
+        focusRoot.addEventListener(
+          'focusin',
+          () => {
+            // Focus arriving from outside starts a fresh hold.
+            if (!focusHold) {
+              playRequested = false;
+            }
+            focusHold = true;
+            if (!playRequested) {
+              pauseAutoPlay();
+            }
+          },
+          { signal },
+        );
+        focusRoot.addEventListener(
+          'focusout',
+          (event) => {
+            if (
+              event.relatedTarget &&
+              focusRoot.contains(event.relatedTarget)
+            ) {
+              return;
+            }
+            focusHold = false;
+            playRequested = false;
             if (!isPaused) {
               startAutoPlay();
             }

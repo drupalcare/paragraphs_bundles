@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.pb_display_video_breakpoint
+    - paragraphs.paragraphs_type.video_bundle
+  module:
+    - options
+id: paragraph.video_bundle.pb_display_video_breakpoint
+field_name: pb_display_video_breakpoint
+entity_type: paragraph
+bundle: video_bundle
+label: 'Background video breakpoint'
+description: 'Background mode only. Below this screen width the poster is shown and the film is not loaded.'
+required: true
+translatable: false
+default_value:
+  -
+    value: pb__768
+default_value_callback: ''
+settings: {  }
+field_type: list_string

@@ -1,0 +1,12 @@
+label: 'Pull quote'
+description: 'The words in large type under a big quotation mark, the title beneath as the name of who said it.'
+weight: 1
+stage: boxed
+ground: light
+placement: inner-padding
+serves: [publication, nonprofit, associations, cultural]
+needs:
+  - 'Type the quote in Body and the person or source in Title. Keep the quote to 280 characters.'
+  - 'A link is optional and sits last. The name is shown as plain text, not as a heading.'
+settings:
+  pb_content_title_tag: div

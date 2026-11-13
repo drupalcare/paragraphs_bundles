@@ -1,0 +1,130 @@
+/**
+ * @file
+ * Pattern Overlap for the Card (two columns).
+ *
+ * The text panel slides over the edge of the photo. Colors, padding, border,
+ * radius and shadow the editor sets on a section win: the Pattern's defaults
+ * are written with :where().
+ *
+ * The Pattern draws its own grid, from the editor's column ratio, switching
+ * by the width of its region (a container query) instead of the viewport, so
+ * it also works in a narrow column of a wide page.
+ */
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner) {
+  padding-block: clamp(1rem, 3cqi, 3rem);
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full {
+  --pb-pattern-overlap: clamp(2rem, 8cqi, 5.5rem);
+  --pb-pattern-inset: clamp(0.75rem, 4cqi, 2rem);
+}
+
+/* Stacked: one column, the panel rides up over the photo. */
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: row;
+  align-items: stretch;
+  gap: 0;
+}
+
+/* Keeps the photo's own title bar inside the photo's stacking context. */
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-image-section {
+  isolation: isolate;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-image-section img {
+  display: block;
+  inline-size: 100%;
+  min-block-size: clamp(14rem, 36cqi, 28rem);
+  object-fit: cover;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left > .pb-card-text-section,
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__right > .pb-card-text-section {
+  position: relative;
+  z-index: 2;
+  flex-grow: 0;
+  align-self: center;
+  inline-size: calc(100% - 2 * var(--pb-pattern-inset));
+  block-size: auto;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left > .pb-card-text-section {
+  margin-block-end: calc(-1 * var(--pb-pattern-overlap));
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__right > .pb-card-text-section {
+  margin-block-start: calc(-1 * var(--pb-pattern-overlap));
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-text-section > .pb-ui-inner) {
+  padding: clamp(1.25rem, 3.5cqi, 2.5rem);
+  color: var(--pb-pattern-ink);
+  border-radius: 0.75rem;
+  background: linear-gradient(var(--pb-pattern-editor-bg) 0 0), var(--pb-pattern-surface);
+  box-shadow: 0 0.75rem 2.5rem color-mix(in oklab, var(--pb-pattern-shadow) 16%, transparent);
+}
+
+/* The photo's title never sits under the panel, and it reads on any photo:
+   it is a plate of its own, as wide as its words, lifted by a margin so the
+   plate does not run under the panel. */
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card__image .pb-card__image-title .field--name-pb-content-title {
+  inline-size: fit-content;
+  max-inline-size: 100%;
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card__image .pb-card__image-title .field--name-pb-content-title) {
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: linear-gradient(var(--pb-pattern-editor-bg) 0 0), var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left .pb-card__image .pb-card__image-title .field--name-pb-content-title {
+  margin-block-end: calc(var(--pb-pattern-overlap) + var(--pb-px12));
+}
+
+@container pb-pattern-region (min-width: 40rem) {
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns.pb-card-two-columns--l4-l8 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns.pb-card-two-columns--l8-l4 {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns.pb-card-two-columns--l3-l9 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap > .pb-ui-inner > .pb-content__full > .pb-card-two-columns.pb-card-two-columns--l9-l3 {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 1fr);
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left > .pb-card-text-section,
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__right > .pb-card-text-section {
+    align-self: start;
+    inline-size: calc(100% + var(--pb-pattern-overlap));
+    margin-block: auto;
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left > .pb-card-text-section {
+    margin-inline: 0;
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__right > .pb-card-text-section {
+    margin-inline: calc(-1 * var(--pb-pattern-overlap)) 0;
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__left .pb-card__image .pb-card__image-title .field--name-pb-content-title {
+    margin-block-end: var(--pb-px12);
+    margin-inline-end: calc(var(--pb-pattern-overlap) + var(--pb-px12));
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-two-columns-overlap .pb-card-two-columns > .pb-card-two-columns__right .pb-card__image .pb-card__image-title .field--name-pb-content-title {
+    margin-inline-start: calc(var(--pb-pattern-overlap) + var(--pb-px12));
+  }
+}

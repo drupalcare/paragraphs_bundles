@@ -58,10 +58,10 @@
    screen reader mid-sentence: right for an emergency, wrong for "all clear".
    Success and Info therefore announce politely as role="status". #}
 {% set pb_state_labels = {
-  'success': 'Success'|t,
-  'info': 'Info'|t,
-  'warning': 'Warning'|t,
-  'error': 'Error'|t,
+  success: 'Success'|t,
+  info: 'Info'|t,
+  warning: 'Warning'|t,
+  error: 'Error'|t,
 } %}
 {% set pb_state_polite = pb_alert_state in ['success', 'info'] %}
 {% set pb_alert_role = pb_state_polite ? 'status' : 'alert' %}
@@ -108,10 +108,18 @@
         </div>
       {% endif %}
         {% if pb_countdown_runs %}
-          <div class="pb-alert__countdown" aria-live="polite">
+          {# No live region on the digits: they change every second and the alert
+             root is itself a live region, so a screen reader would read every
+             tick. The digits are visual only; the hidden sentence states the
+             time once, and the script announces one warning near the end.
+             The Pause button keeps a FIXED label and carries the state in
+             aria-pressed ("Pause ..., pressed" = paused). The Fuse pattern reads
+             that attribute. #}
+          <div class="pb-alert__countdown">
             {% if pb_show_countdown_label %}
-              <span data-pb-countdown-label data-pb-digits>{{ pb_countdown_seconds }}</span>
-              <span class="pb-alert__countdown-unit">{{ 'sec'|t }}</span>
+              <span data-pb-countdown-label data-pb-digits aria-hidden="true">{{ pb_countdown_seconds }}</span>
+              <span class="pb-alert__countdown-unit" aria-hidden="true">{{ 'sec'|t }}</span>
+              <span class="visually-hidden">{{ 'This alert closes after @count seconds.'|t({'@count': pb_countdown_seconds}) }}</span>
             {% endif %}
             <button type="button"
                     data-pb-countdown-pause

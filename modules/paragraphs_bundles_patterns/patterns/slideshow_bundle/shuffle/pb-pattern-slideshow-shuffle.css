@@ -1,0 +1,438 @@
+/**
+ * @file
+ * Pattern Shuffle for the Slideshow: a Hero card on a small pile of cards.
+ *
+ * The pile is two pseudo-elements on the slides box, turned a little; they
+ * share the slides' grid cell, so they are always the card's size. The slide
+ * that loses `pb-is-active` is tossed to the side with a spin inside PB's
+ * 0.6s fade (paragraph-bundle-slideshow.css, the slide transition), and the
+ * new one settles on the pile. Previous and Next are tilted rounded-square
+ * tiles beside the card (under it on phones); the numbered buttons are small
+ * tilted tiles. Needs no script.
+ *
+ * Nested rules read `.pb-slideshow__slide .pb-hero:not(.pb-pattern)`, so a
+ * Hero outside this Pattern, or one with its own Pattern, is not changed.
+ * The card's ground is the editor's slideshow ground when one is set
+ * (--pb-pattern-editor-bg), else the page surface; words read --pb-tx first.
+ */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle {
+  --pb-pattern-shuffle-dir: 1;
+  --pb-pattern-shuffle-radius: 20px;
+  --pb-pattern-shuffle-card: calc(100% - 24px);
+  --pb-pattern-shuffle-tile: 60px;
+
+  color: var(--pb-tx, var(--pb-pattern-ink));
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle {
+  --pb-pattern-shuffle-dir: -1;
+}
+
+/* The stage: card, then number tiles, then arrows. It clips the tossed card
+   and keeps room for the tilts. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage {
+  display: grid;
+  overflow: clip;
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: 16px 8px;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__slides {
+  position: relative;
+  overflow: visible;
+  grid-row: 1;
+  grid-column: 1;
+  justify-self: center;
+  inline-size: var(--pb-pattern-shuffle-card);
+  isolation: isolate;
+}
+
+/* The pile: two colored cards under the top one, decorative. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__slides::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__slides::after {
+  z-index: -1;
+  grid-area: 1 / 1;
+  content: "";
+  pointer-events: none;
+  border-radius: var(--pb-pattern-shuffle-radius);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__slides::before {
+  background-color: var(--pb-pattern-accent);
+  translate: calc(var(--pb-pattern-shuffle-dir) * -6px) 8px;
+  rotate: calc(var(--pb-pattern-shuffle-dir) * -3deg);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__slides::after {
+  background-color: var(--pb-pattern-raised);
+  box-shadow: inset 0 0 0 1px var(--pb-pattern-line);
+  translate: calc(var(--pb-pattern-shuffle-dir) * 8px) 6px;
+  rotate: calc(var(--pb-pattern-shuffle-dir) * 2.5deg);
+}
+
+/* The Slide Title stays for screen readers only. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide-inner > .pb-slideshow__title {
+  position: absolute;
+  overflow: hidden;
+  width: 1px;
+  height: 1px;
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+/* ---- Motion: toss the old card, settle the new one. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slides > .pb-slideshow__slide:not(.pb-is-active) {
+  animation: pb-pattern-slideshow-shuffle-toss 0.55s ease-in;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slides > .pb-slideshow__slide.pb-is-active {
+  animation: pb-pattern-slideshow-shuffle-settle 0.5s var(--pb-pattern-ease-out);
+}
+
+@keyframes pb-pattern-slideshow-shuffle-toss {
+  from {
+    z-index: 2;
+    transform: none;
+  }
+
+  to {
+    z-index: 2;
+    transform: translateX(calc(var(--pb-pattern-shuffle-dir) * 75%)) translateY(-4%) rotate(calc(var(--pb-pattern-shuffle-dir) * 16deg));
+  }
+}
+
+@keyframes pb-pattern-slideshow-shuffle-settle {
+  from {
+    transform: translateY(6px) rotate(calc(var(--pb-pattern-shuffle-dir) * -2deg)) scale(0.97);
+  }
+
+  to {
+    transform: none;
+  }
+}
+
+/* ---- The nested Hero: the top card. Phone: photo 4:3, words below. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+  display: grid;
+  overflow: hidden;
+  flex: 1 1 auto;
+  grid-template-columns: minmax(0, 1fr);
+  border-radius: var(--pb-pattern-shuffle-radius);
+  background: linear-gradient(var(--pb-pattern-editor-bg, transparent), var(--pb-pattern-editor-bg, transparent)), var(--pb-pattern-surface);
+  box-shadow: 0 10px 24px color-mix(in sRGB, var(--pb-pattern-shadow) 16%, transparent);
+}
+
+/* PB's clearfix pseudo-elements would become empty grid cells. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+/* Outranks the Hero's own height classes, so the card decides the height. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full img {
+  position: absolute;
+  display: block;
+  width: 100%;
+  height: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+  position: relative;
+  overflow: visible;
+  align-self: center;
+  height: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  background: transparent;
+  inset: auto;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner {
+  position: relative;
+  overflow: visible;
+  width: 100%;
+  transform: none;
+  inset: auto;
+  max-block-size: none;
+}
+
+:where(.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner) {
+  padding-block: clamp(1.25rem, 4cqi, 2.5rem);
+  padding-inline: clamp(1.25rem, 4cqi, 2.75rem);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner .pb-content__kicker {
+  display: block;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pb-tx, var(--pb-pattern-muted));
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-content__title {
+  margin-block: 0.5rem 0.75rem;
+  text-wrap: balance;
+  font-size: clamp(1.625rem, 3.4cqi, 2.625rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link {
+  float: none;
+  height: auto;
+}
+
+/* The Hero's button: the Link title as a rounded tag. No Link title, no tag. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after {
+  display: inline-flex;
+  clear: none;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  margin-block-start: 1.25rem;
+  content: attr(title);
+  transition:
+    background-color 0.25s,
+    color 0.25s,
+    rotate 0.25s var(--pb-pattern-ease-out);
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  font-weight: 700;
+  padding-block: 0.25rem;
+  padding-inline: 1.25rem;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]:is(:hover, :focus-visible)::after {
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  rotate: calc(var(--pb-pattern-shuffle-dir) * -2deg);
+}
+
+/* ---- Number tiles: a row under the card. ---- */
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number {
+  display: flex;
+  overflow: visible;
+  flex-wrap: wrap;
+  grid-row: 2;
+  grid-column: 1;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  gap: 10px;
+  padding-block: 20px 12px;
+  padding-inline: 12px;
+  scroll-snap-type: none;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number :is(span, p) {
+  color: inherit;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  box-sizing: border-box;
+  inline-size: var(--pb-pattern-target);
+  min-width: var(--pb-pattern-target);
+  block-size: var(--pb-pattern-target);
+  min-height: var(--pb-pattern-target);
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    translate 0.25s var(--pb-pattern-ease-out),
+    box-shadow 0.25s,
+    background-color 0.25s,
+    color 0.25s;
+  transform: none;
+  text-decoration: none;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  border: 0;
+  border-radius: 10px;
+  background-color: color-mix(in sRGB, currentColor 7%, transparent);
+  box-shadow: inset 0 0 0 1px var(--pb-br, var(--pb-pattern-line));
+  font-size: 0.9375rem;
+  font-weight: 700;
+  rotate: calc(var(--pb-pattern-shuffle-dir) * 3deg);
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:nth-child(even) {
+  rotate: calc(var(--pb-pattern-shuffle-dir) * -3deg);
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:hover {
+  translate: 0 -2px;
+}
+
+/* The open tile: filled and lifted. Specific on purpose (rule C2). */
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn.pb-is-active {
+  cursor: default;
+  text-decoration: none;
+  color: var(--pb-bg, var(--pb-pattern-surface));
+  background-color: var(--pb-tx, var(--pb-pattern-ink));
+  box-shadow: 0 6px 14px color-mix(in sRGB, var(--pb-pattern-shadow) 22%, transparent);
+  translate: 0 -4px;
+}
+
+.paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn:focus-visible {
+  outline: 2px solid var(--pb-tx, var(--pb-pattern-ink));
+  outline-offset: 3px;
+}
+
+/* ---- Previous and Next: tilted rounded-square tiles. Phone: under the
+   card, at its two bottom corners. ---- */
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+  display: flex;
+  overflow: visible;
+  grid-row: 3;
+  grid-column: 1;
+  align-items: center;
+  justify-content: space-between;
+  justify-self: center;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 1;
+  inline-size: var(--pb-pattern-shuffle-card);
+  max-inline-size: 100%;
+  padding-block: 8px;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on::before,
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on::after {
+  content: none;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  min-width: var(--pb-pattern-shuffle-tile);
+  min-height: var(--pb-pattern-shuffle-tile);
+  cursor: pointer;
+  transition: rotate 0.25s var(--pb-pattern-ease-out);
+  pointer-events: auto;
+  color: var(--pb-tx, var(--pb-pattern-ink));
+  border-radius: 18px;
+  inline-size: var(--pb-pattern-shuffle-tile);
+  block-size: var(--pb-pattern-shuffle-tile);
+  inset: auto;
+  isolation: isolate;
+}
+
+/* PB keeps the button transparent with an important flag, so the tile is a
+   layer behind the chevron, with a 1.5px edge for its 3:1 boundary. */
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  border-radius: inherit;
+  background-color: color-mix(in sRGB, currentColor 7%, transparent);
+  box-shadow: inset 0 0 0 1.5px currentColor;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__prev {
+  rotate: calc(var(--pb-pattern-shuffle-dir) * -6deg);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows .pb-nav__next {
+  rotate: calc(var(--pb-pattern-shuffle-dir) * 6deg);
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows :is(.pb-nav__prev, .pb-nav__next):hover {
+  transform: none;
+  rotate: 0deg;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button svg {
+  width: 26px;
+  min-width: 0;
+  height: 26px;
+  min-height: 0;
+  opacity: 1;
+  fill: currentColor;
+}
+
+.paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button:focus-visible {
+  border-radius: 18px;
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button svg {
+  transform: scaleX(-1);
+}
+
+/* ---- Wide: card 80% (at most 64rem), photo and words side by side, the
+   arrows outside the card at mid-height. ---- */
+@container pb-pattern-region (min-width: 60rem) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle {
+    --pb-pattern-shuffle-card: min(80%, 64rem);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows.pb-u-prev-next-arrow-on {
+    z-index: 3;
+    grid-row: 1;
+    align-self: center;
+    inline-size: calc(var(--pb-pattern-shuffle-card) + 2 * (var(--pb-pattern-shuffle-tile) + 24px));
+    padding-block: 0;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .hero-bundle-inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    min-block-size: clamp(22rem, 36cqi, 30rem);
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-u-image-full {
+    grid-row: 1;
+    grid-column: 1;
+    aspect-ratio: auto;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-wrapper {
+    grid-row: 1;
+    grid-column: 2;
+  }
+}
+
+/* No toss and no settle; the tilts stay, they do not move. */
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slides > .pb-slideshow__slide:not(.pb-is-active),
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slides > .pb-slideshow__slide.pb-is-active {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__slide .pb-hero:not(.pb-pattern) .pb-hero__text-inner > .pb-ui-link[title]::after,
+  .paragraphs-bundles.pb-pattern.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__nav.pb-slideshow__number.pb-slideshow__nav--nav > .pb-slideshow__nav-btn,
+  .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-shuffle .pb-slideshow__stage > .pb-slideshow__arrows button {
+    transition: none;
+  }
+}

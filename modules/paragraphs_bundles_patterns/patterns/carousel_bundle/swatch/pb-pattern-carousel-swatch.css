@@ -1,0 +1,341 @@
+/**
+ * @file
+ * Pattern Swatch for the Carousel.
+ *
+ * Square tiles opened by a circular clip, with magnetic arrows. The arrows
+ * sit in the control row, not over the tiles, so no control can ever reach a
+ * tile's title or text at any width.
+ */
+
+@property --pb-pattern-progress {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+:where(.pb-pattern--carousel-swatch > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-stage-color);
+
+  padding-block-start: var(--pb-px20);
+  background: var(--pb-pattern-stage-bg);
+}
+
+/* The tiles run edge to edge; the header keeps the inline padding its siblings have. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch > .pb-ui-inner > :is(.pb-content__kicker, .pb-content__title, .pb-content__lede) {
+  padding-inline: clamp(16px, 5cqi, 64px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel.pb-has-arrows .pb-carousel__viewport {
+  display: grid;
+
+  /* The controls get their own row: PB's viewport is height 100%, which must
+     not squeeze the rows together, and 16px always separates tiles from them. */
+  grid-template-rows: auto auto;
+  grid-template-columns: 0 repeat(4, auto) minmax(0, 1fr);
+  align-items: center;
+  height: auto;
+  padding: 0 0 var(--pb-px16);
+  gap: var(--pb-px16) var(--pb-px14);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__wrapper {
+  grid-row: 1;
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__bottom-bar,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar {
+  display: contents;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev {
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots {
+  flex-wrap: wrap;
+  grid-row: 2;
+  grid-column: 3;
+  padding: 0;
+  gap: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__play-pause {
+  position: relative;
+  grid-row: 2;
+  grid-column: 4;
+  width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  color: inherit;
+  border-radius: 50%;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__play-pause::before {
+  position: absolute;
+  content: "";
+  border-radius: 50%;
+  background: conic-gradient(currentColor calc(var(--pb-pattern-progress) * 360deg), var(--pb-pattern-stage-line) 0);
+  -webkit-mask: radial-gradient(closest-side, transparent 80%, #000 82%);
+  mask: radial-gradient(closest-side, transparent 80%, #000 82%);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel.pb-pattern-is-running .pb-carousel__play-pause::before {
+  animation: pb-pattern-carousel-swatch-fill var(--pb-pattern-time, 5s) linear both;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel.pb-pattern-is-held .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel.pb-pattern-is-focus-held .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel:has(.pb-carousel__wrapper:hover) .pb-carousel__play-pause::before,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel:has(.pb-carousel__play-pause.pb-is-paused) .pb-carousel__play-pause::before {
+  animation: none;
+}
+
+@keyframes pb-pattern-carousel-swatch-fill {
+  from {
+    --pb-pattern-progress: 0;
+  }
+
+  to {
+    --pb-pattern-progress: 1;
+  }
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__play-pause svg {
+  width: 20px;
+  height: 20px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+  grid-row: 2;
+  grid-column: 5;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn {
+  width: 60px;
+  height: 60px;
+  transition:
+    transform 0.25s var(--pb-pattern-ease-out),
+    background-color 0.2s,
+    color 0.2s;
+  transform: translate(var(--pb-pattern-mx, 0), var(--pb-pattern-my, 0));
+  color: var(--pb-pattern-stage-bg);
+  border-radius: 50%;
+  background: var(--pb-bt-a, var(--pb-pattern-stage-color));
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn svg {
+  width: 28px;
+  height: 28px;
+  opacity: 1;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__next:not(.pb-is-disabled):hover,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn.pb-nav__prev:not(.pb-is-disabled):hover {
+  transform: translate(var(--pb-pattern-mx, 0), var(--pb-pattern-my, 0));
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn:active {
+  transform: translate(var(--pb-pattern-mx, 0), var(--pb-pattern-my, 0)) scale(0.9);
+}
+
+[dir="rtl"] .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar svg {
+  transform: scaleX(-1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot {
+  display: grid;
+  place-items: center;
+  width: var(--pb-pattern-target);
+  min-width: var(--pb-pattern-target);
+  height: var(--pb-pattern-target);
+  transform: none;
+  color: inherit;
+  border-radius: 50%;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before {
+  width: 10px;
+  height: 10px;
+  content: "";
+  transition:
+    width 0.35s var(--pb-pattern-ease-out),
+    opacity 0.3s;
+  opacity: 0.45;
+  border-radius: 6px;
+  background: currentColor;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active {
+  width: var(--pb-pattern-target);
+  min-width: var(--pb-pattern-target);
+  transform: none;
+  background: transparent;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot.pb-is-active::before {
+  width: 26px;
+  opacity: 1;
+}
+
+/* Tiles. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__wrapper.pb-u-small-screen .pb-carousel__slide {
+  flex: 0 0 100%;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__wrapper:not(.pb-u-small-screen) .pb-carousel__slide {
+  flex: 0 0 calc((100% - 3 * var(--pb-pattern-gap, 0px)) / 4 - 0.5px);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--pb-px12);
+  aspect-ratio: 1;
+  transition: clip-path 1.1s var(--pb-pattern-ease-out);
+  clip-path: circle(0% at 50% 50%);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active {
+  clip-path: circle(72% at 50% 50%);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active:nth-child(4n + 2) {
+  transition-delay: 120ms;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active:nth-child(4n + 3) {
+  transition-delay: 240ms;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active:nth-child(4n + 4) {
+  transition-delay: 360ms;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles,
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles > .pb-ui-inner {
+  position: static;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide > .paragraphs-bundles > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide :is(a.pb-ui-link, .pb-image__wrapper) {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper {
+  overflow: hidden;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 1.4s var(--pb-pattern-ease-out);
+  transform: scale(1.18);
+  object-fit: cover;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide.pb-is-active .pb-image__wrapper img {
+  transform: scale(1);
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide:hover .pb-image__wrapper img {
+  transform: scale(1.05);
+}
+
+/* The photo fills the tile, so text sits on its own scrim box. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-content__title {
+  position: relative;
+  order: 1;
+  margin: 0;
+  padding: var(--pb-px10) var(--pb-px12) var(--pb-px2);
+  border-radius: 12px 12px 0 0;
+  isolation: isolate;
+  font-size: 0.9375rem;
+  font-weight: 650;
+}
+
+/* PB forces heading backgrounds transparent with !important. */
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-content__title::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  border-radius: inherit;
+  background: color-mix(in sRGB, var(--pb-pattern-stage-bg) 70%, transparent);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__desc {
+  display: -webkit-box;
+  overflow: hidden;
+  order: 2;
+  padding: 0 var(--pb-px12);
+
+  /* Bottom space is a border, not padding: padding inside a clamped box lets the
+     next line show through as a half-cut line. */
+  border-block-end: var(--pb-px8) solid transparent;
+  border-radius: 0 0 12px 12px;
+  background: color-mix(in sRGB, var(--pb-pattern-stage-bg) 70%, transparent);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+@container pb-pattern-region (max-width: 33.75rem) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel.pb-pattern-is-running .pb-carousel__play-pause::before {
+    animation: none;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-ui-btn,
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots .pb-carousel__dot::before {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__slide .pb-image__wrapper img {
+    transform: none;
+  }
+}
+
+/* On a phone both arrows lead the row, then the dots and the pause. */
+@container pb-pattern-region (max-width: 30rem) {
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__prev {
+    grid-column: 2;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__options-bar .pb-nav__next {
+    grid-column: 3;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__dots {
+    grid-column: 4;
+  }
+
+  .paragraphs-bundles.pb-carousel.pb-pattern--carousel-swatch.pb-u-horizontal-carousel .pb-carousel__play-pause {
+    grid-column: 5;
+  }
+}

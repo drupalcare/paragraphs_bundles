@@ -1,0 +1,15 @@
+label: 'Loupe'
+description: 'A round magnifying glass follows the pointer over the photo, for mouse users only; a linked photo still clicks.'
+weight: 1
+stage: boxed
+ground: light
+placement: outer-margin
+serves: [cultural, publication, creative]
+needs:
+  - 'Add an image at least 1.4 times wider than it is shown on the page. Smaller images show no glass.'
+settings: {}
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

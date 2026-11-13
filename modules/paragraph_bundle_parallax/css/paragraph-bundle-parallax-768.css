@@ -245,3 +245,32 @@
     filter: none !important;
   }
 }
+
+/* ==========================================================================
+   Reduced Motion - Disable All Text Animations
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--scale .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--rotate .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--translate .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--smooth .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--three-d .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--shadow .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--glow .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--hover .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--combined .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--blur .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--opacity .pb-parallax__text,
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--fade-scale .pb-parallax__text {
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+  .paragraphs-bundles.pb-parallax-section.parallax-js.pb-parallax--br-768 .pb-parallax--hover.pb-is-visible .pb-parallax__text:hover {
+    transform: none !important;
+  }
+}

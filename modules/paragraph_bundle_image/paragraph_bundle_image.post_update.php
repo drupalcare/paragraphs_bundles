@@ -7,6 +7,7 @@
 
 declare(strict_types=1);
 
+use Drupal\Core\Config\FileStorage;
 use Drupal\Core\Entity\Display\EntityDisplayInterface;
 
 /**
@@ -102,4 +103,46 @@ function paragraph_bundle_image_post_update_svg_field(): string {
   $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_image', 'image_narrow_bundle', 'pb_content_svg_image_narrow', 'pb_content_image');
   $done[] = paragraphs_bundles_svg_field_install('paragraph_bundle_image', 'image_wide_bundle', 'pb_content_svg_image_wide', 'pb_content_image');
   return implode(' ', $done);
+}
+
+/**
+ * Adds the Original Picture media view mode for Patterns.
+ */
+function paragraph_bundle_image_post_update_original_picture_view_mode(): string {
+  // New installs get both items from config/optional. Existing sites get the
+  // same two records here: the media view mode, then its display for the PB
+  // image media type. A record that already exists is left alone, and the
+  // display is only created when the media type, field and image style it
+  // depends on are present, as config/optional would require.
+  $files = new FileStorage(\Drupal::service('extension.list.module')->getPath('paragraph_bundle_image') . '/config/optional');
+  $type_manager = \Drupal::entityTypeManager();
+  $created = [];
+  $items = [
+    'entity_view_mode' => 'core.entity_view_mode.media.pb_media_original_picture',
+    'entity_view_display' => 'core.entity_view_display.media.pb_media_image.pb_media_original_picture',
+  ];
+  foreach ($items as $entity_type => $name) {
+    $record = $files->read($name);
+    if (!is_array($record) || !is_string($record['id'] ?? NULL)) {
+      continue;
+    }
+    $storage = $type_manager->getStorage($entity_type);
+    if ($storage->load($record['id']) !== NULL) {
+      continue;
+    }
+    $missing = FALSE;
+    foreach ($record['dependencies']['config'] ?? [] as $dependency) {
+      if (\Drupal::config($dependency)->isNew()) {
+        $missing = TRUE;
+      }
+    }
+    if ($missing) {
+      continue;
+    }
+    $storage->createFromStorageRecord($record)->save();
+    $created[] = $record['id'];
+  }
+  return $created === []
+    ? (string) t('The Original Picture view mode was already present or its media type is missing.')
+    : (string) t('Created: @items.', ['@items' => implode(', ', $created)]);
 }

@@ -19,7 +19,8 @@ Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/). Require
 ## ARIA roles and attributes
 
 - `dialog`
-- `button`
+- `button` with `aria-haspopup="dialog"` on each tile; each is named for its
+  tile ("Enlarge image: title", else the image alt, else "Enlarge image 2 of 6")
 
 See the parent playbook for required attributes per pattern.
 
@@ -33,6 +34,8 @@ See the parent playbook for required attributes per pattern.
 - Open lightbox
 - Escape closes
 - Focus trap in lightbox
+- Left and Right arrows show the previous and next image (mirrored on
+  right-to-left pages); each change is announced as "Image 2 of 6"
 
 ## Screen reader
 

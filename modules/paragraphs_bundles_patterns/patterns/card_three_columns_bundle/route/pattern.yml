@@ -1,0 +1,12 @@
+label: 'Route'
+description: 'Three steps joined by one line with a numbered stop on each, the line drawing itself as it scrolls in; the columns are always equal thirds.'
+weight: 1
+stage: boxed
+ground: light
+placement: both
+serves: [healthcare, saas, corporate, associations]
+needs:
+  - 'Keep one Text section in each of Left, Middle and Right, each with a title. Short titles and two or three sentences read best.'
+  - 'The numbers 1, 2 and 3 are added for you. The line uses the border color you set on the Card.'
+settings:
+  pb_display_card_layout_three: l4_l4_l4

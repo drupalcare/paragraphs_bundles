@@ -1,0 +1,110 @@
+/**
+ * @file
+ * Pattern Slate for Video: the words get a solid column, the film runs beside.
+ *
+ * Text never sits on moving pictures. Colors sit on the inner element as
+ * --pb-* tokens or under :where(), so the editor's settings win. Layout is
+ * specific because PB's own rule on the inner element sets display at class
+ * specificity.
+ */
+
+.paragraphs-bundles.pb-video.pb-pattern--video-slate {
+  --pb-pattern-slate-band: clamp(12rem, 58cqi, 22rem);
+  --pb-pattern-slate-share: clamp(20rem, 38cqi, 34rem);
+  --pb-pattern-slate-pause: max(var(--pb-pattern-target), 2.75rem);
+
+  /* The bundle's plate also sits under :where(), and which file loads last is
+     not ours to choose. Its tokens are Slate's, so either rule paints Slate. */
+  --pb-video-ink: var(--pb-pattern-ink);
+  --pb-video-surface: var(--pb-pattern-surface);
+  --pb-video-radius: 0;
+}
+
+.paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__poster,
+.paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__film {
+  inset-block-end: auto;
+  block-size: var(--pb-pattern-slate-band);
+}
+
+.paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__inner {
+  align-self: stretch;
+  inline-size: 100%;
+  margin-block: var(--pb-pattern-slate-band) 0;
+  margin-inline: 0;
+}
+
+:where(.pb-pattern--video-slate > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-lk: var(--pb-pattern-ink);
+
+  padding: clamp(20px, 5cqi, 64px);
+  border-radius: 0;
+  background-color: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-slate > .pb-ui-inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-slate .pb-content__title {
+  letter-spacing: -0.015em;
+  font-size: clamp(1.75rem, 3.6cqi, 3rem);
+  line-height: 1.08;
+}
+
+/* A Pattern's base rule strips a link's padding; this restores a 44px target.
+   Inline links inside running text are left alone. */
+.paragraphs-bundles.pb-video.pb-pattern--video-slate .pb-video__content :is(a.pb-ui-btn, a.button, .pb-link a):where(:not(.contextual *)) {
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  margin-block-start: 0.25rem;
+  text-decoration: none;
+  border: 2px solid currentColor;
+  font-weight: 600;
+  min-block-size: var(--pb-pattern-target);
+  max-inline-size: 100%;
+  padding-block: 0.55rem;
+  padding-inline: 1.1rem;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-slate .pb-video__content :is(a.pb-ui-btn, a.button, .pb-link a):where(:not(.contextual *)):hover {
+  text-decoration: underline;
+}
+
+.paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__pause {
+  inset-block-start: calc(var(--pb-pattern-slate-band) - var(--pb-pattern-slate-pause) - 0.75rem);
+  inset-block-end: auto;
+  inset-inline-end: 0.75rem;
+  inline-size: var(--pb-pattern-slate-pause);
+  block-size: var(--pb-pattern-slate-pause);
+  color: var(--pb-pattern-surface);
+  border: 0;
+  border-radius: clamp(4px, 0.6cqi, 8px);
+  background-color: var(--pb-pattern-ink);
+}
+
+.paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__pause:hover {
+  background-color: var(--pb-pattern-accent);
+}
+
+@container pb-pattern-region (min-width: 48rem) {
+  .paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__poster,
+  .paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__film {
+    inset-block-end: 0;
+    inset-inline-start: var(--pb-pattern-slate-share);
+    block-size: auto;
+  }
+
+  .paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__inner {
+    inline-size: var(--pb-pattern-slate-share);
+    margin-block: 0;
+  }
+
+  .paragraphs-bundles.pb-video.pb-video--background.pb-pattern--video-slate > .pb-video__pause {
+    inset-block-start: auto;
+    inset-block-end: 0.75rem;
+  }
+}

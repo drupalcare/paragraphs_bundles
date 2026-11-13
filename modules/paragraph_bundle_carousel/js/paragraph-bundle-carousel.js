@@ -123,7 +123,31 @@
       isPaused: false,
       autoSlideTimer: null,
       centerOffset: 0,
+      // Set by a user action (arrows, dots, keys, swipe) so the next layout
+      // pass announces the new slides. Timer and resize passes stay silent.
+      announceNext: false,
+      // Rotation holds: the pointer is over the slides, or keyboard focus is
+      // inside the carousel.
+      hoverHold: false,
+      focusHold: false,
     };
+  }
+
+  /**
+   * Asks the same question as the breakpoint stylesheets.
+   *
+   * Each `paragraph-bundle-carousel-pb-NNN.css` switches at
+   * `max-width: (NNN / 16 - 0.00125)rem`, so the script asks that media query
+   * rather than comparing `innerWidth` to NNN: at exactly NNN pixels the two
+   * used to disagree, and with a larger browser font size a rem is no longer
+   * 16 pixels.
+   *
+   * @param {number} breakpoint - The breakpoint in pixels, such as 992.
+   * @return {boolean} True if the viewport is below the breakpoint.
+   */
+  function belowBreakpoint(breakpoint) {
+    return window.matchMedia(`(max-width: ${breakpoint / 16 - 0.00125}rem)`)
+      .matches;
   }
 
   /**
@@ -143,23 +167,6 @@
       return 'vertical';
     }
     return 'horizontal';
-  }
-
-  /**
-   * Asks the same question as the breakpoint stylesheets.
-   *
-   * Each `paragraph-bundle-carousel-pb-NNN.css` switches at
-   * `max-width: (NNN / 16 - 0.00125)rem`, so the script asks that media query
-   * rather than comparing `innerWidth` to NNN: at exactly NNN pixels the two
-   * used to disagree, and with a larger browser font size a rem is no longer
-   * 16 pixels.
-   *
-   * @param {number} breakpoint - The breakpoint in pixels, such as 992.
-   * @return {boolean} True if the viewport is below the breakpoint.
-   */
-  function belowBreakpoint(breakpoint) {
-    return window.matchMedia(`(max-width: ${breakpoint / 16 - 0.00125}rem)`)
-      .matches;
   }
 
   /**
@@ -415,16 +422,32 @@
   /**
    * Announces the currently visible slides to screen readers.
    *
+   * Only a user action announces (state.announceNext); the autoplay timer,
+   * resizes and the first layout never write to the live region, so a
+   * rotating carousel does not interrupt a screen reader every few seconds.
+   *
    * @param {Object} state - The carousel state object.
    * @param {number} start - Start index of visible items.
    * @param {number} end - End index of visible items.
    */
   function announceVisible(state, start, end) {
-    if (!state.announcer) {
+    if (!state.announcer || !state.announceNext) {
       return;
     }
+    state.announceNext = false;
     const total = state.config.totalSlides;
-    state.announcer.textContent = `Showing slides ${start + 1} to ${Math.min(end, total)} of ${total}`;
+    const last = Math.min(end, total);
+    state.announcer.textContent =
+      last - start <= 1
+        ? Drupal.t('Showing slide @current of @total', {
+            '@current': start + 1,
+            '@total': total,
+          })
+        : Drupal.t('Showing slides @start to @end of @total', {
+            '@start': start + 1,
+            '@end': last,
+            '@total': total,
+          });
   }
 
   /**
@@ -554,6 +577,7 @@
         if (state.nextButton.getAttribute('aria-disabled') === 'true') {
           return;
         }
+        state.announceNext = true;
         nextSlide(state);
         resetAutoSlide();
       },
@@ -566,6 +590,7 @@
         if (state.prevButton.getAttribute('aria-disabled') === 'true') {
           return;
         }
+        state.announceNext = true;
         prevSlide(state);
         resetAutoSlide();
       },
@@ -600,14 +625,18 @@
 
         if (Math.abs(deltaX) > Math.abs(deltaY)) {
           if (deltaX < -50) {
+            state.announceNext = true;
             nextSlide(state);
           } else if (deltaX > 50) {
+            state.announceNext = true;
             prevSlide(state);
           }
         } else if (state.config.orientation === 'vertical') {
           if (deltaY < -50) {
+            state.announceNext = true;
             nextSlide(state);
           } else if (deltaY > 50) {
+            state.announceNext = true;
             prevSlide(state);
           }
         }
@@ -683,6 +712,7 @@
         }
 
         state.pageIndex = groupIndex;
+        state.announceNext = true;
         updateLayout(state);
       },
       { signal },
@@ -716,14 +746,24 @@
 
     let isVisible = true;
 
+    // Pressing Play while focus is inside the carousel is an explicit request
+    // to rotate, so it lifts the focus hold until focus leaves the carousel.
+    let playRequested = false;
+
     const start = () => {
       stopAutoSlide();
-      if (state.isPaused) {
+      if (
+        state.isPaused ||
+        state.hoverHold ||
+        (state.focusHold && !playRequested)
+      ) {
         return;
       }
       state.autoSlideTimer = setInterval(() => nextSlide(state), interval);
     };
 
+    // The button changes its label (Pause/Play), so it carries no
+    // aria-pressed: both together read as "Play, pressed".
     const updatePlayPauseButton = () => {
       const button = state.playPauseButton;
       if (!button) {
@@ -732,7 +772,7 @@
       const paused = state.isPaused;
       button.classList.toggle('pb-is-playing', !paused);
       button.classList.toggle('pb-is-paused', paused);
-      button.setAttribute('aria-pressed', String(!paused));
+      button.removeAttribute('aria-pressed');
       button.setAttribute(
         'aria-label',
         paused ? Drupal.t('Play slideshow') : Drupal.t('Pause slideshow'),
@@ -745,8 +785,11 @@
         ?.toggleAttribute('hidden', paused);
     };
 
-    const togglePlayPause = () => {
+    const togglePlayPause = (event) => {
       state.isPaused = !state.isPaused;
+      // Only a real press lifts the focus hold. Patterns that restart the
+      // timer with play.click() twice must not override it.
+      playRequested = !state.isPaused && Boolean(event?.isTrusted);
       updatePlayPauseButton();
       if (state.isPaused) {
         stopAutoSlide();
@@ -760,10 +803,53 @@
     });
     updatePlayPauseButton();
 
-    state.wrapper.addEventListener('mouseenter', stopAutoSlide, { signal });
+    state.wrapper.addEventListener(
+      'mouseenter',
+      () => {
+        state.hoverHold = true;
+        stopAutoSlide();
+      },
+      { signal },
+    );
     state.wrapper.addEventListener(
       'mouseleave',
       () => {
+        state.hoverHold = false;
+        if (isVisible) {
+          start();
+        }
+      },
+      { signal },
+    );
+
+    // Keyboard focus anywhere in the carousel (slides, arrows, dots, the
+    // play/pause button) holds rotation, so a slide never moves away from a
+    // keyboard user. It resumes when focus leaves, unless the user pressed
+    // Pause.
+    const focusRoot =
+      state.viewport.closest(PARAGRAPHS_BUNDLES_PB_CAROUSEL) || state.viewport;
+    focusRoot.addEventListener(
+      'focusin',
+      () => {
+        // Focus arriving from outside starts a fresh hold.
+        if (!state.focusHold) {
+          playRequested = false;
+        }
+        state.focusHold = true;
+        if (!playRequested) {
+          stopAutoSlide();
+        }
+      },
+      { signal },
+    );
+    focusRoot.addEventListener(
+      'focusout',
+      (event) => {
+        if (event.relatedTarget && focusRoot.contains(event.relatedTarget)) {
+          return;
+        }
+        state.focusHold = false;
+        playRequested = false;
         if (isVisible) {
           start();
         }
@@ -834,6 +920,14 @@
           return;
         }
 
+        // Leave arrow keys to form fields and editable text inside a slide.
+        if (
+          activeElement.isContentEditable ||
+          activeElement.closest('input, textarea, select')
+        ) {
+          return;
+        }
+
         const orientation = state.config.orientation;
 
         if (
@@ -841,6 +935,7 @@
           (orientation === 'vertical' && event.key === 'ArrowDown')
         ) {
           event.preventDefault();
+          state.announceNext = true;
           nextSlide(state);
         }
 
@@ -849,6 +944,7 @@
           (orientation === 'vertical' && event.key === 'ArrowUp')
         ) {
           event.preventDefault();
+          state.announceNext = true;
           prevSlide(state);
         }
       },

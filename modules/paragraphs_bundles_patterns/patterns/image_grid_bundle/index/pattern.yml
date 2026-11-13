@@ -1,0 +1,15 @@
+label: 'Index'
+description: 'A numbered list of rows; a black viewer with a numbered control.'
+weight: 4
+stage: open
+ground: dark
+placement: both
+serves: [publication, studio, cultural]
+needs:
+  - 'Keep at least two sections, each with an image and a title. The pattern sets the single column, so Grid Image Width has no effect here; Grid Gap still applies.'
+settings: {}
+pictures:
+  image_grid_section_bundle.pb_content_image:
+    style: pb_image_grid
+    responsive: false
+    view_mode: pb_image_grid

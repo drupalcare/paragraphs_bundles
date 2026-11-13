@@ -1,0 +1,106 @@
+/**
+ * @file
+ * Paragraphs Bundles Patterns theme bridge: W3CSS region colors.
+ *
+ * Loaded only when the active theme is the W3CSS theme (d8w3css) or one of its
+ * sub-themes (PatternLibraryInfoAlterHook). Token mapping ONLY: it gives the
+ * --pb-pattern-* color tokens of pb-patterns-base.css new values taken from the
+ * W3CSS region the Pattern sits in, and never paints an element.
+ *
+ * Step 1 reads the theme's region colors into --pb-pattern-theme-* role tokens
+ * (the same 19 names the Solo and APEX bridges declare; the Pattern tokens read
+ * these and never spell a --r-* name). Step 2 derives every Pattern token from
+ * those roles with color-mix(), exactly as the Solo bridge does.
+ *
+ * The W3CSS theme sets three roles on a region class: --r-background, --r-text
+ * and --r-border (checked in d8w3css/css 2026-11-11: 336, 368 and 31
+ * declarations). It sets no link, heading, menu or button role, so each of
+ * those is derived from text and ground, the way the Solo bridge does when its
+ * region leaves them unset: link, heading and primary follow the text color
+ * (the base's own `--pb-pattern-link: var(--pb-pattern-ink)`), a button is the
+ * ink fill with ground text. The literals are the base file's neutral values
+ * for a region that leaves a role unset.
+ *
+ * Selector: `.pb-pattern` (0,1,0). pb-patterns-base.css declares the tokens in
+ * :where() (0,0,0), so this file wins whichever one the page loads first.
+ */
+
+.pb-pattern {
+  /* Step 1: the theme's colors as roles. */
+  --pb-pattern-theme-bg: var(--r-background, #fff);
+  --pb-pattern-theme-text: var(--r-text, #111);
+  --pb-pattern-theme-heading: var(--pb-pattern-theme-text);
+  --pb-pattern-theme-link: var(--pb-pattern-theme-text);
+  --pb-pattern-theme-link-hover: var(--pb-pattern-theme-link);
+  --pb-pattern-theme-border: var(--r-border, color-mix(in oklab, var(--pb-pattern-theme-text) 16%, var(--pb-pattern-theme-bg)));
+  --pb-pattern-theme-form-bg: var(--pb-pattern-theme-bg);
+  --pb-pattern-theme-menu-text: var(--pb-pattern-theme-text);
+  --pb-pattern-theme-menu-text-hover: var(--pb-pattern-theme-menu-text);
+  --pb-pattern-theme-menu-bg: var(--pb-pattern-theme-bg);
+  --pb-pattern-theme-menu-bg-hover: var(--pb-pattern-theme-menu-bg);
+  /* Pairs: a fill and the text on it are the page pair swapped (fill = text color, text = ground), a black-and-white pair on any region. */
+  --pb-pattern-theme-button-text: var(--pb-pattern-theme-bg);
+  --pb-pattern-theme-button-text-hover: var(--pb-pattern-theme-button-text);
+  --pb-pattern-theme-button-bg: var(--pb-pattern-theme-text);
+  --pb-pattern-theme-button-bg-hover: var(--pb-pattern-theme-button-bg);
+  /* The active pair (current tab, active chip, open bar): ink fill and ground text. */
+  --pb-pattern-theme-active-bg: var(--pb-pattern-theme-text);
+  --pb-pattern-theme-active-text: var(--pb-pattern-theme-bg);
+  /* A control's outline (quiet button line): the theme border. */
+  --pb-pattern-theme-control-line: var(--r-border, var(--pb-pattern-muted));
+  /* The track a progress fill runs on: the theme border. */
+  --pb-pattern-theme-track: var(--pb-pattern-theme-border);
+
+  /*
+   * Brand roles, the same five names the Solo and APEX bridges declare:
+   * primary = the heading color, secondary = link, accent = link hover, and
+   * the light and dark inks, here the ground and the text of the region.
+   * Used only where a contrast floor holds whatever the region is: the stage.
+   */
+  --pb-pattern-theme-primary: var(--pb-pattern-theme-heading);
+  --pb-pattern-theme-secondary: var(--pb-pattern-theme-link);
+  --pb-pattern-theme-accent: var(--pb-pattern-theme-link-hover);
+  --pb-pattern-theme-ink-light: var(--pb-pattern-theme-bg);
+  --pb-pattern-theme-ink-dark: var(--pb-pattern-theme-text);
+
+  /* Step 2: page tokens. */
+  --pb-pattern-surface: var(--pb-pattern-theme-bg);
+  --pb-pattern-raised: color-mix(in oklab, var(--pb-pattern-theme-bg), var(--pb-pattern-theme-text) 6%);
+  --pb-pattern-ink: var(--pb-pattern-theme-text);
+  /* 15%, not 30%: measured on apex_theme (ink 6.99:1 on its ground) 30% gave
+     3.58:1 and 15% gives 5.0:1, so muted words pass WCAG AA (4.5:1). */
+  --pb-pattern-muted: color-mix(in oklab, var(--pb-pattern-theme-text), var(--pb-pattern-theme-bg) 15%);
+  --pb-pattern-line: var(--pb-pattern-theme-border);
+  /* Link words on the page ground: the theme's own link color. */
+  --pb-pattern-link: var(--pb-pattern-theme-link);
+
+  /*
+   * Stage tokens, the same rule as the APEX bridge. The ground is the brand
+   * primary with its OKLCH lightness capped at 0.4 (a dark primary is used
+   * as it is, a light one is darkened); the words keep 15% of the light ink
+   * and 85% white, so their lightness is at least 0.85. That is at least
+   * about 5.8:1 (WCAG AA 4.5:1) under any scheme, dark schemes included.
+   */
+  --pb-pattern-stage-bg: oklch(from var(--pb-pattern-theme-primary) min(l, 0.4) c h);
+  --pb-pattern-stage-color: color-mix(in oklab, var(--pb-pattern-theme-ink-light) 15%, white);
+  --pb-pattern-stage-muted: color-mix(in oklab, var(--pb-pattern-stage-color), var(--pb-pattern-stage-bg) 22%);
+  --pb-pattern-stage-line: color-mix(in oklab, var(--pb-pattern-stage-color) 50%, transparent);
+
+  /* Theme accent for one-color Patterns, and the color of shadows and scrims. */
+  --pb-pattern-accent: oklch(from var(--pb-pattern-theme-primary) min(l, 0.55) c h);
+  --pb-pattern-shadow: var(--pb-pattern-stage-bg);
+}
+
+@media (forced-colors: active) {
+  .pb-pattern {
+    --pb-pattern-surface: Canvas;
+    --pb-pattern-raised: Canvas;
+    --pb-pattern-ink: CanvasText;
+    --pb-pattern-muted: CanvasText;
+    --pb-pattern-line: CanvasText;
+    --pb-pattern-stage-bg: Canvas;
+    --pb-pattern-stage-color: CanvasText;
+    --pb-pattern-stage-muted: CanvasText;
+    --pb-pattern-stage-line: CanvasText;
+  }
+}

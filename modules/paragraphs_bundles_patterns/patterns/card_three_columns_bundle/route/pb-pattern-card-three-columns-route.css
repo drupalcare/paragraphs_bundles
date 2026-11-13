@@ -1,0 +1,144 @@
+/**
+ * @file
+ * Pattern Route for the Card (three columns).
+ *
+ * Three steps joined by one line, a numbered stop on each. The Pattern draws
+ * its own three equal columns, switching by the width of its region, so the
+ * column ratio the editor picks is not used. The line takes the editor's
+ * border color; the stop numbers are decorative.
+ */
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full {
+  --pb-pattern-stop: 2.75rem;
+  --pb-pattern-route-gap: clamp(1.25rem, 3cqi, 2.5rem);
+}
+
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner) {
+  padding-block: clamp(1rem, 3cqi, 3rem);
+}
+
+/* Stacked: a vertical line down the inline start. */
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-flow: row;
+  counter-reset: pb-pattern-route;
+  gap: var(--pb-pattern-route-gap);
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > div {
+  position: relative;
+  padding-inline-start: calc(var(--pb-pattern-stop) + 1rem);
+  counter-increment: pb-pattern-route;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::before,
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::before,
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__right::before {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  content: counter(pb-pattern-route) / "";
+  color: var(--pb-pattern-surface);
+  border: 2px solid var(--pb-br, var(--pb-pattern-ink));
+  border-radius: 50%;
+  /* The disc is ink so the number always reads; the editor's border color
+     only rings it and draws the line. */
+  background: var(--pb-pattern-ink);
+  font-family: var(--pb-pattern-font-ui);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  inline-size: var(--pb-pattern-stop);
+  block-size: var(--pb-pattern-stop);
+  font-variant-numeric: tabular-nums;
+}
+
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::after,
+.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+  position: absolute;
+  content: "";
+  transform-origin: top;
+  background: var(--pb-br, var(--pb-pattern-accent));
+  inset-block: calc(var(--pb-pattern-stop) + 0.5rem) calc(0.5rem - var(--pb-pattern-route-gap));
+  inset-inline-start: calc(var(--pb-pattern-stop) / 2 - 1px);
+  inline-size: 2px;
+}
+
+@container pb-pattern-region (min-width: 40rem) {
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > div {
+    padding-block-start: calc(var(--pb-pattern-stop) + 1rem);
+    padding-inline-start: 0;
+  }
+
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::after,
+  .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+    inset-block: calc(var(--pb-pattern-stop) / 2 - 1px) auto;
+    inset-inline: calc(var(--pb-pattern-stop) + 0.5rem) calc(0.5rem - var(--pb-pattern-route-gap));
+    inline-size: auto;
+    block-size: 2px;
+    transform-origin: left;
+  }
+
+  [dir="rtl"] .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::after,
+  [dir="rtl"] .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+    transform-origin: right;
+  }
+}
+
+/* The line draws itself as it scrolls in; without support it is just there. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::after,
+    .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+      animation: pb-pattern-route-draw-y linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 45%;
+    }
+
+    .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+      animation-range: cover 10% cover 55%;
+    }
+
+    @container pb-pattern-region (min-width: 40rem) {
+      .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__left::after,
+      .paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route > .pb-ui-inner > .pb-content__full > .pb-card-three-columns > .pb-card-three-columns__middle::after {
+        animation-name: pb-pattern-route-draw-x;
+      }
+    }
+  }
+}
+
+@keyframes pb-pattern-route-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes pb-pattern-route-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* The step title carries the scale; the stop disc carries the color. */
+:where(.paragraphs-bundles.pb-card.pb-pattern--card-three-columns-route .pb-content__title) {
+  margin-block-start: 0;
+  font-family: var(--pb-pattern-font-display);
+  font-size: clamp(1.125rem, 1rem + 1cqi, 1.5rem);
+  font-weight: 700;
+  line-height: 1.25;
+}

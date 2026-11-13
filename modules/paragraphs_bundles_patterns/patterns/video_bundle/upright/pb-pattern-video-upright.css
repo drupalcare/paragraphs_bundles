@@ -1,0 +1,126 @@
+/**
+ * @file
+ * Pattern Upright for Video: a tall phone film with a large title beside it.
+ *
+ * Colors sit on the inner element as --pb-* tokens or under :where(), so the
+ * editor's Background, Text and Link settings win. Layout is specific because
+ * PB's own rule on the inner element sets display at class specificity.
+ */
+
+:where(.pb-pattern--video-upright > .pb-ui-inner) {
+  --pb-tx: var(--pb-pattern-ink);
+  --pb-lk: var(--pb-pattern-ink);
+
+  padding: clamp(16px, 4cqi, 56px);
+  background-color: var(--pb-pattern-surface);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright > .pb-ui-inner {
+  display: grid;
+  grid-template-areas:
+    "stage"
+    "title"
+    "description"
+    "transcript";
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: clamp(22px, 2.4cqi, 24px);
+}
+
+@container pb-pattern-region (min-width: 40rem) {
+  .paragraphs-bundles.pb-video.pb-pattern--video-upright > .pb-ui-inner {
+    grid-template-areas:
+      "stage ."
+      "stage title"
+      "stage description"
+      "stage transcript"
+      "stage .";
+    grid-template-rows: minmax(0, 1fr) auto auto auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, clamp(15rem, 26cqi, 20rem)) minmax(0, 1fr);
+    justify-items: start;
+    column-gap: clamp(32px, 7cqi, 112px);
+  }
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__stage {
+  grid-area: stage;
+  inline-size: 100%;
+  max-inline-size: min(100%, 22.5rem);
+  margin-inline: 0;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-content__title {
+  grid-area: title;
+  letter-spacing: -0.03em;
+  font-size: clamp(2.5rem, 8.5cqi, 6.5rem);
+  line-height: 0.98;
+  max-inline-size: 11ch;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__description {
+  grid-area: description;
+  max-inline-size: 46ch;
+  color: color-mix(in sRGB, currentColor 72%, transparent);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__transcript {
+  grid-area: transcript;
+  inline-size: min(100%, 46ch);
+  border-color: color-mix(in sRGB, currentColor 22%, transparent);
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play {
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  text-align: center;
+  color: var(--pb-pattern-ink);
+  border: 0;
+  border-radius: 0;
+  background-color: var(--pb-pattern-surface);
+  box-shadow: none;
+  font-weight: 600;
+  inset-block-start: auto;
+  inset-block-end: 0;
+  inset-inline: 0;
+  gap: 0.75rem;
+  inline-size: 100%;
+  block-size: auto;
+  min-block-size: max(3.25rem, var(--pb-pattern-target));
+  padding-block: 1rem;
+  padding-inline: 1rem;
+}
+
+/* :not([hidden]), or this outranks the rule that hides Play once it runs. */
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play:not([hidden]) {
+  display: flex;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play:hover,
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play:focus-visible {
+  transform: none;
+  color: var(--pb-pattern-surface);
+  background-color: var(--pb-pattern-ink);
+  box-shadow: none;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play:focus-visible {
+  outline: 2px solid var(--pb-pattern-surface);
+  outline-offset: -6px;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play .pb-video__icon {
+  flex: none;
+  inline-size: 1.1rem;
+  block-size: 1.1rem;
+  margin: 0;
+}
+
+.paragraphs-bundles.pb-video.pb-pattern--video-upright .pb-video__play-label {
+  position: static;
+  overflow: visible;
+  inline-size: auto;
+  block-size: auto;
+  white-space: normal;
+  clip-path: none;
+}

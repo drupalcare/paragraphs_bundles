@@ -22,6 +22,7 @@
   const PB_ACCORDION__SECTIONS = 'pb-accordion__sections';
   const PB_ACCORDION__ITEM = 'pb-accordion__item';
   const PB_ACCORDION__BUTTON = 'pb-accordion__button';
+  const PB_ACCORDION__HEADING = 'pb-accordion__heading';
   const PB_ACCORDION__PANE = 'pb-accordion__pane';
   const PB_ACCORDION__TOGGLE_ALL = 'pb-accordion__toggle-all';
   const PB_GRID__EXPAND_BUTTON = 'pb-grid__expand-button';
@@ -43,8 +44,8 @@
   /** Direct accordion items owned by one sections host. */
   const PB_ACCORDION__SECTIONS_OWNED_ITEM = `:scope > .${PB_ACCORDION__ITEM}`;
 
-  /** Section toggle buttons owned by one sections host. */
-  const PB_ACCORDION__SECTIONS_OWNED_BUTTON = `:scope > .${PB_ACCORDION__ITEM} > .${PB_ACCORDION__BUTTON}`;
+  /** Section toggle buttons owned by one sections host (each in its heading). */
+  const PB_ACCORDION__SECTIONS_OWNED_BUTTON = `:scope > .${PB_ACCORDION__ITEM} > .${PB_ACCORDION__HEADING} > .${PB_ACCORDION__BUTTON}`;
 
   /** Expand/collapse-all control owned by one sections host. */
   const PB_ACCORDION__SECTIONS_OWNED_TOGGLE_ALL = `:scope > .${PB_GRID__EXPAND_BUTTON} .${PB_ACCORDION__TOGGLE_ALL}`;
@@ -126,6 +127,35 @@
         });
 
         /**
+         * Keeps the "Toggle all sections" button true to the sections.
+         *
+         * Its aria-expanded is true only while every section is open, and its
+         * expand/collapse class (which picks the icon and the next action)
+         * follows. Called after every change to a section, so opening or
+         * closing one section by hand never leaves it stale.
+         */
+        const syncToggleAll = () => {
+          const toggleAll = accordionContainer.querySelector(
+            PB_ACCORDION__SECTIONS_OWNED_TOGGLE_ALL,
+          );
+          const wrapper = toggleAll?.closest(`.${PB_GRID__EXPAND_BUTTON}`);
+          const buttons = Array.from(
+            accordionContainer.querySelectorAll(
+              PB_ACCORDION__SECTIONS_OWNED_BUTTON,
+            ),
+          );
+          if (!toggleAll || !wrapper || buttons.length === 0) {
+            return;
+          }
+          const allOpen = buttons.every(
+            (button) => button.getAttribute('aria-expanded') === 'true',
+          );
+          wrapper.classList.toggle(PB_IS_EXPAND_ALL, !allOpen);
+          wrapper.classList.toggle(PB_IS_COLLAPSE_ALL, allOpen);
+          toggleAll.setAttribute('aria-expanded', String(allOpen));
+        };
+
+        /**
          * Opens a specific accordion item.
          *
          * @param {HTMLElement} button - The accordion button to activate.
@@ -144,7 +174,7 @@
           element.classList.remove(PB_IS_INACTIVE);
 
           const toggleButton = element.querySelector(
-            `:scope > .${PB_ACCORDION__BUTTON}`,
+            `:scope > .${PB_ACCORDION__HEADING} > .${PB_ACCORDION__BUTTON}`,
           );
           const contentPane = element.querySelector(
             `:scope > .${PB_ACCORDION__PANE}`,
@@ -157,8 +187,16 @@
             Drupal.paragraphBundleAccordion.slideDown(contentPane);
           }
           togglePlusMinus(plus, minus, true);
+          syncToggleAll();
 
-          button.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Jump instead of gliding when the visitor asked for less motion.
+          const reduceMotion = window.matchMedia(
+            '(prefers-reduced-motion: reduce)',
+          ).matches;
+          button.scrollIntoView({
+            behavior: reduceMotion ? 'auto' : 'smooth',
+            block: 'start',
+          });
 
           const slug = button.getAttribute('data-fragment');
           if (slug) {
@@ -184,7 +222,7 @@
                 }
 
                 const toggleButton = element.querySelector(
-                  `:scope > .${PB_ACCORDION__BUTTON}`,
+                  `:scope > .${PB_ACCORDION__HEADING} > .${PB_ACCORDION__BUTTON}`,
                 );
                 // The button's state, not the class: a pane that is still
                 // sliding shut keeps its active class until the slide ends,
@@ -214,13 +252,16 @@
                     Drupal.paragraphBundleAccordion.slideDown(contentPane);
                   }
                 } else if (contentPane) {
-                  Drupal.paragraphBundleAccordion.slideUp(contentPane, 300, () =>
-                    setOpen(false),
+                  Drupal.paragraphBundleAccordion.slideUp(
+                    contentPane,
+                    300,
+                    () => setOpen(false),
                   );
                 } else {
                   setOpen(false);
                 }
                 togglePlusMinus(plus, minus, !isActive);
+                syncToggleAll();
 
                 const slug = button.getAttribute('data-fragment');
                 if (slug) {
@@ -260,7 +301,7 @@
                     `:scope > .${PB_ACCORDION__PANE}`,
                   );
                   const toggleButton = item.querySelector(
-                    `:scope > .${PB_ACCORDION__BUTTON}`,
+                    `:scope > .${PB_ACCORDION__HEADING} > .${PB_ACCORDION__BUTTON}`,
                   );
                   const { plus, minus } = getOwnedIcons(toggleButton);
                   const isOpen = toggleButton
@@ -296,9 +337,7 @@
                   }
                 });
 
-                wrapper.classList.toggle(PB_IS_EXPAND_ALL, !isExpanding);
-                wrapper.classList.toggle(PB_IS_COLLAPSE_ALL, isExpanding);
-                button.setAttribute('aria-expanded', String(isExpanding));
+                syncToggleAll();
               },
               { signal },
             );

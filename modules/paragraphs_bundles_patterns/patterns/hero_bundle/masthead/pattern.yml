@@ -1,0 +1,16 @@
+label: 'Masthead'
+description: 'An editorial hero like a magazine cover: a wide letterbox photo, then a very large title with a fine double rule under it, with the body at the start and a square split button at the end of the same row. Keep the title short, three to seven words. The button is the Link title, so fill it in.'
+weight: 4
+stage: open
+ground: light
+placement: outer-margin
+serves: [publication, cultural, associations]
+needs:
+  - 'Add a very wide Image, a Kicker (for example Issue 12), a short Title and two sentences of Body.'
+  - 'To show the square button, add a Link and fill in the Link title: that title is the button text.'
+settings: {}
+pictures:
+  hero_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

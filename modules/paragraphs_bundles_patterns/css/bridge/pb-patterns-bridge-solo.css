@@ -1,0 +1,119 @@
+/**
+ * @file
+ * Paragraphs Bundles Patterns theme bridge: Solo region colors.
+ *
+ * Loaded only when the active theme is Solo or a Solo sub-theme
+ * (PatternLibraryInfoAlterHook). Token mapping ONLY: it gives the
+ * --pb-pattern-* color tokens of pb-patterns-base.css new values taken from the
+ * Solo region the Pattern sits in, and never paints an element.
+ *
+ * Step 1 reads the theme's region colors into --pb-pattern-theme-* role tokens
+ * (the same 19 names the APEX bridge declares; the Pattern tokens read these
+ * and never spell a --r-* name, so each theme's spelling lives only here). Step 2 derives every Pattern token
+ * from those roles with color-mix(); no color is hard-coded except the
+ * black-and-white fallbacks for a region that leaves a color unset. Mixed
+ * through step 2, they land close to pb-patterns-base.css, not exactly on it.
+ *
+ * Selector: `.pb-pattern` (0,1,0). pb-patterns-base.css declares the tokens in
+ * :where() (0,0,0), so this file wins whichever one the page loads first.
+ *
+ * Solo names, each checked against solo/css (2026-11-05): --r-bg, --r-tx,
+ * --r-h1, --r-sc-h1, --r-lk, --r-sc-lk, --r-lk-h, --r-sc-lk-h, --r-br,
+ * --r-bg-fr, --r-tx-lk, --r-menu-tx-h, --r-menu-bg-h, --r-tx-bt,
+ * --r-tx-bt-h, --r-bg-bt, --r-bg-bt-h. --r-sc-tx-bt and --r-sc-tx-bt-h are not
+ * read here: they pair with Solo's own button ground (see the button roles).
+ * Solo sets several of the others to `initial` at :root, so the var() fallbacks
+ * below take over where a region is silent.
+ */
+
+.pb-pattern {
+  /* Step 1: the theme's colors as roles. */
+  --pb-pattern-theme-bg: var(--r-background, var(--r-bg, #fff));
+  --pb-pattern-theme-text: var(--r-text, var(--r-tx, #111));
+  --pb-pattern-theme-heading: var(--r-heading, var(--r-h1, var(--r-sc-h1, var(--pb-pattern-theme-text))));
+  --pb-pattern-theme-link: var(--r-link, var(--r-lk, var(--r-sc-lk, var(--pb-pattern-theme-text))));
+  --pb-pattern-theme-link-hover: var(--r-link-hover, var(--r-lk-h, var(--r-sc-lk-h, var(--pb-pattern-theme-link))));
+  --pb-pattern-theme-border: var(--r-border, var(--r-br, color-mix(in oklab, var(--pb-pattern-theme-text) 16%, var(--pb-pattern-theme-bg))));
+  --pb-pattern-theme-form-bg: var(--r-form-background, var(--r-bg-fr, var(--pb-pattern-theme-bg)));
+  --pb-pattern-theme-menu-text: var(--r-menu-text, var(--r-tx-lk, var(--pb-pattern-theme-text)));
+  --pb-pattern-theme-menu-text-hover: var(--r-menu-text-hover, var(--r-menu-tx-h, var(--pb-pattern-theme-menu-text)));
+  /* Not --r-header-bg: Solo schemes often set it to a gradient, which is
+     not a color, and it belongs to the header region, not this one. */
+  --pb-pattern-theme-menu-bg: var(--pb-pattern-theme-bg);
+  --pb-pattern-theme-menu-bg-hover: var(--r-menu-background-hover, var(--r-menu-bg-h, var(--pb-pattern-theme-menu-bg)));
+  /* Not --r-sc-tx-bt(-h): Solo pairs those with its own button ground
+     (--r-bg, solo-variables-regions.css:89-99), and 20 regions in 4
+     predefined schemes set --r-sc-tx-bt-h with no --r-bg-bt-h, so on the ink
+     fill below it would be a color chosen for another ground. */
+  --pb-pattern-theme-button-text: var(--r-button-text, var(--r-tx-bt, var(--pb-pattern-theme-bg)));
+  --pb-pattern-theme-button-text-hover: var(--r-button-text-hover, var(--r-tx-bt-h, var(--pb-pattern-theme-button-text)));
+  --pb-pattern-theme-button-bg: var(--r-button-background, var(--r-bg-bt, var(--pb-pattern-theme-text)));
+  --pb-pattern-theme-button-bg-hover: var(--r-button-background-hover, var(--r-bg-bt-h, var(--pb-pattern-theme-button-bg)));
+  /*
+   * Pairs: a fill and the text on it come from the same pair of roles, and the
+   * fallbacks of a pair are the page pair swapped (fill = text color, text =
+   * ground), so with both unset they are a black-and-white pair. Checked
+   * 2026-11-05: none of the 50 predefined schemes sets a button or menu-hover
+   * fill without its text, so no pair here mixes a scheme color with a fallback.
+   */
+  /* The active pair (current tab, active chip, open bar): menu hover colors, ink fill and ground text when unset. */
+  --pb-pattern-theme-active-bg: var(--r-menu-background-hover, var(--r-menu-bg-h, var(--pb-pattern-theme-text)));
+  --pb-pattern-theme-active-text: var(--r-menu-text-hover, var(--r-menu-tx-h, var(--pb-pattern-theme-bg)));
+  /* A control's outline (quiet button line): the theme border, else the muted ink. */
+  --pb-pattern-theme-control-line: var(--r-border, var(--r-br, var(--pb-pattern-muted)));
+  /* The track a progress fill runs on: the theme border. */
+  --pb-pattern-theme-track: var(--pb-pattern-theme-border);
+
+  /*
+   * Brand roles, the same five names the APEX bridge reads from its scheme:
+   * primary = the region heading color, secondary = link, accent = link
+   * hover, and Solo's own light and dark inks (solo-variables-regions.css:12-14).
+   * Used only where a contrast floor holds whatever the region is: the stage.
+   */
+  --pb-pattern-theme-primary: var(--pb-pattern-theme-heading);
+  --pb-pattern-theme-secondary: var(--pb-pattern-theme-link);
+  --pb-pattern-theme-accent: var(--pb-pattern-theme-link-hover);
+  --pb-pattern-theme-ink-light: var(--solo-tone-text-light, var(--r-tx-light, var(--pb-pattern-theme-bg)));
+  --pb-pattern-theme-ink-dark: var(--solo-tone-text-dark, var(--r-tx-dark, var(--pb-pattern-theme-text)));
+
+  /* Step 2: page tokens. */
+  --pb-pattern-surface: var(--pb-pattern-theme-bg);
+  --pb-pattern-raised: color-mix(in oklab, var(--pb-pattern-theme-bg), var(--pb-pattern-theme-text) 6%);
+  --pb-pattern-ink: var(--pb-pattern-theme-text);
+  /* 15%, not 30%: measured on apex_theme (ink 6.99:1 on its ground) 30% gave
+     3.58:1 and 15% gives 5.0:1, so muted words pass WCAG AA (4.5:1). */
+  --pb-pattern-muted: color-mix(in oklab, var(--pb-pattern-theme-text), var(--pb-pattern-theme-bg) 15%);
+  --pb-pattern-line: var(--pb-pattern-theme-border);
+  /* Link words on the page ground: the theme's own link color. */
+  --pb-pattern-link: var(--pb-pattern-theme-link);
+
+  /*
+   * Stage tokens, the same rule as the APEX bridge. The ground is the brand
+   * primary with its OKLCH lightness capped at 0.4 (a dark primary is used
+   * as it is, a light one is darkened); the words keep 15% of the light ink
+   * and 85% white, so their lightness is at least 0.85. That is at least
+   * about 5.8:1 (WCAG AA 4.5:1) under any scheme, dark Solo schemes included.
+   */
+  --pb-pattern-stage-bg: oklch(from var(--pb-pattern-theme-primary) min(l, 0.4) c h);
+  --pb-pattern-stage-color: color-mix(in oklab, var(--pb-pattern-theme-ink-light) 15%, white);
+  --pb-pattern-stage-muted: color-mix(in oklab, var(--pb-pattern-stage-color), var(--pb-pattern-stage-bg) 22%);
+  --pb-pattern-stage-line: color-mix(in oklab, var(--pb-pattern-stage-color) 50%, transparent);
+
+  /* Theme accent for one-color Patterns, and the color of shadows and scrims. */
+  --pb-pattern-accent: oklch(from var(--pb-pattern-theme-primary) min(l, 0.55) c h);
+  --pb-pattern-shadow: var(--pb-pattern-stage-bg);
+}
+
+@media (forced-colors: active) {
+  .pb-pattern {
+    --pb-pattern-surface: Canvas;
+    --pb-pattern-raised: Canvas;
+    --pb-pattern-ink: CanvasText;
+    --pb-pattern-muted: CanvasText;
+    --pb-pattern-line: CanvasText;
+    --pb-pattern-stage-bg: Canvas;
+    --pb-pattern-stage-color: CanvasText;
+    --pb-pattern-stage-muted: CanvasText;
+    --pb-pattern-stage-line: CanvasText;
+  }
+}

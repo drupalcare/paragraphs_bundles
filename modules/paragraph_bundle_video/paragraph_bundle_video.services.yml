@@ -1,0 +1,13 @@
+services:
+  Drupal\paragraph_bundle_video\Hook\PbvThemeHook: {}
+
+  Drupal\paragraph_bundle_video\Hook\PbvFormHook: {}
+
+  Drupal\paragraph_bundle_video\Hook\PbvPreprocessHook:
+    arguments:
+      - '@entity.repository'
+      - '@language_manager'
+
+  Drupal\paragraph_bundle_video\Hook\PbvHelpHook:
+    arguments:
+      - '@paragraphs_bundles.readme_help_renderer'

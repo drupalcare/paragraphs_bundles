@@ -1,0 +1,120 @@
+/**
+ * @file
+ * Pattern Bloom for the Modal.
+ *
+ * The dialog grows in a circle from the button that opened it until it fills
+ * the screen. The script only passes the button's position to CSS; PB's script
+ * still owns opening, closing, the focus trap, Escape and inert.
+ *
+ * Whatever the editor can set on the panel (colors, padding, border, radius,
+ * width) is written with :where() or left to PB, so the editor wins.
+ */
+
+/* A size container can trap position: fixed children, so this root opts out
+   and every size below uses the viewport. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom {
+  container: none;
+}
+
+/* The shared Pattern reset removes the padding of every button. */
+/* Opener: a round accent pill with a circled plus, ringed so it reads as the
+   point the circle grows from. The plus is decorative. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__button > .pb-ui-btn {
+  align-items: center;
+  justify-content: center;
+  min-width: var(--pb-pattern-target);
+  max-width: 100%;
+  min-height: var(--pb-pattern-target);
+  white-space: normal;
+  color: var(--pb-pattern-stage-color);
+  border-color: var(--pb-pattern-accent);
+  border-radius: 999px;
+  background-color: var(--pb-pattern-accent);
+  box-shadow: 0 0 0 4px color-mix(in sRGB, var(--pb-pattern-accent) 25%, transparent);
+  padding-block: var(--pb-px8);
+  padding-inline: var(--pb-px16);
+  gap: var(--pb-px10);
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__button > .pb-ui-btn::before {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  box-sizing: border-box;
+  width: 1.5rem;
+  height: 1.5rem;
+  content: "+" / "";
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Panel: a dark ground, so the circle opens onto a color. Stock paints Canvas
+   here, so this outranks it by one class; the editor's id-scoped colors still
+   win. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner {
+  display: block;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  background-color: var(--pb-bg, var(--pb-pattern-stage-bg));
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__header {
+  position: sticky;
+  z-index: 1;
+  column-gap: var(--pb-px12);
+  border-block-end: 1px solid var(--pb-pattern-stage-line);
+  background-color: inherit;
+  inset-block-start: 0;
+}
+
+:where(.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner) {
+  padding: clamp(16px, 4vw, 48px);
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog {
+  padding: 0;
+}
+
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog.pb-is-open {
+  align-items: stretch;
+}
+
+/* animation: none also covers a stock animation class that stayed on. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content {
+  display: flex;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  animation: none;
+}
+
+/* Lines stay readable on a very wide screen. */
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__header,
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__body,
+.paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog > .pb-modal__content > .pb-modal__inner > .pb-modal__footer {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+/* The panel fills the screen, so no backdrop is left to tap: the close button
+   stays in reach while the content scrolls. */
+@media (prefers-reduced-motion: no-preference) {
+  .paragraphs-bundles.pb-modal.pb-pattern--modal-bloom > .pb-modal__dialog.pb-is-open {
+    animation: pb-pattern-modal-bloom-open 0.6s var(--pb-pattern-ease-out);
+  }
+}
+
+@keyframes pb-pattern-modal-bloom-open {
+  from {
+    clip-path: circle(0 at var(--pb-pattern-bloom-x, 50vw) var(--pb-pattern-bloom-y, 50vh));
+  }
+
+  to {
+    clip-path: circle(max(150vw, 150vh) at var(--pb-pattern-bloom-x, 50vw) var(--pb-pattern-bloom-y, 50vh));
+  }
+}

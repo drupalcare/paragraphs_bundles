@@ -1,0 +1,17 @@
+label: 'Glossary'
+description: 'A scrolling strip of terms with scroll buttons and a counter over a wide cinema picture.'
+weight: 4
+stage: boxed
+ground: dark
+placement: both
+serves: [university, healthcare, cultural, publication]
+needs:
+  - 'Keep at least four tabs, each with a name and a body: start with an Image, then a text block. The tabs stay across the top for you.'
+settings:
+  pb_display_tab_vertical_tabs: 0
+  pb_display_tab_stack_narrow: 0
+pictures:
+  image_bundle.pb_content_image:
+    style: pb_responsive_image_wide
+    responsive: true
+    view_mode: pb_media_responsive_wide

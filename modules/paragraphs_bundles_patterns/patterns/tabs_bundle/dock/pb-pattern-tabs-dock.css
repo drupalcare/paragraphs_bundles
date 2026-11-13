@@ -1,0 +1,197 @@
+/**
+ * @file
+ * Pattern Dock for the Tabs.
+ *
+ * Whatever the editor can set on the bundle (colors, padding, border, radius)
+ * is written with :where() or as var(--pb-*, default), so the editor wins.
+ * The stage's text token is set on the root element; the editor's rule on the
+ * inner element overrides it.
+ */
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock {
+  --pb-tx: var(--pb-pattern-stage-color);
+  --pb-lk: var(--pb-pattern-stage-color);
+  --pb-br: var(--pb-pattern-stage-line);
+}
+
+:where(.pb-pattern--tabs-dock > .pb-ui-inner) {
+  background: var(--pb-pattern-stage-bg);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset {
+  --pb-pattern-dock-ground: var(--pb-bg, var(--pb-pattern-stage-bg));
+
+  position: relative;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel {
+  position: relative;
+  min-height: clamp(520px, 82vh, 860px);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panels > .pb-tabs__panel {
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  position: absolute;
+  z-index: 0;
+  overflow: hidden;
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-ui-inner, .pb-image__wrapper, .pb-image__wrapper :not(img), a) {
+  height: 100%;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) :is(.pb-content__title, .pb-image__desc) {
+  display: none;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* A band of the ground color under the words: readable under any photo. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)::after {
+  position: absolute;
+  content: "";
+  background: linear-gradient(to top, var(--pb-pattern-dock-ground) 0, color-mix(in sRGB, var(--pb-pattern-dock-ground) 72%, transparent) 42%, transparent 72%);
+  inset: 0;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  padding-block-end: var(--pb-pattern-dock-reserve, 150px);
+  padding-inline: clamp(20px, 6cqi, 88px);
+}
+
+/* The photo opens upward from the dock. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel[aria-hidden="false"] > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+  animation: pb-pattern-tabs-dock-open 1.1s var(--pb-pattern-ease-out) both;
+}
+
+@keyframes pb-pattern-tabs-dock-open {
+  from {
+    clip-path: inset(100% 0 0);
+  }
+
+  to {
+    clip-path: inset(0);
+  }
+}
+
+/* The dock: a pill sized to its tabs, floating over the stage. */
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset > .pb-tabs__tablist {
+  position: absolute;
+  z-index: 3;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  gap: var(--pb-px4);
+  width: max-content;
+  max-width: calc(100% - 2rem);
+  margin-inline: auto;
+  padding: var(--pb-px6);
+  border: 1px solid var(--pb-br, var(--pb-pattern-stage-line));
+  border-radius: 999px;
+  background: color-mix(in sRGB, var(--pb-pattern-dock-ground) 72%, transparent);
+  inset-block-end: 32px;
+  inset-inline: 0;
+  overscroll-behavior-x: contain;
+  backdrop-filter: blur(18px) saturate(1.4);
+  scrollbar-width: none;
+}
+
+/* PB reverses the row on right-to-left pages; the row already follows the
+   reading direction. */
+[dir="rtl"] .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset > .pb-tabs__tablist {
+  flex-direction: row;
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tablist > button {
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  min-width: 64px;
+  min-height: 48px;
+  white-space: nowrap;
+  color: inherit;
+  border-radius: 999px;
+  background: transparent;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding-block: 0;
+  padding-inline: var(--pb-px22);
+}
+
+.paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
+  text-decoration: none;
+  color: var(--pb-pattern-dock-ground);
+  background: var(--pb-tx, var(--pb-pattern-stage-color));
+}
+
+@supports (anchor-name: --a) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset .pb-tabs__tablist > .pb-is-active {
+    background: transparent;
+    anchor-name: --pb-pattern-tabs-dock-active;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset > .pb-tabs__tablist::before {
+    position: absolute;
+    z-index: 0;
+    display: block;
+    content: "";
+    transition:
+      left 0.55s var(--pb-pattern-ease-out),
+      right 0.55s var(--pb-pattern-ease-out);
+    border-radius: 999px;
+    background: var(--pb-tx, var(--pb-pattern-stage-color));
+    inset: anchor(--pb-pattern-tabs-dock-active top) anchor(--pb-pattern-tabs-dock-active right) anchor(--pb-pattern-tabs-dock-active bottom) anchor(--pb-pattern-tabs-dock-active left);
+    position-anchor: --pb-pattern-tabs-dock-active;
+  }
+}
+
+@container pb-pattern-region (max-width: 35rem) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel > :not(:first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow)) {
+    --pb-pattern-dock-reserve: 120px;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset > .pb-tabs__tablist {
+    gap: var(--pb-px2);
+    width: calc(100% - 2rem);
+    padding: var(--pb-px4);
+    inset-block-end: 20px;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tablist > button {
+    flex: 0 0 auto;
+    min-width: 44px;
+    white-space: nowrap;
+    font-size: 0.875rem;
+    padding-inline: var(--pb-px14);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__tabset > .pb-tabs__tablist::before {
+    transition: none;
+  }
+
+  .paragraphs-bundles.pb-tabs.pb-pattern--tabs-dock .pb-tabs__panel[aria-hidden="false"] > :first-child:is(.pb-image, .pb-image-wide, .pb-image-narrow) {
+    animation: none;
+  }
+}
+
+/* The title band runs edge to edge; this keeps it off the edge. */
+:where(.pb-pattern--tabs-dock .pb-content__full > .pb-content__title) {
+  padding-inline: var(--pb-px16);
+}

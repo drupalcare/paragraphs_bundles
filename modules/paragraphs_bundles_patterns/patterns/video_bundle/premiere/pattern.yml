@@ -1,0 +1,17 @@
+label: 'Premiere'
+description: 'The room goes dark and the picture is the only bright thing on the page. The Play button is notched into the bottom edge of the picture, with a large centered title below it.'
+weight: 0
+stage: open
+ground: dark
+placement: inner-padding
+serves: [cultural, creative, events]
+needs:
+  - 'Open this section and choose your video; the sample has none. Keep the Video Title and Poster. The Description or Content text prints under the title.'
+  - 'The title is centered by this pattern, so the Title alignment setting is replaced.'
+settings:
+  pb_content_title_alignment: center
+pictures:
+  video_bundle.pb_content_image:
+    style: pb_original_size
+    responsive: false
+    view_mode: pb_media_original_size

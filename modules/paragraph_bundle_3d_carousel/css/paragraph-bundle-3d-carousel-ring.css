@@ -31,6 +31,14 @@
   transition: transform 1s;
 }
 
+/* The script also sets `transition: none` inline under reduced motion; this
+   keeps the stylesheet correct on its own, before the script runs. */
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-3d-carousel .pb-3d-carousel__ring {
+    transition: none;
+  }
+}
+
 /* ==========================================================================
    Interaction states
    ========================================================================== */

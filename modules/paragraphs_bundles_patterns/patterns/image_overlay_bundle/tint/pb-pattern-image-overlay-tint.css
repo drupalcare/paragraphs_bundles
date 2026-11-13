@@ -1,0 +1,114 @@
+/**
+ * @file
+ * Pattern Tint for the Image Overlay.
+ *
+ * At rest the photo is turned to gray and multiplied by the editor's
+ * background color, which gives a one-color photo from any picture. Pointing
+ * at it or focusing it brings back the full color. The title sits on a solid
+ * label in the editor's colors, so it reads on both states. The multiply layer
+ * is a pseudo-element, so the title is never blended and the link keeps the
+ * whole photo as its target.
+ */
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint {
+  --pb-pattern-tint-color: var(--pb-bg, var(--pb-pattern-accent));
+  --pb-pattern-tint-time: 0.7s;
+  /* A full-strength multiply turns the photo almost black; half strength keeps
+     it plainly visible and still one color. */
+  --pb-pattern-tint-strength: 0.5;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-image__wrapper {
+  transition: filter var(--pb-pattern-tint-time) var(--pb-pattern-ease-out);
+  filter: grayscale(1) contrast(1.1);
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__container {
+  background-color: transparent;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__container::before {
+  position: absolute;
+  content: "";
+  inset: 0;
+  transition: opacity var(--pb-pattern-tint-time) var(--pb-pattern-ease-out);
+  pointer-events: none;
+  opacity: var(--pb-pattern-tint-strength);
+  border-radius: inherit;
+  background-color: var(--pb-pattern-tint-color);
+  mix-blend-mode: multiply;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner:is(:hover, :focus-within) .pb-image__wrapper {
+  filter: none;
+}
+
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner:is(:hover, :focus-within) .pb-overlay__container::before {
+  opacity: 0;
+}
+
+/* The label: always visible, in the editor's colors. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__title {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+  transform: none;
+  text-align: start;
+  overflow-wrap: anywhere;
+  color: var(--pb-tx, var(--pb-pattern-stage-color));
+  isolation: isolate;
+  inset-block: auto 0;
+  inset-inline: 0 auto;
+  line-height: 1.25;
+}
+
+/* PB forces heading backgrounds transparent with !important, so the label's
+   ground is painted behind the words by a pseudo-element. */
+.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__title::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  background-color: var(--pb-pattern-tint-color);
+  inset: 0;
+}
+
+:where(.paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-overlay__title) {
+  padding-block: clamp(0.5rem, 2cqi, 1rem);
+  padding-inline: clamp(0.75rem, 3cqi, 1.5rem);
+  font-size: clamp(0.875rem, 3.2cqi, 1.375rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-image__wrapper,
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__container::before {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-image__wrapper {
+    filter: none;
+  }
+
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__container::before {
+    display: none;
+  }
+
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__title {
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    background-color: Canvas;
+  }
+}
+
+@media print {
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-image__wrapper {
+    filter: none;
+  }
+
+  .paragraphs-bundles.pb-image-overlay.pb-pattern--image-overlay-tint .pb-image-overlay__inner .pb-overlay__container::before {
+    display: none;
+  }
+}
