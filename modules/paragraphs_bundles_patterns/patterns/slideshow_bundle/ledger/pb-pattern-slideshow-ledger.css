@@ -247,6 +247,7 @@
 }
 
 .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-ledger .pb-slideshow__stage > .pb-slideshow__arrows button {
+  all: unset;
   display: grid;
   place-items: center;
   box-sizing: border-box;
@@ -257,10 +258,10 @@
     background-color 0.25s,
     color 0.25s,
     transform 0.35s var(--pb-pattern-ease-out);
-  color: inherit;
   border-radius: 50%;
+  /* stylelint-disable-next-line order/properties-order -- declaration order changes the result here (shorthand and longhand, all, or a physical and logical pair) */
+  color: inherit;
   box-shadow: inset 0 0 0 1.5px var(--pb-br, currentColor);
-  all: unset;
 }
 
 .paragraphs-bundles.pb-slideshow.pb-pattern--slideshow-ledger .pb-slideshow__stage > .pb-slideshow__arrows button svg {
