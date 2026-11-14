@@ -62,13 +62,10 @@ variables:
 # defines a `before_script`, so this adds one rather than replacing the
 # template's own setup.
 #
-# The core-version variants (`phpunit (next minor)` and friends) are opt-in and
-# currently off; give them the same before_script when any is enabled, or their
-# a11y tests will fail on the missing file.
-# THE VARIANTS NEED THIS TOO. The comment above warned that enabling a
-# core-version variant without giving it the same before_script leaves its a11y
-# tests failing on a missing axe-core file — so each enabled variant gets it,
-# through one anchor rather than three copies.
+# THE VARIANTS NEED THIS TOO. A core-version variant without the same
+# before_script fails its a11y tests on a missing axe-core file, so each
+# enabled variant gets it, through one anchor rather than copies.
+# `phpunit (next major)` takes it further down, beside its allow_failure.
 .pb-fetch-axe: &pb-fetch-axe
   before_script:
     - |
@@ -81,9 +78,6 @@ phpunit:
   <<: *pb-fetch-axe
 
 "phpunit (previous minor)":
-  <<: *pb-fetch-axe
-
-"phpunit (next major)":
   <<: *pb-fetch-axe
 
 # THE DRUPAL 12 JOBS CANNOT PASS YET, AND THE REASON IS UPSTREAM.
