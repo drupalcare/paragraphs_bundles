@@ -177,24 +177,38 @@ final class PbCarouselJavascriptTest extends WebDriverTestBase {
     // The toggle renders and starts in the playing state.
     $toggle = $assert->waitForElement('css', '.pb-carousel__play-pause');
     $this->assertNotNull($toggle, 'The play/pause toggle rendered.');
-    $this->assertSame('true', $toggle->getAttribute('aria-pressed'));
+    // The control's label names what pressing does (Pause/Play slideshow), so
+    // it carries no aria-pressed: both together read as "Play, pressed"
+    // (decision FE, planning/vvj-pb-a11y-fix-FE-2026-11-12.md).
+    $this->assertJsCondition(
+      "document.querySelector('.pb-carousel__play-pause').hasAttribute('aria-pressed') === false",
+    );
     $this->assertJsCondition(
       "document.querySelector('.pb-carousel__play-pause').classList.contains('pb-is-playing')",
     );
+    $this->assertJsCondition(
+      "document.querySelector('.pb-carousel__play-pause').getAttribute('aria-label') === 'Pause slideshow'",
+    );
 
-    // Clicking pauses autoplay and flips the control state.
+    // Clicking pauses autoplay, and the label now offers to play.
     $toggle->click();
     $this->assertJsCondition(
-      "document.querySelector('.pb-carousel__play-pause').getAttribute('aria-pressed') === 'false'",
+      "document.querySelector('.pb-carousel__play-pause').classList.contains('pb-is-paused')",
     );
     $this->assertJsCondition(
-      "document.querySelector('.pb-carousel__play-pause').classList.contains('pb-is-paused')",
+      "document.querySelector('.pb-carousel__play-pause').getAttribute('aria-label') === 'Play slideshow'",
     );
 
     // Clicking again resumes.
     $toggle->click();
     $this->assertJsCondition(
-      "document.querySelector('.pb-carousel__play-pause').getAttribute('aria-pressed') === 'true'",
+      "document.querySelector('.pb-carousel__play-pause').classList.contains('pb-is-playing')",
+    );
+    $this->assertJsCondition(
+      "document.querySelector('.pb-carousel__play-pause').getAttribute('aria-label') === 'Pause slideshow'",
+    );
+    $this->assertJsCondition(
+      "document.querySelector('.pb-carousel__play-pause').hasAttribute('aria-pressed') === false",
     );
 
     // No serious/critical accessibility violations in the rendered widget.

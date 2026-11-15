@@ -15,11 +15,13 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 /**
  * Drives the 3D flip-box bundle's focus flip in a real browser.
  *
- * The flip box has no JavaScript: the flip is a pure-CSS :focus-within (and
- * :hover) rotation of the inner element. This test drives the keyboard path —
- * focusing the scene rotates the inner 180 degrees (rotateY, m11 goes 1 to -1),
- * and blurring returns it — which is the browser-observable interaction
- * contract. Requires a WebDriver (chromedriver/selenium).
+ * A behaviour reveals a real `<button>` that flips the box (rotateY, the
+ * inner's m11 goes 1 to -1) and keeps `inert` on the face turned away. The
+ * button carries no `aria-expanded`: its visually-hidden label swaps between
+ * "Show the back" and "Show the front", and a changing label plus a state
+ * attribute would announce both (decision FE,
+ * planning/vvj-pb-a11y-fix-FE-2026-11-12.md). Requires a WebDriver
+ * (chromedriver/selenium).
  */
 #[Group('paragraphs_bundles')]
 #[RunTestsInSeparateProcesses]
@@ -85,6 +87,10 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
     $this->drupalGet($node->toUrl());
     $assert = $this->assertSession();
 
+    // The control's visually-hidden label shows the string the template stored
+    // for one face; both strings are translated in the template.
+    $labelIs = static fn (string $key): string => "(function () { var l = document.querySelector('.pb-3d-flip-box__toggle [data-pb-label-front]'); return l !== null && l.dataset.$key !== '' && l.textContent === l.dataset.$key; })()";
+
     // The inner starts flat (rotateY 0, m11 rounds to 1).
     $assert->waitForElement('css', '.pb-3d-flip-box__inner');
     $this->assertJsCondition(
@@ -100,9 +106,12 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
     // without the script never shows a control that cannot work. Waiting on
     // that is also how we know the behaviour attached.
     $assert->waitForElement('css', '.pb-3d-flip-box__toggle:not([hidden])');
+    // No aria-expanded: the spoken label carries the state instead, and it
+    // starts by offering the back face.
     $this->assertJsCondition(
-      "document.querySelector('.pb-3d-flip-box__toggle').getAttribute('aria-expanded') === 'false'",
+      "document.querySelector('.pb-3d-flip-box__toggle').hasAttribute('aria-expanded') === false",
     );
+    $this->assertJsCondition($labelIs('pbLabelFront'));
 
     // Before the flip, the back face is the one turned away (F-2, F-3).
     $this->assertJsCondition(
@@ -122,7 +131,11 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
       "Math.round(new DOMMatrixReadOnly(getComputedStyle(document.querySelector('.pb-3d-flip-box__inner')).transform).m11) === -1",
     );
     $this->assertJsCondition(
-      "document.querySelector('.pb-3d-flip-box__toggle').getAttribute('aria-expanded') === 'true'",
+      "document.querySelector('.pb-3d-flip-box__scene').classList.contains('pb-is-flipped')",
+    );
+    $this->assertJsCondition($labelIs('pbLabelBack'));
+    $this->assertJsCondition(
+      "document.querySelector('.pb-3d-flip-box__toggle').hasAttribute('aria-expanded') === false",
     );
 
     // …and the isolation follows the presented face rather than staying put:
@@ -141,10 +154,15 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
       "document.querySelector('.pb-3d-flip-box__back').hasAttribute('inert') === true"
       . " && document.querySelector('.pb-3d-flip-box__front').hasAttribute('inert') === false",
     );
+    $this->assertJsCondition(
+      "!document.querySelector('.pb-3d-flip-box__scene').classList.contains('pb-is-flipped')",
+    );
+    $this->assertJsCondition($labelIs('pbLabelFront'));
 
-    // A genuine click reaches the handler too. Only `aria-expanded` is
-    // asserted here: the cursor now rests on the control, so the scene is
-    // hovered and the back face is presented for that reason as well.
+    // A genuine click reaches the handler too. Only the button's own state
+    // (`pb-is-flipped`, which tracks the button and nothing else) is asserted
+    // here: the cursor now rests on the control, so the scene is hovered and
+    // the back face is presented for that reason as well.
     //
     // Enter/Space are deliberately not asserted: the control is a native
     // <button>, so the browser guarantees them, and Mink's synthetic key
@@ -187,7 +205,7 @@ final class PbFlipBoxJavascriptTest extends WebDriverTestBase {
     );
     $toggle->click();
     $this->assertJsCondition(
-      "document.querySelector('.pb-3d-flip-box__toggle').getAttribute('aria-expanded') === 'true'",
+      "document.querySelector('.pb-3d-flip-box__scene').classList.contains('pb-is-flipped')",
     );
 
     // No serious/critical accessibility violations in the rendered widget.
