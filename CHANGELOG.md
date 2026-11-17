@@ -5,6 +5,7 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+- Security (#3638980): the AI Undo link is shown only for this site's own revision revert page; the address is parsed and compared by origin, so a crafted `pb-ai-revert` value such as `/%09/example.com` can no longer send a visitor to another site.
 - New W3CSS theme bridge: PB and PB Patterns pick it for the W3CSS theme and its sub-themes (amun, amunet, anhur, site sub-themes) and read the `--r-text`, `--r-background` and `--r-border` roles that theme sets; link stays the neutral value.
 - Solo bridges read the current region color names (`--r-text`, `--r-link`, `--r-border` and the rest of the 15 roles) first and the 1.x short names second, and the Content bundle's Solo layout rules match both the 1.x and the current Solo layout class and id names.
 - New optional module Paragraphs Bundles Patterns: 71 designed patterns for 22 paragraph types, including Video, picked per paragraph from a list. Paragraphs with no pattern are unchanged. Patterns take region colors on Solo, APEX and their sub-themes, and a save rule refuses content a pattern cannot display.

@@ -86,6 +86,35 @@
    *
    * @return {HTMLElement|null} The section, or null.
    */
+  // Core's revision revert path, with or without a base path or language
+  // prefix in front: /node/12/revisions/34/revert.
+  const REVERT_PATH = /\/node\/\d+\/revisions\/\d+\/revert$/;
+
+  /**
+   * The Undo address, or '' when the value is not this site's revert page.
+   *
+   * @param {string|null} value
+   *   The pb-ai-revert value from the query string.
+   *
+   * @return {string}
+   *   A root-relative address built from the parsed URL, or ''.
+   */
+  const safeRevertUrl = (value) => {
+    if (!value) {
+      return '';
+    }
+    let url;
+    try {
+      url = new URL(value, window.location.origin);
+    } catch (e) {
+      return '';
+    }
+    if (url.origin !== window.location.origin || !REVERT_PATH.test(url.pathname)) {
+      return '';
+    }
+    return url.pathname + url.search + url.hash;
+  };
+
   const sectionById = (id) =>
     document.querySelector(`[id^="pb-"][id$="-${id}"]`);
 
@@ -379,15 +408,17 @@
       // into script execution: `?pb-ai-added=&pb-ai-revert=javascript:…` was
       // enough, because mark() runs on a bare `pb-ai-added`.
       //
-      // So: one leading slash and not a second. That admits the real paths
-      // and refuses `javascript:`, `data:`, and protocol-relative `//host`,
-      // without this script needing to know the site's own origin.
-      const revert = params.get('pb-ai-revert');
+      // So the value is PARSED the way the browser will read it, never
+      // pattern-matched: a regex let `/%09/example.com` through, because the
+      // browser drops the tab and reads `//example.com` (#3638980). It must
+      // be this site's origin and core's revision revert path; the link is
+      // then built from the parsed path, not from the raw value.
+      const revertUrl = safeRevertUrl(params.get('pb-ai-revert'));
 
-      if (revert && /^\/[^/\\]/.test(revert)) {
+      if (revertUrl) {
         const undo = document.createElement('a');
         undo.className = 'pb-ai-undo';
-        undo.href = revert;
+        undo.href = revertUrl;
         undo.textContent = Drupal.t('Undo');
         wrapper.appendChild(undo);
       }
